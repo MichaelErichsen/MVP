@@ -4,7 +4,8 @@ package net.myerichsen.gen.mvp;
  * Constants used by database access and event handling
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 11. dec. 2018
+ * @version 1. jan. 2019
+ * 
  */
 public class Constants {
 	/**
@@ -50,4 +51,5 @@ public class Constants {
 	public static final String SEX_PID_UPDATE_TOPIC = "SEX_PID_UPDATE_TOPIC";
 	public static final String SEX_TYPE_PID_UPDATE_TOPIC = "SEX_TYPE_PID_UPDATE_TOPIC";
 	public static final String TABLENAME_UPDATE_TOPIC = "TABLENAME_UPDATE_TOPIC";
+	public static final String DATABASE_UPDATE_TOPIC = "DATABASE_UPDATE_TOPIC";
 }

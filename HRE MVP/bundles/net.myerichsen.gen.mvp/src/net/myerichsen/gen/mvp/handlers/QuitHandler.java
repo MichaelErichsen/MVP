@@ -5,6 +5,13 @@ import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * Handler to shut down HRE.
+ * 
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 1. jan. 2019
+ *
+ */
 public class QuitHandler {
 	@Execute
 	public void execute(IWorkbench workbench, Shell shell) {
