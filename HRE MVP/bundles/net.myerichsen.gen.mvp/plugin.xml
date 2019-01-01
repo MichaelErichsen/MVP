@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            name="net.myerichsen.gen.mvp"
+            application="org.eclipse.e4.ui.workbench.swt.E4Application">
+         <property
+               name="applicationCSS"
+               value="platform:/plugin/net.myerichsen.gen.mvp/css/default.css">
+         </property>
+         <property
+               name="appName"
+               value="net.myerichsen.gen.mvp">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="com.opcoach.e4.preferences.e4PreferencePages">
+      <page
+            class="net.myerichsen.gen.mvp.preferences.MvpPreferencePage"
+            id="net.myerichsen.gen.mvp.rootpage"
+            name="MVP Preferences">
+      </page>
+      <page
+            category="net.myerichsen.gen.mvp.rootpage"
+            class="net.myerichsen.gen.mvp.preferences.ClientPreferencePage"
+            id="net.myerichsen.gen.mvp.clientpage"
+            name="Client">
+      </page>
+      <page
+            category="net.myerichsen.gen.mvp.rootpage"
+            class="net.myerichsen.gen.mvp.preferences.H2PreferencePage"
+            id="net.myerichsen.gen.mvp.h2page"
+            name="H2">
+      </page>
+      <page
+            category="net.myerichsen.gen.mvp.rootpage"
+            class="net.myerichsen.gen.mvp.preferences.ServerPreferencePage"
+            id="net.myerichsen.gen.mvp.serverpage"
+            name="Server">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.myerichsen.gen.mvp.preferences.DefaultValuesInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

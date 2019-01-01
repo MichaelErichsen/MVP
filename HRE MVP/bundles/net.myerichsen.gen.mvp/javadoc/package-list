@@ -1,0 +1,13 @@
+net.myerichsen.gen.mvp
+net.myerichsen.gen.mvp.databaseadmin
+net.myerichsen.gen.mvp.dbmodels
+net.myerichsen.gen.mvp.dialogs
+net.myerichsen.gen.mvp.handlers
+net.myerichsen.gen.mvp.listeners
+net.myerichsen.gen.mvp.navigators
+net.myerichsen.gen.mvp.parts
+net.myerichsen.gen.mvp.preferences
+net.myerichsen.gen.mvp.providers
+net.myerichsen.gen.mvp.requesthandlers
+net.myerichsen.gen.mvp.serverlogic
+net.myerichsen.gen.mvp.wizards
