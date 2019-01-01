@@ -50,5 +50,17 @@
             class="net.myerichsen.gen.mvp.preferences.DefaultValuesInitializer">
       </initializer>
    </extension>
+   <extension
+         id="HRE_MVP"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.e4.ui.workbench.swt.E4Application"
+            name="net.myerichsen.hremvp">
+         <property
+               name="appName"
+               value="net.myerichsen.hremvp">
+         </property>
+      </product>
+   </extension>
 
 </plugin>
