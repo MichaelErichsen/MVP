@@ -1,4 +1,4 @@
-package org.historyresearchenvironment.toolbox;
+package net.myerichsen.hremvp.toolbox;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
