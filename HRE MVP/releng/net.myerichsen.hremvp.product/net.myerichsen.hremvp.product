@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="net.myerichsen.hremvp" uid="HRE MVP" id="net.myerichsen.gen.mvp.HRE_MVP" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="net.myerichsen.hremvp" uid="HRE MVP" id="net.myerichsen.hremvp.HRE_MVP" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -16,7 +16,7 @@
    <windowImages/>
 
    <splash
-      location="net.myerichsen.gen.mvp" />
+      location="net.myerichsen.hremvp" />
    <plugins>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.opcoach.e4.preferences"/>
@@ -24,7 +24,7 @@
       <plugin id="javax.inject"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
-      <plugin id="net.myerichsen.gen.mvp"/>
+      <plugin id="net.myerichsen.hremvp"/>
       <plugin id="org.apache.batik.constants"/>
       <plugin id="org.apache.batik.css"/>
       <plugin id="org.apache.batik.i18n"/>

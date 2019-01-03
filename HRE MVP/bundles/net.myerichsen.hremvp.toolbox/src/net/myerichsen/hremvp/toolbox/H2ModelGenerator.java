@@ -20,7 +20,7 @@ import java.util.List;
  * Utility to generate a Java model class representing an HRE H2 Table
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 20. nov. 2018
+ * @version 3. jan. 2019
  *
  */
 
@@ -322,7 +322,7 @@ public class H2ModelGenerator {
 	 *
 	 */
 	private static void createHeader() throws IOException {
-		writer.println("package net.myerichsen.gen.mvp.dbmodels;\r\n");
+		writer.println("package net.myerichsen.hremvp.dbmodels;\r\n");
 		writer.println("import java.math.BigDecimal;");
 		writer.println("import java.sql.Connection;");
 		writer.println("import java.sql.LocalDate;");
@@ -332,8 +332,8 @@ public class H2ModelGenerator {
 		writer.println("import java.sql.Timestamp;");
 		writer.println("import java.util.ArrayList;");
 		writer.println("import java.util.List;");
-		writer.println("import net.myerichsen.gen.mvp.HreH2ConnectionPool;");
-		writer.println("import net.myerichsen.gen.mvp.MvpException;\r\n");
+		writer.println("import net.myerichsen.hremvp.HreH2ConnectionPool;");
+		writer.println("import net.myerichsen.hremvp.MvpException;\r\n");
 
 		writer.println("/**");
 		writer.println("* The persistent class for the " + tableName + " database table");

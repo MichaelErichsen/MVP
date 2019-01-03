@@ -6,48 +6,48 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            name="net.myerichsen.gen.mvp"
+            name="net.myerichsen.hremvp"
             application="org.eclipse.e4.ui.workbench.swt.E4Application">
          <property
                name="applicationCSS"
-               value="platform:/plugin/net.myerichsen.gen.mvp/css/default.css">
+               value="platform:/plugin/net.myerichsen.hremvp/css/default.css">
          </property>
          <property
                name="appName"
-               value="net.myerichsen.gen.mvp">
+               value="net.myerichsen.hremvp">
          </property>
       </product>
    </extension>
    <extension
          point="com.opcoach.e4.preferences.e4PreferencePages">
       <page
-            class="net.myerichsen.gen.mvp.preferences.MvpPreferencePage"
-            id="net.myerichsen.gen.mvp.rootpage"
+            class="net.myerichsen.hremvp.preferences.MvpPreferencePage"
+            id="net.myerichsen.hremvp.rootpage"
             name="MVP Preferences">
       </page>
       <page
-            category="net.myerichsen.gen.mvp.rootpage"
-            class="net.myerichsen.gen.mvp.preferences.ClientPreferencePage"
-            id="net.myerichsen.gen.mvp.clientpage"
+            category="net.myerichsen.hremvp.rootpage"
+            class="net.myerichsen.hremvp.preferences.ClientPreferencePage"
+            id="net.myerichsen.hremvp.clientpage"
             name="Client">
       </page>
       <page
-            category="net.myerichsen.gen.mvp.rootpage"
-            class="net.myerichsen.gen.mvp.preferences.H2PreferencePage"
-            id="net.myerichsen.gen.mvp.h2page"
+            category="net.myerichsen.hremvp.rootpage"
+            class="net.myerichsen.hremvp.preferences.H2PreferencePage"
+            id="net.myerichsen.hremvp.h2page"
             name="H2">
       </page>
       <page
-            category="net.myerichsen.gen.mvp.rootpage"
-            class="net.myerichsen.gen.mvp.preferences.ServerPreferencePage"
-            id="net.myerichsen.gen.mvp.serverpage"
+            category="net.myerichsen.hremvp.rootpage"
+            class="net.myerichsen.hremvp.preferences.ServerPreferencePage"
+            id="net.myerichsen.hremvp.serverpage"
             name="Server">
       </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="net.myerichsen.gen.mvp.preferences.DefaultValuesInitializer">
+            class="net.myerichsen.hremvp.preferences.DefaultValuesInitializer">
       </initializer>
    </extension>
    <extension

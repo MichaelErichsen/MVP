@@ -42,7 +42,7 @@ import com.hypotemoose.cal.constants.CalendarConstants;
 public class IndianCivilCalendar extends Almanac {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4045737840665086075L;
 	public static final String CALENDAR_NAME = "Indian Civil Calendar";
@@ -57,7 +57,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	/**
 	 * Constructs a new Indian Civil Calendar from another Almanac.
-	 * 
+	 *
 	 * @param a an almanac.
 	 */
 	public IndianCivilCalendar(Almanac a) {
@@ -66,7 +66,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	/**
 	 * Constructs a new Indian Civil Calendar using a {@link java.util.Calendar}.
-	 * 
+	 *
 	 * @param cal a calendar.
 	 */
 	public IndianCivilCalendar(Calendar cal) {
@@ -75,7 +75,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	/**
 	 * Constructs a new Indian Civil Calendar from another Indian Civil Calendar.
-	 * 
+	 *
 	 * @param date a calendar.
 	 */
 	public IndianCivilCalendar(IndianCivilCalendar date) {
@@ -84,7 +84,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	/**
 	 * Constructs a new Indian Civil calendar.
-	 * 
+	 *
 	 * @param year  a year.
 	 * @param month a month [1 - 12].
 	 * @param day   a day.
@@ -108,7 +108,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	/**
 	 * Determines if a given Indian Civil year is a leap year.
-	 * 
+	 *
 	 * @param year a year in the Indian Civil Calendar.
 	 * @return true, if is a leap year; false, otherwise.
 	 */
@@ -136,7 +136,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	/**
 	 * Gets the name of this calendar's month.
-	 * 
+	 *
 	 * @return the name of this calendar's month.
 	 */
 	public String getMonthName() {
@@ -183,7 +183,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	/**
 	 * Determines if this calendar falls in a leap year.
-	 * 
+	 *
 	 * @return true, if this calendar falls in a leap year; false, otherwise.
 	 */
 	public boolean isLeapYear() {
@@ -192,7 +192,7 @@ public class IndianCivilCalendar extends Almanac {
 
 	@Override
 	public void set(Almanac a) {
-		IndianCivilCalendar cal = toIndianCivilCalendar(a);
+		final IndianCivilCalendar cal = toIndianCivilCalendar(a);
 		year = cal.getYear();
 		month = cal.getMonth();
 		day = cal.getDay();

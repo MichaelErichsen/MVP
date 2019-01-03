@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mvp
-Bundle-SymbolicName: net.myerichsen.gen.mvp;singleton:=true
+Bundle-SymbolicName: net.myerichsen.hremvp;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: net.myerichsen.gen.mvp.Activator
+Bundle-Activator: net.myerichsen.hremvp.Activator
 Bundle-Vendor: Michael Erichsen
 Require-Bundle: javax.inject;bundle-version="0.0.0",
  org.eclipse.swt;bundle-version="0.0.0",
@@ -29,9 +29,11 @@ Require-Bundle: javax.inject;bundle-version="0.0.0",
  org.eclipse.e4.ui.workbench.swt,
  com.opcoach.e4.preferences,
  org.eclipse.help.base,
- org.eclipse.equinox.preferences
+ org.eclipse.equinox.preferences,
+ org.eclipse.help.ui,
+ org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Automatic-Module-Name: net.myerichsen.gen.mvp
+Automatic-Module-Name: net.myerichsen.hremvp
 Import-Package: javax.annotation;version="1.0.0";resolution:=optional,
  javax.inject;version="1.0.0"
 Bundle-ActivationPolicy: lazy

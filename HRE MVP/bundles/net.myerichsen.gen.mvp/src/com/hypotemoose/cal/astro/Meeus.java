@@ -179,30 +179,30 @@ public class Meeus {
 // private
 
 	protected static double calculateJdeo(double[] series, double y) {
-		double y2 = y * y;
-		double y3 = y2 * y;
-		double y4 = y3 * y;
+		final double y2 = y * y;
+		final double y3 = y2 * y;
+		final double y4 = y3 * y;
 		return (series[0] + (series[1] * y) + (series[2] * y2) + (series[3] * y3) + (series[4] * y4));
 	}
 
 	protected static double[] computeLunarCoefficients(int quarter, double m, double mp, double f, double omega,
 			double e) {
-		double c01 = dsin(mp);
-		double c02 = dsin(m);
-		double c03 = dsin(2 * mp);
-		double c04 = dsin(2 * f);
-		double c05 = dsin(mp - m);
-		double c06 = dsin(mp + m);
-		double c07 = dsin(2 * m);
-		double c08 = dsin(mp - (2 * f));
-		double c09 = dsin(mp + (2 * f));
-		double c10 = dsin((2 * mp) + m);
-		double c11 = dsin(3 * mp);
-		double c12 = dsin(m + (2 * f));
-		double c13 = dsin(m - (2 * f));
-		double c14 = dsin((2 * mp) - m);
-		double c15 = dsin(omega);
-		double c16 = dsin(mp + (2 * m));
+		final double c01 = dsin(mp);
+		final double c02 = dsin(m);
+		final double c03 = dsin(2 * mp);
+		final double c04 = dsin(2 * f);
+		final double c05 = dsin(mp - m);
+		final double c06 = dsin(mp + m);
+		final double c07 = dsin(2 * m);
+		final double c08 = dsin(mp - (2 * f));
+		final double c09 = dsin(mp + (2 * f));
+		final double c10 = dsin((2 * mp) + m);
+		final double c11 = dsin(3 * mp);
+		final double c12 = dsin(m + (2 * f));
+		final double c13 = dsin(m - (2 * f));
+		final double c14 = dsin((2 * mp) - m);
+		final double c15 = dsin(omega);
+		final double c16 = dsin(mp + (2 * m));
 
 		// Coefficients for new and full moons.
 		if ((quarter % 2) == 0) {
@@ -288,7 +288,7 @@ public class Meeus {
 
 		// Sum periodic terms for time t.
 		s = 0;
-		for (double[] aTblC : tblC) {
+		for (final double[] aTblC : tblC) {
 			s += aTblC[0] * dcos(aTblC[1] + (aTblC[2] * t));
 		}
 
@@ -314,16 +314,17 @@ public class Meeus {
 	 * @return the lunar phase as a percentage.
 	 */
 	public static double getLunarPhase(double jd) {
-		double t = (jd - J2000) / JULIAN_CENTURY;
-		double t2 = t * t;
-		double t3 = t2 * t;
-		double t4 = t3 * t;
+		final double t = (jd - J2000) / JULIAN_CENTURY;
+		final double t2 = t * t;
+		final double t3 = t2 * t;
+		final double t4 = t3 * t;
 		// Moon mean elongation D
-		double d = (((297.8502042 + (t * 445267.1115168)) - (t2 * 0.0016300)) + (t3 / 545868.0)) - (t4 / 113065000.0);
+		final double d = (((297.8502042 + (t * 445267.1115168)) - (t2 * 0.0016300)) + (t3 / 545868.0))
+				- (t4 / 113065000.0);
 		// Moon mean anomaly M'
-		double mp = (134.9634114 + (t * 477198.8675055) + (t2 * 0.0087414) + (t3 / 69699.0)) - (t4 / 14712000.0);
-		double m = ((357.5291092 + (t * 35999.0502909)) - (t2 * 0.0001536)) + (t3 / 24490000.0);
-		double phase = ((180.0 - d - (6.289 * dsin(mp))) + (2.1 * dsin(m))) - (1.274 * dsin((2 * d) - mp))
+		final double mp = (134.9634114 + (t * 477198.8675055) + (t2 * 0.0087414) + (t3 / 69699.0)) - (t4 / 14712000.0);
+		final double m = ((357.5291092 + (t * 35999.0502909)) - (t2 * 0.0001536)) + (t3 / 24490000.0);
+		final double phase = ((180.0 - d - (6.289 * dsin(mp))) + (2.1 * dsin(m))) - (1.274 * dsin((2 * d) - mp))
 				- (0.658 * dsin(2 * d)) - (0.214 * dsin(2 * mp)) - (0.11 * dsin(d));
 		return fixAngle(phase);
 	}
@@ -339,18 +340,18 @@ public class Meeus {
 	 * @return an array[4] containing the next lunar cycle in Julian days.
 	 */
 	public static double[] getMoonQuarters(int year, int month, int day) {
-		double[] quarters = new double[4];
-		double k = floor(((year + (((month - 1) + (day / 30.0)) / 12.0)) - 2000) * 12.3685);
+		final double[] quarters = new double[4];
+		final double k = floor(((year + (((month - 1) + (day / 30.0)) / 12.0)) - 2000) * 12.3685);
 		// Time in Julian centuries since 2000
-		double t = k / 1236.85;
-		double t2 = t * t;
-		double t3 = t2 * t;
-		double t4 = t3 * t;
+		final double t = k / 1236.85;
+		final double t2 = t * t;
+		final double t3 = t2 * t;
+		final double t4 = t3 * t;
 		// Sun's mean anomaly M
 		double m = (2.5534 + (k * 29.10535669)) - (t2 * 0.0000218);
 		// Moon's mean anomaly M'
 		double mp = (201.5643 + (k * 385.81693528) + (t2 * 0.0107438) + (t3 * 0.00001239)) - (t3 * 0.00000011);
-		double e = 1 - (0.002516 * t) - (0.0000074 * t2);
+		final double e = 1 - (0.002516 * t) - (0.0000074 * t2);
 		// Moon's argument of latitude
 		double f = ((160.7108 + (k * 390.67050274)) - (t2 * 0.0016341) - (t3 * 0.00000227 * t3)) + (t4 * 0.000000011);
 		double omega = (124.7746 - (k * 1.56375580)) + (t2 * 0.0020691) + (t3 * 0.00000215);
@@ -361,7 +362,7 @@ public class Meeus {
 
 		// The full planetary arguments list include 14 terms
 		// Only using the 7 most significant.
-		double[] args = new double[] { fixAngle((299.77 + (0.107408 * k)) - (0.009173 * t2)),
+		final double[] args = new double[] { fixAngle((299.77 + (0.107408 * k)) - (0.009173 * t2)),
 				fixAngle(251.88 + (0.016321 * k)), fixAngle(251.83 + (26.651886 * k)),
 				fixAngle(349.42 + (36.412478 * k)), fixAngle(84.88 + (18.206239 * k)),
 				fixAngle(141.74 + (53.303771 * k)), fixAngle(207.14 + (2.453732 * k)) };
@@ -443,7 +444,7 @@ public class Meeus {
 	public static double[] nutation(double jd) {
 		double dPsi, dEpsilon;
 		double t, t2, t3, to10, dp = 0.0, de = 0.0, ang;
-		double[] ta = new double[5];
+		final double[] ta = new double[5];
 
 		t = (jd - 2451545.0) / (36525.0);
 		t2 = t * t;
@@ -463,7 +464,7 @@ public class Meeus {
 		for (int i = 0; i < 63; ++i) {
 			ang = 0.0;
 			for (int j = 0; j < 5; ++j) {
-				int k = (i * 5) + j;
+				final int k = (i * 5) + j;
 				if (nutArgMult[k] != 0) {
 					ang += nutArgMult[k] * ta[j];
 				}
