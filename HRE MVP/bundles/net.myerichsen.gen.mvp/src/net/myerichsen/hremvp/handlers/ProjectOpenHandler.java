@@ -35,8 +35,8 @@ import net.myerichsen.hremvp.models.ProjectModel;
 /**
  * Open an existing project.
  * 
- * @version 2018-07-23
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 3. jan. 2019
  *
  */
 public class ProjectOpenHandler {
@@ -57,7 +57,7 @@ public class ProjectOpenHandler {
 	 */
 	@Execute
 	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell) {
-		final IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("org.historyresearchenvironment");
+		final IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
 		Connection conn = null;
 
 		// Open file dialog

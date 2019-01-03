@@ -40,8 +40,8 @@ import net.myerichsen.hremvp.providers.NewDatabaseProvider;
 /**
  * Create a new HRE project database.
  * 
- * @version 2018-07-23
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 3. jan. 2019
  *
  */
 public class ProjectNewHandler {
@@ -53,7 +53,7 @@ public class ProjectNewHandler {
 
 	@Inject
 	EModelService modelService;
-	private final IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("org.historyresearchenvironment");
+	private final IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
 	private NewDatabaseProvider provider;
 
 	/**

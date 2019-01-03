@@ -15,8 +15,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 /**
  * Open the embedded help browser
  * 
- * @version 2018-06-22
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 3. jan. 2019
  *
  */
 public class HelpBrowserHandler {

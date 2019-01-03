@@ -11,14 +11,14 @@ import org.eclipse.help.internal.base.BaseHelpSystem;
 /**
  * Handler to open the help system in an external browser.
  * 
- * @version 2018-07-23
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 3. jan. 2019
  *
  */
 @SuppressWarnings("restriction")
 public class HelpContentsHandler {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("org.historyresearchenvironment");
+	private static IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
 
 	/**
 	 * 

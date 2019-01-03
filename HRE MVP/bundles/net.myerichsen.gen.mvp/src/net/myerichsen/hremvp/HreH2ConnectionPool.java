@@ -18,7 +18,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 15. okt. 2018
+ * @version 3. jan. 2019
  *
  */
 public class HreH2ConnectionPool {
@@ -128,6 +128,8 @@ public class HreH2ConnectionPool {
 		connectionPool.setMaxConnections(500);
 		LOGGER.info("Connection pool has been created");
 
+		// FIXME SEVERE: Invalid database name: "C:\\Program Files\HRE\eclipse\\"
+		// [90138-197]
 		return connectionPool.getConnection();
 	}
 }

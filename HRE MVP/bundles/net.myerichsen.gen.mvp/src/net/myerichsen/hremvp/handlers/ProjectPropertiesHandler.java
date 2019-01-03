@@ -16,12 +16,12 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 /**
  * Handler to open the project properties.
  * 
- * @version 2018-07-15
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 3. jan. 2019
  *
  */
 public class ProjectPropertiesHandler {
-	private final static String contributionURI = "bundleclass://org.historyresearchenvironment.client/org.historyresearchenvironment.client.parts.ProjectProperties";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.ProjectProperties";
 
 	/**
 	 * @param partService

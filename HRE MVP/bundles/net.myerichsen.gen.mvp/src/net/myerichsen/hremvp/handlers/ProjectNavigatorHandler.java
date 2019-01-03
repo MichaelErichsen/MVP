@@ -21,7 +21,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  *
  */
 public class ProjectNavigatorHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.ProjectNavigator";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator";
 
 	/**
 	 * @param partService
