@@ -15,7 +15,7 @@ import org.eclipse.jetty.server.Server;
 /**
  * HTTP root request handler
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 4. okt. 2018
  *
  */

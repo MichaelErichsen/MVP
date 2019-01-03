@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.wizards.NewLocationWizard;
 /**
  * Open the new location wizard
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 31. okt. 2018
  *
  */

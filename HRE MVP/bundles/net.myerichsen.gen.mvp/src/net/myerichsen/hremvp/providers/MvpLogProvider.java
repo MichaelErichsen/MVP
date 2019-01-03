@@ -13,7 +13,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
  * Provides log entries to the log view
  *
  * @version 2018-09-14
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class MvpLogProvider implements IStructuredContentProvider {

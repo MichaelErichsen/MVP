@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.Constants;
  * Create a view part with a table. Create a column for each columns in the
  * catalog for the given table. Populate the table with data from H2.
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 2. jan. 2019
  *
  */

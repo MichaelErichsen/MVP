@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.wizards.NewEventWizard;
 /**
  * Open the new event wizard
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 21. nov. 2018
  *
  */

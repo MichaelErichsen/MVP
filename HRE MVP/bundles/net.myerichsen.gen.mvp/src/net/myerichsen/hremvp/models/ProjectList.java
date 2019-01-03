@@ -19,7 +19,7 @@ import org.osgi.service.prefs.BackingStoreException;
 /**
  * Singleton class encapsulating a list of project model objects.
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
  */
@@ -108,7 +108,6 @@ public class ProjectList {
 		final int projectCount = preferences.getInt("projectcount", 1);
 
 		try {
-			// FIXME Null pointer exception
 			for (int i = 0; i < projectCount; i++) {
 				key = new String("project." + i + ".name");
 				name = preferences.get(key, "?");

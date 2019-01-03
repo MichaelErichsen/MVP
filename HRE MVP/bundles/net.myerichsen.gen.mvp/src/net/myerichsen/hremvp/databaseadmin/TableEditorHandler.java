@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Table Editor
  *
  * @version 2018-09-04
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class TableEditorHandler {

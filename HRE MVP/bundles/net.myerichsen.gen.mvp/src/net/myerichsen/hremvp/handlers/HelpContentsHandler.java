@@ -11,7 +11,7 @@ import org.eclipse.help.internal.base.BaseHelpSystem;
 /**
  * Handler to open the help system in an external browser.
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
  */

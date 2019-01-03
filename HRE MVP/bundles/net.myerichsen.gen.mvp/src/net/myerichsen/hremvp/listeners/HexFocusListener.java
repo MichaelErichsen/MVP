@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Text;
  * Make sure that the number of characters is even
  *
  * @version 2018-05-19
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class HexFocusListener implements FocusListener {

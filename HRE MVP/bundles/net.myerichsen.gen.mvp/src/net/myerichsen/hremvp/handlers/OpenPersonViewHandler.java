@@ -17,7 +17,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Person view
  *
  * @version 2018-09-14
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class OpenPersonViewHandler {

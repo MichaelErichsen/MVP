@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.serverlogic.EventTypeServer;
 /**
  * Provides all data for an event type
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 11. dec. 2018
  *
  */

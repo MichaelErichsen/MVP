@@ -36,13 +36,13 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 /**
  * Dialog to create a date in several formats
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 21. nov. 2018
  *
  */
 public class DateDialog extends TitleAreaDialog {
 	/**
-	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
 	 * @version 15. nov. 2018
 	 *
 	 */
@@ -87,7 +87,7 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
 	 * @version 7. nov. 2018
 	 *
 	 */
@@ -132,7 +132,7 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
 	 * @version 7. nov. 2018
 	 *
 	 */
@@ -177,7 +177,7 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
 	 * @version 7. nov. 2018
 	 *
 	 */
@@ -222,7 +222,7 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
 	 * @version 7. nov. 2018
 	 *
 	 */

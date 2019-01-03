@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.LocationNameStyleProvider;
 /**
  * Display all data about a Location Name Style
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 20. nov. 2018
  *
  */

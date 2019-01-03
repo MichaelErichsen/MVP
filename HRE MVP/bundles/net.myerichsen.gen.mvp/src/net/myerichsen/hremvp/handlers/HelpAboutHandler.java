@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.dialogs.HelpAboutDialog;
  * Handler to display the Help About dialog.
  * 
  * @version 2018-06-09
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class HelpAboutHandler {

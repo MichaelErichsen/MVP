@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.providers.PersonListProvider;
  * Display a list of all persons with their primary names
  *
  * @version 2018-08-30
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 

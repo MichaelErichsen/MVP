@@ -9,7 +9,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
  * Handler to refresh the log
  *
  * @version 2018-09-12
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class LogRefreshHandler {

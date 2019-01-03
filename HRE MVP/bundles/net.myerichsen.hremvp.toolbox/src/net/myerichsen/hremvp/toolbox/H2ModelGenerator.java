@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Utility to generate a Java model class representing an HRE H2 Table
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
  */

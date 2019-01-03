@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the NAME_TYPES database table.
  *
  * @version 2018-09-17
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 

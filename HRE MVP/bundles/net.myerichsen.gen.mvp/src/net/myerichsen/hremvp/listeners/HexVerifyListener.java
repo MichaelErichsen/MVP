@@ -7,7 +7,7 @@ import org.eclipse.swt.events.VerifyListener;
  * Limit input to valid hex characters
  *
  * @version 2018-05-19
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class HexVerifyListener implements VerifyListener {

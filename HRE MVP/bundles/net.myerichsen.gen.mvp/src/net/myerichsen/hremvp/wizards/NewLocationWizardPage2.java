@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.providers.LocationNameStyleProvider;
 /**
  * Location name wizard page
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 19. nov. 2018
  *
  */

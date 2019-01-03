@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.dbmodels.Names;
 /**
  * Provide a list of all names
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 28. sep. 2018
  *
  */

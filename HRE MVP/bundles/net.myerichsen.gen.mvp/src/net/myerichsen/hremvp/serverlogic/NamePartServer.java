@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.Names;
  * Business logic interface for
  * {@link net.myerichsen.hremvp.dbmodels.NameParts}
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 29. sep. 2018
  */
 public class NamePartServer {

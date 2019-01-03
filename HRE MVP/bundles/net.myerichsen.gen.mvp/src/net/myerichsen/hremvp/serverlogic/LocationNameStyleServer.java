@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  * Business logic interface for
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameStyles}
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 20. nov. 2018
  *
  */

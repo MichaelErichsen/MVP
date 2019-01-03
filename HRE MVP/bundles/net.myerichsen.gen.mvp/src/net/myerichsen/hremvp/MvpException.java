@@ -3,7 +3,7 @@ package net.myerichsen.hremvp;
 /**
  * Application specific exceptions
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 15. sep. 2018
  *
  */

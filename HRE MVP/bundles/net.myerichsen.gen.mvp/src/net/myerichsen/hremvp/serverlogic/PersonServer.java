@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 25. nov. 2018
  *
  */

@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.serverlogic.LocationNameServer;
 /**
  * Provides all data for a single name for a location
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 12. nov. 2018
  *
  */

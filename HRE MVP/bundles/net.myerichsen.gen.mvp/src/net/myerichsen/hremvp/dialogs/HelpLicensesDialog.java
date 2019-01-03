@@ -15,7 +15,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
  * Dialog to display licenses used by HRE.
  * 
  * @version 2018-07-15
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class HelpLicensesDialog extends Dialog {

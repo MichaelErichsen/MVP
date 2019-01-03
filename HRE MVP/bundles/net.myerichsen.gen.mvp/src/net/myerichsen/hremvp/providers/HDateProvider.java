@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.serverlogic.HDateServer;
 /**
  * Provides all data for a single historical date
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 13. nov. 2018
  *
  */

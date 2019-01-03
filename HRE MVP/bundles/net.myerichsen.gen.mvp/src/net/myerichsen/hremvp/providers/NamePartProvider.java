@@ -8,7 +8,7 @@ import net.myerichsen.hremvp.serverlogic.NamePartServer;
 /**
  * Provides all data for a single name part
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 29. sep. 2018
  *
  */

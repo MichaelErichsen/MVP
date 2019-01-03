@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.serverlogic.LocationServer;
 /**
  * Provides all data for a single location
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 25. nov. 2018
  *
  */

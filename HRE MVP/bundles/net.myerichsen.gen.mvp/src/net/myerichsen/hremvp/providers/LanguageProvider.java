@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.serverlogic.LanguageServer;
 /**
  * Provide a language
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 2. nov. 2018
  *
  */

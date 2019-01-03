@@ -14,7 +14,7 @@ import org.osgi.framework.ServiceReference;
  * The activator class runs when the application starts and stops, Sets up the
  * logger. Starts and stops the Help System.
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 2. jan. 2019
  *
  */

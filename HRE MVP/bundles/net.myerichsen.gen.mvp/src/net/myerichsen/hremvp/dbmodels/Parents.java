@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the PARENTS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
  * @version 25. nov. 2018
  *
  */

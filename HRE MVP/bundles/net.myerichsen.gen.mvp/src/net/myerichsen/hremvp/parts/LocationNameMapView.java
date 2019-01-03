@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.LocationNameMapProvider;
 /**
  * Display all data about a location name map
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 19. sep. 2018
  *
  */

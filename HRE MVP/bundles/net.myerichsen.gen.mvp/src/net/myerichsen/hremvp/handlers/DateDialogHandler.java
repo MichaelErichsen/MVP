@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.dialogs.DateDialog;
 /**
  * Open the time dialog
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 7. nov. 2018
  *
  */

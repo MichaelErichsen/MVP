@@ -44,7 +44,7 @@ import net.myerichsen.hremvp.providers.PersonProvider;
 /**
  * Display all data about a single person
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 14. nov. 2018
  */
 @SuppressWarnings("restriction")

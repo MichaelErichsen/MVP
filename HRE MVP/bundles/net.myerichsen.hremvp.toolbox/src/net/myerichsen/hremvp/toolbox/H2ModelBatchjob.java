@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @see H2ModelGenerator
  * @version 2018-08-02
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class H2ModelBatchjob {

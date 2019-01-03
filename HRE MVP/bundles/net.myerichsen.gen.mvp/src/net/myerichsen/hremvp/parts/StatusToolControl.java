@@ -17,7 +17,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
  * Status line field
  *
  * @version 2018-09-14
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class StatusToolControl {

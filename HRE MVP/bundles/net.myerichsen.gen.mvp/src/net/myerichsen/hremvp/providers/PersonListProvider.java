@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.dbmodels.Persons;
  * Provide a list of all persons.
  *
  * @version 2018-08-30
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 

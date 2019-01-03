@@ -8,7 +8,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 /**
  * Switch perspective to administration perspective
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 11. nov. 2018
  *
  */

@@ -4,7 +4,7 @@ package net.myerichsen.hremvp.databaseadmin;
  * Model for the H2DatabaseNavigator
  *
  * @version 2018-05-24
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class H2DatabaseModel {

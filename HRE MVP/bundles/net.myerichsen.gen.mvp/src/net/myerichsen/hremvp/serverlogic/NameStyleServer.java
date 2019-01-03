@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.NameStyles;
  * Business logic interface for
  * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 29. sep. 2018
  *
  */

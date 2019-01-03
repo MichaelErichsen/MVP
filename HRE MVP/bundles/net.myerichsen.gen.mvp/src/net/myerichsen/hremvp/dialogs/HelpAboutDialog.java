@@ -22,7 +22,7 @@ import net.myerichsen.hremvp.Constants;
 /**
  * Dialog to display help about HRE.
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 2. jan. 2019
  *
  */

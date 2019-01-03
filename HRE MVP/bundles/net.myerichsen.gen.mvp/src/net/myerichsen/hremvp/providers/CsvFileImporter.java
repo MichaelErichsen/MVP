@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
 
 /**
  * @version 2018-06-30
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class CsvFileImporter {

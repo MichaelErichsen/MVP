@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.models.ProjectModel;
 /**
  * GUI part displaying project properties.
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
  */

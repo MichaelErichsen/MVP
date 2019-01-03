@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.listeners.SmallIntListener;
 /**
  * Dynamically create an editor with the fields in the database catalog
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 2. jan. 2019
  *
  */

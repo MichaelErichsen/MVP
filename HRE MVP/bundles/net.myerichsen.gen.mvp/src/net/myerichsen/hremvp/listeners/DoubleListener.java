@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Limit DOUBLE fields to legal values
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 22. okt. 2018
  *
  */

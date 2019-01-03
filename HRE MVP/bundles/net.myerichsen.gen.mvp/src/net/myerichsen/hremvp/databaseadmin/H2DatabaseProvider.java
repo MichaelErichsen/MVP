@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 /**
  * Provides H2 data to the database navigator
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 30. okt. 2018
  *
  */

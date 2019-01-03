@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 /**
  * Handler to open the Events view
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 21. sep. 2018
  *
  */

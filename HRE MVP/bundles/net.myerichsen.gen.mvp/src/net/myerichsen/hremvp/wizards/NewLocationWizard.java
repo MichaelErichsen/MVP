@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.providers.LocationProvider;
 /**
  * Wizard to add a new location
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 12. nov. 2018
  *
  */

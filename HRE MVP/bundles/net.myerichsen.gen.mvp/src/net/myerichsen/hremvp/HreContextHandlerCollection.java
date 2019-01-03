@@ -8,7 +8,7 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
  * Singleton class encapsulating the ContextHandlerCollection of the embedded
  * Jetty server
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 1. okt. 2018
  *
  */

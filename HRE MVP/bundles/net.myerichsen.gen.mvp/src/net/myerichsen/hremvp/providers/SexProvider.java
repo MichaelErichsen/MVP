@@ -8,7 +8,7 @@ import net.myerichsen.hremvp.serverlogic.SexServer;
 /**
  * Provide all data for a sex
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 14. nov. 2018
  *
  */

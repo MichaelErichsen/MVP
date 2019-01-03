@@ -38,7 +38,7 @@ import net.myerichsen.hremvp.providers.LocationPersonProvider;
 /**
  * Display all persons for a single location
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 19. nov. 2018
  */
 public class LocationPersonView {

@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.providers.LocationProvider;
 /**
  * Display location on Google Maps
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 18. nov. 2018
  *
  */

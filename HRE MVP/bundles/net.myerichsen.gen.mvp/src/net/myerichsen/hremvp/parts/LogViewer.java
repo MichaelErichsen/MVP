@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.providers.MvpLogProvider;
  * Display the application log
  *
  * @version 2018-09-12
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class LogViewer {

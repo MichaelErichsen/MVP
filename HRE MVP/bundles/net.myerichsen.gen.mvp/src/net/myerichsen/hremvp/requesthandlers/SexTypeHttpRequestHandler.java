@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.serverlogic.SexTypeServer;
 /**
  * HTTP request handler for Sex Types
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 16. okt. 2018
  *
  */

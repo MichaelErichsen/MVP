@@ -15,7 +15,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Set up logger using the path from the preferences and the file name format
  * "mvp-log.%u.%g.txt".
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 21. okt. 2018
  *
  */

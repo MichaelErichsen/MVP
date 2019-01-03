@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * Business logic interface for
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 30. okt. 2018
  */
 public class LocationNamePartServer {

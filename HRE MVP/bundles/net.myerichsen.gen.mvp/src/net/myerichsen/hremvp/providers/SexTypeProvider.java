@@ -30,7 +30,7 @@ import net.myerichsen.hremvp.serverlogic.SexTypeServer;
 /**
  * Provide all data for a sex type
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 21. okt. 2018
  *
  */

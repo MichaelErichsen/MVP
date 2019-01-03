@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.models.ProjectModel;
 /**
  * Open an existing project.
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
  */

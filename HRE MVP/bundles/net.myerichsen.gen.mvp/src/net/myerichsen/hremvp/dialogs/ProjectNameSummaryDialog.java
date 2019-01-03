@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Text;
  * Dialog to be called by the new project process.
  * 
  * @version 2018-06-11
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
 public class ProjectNameSummaryDialog extends TitleAreaDialog {

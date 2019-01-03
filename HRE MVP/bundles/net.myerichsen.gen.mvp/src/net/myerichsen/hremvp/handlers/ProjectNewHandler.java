@@ -35,12 +35,12 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.dialogs.ProjectNameSummaryDialog;
 import net.myerichsen.hremvp.models.ProjectList;
 import net.myerichsen.hremvp.models.ProjectModel;
-import net.myerichsen.hremvp.providers.NewDatabaseProvider;
+import net.myerichsen.hremvp.providers.ProjectNewDatabaseProvider;
 
 /**
  * Create a new HRE project database.
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
  */
@@ -54,7 +54,7 @@ public class ProjectNewHandler {
 	@Inject
 	EModelService modelService;
 	private final IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
-	private NewDatabaseProvider provider;
+	private ProjectNewDatabaseProvider provider;
 
 	/**
 	 * Create a new database and open it
@@ -74,12 +74,13 @@ public class ProjectNewHandler {
 
 		final String shortName = dialog.getFileName();
 		final String[] parts = shortName.split("\\.");
-		final String dbName = dialog.getFilterPath() + "\\" + parts[0];
+		String path = dialog.getFilterPath();
+		final String dbName = parts[0];
 
 		try {
 			// Create the new database
-			LOGGER.info("New database name: " + dbName);
-			provider = new NewDatabaseProvider();
+			LOGGER.info("New database name: " + path + "//" + dbName);
+			provider = new ProjectNewDatabaseProvider();
 
 			provider.provide(dbName);
 
@@ -95,6 +96,7 @@ public class ProjectNewHandler {
 			}
 
 			try {
+				preferences.put("DBPATH", path);
 				preferences.put("DBNAME", dbName);
 				preferences.flush();
 			} catch (final BackingStoreException e) {

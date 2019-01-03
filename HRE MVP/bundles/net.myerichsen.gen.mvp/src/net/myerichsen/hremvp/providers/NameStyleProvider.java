@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.serverlogic.NameStyleServer;
 /**
  * Provide a name style
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 29. sep. 2018
  *
  */

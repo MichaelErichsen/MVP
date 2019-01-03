@@ -50,7 +50,7 @@ import net.myerichsen.hremvp.models.ProjectModel;
 /**
  * Navigator part to display all tables in an HRE project.
  * 
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
  */
@@ -173,7 +173,7 @@ public class ProjectNavigator {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final ParameterizedCommand newCommand = commandService.createCommand("org.eclipse.ui.file.save", null);
+				final ParameterizedCommand newCommand = commandService.createCommand("net.myerichsen.hremvp.command.projectnew", null);
 				handlerService.executeHandler(newCommand);
 			}
 		});

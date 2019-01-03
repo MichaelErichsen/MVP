@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Label;
 /**
  * Root preferences page for MVP
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 17. okt. 2018
  *
  */
