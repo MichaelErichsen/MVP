@@ -16,8 +16,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 /**
  * Handler to open the project navigator.
  * 
- * @version 2018-07-15
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 3. jan. 2019
  *
  */
 public class ProjectNavigatorHandler {

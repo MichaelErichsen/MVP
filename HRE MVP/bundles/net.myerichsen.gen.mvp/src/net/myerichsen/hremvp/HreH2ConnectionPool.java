@@ -128,8 +128,6 @@ public class HreH2ConnectionPool {
 		connectionPool.setMaxConnections(500);
 		LOGGER.info("Connection pool has been created");
 
-		// FIXME SEVERE: Invalid database name: "C:\\Program Files\HRE\eclipse\\"
-		// [90138-197]
 		return connectionPool.getConnection();
 	}
 }

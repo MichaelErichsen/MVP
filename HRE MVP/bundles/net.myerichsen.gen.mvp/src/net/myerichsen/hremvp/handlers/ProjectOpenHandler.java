@@ -68,7 +68,8 @@ public class ProjectOpenHandler {
 
 		final String shortName = dialog.getFileName();
 		final String[] parts = shortName.split("\\.");
-		final String dbName = dialog.getFilterPath() + "\\" + parts[0];
+		String path = dialog.getFilterPath();
+		String dbName = parts[0];
 
 		// Disconnect from any currently connected database
 		try {
@@ -86,6 +87,7 @@ public class ProjectOpenHandler {
 		}
 
 		try {
+			preferences.put("DBPATH", path);
 			preferences.put("DBNAME", dbName);
 			preferences.flush();
 		} catch (final BackingStoreException e) {
@@ -141,8 +143,7 @@ public class ProjectOpenHandler {
 				ProjectList.add(model);
 
 				// Set database name in title bar
-				final MWindow window = (MWindow) modelService.find("org.historyresearchenvironment.client.window.main",
-						application);
+				final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
 				window.setLabel("HRE v0.1 - " + dbName);
 			}
 
@@ -153,7 +154,7 @@ public class ProjectOpenHandler {
 			pnPart.setCloseable(true);
 			pnPart.setVisible(true);
 			pnPart.setContributionURI(
-					"bundleclass://org.historyresearchenvironment.client/org.historyresearchenvironment.client.parts.ProjectNavigator");
+					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator");
 			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 			stacks.get(0).getChildren().add(pnPart);
 			partService.showPart(pnPart, PartState.ACTIVATE);
@@ -165,7 +166,7 @@ public class ProjectOpenHandler {
 			h2dnPart.setCloseable(true);
 			h2dnPart.setVisible(true);
 			h2dnPart.setContributionURI(
-					"bundleclass://org.historyresearchenvironment.client/org.historyresearchenvironment.databaseadmin.parts.H2DatabaseNavigator");
+					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
 			stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
 			partService.showPart(h2dnPart, PartState.ACTIVATE);
 

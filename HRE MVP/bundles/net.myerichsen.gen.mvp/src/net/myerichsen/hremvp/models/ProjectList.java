@@ -28,7 +28,7 @@ public class ProjectList {
 	private static IEventBroker eventBroker;
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("org.historyresearchenvironment");
+	private static IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
 	private static List<ProjectModel> models;
 
 	/**

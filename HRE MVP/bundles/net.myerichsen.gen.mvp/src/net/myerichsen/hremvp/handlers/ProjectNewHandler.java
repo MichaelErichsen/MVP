@@ -127,8 +127,7 @@ public class ProjectNewHandler {
 			ProjectList.add(model);
 
 			// Set database name in title bar
-			final MWindow window = (MWindow) modelService.find("org.historyresearchenvironment.client.window.main",
-					application);
+			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE v0.1 - " + dbName);
 
 			// Open Project Navigator
@@ -138,7 +137,7 @@ public class ProjectNewHandler {
 			pnPart.setCloseable(true);
 			pnPart.setVisible(true);
 			pnPart.setContributionURI(
-					"bundleclass://org.historyresearchenvironment.client/org.historyresearchenvironment.client.parts.ProjectNavigator");
+					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator");
 			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 			stacks.get(0).getChildren().add(pnPart);
 			partService.showPart(pnPart, PartState.ACTIVATE);
@@ -150,7 +149,7 @@ public class ProjectNewHandler {
 			h2dnPart.setCloseable(true);
 			h2dnPart.setVisible(true);
 			h2dnPart.setContributionURI(
-					"bundleclass://org.historyresearchenvironment.databaseadmin.client/org.historyresearchenvironment.databaseadmin.parts.H2DatabaseNavigator");
+					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
 			stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
 			partService.showPart(h2dnPart, PartState.ACTIVATE);
 
