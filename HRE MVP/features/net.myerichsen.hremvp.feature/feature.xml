@@ -2,7 +2,7 @@
 <feature
       id="net.myerichsen.hremvp.feature"
       label="HRE MVP Base Feature"
-      version="1.0.0.qualifier"
+      version="0.2.0.qualifier"
       provider-name="History Reserach Environment Ltd.">
 
    <description url="http://www.example.com/description">
@@ -44,8 +44,12 @@
       <import plugin="org.eclipse.e4.core.di.extensions"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.e4.ui.workbench.swt"/>
-      <import plugin="javax.annotation"/>
       <import plugin="com.opcoach.e4.preferences"/>
+      <import plugin="javax.annotation"/>
+      <import plugin="org.eclipse.help.base"/>
+      <import plugin="org.eclipse.equinox.preferences"/>
+      <import plugin="org.eclipse.help.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
    </requires>
 
    <plugin
