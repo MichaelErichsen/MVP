@@ -14,5 +14,15 @@
 	<modules>
 		<module>net.myerichsen.hremvp.update</module>
 		<module>net.myerichsen.hremvp.product</module>
+
 	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.197</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
