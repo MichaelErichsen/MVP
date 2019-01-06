@@ -10,7 +10,6 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
@@ -24,6 +23,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -40,7 +40,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.osgi.service.prefs.BackingStoreException;
+
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
@@ -51,12 +52,12 @@ import net.myerichsen.hremvp.models.ProjectModel;
  * Navigator part to display all tables in an HRE project.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 6. jan. 2019
  *
  */
 @SuppressWarnings("restriction")
 public class ProjectNavigator {
-	private static IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
+	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private ECommandService commandService;
@@ -111,13 +112,13 @@ public class ProjectNavigator {
 		tblclmnProjectName.setWidth(100);
 		tblclmnProjectName.setText("Project Name");
 
-		final int projectCount = preferences.getInt("projectcount", 1);
+		final int projectCount = store.getInt("projectcount");
 		String key;
 
 		for (int i = 0; i < projectCount; i++) {
 			final TableItem tableItem = new TableItem(table, SWT.NONE);
 			key = new String("project." + i + ".name");
-			tableItem.setText(preferences.get(key, "?"));
+			tableItem.setText(store.getString(key));
 		}
 
 		final Menu menu = new Menu(table);
@@ -173,7 +174,8 @@ public class ProjectNavigator {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final ParameterizedCommand newCommand = commandService.createCommand("net.myerichsen.hremvp.command.projectnew", null);
+				final ParameterizedCommand newCommand = commandService
+						.createCommand("net.myerichsen.hremvp.command.projectnew", null);
 				handlerService.executeHandler(newCommand);
 			}
 		});
@@ -244,16 +246,15 @@ public class ProjectNavigator {
 		// Find selected database
 		final int index = table.getSelectionIndex();
 		final ProjectModel model = ProjectList.getModel(index);
-		final String dbName = model.getPath();
+		final String dbName = model.getName();
 
-		try {
-			preferences.put("DBNAME", dbName);
-			preferences.flush();
-		} catch (final BackingStoreException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
 
+		String path = model.getPath();
+		int length = path.length() - dbName.length();
+
+		store.setValue("DBNAME", dbName);
+		store.setValue("DBPATH", path.substring(0, length - 1));
+		
 		try {
 			conn = HreH2ConnectionPool.getConnection(dbName);
 
@@ -271,9 +272,8 @@ public class ProjectNavigator {
 			}
 
 			// Set database name in title bar
-			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main",
-					application);
-			window.setLabel("HRE v0.1 - " + dbName);
+			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
+			window.setLabel("HRE MVP v0.2 - " + dbName);
 
 			// Open H2 Database Navigator
 			final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();

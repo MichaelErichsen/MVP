@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.Constants;
  * Dialog to display help about HRE.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. jan. 2019
+ * @version 6. jan. 2019
  *
  */
 public class HelpAboutDialog extends Dialog {
@@ -39,7 +39,7 @@ public class HelpAboutDialog extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("About HRE");
+		newShell.setText("About HRE MVP");
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class HelpAboutDialog extends Dialog {
 		styledText_1.setDoubleClickEnabled(false);
 		styledText_1.setEditable(false);
 		styledText_1.setFont(SWTResourceManager.getFont("Calibri", 28, SWT.BOLD));
-		styledText_1.setText("History Research Environment");
+		styledText_1.setText("History Research Environment Minimum Viable Product");
 		styledText_1.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false, 1, 1));
 
 		final StyledText styledText_2 = new StyledText(container, SWT.NONE);
@@ -91,7 +91,7 @@ public class HelpAboutDialog extends Dialog {
 		styledText_2.setDoubleClickEnabled(false);
 		styledText_2.setEditable(false);
 		styledText_2.setFont(SWTResourceManager.getFont("Calibri", 10, SWT.BOLD));
-		styledText_2.setText("Release V0.1.0\r\nBuild Date 2018-07-16");
+		styledText_2.setText("Release V0.2.0\r\nBuild Date 2019-01-06");
 		styledText_2.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, false, 1, 1));
 
 		final StyledText styledText = new StyledText(container, SWT.WRAP);
@@ -144,6 +144,6 @@ public class HelpAboutDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(560, 598);
+		return new Point(560, 687);
 	}
 }

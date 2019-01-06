@@ -14,8 +14,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 /**
  * Dialog to display licenses used by HRE.
  * 
- * @version 2018-07-15
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 6. jan. 2019
  *
  */
 public class HelpLicensesDialog extends Dialog {
@@ -60,10 +60,15 @@ public class HelpLicensesDialog extends Dialog {
 		styledText.setAlwaysShowScrollBars(false);
 		styledText.setEditable(false);
 		styledText.setText(
-				"HRE is built as an Eclipse Rich Client Application, licensed under the Eclipse Public License, http://www.eclipse.org/legal/epl-2.0/\r\n\r\n"
-						+ "The embedded database is H2, http://www.h2database.com.\r\nH2 is dual licensed and available under the MPL 2.0 (Mozilla Public License Version 2.0) or under the EPL 1.0 (Eclipse Public License).\r\n\r\n"
-						+ "Preference code used from https://github.com/opcoach/e4preferences\r\nE4preferrences is licensed under the Eclipse Public License 1.0\r\n\r\n"
-						+ "JSON code is used from https://github.com/stleary/JSON-java\r\nThe license includes this restriction: \"The software shall be used for good, not evil.\" If your conscience cannot live with that, then choose a different package.");
+				"HRE MVP is built as an Eclipse Rich Client Application, licensed under the Eclipse Public License, http://www.eclipse.org/legal/epl-2.0/\r\n\r\n"
+						+ "The embedded database is H2, http://www.h2database.com, original author is Thomas Mueller.\r\n"
+						+ "H2 is dual licensed and available under the MPL 2.0 "
+						+ "(Mozilla Public License Version 2.0) or under the EPL 1.0 (Eclipse Public License).\r\n\r\n"
+						+ "Preference code by Olivier Prouvost is used from https://github.com/opcoach/e4preferences\r\nIt is licensed under the Eclipse Public License 1.0\r\n\r\n"
+						+ "JSON code by Sean Leary is used from https://github.com/stleary/JSON-java\r\n"
+						+ "The license includes this restriction: \"The software shall be used for good, not evil.\"\r\n\r\n"
+						+ "Almanac Conversion code by Chris Engelsma is used from https://github.com/chrisengelsma/almanac-converter.\r\n"
+						+ "It is licensed under the Apache License 2.0");
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		return container;
@@ -74,7 +79,7 @@ public class HelpLicensesDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(553, 414);
+		return new Point(553, 455);
 	}
 
 }

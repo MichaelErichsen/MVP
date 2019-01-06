@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * Create and open a new HRE project database
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 6. jan. 2019
  *
  */
 public class ProjectNewDatabaseProvider {
@@ -225,8 +225,10 @@ public class ProjectNewDatabaseProvider {
 	 * 
 	 * @throws SQLException          When failing
 	 * @throws BackingStoreException Preferences file access failure
+	 * @throws                       java.util.prefs.BackingStoreException
 	 */
-	public void provide(String dbName) throws SQLException, BackingStoreException {
+	public void provide(String dbName)
+			throws SQLException, BackingStoreException, java.util.prefs.BackingStoreException {
 		HreH2ConnectionPool.createNew(dbName);
 		conn = HreH2ConnectionPool.getConnection();
 		stmt = conn.createStatement();

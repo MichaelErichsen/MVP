@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.preferences;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -23,7 +24,7 @@ import net.myerichsen.hremvp.dialogs.ServerListDialog;
  * Preference page for the embedded Jetty server
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. dec. 2018
+ * @version 6. jan. 2019
  *
  */
 public class ServerPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -91,6 +92,10 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 				return stringList.split("¤");
 			}
 		});
+
+		final BooleanFieldEditor booleanFieldEditorTls = new BooleanFieldEditor("TLS", "Secure Connection",
+				BooleanFieldEditor.DEFAULT, composite);
+		addField(booleanFieldEditorTls);
 	}
 
 	/*

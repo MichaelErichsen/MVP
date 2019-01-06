@@ -79,6 +79,7 @@ public class ScopedPreferenceStore extends EventManager implements
 	 * The default context is the context where getDefault and setDefault
 	 * methods will search. This context is also used in the search.
 	 */
+	@SuppressWarnings("deprecation")
 	private IScopeContext defaultContext = new DefaultScope();
 
 	/**

@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -25,10 +24,12 @@ import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.osgi.service.prefs.BackingStoreException;
+
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
@@ -41,7 +42,7 @@ import net.myerichsen.hremvp.providers.ProjectNewDatabaseProvider;
  * Create a new HRE project database.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 5. jan. 2019
  *
  */
 public class ProjectNewHandler {
@@ -53,7 +54,7 @@ public class ProjectNewHandler {
 
 	@Inject
 	EModelService modelService;
-	private final IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
+	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private ProjectNewDatabaseProvider provider;
 
 	/**
@@ -68,7 +69,7 @@ public class ProjectNewHandler {
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
 		dialog.setText("Create new HRE Project");
 		dialog.setFilterPath("./");
-		final String[] extensions = { "*.h2.db", "*.mv.db", "*.*" };
+		final String[] extensions = { "*.mv.db", "*.h2.db", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
@@ -79,7 +80,11 @@ public class ProjectNewHandler {
 
 		try {
 			// Create the new database
-			LOGGER.info("New database name: " + path + "//" + dbName);
+			LOGGER.info("New database name: " + path + "\\" + dbName);
+
+			store.setValue("DBPATH", path);
+			store.setValue("DBNAME", dbName);
+
 			provider = new ProjectNewDatabaseProvider();
 
 			provider.provide(dbName);
@@ -93,15 +98,6 @@ public class ProjectNewHandler {
 				conn.createStatement().execute("SHUTDOWN");
 				conn.close();
 				HreH2ConnectionPool.dispose();
-			}
-
-			try {
-				preferences.put("DBPATH", path);
-				preferences.put("DBNAME", dbName);
-				preferences.flush();
-			} catch (final BackingStoreException e) {
-				LOGGER.severe(e.getMessage());
-				e.printStackTrace();
 			}
 
 			// Connect to the new database
@@ -130,7 +126,7 @@ public class ProjectNewHandler {
 
 			// Set database name in title bar
 			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
-			window.setLabel("HRE v0.1 - " + dbName);
+			window.setLabel("HRE MVP v0.2 - " + dbName);
 
 			// Open Project Navigator
 			final MPart pnPart = MBasicFactory.INSTANCE.createPart();

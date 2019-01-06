@@ -11,16 +11,17 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.osgi.service.prefs.BackingStoreException;
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * Singleton class encapsulating a list of project model objects.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 6. jan. 2019
  *
  */
 public class ProjectList {
@@ -28,32 +29,26 @@ public class ProjectList {
 	private static IEventBroker eventBroker;
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
+	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static List<ProjectModel> models;
 
 	/**
 	 * @param model
 	 */
 	public static void add(ProjectModel model) {
-		try {
-			readPreferences();
-			models.add(model);
+		readPreferences();
+		models.add(model);
 
-			int count = preferences.getInt("projectcount", 1);
+		int count = store.getInt("projectcount");
 
-			preferences.put("project." + count + ".name", model.getName());
-			final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			preferences.put("project." + count + ".lastupdated", df.format(model.getLastEdited()));
-			preferences.put("project." + count + ".summary", model.getSummary());
-			preferences.put("project." + count + ".localserver", model.getLocalServer());
-			preferences.put("project." + count + ".path", model.getPath());
-			count++;
-			preferences.putInt("projectcount", count);
-			preferences.flush();
-		} catch (final BackingStoreException e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-		}
+		store.setValue("project." + count + ".name", model.getName());
+		final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		store.setValue("project." + count + ".lastupdated", df.format(model.getLastEdited()));
+		store.setValue("project." + count + ".summary", model.getSummary());
+		store.setValue("project." + count + ".localserver", model.getLocalServer());
+		store.setValue("project." + count + ".path", model.getPath());
+		count++;
+		store.setValue("projectcount", count);
 	}
 
 	/**
@@ -105,26 +100,26 @@ public class ProjectList {
 			models = new ArrayList<ProjectModel>();
 		}
 
-		final int projectCount = preferences.getInt("projectcount", 1);
+		final int projectCount = store.getInt("projectcount");
 
 		try {
 			for (int i = 0; i < projectCount; i++) {
 				key = new String("project." + i + ".name");
-				name = preferences.get(key, "?");
+				name = store.getString(key);
 
 				key = new String("project." + i + ".lastupdated");
-				lastEditedString = preferences.get(key, "?");
+				lastEditedString = store.getString(key);
 				final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 				lastEdited = df.parse(lastEditedString);
 
 				key = new String("project." + i + ".summary");
-				summary = preferences.get(key, "?");
+				summary = store.getString(key);
 
 				key = new String("project." + i + ".localserver");
-				localServer = preferences.get(key, "?");
+				localServer = store.getString(key);
 
 				key = new String("project." + i + ".path");
-				path = preferences.get(key, "?");
+				path = store.getString(key);
 
 				model = new ProjectModel(name, lastEdited, summary, localServer, path);
 				models.add(model);
@@ -139,14 +134,8 @@ public class ProjectList {
 	 * @param model
 	 */
 	public static void remove(ProjectModel model) {
-		try {
-			readPreferences();
-			models.remove(model);
-			preferences.flush();
-		} catch (final BackingStoreException e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-		}
+		readPreferences();
+		models.remove(model);
 	}
 
 	public static boolean verify() {

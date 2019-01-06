@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -22,9 +21,12 @@ import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
+
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
@@ -36,7 +38,7 @@ import net.myerichsen.hremvp.models.ProjectModel;
  * Open an existing project.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 6. jan. 2019
  *
  */
 public class ProjectOpenHandler {
@@ -44,6 +46,8 @@ public class ProjectOpenHandler {
 	private static IEventBroker eventBroker;
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+			"net.myerichsen.hremvp");
 
 	/**
 	 * Select a database and open it
@@ -57,7 +61,7 @@ public class ProjectOpenHandler {
 	 */
 	@Execute
 	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell) {
-		final IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("net.myerichsen.hremvp");
+
 		Connection conn = null;
 
 		// Open file dialog
@@ -86,14 +90,8 @@ public class ProjectOpenHandler {
 			LOGGER.severe(e1.getMessage());
 		}
 
-		try {
-			preferences.put("DBPATH", path);
-			preferences.put("DBNAME", dbName);
-			preferences.flush();
-		} catch (final BackingStoreException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
+		store.setValue("DBPATH", path);
+		store.setValue("DBNAME", dbName);
 
 		try {
 			conn = HreH2ConnectionPool.getConnection(dbName);
@@ -111,16 +109,14 @@ public class ProjectOpenHandler {
 				conn.close();
 			}
 
-			// Check if project is registered
-			final int projectCount = preferences.getInt("projectcount", 0);
-			final String[] keylist = preferences.keys();
+			final int projectCount = store.getInt("projectcount");
 			String key;
 			boolean alreadyRegistered = false;
 
 			for (int i = 0; i < projectCount; i++) {
-				key = keylist[i];
-				if ((key.startsWith("project.")) && (key.endsWith(".path"))) {
-					if (dbName.equals(preferences.get(key, "?"))) {
+				key = "project." + i + ".path";
+				if (store.contains(key)) {
+					if (dbName.equals(store.getString(key))) {
 						alreadyRegistered = true;
 						break;
 					}
@@ -172,7 +168,9 @@ public class ProjectOpenHandler {
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 			eventBroker.post("MESSAGE", "Project database " + dbName + " has been opened");
-		} catch (final Exception e1) {
+		} catch (
+
+		final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();

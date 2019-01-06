@@ -8,7 +8,9 @@ import java.util.logging.Logger;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.FontFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -21,13 +23,18 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Preference page for client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. nov. 2018
+ * @version 6. jan. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private ComboFieldEditor comboFieldEditorLogLevel;
 	private ComboFieldEditor comboFieldEditorCsMode;
+	private FontFieldEditor fontFieldEditor;
+	private StringFieldEditor updateSiteFieldEditor;
+	private IntegerFieldEditor helpportIntegerFieldEditor;
+	private IntegerFieldEditor serverportIntegerFieldEditor;
+	private ComboFieldEditor comboGuiLanguage;
 
 	/**
 	 * Constructor
@@ -60,6 +67,27 @@ public class ClientPreferencePage extends FieldEditorPreferencePage implements I
 						{ "ALL", "ALL" } },
 				composite);
 		addField(comboFieldEditorLogLevel);
+
+		fontFieldEditor = new FontFieldEditor("HREFONT", "Font Selection", null, getFieldEditorParent());
+		addField(fontFieldEditor);
+
+		updateSiteFieldEditor = new StringFieldEditor("UPDATESITE", "HRE Update Site", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, getFieldEditorParent());
+		addField(updateSiteFieldEditor);
+
+		helpportIntegerFieldEditor = new IntegerFieldEditor("HELPSYSTEMPORT", "Port number for Help System",
+				getFieldEditorParent());
+		addField(helpportIntegerFieldEditor);
+
+		serverportIntegerFieldEditor = new IntegerFieldEditor("SERVERPORT", "Port Number for local HRE Server",
+				getFieldEditorParent());
+		addField(serverportIntegerFieldEditor);
+		
+		comboGuiLanguage = new ComboFieldEditor(
+				"GUILANGUAGE", "GUI Language", new String[][] { { "Australian", "AUSTRALIAN" }, { "Dansk", "DANISH" },
+						{ "English", "ENGLISH" }, { "Norsk", "NORWEGIAN" }, { "US English", "USENGLISH" } },
+				getFieldEditorParent());
+		addField(comboGuiLanguage);
 	}
 
 	/*
