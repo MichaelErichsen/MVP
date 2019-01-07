@@ -18,7 +18,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 7. jan. 2019
  *
  */
 public class HreH2ConnectionPool {
@@ -109,7 +109,7 @@ public class HreH2ConnectionPool {
 			}
 		}
 
-		LOGGER.info("Reusing connection pool, Max: " + connectionPool.getMaxConnections() + ", Active: "
+		LOGGER.fine("Reusing connection pool, Max: " + connectionPool.getMaxConnections() + ", Active: "
 				+ connectionPool.getActiveConnections());
 		return connectionPool.getConnection();
 	}

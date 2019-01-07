@@ -14,7 +14,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Handler to open the help system in an external browser.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. jan. 2019
+ * @version 7. jan. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -32,6 +32,7 @@ public class HelpContentsHandler {
 			final String helpURL = "http://127.0.0.1:" + store.getInt("HELPSYSTEMPORT") + "/help/index.jsp";
 
 			BaseHelpSystem.getHelpBrowser(true).displayURL(helpURL);
+			LOGGER.info("Browser pointing at " + helpURL);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage());
 		}

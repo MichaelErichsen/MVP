@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extensions>
 	<tocOrder>
-		<toc id="/org.historyresearchenvironment.helpsystem/toc.xml" />
+		<toc id="/net.myerichsen.hremvp.helpsystem/toc.xml" />
 	</tocOrder>
 	<hidden>
 		<toc id="/org.eclipse.platform.doc.user/toc.xml" />

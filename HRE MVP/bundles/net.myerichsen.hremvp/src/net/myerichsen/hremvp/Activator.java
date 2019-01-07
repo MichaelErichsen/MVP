@@ -17,7 +17,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 7. jan. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -48,7 +48,7 @@ public class Activator implements BundleActivator {
 		HreLogger.setup();
 
 		LOGGER.info("HRE MVP v0.2 has been started");
-		LOGGER.info("Command line arguments:");
+		LOGGER.fine("Command line arguments:");
 
 		final ServiceReference<EnvironmentInfo> envRef = context.getServiceReference(EnvironmentInfo.class);
 		final EnvironmentInfo envInfo = context.getService(envRef);
@@ -60,7 +60,7 @@ public class Activator implements BundleActivator {
 		final String csMode = store.getString("CSMODE");
 		LOGGER.info("Client/server mode " + csMode);
 		LOGGER.info("HRE Absolute path: " + new File(".").getAbsolutePath());
-		LOGGER.info("HRE Font: " + store.getString("HREFONT"));
+		LOGGER.fine("HRE Font: " + store.getString("HREFONT"));
 
 		int port = store.getInt("HELPSYSTEMPORT");
 		final String command = "java -classpath " + HELPCLASSPATH
@@ -69,8 +69,12 @@ public class Activator implements BundleActivator {
 
 		try {
 			LOGGER.info("Help System is being started at port " + port);
-			Runtime.getRuntime().exec(command);
-			LOGGER.info("Has been started: " + command);
+			Process helpProcess = Runtime.getRuntime().exec(command);
+			if (helpProcess.isAlive()) {
+				LOGGER.info("Help system start command: " + command);
+			} else {
+				throw new MvpException("Could not start help system process");
+			}
 		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage());
 		}
