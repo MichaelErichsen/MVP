@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_6wlLcMgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.application" bindingContexts="_6wlLecgZEeSyMNYR5xypkQ">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_6wlLccgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.window.main" label="HRE MVP V0.2" tooltip="Genealogy Minimum Viable Product" width="1280" height="720">
-    <children xsi:type="advanced:PerspectiveStack" xmi:id="_LhRoYOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspectivestack.0" selectedElement="_Q2zioOTQEeiOQPtyES1FZg">
-      <children xsi:type="advanced:Perspective" xmi:id="_MY4l0OTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspective.baseperspective" label="Base" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PersonIcon.png">
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_LhRoYOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspectivestack.0" selectedElement="_GjFOUBKqEemNAMxJdnZnGA">
+      <children xsi:type="advanced:Perspective" xmi:id="_MY4l0OTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspective.baseperspective" label="Project" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/FamilyTreeIcon.png" tooltip="Project">
         <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.partsashcontainer.sample" containerData="1280" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_Fu-b0KRUEeivq68TpLbBuw" elementId="net.myerichsen.hremvp.partstack.0" containerData="380" selectedElement="_iNTDgKSJEeikydEfX4x7tA">
+          <children xsi:type="basic:PartStack" xmi:id="_Fu-b0KRUEeivq68TpLbBuw" elementId="net.myerichsen.hremvp.partstack.0" containerData="380" selectedElement="_UduHwBKrEemNAMxJdnZnGA">
             <children xsi:type="basic:Part" xmi:id="_iNTDgKSJEeikydEfX4x7tA" elementId="net.myerichsen.hremvp.part.persons" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.PersonNavigator" label="Persons" tooltip="Persons"/>
+            <children xsi:type="basic:Part" xmi:id="_UduHwBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.projectnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator" label="Project Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_m_sw4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partsashcontainer.0" containerData="900">
             <children xsi:type="basic:PartStack" xmi:id="_owicYLAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.2" containerData="8000" accessibilityPhrase="">
-              <children xsi:type="basic:Part" xmi:id="_vN_ToKR-EeiDVvVNqbPujw" elementId="net.myerichsen.hremvp.part.person" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonView" label="Person" tooltip="Person"/>
+              <children xsi:type="basic:Part" xmi:id="_vN_ToKR-EeiDVvVNqbPujw" elementId="net.myerichsen.hremvp.part.person" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonViewOld" label="Person" tooltip="Person"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_pZ9z4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.3" containerData="2000">
               <children xsi:type="basic:Part" xmi:id="_M88-4LBcEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.part.log" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LogViewer" label="Log" tooltip="Log">
                 <toolbar xmi:id="_AWCk4LBgEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.toolbar.0">
                   <children xsi:type="menu:HandledToolItem" xmi:id="_CLSPQLBgEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.handledtoolitem.refresh" label="Refresh" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/refresh.png" tooltip="Refresh" command="_GEqUkLBgEeizXZZKfAgc9g"/>
                 </toolbar>
+              </children>
+            </children>
+          </children>
+        </children>
+      </children>
+      <children xsi:type="advanced:Perspective" xmi:id="_GjFOUBKqEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.perspective.person" label="Person" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PersonIcon.png" tooltip="Person">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_fY_igBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.11" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_m-D2cBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.16">
+            <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.PersonNavigator" label="PersonNavigator"/>
+          </children>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_oZFC8BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.12">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_y8_toBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.13" horizontal="true">
+              <children xsi:type="basic:PartStack" xmi:id="_3zEEsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.17">
+                <children xsi:type="basic:Part" xmi:id="_-PNBsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.namesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonNamesView" label="Names for Person"/>
+              </children>
+              <children xsi:type="basic:PartStack" xmi:id="_4TvI0BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.18" selectedElement="_Z2uXUBKsEemNAMxJdnZnGA">
+                <children xsi:type="basic:Part" xmi:id="_Z2uXUBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.eventsforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.dbmodels.PersonEvents" label="Events for Person"/>
+                <children xsi:type="basic:Part" xmi:id="_CxF4gBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.sexesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonSexesView" label="Sexes for Person"/>
+              </children>
+            </children>
+            <children xsi:type="basic:PartSashContainer" xmi:id="_ziFXsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.14" horizontal="true">
+              <children xsi:type="basic:PartStack" xmi:id="_5EOxoBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.19">
+                <children xsi:type="basic:Part" xmi:id="_HydgoBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.partners" accessibilityPhrase="" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonPartnersView" label="Partners"/>
+                <children xsi:type="basic:Part" xmi:id="_LmM4ABKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.parents" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonParentsView" label="Parents"/>
+              </children>
+              <children xsi:type="basic:PartStack" xmi:id="_5fZDoBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.20">
+                <children xsi:type="basic:Part" xmi:id="_SSvBcBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.siblings" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonSiblingsView" label="Siblings"/>
+                <children xsi:type="basic:Part" xmi:id="_V08j8BKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.children" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonChildrenView" label="Children"/>
               </children>
             </children>
           </children>
@@ -77,7 +106,7 @@
                 <children xsi:type="basic:Part" xmi:id="_mtqi4O1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventView" label="Event View" tooltip="Event View"/>
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_qDCPoP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partstack.14">
-                <children xsi:type="basic:Part" xmi:id="_gWYPAP06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonView" label="Persons in Event"/>
+                <children xsi:type="basic:Part" xmi:id="_gWYPAP06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonViewOld" label="Persons in Event"/>
               </children>
             </children>
             <children xsi:type="basic:PartSashContainer" xmi:id="_cCshYP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.10" horizontal="true">

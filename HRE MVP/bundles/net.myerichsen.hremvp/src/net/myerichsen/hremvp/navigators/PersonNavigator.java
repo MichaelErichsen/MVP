@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.navigators;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -23,35 +24,43 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.dbmodels.Persons;
-import net.myerichsen.hremvp.providers.NameProvider;
-import net.myerichsen.hremvp.providers.PersonListProvider;
+import net.myerichsen.hremvp.providers.PersonProvider;
 
 /**
  * Display a list of all persons with their primary names
  *
- * @version 2018-08-30
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 7. jan. 2019
  *
  */
 
 @SuppressWarnings("restriction")
 public class PersonNavigator {
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
 	private ECommandService commandService;
 	@Inject
 	private EHandlerService handlerService;
-	private PersonListProvider provider;
+
 	private Table table;
+	private PersonProvider provider;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public PersonNavigator() {
-		provider = new PersonListProvider();
+		try {
+			provider = new PersonProvider();
+		} catch (Exception e) {
+			e.printStackTrace();
+			eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+		}
+
 	}
 
 	/**
@@ -85,9 +94,35 @@ public class PersonNavigator {
 		tblclmnPrimaryName.setWidth(300);
 		tblclmnPrimaryName.setText("Primary Name");
 
-		updateGui();
+		List<String> stringList;
+
+		try {
+			List<List<String>> lls = provider.get();
+			table.removeAll();
+			TableItem item;
+
+			for (int i = 0; i < lls.size(); i++) {
+				stringList = lls.get(i);
+
+				if (stringList.get(1).trim().length() > 0) {
+
+					item = new TableItem(table, SWT.NONE);
+
+					for (int j = 0; j < stringList.size(); j++) {
+						item.setText(j, stringList.get(j).trim());
+					}
+				}
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			eventBroker.post("MESSAGE", e1.getMessage());
+			LOGGER.severe(e1.getMessage());
+		}
 	}
 
+	/**
+	 * 
+	 */
 	@PreDestroy
 	public void dispose() {
 	}
@@ -117,32 +152,4 @@ public class PersonNavigator {
 	@Focus
 	public void setFocus() {
 	}
-
-	/**
-	 *
-	 */
-	private void updateGui() {
-		NameProvider np;
-		int personPid;
-
-		try {
-			provider = new PersonListProvider();
-			List<Persons> rowList = provider.getModelList();
-
-			table.removeAll();
-
-			for (int i = 0; i < rowList.size(); i++) {
-				TableItem item = new TableItem(table, SWT.NONE);
-				Persons row = rowList.get(i);
-				personPid = row.getPersonPid();
-				item.setText(0, Integer.toString(personPid));
-
-				np = new NameProvider();
-				item.setText(1, np.getPrimaryNameString(personPid));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 }

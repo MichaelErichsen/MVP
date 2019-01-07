@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @version 7. jan. 2019
  *
  */
 //Use LocalDate
@@ -82,6 +82,47 @@ public class PersonServer {
 	public void deleteRemote(String target) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * Get all rows
+	 *
+	 * @return A list of lists of strings of pids and labels
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 */
+	public List<List<String>> get() throws SQLException, MvpException {
+		List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		List<Persons> lnsl = person.get();
+
+		List<Names> ln;
+		Names name;
+		NameServer ns = new NameServer();
+		for (Persons person : lnsl) {
+			// Get all names of each person
+			ln = new Names().getFKPersonPid(person.getPersonPid());
+
+			nameList = new ArrayList<>();
+
+			// For each name get pid, name string and primary flag
+			for (int i = 0; i < ln.size(); i++) {
+				stringList = new ArrayList<>();
+				name = ln.get(i);
+				if (name.isPrimaryName()) {
+					stringList.add(Integer.toString(name.getNamePid()));
+					ns.get(name.getNamePid());
+					stringList.add(ns.getNameStrings()[i]);
+					lls.add(stringList);
+					break;
+				}
+			}
+
+		}
+
+		return lls;
 	}
 
 	/**

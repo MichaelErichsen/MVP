@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.Names;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. nov. 2018
+ * @version 7. jan. 2019
  *
  */
 //Use LocalDate
@@ -154,7 +154,7 @@ public class NameServer {
 				LOGGER.fine("Name part " + nameParts.getNamePartPid() + ", name " + nameParts.getNamePid());
 				if (nameParts.getNamePid() == name.getNamePid()) {
 					if (nameParts.getLabel() != null) {
-						sb.append(nameParts.getLabel() + " ");
+						sb.append(nameParts.getLabel().trim() + " ");
 						LOGGER.fine("Part " + nameParts.getLabel());
 					}
 				}

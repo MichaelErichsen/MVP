@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.LocationProvider;
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. nov. 2018
+ * @version 7. jan. 2019
  *
  */
 public class LocationNavigator {

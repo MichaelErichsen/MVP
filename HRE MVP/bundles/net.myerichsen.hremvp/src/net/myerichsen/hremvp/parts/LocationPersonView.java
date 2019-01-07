@@ -136,7 +136,7 @@ public class LocationPersonView {
 	 *
 	 */
 	protected void openPersonView() {
-		String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonView";
+		String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonViewOld";
 
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();

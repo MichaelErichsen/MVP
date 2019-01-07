@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 7. jan. 2019
  *
  */
-public class PersonView {
+public class PersonParentsView {
 
-	public PersonView() {
+	public PersonParentsView() {
 	}
 
 	/**
