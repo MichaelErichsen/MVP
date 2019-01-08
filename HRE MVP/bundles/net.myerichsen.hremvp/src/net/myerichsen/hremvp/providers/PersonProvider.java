@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.serverlogic.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. jan. 2019
+ * @version 8. jan. 2019
  *
  */
 public class PersonProvider {
@@ -67,8 +67,8 @@ public class PersonProvider {
 	 */
 	public List<List<String>> get() throws SQLException, MvpException {
 		return server.get();
-	}	
-	
+	}
+
 	/**
 	 * @param key The persistent ID of the person
 	 * @throws SQLException An exception that provides information on a database
@@ -294,5 +294,13 @@ public class PersonProvider {
 	 */
 	public void setChildrenList(List<List<String>> childrenList) {
 		this.childrenList = childrenList;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<List<String>> getSiblingList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
