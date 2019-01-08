@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. jan. 2019
+ * @version 8. jan. 2019
  *
  */
 //Use LocalDate
@@ -41,11 +41,12 @@ public class PersonServer {
 	private List<List<String>> sexesList;
 	private List<List<String>> parentList;
 	private List<List<String>> partnerList;
-	private List<List<String>> childrenList;
+	private final List<List<String>> childrenList;
 	private List<List<String>> personEventList;
 	private List<List<String>> eventList;
+	private List<List<String>> siblingList;
 
-	private Persons person;
+	private final Persons person;
 
 	/**
 	 * Constructor
@@ -59,6 +60,7 @@ public class PersonServer {
 		partnerList = new ArrayList<>();
 		childrenList = new ArrayList<>();
 		eventList = new ArrayList<>();
+		siblingList = new ArrayList<>();
 	}
 
 	/**
@@ -93,15 +95,15 @@ public class PersonServer {
 	 * @throws MvpException Application specific exception
 	 */
 	public List<List<String>> get() throws SQLException, MvpException {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
-		List<Persons> lnsl = person.get();
+		final List<Persons> lnsl = person.get();
 
 		List<Names> ln;
 		Names name;
-		NameServer ns = new NameServer();
-		for (Persons person : lnsl) {
+		final NameServer ns = new NameServer();
+		for (final Persons person : lnsl) {
 			// Get all names of each person
 			ln = new Names().getFKPersonPid(person.getPersonPid());
 
@@ -122,6 +124,8 @@ public class PersonServer {
 
 		}
 
+		// FIXME Add events
+		
 		return lls;
 	}
 
@@ -141,10 +145,10 @@ public class PersonServer {
 		setDeathDate(person.getDeathDatePid());
 
 		// Get all names of the person
-		List<Names> ln = new Names().getFKPersonPid(key);
+		final List<Names> ln = new Names().getFKPersonPid(key);
 		Names name;
 
-		NameServer ns = new NameServer();
+		final NameServer ns = new NameServer();
 		nameList = new ArrayList<>();
 
 		List<String> ls;
@@ -164,7 +168,7 @@ public class PersonServer {
 		SexTypes st;
 		sexesList.clear();
 
-		for (Sexes sex : new Sexes().getFKPersonPid(key)) {
+		for (final Sexes sex : new Sexes().getFKPersonPid(key)) {
 			ls = new ArrayList<>();
 			st = new SexTypes();
 			st.get(sex.getSexTypePid());
@@ -177,7 +181,7 @@ public class PersonServer {
 
 		parentList.clear();
 
-		for (Parents parent : new Parents().getFKChild(key)) {
+		for (final Parents parent : new Parents().getFKChild(key)) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(parent.getParent()));
 			ls.add(ns.getPrimaryNameString(parent.getParent()));
@@ -187,11 +191,16 @@ public class PersonServer {
 			parentList.add(ls);
 		}
 
-		List<Partners> lpa = new Partners().getFKPartner1(key);
+// FIXME Add siblings
+		siblingList.clear();
+		
+
+		
+		final List<Partners> lpa = new Partners().getFKPartner1(key);
 		lpa.addAll(new Partners().getFKPartner2(key));
 		partnerList.clear();
 
-		for (Partners partner : lpa) {
+		for (final Partners partner : lpa) {
 			ls = new ArrayList<>();
 
 			if (partner.getPartner1() == key) {
@@ -210,9 +219,9 @@ public class PersonServer {
 
 		childrenList.clear();
 
-		for (Parents parent : new Parents().getFKParent(key)) {
+		for (final Parents parent : new Parents().getFKParent(key)) {
 			ls = new ArrayList<>();
-			int pid = parent.getChild();
+			final int pid = parent.getChild();
 			ls.add(Integer.toString(pid));
 			ls.add(ns.getPrimaryNameString(pid));
 
@@ -223,7 +232,7 @@ public class PersonServer {
 		EventNames eventName;
 		eventList.clear();
 
-		for (PersonEvents personEvent : new PersonEvents().getFKPersonPid(key)) {
+		for (final PersonEvents personEvent : new PersonEvents().getFKPersonPid(key)) {
 			event = new Events();
 			event.get(personEvent.getEventPid());
 			eventName = new EventNames();
@@ -324,12 +333,12 @@ public class PersonServer {
 	 *                               classes when things are amiss
 	 */
 	public String getRemote(HttpServletResponse response, String target) throws Exception {
-		String[] targetParts = target.split("/");
-		int targetSize = targetParts.length;
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
 
 		get(Integer.parseInt(targetParts[targetSize - 1]));
 
-		JSONStringer js = new JSONStringer();
+		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("personPid");
 		js.value(personPid);
@@ -341,7 +350,7 @@ public class PersonServer {
 		js.key("nameList");
 		js.array();
 
-		for (List<String> list : nameList) {
+		for (final List<String> list : nameList) {
 			js.object();
 			js.key("namePid");
 			js.value(list.get(0));
@@ -357,7 +366,7 @@ public class PersonServer {
 		js.key("sexTypeList");
 		js.array();
 
-		for (List<String> list : sexesList) {
+		for (final List<String> list : sexesList) {
 			js.object();
 			js.key("sexTypePid");
 			js.value(list.get(0));
@@ -373,7 +382,7 @@ public class PersonServer {
 		js.key("parentList");
 		js.array();
 
-		for (List<String> list : parentList) {
+		for (final List<String> list : parentList) {
 			js.object();
 			js.key("namePid");
 			js.value(list.get(0));
@@ -391,7 +400,7 @@ public class PersonServer {
 		js.key("partnerList");
 		js.array();
 
-		for (List<String> list : partnerList) {
+		for (final List<String> list : partnerList) {
 			js.object();
 			js.key("namePid");
 			js.value(list.get(0));
@@ -409,7 +418,7 @@ public class PersonServer {
 		js.key("eventList");
 		js.array();
 
-		for (List<String> list : eventList) {
+		for (final List<String> list : eventList) {
 			js.object();
 			js.key("eventPid");
 			js.value(list.get(0));
@@ -440,6 +449,13 @@ public class PersonServer {
 	}
 
 	/**
+	 * @return the siblingList
+	 */
+	public List<List<String>> getSiblingList() {
+		return siblingList;
+	}
+
+	/**
 	 * Insert a row
 	 *
 	 * @throws SQLException An exception that provides information on a database
@@ -467,7 +483,7 @@ public class PersonServer {
 	 * @param i the birthDatePid to set
 	 */
 	public void setBirthDate(int i) {
-		this.birthDatePid = i;
+		birthDatePid = i;
 	}
 
 	/**
@@ -480,7 +496,7 @@ public class PersonServer {
 	 * @param i the deathDatePid to set
 	 */
 	public void setDeathDate(int i) {
-		this.deathDatePid = i;
+		deathDatePid = i;
 	}
 
 	/**
@@ -530,6 +546,13 @@ public class PersonServer {
 	 */
 	public void setSexesList(List<List<String>> sexesList) {
 		this.sexesList = sexesList;
+	}
+
+	/**
+	 * @param siblingList the siblingList to set
+	 */
+	public void setSiblingList(List<List<String>> siblingList) {
+		this.siblingList = siblingList;
 	}
 
 	/**

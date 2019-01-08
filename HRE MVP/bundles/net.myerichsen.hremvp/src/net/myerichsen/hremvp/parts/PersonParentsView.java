@@ -40,7 +40,7 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.providers.PersonProvider;
 
 /**
- * Display all data about a single person
+ * Display all parents for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 8. jan. 2019

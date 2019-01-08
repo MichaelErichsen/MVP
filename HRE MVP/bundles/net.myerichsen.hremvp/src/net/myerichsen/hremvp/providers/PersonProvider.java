@@ -26,8 +26,8 @@ public class PersonProvider {
 	private List<List<String>> childrenList;
 	private List<List<String>> personEventList;
 	private List<List<String>> eventList;
-
-	private PersonServer server;
+	private List<List<String>> siblingList;
+	private final PersonServer server;
 
 	/**
 	 * Constructor
@@ -86,6 +86,7 @@ public class PersonProvider {
 		setPartnerList(server.getPartnerList());
 		setChildrenList(server.getChildrenList());
 		setSexesList(server.getSexesList());
+		setSiblingList(server.getSiblingList());
 	}
 
 //	public void get(int key) throws ClientProtocolException, IOException, MvpException {
@@ -199,6 +200,13 @@ public class PersonProvider {
 	}
 
 	/**
+	 * @return the siblingList
+	 */
+	public List<List<String>> getSiblingList() {
+		return siblingList;
+	}
+
+	/**
 	 * Insert a row
 	 *
 	 * @throws SQLException An exception that provides information on a database
@@ -216,14 +224,21 @@ public class PersonProvider {
 	 * @param birthDatePid the birthDatePid to set
 	 */
 	public void setBirthDatePid(int i) {
-		this.birthDatePid = i;
+		birthDatePid = i;
+	}
+
+	/**
+	 * @param childrenList the childrenList to set
+	 */
+	public void setChildrenList(List<List<String>> childrenList) {
+		this.childrenList = childrenList;
 	}
 
 	/**
 	 * @param i the deathDatePid to set
 	 */
 	public void setDeathDatePid(int i) {
-		this.deathDatePid = i;
+		deathDatePid = i;
 	}
 
 	/**
@@ -276,6 +291,13 @@ public class PersonProvider {
 	}
 
 	/**
+	 * @param siblingList the siblingList to set
+	 */
+	public void setSiblingList(List<List<String>> siblingList) {
+		this.siblingList = siblingList;
+	}
+
+	/**
 	 * Update a row
 	 *
 	 * @throws SQLException An exception that provides information on a database
@@ -287,20 +309,5 @@ public class PersonProvider {
 		server.setDeathDate(deathDatePid);
 		server.setPersonPid(personPid);
 		server.update();
-	}
-
-	/**
-	 * @param childrenList the childrenList to set
-	 */
-	public void setChildrenList(List<List<String>> childrenList) {
-		this.childrenList = childrenList;
-	}
-
-	/**
-	 * @return
-	 */
-	public List<List<String>> getSiblingList() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

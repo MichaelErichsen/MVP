@@ -38,6 +38,7 @@ import net.myerichsen.hremvp.providers.PersonProvider;
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 8. jan. 2019
  */
+// TODO Add Google search browser window
 public class PersonView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
