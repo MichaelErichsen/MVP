@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.serverlogic.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. jan. 2019
+ * @version 9. jan. 2019
  *
  */
 public class PersonProvider {
@@ -77,8 +77,8 @@ public class PersonProvider {
 	 */
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
-		setBirthDatePid(server.getBirthDate());
-		setDeathDatePid(server.getDeathDate());
+		setBirthDatePid(server.getBirthDatePid());
+		setDeathDatePid(server.getDeathDatePid());
 		setPersonPid(key);
 		setEventList(server.getEventList());
 		setNameList(server.getNameList());
@@ -214,8 +214,8 @@ public class PersonProvider {
 	 * @throws MvpException Application specific exception
 	 */
 	public void insert() throws SQLException, MvpException {
-		server.setBirthDate(birthDatePid);
-		server.setDeathDate(deathDatePid);
+		server.setBirthDatePid(birthDatePid);
+		server.setDeathDatePid(deathDatePid);
 		server.setPersonPid(personPid);
 		server.insert();
 	}
@@ -305,8 +305,8 @@ public class PersonProvider {
 	 * @throws MvpException Application specific exception
 	 */
 	public void update() throws SQLException, MvpException {
-		server.setBirthDate(birthDatePid);
-		server.setDeathDate(deathDatePid);
+		server.setBirthDatePid(birthDatePid);
+		server.setDeathDatePid(deathDatePid);
 		server.setPersonPid(personPid);
 		server.update();
 	}

@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. jan. 2019
+ * @version 9. jan. 2019
  *
  */
 //Use LocalDate
@@ -140,9 +140,9 @@ public class PersonServer {
 	 */
 	public void get(int key) throws SQLException, MvpException {
 		person.get(key);
-		setBirthDate(person.getBirthDatePid());
+		setBirthDatePid(person.getBirthDatePid());
 		setPersonPid(key);
-		setDeathDate(person.getDeathDatePid());
+		setDeathDatePid(person.getDeathDatePid());
 
 		// Get all names of the person
 		final List<Names> ln = new Names().getFKPersonPid(key);
@@ -252,7 +252,7 @@ public class PersonServer {
 	/**
 	 * @return the birthDatePid
 	 */
-	public int getBirthDate() {
+	public int getBirthDatePid() {
 		return birthDatePid;
 	}
 
@@ -266,7 +266,7 @@ public class PersonServer {
 	/**
 	 * @return the deathDatePid
 	 */
-	public int getDeathDate() {
+	public int getDeathDatePid() {
 		return deathDatePid;
 	}
 
@@ -482,7 +482,7 @@ public class PersonServer {
 	/**
 	 * @param i the birthDatePid to set
 	 */
-	public void setBirthDate(int i) {
+	public void setBirthDatePid(int i) {
 		birthDatePid = i;
 	}
 
@@ -495,7 +495,7 @@ public class PersonServer {
 	/**
 	 * @param i the deathDatePid to set
 	 */
-	public void setDeathDate(int i) {
+	public void setDeathDatePid(int i) {
 		deathDatePid = i;
 	}
 

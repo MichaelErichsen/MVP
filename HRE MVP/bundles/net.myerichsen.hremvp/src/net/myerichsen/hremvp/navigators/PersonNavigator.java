@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -30,10 +29,10 @@ import net.myerichsen.hremvp.providers.PersonProvider;
  * Display a list of all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. jan. 2019
+ * @version 9. jan. 2019
  *
  */
-
+// FIXME Context sensitive: New, Google search, LDS Search
 @SuppressWarnings("restriction")
 public class PersonNavigator {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -76,11 +75,10 @@ public class PersonNavigator {
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		// FIXME Double click should not open person view
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				openPersonView();
+				postPersonPid();
 			}
 		});
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -131,13 +129,8 @@ public class PersonNavigator {
 	/**
 	 *
 	 */
-	private void openPersonView() {
+	private void postPersonPid() {
 		int personPid = 0;
-
-		// Open an editor
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openpersonview", null);
-		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = table.getSelection();
 
@@ -146,8 +139,8 @@ public class PersonNavigator {
 			personPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
+		LOGGER.info("Posting person pid " + personPid);
 		eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
-
 	}
 
 	@Focus

@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a date in several formats
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. nov. 2018
+ * @version 9. jan. 2019
  *
  */
 public class DateDialog extends TitleAreaDialog {
@@ -58,13 +58,13 @@ public class DateDialog extends TitleAreaDialog {
 					negative = -1;
 				}
 
-				String[] sa = s.split("\\-");
+				final String[] sa = s.split("\\-");
 				int year = Integer.parseInt(sa[0]) * negative;
 				int month = Integer.parseInt(sa[1]);
 				int day = Integer.parseInt(sa[2]);
 
-				IslamicCalendar calendar = new IslamicCalendar(year, month, day);
-				GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
+				final IslamicCalendar calendar = new IslamicCalendar(year, month, day);
+				final GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
 				year = gc.getYear();
 				month = gc.getMonth();
 				day = gc.getDay();
@@ -103,13 +103,13 @@ public class DateDialog extends TitleAreaDialog {
 					negative = -1;
 				}
 
-				String[] sa = s.split("\\-");
+				final String[] sa = s.split("\\-");
 				int year = Integer.parseInt(sa[0]) * negative;
 				int month = Integer.parseInt(sa[1]);
 				int day = Integer.parseInt(sa[2]);
 
-				IndianCivilCalendar calendar = new IndianCivilCalendar(year, month, day);
-				GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
+				final IndianCivilCalendar calendar = new IndianCivilCalendar(year, month, day);
+				final GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
 				year = gc.getYear();
 				month = gc.getMonth();
 				day = gc.getDay();
@@ -148,13 +148,13 @@ public class DateDialog extends TitleAreaDialog {
 					negative = -1;
 				}
 
-				String[] sa = s.split("\\-");
+				final String[] sa = s.split("\\-");
 				int year = Integer.parseInt(sa[0]) * negative;
 				int month = Integer.parseInt(sa[1]);
 				int day = Integer.parseInt(sa[2]);
 
-				HebrewCalendar calendar = new HebrewCalendar(year, month, day);
-				GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
+				final HebrewCalendar calendar = new HebrewCalendar(year, month, day);
+				final GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
 				year = gc.getYear();
 				month = gc.getMonth();
 				day = gc.getDay();
@@ -193,13 +193,13 @@ public class DateDialog extends TitleAreaDialog {
 					negative = -1;
 				}
 
-				String[] sa = s.split("\\-");
+				final String[] sa = s.split("\\-");
 				int year = Integer.parseInt(sa[0]) * negative;
 				int month = Integer.parseInt(sa[1]);
 				int day = Integer.parseInt(sa[2]);
 
-				JulianCalendar calendar = new JulianCalendar(year, month, day);
-				GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
+				final JulianCalendar calendar = new JulianCalendar(year, month, day);
+				final GregorianCalendar gc = AlmanacConverter.toGregorianCalendar(calendar);
 				year = gc.getYear();
 				month = gc.getMonth();
 				day = gc.getDay();
@@ -237,10 +237,10 @@ public class DateDialog extends TitleAreaDialog {
 					s = s.substring(1);
 					negative = -1;
 				}
-				String[] sa = s.split("\\-");
-				int year = Integer.parseInt(sa[0]) * negative;
-				int month = Integer.parseInt(sa[1]);
-				int day = Integer.parseInt(sa[2]);
+				final String[] sa = s.split("\\-");
+				final int year = Integer.parseInt(sa[0]) * negative;
+				final int month = Integer.parseInt(sa[1]);
+				final int day = Integer.parseInt(sa[2]);
 
 				setGregorian(year, month, day);
 				setGregorianOutput(year, month, day);
@@ -262,7 +262,7 @@ public class DateDialog extends TitleAreaDialog {
 
 	// private final static Logger LOGGER =
 	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 	private Text textStoredFormat;
 	private Text textJulian;
 	private Text textJewish;
@@ -305,7 +305,7 @@ public class DateDialog extends TitleAreaDialog {
 	public DateDialog(Shell parentShell, IEclipseContext context, int hdatePid) {
 		super(parentShell);
 		eventBroker = context.get(IEventBroker.class);
-		this.hDatePid = hdatePid;
+		hDatePid = hdatePid;
 	}
 
 	/**
@@ -328,14 +328,14 @@ public class DateDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		setMessage("Historical Dates");
 		setTitle("Date");
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
+		final Composite area = (Composite) super.createDialogArea(parent);
+		final Composite container = new Composite(area, SWT.NONE);
 		container.setLayout(new GridLayout(3, false));
-		GridData gd_container = new GridData(GridData.FILL_BOTH);
+		final GridData gd_container = new GridData(GridData.FILL_BOTH);
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
-		Label lblOriginalText = new Label(container, SWT.NONE);
+		final Label lblOriginalText = new Label(container, SWT.NONE);
 		lblOriginalText.setText("Original Text");
 
 		textOriginal = new Text(container, SWT.BORDER);
@@ -347,7 +347,7 @@ public class DateDialog extends TitleAreaDialog {
 		});
 		textOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Label lblNewLabel = new Label(container, SWT.NONE);
+		final Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setText("Stored format");
 
 		textStoredFormat = new Text(container, SWT.BORDER);
@@ -356,7 +356,7 @@ public class DateDialog extends TitleAreaDialog {
 		textStoredFormat.setToolTipText("Format: [+-]999999999-01-01");
 		textStoredFormat.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Label lblSortDate = new Label(container, SWT.NONE);
+		final Label lblSortDate = new Label(container, SWT.NONE);
 		lblSortDate.setText("Sort Date");
 
 		textSortDate = new Text(container, SWT.BORDER);
@@ -371,10 +371,10 @@ public class DateDialog extends TitleAreaDialog {
 						s = s.substring(1);
 						negative = -1;
 					}
-					String[] sa = s.split("\\-");
-					int year = Integer.parseInt(sa[0]) * negative;
-					int month = Integer.parseInt(sa[1]);
-					int day = Integer.parseInt(sa[2]);
+					final String[] sa = s.split("\\-");
+					final int year = Integer.parseInt(sa[0]) * negative;
+					final int month = Integer.parseInt(sa[1]);
+					final int day = Integer.parseInt(sa[2]);
 
 					sortDate = LocalDate.of(year, month, day);
 				} else {
@@ -388,7 +388,7 @@ public class DateDialog extends TitleAreaDialog {
 		textSortDate.setToolTipText("Format: [+-]999999999-01-01");
 		textSortDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Label lblSurety = new Label(container, SWT.NONE);
+		final Label lblSurety = new Label(container, SWT.NONE);
 		lblSurety.setText("Surety");
 
 		textSurety = new Text(container, SWT.BORDER);
@@ -412,16 +412,16 @@ public class DateDialog extends TitleAreaDialog {
 		});
 		textSurety.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Label lblGregorian = new Label(container, SWT.NONE);
+		final Label lblGregorian = new Label(container, SWT.NONE);
 		lblGregorian.setText("Gregorian");
 
 		dateTimeGregorian = new DateTime(container, SWT.BORDER | SWT.CALENDAR);
 		dateTimeGregorian.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int year = dateTimeGregorian.getYear();
-				int month = dateTimeGregorian.getMonth() + 1;
-				int day = dateTimeGregorian.getDay();
+				final int year = dateTimeGregorian.getYear();
+				final int month = dateTimeGregorian.getMonth() + 1;
+				final int day = dateTimeGregorian.getDay();
 
 				setStoredFormat(year, month, day);
 				setGregorianOutput(year, month, day);
@@ -440,7 +440,7 @@ public class DateDialog extends TitleAreaDialog {
 		textGregorianOutput.setEditable(false);
 		textGregorianOutput.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-		Label lblJulian = new Label(container, SWT.NONE);
+		final Label lblJulian = new Label(container, SWT.NONE);
 		lblJulian.setText("Julian");
 
 		textJulian = new Text(container, SWT.BORDER);
@@ -453,7 +453,7 @@ public class DateDialog extends TitleAreaDialog {
 		textJulianOutput.setEditable(false);
 		textJulianOutput.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblNewLabel_1 = new Label(container, SWT.NONE);
+		final Label lblNewLabel_1 = new Label(container, SWT.NONE);
 		lblNewLabel_1.setText("Jewish");
 
 		textJewish = new Text(container, SWT.BORDER);
@@ -464,7 +464,7 @@ public class DateDialog extends TitleAreaDialog {
 		textJewishOutput.setEditable(false);
 		textJewishOutput.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblArabic = new Label(container, SWT.NONE);
+		final Label lblArabic = new Label(container, SWT.NONE);
 		lblArabic.setText("Arabic");
 
 		textArabic = new Text(container, SWT.BORDER);
@@ -475,7 +475,7 @@ public class DateDialog extends TitleAreaDialog {
 		textArabicOutput.setEditable(false);
 		textArabicOutput.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblIndiansaka = new Label(container, SWT.NONE);
+		final Label lblIndiansaka = new Label(container, SWT.NONE);
 		lblIndiansaka.setText("Indian");
 
 		textIndian = new Text(container, SWT.BORDER);
@@ -490,18 +490,25 @@ public class DateDialog extends TitleAreaDialog {
 
 		if (hDatePid != 0) {
 			try {
-				HDateProvider hdp = new HDateProvider();
+				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hDatePid);
 				getTextStoredFormat().setText(hdp.getDate().toString());
 				getTextSortDate().setText(hdp.getSortDate().toString());
 				getTextOriginal().setText(hdp.getOriginalText());
 				getTextSurety().setText(hdp.getSurety());
-			} catch (Exception e1) {
+			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
 		}
 
 		return area;
+	}
+
+	/**
+	 * @return the hDatePid
+	 */
+	public int gethDatePid() {
+		return hDatePid;
 	}
 
 	/**
@@ -577,8 +584,8 @@ public class DateDialog extends TitleAreaDialog {
 	 * @param day
 	 */
 	protected void setArabic(int year, int month, int day) {
-		IslamicCalendar calendar = AlmanacConverter.toIslamicCalendar(new GregorianCalendar(year, month, day));
-		String date = calendar.getDate();
+		final IslamicCalendar calendar = AlmanacConverter.toIslamicCalendar(new GregorianCalendar(year, month, day));
+		final String date = calendar.getDate();
 		textArabicOutput.setText(date);
 		if (textOriginal.getText().length() == 0) {
 			textOriginal.setText(date);
@@ -610,8 +617,8 @@ public class DateDialog extends TitleAreaDialog {
 	 */
 	protected void setGregorianOutput(int year, int month, int day) {
 		if (year > 1600) {
-			GregorianCalendar calendar = new GregorianCalendar(year, month, day);
-			String date = calendar.getDate();
+			final GregorianCalendar calendar = new GregorianCalendar(year, month, day);
+			final String date = calendar.getDate();
 			textGregorianOutput.setText(date);
 			if (textOriginal.getText().length() == 0) {
 				textOriginal.setText(date);
@@ -623,13 +630,20 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @param hDatePid the hDatePid to set
+	 */
+	public void sethDatePid(int hDatePid) {
+		this.hDatePid = hDatePid;
+	}
+
+	/**
 	 * @param year
 	 * @param month
 	 * @param day
 	 */
 	protected void setHebrew(int year, int month, int day) {
-		HebrewCalendar calendar = AlmanacConverter.toHebrewCalendar(new GregorianCalendar(year, month, day));
-		String date = calendar.getDate();
+		final HebrewCalendar calendar = AlmanacConverter.toHebrewCalendar(new GregorianCalendar(year, month, day));
+		final String date = calendar.getDate();
 		textJewishOutput.setText(date);
 		if (textOriginal.getText().length() == 0) {
 			textOriginal.setText(date);
@@ -643,8 +657,9 @@ public class DateDialog extends TitleAreaDialog {
 	 * @param day
 	 */
 	protected void setIndian(int year, int month, int day) {
-		IndianCivilCalendar calendar = AlmanacConverter.toIndianCivilCalendar(new GregorianCalendar(year, month, day));
-		String date = calendar.getDate();
+		final IndianCivilCalendar calendar = AlmanacConverter
+				.toIndianCivilCalendar(new GregorianCalendar(year, month, day));
+		final String date = calendar.getDate();
 		textIndianOutput.setText(date);
 		if (textOriginal.getText().length() == 0) {
 			textOriginal.setText(date);
@@ -659,8 +674,8 @@ public class DateDialog extends TitleAreaDialog {
 	 * @param day
 	 */
 	protected void setJulian(int year, int month, int day) {
-		JulianCalendar calendar = AlmanacConverter.toJulianCalendar(new GregorianCalendar(year, month, day));
-		String date = calendar.getDate();
+		final JulianCalendar calendar = AlmanacConverter.toJulianCalendar(new GregorianCalendar(year, month, day));
+		final String date = calendar.getDate();
 		textJulianOutput.setText(date);
 		if (textOriginal.getText().length() == 0) {
 			textOriginal.setText(date);
