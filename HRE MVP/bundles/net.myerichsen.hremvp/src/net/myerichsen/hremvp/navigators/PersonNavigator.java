@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.providers.PersonProvider;
  * @version 9. jan. 2019
  *
  */
-// FIXME Context sensitive: New, Google search, LDS Search
+// FIXME Context sensitive: New, Web search, Google search, LDS Search
 @SuppressWarnings("restriction")
 public class PersonNavigator {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

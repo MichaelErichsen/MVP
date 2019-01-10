@@ -23,6 +23,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * @version 6. jan. 2019
  *
  */
+// FIXME Add web ites and search templates: Google, Bing, LDS...
 public class H2PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private ComboFieldEditor comboFieldEditorH2TraceLevel;

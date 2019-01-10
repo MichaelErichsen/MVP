@@ -23,8 +23,10 @@
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_GjFOUBKqEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.perspective.personperspective" label="Person" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PersonIcon.png" tooltip="Person">
         <children xsi:type="basic:PartSashContainer" xmi:id="_fY_igBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.11" containerData="1280" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_m-D2cBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.16" containerData="380">
-            <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.PersonNavigator" label="PersonNavigator"/>
+          <children xsi:type="basic:PartStack" xmi:id="_m-D2cBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.16" containerData="380" accessibilityPhrase="">
+            <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.PersonNavigator" label="Person Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="__ROskBSyEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.ancestornaviogator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.AncestorNavigator" label="Ancestor Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="_G-ujwBSzEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.descendantnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.AncestorNavigator" label="Descendant Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_oZFC8BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.12" containerData="900">
             <children xsi:type="basic:PartSashContainer" xmi:id="_y8_toBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.13" horizontal="true">
