@@ -9,3 +9,4 @@ Bundle-Vendor: History Research Environment Ltd.
 Created-By: Apache Maven 3.3.9
 Build-Jdk: 1.8.0_144
 Automatic-Module-Name: net.myerichsen.hremvp.helpsystem
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

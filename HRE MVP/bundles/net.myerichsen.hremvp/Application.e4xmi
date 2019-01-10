@@ -108,7 +108,7 @@
                 <children xsi:type="basic:Part" xmi:id="_mtqi4O1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventView" label="Event View" tooltip="Event View"/>
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_qDCPoP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partstack.14">
-                <children xsi:type="basic:Part" xmi:id="_gWYPAP06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonViewOld" label="Persons in Event"/>
+                <children xsi:type="basic:Part" xmi:id="_gWYPAP06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventPersonView" label="Persons in Event"/>
               </children>
             </children>
             <children xsi:type="basic:PartSashContainer" xmi:id="_cCshYP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.10" horizontal="true">
@@ -116,7 +116,7 @@
                 <children xsi:type="basic:Part" xmi:id="_u3OXYP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.eventtypes" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventTypeView" label="Event Types"/>
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_1YIfoP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partstack.15">
-                <children xsi:type="basic:Part" xmi:id="_l1eU8P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.locationsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView" label="Locations in Event"/>
+                <children xsi:type="basic:Part" xmi:id="_l1eU8P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.locationsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventLocationView" label="Locations in Event"/>
               </children>
             </children>
           </children>

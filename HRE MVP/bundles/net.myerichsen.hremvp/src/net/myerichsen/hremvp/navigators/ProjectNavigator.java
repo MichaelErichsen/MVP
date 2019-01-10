@@ -50,9 +50,9 @@ import net.myerichsen.hremvp.models.ProjectModel;
 
 /**
  * Navigator part to display all tables in an HRE project.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 10. jan. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -94,13 +94,7 @@ public class ProjectNavigator {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				final ParameterizedCommand command = commandService
-						.createCommand("net.myerichsen.hremvp.command.projectproperties", null);
-				handlerService.executeHandler(command);
-
-				final int index = table.getSelectionIndex();
-				eventBroker.post(Constants.SELECTION_INDEX_TOPIC, index);
-				LOGGER.info("Project Navigator posted selection index " + index);
+				postProjectPid();
 			}
 		});
 		table.setLinesVisible(true);
@@ -206,9 +200,7 @@ public class ProjectNavigator {
 						.createCommand("net.myerichsen.hremvp.command.projectproperties", null);
 				handlerService.executeHandler(command);
 
-				final int index = table.getSelectionIndex();
-				eventBroker.post(Constants.SELECTION_INDEX_TOPIC, index);
-				LOGGER.info("Project Navigator posted selection index " + index);
+				postProjectPid();
 			}
 		});
 		mntmProperties.setToolTipText("Properties");
@@ -216,7 +208,7 @@ public class ProjectNavigator {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@PreDestroy
 	public void dispose() {
@@ -248,13 +240,12 @@ public class ProjectNavigator {
 		final ProjectModel model = ProjectList.getModel(index);
 		final String dbName = model.getName();
 
-
-		String path = model.getPath();
-		int length = path.length() - dbName.length();
+		final String path = model.getPath();
+		final int length = path.length() - dbName.length();
 
 		store.setValue("DBNAME", dbName);
 		store.setValue("DBPATH", path.substring(0, length - 1));
-		
+
 		try {
 			conn = HreH2ConnectionPool.getConnection(dbName);
 
@@ -297,7 +288,16 @@ public class ProjectNavigator {
 	}
 
 	/**
-	 * 
+	 *
+	 */
+	private void postProjectPid() {
+		final int index = table.getSelectionIndex();
+		eventBroker.post(Constants.SELECTION_INDEX_TOPIC, index);
+		LOGGER.info("Project Navigator posted selection index " + index);
+	}
+
+	/**
+	 *
 	 */
 	@Focus
 	public void setFocus() {

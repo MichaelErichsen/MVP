@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -16,9 +17,13 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -29,7 +34,7 @@ import net.myerichsen.hremvp.providers.PersonProvider;
  * Display a list of all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. jan. 2019
+ * @version 10. jan. 2019
  *
  */
 // FIXME Context sensitive: New, Web search, Google search, LDS Search
@@ -117,6 +122,56 @@ public class PersonNavigator {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
 		}
+
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		final MenuItem mntmNew = new MenuItem(menu, SWT.NONE);
+		mntmNew.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 *
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+			 * .SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final ParameterizedCommand newCommand = commandService
+						.createCommand("net.myerichsen.hremvp.command.personnew", null);
+				handlerService.executeHandler(newCommand);
+			}
+		});
+		mntmNew.setText("New...");
+
+		final MenuItem mntmCopyAs = new MenuItem(menu, SWT.NONE);
+		mntmCopyAs.setText("Copy as...");
+
+		final MenuItem mntmRename = new MenuItem(menu, SWT.NONE);
+		mntmRename.setText("Rename...");
+
+		final MenuItem mntmDelete = new MenuItem(menu, SWT.NONE);
+		mntmDelete.setText("Delete");
+
+		final MenuItem mntmWebSearch = new MenuItem(menu, SWT.NONE);
+		mntmWebSearch.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 *
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+			 * .SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final ParameterizedCommand newCommand = commandService
+						.createCommand("net.myerichsen.hremvp.command.personwebsearch", null);
+				handlerService.executeHandler(newCommand);
+			}
+		});
+		mntmWebSearch.setText("Web Search...");
 	}
 
 	/**

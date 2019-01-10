@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.serverlogic.EventServer;
  * Provides all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. dec. 2018
+ * @version 10. jan. 2019
  *
  */
 public class EventProvider {
@@ -350,6 +350,15 @@ public class EventProvider {
 		server.setToDatePid(ToDatePid);
 		server.setEventNamePid(EventNamePid);
 		server.update();
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 */
+	public List<String> getLocationList(int key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

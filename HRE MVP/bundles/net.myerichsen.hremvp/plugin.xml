@@ -43,6 +43,12 @@
             id="net.myerichsen.hremvp.serverpage"
             name="Server">
       </page>
+      <page
+            category="net.myerichsen.hremvp.rootpage"
+            class="net.myerichsen.hremvp.preferences.WebSearchPreferencePage"
+            id="net.myerichsen.hremvp.websearchpage"
+            name="Web Sites">
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
