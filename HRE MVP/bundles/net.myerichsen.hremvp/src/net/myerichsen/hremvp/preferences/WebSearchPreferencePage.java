@@ -3,19 +3,16 @@ package net.myerichsen.hremvp.preferences;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
-import net.myerichsen.hremvp.dialogs.ServerListDialog;
+import net.myerichsen.hremvp.dialogs.WebSiteListDialog;
 
 /**
  * Preference page for web search sites
@@ -26,7 +23,6 @@ import net.myerichsen.hremvp.dialogs.ServerListDialog;
  */
 public class WebSearchPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private FieldEditor comboFieldEditorJettyLogLevel;
 
 	/**
 	 * Constructor
@@ -44,10 +40,8 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 	 */
 	@Override
 	protected void createFieldEditors() {
-		final Composite composite = getFieldEditorParent();
-
 		// FIXME web sites and search templates
-		addField(new ListEditor("SERVERLIST", "Server addresses and ports", getFieldEditorParent()) {
+		addField(new ListEditor("WEBSITELIST", "Web sites and search templates", getFieldEditorParent()) {
 
 			@Override
 			protected String createList(String[] items) {
@@ -62,12 +56,12 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 
 			@Override
 			protected String getNewInputObject() {
-				final ServerListDialog dialog = new ServerListDialog(getFieldEditorParent().getShell());
+				final WebSiteListDialog dialog = new WebSiteListDialog(getFieldEditorParent().getShell());
 
 				final int a = dialog.open();
 
 				if (a == Window.OK) {
-					return dialog.getAddress() + " " + dialog.getPort();
+					return dialog.getAddress() + "?" + dialog.getPort();
 				}
 
 				return null;
@@ -78,10 +72,6 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 				return stringList.split("¤");
 			}
 		});
-
-		final BooleanFieldEditor booleanFieldEditorTls = new BooleanFieldEditor("TLS", "Secure Connection",
-				BooleanFieldEditor.DEFAULT, composite);
-		addField(booleanFieldEditorTls);
 	}
 
 	/*
@@ -108,11 +98,5 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 
 		LOGGER.info(
 				"Changed property: " + event.getProperty() + ", " + event.getOldValue() + " to " + event.getNewValue());
-
-		if (event.getSource() == comboFieldEditorJettyLogLevel) {
-			LOGGER.info("Changed property " + comboFieldEditorJettyLogLevel.getPreferenceName() + " from "
-					+ event.getOldValue() + " to " + event.getNewValue());
-			System.setProperty("org.eclipse.jetty.LEVEL", event.getNewValue().toString());
-		}
 	}
 }

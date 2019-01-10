@@ -3,8 +3,6 @@ package net.myerichsen.hremvp.dialogs;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -14,19 +12,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.listeners.IntegerListener;
-import net.myerichsen.hremvp.listeners.IpAddressListener;
-
 /**
+ * Dialog to enter a search web site and template string
+ * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 10. jan. 2019
  *
  */
 public class WebSiteListDialog extends Dialog {
-	private Text textIpAddress;
-	private Text textPortNo;
+	private Text textWebSite;
+	private Text textSearchTemplate;
 	private String address;
-	private String port;
+	private String template;
 
 	/**
 	 * Create the dialog. Constructor
@@ -71,30 +68,17 @@ public class WebSiteListDialog extends Dialog {
 		container.setLayout(new GridLayout(2, false));
 
 		final Label lblIpAddress = new Label(container, SWT.NONE);
-		lblIpAddress.setText("IP Address");
+		lblIpAddress.setText("Web Site Address");
 
-		textIpAddress = new Text(container, SWT.BORDER);
-		textIpAddress.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				final String text = textIpAddress.getText();
+		textWebSite = new Text(container, SWT.BORDER);
+		textWebSite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-				if (text.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
-					return;
-				}
-			}
-		});
-		textIpAddress.addListener(SWT.Verify, new IpAddressListener());
-		textIpAddress.setToolTipText("Format: 255.255.255.255 (\"Dotted Quad\")");
-		textIpAddress.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		final Label lblTemplate = new Label(container, SWT.NONE);
+		lblTemplate.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblTemplate.setText("Template");
 
-		final Label lblPortNumber = new Label(container, SWT.NONE);
-		lblPortNumber.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblPortNumber.setText("Port number");
-
-		textPortNo = new Text(container, SWT.BORDER);
-		textPortNo.addListener(SWT.Verify, new IntegerListener());
-		textPortNo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textSearchTemplate = new Text(container, SWT.BORDER);
+		textSearchTemplate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		return container;
 	}
@@ -115,10 +99,10 @@ public class WebSiteListDialog extends Dialog {
 	}
 
 	/**
-	 * @return the port
+	 * @return the template
 	 */
 	public String getPort() {
-		return port;
+		return template;
 	}
 
 	/*
@@ -128,8 +112,8 @@ public class WebSiteListDialog extends Dialog {
 	 */
 	@Override
 	protected void okPressed() {
-		setAddress(textIpAddress.getText());
-		setPort(textPortNo.getText());
+		setAddress(textWebSite.getText());
+		setPort(textSearchTemplate.getText());
 		super.okPressed();
 	}
 
@@ -141,9 +125,9 @@ public class WebSiteListDialog extends Dialog {
 	}
 
 	/**
-	 * @param port the port to set
+	 * @param template the template to set
 	 */
 	public void setPort(String port) {
-		this.port = port;
+		this.template = port;
 	}
 }

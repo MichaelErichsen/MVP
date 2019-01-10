@@ -17,9 +17,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *
  */
-public class HreWebsite {
+public class HelpHreWebsite {
 
-	public HreWebsite() {
+	public HelpHreWebsite() {
 	}
 
 	/**

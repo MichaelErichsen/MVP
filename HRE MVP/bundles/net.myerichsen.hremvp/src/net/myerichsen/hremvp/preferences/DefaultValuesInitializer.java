@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 10. jan. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -41,6 +41,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("HREFONT", "1|Segoe UI|12.0|0|WINDOWS|1|-16|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI");
 		store.setDefault("TLS", "true");
 		store.setDefault("UPDATESITE", "http://www.myerichsen.net/HRERepository");
+		store.setDefault("WEBSITELIST", "https://www.google.dk/search?oq=");
 
 		// H2
 		store.setDefault("H2TRACELEVEL", "1");
@@ -55,6 +56,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("SERVERROOT", "mvp/v100");
 		store.setDefault("SERVERPORT", 8000);
 		store.setDefault("JETTYLOGLEVEL", "INFO");
+		store.setDefault("SERVERLIST", "127.0.0.1:8001");
 
 		store.setDefault("projectcount", "1");
 		store.setDefault("project.0.name", "MVP");

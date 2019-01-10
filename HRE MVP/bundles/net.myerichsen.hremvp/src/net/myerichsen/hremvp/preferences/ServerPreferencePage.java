@@ -61,6 +61,10 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 				composite);
 		addField(comboFieldEditorJettyLogLevel);
 
+		final BooleanFieldEditor booleanFieldEditorTls = new BooleanFieldEditor("TLS", "Secure Connection",
+				BooleanFieldEditor.DEFAULT, composite);
+		addField(booleanFieldEditorTls);
+
 		addField(new ListEditor("SERVERLIST", "Server addresses and ports", getFieldEditorParent()) {
 
 			@Override
@@ -81,7 +85,7 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 				final int a = dialog.open();
 
 				if (a == Window.OK) {
-					return dialog.getAddress() + " " + dialog.getPort();
+					return dialog.getAddress() + ":" + dialog.getPort();
 				}
 
 				return null;
@@ -92,10 +96,6 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 				return stringList.split("¤");
 			}
 		});
-
-		final BooleanFieldEditor booleanFieldEditorTls = new BooleanFieldEditor("TLS", "Secure Connection",
-				BooleanFieldEditor.DEFAULT, composite);
-		addField(booleanFieldEditorTls);
 	}
 
 	/*

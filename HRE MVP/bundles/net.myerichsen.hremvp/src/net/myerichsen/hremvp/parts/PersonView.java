@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.parts;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -13,11 +12,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -40,28 +34,27 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 import net.myerichsen.hremvp.providers.PersonProvider;
 
 /**
- * Display all data about a single person
+ * Display static data about a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 9. jan. 2019
  */
+// FIXME Displays twice
 public class PersonView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 
 	private Text textId;
 	private Text textBirthDatePid;
 	private Text textBirthDate;
+	private Button birthDateUpdateButton;
+	private Button birthDateClearButton;
 	private Text textDeathDatePid;
 	private Text textDeathDate;
+	private Button deathDateUpdateButton;
+	private Button deathDateClearButton;
 
 	private Composite composite;
 	private Button buttonSelect;
@@ -69,11 +62,8 @@ public class PersonView {
 	private Button buttonUpdate;
 	private Button buttonDelete;
 	private Button buttonClear;
-	private Button buttonClose;
 
 	private final PersonProvider provider;
-	private Button birthDateUpdateButton;
-	private Button deathDateUpdateButton;
 
 	/**
 	 * Constructor
@@ -95,17 +85,6 @@ public class PersonView {
 		textBirthDate.setText("");
 		textDeathDatePid.setText("");
 		textDeathDate.setText("");
-
-	}
-
-	/**
-	 *
-	 */
-	private void close() {
-		// FIXME Find actual part to close
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
-		partService.hidePart(part, true);
 	}
 
 	/**
@@ -116,15 +95,17 @@ public class PersonView {
 	@PostConstruct
 	@Inject
 	public void createControls(Composite parent, IEclipseContext context) {
-		parent.setLayout(new GridLayout(4, false));
+		parent.setLayout(new GridLayout(5, false));
 
 		final Label lblId = new Label(parent, SWT.NONE);
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
+		textId.setToolTipText("Doubleclick to edit");
 		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textId.addListener(SWT.Verify, new IntegerListener());
 
+		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
@@ -167,8 +148,17 @@ public class PersonView {
 		});
 		birthDateUpdateButton.setText("Update");
 
+		birthDateClearButton = new Button(parent, SWT.NONE);
+		birthDateClearButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				textBirthDatePid.setText("0");
+				textBirthDate.setText("");
+			}
+		});
+		birthDateClearButton.setText("Clear");
+
 		final Label lblDeathDate = new Label(parent, SWT.NONE);
-		lblDeathDate.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDeathDate.setText("Death Date");
 
 		textDeathDatePid = new Text(parent, SWT.BORDER);
@@ -207,8 +197,18 @@ public class PersonView {
 		});
 		deathDateUpdateButton.setText("Update");
 
+		deathDateClearButton = new Button(parent, SWT.NONE);
+		deathDateClearButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				textDeathDatePid.setText("0");
+				textDeathDate.setText("");
+			}
+		});
+		deathDateClearButton.setText("Clear");
+
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -257,16 +257,6 @@ public class PersonView {
 		});
 		buttonClear.setText("Clear");
 
-		buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-		new Label(parent, SWT.NONE);
-
 		get(1);
 	}
 
@@ -274,8 +264,16 @@ public class PersonView {
 	 * 
 	 */
 	protected void insert() {
-		// TODO Auto-generated method stub
-
+		try {
+			provider.setBirthDatePid(Integer.parseInt(textBirthDatePid.getText()));
+			provider.setDeathDatePid(Integer.parseInt(textDeathDatePid.getText()));
+			provider.setPersonPid(Integer.parseInt(textId.getText()));
+			provider.insert();
+			eventBroker.post("MESSAGE", "Person " + textId.getText() + " has been inserted");
+		} catch (final Exception e) {
+			eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+		}
 	}
 
 	/**
@@ -365,8 +363,8 @@ public class PersonView {
 	 */
 	protected void update() {
 		try {
-			provider.setBirthDatePid(Integer.parseInt(textBirthDate.getText()));
-			provider.setDeathDatePid(Integer.parseInt(textDeathDate.getText()));
+			provider.setBirthDatePid(Integer.parseInt(textBirthDatePid.getText()));
+			provider.setDeathDatePid(Integer.parseInt(textDeathDatePid.getText()));
 			provider.setPersonPid(Integer.parseInt(textId.getText()));
 			provider.update();
 			eventBroker.post("MESSAGE", "Person " + textId.getText() + " has been updated");

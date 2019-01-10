@@ -28,7 +28,7 @@ public class HelpHreWebsiteHandler {
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(
-				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HreWebsite");
+				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HelpHreWebsite");
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
