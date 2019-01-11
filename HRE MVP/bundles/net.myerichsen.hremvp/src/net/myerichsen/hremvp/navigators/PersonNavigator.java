@@ -34,10 +34,9 @@ import net.myerichsen.hremvp.providers.PersonProvider;
  * Display a list of all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jan. 2019
+ * @version 11. jan. 2019
  *
  */
-// FIXME Context sensitive: New, Web search, Google search, LDS Search
 @SuppressWarnings("restriction")
 public class PersonNavigator {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

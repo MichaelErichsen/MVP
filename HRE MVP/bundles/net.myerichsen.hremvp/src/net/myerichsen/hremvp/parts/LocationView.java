@@ -22,8 +22,6 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -37,9 +35,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
@@ -49,10 +44,10 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 import net.myerichsen.hremvp.providers.LocationProvider;
 
 /**
- * Display all data about a location
+ * Display static data about a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @version 11. jan. 2019
  */
 public class LocationView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -75,8 +70,6 @@ public class LocationView {
 	private Text textYCoordinate;
 	private Text textZCoordinate;
 	private Button btnPrimaryLocation;
-	private Table tableNames;
-	private TableViewer tableViewerNames;
 
 	private Text textFromDatePid;
 	private Text textFromDate;
@@ -129,7 +122,6 @@ public class LocationView {
 		textYCoordinate.setText("0.0");
 		textZCoordinate.setText("0.0");
 		btnPrimaryLocation.setSelection(false);
-		tableNames.removeAll();
 	}
 
 	/**
@@ -184,47 +176,6 @@ public class LocationView {
 
 		textZCoordinate = new Text(composite_1, SWT.BORDER);
 		textZCoordinate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-
-		Label lblLocationNames = new Label(composite_1, SWT.NONE);
-		lblLocationNames.setText("Location Names");
-
-		tableViewerNames = new TableViewer(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
-		tableNames = tableViewerNames.getTable();
-		tableNames.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
-		tableNames.setToolTipText("Double click to edit name part");
-		tableNames.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				openLocationNameView();
-			}
-		});
-		tableNames.setLinesVisible(true);
-		tableNames.setHeaderVisible(true);
-
-		TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewerNames, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumnId.getColumn();
-		tblclmnId.setWidth(50);
-		tblclmnId.setText("ID");
-
-		TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewerNames, SWT.NONE);
-		TableColumn tblclmnName = tableViewerColumnName.getColumn();
-		tblclmnName.setWidth(200);
-		tblclmnName.setText("Name");
-
-		TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewerNames, SWT.NONE);
-		TableColumn tblclmnPrimary = tableViewerColumnPrimary.getColumn();
-		tblclmnPrimary.setWidth(60);
-		tblclmnPrimary.setText("Primary");
-
-		TableViewerColumn tableViewerColumnFrom = new TableViewerColumn(tableViewerNames, SWT.NONE);
-		TableColumn tblclmnFrom = tableViewerColumnFrom.getColumn();
-		tblclmnFrom.setWidth(100);
-		tblclmnFrom.setText("From");
-
-		TableViewerColumn tableViewerColumnTo = new TableViewerColumn(tableViewerNames, SWT.NONE);
-		TableColumn tblclmnTo = tableViewerColumnTo.getColumn();
-		tblclmnTo.setWidth(100);
-		tblclmnTo.setText("To");
 
 		Label lblFromDate = new Label(composite_1, SWT.NONE);
 		lblFromDate.setText("From Date ID");
@@ -515,21 +466,6 @@ public class LocationView {
 			}
 			btnPrimaryLocation.setSelection(provider.isPrimaryLocation());
 
-			tableNames.removeAll();
-
-			List<List<String>> nameList = provider.getNameList();
-			List<String> sl;
-
-			for (int i = 0; i < nameList.size(); i++) {
-				TableItem item = new TableItem(tableNames, SWT.NONE);
-				sl = nameList.get(i);
-				item.setText(0, sl.get(0));
-				item.setText(1, sl.get(1));
-				item.setText(2, sl.get(2));
-				item.setText(3, sl.get(3));
-				item.setText(4, sl.get(4));
-			}
-
 			openGoogleMaps();
 
 		} catch (Exception e) {
@@ -599,7 +535,7 @@ public class LocationView {
 	 *
 	 */
 	protected void openLocationNameView() {
-		String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationNameView";
+		String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationNameViewOld";
 
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
@@ -628,17 +564,6 @@ public class LocationView {
 			partService.showPart(part, PartState.ACTIVATE);
 		}
 
-		String locationNamePid = "0";
-
-		final TableItem[] selectedRows = tableNames.getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			locationNamePid = selectedRow.getText(0);
-		}
-
-		LOGGER.info("Setting location name pid: " + locationNamePid);
-		eventBroker.post(Constants.LOCATION_NAME_PID_UPDATE_TOPIC, Integer.parseInt(locationNamePid));
 	}
 
 	/**
