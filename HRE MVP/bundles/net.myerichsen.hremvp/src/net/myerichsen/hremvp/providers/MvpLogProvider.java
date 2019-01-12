@@ -29,11 +29,11 @@ public class MvpLogProvider implements IStructuredContentProvider {
 	@Override
 	public Object[] getElements(Object inputElement) {
 		LOGGER.fine("MvpLogProvider invoked");
-		List<String> lines = new ArrayList<>();
+		final List<String> lines = new ArrayList<>();
 
 		try {
-			File file = new File((String) inputElement);
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			final File file = new File((String) inputElement);
+			final BufferedReader br = new BufferedReader(new FileReader(file));
 
 			String readLine = "";
 
@@ -42,7 +42,7 @@ public class MvpLogProvider implements IStructuredContentProvider {
 			}
 
 			br.close();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 

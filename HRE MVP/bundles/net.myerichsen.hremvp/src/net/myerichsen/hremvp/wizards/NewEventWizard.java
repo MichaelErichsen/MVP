@@ -10,9 +10,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.providers.LocationNamePartProvider;
-import net.myerichsen.hremvp.providers.LocationNameProvider;
-import net.myerichsen.hremvp.providers.LocationProvider;
+import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
+import net.myerichsen.hremvp.location.providers.LocationNameProvider;
+import net.myerichsen.hremvp.location.providers.LocationProvider;
 
 /**
  * Wizard to add a new location
@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.providers.LocationProvider;
 public class NewEventWizard extends Wizard {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private IEclipseContext context;
+	private final IEclipseContext context;
 	private NewLocationWizardPage1 page1;
 	private NewLocationWizardPage2 page2;
 	private NewLocationWizardPage3 page3;
@@ -123,49 +123,49 @@ public class NewEventWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		IEventBroker eventBroker = context.get(IEventBroker.class);
+		final IEventBroker eventBroker = context.get(IEventBroker.class);
 
 		try {
-			LocationProvider lp = new LocationProvider();
+			final LocationProvider lp = new LocationProvider();
 			lp.setFromDatePid(page1.getFromDatePid());
 			lp.setToDatePid(page1.getFromDatePid());
 			lp.setxCoordinate(new BigDecimal(page1.getTextXCoordinate().getText()));
 			lp.setyCoordinate(new BigDecimal(page1.getTextYCoordinate().getText()));
 			lp.setzCoordinate(new BigDecimal(page1.getTextZCoordinate().getText()));
 			lp.setPrimaryLocation(page1.getBtnCheckButtonPrimary().getSelection());
-			int locationPid = lp.insert();
+			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 
-			LocationNameProvider lnp = new LocationNameProvider();
+			final LocationNameProvider lnp = new LocationNameProvider();
 			lnp.setLocationPid(locationPid);
 			lnp.setFromDatePid(page2.getFromDatePid());
 			lnp.setToDatePid(page2.getFromDatePid());
 			lnp.setPrimaryLocationName(true);
 
-			String s = page2.getComboLocationNameStyles().getText();
-			String[] sa = s.split(",");
+			final String s = page2.getComboLocationNameStyles().getText();
+			final String[] sa = s.split(",");
 			lnp.setLocationNameStylePid(Integer.parseInt(sa[0]));
 
 			lnp.setPrimaryLocationName(page2.getBtnPrimaryLocationName().getSelection());
 			lnp.setPreposition(page2.getTextPreposition().getText());
-			int locationNamePid = lnp.insert();
+			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
-			List<Label> labelList = page3.getLabelList();
-			List<Text> textList = page3.getTextList();
+			final List<Label> labelList = page3.getLabelList();
+			final List<Text> textList = page3.getTextList();
 
 			for (int i = 0; i < labelList.size(); i++) {
-				LocationNamePartProvider lnpp = new LocationNamePartProvider();
+				final LocationNamePartProvider lnpp = new LocationNamePartProvider();
 				lnpp.setLocationNamePid(locationNamePid);
 				lnpp.setPartNo(i + 1);
 				lnpp.setLabel(textList.get(i).getText());
-				int locationNamePartPid = lnpp.insert();
+				final int locationNamePartPid = lnpp.insert();
 				LOGGER.info("Inserted location name part " + locationNamePartPid);
 			}
 
 			eventBroker.post("MESSAGE", locationName + " inserted in the database as no. " + locationPid);
 			return true;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

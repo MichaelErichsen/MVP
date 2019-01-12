@@ -44,7 +44,7 @@ import java.util.Objects;
 public final class GregorianCalendar extends Almanac {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 182956764093971616L;
 	public static final String CALENDAR_NAME = "Gregorian Calendar";
@@ -113,7 +113,7 @@ public final class GregorianCalendar extends Almanac {
 	 * @return an array[12] of month-lengths for a given year.
 	 */
 	public static int[] getDaysPerMonthInYear(int year) {
-		int[] days = new int[12];
+		final int[] days = new int[12];
 		for (int i = 0; i < 12; ++i) {
 			days[i] = GregorianCalendar.getNumberOfDaysInMonth(year, i + 1);
 		}
@@ -173,8 +173,8 @@ public final class GregorianCalendar extends Almanac {
 	 * @return true, if year is a leap year; false, otherwise.
 	 */
 	public static boolean isLeapYear(int year, boolean useProleptic) {
-		GregorianCalendar epoch = new GregorianCalendar(EPOCH);
-		GregorianCalendar date = new GregorianCalendar(year, 1, 1);
+		final GregorianCalendar epoch = new GregorianCalendar(EPOCH);
+		final GregorianCalendar date = new GregorianCalendar(year, 1, 1);
 
 		if (useProleptic && datesAreChronological(date, epoch)) {
 			return JulianCalendar.isLeapYear(year);
@@ -347,7 +347,7 @@ public final class GregorianCalendar extends Almanac {
 	 */
 	@Override
 	public void set(Almanac a) {
-		GregorianCalendar cal = toGregorianCalendar(a);
+		final GregorianCalendar cal = toGregorianCalendar(a);
 		year = cal.getYear();
 		month = cal.getMonth();
 		day = cal.getDay();

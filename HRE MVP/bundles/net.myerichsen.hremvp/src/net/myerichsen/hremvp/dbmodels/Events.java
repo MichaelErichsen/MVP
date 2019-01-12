@@ -19,22 +19,14 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class Events {
-	private List<Events> modelList;
-	private PreparedStatement ps;
-	private ResultSet rs;
-	private Connection conn;
 	private static final String SELECT = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
 			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
-
 	private static final String SELECT_FROM_DATE_PID = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE FROM_DATE_PID = ? ORDER BY EVENT_PID";
-
 	private static final String SELECT_TO_DATE_PID = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE TO_DATE_PID = ? ORDER BY EVENT_PID";
-
 	private static final String SELECTALL = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS ORDER BY EVENT_PID";
-
 	private static final String SELECTMAX = "SELECT MAX(EVENT_PID) FROM PUBLIC.EVENTS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( EVENT_PID, TABLE_ID, "
@@ -46,6 +38,14 @@ public class Events {
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.EVENTS";
+
+	private List<Events> modelList;
+
+	private PreparedStatement ps;
+
+	private ResultSet rs;
+
+	private Connection conn;
 
 	private int EventPid;
 	private int TableId;
@@ -76,7 +76,7 @@ public class Events {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Events>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Events();
 			model.setEventPid(rs.getInt("EVENT_PID"));
@@ -107,12 +107,30 @@ public class Events {
 		conn.close();
 	}
 
+	/**
+	 * Get the EventNamePid field.
+	 *
+	 * @return Contents of the EVENT_NAME_PID column
+	 */
+	public int getEventNamePid() {
+		return EventNamePid;
+	}
+
+	/**
+	 * Get the EventPid field.
+	 *
+	 * @return Contents of the EVENT_PID column
+	 */
+	public int getEventPid() {
+		return EventPid;
+	}
+
 	public List<Events> getFKFromDatePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Events>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Events();
 			model.setEventPid(rs.getInt("EVENT_PID"));
@@ -131,7 +149,7 @@ public class Events {
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Events>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Events();
 			model.setEventPid(rs.getInt("EVENT_PID"));
@@ -143,6 +161,33 @@ public class Events {
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the FromDatePid field.
+	 *
+	 * @return Contents of the FROM_DATE_PID column
+	 */
+	public int getFromDatePid() {
+		return FromDatePid;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return TableId;
+	}
+
+	/**
+	 * Get the ToDatePid field.
+	 *
+	 * @return Contents of the TO_DATE_PID column
+	 */
+	public int getToDatePid() {
+		return ToDatePid;
 	}
 
 	public int insert() throws SQLException {
@@ -158,81 +203,29 @@ public class Events {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setInt(2, getTableId());
-		if (getFromDatePid() == 0)
+		if (getFromDatePid() == 0) {
 			ps.setNull(3, java.sql.Types.INTEGER);
-		else
+		} else {
 			ps.setInt(3, getFromDatePid());
-		if (getToDatePid() == 0)
+		}
+		if (getToDatePid() == 0) {
 			ps.setNull(4, java.sql.Types.INTEGER);
-		else
+		} else {
 			ps.setInt(4, getToDatePid());
+		}
 		ps.setInt(5, getEventNamePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
 	}
 
-	public void update() throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTableId());
-		if (getFromDatePid() == 0)
-			ps.setNull(2, java.sql.Types.INTEGER);
-		else
-			ps.setInt(2, getFromDatePid());
-		if (getToDatePid() == 0)
-			ps.setNull(3, java.sql.Types.INTEGER);
-		else
-			ps.setInt(3, getToDatePid());
-		ps.setInt(4, getEventNamePid());
-		ps.setInt(5, getEventPid());
-		ps.executeUpdate();
-		conn.close();
-	}
-
 	/**
-	 * Get the EventPid field.
+	 * Set the EventNamePid field
 	 *
-	 * @return Contents of the EVENT_PID column
+	 * @param EventNamePid Contents of the EVENT_NAME_PID column
 	 */
-	public int getEventPid() {
-		return this.EventPid;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return this.TableId;
-	}
-
-	/**
-	 * Get the FromDatePid field.
-	 *
-	 * @return Contents of the FROM_DATE_PID column
-	 */
-	public int getFromDatePid() {
-		return this.FromDatePid;
-	}
-
-	/**
-	 * Get the ToDatePid field.
-	 *
-	 * @return Contents of the TO_DATE_PID column
-	 */
-	public int getToDatePid() {
-		return this.ToDatePid;
-	}
-
-	/**
-	 * Get the EventNamePid field.
-	 *
-	 * @return Contents of the EVENT_NAME_PID column
-	 */
-	public int getEventNamePid() {
-		return this.EventNamePid;
+	public void setEventNamePid(int EventNamePid) {
+		this.EventNamePid = EventNamePid;
 	}
 
 	/**
@@ -245,21 +238,21 @@ public class Events {
 	}
 
 	/**
-	 * Set the TableId field
-	 *
-	 * @param TableId Contents of the TABLE_ID column
-	 */
-	public void setTableId(int TableId) {
-		this.TableId = TableId;
-	}
-
-	/**
 	 * Set the FromDatePid field
 	 *
 	 * @param FromDatePid Contents of the FROM_DATE_PID column
 	 */
 	public void setFromDatePid(int FromDatePid) {
 		this.FromDatePid = FromDatePid;
+	}
+
+	/**
+	 * Set the TableId field
+	 *
+	 * @param TableId Contents of the TABLE_ID column
+	 */
+	public void setTableId(int TableId) {
+		this.TableId = TableId;
 	}
 
 	/**
@@ -271,13 +264,24 @@ public class Events {
 		this.ToDatePid = ToDatePid;
 	}
 
-	/**
-	 * Set the EventNamePid field
-	 *
-	 * @param EventNamePid Contents of the EVENT_NAME_PID column
-	 */
-	public void setEventNamePid(int EventNamePid) {
-		this.EventNamePid = EventNamePid;
+	public void update() throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setInt(1, getTableId());
+		if (getFromDatePid() == 0) {
+			ps.setNull(2, java.sql.Types.INTEGER);
+		} else {
+			ps.setInt(2, getFromDatePid());
+		}
+		if (getToDatePid() == 0) {
+			ps.setNull(3, java.sql.Types.INTEGER);
+		} else {
+			ps.setInt(3, getToDatePid());
+		}
+		ps.setInt(4, getEventNamePid());
+		ps.setInt(5, getEventPid());
+		ps.executeUpdate();
+		conn.close();
 	}
 
 }

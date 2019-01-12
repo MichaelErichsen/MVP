@@ -9,8 +9,7 @@ import net.myerichsen.hremvp.dbmodels.NameParts;
 import net.myerichsen.hremvp.dbmodels.Names;
 
 /**
- * Business logic interface for
- * {@link net.myerichsen.hremvp.dbmodels.NameParts}
+ * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.NameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 29. sep. 2018
@@ -24,7 +23,7 @@ public class NamePartServer {
 	private String label;
 	private int partNo;
 
-	private NameParts part;
+	private final NameParts part;
 
 	/**
 	 * Constructor
@@ -64,10 +63,10 @@ public class NamePartServer {
 		setPartNo(part.getPartNo());
 
 		// Get name
-		StringBuilder sb = new StringBuilder();
-		List<NameParts> partList = new NameParts().getFKNamePid(namePid);
+		final StringBuilder sb = new StringBuilder();
+		final List<NameParts> partList = new NameParts().getFKNamePid(namePid);
 
-		for (NameParts nameParts : partList) {
+		for (final NameParts nameParts : partList) {
 			if (nameParts.getNamePid() == namePid) {
 				if (nameParts.getLabel() != null) {
 					sb.append(nameParts.getLabel() + " ");
@@ -79,12 +78,12 @@ public class NamePartServer {
 
 		// Get map label
 		setMapLabel("Label");
-		Names name = new Names();
+		final Names name = new Names();
 		name.get(namePid);
 
-		NameMaps map = new NameMaps();
-		List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
-		
+		final NameMaps map = new NameMaps();
+		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+
 		if (mapList.size() != partList.size()) {
 			throw new MvpException("Map list size: " + mapList.size() + ", part list size: " + partList.size());
 		}
@@ -154,11 +153,11 @@ public class NamePartServer {
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		Names name = new Names();
+		final Names name = new Names();
 		name.get(namePid);
 
-		NameMaps map = new NameMaps();
-		List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+		final NameMaps map = new NameMaps();
+		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
 		Boolean found = false;
 
 		for (int i = 0; i < mapList.size(); i++) {
@@ -232,11 +231,11 @@ public class NamePartServer {
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		Names name = new Names();
+		final Names name = new Names();
 		name.get(namePid);
 
-		NameMaps map = new NameMaps();
-		List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+		final NameMaps map = new NameMaps();
+		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
 		Boolean found = false;
 
 		for (int i = 0; i < mapList.size(); i++) {

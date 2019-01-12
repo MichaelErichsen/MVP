@@ -64,7 +64,7 @@ public class NamePartView {
 	private Button buttonDelete;
 	private Button buttonClear;
 	private Button buttonClose;
-	private NamePartProvider provider;
+	private final NamePartProvider provider;
 
 	/**
 	 * Constructor
@@ -106,7 +106,7 @@ public class NamePartView {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(3, false));
 
-		Label lblId = new Label(parent, SWT.NONE);
+		final Label lblId = new Label(parent, SWT.NONE);
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
@@ -114,7 +114,7 @@ public class NamePartView {
 		textId.addVerifyListener(new NumericVerifyListener());
 		new Label(parent, SWT.NONE);
 
-		Label lblName = new Label(parent, SWT.NONE);
+		final Label lblName = new Label(parent, SWT.NONE);
 		lblName.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		lblName.setText("Name ID");
 
@@ -126,7 +126,7 @@ public class NamePartView {
 		textName.setEditable(false);
 		textName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblPartNo = new Label(parent, SWT.NONE);
+		final Label lblPartNo = new Label(parent, SWT.NONE);
 		lblPartNo.setText("Part no.");
 
 		textPartNo = new Text(parent, SWT.BORDER);
@@ -243,7 +243,7 @@ public class NamePartView {
 			textMapLabel.setText(provider.getMapLabel());
 			textLabel.setText(provider.getLabel());
 			eventBroker.post("MESSAGE", "Name Part " + textId.getText() + " has been fetched");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -262,7 +262,7 @@ public class NamePartView {
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.insert();
 			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been inserted");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}
@@ -298,7 +298,7 @@ public class NamePartView {
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.update();
 			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been updated");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}

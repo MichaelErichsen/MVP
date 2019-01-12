@@ -39,7 +39,7 @@ import java.util.Objects;
 public class HebrewCalendar extends Almanac {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final String CALENDAR_NAME = "Hebrew Calendar";
@@ -99,8 +99,8 @@ public class HebrewCalendar extends Almanac {
 	 * @return an array of month-lengths for a given year.
 	 */
 	public static int[] getDaysPerMonthInYear(int year) {
-		int n = HebrewCalendar.getNumberOfMonthsInYear(year);
-		int[] days = new int[n];
+		final int n = HebrewCalendar.getNumberOfMonthsInYear(year);
+		final int[] days = new int[n];
 		for (int i = 0; i < n; ++i) {
 			days[i] = HebrewCalendar.getNumberOfDaysInMonth(year, i + 1);
 		}
@@ -149,11 +149,11 @@ public class HebrewCalendar extends Almanac {
 	}
 
 	public static int getNumberOfDaysInYear(int year) {
-		HebrewCalendar now = new HebrewCalendar(year, 7, 1);
-		HebrewCalendar next = new HebrewCalendar(year + 1, 7, 1);
-		JulianDay jnow = toJulianDay(now);
-		JulianDay jnext = toJulianDay(next);
-		int num = (int) (jnext.getValue() - jnow.getValue());
+		final HebrewCalendar now = new HebrewCalendar(year, 7, 1);
+		final HebrewCalendar next = new HebrewCalendar(year + 1, 7, 1);
+		final JulianDay jnow = toJulianDay(now);
+		final JulianDay jnext = toJulianDay(next);
+		final int num = (int) (jnext.getValue() - jnow.getValue());
 		return num;
 	}
 
@@ -174,7 +174,7 @@ public class HebrewCalendar extends Almanac {
 	 * @return true, if a leap year; false, otherwise.
 	 */
 	public static boolean isLeapYear(int year) {
-		int val = ((7 * year) + 1) % 19;
+		final int val = ((7 * year) + 1) % 19;
 		return (val < 7);
 	}
 
@@ -313,7 +313,7 @@ public class HebrewCalendar extends Almanac {
 	 */
 	@Override
 	public void set(Almanac a) {
-		HebrewCalendar cal = toHebrewCalendar(a);
+		final HebrewCalendar cal = toHebrewCalendar(a);
 		set(cal.getYear(), cal.getMonth(), cal.getDay());
 	}
 

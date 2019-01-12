@@ -26,7 +26,7 @@ public class NameProvider {
 	private int nameStylePid;
 	List<List<String>> nameList;
 
-	private NameServer server;
+	private final NameServer server;
 
 	/**
 	 * Constructor
@@ -181,7 +181,7 @@ public class NameProvider {
 	 * @param fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int i) {
-		this.fromDatePid = i;
+		fromDatePid = i;
 	}
 
 	/**
@@ -237,7 +237,7 @@ public class NameProvider {
 	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDate) {
-		this.toDatePid = toDate;
+		toDatePid = toDate;
 	}
 
 	/**

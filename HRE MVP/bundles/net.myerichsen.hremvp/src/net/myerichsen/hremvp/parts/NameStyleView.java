@@ -81,7 +81,7 @@ public class NameStyleView {
 	private Button buttonClear;
 	private Button buttonClose;
 
-	private NameStyleProvider provider;
+	private final NameStyleProvider provider;
 
 	/**
 	 * Constructor
@@ -126,7 +126,7 @@ public class NameStyleView {
 	public void createControls(Composite parent) throws MvpException {
 		parent.setLayout(new GridLayout(4, false));
 
-		Label lblId = new Label(parent, SWT.NONE);
+		final Label lblId = new Label(parent, SWT.NONE);
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
@@ -134,7 +134,7 @@ public class NameStyleView {
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
-		Label lblLanguage = new Label(parent, SWT.NONE);
+		final Label lblLanguage = new Label(parent, SWT.NONE);
 		lblLanguage.setText("Language");
 
 		textLanguageId = new Text(parent, SWT.BORDER);
@@ -148,13 +148,13 @@ public class NameStyleView {
 		textIsoCode.setEditable(false);
 		textIsoCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblName = new Label(parent, SWT.NONE);
+		final Label lblName = new Label(parent, SWT.NONE);
 		lblName.setText("Name");
 
 		textLabel = new Text(parent, SWT.BORDER);
 		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-		Label lblNameMaps = new Label(parent, SWT.NONE);
+		final Label lblNameMaps = new Label(parent, SWT.NONE);
 		lblNameMaps.setText(" Name Maps\r\nDblclk to open");
 
 		tableViewerMaps = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -170,23 +170,23 @@ public class NameStyleView {
 		tableMaps.setHeaderVisible(true);
 		tableMaps.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 
-		TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewerMaps, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumnId.getColumn();
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
-		TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(tableViewerMaps, SWT.NONE);
-		TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
+		final TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
 		tblclmnPartNo.setWidth(50);
 		tblclmnPartNo.setText("Part No.");
 
-		TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewerMaps, SWT.NONE);
-		TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
 		tblclmnLabel.setWidth(200);
 		tblclmnLabel.setText("Label");
 
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewerMaps, SWT.NONE);
-		TableColumn tblclmnLabelPosition = tableViewerColumn.getColumn();
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableColumn tblclmnLabelPosition = tableViewerColumn.getColumn();
 		tblclmnLabelPosition.setWidth(100);
 		tblclmnLabelPosition.setText("Label Position");
 
@@ -289,18 +289,18 @@ public class NameStyleView {
 
 			tableMaps.removeAll();
 
-			List<NameMaps> mapList = provider.getMapList();
+			final List<NameMaps> mapList = provider.getMapList();
 			NameMaps map;
 
 			for (int i = 0; i < mapList.size(); i++) {
 				map = mapList.get(i);
 
-				TableItem item = new TableItem(tableMaps, SWT.NONE);
+				final TableItem item = new TableItem(tableMaps, SWT.NONE);
 				item.setText(0, Integer.toString(map.getNameMapPid()));
 				item.setText(1, Integer.toString(map.getPartNo()));
 				item.setText(2, map.getLabel());
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -317,7 +317,7 @@ public class NameStyleView {
 			provider.setLanguagePid(Integer.parseInt(textLanguageId.getText()));
 			provider.setNameStylePid(Integer.parseInt(textId.getText()));
 			provider.insert();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -372,7 +372,7 @@ public class NameStyleView {
 			provider.setLanguagePid(Integer.parseInt(textLanguageId.getText()));
 			provider.setNameStylePid(Integer.parseInt(textId.getText()));
 			provider.update();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

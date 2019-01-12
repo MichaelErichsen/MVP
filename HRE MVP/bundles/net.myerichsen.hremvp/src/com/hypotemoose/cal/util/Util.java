@@ -23,87 +23,90 @@ package com.hypotemoose.cal.util;
  */
 public final class Util {
 
-  /**
-   * Converts an integer to string.
-   *
-   * @param val an integer.
-   * @return the integer as a string.
-   */
-  public static String its(int val) {
-    return Integer.toString(val);
-  }
+	/**
+	 * Determines if a value exists in an array.
+	 *
+	 * @param array an array.
+	 * @param v     value to find.
+	 * @return true, if exists in array; false, otherwise.
+	 */
+	public static boolean arrayContains(final int[] array, final int v) {
+		for (final int i : array) {
+			if (i == v) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-  /**
-   * The sine of an angle in degrees.
-   *
-   * @param deg an angle in degrees.
-   * @return the sine of the angle.
-   */
-  public static double dsin(double deg) {
-    return Math.sin(dtr(deg));
-  }
+	/**
+	 * The cosine of an angle in degrees.
+	 *
+	 * @param deg an angle in degrees.
+	 * @return the cosine of the angle.
+	 */
+	public static double dcos(double deg) {
+		return Math.cos(dtr(deg));
+	}
 
-  /**
-   * The cosine of an angle in degrees.
-   *
-   * @param deg an angle in degrees.
-   * @return the cosine of the angle.
-   */
-  public static double dcos(double deg) {
-    return Math.cos(dtr(deg));
-  }
+	/**
+	 * The sine of an angle in degrees.
+	 *
+	 * @param deg an angle in degrees.
+	 * @return the sine of the angle.
+	 */
+	public static double dsin(double deg) {
+		return Math.sin(dtr(deg));
+	}
 
-  /**
-   * Converts radians to degrees.
-   *
-   * @param rad an angle in radians.
-   * @return the angle in degrees.
-   */
-  public static double rtd(double rad) {
-    return Math.toDegrees(rad);
-  }
+	/**
+	 * Converts degrees to radians.
+	 *
+	 * @param deg an angle in degrees.
+	 * @return the angle in radians.
+	 */
+	public static double dtr(double deg) {
+		return Math.toRadians(deg);
+	}
 
-  /**
-   * Converts degrees to radians.
-   *
-   * @param deg an angle in degrees.
-   * @return the angle in radians.
-   */
-  public static double dtr(double deg) {
-    return Math.toRadians(deg);
-  }
+	/**
+	 * Fixes an angle between range [0-360).
+	 *
+	 * @param a an angle in degrees.
+	 * @return the fixed angle.
+	 */
+	public static double fixAngle(double a) {
+		return (a - (360.0 * (Math.floor(a / 360.0))));
+	}
 
-  /**
-   * Fixes an angle between range [0-360).
-   *
-   * @param a an angle in degrees.
-   * @return the fixed angle.
-   */
-  public static double fixAngle(double a) {
-    return (a - 360.0 * (Math.floor(a / 360.0)));
-  }
+	/**
+	 * Fixes an angle between range [0-2*PI).
+	 *
+	 * @param rad an angle in radians.
+	 * @return the fixed angle.
+	 */
+	public static double fixAngler(double rad) {
+		return rad - ((2 * Math.PI) * (Math.floor(rad / (2 * Math.PI))));
+	}
 
-  /**
-   * Fixes an angle between range [0-2*PI).
-   *
-   * @param rad an angle in radians.
-   * @return the fixed angle.
-   */
-  public static double fixAngler(double rad) {
-    return rad - (2 * Math.PI) * (Math.floor(rad / (2 * Math.PI)));
-  }
+	/**
+	 * Converts an integer to string.
+	 *
+	 * @param val an integer.
+	 * @return the integer as a string.
+	 */
+	public static String its(int val) {
+		return Integer.toString(val);
+	}
 
-  /**
-   * Determines if a value exists in an array.
-   *
-   * @param array an array.
-   * @param v value to find.
-   * @return true, if exists in array; false, otherwise.
-   */
-  public static boolean arrayContains(final int[] array, final int v) {
-    for (int i : array)
-      if (i == v) return true;
-    return false;
-  }
+	/**
+	 * Converts radians to degrees.
+	 *
+	 * @param rad an angle in radians.
+	 * @return the angle in degrees.
+	 */
+	public static double rtd(double rad) {
+		return Math.toDegrees(rad);
+	}
 
 }

@@ -123,8 +123,7 @@ public class H2DatabaseNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeDatabaseNameUpdateTopic(
-			@UIEventTopic(Constants.DATABASE_UPDATE_TOPIC) String dbName2) {
+	private void subscribeDatabaseNameUpdateTopic(@UIEventTopic(Constants.DATABASE_UPDATE_TOPIC) String dbName2) {
 		dbName = dbName2;
 		LOGGER.info(dbName2);
 		updateGui();

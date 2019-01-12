@@ -28,7 +28,7 @@ import java.util.Iterator;
 
 /**
  * Convert an HTTP header to a JSONObject and back.
- * 
+ *
  * @author JSON.org
  * @version 2010-12-24
  */
@@ -40,7 +40,7 @@ public class HTTP {
 	/**
 	 * Convert an HTTP header string into a JSONObject. It can be a request header
 	 * or a response header. A request header will contain
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *    Method: "POST" (for example),
@@ -48,9 +48,9 @@ public class HTTP {
 	 *    "HTTP-Version": "HTTP/1.1" (for example)
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * A response header will contain
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *    "HTTP-Version": "HTTP/1.1" (for example),
@@ -58,18 +58,18 @@ public class HTTP {
 	 *    "Reason-Phrase": "OK" (for example)
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * In addition, the other parameters in the header will be captured, using the
 	 * HTTP field names as JSON names, so that
-	 * 
+	 *
 	 * <pre>
 	 *    Date: Sun, 26 May 2002 18:06:04 GMT
 	 *    Cookie: Q=q2=PPEAsg--; B=677gi6ouf29bn&b=2&f=s
 	 *    Cache-Control: no-cache
 	 * </pre>
-	 * 
+	 *
 	 * become
-	 * 
+	 *
 	 * <pre>
 	 * {...
 	 *    Date: "Sun, 26 May 2002 18:06:04 GMT",
@@ -77,18 +77,18 @@ public class HTTP {
 	 *    "Cache-Control": "no-cache",
 	 * ...}
 	 * </pre>
-	 * 
+	 *
 	 * It does no further checking or conversion. It does not parse dates. It does
 	 * not do '%' transforms on URLs.
-	 * 
+	 *
 	 * @param string An HTTP header string.
 	 * @return A JSONObject containing the elements and attributes of the XML
 	 *         string.
 	 * @throws JSONException
 	 */
 	public static JSONObject toJSONObject(String string) throws JSONException {
-		JSONObject jo = new JSONObject();
-		HTTPTokener x = new HTTPTokener(string);
+		final JSONObject jo = new JSONObject();
+		final HTTPTokener x = new HTTPTokener(string);
 		String token;
 
 		token = x.nextToken();
@@ -113,7 +113,7 @@ public class HTTP {
 // Fields
 
 		while (x.more()) {
-			String name = x.nextTo(':');
+			final String name = x.nextTo(':');
 			x.next(':');
 			jo.put(name, x.nextTo('\0'));
 			x.next();
@@ -123,7 +123,7 @@ public class HTTP {
 
 	/**
 	 * Convert a JSONObject into an HTTP header. A request header must contain
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *    Method: "POST" (for example),
@@ -131,9 +131,9 @@ public class HTTP {
 	 *    "HTTP-Version": "HTTP/1.1" (for example)
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * A response header must contain
-	 * 
+	 *
 	 * <pre>
 	 * {
 	 *    "HTTP-Version": "HTTP/1.1" (for example),
@@ -141,19 +141,19 @@ public class HTTP {
 	 *    "Reason-Phrase": "OK" (for example)
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * Any other members of the JSONObject will be output as HTTP fields. The result
 	 * will end with two CRLF pairs.
-	 * 
+	 *
 	 * @param jo A JSONObject
 	 * @return An HTTP header string.
 	 * @throws JSONException if the object does not contain enough information.
 	 */
 	@SuppressWarnings("rawtypes")
 	public static String toString(JSONObject jo) throws JSONException {
-		Iterator keys = jo.keys();
+		final Iterator keys = jo.keys();
 		String string;
-		StringBuffer sb = new StringBuffer();
+		final StringBuffer sb = new StringBuffer();
 		if (jo.has("Status-Code") && jo.has("Reason-Phrase")) {
 			sb.append(jo.getString("HTTP-Version"));
 			sb.append(' ');

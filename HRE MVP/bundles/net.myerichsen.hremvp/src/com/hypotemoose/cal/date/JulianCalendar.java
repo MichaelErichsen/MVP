@@ -31,7 +31,7 @@ import java.util.Objects;
 public final class JulianCalendar extends Almanac {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5899242194536474531L;
 	public static final String CALENDAR_NAME = "Julian Calendar";
@@ -101,7 +101,7 @@ public final class JulianCalendar extends Almanac {
 	 * @return an array[12] of month-lengths for a given year.
 	 */
 	public static int[] getDaysPerMonthInYear(int year) {
-		int[] days = new int[12];
+		final int[] days = new int[12];
 		for (int i = 0; i < 12; ++i) {
 			days[i] = JulianCalendar.getNumberOfDaysInMonth(i + 1, year);
 		}
@@ -128,7 +128,7 @@ public final class JulianCalendar extends Almanac {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public static String getMonthName(int month, boolean latin) throws IndexOutOfBoundsException {
-		int l = (latin) ? 1 : 0;
+		final int l = (latin) ? 1 : 0;
 		return monthNames[(2 * (month - 1)) + l];
 	}
 
@@ -139,8 +139,8 @@ public final class JulianCalendar extends Almanac {
 	 * @return the list of months.
 	 */
 	public static String[] getMonthNames(boolean latin) {
-		String[] m = new String[12];
-		int lat = (latin) ? 1 : 0;
+		final String[] m = new String[12];
+		final int lat = (latin) ? 1 : 0;
 		for (int i = 0; i < 12; ++i) {
 			m[i] = monthNames[(2 * i) + lat];
 		}
@@ -316,7 +316,7 @@ public final class JulianCalendar extends Almanac {
 	 */
 	@Override
 	public void set(Almanac a) {
-		JulianCalendar cal = toJulianCalendar(a);
+		final JulianCalendar cal = toJulianCalendar(a);
 		year = cal.getYear();
 		month = cal.getMonth();
 		day = cal.getDay();

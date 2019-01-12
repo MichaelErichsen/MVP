@@ -57,7 +57,7 @@ import java.util.Objects;
 public class MayaCalendar extends Almanac {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 785264680515567705L;
 	public static final String CALENDAR_NAME = "Maya Calendar";
@@ -239,7 +239,7 @@ public class MayaCalendar extends Almanac {
 	 */
 	@Override
 	public void set(Almanac a) {
-		MayaCalendar cal = toMayaCalendar(a);
+		final MayaCalendar cal = toMayaCalendar(a);
 		_kin = cal.getKin();
 		_uinal = cal.getUinal();
 		_tun = cal.getTun();

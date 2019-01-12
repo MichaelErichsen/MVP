@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Limit Alphanumeric fields to legal values
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 11. dec. 2018
  *

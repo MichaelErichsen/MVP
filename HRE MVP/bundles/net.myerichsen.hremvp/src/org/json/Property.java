@@ -30,47 +30,51 @@ import java.util.Properties;
 
 /**
  * Converts a Property file data into JSONObject and back.
+ * 
  * @author JSON.org
  * @version 2013-05-23
  */
 public class Property {
-    /**
-     * Converts a property file object into a JSONObject. The property file object is a table of name value pairs.
-     * @param properties java.util.Properties
-     * @return JSONObject
-     * @throws JSONException
-     */
-    public static JSONObject toJSONObject(java.util.Properties properties) throws JSONException {
-        JSONObject jo = new JSONObject();
-        if (properties != null && !properties.isEmpty()) {
-            @SuppressWarnings("rawtypes")
-			Enumeration enumProperties = properties.propertyNames();
-            while(enumProperties.hasMoreElements()) {
-                String name = (String)enumProperties.nextElement();
-                jo.put(name, properties.getProperty(name));
-            }
-        }
-        return jo;
+	/**
+	 * Converts a property file object into a JSONObject. The property file object
+	 * is a table of name value pairs.
+	 * 
+	 * @param properties java.util.Properties
+	 * @return JSONObject
+	 * @throws JSONException
+	 */
+	public static JSONObject toJSONObject(java.util.Properties properties) throws JSONException {
+		final JSONObject jo = new JSONObject();
+		if ((properties != null) && !properties.isEmpty()) {
+			@SuppressWarnings("rawtypes")
+			final Enumeration enumProperties = properties.propertyNames();
+			while (enumProperties.hasMoreElements()) {
+				final String name = (String) enumProperties.nextElement();
+				jo.put(name, properties.getProperty(name));
+			}
+		}
+		return jo;
 
-    }
+	}
 
-    /**
-     * Converts the JSONObject into a property file object.
-     * @param jo JSONObject
-     * @return java.util.Properties
-     * @throws JSONException
-     */
-    @SuppressWarnings("rawtypes")
-	public static Properties toProperties(JSONObject jo)  throws JSONException {
-        Properties  properties = new Properties();
-        if (jo != null) {
-            Iterator keys = jo.keys();
+	/**
+	 * Converts the JSONObject into a property file object.
+	 * 
+	 * @param jo JSONObject
+	 * @return java.util.Properties
+	 * @throws JSONException
+	 */
+	@SuppressWarnings("rawtypes")
+	public static Properties toProperties(JSONObject jo) throws JSONException {
+		final Properties properties = new Properties();
+		if (jo != null) {
+			final Iterator keys = jo.keys();
 
-            while (keys.hasNext()) {
-                String name = keys.next().toString();
-                properties.put(name, jo.getString(name));
-            }
-        }
-        return properties;
-    }
+			while (keys.hasNext()) {
+				final String name = keys.next().toString();
+				properties.put(name, jo.getString(name));
+			}
+		}
+		return properties;
+	}
 }

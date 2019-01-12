@@ -8,7 +8,8 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
 
 /**
- * * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
+ * * Business logic interface for
+ * {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 7. nov. 2018
@@ -19,7 +20,7 @@ public class LanguageServer {
 	private String Isocode;
 	private String Label;
 	private int TableId;
-	private Languages language;
+	private final Languages language;
 
 	/**
 	 * Constructor
@@ -38,11 +39,11 @@ public class LanguageServer {
 	 * @throws MvpException Application specific exception
 	 */
 	public List<String> get() throws SQLException, MvpException {
-		List<String> stringList = new ArrayList<>();
+		final List<String> stringList = new ArrayList<>();
 
-		List<Languages> languageList = language.get();
+		final List<Languages> languageList = language.get();
 
-		for (Languages aLanguage : languageList) {
+		for (final Languages aLanguage : languageList) {
 			stringList.add(aLanguage.getLanguagePid() + "," + aLanguage.getIsocode() + "," + aLanguage.getLabel());
 		}
 

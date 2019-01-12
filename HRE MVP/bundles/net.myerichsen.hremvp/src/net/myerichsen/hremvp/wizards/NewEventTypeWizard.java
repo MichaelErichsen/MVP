@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * @author  Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 27. nov. 2018
  *
  */
@@ -25,7 +25,9 @@ public class NewEventTypeWizard implements IWizard {
 		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#addPages()
 	 */
 	@Override
@@ -34,7 +36,9 @@ public class NewEventTypeWizard implements IWizard {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#canFinish()
 	 */
 	@Override
@@ -43,8 +47,12 @@ public class NewEventTypeWizard implements IWizard {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#createPageControls(org.eclipse.swt.widgets.Composite)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.wizard.IWizard#createPageControls(org.eclipse.swt.widgets.
+	 * Composite)
 	 */
 	@Override
 	public void createPageControls(Composite pageContainer) {
@@ -52,7 +60,9 @@ public class NewEventTypeWizard implements IWizard {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#dispose()
 	 */
 	@Override
@@ -61,7 +71,9 @@ public class NewEventTypeWizard implements IWizard {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getContainer()
 	 */
 	@Override
@@ -70,7 +82,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getDefaultPageImage()
 	 */
 	@Override
@@ -79,7 +93,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getDialogSettings()
 	 */
 	@Override
@@ -88,8 +104,11 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.IWizard#getNextPage(org.eclipse.jface.wizard.
+	 * IWizardPage)
 	 */
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
@@ -97,7 +116,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getPage(java.lang.String)
 	 */
 	@Override
@@ -106,7 +127,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getPageCount()
 	 */
 	@Override
@@ -115,7 +138,9 @@ public class NewEventTypeWizard implements IWizard {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getPages()
 	 */
 	@Override
@@ -124,8 +149,12 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.wizard.IWizard#getPreviousPage(org.eclipse.jface.wizard.
+	 * IWizardPage)
 	 */
 	@Override
 	public IWizardPage getPreviousPage(IWizardPage page) {
@@ -133,7 +162,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getStartingPage()
 	 */
 	@Override
@@ -142,7 +173,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getTitleBarColor()
 	 */
 	@Override
@@ -151,7 +184,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#getWindowTitle()
 	 */
 	@Override
@@ -160,7 +195,9 @@ public class NewEventTypeWizard implements IWizard {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#isHelpAvailable()
 	 */
 	@Override
@@ -169,7 +206,9 @@ public class NewEventTypeWizard implements IWizard {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#needsPreviousAndNextButtons()
 	 */
 	@Override
@@ -178,7 +217,9 @@ public class NewEventTypeWizard implements IWizard {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#needsProgressMonitor()
 	 */
 	@Override
@@ -187,7 +228,9 @@ public class NewEventTypeWizard implements IWizard {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#performCancel()
 	 */
 	@Override
@@ -196,7 +239,9 @@ public class NewEventTypeWizard implements IWizard {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
 	 */
 	@Override
@@ -205,8 +250,11 @@ public class NewEventTypeWizard implements IWizard {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#setContainer(org.eclipse.jface.wizard.IWizardContainer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.IWizard#setContainer(org.eclipse.jface.wizard.
+	 * IWizardContainer)
 	 */
 	@Override
 	public void setContainer(IWizardContainer wizardContainer) {

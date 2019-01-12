@@ -20,7 +20,7 @@ public class NameMapProvider {
 	private int nameStylePid;
 	private String styleLabel;
 
-	private NameMapServer server;
+	private final NameMapServer server;
 
 	/**
 	 * Constructor

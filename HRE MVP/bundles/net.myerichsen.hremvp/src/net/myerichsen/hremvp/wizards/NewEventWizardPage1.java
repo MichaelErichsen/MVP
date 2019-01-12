@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 // FIXME Create
 public class NewEventWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEclipseContext context;
+	private final IEclipseContext context;
 
 	private Text textFromDate;
 	private Text textFromDateSort;
@@ -80,12 +80,12 @@ public class NewEventWizardPage1 extends WizardPage {
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NONE);
+		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
 		container.setLayout(new GridLayout(3, false));
 
-		Label lblFromDate = new Label(container, SWT.NONE);
+		final Label lblFromDate = new Label(container, SWT.NONE);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(container, SWT.BORDER);
@@ -106,7 +106,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		textFromSurety.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
-		Composite compositeFrom = new Composite(container, SWT.NONE);
+		final Composite compositeFrom = new Composite(container, SWT.NONE);
 		compositeFrom.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
@@ -114,10 +114,10 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
-						HDateProvider hdp = new HDateProvider();
+						final HDateProvider hdp = new HDateProvider();
 						hdp.setDate(dialog.getLocalDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
@@ -129,7 +129,7 @@ public class NewEventWizardPage1 extends WizardPage {
 						}
 						textFromOriginal.setText(dialog.getOriginal());
 						textFromSurety.setText(dialog.getSurety());
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -141,17 +141,17 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
-						int hdatePid = dialog.getHdatePid();
-						HDateProvider hdp = new HDateProvider();
+						final int hdatePid = dialog.getHdatePid();
+						final HDateProvider hdp = new HDateProvider();
 						hdp.get(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 						textFromDateSort.setText(hdp.getSortDate().toString());
 						textFromOriginal.setText(hdp.getOriginalText());
 						textFromSurety.setText(hdp.getSurety());
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -171,7 +171,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnClearFrom.setText("Clear");
 
-		Label lblToDate = new Label(container, SWT.NONE);
+		final Label lblToDate = new Label(container, SWT.NONE);
 		lblToDate.setText("To Date");
 
 		textToDate = new Text(container, SWT.BORDER);
@@ -192,7 +192,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		textToSurety.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
-		Composite compositeTo = new Composite(container, SWT.NONE);
+		final Composite compositeTo = new Composite(container, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
 		compositeTo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
@@ -214,10 +214,10 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				DateDialog dialog = new DateDialog(textToDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(textToDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
-						HDateProvider hdp = new HDateProvider();
+						final HDateProvider hdp = new HDateProvider();
 						hdp.setDate(dialog.getLocalDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
@@ -227,7 +227,7 @@ public class NewEventWizardPage1 extends WizardPage {
 						textToDateSort.setText(dialog.getSortDate().toString());
 						textToOriginal.setText(dialog.getOriginal());
 						textToSurety.setText(dialog.getSurety());
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
 					}
 				}
@@ -239,17 +239,17 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
-						int hdatePid = dialog.getHdatePid();
-						HDateProvider hdp = new HDateProvider();
+						final int hdatePid = dialog.getHdatePid();
+						final HDateProvider hdp = new HDateProvider();
 						hdp.get(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 						textToDateSort.setText(hdp.getSortDate().toString());
 						textToOriginal.setText(hdp.getOriginalText());
 						textToSurety.setText(hdp.getSurety());
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -269,7 +269,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnClearTo.setText("Clear");
 
-		Label lblXCoordinate = new Label(container, SWT.NONE);
+		final Label lblXCoordinate = new Label(container, SWT.NONE);
 		lblXCoordinate.setText("X Coordinate");
 
 		textXCoordinate = new Text(container, SWT.BORDER);
@@ -279,7 +279,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		textXCoordinate.addListener(SWT.Verify, new DoubleListener());
 		new Label(container, SWT.NONE);
 
-		Label lblYCoordinate = new Label(container, SWT.NONE);
+		final Label lblYCoordinate = new Label(container, SWT.NONE);
 		lblYCoordinate.setText("Y Coordinate");
 
 		textYCoordinate = new Text(container, SWT.BORDER);
@@ -289,7 +289,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		textYCoordinate.addListener(SWT.Verify, new DoubleListener());
 		new Label(container, SWT.NONE);
 
-		Label lblZCoordinate = new Label(container, SWT.NONE);
+		final Label lblZCoordinate = new Label(container, SWT.NONE);
 		lblZCoordinate.setText("Z Coordinate");
 
 		textZCoordinate = new Text(container, SWT.BORDER);

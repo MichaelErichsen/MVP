@@ -21,8 +21,8 @@ public class NameMapServer {
 	private int nameStylePid;
 	private String styleLabel;
 
-	private NameMaps map;
-	private NameStyles style;
+	private final NameMaps map;
+	private final NameStyles style;
 
 	/**
 	 * Constructor

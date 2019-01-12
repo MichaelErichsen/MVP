@@ -7,7 +7,7 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 /**
  * Singleton class encapsulating the ContextHandlerCollection of the embedded
  * Jetty server
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 1. okt. 2018
  *
@@ -15,6 +15,12 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 public class HreContextHandlerCollection {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static ContextHandlerCollection contexts;
+
+	/**
+	 * Exists only to defeat instantiation
+	 */
+	protected HreContextHandlerCollection() {
+	}
 
 	/**
 	 * @return a context handler collection
@@ -25,11 +31,5 @@ public class HreContextHandlerCollection {
 			LOGGER.info("HreContextHandlerCollection created");
 		}
 		return contexts;
-	}
-
-	/**
-	 * Exists only to defeat instantiation
-	 */
-	protected HreContextHandlerCollection() {
 	}
 }

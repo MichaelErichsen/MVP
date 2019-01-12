@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Model object encapsulating properties of a project.
- * 
+ *
  * @version 2018-06-11
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  *

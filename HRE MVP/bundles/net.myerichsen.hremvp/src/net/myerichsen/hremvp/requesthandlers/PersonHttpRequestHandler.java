@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 
-import net.myerichsen.hremvp.serverlogic.PersonServer;
+import net.myerichsen.hremvp.person.servers.PersonServer;
 
 /**
  * HTTP request handler for Persons
@@ -68,16 +68,16 @@ public class PersonHttpRequestHandler implements Handler {
 		LOGGER.fine("Target: " + target + "\r\nRequest" + baseRequest + "\r\nHttpServletRequest" + request);
 
 		// TODO Generalize request handler. Use class.forname() for server class
-		PersonServer server = new PersonServer();
+		final PersonServer server = new PersonServer();
 
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 
-		String method = request.getMethod();
+		final String method = request.getMethod();
 
 		try {
 			if (method.equals("GET")) {
-				PrintWriter out = response.getWriter();
+				final PrintWriter out = response.getWriter();
 				out.print(server.getRemote(response, target));
 				out.close();
 			} else if (method.equals("DELETE")) {
@@ -87,11 +87,11 @@ public class PersonHttpRequestHandler implements Handler {
 			} else if (method.equals("PUT")) {
 				server.updateRemote(request);
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + " " + e.getMessage());
 			try {
 				response.sendError(500, e.getClass() + " " + e.getMessage());
-			} catch (IOException e1) {
+			} catch (final IOException e1) {
 				LOGGER.severe(e1.getMessage());
 			}
 		}

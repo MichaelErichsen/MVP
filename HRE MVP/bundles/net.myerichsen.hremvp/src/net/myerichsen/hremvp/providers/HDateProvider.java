@@ -22,7 +22,7 @@ public class HDateProvider {
 	private LocalDate SortDate;
 	private String Surety;
 
-	private HDateServer server;
+	private final HDateServer server;
 
 	/**
 	 * Constructor

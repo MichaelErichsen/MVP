@@ -73,7 +73,7 @@ public class NameServer {
 		setPrimaryName(name.isPrimaryName());
 		setNameStylePid(name.getNameStylePid());
 
-		NameStyles ns = new NameStyles();
+		final NameStyles ns = new NameStyles();
 		ns.get(name.getNameStylePid());
 		setNameTypeLabel(ns.getLabel());
 
@@ -136,21 +136,21 @@ public class NameServer {
 	public String[] getNameStrings() throws SQLException {
 		StringBuilder sb;
 
-		int personPid = name.getPersonPid();
+		final int personPid = name.getPersonPid();
 		List<Names> nameList = new ArrayList<>();
 		nameList = new Names().getFKPersonPid(personPid);
 
-		String[] sa = new String[nameList.size()];
+		final String[] sa = new String[nameList.size()];
 
 		for (int i = 0; i < nameList.size(); i++) {
 			sb = new StringBuilder();
 			name = nameList.get(i);
 			LOGGER.fine("Name " + name.getNamePid() + ", person " + name.getPersonPid());
-			List<NameParts> npl = new NameParts().getFKNamePid(name.getNamePid());
+			final List<NameParts> npl = new NameParts().getFKNamePid(name.getNamePid());
 
 			LOGGER.fine("List size " + npl.size());
 			// Concatenate non-null name parts
-			for (NameParts nameParts : npl) {
+			for (final NameParts nameParts : npl) {
 				LOGGER.fine("Name part " + nameParts.getNamePartPid() + ", name " + nameParts.getNamePid());
 				if (nameParts.getNamePid() == name.getNamePid()) {
 					if (nameParts.getLabel() != null) {
@@ -203,7 +203,7 @@ public class NameServer {
 	 *                      access error or other errors
 	 */
 	public String getPrimaryNameString(int personPid) throws SQLException {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		Names name;
 
 		List<Names> nameList = new ArrayList<>();
@@ -213,10 +213,10 @@ public class NameServer {
 			name = nameList.get(i);
 
 			if (name.isPrimaryName()) {
-				List<NameParts> npl = new NameParts().getFKNamePid(name.getNamePid());
+				final List<NameParts> npl = new NameParts().getFKNamePid(name.getNamePid());
 
 				// Concatenate non-null name parts
-				for (NameParts nameParts : npl) {
+				for (final NameParts nameParts : npl) {
 					if (nameParts.getNamePid() == name.getNamePid()) {
 						if (nameParts.getLabel() != null) {
 							sb.append(nameParts.getLabel() + " ");
@@ -226,7 +226,7 @@ public class NameServer {
 				break;
 			}
 		}
-		String s = sb.toString().trim();
+		final String s = sb.toString().trim();
 		return s;
 	}
 
@@ -265,7 +265,7 @@ public class NameServer {
 	 * @param i the fromDate to set
 	 */
 	public void setFromDatePid(int i) {
-		this.fromDatePid = i;
+		fromDatePid = i;
 	}
 
 	/**
@@ -321,7 +321,7 @@ public class NameServer {
 	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDate) {
-		this.toDatePid = toDate;
+		toDatePid = toDate;
 	}
 
 	/**

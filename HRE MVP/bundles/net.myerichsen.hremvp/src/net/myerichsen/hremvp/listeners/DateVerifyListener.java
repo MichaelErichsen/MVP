@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Verify valid formated date
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 6. nov. 2018
  *

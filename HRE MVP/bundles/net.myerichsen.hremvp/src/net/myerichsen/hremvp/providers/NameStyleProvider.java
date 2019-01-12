@@ -23,7 +23,7 @@ public class NameStyleProvider {
 	private String isoCode;
 
 	private List<NameMaps> mapList;
-	private NameStyleServer server;
+	private final NameStyleServer server;
 
 	/**
 	 * Constructor

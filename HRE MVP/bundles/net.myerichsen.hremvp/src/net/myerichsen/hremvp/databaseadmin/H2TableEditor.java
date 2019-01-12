@@ -592,8 +592,7 @@ public class H2TableEditor {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNameUpdateTopic(
-			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName2) {
+	private void subscribeNameUpdateTopic(@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName2) {
 		tableName = tableName2;
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
@@ -606,8 +605,7 @@ public class H2TableEditor {
 	 */
 	@Inject
 	@Optional
-	private void subscribeRecordNumUpdateTopic(
-			@UIEventTopic(Constants.RECORDNUM_UPDATE_TOPIC) String recordNumString)
+	private void subscribeRecordNumUpdateTopic(@UIEventTopic(Constants.RECORDNUM_UPDATE_TOPIC) String recordNumString)
 			throws SQLException {
 		recordNum = Integer.parseInt(recordNumString);
 		createLines();

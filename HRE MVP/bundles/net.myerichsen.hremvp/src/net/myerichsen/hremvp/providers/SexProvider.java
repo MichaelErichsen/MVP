@@ -25,7 +25,7 @@ public class SexProvider {
 	private String languageLabel;
 	private String isocode;
 
-	private SexServer server;
+	private final SexServer server;
 
 	/**
 	 * Constructor
@@ -176,7 +176,7 @@ public class SexProvider {
 	 * @param fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int i) {
-		this.fromDatePid = i;
+		fromDatePid = i;
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class SexProvider {
 	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int todate) {
-		this.toDatePid = todate;
+		toDatePid = todate;
 	}
 
 	/**

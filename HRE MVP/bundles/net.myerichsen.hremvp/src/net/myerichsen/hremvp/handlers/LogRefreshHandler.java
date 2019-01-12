@@ -20,7 +20,7 @@ public class LogRefreshHandler {
 	 */
 	@Execute
 	public void execute(IEventBroker eventBroker) {
-		int i = 0;
+		final int i = 0;
 		LOGGER.fine("Refreshing log");
 		eventBroker.post(net.myerichsen.hremvp.Constants.LOG_REFRESH_UPDATE_TOPIC, i);
 

@@ -129,6 +129,26 @@ public class EventNames {
 		return EventTypePid;
 	}
 
+	public List<EventNames> getFKCombined(int languagePid, int eventTypePid) throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECT_LANGUAGE_PID_EVENT_TYPE_PID);
+		ps.setInt(1, languagePid);
+		ps.setInt(2, eventTypePid);
+		rs = ps.executeQuery();
+		modelList = new ArrayList<>();
+		while (rs.next()) {
+			model = new EventNames();
+			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLabel(rs.getString("LABEL"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
+			modelList.add(model);
+		}
+		conn.close();
+		return modelList;
+	}
+
 	public List<EventNames> getFKEventTypePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_EVENT_TYPE_PID);
@@ -167,26 +187,6 @@ public class EventNames {
 		return modelList;
 	}
 
-	public List<EventNames> getFKCombined(int languagePid, int eventTypePid) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID_EVENT_TYPE_PID);
-		ps.setInt(1, languagePid);
-		ps.setInt(2,  eventTypePid);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new EventNames();
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-	
 	/**
 	 * Get the Label field.
 	 *

@@ -45,7 +45,7 @@ public class SexTypeProvider {
 	private String languageLabel;
 	private String isoCode;
 
-	private SexTypeServer server;
+	private final SexTypeServer server;
 
 	/**
 	 * Constructor
@@ -53,6 +53,30 @@ public class SexTypeProvider {
 	 */
 	public SexTypeProvider() {
 		server = new SexTypeServer();
+	}
+
+	/**
+	 * Delete a row
+	 *
+	 * @param key The persistent ID of the row
+	 * @throws IOException             IOException
+	 * @throws ClientProtocolException ClientProtocolException
+	 * @throws MvpException            Application specific exception
+	 *
+	 */
+	public void delete(int key) throws ClientProtocolException, IOException, MvpException {
+		final CloseableHttpClient client = HttpClients.createDefault();
+		final HttpDelete request = new HttpDelete("http://" + store.getString("SERVERADDRESS") + ":"
+				+ store.getString("SERVERPORT") + "/mvp/v100/sextype/" + key);
+		final CloseableHttpResponse response = client.execute(request);
+		final StatusLine statusLine = response.getStatusLine();
+
+		if (statusLine.getStatusCode() != 200) {
+			throw new MvpException(statusLine.getReasonPhrase());
+		}
+
+		response.close();
+		client.close();
 	}
 
 	/**
@@ -69,27 +93,49 @@ public class SexTypeProvider {
 	}
 
 	/**
-	 * Delete a row
+	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
+	 * @throws ClientProtocolException Signals an error in the HTTP protocol
 	 * @throws IOException             IOException
-	 * @throws ClientProtocolException ClientProtocolException
+	 * @throws JSONException           Thrown to indicate a problem with the JSON
+	 *                                 API
 	 * @throws MvpException            Application specific exception
-	 *
 	 */
-	public void delete(int key) throws ClientProtocolException, IOException, MvpException {
-		CloseableHttpClient client = HttpClients.createDefault();
-		HttpDelete request = new HttpDelete("http://" + store.getString("SERVERADDRESS") + ":"
-				+ store.getString("SERVERPORT") + "/mvp/v100/sextype/" + key);
-		CloseableHttpResponse response = client.execute(request);
-		StatusLine statusLine = response.getStatusLine();
+	public void get(int key) throws ClientProtocolException, IOException, MvpException {
+		final StringBuilder sb = new StringBuilder();
+		String s = "";
+
+		final CloseableHttpClient client = HttpClients.createDefault();
+		final HttpGet request = new HttpGet("http://127.0.0.1:8000/mvp/v100/sextype/" + key);
+		final CloseableHttpResponse response = client.execute(request);
+
+		final StatusLine statusLine = response.getStatusLine();
 
 		if (statusLine.getStatusCode() != 200) {
 			throw new MvpException(statusLine.getReasonPhrase());
 		}
 
+		final BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+		while (null != (s = br.readLine())) {
+			sb.append(s);
+		}
+
+		br.close();
 		response.close();
 		client.close();
+
+		final JSONObject jsonObject = new JSONObject(sb.toString());
+
+		LOGGER.info(jsonObject.toString(2));
+
+		setSexTypePid(jsonObject.getInt("sexTypePid"));
+		setAbbreviation(jsonObject.getString("abbreviation"));
+		setLabel(jsonObject.getString("label"));
+		setLanguagePid(jsonObject.getInt("languagePid"));
+		setLanguageLabel(jsonObject.getString("languageLabel"));
+		setIsoCode(jsonObject.getString("isoCode"));
 	}
 
 	/**
@@ -109,52 +155,6 @@ public class SexTypeProvider {
 		setLanguagePid(server.getLanguagePid());
 		setLanguageLabel(server.getLanguageLabel());
 		setIsoCode(server.getIsoCode());
-	}
-
-	/**
-	 * Get a row
-	 *
-	 * @param key The persistent ID of the row
-	 * @throws ClientProtocolException Signals an error in the HTTP protocol
-	 * @throws IOException             IOException
-	 * @throws JSONException           Thrown to indicate a problem with the JSON
-	 *                                 API
-	 * @throws MvpException            Application specific exception
-	 */
-	public void get(int key) throws ClientProtocolException, IOException, MvpException {
-		StringBuilder sb = new StringBuilder();
-		String s = "";
-
-		CloseableHttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet("http://127.0.0.1:8000/mvp/v100/sextype/" + key);
-		CloseableHttpResponse response = client.execute(request);
-
-		StatusLine statusLine = response.getStatusLine();
-
-		if (statusLine.getStatusCode() != 200) {
-			throw new MvpException(statusLine.getReasonPhrase());
-		}
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-		while (null != (s = br.readLine())) {
-			sb.append(s);
-		}
-
-		br.close();
-		response.close();
-		client.close();
-
-		JSONObject jsonObject = new JSONObject(sb.toString());
-
-		LOGGER.info(jsonObject.toString(2));
-
-		setSexTypePid(jsonObject.getInt("sexTypePid"));
-		setAbbreviation(jsonObject.getString("abbreviation"));
-		setLabel(jsonObject.getString("label"));
-		setLanguagePid(jsonObject.getInt("languagePid"));
-		setLanguageLabel(jsonObject.getString("languageLabel"));
-		setIsoCode(jsonObject.getString("isoCode"));
 	}
 
 	/**
@@ -202,27 +202,12 @@ public class SexTypeProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	public void insert1() throws SQLException, MvpException {
-		server.setSexTypePid(sexTypePid);
-		server.setAbbreviation(abbreviation);
-		server.setLabel(label);
-		server.setLanguagePid(languagePid);
-		server.insert();
-	}
-
-	/**
-	 * Insert a row
-	 * 
 	 * @throws ParseException ParseException
 	 * @throws MvpException   Application specific exception
 	 * @throws IOException    IOException
 	 */
 	public void insert() throws ParseException, IOException, MvpException {
-		JSONStringer js = new JSONStringer();
+		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("sexTypePid");
 		js.value(sexTypePid);
@@ -234,13 +219,13 @@ public class SexTypeProvider {
 		js.value(languagePid);
 		js.endObject();
 
-		CloseableHttpClient client = HttpClients.createDefault();
-		HttpPost request = new HttpPost("http://127.0.0.1:8000/mvp/v100/sextype/");
-		StringEntity params = new StringEntity(js.toString());
+		final CloseableHttpClient client = HttpClients.createDefault();
+		final HttpPost request = new HttpPost("http://127.0.0.1:8000/mvp/v100/sextype/");
+		final StringEntity params = new StringEntity(js.toString());
 		request.addHeader("content-type", "application/json");
 		request.setEntity(params);
-		CloseableHttpResponse result = client.execute(request);
-		StatusLine statusLine = result.getStatusLine();
+		final CloseableHttpResponse result = client.execute(request);
+		final StatusLine statusLine = result.getStatusLine();
 
 		if (statusLine.getStatusCode() != 200) {
 			throw new MvpException(statusLine.getReasonPhrase());
@@ -248,6 +233,21 @@ public class SexTypeProvider {
 
 		result.close();
 		client.close();
+	}
+
+	/**
+	 * Insert a row
+	 *
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 */
+	public void insert1() throws SQLException, MvpException {
+		server.setSexTypePid(sexTypePid);
+		server.setAbbreviation(abbreviation);
+		server.setLabel(label);
+		server.setLanguagePid(languagePid);
+		server.insert();
 	}
 
 	/**

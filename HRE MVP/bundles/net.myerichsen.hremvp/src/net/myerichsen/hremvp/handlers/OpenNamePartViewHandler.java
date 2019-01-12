@@ -32,7 +32,7 @@ public class OpenNamePartViewHandler {
 	@Execute
 	public void execute(EPartService partService, MApplication application, EModelService modelService) {
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
+		final MPart part = MBasicFactory.INSTANCE.createPart();
 
 		part.setLabel("Name Part");
 		part.setContainerData("650");

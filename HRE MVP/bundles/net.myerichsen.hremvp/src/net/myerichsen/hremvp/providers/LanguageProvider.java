@@ -18,7 +18,7 @@ public class LanguageProvider {
 	private String Isocode;
 	private String Label;
 	private int TableId;
-	private LanguageServer server;
+	private final LanguageServer server;
 
 	/**
 	 * Constructor

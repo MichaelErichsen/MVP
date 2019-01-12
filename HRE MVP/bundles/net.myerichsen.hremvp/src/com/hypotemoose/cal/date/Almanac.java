@@ -43,7 +43,7 @@ public abstract class Almanac implements Serializable {
 	public static boolean datesAreChronological(Almanac... a) {
 		JulianDay d0 = toJulianDay(a[0]);
 		for (int i = 1; i < a.length; ++i) {
-			JulianDay d1 = toJulianDay(a[i]);
+			final JulianDay d1 = toJulianDay(a[i]);
 			if (d1.getValue() < d0.getValue()) {
 				return false;
 			}
@@ -61,7 +61,7 @@ public abstract class Almanac implements Serializable {
 	public static boolean datesAreReverseChronological(Almanac... a) {
 		JulianDay d0 = toJulianDay(a[0]);
 		for (int i = 1; i < a.length; ++i) {
-			JulianDay d1 = toJulianDay(a[i]);
+			final JulianDay d1 = toJulianDay(a[i]);
 			if (d1.getValue() > d0.getValue()) {
 				return false;
 			}
@@ -135,8 +135,8 @@ public abstract class Almanac implements Serializable {
 	 * @return a weekday in the range [0,6].
 	 */
 	public int getWeekDayNumber() {
-		int weekLength = getNumberOfDaysInWeek();
-		double jd = (toJulianDay(this)).getValue();
+		final int weekLength = getNumberOfDaysInWeek();
+		final double jd = (toJulianDay(this)).getValue();
 		return (int) floor(jd + 1.5) % weekLength;
 	}
 

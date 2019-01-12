@@ -28,9 +28,9 @@ public class SexServer {
 	private String languageLabel;
 	private String isocode;
 
-	private Sexes sex;
-	private SexTypes sexType;
-	private Languages language;
+	private final Sexes sex;
+	private final SexTypes sexType;
+	private final Languages language;
 
 	/**
 	 * Constructor
@@ -188,7 +188,7 @@ public class SexServer {
 	 * @param fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int fromdate) {
-		this.fromDatePid = fromdate;
+		fromDatePid = fromdate;
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class SexServer {
 	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int todate) {
-		this.toDatePid = todate;
+		toDatePid = todate;
 	}
 
 	/**

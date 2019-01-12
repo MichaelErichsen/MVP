@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jan. 2019
+ * @version 12. jan. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -56,7 +56,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("SERVERROOT", "mvp/v100");
 		store.setDefault("SERVERPORT", 8000);
 		store.setDefault("JETTYLOGLEVEL", "INFO");
-		store.setDefault("SERVERLIST", "127.0.0.1:8001");
+		store.setDefault("SERVERLIST", "127.0.0.1:8000");
 
 		store.setDefault("projectcount", "1");
 		store.setDefault("project.0.name", "MVP");

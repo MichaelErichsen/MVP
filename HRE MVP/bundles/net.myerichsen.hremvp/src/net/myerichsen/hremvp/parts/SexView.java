@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.SexProvider;
 
 /**
  * Display all data for a sex
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 14. nov. 2018
  *
@@ -81,7 +81,7 @@ public class SexView {
 	private Button buttonClear;
 	private Button buttonClose;
 
-	private SexProvider provider;
+	private final SexProvider provider;
 
 	/**
 	 * Constructor
@@ -92,7 +92,7 @@ public class SexView {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void clear() {
 		textId.setText("0");
@@ -119,32 +119,32 @@ public class SexView {
 
 	/**
 	 * Create contents of the view part
-	 * 
+	 *
 	 * @param parent The parent composite
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(2, false));
 
-		Label lblId = new Label(parent, SWT.NONE);
+		final Label lblId = new Label(parent, SWT.NONE);
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
 		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblPerson = new Label(parent, SWT.NONE);
+		final Label lblPerson = new Label(parent, SWT.NONE);
 		lblPerson.setText("Person");
 
 		textPersonPid = new Text(parent, SWT.BORDER);
 		textPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblFromDate = new Label(parent, SWT.NONE);
+		final Label lblFromDate = new Label(parent, SWT.NONE);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(parent, SWT.BORDER);
 		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblToDate = new Label(parent, SWT.NONE);
+		final Label lblToDate = new Label(parent, SWT.NONE);
 		lblToDate.setText("To Date");
 
 		textToDate = new Text(parent, SWT.BORDER);
@@ -155,7 +155,7 @@ public class SexView {
 		btnPrimarySex.setSelection(true);
 		btnPrimarySex.setText("Primary Sex");
 
-		Label lblSexType = new Label(parent, SWT.NONE);
+		final Label lblSexType = new Label(parent, SWT.NONE);
 		lblSexType.setText("Sex type\r\nDblClk to open");
 
 		textSexType = new Text(parent, SWT.BORDER);
@@ -167,34 +167,34 @@ public class SexView {
 		});
 		textSexType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblAbbreviation = new Label(parent, SWT.NONE);
+		final Label lblAbbreviation = new Label(parent, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");
 
 		textAbbreviation = new Text(parent, SWT.BORDER);
 		textAbbreviation.setEditable(false);
 		textAbbreviation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblLabel = new Label(parent, SWT.NONE);
+		final Label lblLabel = new Label(parent, SWT.NONE);
 		lblLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
 		textLabel.setEditable(false);
 		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblLanguageId = new Label(parent, SWT.NONE);
+		final Label lblLanguageId = new Label(parent, SWT.NONE);
 		lblLanguageId.setText("Language Id");
 
 		textLanguagePid = new Text(parent, SWT.BORDER);
 		textLanguagePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblLanguage = new Label(parent, SWT.NONE);
+		final Label lblLanguage = new Label(parent, SWT.NONE);
 		lblLanguage.setText("Language");
 
 		textLanguageLabel = new Text(parent, SWT.BORDER);
 		textLanguageLabel.setEditable(false);
 		textLanguageLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblIsoCode = new Label(parent, SWT.NONE);
+		final Label lblIsoCode = new Label(parent, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
 
 		textIsoCode = new Text(parent, SWT.BORDER);
@@ -270,7 +270,7 @@ public class SexView {
 			provider.delete(Integer.parseInt(textId.getText()));
 			eventBroker.post("MESSAGE", "Sex " + textId.getText() + " has been deleted");
 			clear();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}
@@ -301,12 +301,12 @@ public class SexView {
 			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
 			try {
 				textFromDate.setText(Integer.toString(provider.getFromDatePid()));
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				textFromDate.setText("");
 			}
 			try {
 				textToDate.setText(Integer.toString(provider.getToDatePid()));
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				textToDate.setText("");
 			}
 			btnPrimarySex.setSelection(provider.isPrimarySex());
@@ -360,7 +360,7 @@ public class SexView {
 				.createCommand("net.myerichsen.hremvp.command.opensextypeview", null);
 		handlerService.executeHandler(command);
 
-		int sexTypePid = Integer.parseInt(textSexType.getText());
+		final int sexTypePid = Integer.parseInt(textSexType.getText());
 
 		LOGGER.info("Setting sex type pid: " + sexTypePid);
 		eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);

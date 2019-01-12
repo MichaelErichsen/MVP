@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 
 /**
  * Preference page for H2 databse
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 6. jan. 2019
  *
@@ -53,7 +53,7 @@ public class H2PreferencePage extends FieldEditorPreferencePage implements IWork
 		comboFieldEditorH2TraceLevel = new ComboFieldEditor("H2TRACELEVEL", "H2 Trace Level",
 				new String[][] { { "OFF", "0" }, { "ERROR", "1" }, { "INFO", "2" }, { "DEBUG", "3" } }, composite);
 		addField(comboFieldEditorH2TraceLevel);
-		StringFieldEditor h2versionStringFieldEditor = new StringFieldEditor("H2VERSION", "H2 Version", -1,
+		final StringFieldEditor h2versionStringFieldEditor = new StringFieldEditor("H2VERSION", "H2 Version", -1,
 				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite);
 		h2versionStringFieldEditor.getTextControl(composite).setEditable(false);
 		addField(h2versionStringFieldEditor);

@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 
 /**
  * Create and open a new HRE project database
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 6. jan. 2019
  *
@@ -220,9 +220,9 @@ public class ProjectNewDatabaseProvider {
 
 	/**
 	 * Provide the data
-	 * 
+	 *
 	 * @param dbName
-	 * 
+	 *
 	 * @throws SQLException          When failing
 	 * @throws BackingStoreException Preferences file access failure
 	 * @throws                       java.util.prefs.BackingStoreException

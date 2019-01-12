@@ -21,7 +21,7 @@ public class NamePartProvider {
 	private String label;
 	private int partNo;
 
-	private NamePartServer server;
+	private final NamePartServer server;
 
 	/**
 	 * Constructor

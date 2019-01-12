@@ -82,7 +82,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage implements I
 		serverportIntegerFieldEditor = new IntegerFieldEditor("SERVERPORT", "Port Number for local HRE Server",
 				getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
-		
+
 		comboGuiLanguage = new ComboFieldEditor(
 				"GUILANGUAGE", "GUI Language", new String[][] { { "Australian", "AUSTRALIAN" }, { "Dansk", "DANISH" },
 						{ "English", "ENGLISH" }, { "Norsk", "NORWEGIAN" }, { "US English", "USENGLISH" } },
@@ -109,7 +109,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage implements I
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 		super.propertyChange(event);
 

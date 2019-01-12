@@ -38,8 +38,8 @@ public class SexTypeServer {
 	private String languageLabel;
 	private String isoCode;
 
-	private SexTypes sexType;
-	private Languages language;
+	private final SexTypes sexType;
+	private final Languages language;
 
 	/**
 	 * Constructor
@@ -71,8 +71,8 @@ public class SexTypeServer {
 	 * @throws MvpException          Application specific exception
 	 */
 	public void deleteRemote(String target) throws NumberFormatException, SQLException, MvpException {
-		String[] targetParts = target.split("/");
-		int targetSize = targetParts.length;
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
 		delete(Integer.parseInt(targetParts[targetSize - 1]));
 	}
 
@@ -145,12 +145,12 @@ public class SexTypeServer {
 	 */
 	public String getRemote(HttpServletResponse response, String target)
 			throws NumberFormatException, SQLException, MvpException, IOException, JSONException {
-		String[] targetParts = target.split("/");
-		int targetSize = targetParts.length;
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
 
 		get(Integer.parseInt(targetParts[targetSize - 1]));
 
-		JSONStringer js = new JSONStringer();
+		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("sexTypePid");
 		js.value(sexTypePid);
@@ -198,9 +198,9 @@ public class SexTypeServer {
 	 * @throws SQLException  SQLException
 	 */
 	public void insertRemote(HttpServletRequest request) throws IOException, JSONException, SQLException {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		String s = "";
-		BufferedReader br = request.getReader();
+		final BufferedReader br = request.getReader();
 
 		while (null != (s = br.readLine())) {
 			sb.append(s);
@@ -208,7 +208,7 @@ public class SexTypeServer {
 
 		br.close();
 
-		JSONObject jsonObject = new JSONObject(sb.toString());
+		final JSONObject jsonObject = new JSONObject(sb.toString());
 
 		LOGGER.info(jsonObject.toString(2));
 
@@ -287,9 +287,9 @@ public class SexTypeServer {
 	 * @throws MvpException  Application specific exception
 	 */
 	public void updateRemote(HttpServletRequest request) throws IOException, JSONException, SQLException, MvpException {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		String s = "";
-		BufferedReader br = request.getReader();
+		final BufferedReader br = request.getReader();
 
 		while (null != (s = br.readLine())) {
 			sb.append(s);
@@ -297,7 +297,7 @@ public class SexTypeServer {
 
 		br.close();
 
-		JSONObject jsonObject = new JSONObject(sb.toString());
+		final JSONObject jsonObject = new JSONObject(sb.toString());
 
 		LOGGER.info(jsonObject.toString(2));
 

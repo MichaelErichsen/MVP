@@ -62,14 +62,14 @@ public class Activator implements BundleActivator {
 		LOGGER.info("HRE Absolute path: " + new File(".").getAbsolutePath());
 		LOGGER.fine("HRE Font: " + store.getString("HREFONT"));
 
-		int port = store.getInt("HELPSYSTEMPORT");
+		final int port = store.getInt("HELPSYSTEMPORT");
 		final String command = "java -classpath " + HELPCLASSPATH
 				+ " org.eclipse.help.standalone.Infocenter -command start -port " + port
 				+ " -product net.myerichsen.hremvp.helpsystem -clean";
 
 		try {
 			LOGGER.info("Help System is being started at port " + port);
-			Process helpProcess = Runtime.getRuntime().exec(command);
+			final Process helpProcess = Runtime.getRuntime().exec(command);
 			if (helpProcess.isAlive()) {
 				LOGGER.info("Help system start command: " + command);
 			} else {

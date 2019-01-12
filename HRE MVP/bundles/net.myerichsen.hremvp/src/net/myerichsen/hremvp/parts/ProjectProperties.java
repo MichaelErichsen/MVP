@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.models.ProjectModel;
 
 /**
  * GUI part displaying project properties.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. jan. 2019
  *
@@ -105,10 +105,9 @@ public class ProjectProperties {
 
 	@Inject
 	@Optional
-	private void subscribeSelectionIndexTopic(
-			@UIEventTopic(Constants.SELECTION_INDEX_TOPIC) int index2) {
+	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.SELECTION_INDEX_TOPIC) int index2) {
 		LOGGER.info("Received index " + index2);
-		this.index = index2;
+		index = index2;
 		createItems(table);
 	}
 

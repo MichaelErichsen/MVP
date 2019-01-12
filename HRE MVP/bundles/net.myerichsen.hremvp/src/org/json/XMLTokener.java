@@ -27,7 +27,7 @@ SOFTWARE.
 /**
  * The XMLTokener extends the JSONTokener to provide additional methods for the
  * parsing of XML texts.
- * 
+ *
  * @author JSON.org
  * @version 2012-11-13
  */
@@ -51,7 +51,7 @@ public class XMLTokener extends JSONTokener {
 
 	/**
 	 * Construct an XMLTokener from a string.
-	 * 
+	 *
 	 * @param s A source string.
 	 */
 	public XMLTokener(String s) {
@@ -60,14 +60,14 @@ public class XMLTokener extends JSONTokener {
 
 	/**
 	 * Get the text in the CDATA block.
-	 * 
+	 *
 	 * @return The string up to the <code>]]&gt;</code>.
 	 * @throws JSONException If the <code>]]&gt;</code> is not found.
 	 */
 	public String nextCDATA() throws JSONException {
 		char c;
 		int i;
-		StringBuffer sb = new StringBuffer();
+		final StringBuffer sb = new StringBuffer();
 		for (;;) {
 			c = next();
 			if (end()) {
@@ -121,15 +121,15 @@ public class XMLTokener extends JSONTokener {
 	/**
 	 * Return the next entity. These entities are translated to Characters:
 	 * <code>&amp;  &apos;  &gt;  &lt;  &quot;</code>.
-	 * 
+	 *
 	 * @param ampersand An ampersand character.
 	 * @return A Character or an entity String if the entity is not recognized.
 	 * @throws JSONException If missing ';' in XML entity.
 	 */
 	public Object nextEntity(char ampersand) throws JSONException {
-		StringBuffer sb = new StringBuffer();
+		final StringBuffer sb = new StringBuffer();
 		for (;;) {
-			char c = next();
+			final char c = next();
 			if (Character.isLetterOrDigit(c) || (c == '#')) {
 				sb.append(Character.toLowerCase(c));
 			} else if (c == ';') {
@@ -138,15 +138,15 @@ public class XMLTokener extends JSONTokener {
 				throw syntaxError("Missing ';' in XML entity: &" + sb);
 			}
 		}
-		String string = sb.toString();
-		Object object = entity.get(string);
+		final String string = sb.toString();
+		final Object object = entity.get(string);
 		return object != null ? object : ampersand + string + ";";
 	}
 
 	/**
 	 * Returns the next XML meta token. This is used for skipping over <!...> and
 	 * <?...?> structures.
-	 * 
+	 *
 	 * @return Syntax characters (<code>< > / = ! ?</code>) are returned as
 	 *         Character, and strings and names are returned as Boolean. We don't
 	 *         care what the values actually are.
@@ -213,7 +213,7 @@ public class XMLTokener extends JSONTokener {
 	 * Get the next XML Token. These tokens are found inside of angle brackets. It
 	 * may be one of these characters: <code>/ > = ! ?</code> or it may be a string
 	 * wrapped in single quotes or double quotes, or it may be a name.
-	 * 
+	 *
 	 * @return a String or a Character.
 	 * @throws JSONException If the XML is not well formed.
 	 */
@@ -295,7 +295,7 @@ public class XMLTokener extends JSONTokener {
 	/**
 	 * Skip characters until past the requested string. If it is not found, we are
 	 * left at the end of the source with a result of false.
-	 * 
+	 *
 	 * @param to A string to skip past.
 	 * @throws JSONException
 	 */
@@ -305,8 +305,8 @@ public class XMLTokener extends JSONTokener {
 		int i;
 		int j;
 		int offset = 0;
-		int length = to.length();
-		char[] circle = new char[length];
+		final int length = to.length();
+		final char[] circle = new char[length];
 
 		/*
 		 * First fill the circle buffer with as many characters as are in the to string.
