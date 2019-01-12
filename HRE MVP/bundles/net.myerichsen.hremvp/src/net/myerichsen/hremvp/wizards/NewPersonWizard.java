@@ -18,6 +18,9 @@ public class NewPersonWizard extends Wizard {
 
 	private final IEclipseContext context;
 	private NewPersonWizardPage1 page1;
+	private NewPersonWizardPage2 page2;
+	private NewPersonWizardPage3 page3;
+	private NewPersonWizardPage4 page4;
 
 	private int personNameStyle = 0;
 	private String personName;
@@ -43,6 +46,12 @@ public class NewPersonWizard extends Wizard {
 	public void addPages() {
 		page1 = new NewPersonWizardPage1(context);
 		addPage(page1);
+		page2 = new NewPersonWizardPage2(context);
+		addPage(page2);
+		page3 = new NewPersonWizardPage3(context);
+		addPage(page3);
+		page4 = new NewPersonWizardPage4(context);
+		addPage(page4);
 	}
 
 	/**
@@ -50,6 +59,27 @@ public class NewPersonWizard extends Wizard {
 	 */
 	public NewPersonWizardPage1 getPage1() {
 		return page1;
+	}
+
+	/**
+	 * @return the page2
+	 */
+	public NewPersonWizardPage2 getPage2() {
+		return page2;
+	}
+
+	/**
+	 * @return the page3
+	 */
+	public NewPersonWizardPage3 getPage() {
+		return page3;
+	}
+
+	/**
+	 * @return the page4
+	 */
+	public NewPersonWizardPage4 getPage4() {
+		return page4;
 	}
 
 	/**
