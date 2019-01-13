@@ -29,7 +29,7 @@ import java.util.Iterator;
 /**
  * This provides static methods to convert an XML text into a JSONObject, and to
  * covert a JSONObject into an XML text.
- * 
+ *
  * @author JSON.org
  * @version 2012-10-26
  */
@@ -64,14 +64,14 @@ public class XML {
 
 	/**
 	 * Replace special characters with XML escapes:
-	 * 
+	 *
 	 * <pre>
 	 * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
 	 * &lt; <small>(less than)</small> is replaced by &amp;lt;
 	 * &gt; <small>(greater than)</small> is replaced by &amp;gt;
 	 * &quot; <small>(double quote)</small> is replaced by &amp;quot;
 	 * </pre>
-	 * 
+	 *
 	 * @param string The string to be escaped.
 	 * @return The escaped string.
 	 */
@@ -105,7 +105,7 @@ public class XML {
 	/**
 	 * Throw an exception if the string contains whitespace. Whitespace is not
 	 * allowed in tagNames and attributes.
-	 * 
+	 *
 	 * @param string
 	 * @throws JSONException
 	 */
@@ -124,7 +124,7 @@ public class XML {
 
 	/**
 	 * Scan the content following the named tag, attaching it to the context.
-	 * 
+	 *
 	 * @param x       The XMLTokener containing the source string.
 	 * @param context The JSONObject that will include the new material.
 	 * @param name    The tag name.
@@ -294,7 +294,7 @@ public class XML {
 	 * be converted, return the string. This is much less ambitious than
 	 * JSONObject.stringToValue, especially because it does not attempt to convert
 	 * plus forms, octal forms, hex forms, or E forms lacking decimal points.
-	 * 
+	 *
 	 * @param string A String.
 	 * @return A simple JSON value.
 	 */
@@ -354,7 +354,7 @@ public class XML {
 	 * elements and attributes. Sequences of similar elements are represented as
 	 * JSONArrays. Content text may be placed in a "content" member. Comments,
 	 * prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
-	 * 
+	 *
 	 * @param string The source string.
 	 * @return A JSONObject containing the structured data from the XML string.
 	 * @throws JSONException
@@ -370,7 +370,7 @@ public class XML {
 
 	/**
 	 * Convert a JSONObject into a well-formed, element-normal XML string.
-	 * 
+	 *
 	 * @param object A JSONObject.
 	 * @return A string.
 	 * @throws JSONException
@@ -381,7 +381,7 @@ public class XML {
 
 	/**
 	 * Convert a JSONObject into a well-formed, element-normal XML string.
-	 * 
+	 *
 	 * @param object  A JSONObject.
 	 * @param tagName The optional name of the enclosing tag.
 	 * @return A string.

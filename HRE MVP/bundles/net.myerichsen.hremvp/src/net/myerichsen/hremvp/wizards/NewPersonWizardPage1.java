@@ -18,13 +18,15 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
+import net.myerichsen.hremvp.dialogs.SexTypeNavigatorDialog;
+import net.myerichsen.hremvp.person.providers.SexProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. jan. 2019
+ * @version 14. jan. 2019
  *
  */
 // FIXME Add sex handling
@@ -48,15 +50,14 @@ public class NewPersonWizardPage1 extends WizardPage {
 	private Button btnBrowseDeath;
 	private Button btnClearDeath;
 
-	private int BirthDatePid;
-	private int DeathDatePid;
-	private Label lblSex;
-	private Text textSexPid;
+	private Text textSexTypePid;
 	private Text textSex;
-	private Composite composite;
-	private Button btnNewSex;
 	private Button btnBrowseSexes;
 	private Button btnClearSex;
+
+	private int BirthDatePid;
+	private int DeathDatePid;
+	private int sexTypePid;
 
 	/**
 	 * Constructor
@@ -114,6 +115,26 @@ public class NewPersonWizardPage1 extends WizardPage {
 	/**
 	 *
 	 */
+	protected void browseSexes() {
+		final SexTypeNavigatorDialog dialog = new SexTypeNavigatorDialog(textSexTypePid.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				sexTypePid = dialog.getSexesPid();
+				textSexTypePid.setText(Integer.toString(sexTypePid));
+
+				final SexProvider provider = new SexProvider();
+				provider.get(sexTypePid);
+				textSex.setText(provider.getSexTypeLabel());
+			} catch (final Exception e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
 	private void clearBirthDate() {
 		textBirthDate.setText("");
 		textBirthDateSort.setText("");
@@ -129,6 +150,14 @@ public class NewPersonWizardPage1 extends WizardPage {
 		textDeathDateSort.setText("");
 		textDeathOriginal.setText("");
 		textDeathSurety.setText("");
+	}
+
+	/**
+	 *
+	 */
+	protected void clearSex() {
+		textSexTypePid.setText("");
+		textSex.setText("");
 	}
 
 	/*
@@ -166,11 +195,11 @@ public class NewPersonWizardPage1 extends WizardPage {
 		textBirthSurety.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
-		final Composite compositeFrom = new Composite(container, SWT.NONE);
-		compositeFrom.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeBirth = new Composite(container, SWT.NONE);
+		compositeBirth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeBirth.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnNewBirth = new Button(compositeFrom, SWT.NONE);
+		btnNewBirth = new Button(compositeBirth, SWT.NONE);
 		btnNewBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -179,7 +208,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewBirth.setText("New");
 
-		btnBrowseBirth = new Button(compositeFrom, SWT.NONE);
+		btnBrowseBirth = new Button(compositeBirth, SWT.NONE);
 		btnBrowseBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -188,7 +217,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseBirth.setText("Browse");
 
-		btnClearBirth = new Button(compositeFrom, SWT.NONE);
+		btnClearBirth = new Button(compositeBirth, SWT.NONE);
 		btnClearBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -218,11 +247,11 @@ public class NewPersonWizardPage1 extends WizardPage {
 		textDeathSurety.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
-		final Composite compositeTo = new Composite(container, SWT.NONE);
-		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeTo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		final Composite compositeDeath = new Composite(container, SWT.NONE);
+		compositeDeath.setLayout(new RowLayout(SWT.HORIZONTAL));
+		compositeDeath.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		btnNewDeath = new Button(compositeTo, SWT.NONE);
+		btnNewDeath = new Button(compositeDeath, SWT.NONE);
 		btnNewDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -231,7 +260,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewDeath.setText("New");
 
-		btnBrowseDeath = new Button(compositeTo, SWT.NONE);
+		btnBrowseDeath = new Button(compositeDeath, SWT.NONE);
 		btnBrowseDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -240,7 +269,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseDeath.setText("Browse");
 
-		btnClearDeath = new Button(compositeTo, SWT.NONE);
+		btnClearDeath = new Button(compositeDeath, SWT.NONE);
 		btnClearDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -248,32 +277,41 @@ public class NewPersonWizardPage1 extends WizardPage {
 			}
 		});
 		btnClearDeath.setText("Clear");
-		
-		lblSex = new Label(container, SWT.NONE);
+
+		final Label lblSex = new Label(container, SWT.NONE);
 		lblSex.setText("Sex");
-		
-		textSexPid = new Text(container, SWT.BORDER);
-		textSexPid.setToolTipText("More sexes can be added later");
-		textSexPid.setEditable(false);
-		textSexPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
+
+		textSexTypePid = new Text(container, SWT.BORDER);
+		textSexTypePid.setToolTipText("More sexes can be added later");
+		textSexTypePid.setEditable(false);
+		textSexTypePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		textSex = new Text(container, SWT.BORDER);
 		textSex.setEditable(false);
 		textSex.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
-		
-		composite = new Composite(container, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-		
-		btnNewSex = new Button(composite, SWT.NONE);
-		btnNewSex.setText("New");
-		
-		btnBrowseSexes = new Button(composite, SWT.NONE);
+
+		final Composite compositeSex = new Composite(container, SWT.NONE);
+		compositeSex.setLayout(new RowLayout(SWT.HORIZONTAL));
+		compositeSex.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+
+		btnBrowseSexes = new Button(compositeSex, SWT.NONE);
+		btnBrowseSexes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseSexes();
+			}
+		});
 		btnBrowseSexes.setText("Browse");
-		
-		btnClearSex = new Button(composite, SWT.NONE);
+
+		btnClearSex = new Button(compositeSex, SWT.NONE);
+		btnClearSex.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearSex();
+			}
+		});
 		btnClearSex.setText("Clear");
-		new Label(container, SWT.NONE);
 	}
 
 	/**
@@ -339,6 +377,13 @@ public class NewPersonWizardPage1 extends WizardPage {
 	}
 
 	/**
+	 * @return the sexTypePid
+	 */
+	public int getSexTypePid() {
+		return sexTypePid;
+	}
+
+	/**
 	 * @param BirthDatePid the BirthDatePid to set
 	 */
 	public void setBirthDatePid(int BirthDatePid) {
@@ -350,5 +395,12 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 */
 	public void setDeathDatePid(int DeathDatePid) {
 		this.DeathDatePid = DeathDatePid;
+	}
+
+	/**
+	 * @param sexTypePid the sexTypePid to set
+	 */
+	public void setSexTypePid(int sexPid) {
+		this.sexTypePid = sexPid;
 	}
 }

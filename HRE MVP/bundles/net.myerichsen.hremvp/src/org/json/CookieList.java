@@ -28,7 +28,7 @@ import java.util.Iterator;
 
 /**
  * Convert a web browser cookie list string to a JSONObject and back.
- * 
+ *
  * @author JSON.org
  * @version 2010-12-24
  */
@@ -43,7 +43,7 @@ public class CookieList {
 	 * To add a cookie to a cooklist,
 	 * cookielistJSONObject.put(cookieJSONObject.getString("name"),
 	 * cookieJSONObject.getString("value"));
-	 * 
+	 *
 	 * @param string A cookie list string
 	 * @return A JSONObject
 	 * @throws JSONException
@@ -65,7 +65,7 @@ public class CookieList {
 	 * name/value pairs. The names are separated from the values by '='. The pairs
 	 * are separated by ';'. The characters '%', '+', '=', and ';' in the names and
 	 * values are replaced by "%hh".
-	 * 
+	 *
 	 * @param jo A JSONObject
 	 * @return A cookie list string
 	 * @throws JSONException

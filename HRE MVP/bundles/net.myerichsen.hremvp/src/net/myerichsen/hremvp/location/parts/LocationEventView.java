@@ -56,7 +56,7 @@ public class LocationEventView {
 	private Table table;
 	private TableViewer tableViewer;
 
-	private LocationEventProvider provider;
+	private final LocationEventProvider provider;
 
 	/**
 	 * Constructor
@@ -90,13 +90,13 @@ public class LocationEventView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 
-		TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
+		final TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnEvent = tableViewerColumnEventLabel.getColumn();
+		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnEvent = tableViewerColumnEventLabel.getColumn();
 		tblclmnEvent.setWidth(300);
 		tblclmnEvent.setText("Event");
 	}
@@ -131,7 +131,7 @@ public class LocationEventView {
 				}
 			}
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -142,7 +142,7 @@ public class LocationEventView {
 	 *
 	 */
 	protected void openEventView() {
-		String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventView";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventView";
 
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();

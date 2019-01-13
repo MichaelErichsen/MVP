@@ -28,11 +28,11 @@ import org.eclipse.swt.widgets.Control;
  * <p>
  * Subclasses must implement the <code>createPageContents</code>.
  * </p>
- * 
+ *
  * <p>
  * This class may be freely distributed as part of any application or plugin.
  * </p>
- * 
+ *
  * @version $Revision: 1.1 $
  * @author scheglov_ke
  */
@@ -40,7 +40,7 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	/**
 	 * The field editors.
 	 */
-	private List<FieldEditor> m_fields = new ArrayList<>();
+	private final List<FieldEditor> m_fields = new ArrayList<>();
 	/**
 	 * The first invalid field editor, or <code>null</code> if all field editors are
 	 * valid.
@@ -103,9 +103,9 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 		// The state can only be set to true if all
 		// field editors contain a valid value. So we must check them all
 		if (m_fields != null) {
-			int size = m_fields.size();
+			final int size = m_fields.size();
 			for (int i = 0; i < size; i++) {
-				FieldEditor editor = m_fields.get(i);
+				final FieldEditor editor = m_fields.get(i);
 				valid = valid && editor.isValid();
 				if (!valid) {
 					m_invalidFieldEditor = editor;
@@ -121,7 +121,7 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
-		Control contens = createPageContents(parent);
+		final Control contens = createPageContents(parent);
 		initialize();
 		checkState();
 		return contens;
@@ -152,9 +152,9 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	public void dispose() {
 		super.dispose();
 		if (m_fields != null) {
-			Iterator<FieldEditor> I = m_fields.iterator();
+			final Iterator<FieldEditor> I = m_fields.iterator();
 			while (I.hasNext()) {
-				FieldEditor editor = I.next();
+				final FieldEditor editor = I.next();
 				editor.setPage(null);
 				editor.setPropertyChangeListener(null);
 				editor.setPreferenceStore(null);
@@ -167,9 +167,9 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	 */
 	protected void initialize() {
 		if (m_fields != null) {
-			Iterator<FieldEditor> I = m_fields.iterator();
+			final Iterator<FieldEditor> I = m_fields.iterator();
 			while (I.hasNext()) {
-				FieldEditor editor = I.next();
+				final FieldEditor editor = I.next();
 				editor.setPage(null);
 				editor.setPropertyChangeListener(this);
 				editor.setPreferenceStore(getPreferenceStore());
@@ -186,9 +186,9 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	@Override
 	protected void performDefaults() {
 		if (m_fields != null) {
-			Iterator<FieldEditor> I = m_fields.iterator();
+			final Iterator<FieldEditor> I = m_fields.iterator();
 			while (I.hasNext()) {
-				FieldEditor editor = I.next();
+				final FieldEditor editor = I.next();
 				editor.loadDefault();
 			}
 		}
@@ -209,9 +209,9 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	@Override
 	public boolean performOk() {
 		if (m_fields != null) {
-			Iterator<FieldEditor> I = m_fields.iterator();
+			final Iterator<FieldEditor> I = m_fields.iterator();
 			while (I.hasNext()) {
-				FieldEditor editor = I.next();
+				final FieldEditor editor = I.next();
 				editor.store();
 			}
 		}
@@ -227,7 +227,7 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getProperty().equals(FieldEditor.IS_VALID)) {
-			boolean newValue = ((Boolean) event.getNewValue()).booleanValue();
+			final boolean newValue = ((Boolean) event.getNewValue()).booleanValue();
 			// If the new value is true then we must check all field editors.
 			// If it is false, then the page is invalid in any case.
 			if (newValue) {

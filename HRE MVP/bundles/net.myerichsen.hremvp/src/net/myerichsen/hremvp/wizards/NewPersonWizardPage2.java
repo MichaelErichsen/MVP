@@ -2,15 +2,7 @@ package net.myerichsen.hremvp.wizards;
 
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -22,37 +14,30 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
+import net.myerichsen.hremvp.dialogs.PersonNameStyleNavigatorDialog;
+import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 13. jan. 2019
+ * @version 14. jan. 2019
  *
  */
-// FIXME Better handling of person name style. Primary as default
-@SuppressWarnings("restriction")
 public class NewPersonWizardPage2 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+
 	private final IEclipseContext context;
 
-	@Inject
-	private IEventBroker eventBroker;
-	@Inject
-	private ECommandService commandService;
-	@Inject
-	private EHandlerService handlerService;
-
 	private Text textPersonNameStyle;
+	private Button btnBrowseNameStyle;
+	private Button btnClearNameStyle;
 
 	private Text textFromDate;
 	private Button btnNewFrom;
@@ -60,17 +45,19 @@ public class NewPersonWizardPage2 extends WizardPage {
 	private Button btnClearFrom;
 
 	private Text textToDate;
-	private Button btnCopyFromTo;
 	private Button btnNewTo;
 	private Button btnBrowseTo;
 	private Button btnClearTo;
 
-	private Table tableNameParts;
-
+	private int personNameStylePid;
 	private int fromDatePid;
 	private int toDatePid;
-	private Text textPersonNameStylePid;
 
+	/**
+	 * Constructor
+	 *
+	 * @param context
+	 */
 	public NewPersonWizardPage2(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("Person name");
@@ -89,6 +76,29 @@ public class NewPersonWizardPage2 extends WizardPage {
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hdatePid);
 				textFromDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	protected void browseNameStyles() {
+		final PersonNameStyleNavigatorDialog dialog = new PersonNameStyleNavigatorDialog(textPersonNameStyle.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int personNameStylePid = dialog.getPersonNameStylePid();
+				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
+				pnsp.get(personNameStylePid);
+				textPersonNameStyle.setText(pnsp.getLabel());
+				NewPersonWizard wizard = (NewPersonWizard) getWizard();
+				wizard.setPersonNameStylePid(personNameStylePid);
+				setPageComplete(true);
+				wizard.addPage3();
+				wizard.getContainer().updateButtons();
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -122,6 +132,14 @@ public class NewPersonWizardPage2 extends WizardPage {
 	/**
 	 *
 	 */
+	protected void clearNameStyles() {
+		textPersonNameStyle.setText("");
+		setPageComplete(false);
+	}
+
+	/**
+	 *
+	 */
 	private void clearToDate() {
 		textToDate.setText("");
 	}
@@ -137,12 +155,41 @@ public class NewPersonWizardPage2 extends WizardPage {
 		lblPersonNameStyle.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPersonNameStyle.setText("Person Name Style");
 
-		textPersonNameStylePid = new Text(container, SWT.BORDER);
-		textPersonNameStylePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		textPersonNameStyle = new Text(container, SWT.BORDER);
 		textPersonNameStyle.setEditable(false);
 		textPersonNameStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		// TODO Bad logic handling next pages
+//		try {
+//			int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
+//			PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
+//			pnsp.get(defaultStyle);
+//			textPersonNameStyle.setText(pnsp.getLabel());
+//		} catch (SQLException | MvpException e1) {
+//			LOGGER.severe(e1.getMessage());
+//			e1.printStackTrace();
+//		}
+
+		final Composite compositeNameStyle = new Composite(container, SWT.NONE);
+		compositeNameStyle.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		btnBrowseNameStyle = new Button(compositeNameStyle, SWT.NONE);
+		btnBrowseNameStyle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseNameStyles();
+			}
+		});
+		btnBrowseNameStyle.setText("Browse");
+
+		btnClearNameStyle = new Button(compositeNameStyle, SWT.NONE);
+		btnClearNameStyle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearNameStyles();
+			}
+		});
+		btnClearNameStyle.setText("Clear");
 
 		final Label lblFromDate = new Label(container, SWT.NONE);
 		lblFromDate.setText("From Date");
@@ -191,15 +238,6 @@ public class NewPersonWizardPage2 extends WizardPage {
 		final Composite compositeTo = new Composite(container, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnCopyFromTo = new Button(compositeTo, SWT.NONE);
-		btnCopyFromTo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				textToDate.setText(textFromDate.getText());
-			}
-		});
-		btnCopyFromTo.setText("Copy From");
-
 		btnNewTo = new Button(compositeTo, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -227,32 +265,14 @@ public class NewPersonWizardPage2 extends WizardPage {
 		});
 		btnClearTo.setText("Clear");
 
-		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
-		tableNameParts = tableViewer.getTable();
-		tableNameParts.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				openNamePartView();
-			}
-		});
-		tableNameParts.setLinesVisible(true);
-		tableNameParts.setHeaderVisible(true);
-		tableNameParts.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		setPageComplete(false);
+	}
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
-		tblclmnId.setWidth(100);
-		tblclmnId.setText("ID");
-
-		final TableViewerColumn tableViewerColumnMap = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnLabelFromMap = tableViewerColumnMap.getColumn();
-		tblclmnLabelFromMap.setWidth(134);
-		tblclmnLabelFromMap.setText("Label from Map");
-
-		final TableViewerColumn tableViewerColumnPart = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnValueFromPart = tableViewerColumnPart.getColumn();
-		tblclmnValueFromPart.setWidth(293);
-		tblclmnValueFromPart.setText("Value from Part");
+	/**
+	 * @return the fromDatePid
+	 */
+	public int getFromDatePid() {
+		return fromDatePid;
 	}
 
 	/**
@@ -296,25 +316,37 @@ public class NewPersonWizardPage2 extends WizardPage {
 	}
 
 	/**
-	 *
+	 * @return the personNameStylePid
 	 */
-	protected void openNamePartView() {
-		String namePartPid = "0";
+	public int getPersonNameStylePid() {
+		return personNameStylePid;
+	}
 
-		// Open an editor
-		LOGGER.fine("Opening Name Part View");
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.opennamepartview", null);
-		handlerService.executeHandler(command);
+	/**
+	 * @return the toDatePid
+	 */
+	public int getToDatePid() {
+		return toDatePid;
+	}
 
-		final TableItem[] selectedRows = tableNameParts.getSelection();
+	/**
+	 * @param fromDatePid the fromDatePid to set
+	 */
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
+	}
 
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			namePartPid = selectedRow.getText(0);
-		}
+	/**
+	 * @param personNameStylePid the personNameStylePid to set
+	 */
+	public void setPersonNameStylePid(int personNameStylePid) {
+		this.personNameStylePid = personNameStylePid;
+	}
 
-		LOGGER.info("Setting name part pid: " + namePartPid);
-		eventBroker.post(Constants.NAME_PART_PID_UPDATE_TOPIC, Integer.parseInt(namePartPid));
+	/**
+	 * @param toDatePid the toDatePid to set
+	 */
+	public void setToDatePid(int toDatePid) {
+		this.toDatePid = toDatePid;
 	}
 }

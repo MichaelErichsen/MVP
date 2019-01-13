@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.dialogs.ProjectNameSummaryDialog;
 import net.myerichsen.hremvp.models.ProjectList;
 import net.myerichsen.hremvp.models.ProjectModel;
-import net.myerichsen.hremvp.providers.ProjectNewDatabaseProvider;
+import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
 
 /**
  * Create a new HRE project database.

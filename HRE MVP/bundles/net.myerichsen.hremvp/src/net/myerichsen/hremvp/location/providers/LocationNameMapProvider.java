@@ -21,7 +21,7 @@ public class LocationNameMapProvider {
 	private String styleLabel;
 	private String labelPosition;
 
-	private LocationNameMapServer server;
+	private final LocationNameMapServer server;
 
 	/**
 	 * Constructor

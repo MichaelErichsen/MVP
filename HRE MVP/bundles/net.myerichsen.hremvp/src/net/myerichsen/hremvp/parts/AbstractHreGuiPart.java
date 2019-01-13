@@ -18,25 +18,25 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * Abstract class for GUI parts.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 6. jan. 2019
  *
  */
 @SuppressWarnings("restriction")
 public abstract class AbstractHreGuiPart {
-	@Inject
-	ECommandService commandService;
-	@Inject
-	EHandlerService handlerService;
-	@Inject
-	protected IEventBroker eventBroker;
 	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-
 	protected final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 //	protected BusinessLayerInterface bli;
 //	protected ServerRequest request;
 //	protected ServerResponse response;
+	@Inject
+	ECommandService commandService;
+	@Inject
+	EHandlerService handlerService;
+
+	@Inject
+	protected IEventBroker eventBroker;
 
 	/*
 	 * protected void callBusinessLayer(String operation, AbstractHreProvider
@@ -44,21 +44,21 @@ public abstract class AbstractHreGuiPart {
 	 * BusinessLayerInterfaceFactory.getBusinessLayerInterface();
 	 * provider.setKey(key); request = new ServerRequest("GET", provider,
 	 * businessLogic);
-	 * 
+	 *
 	 * final long before = System.nanoTime();
-	 * 
+	 *
 	 * response = bli.callBusinessLayer(request);
-	 * 
+	 *
 	 * final long after = System.nanoTime();
-	 * 
+	 *
 	 * LOGGER.info("Elapsed time in milliseconds: " + ((after - before) / 1000000));
-	 * 
+	 *
 	 * if (response == null) { eventBroker.post("MESSAGE", "Call not successful");
 	 * LOGGER.severe("Call not successful"); } else if (response.getReturnCode() !=
 	 * 0) { eventBroker.post("MESSAGE", response.getReturnMessage());
 	 * LOGGER.severe(response.getReturnMessage()); } else { provider =
 	 * response.getProvider();
-	 * 
+	 *
 	 * try { updateGui(); } catch (final Exception e2) { e2.printStackTrace();
 	 * LOGGER.severe("Error in request " + request.getOperation() + " " +
 	 * request.getProvider().getClass().getSimpleName() + ", " +
@@ -99,7 +99,7 @@ public abstract class AbstractHreGuiPart {
 	}
 
 //	/**
-//	 * 
+//	 *
 //	 */
 //	protected abstract void updateGui();
 

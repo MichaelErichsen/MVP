@@ -68,7 +68,7 @@ public class RootHttpRequestHandler implements Handler {
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 
-		PrintWriter out = response.getWriter();
+		final PrintWriter out = response.getWriter();
 
 		out.println("{");
 		out.println("\"Method\": \"" + request.getMethod() + "\", ");

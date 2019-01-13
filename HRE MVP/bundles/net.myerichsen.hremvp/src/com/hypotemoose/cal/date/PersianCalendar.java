@@ -38,7 +38,7 @@ import com.hypotemoose.cal.util.AlmanacConverter;
 public class PersianCalendar extends Almanac {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4825408220898275801L;
 	public static final String CALENDAR_NAME = "Persian Calendar";
@@ -90,7 +90,7 @@ public class PersianCalendar extends Almanac {
 	 * @return an array[12] containing the month lengths.
 	 */
 	public static int[] getDaysPerMonthInYear(int year) {
-		int[] days = new int[12];
+		final int[] days = new int[12];
 		for (int i = 0; i < 11; ++i) {
 			days[i] = (i <= 5) ? 31 : 30;
 		}
@@ -134,10 +134,10 @@ public class PersianCalendar extends Almanac {
 	 * @return true, if is a leap year; false, otherwise.
 	 */
 	public static boolean isLeapYear(int year) {
-		PersianCalendar cal = new PersianCalendar(year, 1, 1);
-		PersianCalendar calp1 = new PersianCalendar(year + 1, 1, 1);
-		JulianDay jd = AlmanacConverter.toJulianDay(cal);
-		JulianDay jdp1 = AlmanacConverter.toJulianDay(calp1);
+		final PersianCalendar cal = new PersianCalendar(year, 1, 1);
+		final PersianCalendar calp1 = new PersianCalendar(year + 1, 1, 1);
+		final JulianDay jd = AlmanacConverter.toJulianDay(cal);
+		final JulianDay jdp1 = AlmanacConverter.toJulianDay(calp1);
 		return ((jdp1.getValue() - jd.getValue()) > 365);
 	}
 
@@ -269,7 +269,7 @@ public class PersianCalendar extends Almanac {
 	 */
 	@Override
 	public void set(Almanac a) {
-		PersianCalendar cal = toPersianCalendar(a);
+		final PersianCalendar cal = toPersianCalendar(a);
 		year = cal.getYear();
 		month = cal.getMonth();
 		day = cal.getDay();

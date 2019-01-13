@@ -5,7 +5,7 @@ package net.myerichsen.hremvp;
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 2. jan. 2019
- * 
+ *
  */
 public class Constants {
 	/**

@@ -20,7 +20,7 @@ public class DateDialogHandler {
 	 */
 	@Execute
 	public void execute(Shell shell, IEclipseContext context) {
-		DateDialog dialog = new DateDialog(shell, context);
+		final DateDialog dialog = new DateDialog(shell, context);
 		dialog.open();
 	}
 }

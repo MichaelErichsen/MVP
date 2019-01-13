@@ -8,9 +8,9 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * Default values initializer
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. jan. 2019
+ * @version 14. jan. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -30,7 +30,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 	 */
 	@Override
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 		// MVP
 		store.setDefault("CSMODE", "STANDALONE");
@@ -42,6 +42,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("TLS", "true");
 		store.setDefault("UPDATESITE", "http://www.myerichsen.net/HRERepository");
 		store.setDefault("WEBSITELIST", "https://www.google.dk/search?oq=");
+		store.setDefault("DEFAULTPERSONNAMESTYLE", "1");
 
 		// H2
 		store.setDefault("H2TRACELEVEL", "1");

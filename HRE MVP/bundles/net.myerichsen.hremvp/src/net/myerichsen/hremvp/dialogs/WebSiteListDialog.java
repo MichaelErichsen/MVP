@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Dialog to enter a search web site and template string
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 10. jan. 2019
  *
@@ -128,6 +128,6 @@ public class WebSiteListDialog extends Dialog {
 	 * @param template the template to set
 	 */
 	public void setPort(String port) {
-		this.template = port;
+		template = port;
 	}
 }

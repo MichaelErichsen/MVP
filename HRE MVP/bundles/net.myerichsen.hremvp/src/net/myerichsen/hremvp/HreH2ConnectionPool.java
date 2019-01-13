@@ -61,8 +61,8 @@ public class HreH2ConnectionPool {
 	 *                      access error or other errors
 	 */
 	public static void dispose() throws SQLException {
-		Connection conn = HreH2ConnectionPool.getConnection();
-		PreparedStatement ps = conn.prepareStatement("SHUTDOWN");
+		final Connection conn = HreH2ConnectionPool.getConnection();
+		final PreparedStatement ps = conn.prepareStatement("SHUTDOWN");
 		ps.executeUpdate();
 
 		if (connectionPool != null) {

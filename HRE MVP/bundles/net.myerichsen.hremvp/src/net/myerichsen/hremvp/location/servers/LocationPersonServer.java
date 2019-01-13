@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
 import net.myerichsen.hremvp.dbmodels.PersonEvents;
-import net.myerichsen.hremvp.serverlogic.NameServer;
+import net.myerichsen.hremvp.person.servers.PersonNameServer;
 
 /**
  * Business logic interface for persons for locationa
@@ -40,7 +40,7 @@ public class LocationPersonServer {
 		String string;
 		List<PersonEvents> peList;
 		int personPid;
-		NameServer ns;
+		PersonNameServer ns;
 
 		final List<LocationEvents> leList = leLink.getFKLocationPid(locationPid);
 		stringList.clear();
@@ -51,7 +51,7 @@ public class LocationPersonServer {
 
 			for (final PersonEvents personLink : peList) {
 				personPid = personLink.getPersonPid();
-				ns = new NameServer();
+				ns = new PersonNameServer();
 				string = Integer.toString(personPid) + "," + ns.getPrimaryNameString(personPid);
 				LOGGER.info(string);
 				stringList.add(string);

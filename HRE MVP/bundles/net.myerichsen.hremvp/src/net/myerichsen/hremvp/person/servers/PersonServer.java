@@ -22,7 +22,6 @@ import net.myerichsen.hremvp.dbmodels.PersonEvents;
 import net.myerichsen.hremvp.dbmodels.Persons;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
 import net.myerichsen.hremvp.dbmodels.Sexes;
-import net.myerichsen.hremvp.serverlogic.NameServer;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
@@ -102,7 +101,7 @@ public class PersonServer {
 
 		List<Names> ln;
 		Names name;
-		final NameServer ns = new NameServer();
+		final PersonNameServer ns = new PersonNameServer();
 		for (final Persons person : lnsl) {
 			// Get all names of each person
 			ln = new Names().getFKPersonPid(person.getPersonPid());
@@ -148,7 +147,7 @@ public class PersonServer {
 		final List<Names> ln = new Names().getFKPersonPid(key);
 		Names name;
 
-		final NameServer ns = new NameServer();
+		final PersonNameServer ns = new PersonNameServer();
 		nameList = new ArrayList<>();
 
 		List<String> ls;
@@ -455,7 +454,8 @@ public class PersonServer {
 
 	/**
 	 * Insert a row
-	 * @return 
+	 * 
+	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors

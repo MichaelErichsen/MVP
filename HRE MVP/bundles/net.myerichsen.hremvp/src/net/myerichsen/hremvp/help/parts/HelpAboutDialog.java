@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.Constants;
 
 /**
  * Dialog to display help about HRE.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 6. jan. 2019
  *
@@ -44,7 +44,7 @@ public class HelpAboutDialog extends Dialog {
 
 	/**
 	 * Create contents of the button bar.
-	 * 
+	 *
 	 * @param parent
 	 */
 	@Override
@@ -63,7 +63,7 @@ public class HelpAboutDialog extends Dialog {
 
 	/**
 	 * Create contents of the dialog.
-	 * 
+	 *
 	 * @param parent
 	 */
 	@Override

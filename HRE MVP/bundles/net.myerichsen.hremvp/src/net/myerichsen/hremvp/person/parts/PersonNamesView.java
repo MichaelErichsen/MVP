@@ -40,13 +40,13 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.providers.NameProvider;
+import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 
 /**
  * Display all data about a name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. jan. 2019
+ * @version 14. jan. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonNamesView {
@@ -73,7 +73,6 @@ public class PersonNamesView {
 	private Text textDateTo;
 	private Button btnPrimaryName;
 	private Table tableNameParts;
-	private Composite composite;
 	private Button buttonSelect;
 	private Button buttonInsert;
 	private Button buttonUpdate;
@@ -81,7 +80,7 @@ public class PersonNamesView {
 	private Button buttonClear;
 	private Button buttonClose;
 
-	private final NameProvider provider;
+	private final PersonNameProvider provider;
 
 	/**
 	 * Constructor
@@ -91,7 +90,7 @@ public class PersonNamesView {
 	 *
 	 */
 	public PersonNamesView() throws SQLException {
-		provider = new NameProvider();
+		provider = new PersonNameProvider();
 	}
 
 	/**
@@ -202,7 +201,7 @@ public class PersonNamesView {
 		tblclmnValueFromPart.setWidth(100);
 		tblclmnValueFromPart.setText("Value from Part");
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
@@ -345,7 +344,7 @@ public class PersonNamesView {
 	private void insert() {
 		// TODO Insert() missing
 		// try {
-		// provider = new NameProvider();
+		// provider = new PersonNameProvider();
 		// provider.setNames(new Names());
 		// provider.setNamePid(Integer.parseInt(textId.getText()));
 		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));

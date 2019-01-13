@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 
-import net.myerichsen.hremvp.serverlogic.SexTypeServer;
+import net.myerichsen.hremvp.person.servers.SexTypeServer;
 
 /**
  * HTTP request handler for Sex Types

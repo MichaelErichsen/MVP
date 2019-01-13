@@ -1,121 +1,100 @@
 package net.myerichsen.hremvp.wizards;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.dbmodels.NameMaps;
+import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
 
 /**
- * Person parents wizard page
- * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 13. jan. 2019
+ * @version 14. jan. 2019
  *
  */
-// FIXME Add context menu to browse or delete parents
-@SuppressWarnings("restriction")
 public class NewPersonWizardPage3 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	@SuppressWarnings("unused")
 	private final IEclipseContext context;
 
-	@Inject
-	private IEventBroker eventBroker;
-	@Inject
-	private ECommandService commandService;
-	@Inject
-	private EHandlerService handlerService;
+	private int personNameStylePid;
+	private PersonNameMapProvider provider;
+	private List<Text> textFieldList;
 
-	private Table tableParents;
-
-	private TableColumn tblclmnParentPrimary;
-	private TableViewerColumn tableViewerColumn;
-
+	/**
+	 * 
+	 * Constructor
+	 *
+	 * @param context
+	 */
 	public NewPersonWizardPage3(IEclipseContext context) {
 		super("wizardPage");
-		setTitle("Person Parents");
-		setDescription("Add primary parents for the new person. More parents can be added later.");
+		setTitle("Person Name Parts");
+		setDescription("Enter each part of the name");
 		this.context = context;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
+	 * Composite)
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(1, false));
+		container.setLayout(new GridLayout(2, false));
 
-		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
-		tableParents = tableViewer.getTable();
-		tableParents.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				openNamePartView();
+		try {
+			NewPersonWizard wizard = (NewPersonWizard) getWizard();
+			personNameStylePid = wizard.getPersonNameStylePid();
+
+			provider = new PersonNameMapProvider();
+			List<NameMaps> mapList = provider.getFKNameStylePid(personNameStylePid);
+			textFieldList = new ArrayList<Text>();
+
+			for (int i = 0; i < mapList.size(); i++) {
+				Label lblNewLabel = new Label(container, SWT.NONE);
+//				lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+				lblNewLabel.setText(mapList.get(i).getLabel());
+
+				Text text = new Text(container, SWT.BORDER);
+				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				textFieldList.add(text);
 			}
-		});
-		tableParents.setLinesVisible(true);
-		tableParents.setHeaderVisible(true);
-		tableParents.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnParentId = tableViewerColumnId.getColumn();
-		tblclmnParentId.setWidth(100);
-		tblclmnParentId.setText("ID");
-
-		final TableViewerColumn tableViewerColumnMap = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnParentName = tableViewerColumnMap.getColumn();
-		tblclmnParentName.setWidth(100);
-		tblclmnParentName.setText("Parent Name");
-
-		final TableViewerColumn tableViewerColumnPart = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnParentRole = tableViewerColumnPart.getColumn();
-		tblclmnParentRole.setWidth(100);
-		tblclmnParentRole.setText("Role");
-
-		tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		tblclmnParentPrimary = tableViewerColumn.getColumn();
-		tblclmnParentPrimary.setWidth(100);
-		tblclmnParentPrimary.setText("Primary");
 	}
 
 	/**
-	 *
+	 * @return the personNameStylePid
 	 */
-	protected void openNamePartView() {
-		String namePartPid = "0";
-
-		// Open an editor
-		LOGGER.fine("Opening Name Part View");
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.opennamepartview", null);
-		handlerService.executeHandler(command);
-
-		final TableItem[] selectedRows = tableParents.getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			namePartPid = selectedRow.getText(0);
-		}
-
-		LOGGER.info("Setting name part pid: " + namePartPid);
-		eventBroker.post(Constants.NAME_PART_PID_UPDATE_TOPIC, Integer.parseInt(namePartPid));
+	public int getPersonNameStylePid() {
+		return personNameStylePid;
 	}
+
+	/**
+	 * @param personNameStylePid the personNameStylePid to set
+	 */
+	public void setPersonNameStylePid(int personNameStylePid) {
+		this.personNameStylePid = personNameStylePid;
+	}
+
 }

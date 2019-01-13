@@ -24,19 +24,19 @@ public class LocationEventServer {
 	 * @throws Exception
 	 */
 	public List<List<String>> getEventList(int locationPid) throws Exception {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
 		int eventPid;
 		int namePid;
 
-		Events event = new Events();
-		EventNames name = new EventNames();
-		LocationEvents link = new LocationEvents();
-		List<LocationEvents> a = link.getFKLocationPid(locationPid);
+		final Events event = new Events();
+		final EventNames name = new EventNames();
+		final LocationEvents link = new LocationEvents();
+		final List<LocationEvents> a = link.getFKLocationPid(locationPid);
 
-		for (LocationEvents eventLink : a) {
-			stringList = new ArrayList<String>();
+		for (final LocationEvents eventLink : a) {
+			stringList = new ArrayList<>();
 
 			eventPid = eventLink.getEventPid();
 			event.get(eventPid);

@@ -60,7 +60,7 @@ public final class JulianDay extends Almanac {
 
 	/**
 	 * Constructs a Julian Day from {@link java.util.Calendar}.
-	 * 
+	 *
 	 * @param cal a {@link java.util.Calendar}.
 	 */
 	public JulianDay(Calendar cal) {

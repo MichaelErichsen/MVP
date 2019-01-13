@@ -232,7 +232,6 @@ public class PersonSexesView {
 
 			List<String> ls;
 
-
 			final List<List<String>> sexesList = provider.getSexesList();
 
 			for (int i = 0; i < sexesList.size(); i++) {
@@ -242,8 +241,6 @@ public class PersonSexesView {
 				item.setText(1, ls.get(1));
 				item.setText(2, ls.get(2));
 			}
-
-			
 
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());

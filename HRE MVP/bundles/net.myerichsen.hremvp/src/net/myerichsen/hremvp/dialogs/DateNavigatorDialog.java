@@ -31,12 +31,12 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all historical dates
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. nov. 2018
+ * @version 14. jan. 2019
  *
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	IEclipseContext context;
+	private IEclipseContext context;
 	private IEventBroker eventBroker;
 
 	private HDateProvider provider;

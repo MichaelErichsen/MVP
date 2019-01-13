@@ -23,7 +23,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Preference page for client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 14. jan. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -88,6 +88,10 @@ public class ClientPreferencePage extends FieldEditorPreferencePage implements I
 						{ "English", "ENGLISH" }, { "Norsk", "NORWEGIAN" }, { "US English", "USENGLISH" } },
 				getFieldEditorParent());
 		addField(comboGuiLanguage);
+		
+		// FIXME Should be populated from database table
+		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
+				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } }, getFieldEditorParent()));
 	}
 
 	/*
