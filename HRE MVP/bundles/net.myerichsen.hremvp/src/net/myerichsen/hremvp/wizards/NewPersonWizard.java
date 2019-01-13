@@ -2,15 +2,19 @@ package net.myerichsen.hremvp.wizards;
 
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
+import net.myerichsen.hremvp.person.providers.PersonProvider;
+
 /**
- * Wizard to add a new person
+ * Wizard to add a new person with sex, name, parents and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. jan. 2019
+ * @version 13. jan. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -24,6 +28,9 @@ public class NewPersonWizard extends Wizard {
 
 	private int personNameStyle = 0;
 	private String personName;
+
+	@Inject
+	private IEventBroker eventBroker;
 
 	/**
 	 * Constructor
@@ -105,16 +112,12 @@ public class NewPersonWizard extends Wizard {
 	public boolean performFinish() {
 		context.get(IEventBroker.class);
 
-//		try {
-//			PersonProvider lp = new PersonProvider();
-//			lp.setFromDatePid(page1.getFromDatePid());
-//			lp.setToDatePid(page1.getFromDatePid());
-//			lp.setxCoordinate(new BigDecimal(page1.getTextXCoordinate().getText()));
-//			lp.setyCoordinate(new BigDecimal(page1.getTextYCoordinate().getText()));
-//			lp.setzCoordinate(new BigDecimal(page1.getTextZCoordinate().getText()));
-//			lp.setPrimaryPerson(page1.getBtnCheckButtonPrimary().getSelection());
-//			int personPid = lp.insert();
-//			LOGGER.info("Inserted person " + personPid);
+		try {
+			PersonProvider lp = new PersonProvider();
+			lp.setBirthDatePid(page1.getBirthDatePid());
+			lp.setDeathDatePid(page1.getDeathDatePid());
+			int personPid = lp.insert();
+			LOGGER.info("Inserted person " + personPid);
 
 //			PersonNameProvider lnp = new PersonNameProvider();
 //			lnp.setPersonPid(personPid);
@@ -144,12 +147,12 @@ public class NewPersonWizard extends Wizard {
 //			}
 //
 //			eventBroker.post("MESSAGE", personName + " inserted in the database as no. " + personPid);
-//			return true;
-//		} catch (Exception e) {
-//			LOGGER.severe(e.getMessage());
-//			eventBroker.post("MESSAGE", e.getMessage());
-//			e.printStackTrace();
-//		}
+			return true;
+		} catch (Exception e) {
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
+		}
 		return false;
 	}
 

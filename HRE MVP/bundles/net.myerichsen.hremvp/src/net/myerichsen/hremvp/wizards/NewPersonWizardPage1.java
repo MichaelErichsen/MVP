@@ -21,12 +21,13 @@ import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Base person data wizard page
+ * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. jan. 2019
+ * @version 13. jan. 2019
  *
  */
+// FIXME Add sex handling
 public class NewPersonWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
@@ -49,6 +50,13 @@ public class NewPersonWizardPage1 extends WizardPage {
 
 	private int BirthDatePid;
 	private int DeathDatePid;
+	private Label lblSex;
+	private Text textSexPid;
+	private Text textSex;
+	private Composite composite;
+	private Button btnNewSex;
+	private Button btnBrowseSexes;
+	private Button btnClearSex;
 
 	/**
 	 * Constructor
@@ -61,6 +69,66 @@ public class NewPersonWizardPage1 extends WizardPage {
 		setTitle("New Person");
 		setDescription("Create a new person by entering static data for it.");
 		this.context = context;
+	}
+
+	/**
+	 *
+	 */
+	private void browseBirthDates() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(textBirthDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textBirthDate.setText(hdp.getDate().toString());
+				textBirthDateSort.setText(hdp.getSortDate().toString());
+				textBirthOriginal.setText(hdp.getOriginalText());
+				textBirthSurety.setText(hdp.getSurety());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void browseDeathDates() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(textDeathDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textDeathDate.setText(hdp.getDate().toString());
+				textDeathDateSort.setText(hdp.getSortDate().toString());
+				textDeathOriginal.setText(hdp.getOriginalText());
+				textDeathSurety.setText(hdp.getSurety());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void clearBirthDate() {
+		textBirthDate.setText("");
+		textBirthDateSort.setText("");
+		textBirthOriginal.setText("");
+		textBirthSurety.setText("");
+	}
+
+	/**
+	 *
+	 */
+	private void clearDeathDate() {
+		textDeathDate.setText("");
+		textDeathDateSort.setText("");
+		textDeathOriginal.setText("");
+		textDeathSurety.setText("");
 	}
 
 	/*
@@ -106,25 +174,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnNewBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textBirthDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						BirthDatePid = hdp.insert();
-						textBirthDate.setText(dialog.getLocalDate().toString());
-						if (textBirthDateSort.getText().length() == 0) {
-							textBirthDateSort.setText(dialog.getSortDate().toString());
-						}
-						textBirthOriginal.setText(dialog.getOriginal());
-						textBirthSurety.setText(dialog.getSurety());
-					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
-				}
+				getNewBirthDate();
 			}
 		});
 		btnNewBirth.setText("New");
@@ -133,20 +183,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnBrowseBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textBirthDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						textBirthDate.setText(hdp.getDate().toString());
-						textBirthDateSort.setText(hdp.getSortDate().toString());
-						textBirthOriginal.setText(hdp.getOriginalText());
-						textBirthSurety.setText(hdp.getSurety());
-					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
-				}
+				browseBirthDates();
 			}
 		});
 		btnBrowseBirth.setText("Browse");
@@ -155,10 +192,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnClearBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				textBirthDate.setText("");
-				textBirthDateSort.setText("");
-				textBirthOriginal.setText("");
-				textBirthSurety.setText("");
+				clearBirthDate();
 			}
 		});
 		btnClearBirth.setText("Clear");
@@ -192,23 +226,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnNewDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textDeathDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						DeathDatePid = hdp.insert();
-						textDeathDate.setText(dialog.getLocalDate().toString());
-						textDeathDateSort.setText(dialog.getSortDate().toString());
-						textDeathOriginal.setText(dialog.getOriginal());
-						textDeathSurety.setText(dialog.getSurety());
-					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
-					}
-				}
+				getNewDeathDate();
 			}
 		});
 		btnNewDeath.setText("New");
@@ -217,20 +235,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnBrowseDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textDeathDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						textDeathDate.setText(hdp.getDate().toString());
-						textDeathDateSort.setText(hdp.getSortDate().toString());
-						textDeathOriginal.setText(hdp.getOriginalText());
-						textDeathSurety.setText(hdp.getSurety());
-					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
-				}
+				browseDeathDates();
 			}
 		});
 		btnBrowseDeath.setText("Browse");
@@ -239,13 +244,36 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnClearDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				textDeathDate.setText("");
-				textDeathDateSort.setText("");
-				textDeathOriginal.setText("");
-				textDeathSurety.setText("");
+				clearDeathDate();
 			}
 		});
 		btnClearDeath.setText("Clear");
+		
+		lblSex = new Label(container, SWT.NONE);
+		lblSex.setText("Sex");
+		
+		textSexPid = new Text(container, SWT.BORDER);
+		textSexPid.setToolTipText("More sexes can be added later");
+		textSexPid.setEditable(false);
+		textSexPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		textSex = new Text(container, SWT.BORDER);
+		textSex.setEditable(false);
+		textSex.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(container, SWT.NONE);
+		
+		composite = new Composite(container, SWT.NONE);
+		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		
+		btnNewSex = new Button(composite, SWT.NONE);
+		btnNewSex.setText("New");
+		
+		btnBrowseSexes = new Button(composite, SWT.NONE);
+		btnBrowseSexes.setText("Browse");
+		
+		btnClearSex = new Button(composite, SWT.NONE);
+		btnClearSex.setText("Clear");
+		new Label(container, SWT.NONE);
 	}
 
 	/**
@@ -260,6 +288,54 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 */
 	public int getDeathDatePid() {
 		return DeathDatePid;
+	}
+
+	/**
+	 *
+	 */
+	private void getNewBirthDate() {
+		final DateDialog dialog = new DateDialog(textBirthDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				BirthDatePid = hdp.insert();
+				textBirthDate.setText(dialog.getLocalDate().toString());
+				if (textBirthDateSort.getText().length() == 0) {
+					textBirthDateSort.setText(dialog.getSortDate().toString());
+				}
+				textBirthOriginal.setText(dialog.getOriginal());
+				textBirthSurety.setText(dialog.getSurety());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void getNewDeathDate() {
+		final DateDialog dialog = new DateDialog(textDeathDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				DeathDatePid = hdp.insert();
+				textDeathDate.setText(dialog.getLocalDate().toString());
+				textDeathDateSort.setText(dialog.getSortDate().toString());
+				textDeathOriginal.setText(dialog.getOriginal());
+				textDeathSurety.setText(dialog.getSurety());
+			} catch (final Exception e1) {
+				LOGGER.severe(e1.getMessage());
+			}
+		}
 	}
 
 	/**

@@ -28,10 +28,9 @@ import net.myerichsen.hremvp.serverlogic.NameServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. jan. 2019
+ * @version 13. jan. 2019
  *
  */
-//Use LocalDate
 public class PersonServer {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -456,16 +455,17 @@ public class PersonServer {
 
 	/**
 	 * Insert a row
+	 * @return 
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		person.setBirthDatePid(birthDatePid);
 		person.setDeathDatePid(deathDatePid);
 		person.setPersonPid(personPid);
-		person.insert();
+		return person.insert();
 	}
 
 	/**
