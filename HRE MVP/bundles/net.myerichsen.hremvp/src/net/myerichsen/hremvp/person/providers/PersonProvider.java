@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Persons;
 import net.myerichsen.hremvp.person.servers.PersonServer;
 
 /**
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. jan. 2019
+ * @version 16. jan. 2019
  *
  */
 public class PersonProvider {
@@ -60,12 +61,12 @@ public class PersonProvider {
 	/**
 	 * Get all rows
 	 *
-	 * @return A list of lists of strings with pids and labels
+	 * @return A list persons
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<Persons> get() throws SQLException, MvpException {
 		return server.get();
 	}
 
@@ -130,6 +131,15 @@ public class PersonProvider {
 //	}
 
 	/**
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getAllNames() throws SQLException, MvpException {
+		return server.getAllNames();
+	}
+
+	/**
 	 * @return the birthDatePid
 	 */
 	public int getBirthDatePid() {
@@ -190,6 +200,14 @@ public class PersonProvider {
 	 */
 	public int getPersonPid() {
 		return personPid;
+	}
+
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getPrimaryName() throws SQLException {
+		return server.getPrimaryName();
 	}
 
 	/**

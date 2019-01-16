@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. jan. 2019
+ * @version 16. jan. 2019
  *
  */
 public class PersonServer {
@@ -93,7 +93,19 @@ public class PersonServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<Persons> get() throws SQLException, MvpException {
+		return person.get();
+	}
+
+	/**
+	 * Get all rows
+	 *
+	 * @return A list of lists of strings of pids and labels
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 */
+	public List<List<String>> getAllNames() throws SQLException, MvpException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -108,7 +120,7 @@ public class PersonServer {
 
 			nameList = new ArrayList<>();
 
-			// For each name get pid, name string and primary flag
+			// For each name get pid, name string, and primary flag
 			for (int i = 0; i < ln.size(); i++) {
 				stringList = new ArrayList<>();
 				name = ln.get(i);
@@ -123,9 +135,16 @@ public class PersonServer {
 
 		}
 
-		// FIXME Add events
-
 		return lls;
+	}
+
+	/**
+	 * @return The primary name
+	 * @throws SQLException 
+	 */
+	public String getPrimaryName() throws SQLException {
+		PersonNameServer pns = new PersonNameServer();
+		return pns.getPrimaryNameString(personPid);
 	}
 
 	/**

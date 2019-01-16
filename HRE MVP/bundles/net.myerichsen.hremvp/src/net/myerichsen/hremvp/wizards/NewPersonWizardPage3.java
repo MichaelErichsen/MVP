@@ -19,14 +19,13 @@ import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 14. jan. 2019
+ * @version 15. jan. 2019
  *
  */
+// FIXME Handle buttons
+
 public class NewPersonWizardPage3 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-	@SuppressWarnings("unused")
-	private final IEclipseContext context;
 
 	private int personNameStylePid;
 	private PersonNameMapProvider provider;
@@ -42,7 +41,6 @@ public class NewPersonWizardPage3 extends WizardPage {
 		super("wizardPage");
 		setTitle("Person Name Parts");
 		setDescription("Enter each part of the name");
-		this.context = context;
 	}
 
 	/*
@@ -69,7 +67,6 @@ public class NewPersonWizardPage3 extends WizardPage {
 
 			for (int i = 0; i < mapList.size(); i++) {
 				Label lblNewLabel = new Label(container, SWT.NONE);
-//				lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 				lblNewLabel.setText(mapList.get(i).getLabel());
 
 				Text text = new Text(container, SWT.BORDER);

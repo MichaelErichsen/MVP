@@ -100,7 +100,7 @@ public class PersonNavigator {
 		List<String> stringList;
 
 		try {
-			final List<List<String>> lls = provider.get();
+			final List<List<String>> lls = provider.getAllNames();
 			table.removeAll();
 			TableItem item;
 
