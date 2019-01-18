@@ -1,6 +1,8 @@
 package net.myerichsen.hremvp.wizards;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -22,26 +24,18 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Events;
-import net.myerichsen.hremvp.dialogs.EventTypeNavigatorDialog;
 import net.myerichsen.hremvp.dialogs.NewEventDialog;
 
 /**
  * Person events wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 17. jan. 2019
+ * @version 18. jan. 2019
  *
  */
 public class NewPersonWizardPage5 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
-
-//	@Inject
-//	private IEventBroker eventBroker;
-//	@Inject
-//	private ECommandService commandService;
-//	@Inject
-//	private EHandlerService handlerService;
 
 	private Table tableEvents;
 
@@ -50,11 +44,39 @@ public class NewPersonWizardPage5 extends WizardPage {
 	private TableColumn tblclmnToDate;
 	private TableViewerColumn tableViewerColumn_1;
 
+	private List<Integer> eventPidList;
+
 	public NewPersonWizardPage5(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("Person Events");
 		setDescription("Add events for the new person. More events can be added later.");
 		this.context = context;
+		setEventPidList(new ArrayList<>());
+	}
+
+	/**
+	 *
+	 */
+	protected void addEvent() {
+		final NewEventDialog dialog = new NewEventDialog(tableEvents.getShell(), context);
+
+		if (dialog.open() == Window.OK) {
+			try {
+				final List<String> eventStringList = dialog.getEventStringList();
+
+				final TableItem item = new TableItem(tableEvents, SWT.NONE);
+				item.setText(0, eventStringList.get(0));
+				item.setText(1, eventStringList.get(1));
+				item.setText(2, eventStringList.get(2));
+				item.setText(3, eventStringList.get(3));
+				item.setText(4, eventStringList.get(4));
+
+				eventPidList.add(Integer.parseInt(eventStringList.get(0)));
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
 	}
 
 	@Override
@@ -95,10 +117,10 @@ public class NewPersonWizardPage5 extends WizardPage {
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
 
-		Menu menu = new Menu(tableEvents);
+		final Menu menu = new Menu(tableEvents);
 		tableEvents.setMenu(menu);
 
-		MenuItem mntmNewEvent = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmNewEvent = new MenuItem(menu, SWT.NONE);
 		mntmNewEvent.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -107,7 +129,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 		});
 		mntmNewEvent.setText("New Event...");
 
-		MenuItem mntmDeleteSelectedEvent = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmDeleteSelectedEvent = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedEvent.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -119,52 +141,41 @@ public class NewPersonWizardPage5 extends WizardPage {
 	}
 
 	/**
-	 * 
-	 */
-	protected void addEvent() {
-		NewEventDialog dialog = new NewEventDialog(tableEvents.getShell(), context);
-		// FIX ME First display an event dialog
-//		EventTypeNavigatorDialog dialog = new EventTypeNavigatorDialog(tableEvents.getShell(), context);
-//
-		if (dialog.open() == Window.OK) {
-			try {
-//				int eventTypePid = dialog.getEventTypePid();
-////				final int personNameStylePid = dialog.getPersonNameStylePid();
-////				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
-////				pnsp.get(personNameStylePid);
-////				textPersonNameStyle.setText(pnsp.getLabel());
-////				NewPersonWizard wizard = (NewPersonWizard) getWizard();
-////				wizard.setPersonNameStylePid(personNameStylePid);
-////				setPageComplete(true);
-////				wizard.addPage3();
-////				wizard.getContainer().updateButtons();
-			} catch (final Exception e1) {
-				e1.printStackTrace();
-			}
-
-		}
-	}
-
-	/**
-	 * 
+	 *
 	 */
 	protected void deleteSelectedEvent() {
 		int eventPid;
 		Events event;
-		TableItem[] selectedRows = tableEvents.getSelection();
+		final TableItem[] selectedRows = tableEvents.getSelection();
 
 		try {
 			if (selectedRows.length > 0) {
-				TableItem selectedRow = selectedRows[0];
+				final TableItem selectedRow = selectedRows[0];
 				eventPid = Integer.parseInt(selectedRow.getText(0));
 				event = new Events();
 				event.get(eventPid);
 				event.delete();
+
+				eventPidList.remove(eventPid);
 				LOGGER.info("Deleted event " + eventPid);
 			}
 		} catch (NumberFormatException | SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @return the eventPidList
+	 */
+	public List<Integer> getEventPidList() {
+		return eventPidList;
+	}
+
+	/**
+	 * @param eventPidList the eventPidList to set
+	 */
+	public void setEventPidList(List<Integer> eventPidList) {
+		this.eventPidList = eventPidList;
 	}
 }

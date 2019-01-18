@@ -26,28 +26,15 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 14. jan. 2019
+ * @version 18. jan. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-//	private IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-
 	private final IEclipseContext context;
-
 	private Text textPersonNameStyle;
-	private Button btnBrowseNameStyle;
-	private Button btnClearNameStyle;
-
 	private Text textFromDate;
-	private Button btnNewFrom;
-	private Button btnBrowseFrom;
-	private Button btnClearFrom;
-
 	private Text textToDate;
-	private Button btnNewTo;
-	private Button btnBrowseTo;
-	private Button btnClearTo;
 
 	private int personNameStylePid;
 	private int fromDatePid;
@@ -60,8 +47,9 @@ public class NewPersonWizardPage2 extends WizardPage {
 	 */
 	public NewPersonWizardPage2(IEclipseContext context) {
 		super("wizardPage");
-		setTitle("Person name");
-		setDescription("Add a name for the new person. More names can be added later.");
+		setTitle("Person name style");
+		setDescription(
+				"Set the name style for the new person and optionally dates limiting the validity of the name. More names can be added later");
 		this.context = context;
 	}
 
@@ -97,7 +85,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 				NewPersonWizard wizard = (NewPersonWizard) getWizard();
 				wizard.setPersonNameStylePid(personNameStylePid);
 				setPageComplete(true);
-				wizard.addPage3();
+				wizard.addBackPages();
 				wizard.getContainer().updateButtons();
 			} catch (final Exception e1) {
 				e1.printStackTrace();
@@ -173,7 +161,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		final Composite compositeNameStyle = new Composite(container, SWT.NONE);
 		compositeNameStyle.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnBrowseNameStyle = new Button(compositeNameStyle, SWT.NONE);
+		Button btnBrowseNameStyle = new Button(compositeNameStyle, SWT.NONE);
 		btnBrowseNameStyle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -182,7 +170,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		});
 		btnBrowseNameStyle.setText("Browse");
 
-		btnClearNameStyle = new Button(compositeNameStyle, SWT.NONE);
+		Button btnClearNameStyle = new Button(compositeNameStyle, SWT.NONE);
 		btnClearNameStyle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -201,7 +189,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		final Composite compositeFrom = new Composite(container, SWT.NONE);
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -210,7 +198,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -219,7 +207,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -238,7 +226,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		final Composite compositeTo = new Composite(container, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnNewTo = new Button(compositeTo, SWT.NONE);
+		Button btnNewTo = new Button(compositeTo, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -247,7 +235,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		});
 		btnNewTo.setText("New");
 
-		btnBrowseTo = new Button(compositeTo, SWT.NONE);
+		Button btnBrowseTo = new Button(compositeTo, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -256,7 +244,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		btnClearTo = new Button(compositeTo, SWT.NONE);
+		Button btnClearTo = new Button(compositeTo, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {

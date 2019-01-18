@@ -22,22 +22,24 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.event.providers.EventTypeProvider;
+import net.myerichsen.hremvp.dbmodels.EventNames;
+import net.myerichsen.hremvp.event.providers.EventNameProvider;
 
 /**
- * Display all Event types
+ * Display all Event Names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. jan. 2019
+ * @version 18. jan. 2019
  *
  */
-public class EventTypeNavigatorDialog extends TitleAreaDialog {
+public class EventNameNavigatorDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEventBroker eventBroker;
 
-	private EventTypeProvider provider;
+	private EventNameProvider provider;
 	private Table table;
-	private int eventTypePid;
+	private int eventNamePid;
+	private String eventNameLabel;
 
 	/**
 	 * Create the dialog.
@@ -45,11 +47,11 @@ public class EventTypeNavigatorDialog extends TitleAreaDialog {
 	 * @param parentShell
 	 * @param context
 	 */
-	public EventTypeNavigatorDialog(Shell parentShell, IEclipseContext context) {
+	public EventNameNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
 		eventBroker = context.get(IEventBroker.class);
 		try {
-			provider = new EventTypeProvider();
+			provider = new EventNameProvider();
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -74,8 +76,8 @@ public class EventTypeNavigatorDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setMessage("Select an Event Type");
-		setTitle("Event Types");
+		setMessage("Select an Event Name");
+		setTitle("Event Names");
 		final Composite area = (Composite) super.createDialogArea(parent);
 		final Composite container = new Composite(area, SWT.NONE);
 		container.setLayout(new GridLayout(1, false));
@@ -90,7 +92,8 @@ public class EventTypeNavigatorDialog extends TitleAreaDialog {
 			public void widgetSelected(SelectionEvent e) {
 				final TableItem[] items = table.getSelection();
 				final TableItem selectedItem = items[0];
-				setEventTypePid(Integer.parseInt(selectedItem.getText(0)));
+				setEventNamePid(Integer.parseInt(selectedItem.getText(0)));
+				setEventNameLabel(selectedItem.getText(1));
 			}
 		});
 		table.setLinesVisible(true);
@@ -108,14 +111,14 @@ public class EventTypeNavigatorDialog extends TitleAreaDialog {
 		tblclmnHistoricalEvent.setText("Event");
 
 		try {
-			final List<List<String>> EventTypeList = provider.get();
+			final List<EventNames> EventNameList = provider.get();
 			table.removeAll();
 
-			for (int i = 0; i < EventTypeList.size(); i++) {
-				final List<String> type = EventTypeList.get(i);
+			for (int i = 0; i < EventNameList.size(); i++) {
+				EventNames eventName = EventNameList.get(i);
 				final TableItem item = new TableItem(table, SWT.NONE);
-				item.setText(0, type.get(0));
-				item.setText(1, type.get(1));
+				item.setText(0, Integer.toString(eventName.getEventNamePid()));
+				item.setText(1, eventName.getLabel());
 			}
 		} catch (final Exception e1) {
 			e1.printStackTrace();
@@ -127,10 +130,17 @@ public class EventTypeNavigatorDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @return the eventNameLabel
+	 */
+	public String getEventNameLabel() {
+		return eventNameLabel;
+	}
+
+	/**
 	 * @return the EventesPid
 	 */
-	public int getEventTypePid() {
-		return eventTypePid;
+	public int getEventNamePid() {
+		return eventNamePid;
 	}
 
 	/**
@@ -142,10 +152,17 @@ public class EventTypeNavigatorDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @param eventTypePid the eventTypePid to set
+	 * @param eventNameLabel the eventNameLabel to set
 	 */
-	public void setEventTypePid(int eventPid) {
-		this.eventTypePid = eventPid;
+	public void setEventNameLabel(String eventNameLabel) {
+		this.eventNameLabel = eventNameLabel;
+	}
+
+	/**
+	 * @param eventNamePid the eventNamePid to set
+	 */
+	public void setEventNamePid(int eventPid) {
+		eventNamePid = eventPid;
 	}
 
 }

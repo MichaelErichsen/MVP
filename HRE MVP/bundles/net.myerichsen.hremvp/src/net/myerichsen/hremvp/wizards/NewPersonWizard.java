@@ -10,18 +10,14 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 
 /**
- * Wizard to add a new person with sex, name, parents and events
+ * Wizard to add a new person with sex, name, parents, paprtner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 18. jan. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-//	@Inject
-//	private IEventBroker eventBroker;
-
 	private final IEclipseContext context;
 	private NewPersonWizardPage1 page1;
 	private NewPersonWizardPage2 page2;
@@ -47,7 +43,7 @@ public class NewPersonWizard extends Wizard {
 	/**
 	 *
 	 */
-	public void addPage3() {
+	public void addBackPages() {
 		page3 = new NewPersonWizardPage3(context);
 		addPage(page3);
 		page4 = new NewPersonWizardPage4(context);
@@ -128,6 +124,8 @@ public class NewPersonWizard extends Wizard {
 		context.get(IEventBroker.class);
 
 		try {
+			// Page 1
+			// Birth date, death date and sex
 			final PersonProvider personProvider = new PersonProvider();
 			personProvider.setBirthDatePid(page1.getBirthDatePid());
 			personProvider.setDeathDatePid(page1.getDeathDatePid());
@@ -141,6 +139,19 @@ public class NewPersonWizard extends Wizard {
 			final int sexPid = sexProvider.insert();
 			LOGGER.info("Inserted sex " + sexPid + " for person " + personPid);
 
+			// Page 2 
+			// Name validity dates
+			
+			// Page 3
+			// Name parts
+			
+			// Page 4 
+			// Primary father, mother and partner
+			
+			// Page 5
+			// Events
+			
+			
 //			PersonNameProvider lnp = new PersonNameProvider();
 //			lnp.setPersonPid(personPid);
 //			lnp.setFromDatePid(page2.getFromDatePid());

@@ -29,7 +29,6 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 14. jan. 2019
  *
  */
-// FIXME Add sex handling
 public class NewPersonWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
