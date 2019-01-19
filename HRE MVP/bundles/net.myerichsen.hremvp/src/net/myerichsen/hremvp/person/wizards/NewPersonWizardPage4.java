@@ -1,9 +1,10 @@
-package net.myerichsen.hremvp.wizards;
+package net.myerichsen.hremvp.person.wizards;
 
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -25,10 +26,10 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Person parents wizard page
+ * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. jan. 2019
+ * @version 19. jan. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
@@ -46,6 +47,11 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private Text textMotherBirthDate;
 	private Text textMotherDeathDate;
 
+	private Text textChildPersonPid;
+	private Text textChildName;
+	private Text textChildBirthDate;
+	private Text textChildDeathDate;
+
 	private Text textPartnerPersonPid;
 	private Text textPartnerName;
 	private Text textPartnerBirthDate;
@@ -54,6 +60,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private int fatherPid;
 	private int motherPid;
 	private int partnerPid;
+	private int childPid;
+	private IEventBroker eventBroker;
 
 	/**
 	 * Constructor
@@ -65,6 +73,28 @@ public class NewPersonWizardPage4 extends WizardPage {
 		setTitle("Person Primary Parents and Partner");
 		setDescription(
 				"Add primary parents and partner for the new person. More parents and partners can be added later.");
+		eventBroker = context.get(IEventBroker.class);
+	}
+
+	/**
+	 *
+	 */
+	protected void browseChild() {
+		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell);
+		if (dialog.open() == Window.OK) {
+			try {
+				childPid = dialog.getPersonPid();
+				textChildPersonPid.setText(Integer.toString(childPid));
+				textChildName.setText(dialog.getPersonName());
+				textChildBirthDate.setText(dialog.getBirthDate());
+				textChildDeathDate.setText(dialog.getDeathDate());
+			} catch (final Exception e) {
+				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
+			}
+
+		}
+
 	}
 
 	/**
@@ -81,6 +111,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				textFatherDeathDate.setText(dialog.getDeathDate());
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 			}
 
 		}
@@ -100,6 +131,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				textMotherDeathDate.setText(dialog.getDeathDate());
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 			}
 
 		}
@@ -119,10 +151,22 @@ public class NewPersonWizardPage4 extends WizardPage {
 				textPartnerDeathDate.setText(dialog.getDeathDate());
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 			}
 
 		}
 
+	}
+
+	/**
+	 *
+	 */
+	protected void clearChild() {
+		childPid = 0;
+		textChildPersonPid.setText("");
+		textChildName.setText("");
+		textChildBirthDate.setText("");
+		textChildDeathDate.setText("");
 	}
 
 	/**
@@ -268,6 +312,57 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearMother.setText("Clear");
 
+		final Label lblChild = new Label(container, SWT.NONE);
+		lblChild.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
+		lblChild.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		lblChild.setText("Child");
+
+		textChildPersonPid = new Text(container, SWT.BORDER);
+		textChildPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textChildName = new Text(container, SWT.BORDER);
+		textChildName.setEditable(false);
+		textChildName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textChildBirthDate = new Text(container, SWT.BORDER);
+		textChildBirthDate.setEditable(false);
+		textChildBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textChildDeathDate = new Text(container, SWT.BORDER);
+		textChildDeathDate.setEditable(false);
+		textChildDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		composite = new Composite(container, SWT.NONE);
+		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button btnUpdateChild = new Button(composite, SWT.NONE);
+		btnUpdateChild.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateChild();
+			}
+		});
+		btnUpdateChild.setText("Update");
+
+		final Button btnBrowseChild = new Button(composite, SWT.NONE);
+		btnBrowseChild.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseChild();
+			}
+		});
+		btnBrowseChild.setText("Browse");
+
+		final Button btnClearChild = new Button(composite, SWT.NONE);
+		btnClearChild.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearChild();
+			}
+		});
+		btnClearChild.setText("Clear");
+
 		final Label lblPartner = new Label(container, SWT.NONE);
 		lblPartner.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 		lblPartner.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
@@ -322,6 +417,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 	}
 
 	/**
+	 * @return the childPid
+	 */
+	public int getChildPid() {
+		return childPid;
+	}
+
+	/**
 	 * @return the fatherPid
 	 */
 	public int getFatherPid() {
@@ -340,6 +442,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 */
 	public int getPartnerPid() {
 		return partnerPid;
+	}
+
+	/**
+	 * @param childPid the childPid to set
+	 */
+	public void setChildPid(int childPid) {
+		this.childPid = childPid;
 	}
 
 	/**
@@ -366,6 +475,29 @@ public class NewPersonWizardPage4 extends WizardPage {
 	/**
 	 *
 	 */
+	protected void updateChild() {
+		childPid = Integer.parseInt(textChildPersonPid.getText());
+		PersonProvider provider;
+
+		try {
+			final HDateProvider dateProvider = new HDateProvider();
+			provider = new PersonProvider();
+			provider.get(childPid);
+			textChildName.setText(provider.getPrimaryName());
+			dateProvider.get(provider.getBirthDatePid());
+			textChildBirthDate.setText(dateProvider.getDate().toString());
+			dateProvider.get(provider.getDeathDatePid());
+			textChildDeathDate.setText(dateProvider.getDate().toString());
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 *
+	 */
 	protected void updateFather() {
 		fatherPid = Integer.parseInt(textFatherPersonPid.getText());
 		PersonProvider provider;
@@ -381,6 +513,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textFatherDeathDate.setText(dateProvider.getDate().toString());
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -403,6 +536,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textMotherDeathDate.setText(dateProvider.getDate().toString());
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -425,6 +559,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textPartnerDeathDate.setText(dateProvider.getDate().toString());
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}

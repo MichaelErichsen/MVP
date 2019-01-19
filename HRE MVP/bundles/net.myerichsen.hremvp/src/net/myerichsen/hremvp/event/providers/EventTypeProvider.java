@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.servers.EventTypeServer;
 
 /**
- * Provides all data for an event type
+ * Provides all data for an personEvent type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 11. dec. 2018

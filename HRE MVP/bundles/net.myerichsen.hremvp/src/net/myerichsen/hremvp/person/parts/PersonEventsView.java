@@ -216,7 +216,7 @@ public class PersonEventsView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -259,7 +259,7 @@ public class PersonEventsView {
 
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -272,7 +272,7 @@ public class PersonEventsView {
 			provider.insert();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -293,7 +293,7 @@ public class PersonEventsView {
 			eventPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		LOGGER.info("Setting event pid: " + eventPid);
+		LOGGER.info("Setting personEvent pid: " + eventPid);
 		eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
 	}
 
@@ -322,7 +322,7 @@ public class PersonEventsView {
 			provider.update();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 

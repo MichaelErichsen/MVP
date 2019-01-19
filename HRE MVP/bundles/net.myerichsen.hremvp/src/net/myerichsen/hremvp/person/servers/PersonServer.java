@@ -98,56 +98,6 @@ public class PersonServer {
 	}
 
 	/**
-	 * Get all rows
-	 *
-	 * @return A list of lists of strings of pids and labels
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	public List<List<String>> getAllNames() throws SQLException, MvpException {
-		final List<List<String>> lls = new ArrayList<>();
-		List<String> stringList;
-
-		final List<Persons> lnsl = person.get();
-
-		List<Names> ln;
-		Names name;
-		final PersonNameServer ns = new PersonNameServer();
-		for (final Persons person : lnsl) {
-			// Get all names of each person
-			ln = new Names().getFKPersonPid(person.getPersonPid());
-
-			nameList = new ArrayList<>();
-
-			// For each name get pid, name string, and primary flag
-			for (int i = 0; i < ln.size(); i++) {
-				stringList = new ArrayList<>();
-				name = ln.get(i);
-				if (name.isPrimaryName()) {
-					stringList.add(Integer.toString(name.getNamePid()));
-					ns.get(name.getNamePid());
-					stringList.add(ns.getNameStrings()[i]);
-					lls.add(stringList);
-					break;
-				}
-			}
-
-		}
-
-		return lls;
-	}
-
-	/**
-	 * @return The primary name
-	 * @throws SQLException 
-	 */
-	public String getPrimaryName() throws SQLException {
-		PersonNameServer pns = new PersonNameServer();
-		return pns.getPrimaryNameString(personPid);
-	}
-
-	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
@@ -266,6 +216,47 @@ public class PersonServer {
 	}
 
 	/**
+	 * Get all rows
+	 *
+	 * @return A list of lists of strings of pids and labels
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 */
+	public List<List<String>> getAllNames() throws SQLException, MvpException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		final List<Persons> lnsl = person.get();
+
+		List<Names> ln;
+		Names name;
+		final PersonNameServer ns = new PersonNameServer();
+		for (final Persons person : lnsl) {
+			// Get all names of each person
+			ln = new Names().getFKPersonPid(person.getPersonPid());
+
+			nameList = new ArrayList<>();
+
+			// For each name get pid, name string, and primary flag
+			for (int i = 0; i < ln.size(); i++) {
+				stringList = new ArrayList<>();
+				name = ln.get(i);
+				if (name.isPrimaryName()) {
+					stringList.add(Integer.toString(name.getNamePid()));
+					ns.get(name.getNamePid());
+					stringList.add(ns.getNameStrings()[i]);
+					lls.add(stringList);
+					break;
+				}
+			}
+
+		}
+
+		return lls;
+	}
+
+	/**
 	 * @return the birthDatePid
 	 */
 	public int getBirthDatePid() {
@@ -326,6 +317,15 @@ public class PersonServer {
 	 */
 	public int getPersonPid() {
 		return personPid;
+	}
+
+	/**
+	 * @return The primary name
+	 * @throws SQLException
+	 */
+	public String getPrimaryName() throws SQLException {
+		final PersonNameServer pns = new PersonNameServer();
+		return pns.getPrimaryNameString(personPid);
 	}
 
 	/**
@@ -473,7 +473,7 @@ public class PersonServer {
 
 	/**
 	 * Insert a row
-	 * 
+	 *
 	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database

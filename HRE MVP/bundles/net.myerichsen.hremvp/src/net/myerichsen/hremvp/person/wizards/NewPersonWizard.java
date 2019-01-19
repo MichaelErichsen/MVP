@@ -1,11 +1,13 @@
-package net.myerichsen.hremvp.wizards;
+package net.myerichsen.hremvp.person.wizards;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
+import net.myerichsen.hremvp.dbmodels.NameParts;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 
@@ -13,12 +15,13 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, paprtner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. jan. 2019
+ * @version 19. jan. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
+	
 	private NewPersonWizardPage1 page1;
 	private NewPersonWizardPage2 page2;
 	private NewPersonWizardPage3 page3;
@@ -27,6 +30,8 @@ public class NewPersonWizard extends Wizard {
 
 	private String personName;
 	private int personNameStylePid;
+	private int personPid;
+	private IEventBroker eventBroker;
 
 	/**
 	 * Constructor
@@ -38,6 +43,7 @@ public class NewPersonWizard extends Wizard {
 		setWindowTitle("New Person");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
+		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/**
@@ -115,6 +121,13 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @return the personPid
+	 */
+	public int getPersonPid() {
+		return personPid;
+	}
+
+	/**
 	 * /* (non-Javadoc)
 	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
@@ -129,7 +142,7 @@ public class NewPersonWizard extends Wizard {
 			final PersonProvider personProvider = new PersonProvider();
 			personProvider.setBirthDatePid(page1.getBirthDatePid());
 			personProvider.setDeathDatePid(page1.getDeathDatePid());
-			final int personPid = personProvider.insert();
+			personPid = personProvider.insert();
 			LOGGER.info("Inserted person " + personPid);
 
 			final SexProvider sexProvider = new SexProvider();
@@ -139,19 +152,76 @@ public class NewPersonWizard extends Wizard {
 			final int sexPid = sexProvider.insert();
 			LOGGER.info("Inserted sex " + sexPid + " for person " + personPid);
 
-			// Page 2 
+			// Page 2
 			// Name validity dates
-			
+			final List<String> nameParts = page3.getNameParts();
+			// Create a new name
+//			private int NamePid;
+//			private int PersonPid;
+//			private boolean PrimaryName;
+//			private int NameStylePid;
+//			private int TableId;
+//			private int FromDatePid;
+//			private int ToDatePid;
+
 			// Page 3
 			// Name parts
-			
-			// Page 4 
+			NameParts part;
+
+			for (final String string : nameParts) {
+				if ((string != null) && !(string.equals(""))) {
+
+					part = new NameParts();
+//					private int NamePartPid;
+//					private int NamePid;
+//					private String Label;
+//					private int PartNo;
+					part.setLabel(string);
+				}
+			}
+
+			// Page 4
 			// Primary father, mother and partner
-			
+//			private int ParentPid;
+//			private int Child;
+//			private int Parent;
+//			private String ParentRole;
+//			private boolean PrimaryParent;
+//			private int LanguagePid;
+
+//			private int PartnerPid;
+//			private int Partner1;
+//			private int Partner2;
+//			private boolean PrimaryPartner;
+//			private String Role;
+//			private int FromDatePid;
+//			private int ToDatePid;
+
+			page4.getFatherPid();
+			page4.getMotherPid();
+			page4.getPartnerPid();
+
 			// Page 5
 			// Events
-			
-			
+
+//			private int EventPid;
+//			private int FromDatePid;
+//			private int ToDatePid;
+//			private int EventNamePid;
+
+			// Get all new events
+			// Create person/personEvent objects for each
+
+//			List<Integer> eventPidList = page5.getEventPidList();
+//
+//			for (Integer eventPid : eventPidList) {
+//				EventProvider ep = new EventProvider();
+//				ep.setEventNamePid(eventNamePid);
+//				ep.setFromDatePid(i);
+//				ep.setToDatePid(todate);
+//				ep.insert();
+//			}
+
 //			PersonNameProvider lnp = new PersonNameProvider();
 //			lnp.setPersonPid(personPid);
 //			lnp.setFromDatePid(page2.getFromDatePid());
@@ -183,6 +253,7 @@ public class NewPersonWizard extends Wizard {
 			return true;
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 //			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
@@ -201,6 +272,13 @@ public class NewPersonWizard extends Wizard {
 	 */
 	public void setPersonNameStylePid(int personNameStylePid) {
 		this.personNameStylePid = personNameStylePid;
+	}
+
+	/**
+	 * @param personPid the personPid to set
+	 */
+	public void setPersonPid(int personPid) {
+		this.personPid = personPid;
 	}
 
 }

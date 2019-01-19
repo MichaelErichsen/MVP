@@ -3,6 +3,9 @@ package net.myerichsen.hremvp.dialogs;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.TableViewer;
@@ -28,11 +31,14 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all persons.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. jan. 2019
+ * @version 19. jan. 2019
  *
  */
 // TODO Add filtering
 public class PersonNavigatorDialog extends TitleAreaDialog {
+	@Inject
+	private IEventBroker eventBroker;
+
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private PersonProvider provider;
@@ -55,6 +61,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 			provider = new PersonProvider();
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -127,7 +134,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 			final HDateProvider dateProvider = new HDateProvider();
 			int loopPid;
 
-			for (Persons person : personList) {
+			for (final Persons person : personList) {
 				final TableItem item = new TableItem(table, SWT.NONE);
 				loopPid = person.getPersonPid();
 				item.setText(0, Integer.toString(loopPid));
@@ -140,6 +147,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 			}
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 
 		return area;

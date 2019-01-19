@@ -54,6 +54,14 @@ public class PersonNameStyleServer {
 	}
 
 	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NameStyles> get() throws SQLException {
+		return style.get();
+	}
+
+	/**
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
@@ -210,13 +218,5 @@ public class PersonNameStyleServer {
 		style.setLanguagePid(languagePid);
 		style.setNameStylePid(nameStylePid);
 		style.update();
-	}
-
-	/**
-	 * @return
-	 * @throws SQLException 
-	 */
-	public List<NameStyles> get() throws SQLException {
-		return style.get();
 	}
 }

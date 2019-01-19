@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import net.myerichsen.hremvp.wizards.NewEventTypeWizard;
 
 /**
- * Open the new event type wizard
+ * Open the new personEvent type wizard
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 27. nov. 2018

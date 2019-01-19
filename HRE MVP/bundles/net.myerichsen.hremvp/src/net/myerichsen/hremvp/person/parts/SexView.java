@@ -272,7 +272,7 @@ public class SexView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -320,7 +320,7 @@ public class SexView {
 			eventBroker.post("MESSAGE", "Name " + textId.getText() + " has been fetched");
 		} catch (final SQLException | MvpException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}

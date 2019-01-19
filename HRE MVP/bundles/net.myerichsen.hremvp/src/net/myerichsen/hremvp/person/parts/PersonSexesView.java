@@ -205,7 +205,7 @@ public class PersonSexesView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -244,7 +244,7 @@ public class PersonSexesView {
 
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -257,7 +257,7 @@ public class PersonSexesView {
 			provider.insert();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -307,7 +307,7 @@ public class PersonSexesView {
 			provider.update();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 

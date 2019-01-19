@@ -6,7 +6,7 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 /**
- * Switch perspective to event perspective
+ * Switch perspective to personEvent perspective
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 21. nov. 2018

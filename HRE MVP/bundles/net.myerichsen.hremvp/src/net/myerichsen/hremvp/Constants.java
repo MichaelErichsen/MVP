@@ -1,7 +1,7 @@
 package net.myerichsen.hremvp;
 
 /**
- * Constants used by database access and event handling
+ * Constants used by database access and personEvent handling
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 2. jan. 2019

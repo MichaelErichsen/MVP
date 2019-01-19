@@ -212,7 +212,7 @@ public class NameMapView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -246,7 +246,7 @@ public class NameMapView {
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -263,7 +263,7 @@ public class NameMapView {
 			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been inserted");
 		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -298,7 +298,7 @@ public class NameMapView {
 			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been updated");
 		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 }

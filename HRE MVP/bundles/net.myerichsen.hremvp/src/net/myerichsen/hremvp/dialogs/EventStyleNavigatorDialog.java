@@ -52,7 +52,7 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 		try {
 			provider = new EventTypeProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}

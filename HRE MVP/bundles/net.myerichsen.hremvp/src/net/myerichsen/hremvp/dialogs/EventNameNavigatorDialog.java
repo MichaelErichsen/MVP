@@ -53,7 +53,7 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 		try {
 			provider = new EventNameProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -115,7 +115,7 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 			table.removeAll();
 
 			for (int i = 0; i < EventNameList.size(); i++) {
-				EventNames eventName = EventNameList.get(i);
+				final EventNames eventName = EventNameList.get(i);
 				final TableItem item = new TableItem(table, SWT.NONE);
 				item.setText(0, Integer.toString(eventName.getEventNamePid()));
 				item.setText(1, eventName.getLabel());

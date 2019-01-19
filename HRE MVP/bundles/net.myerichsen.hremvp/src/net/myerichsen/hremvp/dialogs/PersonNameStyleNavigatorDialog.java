@@ -4,8 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -34,15 +37,15 @@ import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 14. jan. 2019
+ * @version 19. jan. 2019
  *
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	@Inject
+	private IEventBroker eventBroker;
 
-//	private IEclipseContext context;
-//	private final IEventBroker eventBroker;
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	private PersonNameStyleProvider provider;
 
@@ -61,8 +64,9 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 //		eventBroker = context.get(IEventBroker.class);
 		try {
 			provider = new PersonNameStyleProvider();
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -97,8 +101,8 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				TableItem[] items = table.getSelection();
-				TableItem selectedItem = items[0];
+				final TableItem[] items = table.getSelection();
+				final TableItem selectedItem = items[0];
 				setPersonNameStylePid(Integer.parseInt(selectedItem.getText(0)));
 			}
 		});
@@ -121,22 +125,22 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		tblclmnLanguage.setWidth(100);
 		tblclmnLanguage.setText("Language");
 
-		TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnIsoCode = tableViewerColumn_3.getColumn();
+		final TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnIsoCode = tableViewerColumn_3.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
 
-		int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
+		final int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
 		int currentStyle;
 
 		try {
-			List<NameStyles> nameStyleList = provider.get();
+			final List<NameStyles> nameStyleList = provider.get();
 			table.removeAll();
 			Languages language;
 
 			for (int i = 0; i < nameStyleList.size(); i++) {
-				NameStyles style = nameStyleList.get(i);
-				TableItem item = new TableItem(table, SWT.NONE);
+				final NameStyles style = nameStyleList.get(i);
+				final TableItem item = new TableItem(table, SWT.NONE);
 				personNameStylePid = style.getNameStylePid();
 				item.setText(0, Integer.toString(personNameStylePid));
 				item.setText(1, style.getLabel());
@@ -151,8 +155,9 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 					table.setSelection(i);
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 
 		return area;

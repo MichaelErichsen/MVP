@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. nov. 2018
+ * @version 19. jan. 2019
  *
  */
 // FIXME Create
@@ -33,6 +33,8 @@ public class NewEventWizard extends Wizard {
 	private int locationNameStyle = 0;
 	private String locationName;
 
+	private IEventBroker eventBroker;
+
 	/**
 	 * Constructor
 	 *
@@ -43,6 +45,7 @@ public class NewEventWizard extends Wizard {
 		setWindowTitle("New Location");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
+		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/**
@@ -123,8 +126,6 @@ public class NewEventWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		final IEventBroker eventBroker = context.get(IEventBroker.class);
-
 		try {
 			final LocationProvider lp = new LocationProvider();
 			lp.setFromDatePid(page1.getFromDatePid());

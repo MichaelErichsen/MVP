@@ -60,7 +60,7 @@ public class LocationNavigator {
 	public LocationNavigator() {
 		try {
 			provider = new LocationProvider();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -69,7 +69,7 @@ public class LocationNavigator {
 
 	/**
 	 * Create contents of the view part.
-	 * 
+	 *
 	 * @param parent
 	 * @param menuService
 	 */
@@ -77,7 +77,7 @@ public class LocationNavigator {
 	public void createControls(Composite parent, EMenuService menuService) {
 		parent.setLayout(new GridLayout(1, false));
 
-		TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -90,35 +90,36 @@ public class LocationNavigator {
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
-		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnPrimaryLocationName = tableViewerColumn_1.getColumn();
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnPrimaryLocationName = tableViewerColumn_1.getColumn();
 		tblclmnPrimaryLocationName.setWidth(400);
 		tblclmnPrimaryLocationName.setText("Primary Location Name");
 
 		List<String> stringList;
 
 		try {
-			List<List<String>> lls = provider.get();
+			final List<List<String>> lls = provider.get();
 			table.removeAll();
 			TableItem item;
 
 			for (int i = 0; i < lls.size(); i++) {
 				stringList = lls.get(i);
-				
+
 				if (stringList.get(1).trim().length() > 0) {
 
-				item = new TableItem(table, SWT.NONE);
+					item = new TableItem(table, SWT.NONE);
 
-				for (int j = 0; j < stringList.size(); j++) {
-					item.setText(j, stringList.get(j).trim());
-				}				}
+					for (int j = 0; j < stringList.size(); j++) {
+						item.setText(j, stringList.get(j).trim());
+					}
+				}
 			}
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
@@ -133,7 +134,7 @@ public class LocationNavigator {
 	 *
 	 */
 	protected void openLocationView() {
-		String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView";
 
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();

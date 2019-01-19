@@ -88,7 +88,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage implements I
 						{ "English", "ENGLISH" }, { "Norsk", "NORWEGIAN" }, { "US English", "USENGLISH" } },
 				getFieldEditorParent());
 		addField(comboGuiLanguage);
-		
+
 		// FIXME Should be populated from database table
 		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
 				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } }, getFieldEditorParent()));

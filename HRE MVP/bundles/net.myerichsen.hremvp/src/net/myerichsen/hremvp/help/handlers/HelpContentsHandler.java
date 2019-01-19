@@ -12,7 +12,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * Handler to open the help system in an external browser.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 7. jan. 2019
  *
@@ -23,7 +23,7 @@ public class HelpContentsHandler {
 	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	/**
-	 * 
+	 *
 	 */
 	@Execute
 	public void execute() {

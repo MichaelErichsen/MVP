@@ -1,8 +1,9 @@
-package net.myerichsen.hremvp.wizards;
+package net.myerichsen.hremvp.person.wizards;
 
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -26,7 +27,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 19. jan. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -37,26 +38,19 @@ public class NewPersonWizardPage1 extends WizardPage {
 	private Text textBirthDateSort;
 	private Text textBirthOriginal;
 	private Text textBirthSurety;
-	private Button btnNewBirth;
-	private Button btnBrowseBirth;
-	private Button btnClearBirth;
 
 	private Text textDeathDate;
 	private Text textDeathDateSort;
 	private Text textDeathOriginal;
 	private Text textDeathSurety;
-	private Button btnNewDeath;
-	private Button btnBrowseDeath;
-	private Button btnClearDeath;
 
 	private Text textSexTypePid;
 	private Text textSex;
-	private Button btnBrowseSexes;
-	private Button btnClearSex;
 
 	private int BirthDatePid;
 	private int DeathDatePid;
 	private int sexTypePid;
+	private IEventBroker eventBroker;
 
 	/**
 	 * Constructor
@@ -69,6 +63,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		setTitle("New Person");
 		setDescription("Create a new person by entering static data for it.");
 		this.context = context;
+		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/**
@@ -126,6 +121,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				textSex.setText(provider.getSexTypeLabel());
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -198,7 +194,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		compositeBirth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeBirth.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnNewBirth = new Button(compositeBirth, SWT.NONE);
+		Button btnNewBirth = new Button(compositeBirth, SWT.NONE);
 		btnNewBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -207,7 +203,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewBirth.setText("New");
 
-		btnBrowseBirth = new Button(compositeBirth, SWT.NONE);
+		Button btnBrowseBirth = new Button(compositeBirth, SWT.NONE);
 		btnBrowseBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -216,7 +212,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseBirth.setText("Browse");
 
-		btnClearBirth = new Button(compositeBirth, SWT.NONE);
+		Button btnClearBirth = new Button(compositeBirth, SWT.NONE);
 		btnClearBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -250,7 +246,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		compositeDeath.setLayout(new RowLayout(SWT.HORIZONTAL));
 		compositeDeath.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		btnNewDeath = new Button(compositeDeath, SWT.NONE);
+		Button btnNewDeath = new Button(compositeDeath, SWT.NONE);
 		btnNewDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -259,7 +255,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewDeath.setText("New");
 
-		btnBrowseDeath = new Button(compositeDeath, SWT.NONE);
+		Button btnBrowseDeath = new Button(compositeDeath, SWT.NONE);
 		btnBrowseDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -268,7 +264,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseDeath.setText("Browse");
 
-		btnClearDeath = new Button(compositeDeath, SWT.NONE);
+		Button btnClearDeath = new Button(compositeDeath, SWT.NONE);
 		btnClearDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -294,7 +290,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		compositeSex.setLayout(new RowLayout(SWT.HORIZONTAL));
 		compositeSex.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		btnBrowseSexes = new Button(compositeSex, SWT.NONE);
+		Button btnBrowseSexes = new Button(compositeSex, SWT.NONE);
 		btnBrowseSexes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -303,7 +299,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseSexes.setText("Browse");
 
-		btnClearSex = new Button(compositeSex, SWT.NONE);
+		Button btnClearSex = new Button(compositeSex, SWT.NONE);
 		btnClearSex.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -400,6 +396,6 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 * @param sexTypePid the sexTypePid to set
 	 */
 	public void setSexTypePid(int sexPid) {
-		this.sexTypePid = sexPid;
+		sexTypePid = sexPid;
 	}
 }

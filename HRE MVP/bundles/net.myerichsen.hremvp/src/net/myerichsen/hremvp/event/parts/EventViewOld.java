@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Display all data about an event
+ * Display all data about an personEvent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 11. dec. 2018

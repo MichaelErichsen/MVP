@@ -35,9 +35,9 @@ import net.myerichsen.hremvp.person.providers.SexTypeProvider;
 public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	IEclipseContext context;
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
-	private SexTypeProvider provider;
+	private final SexTypeProvider provider;
 	private Table table;
 	private int SexesPid;
 
@@ -74,20 +74,20 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		setMessage("Select a Sex");
 		setTitle("Sexes");
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
+		final Composite area = (Composite) super.createDialogArea(parent);
+		final Composite container = new Composite(area, SWT.NONE);
 		container.setLayout(new GridLayout(1, false));
-		GridData gd_container = new GridData(GridData.FILL_BOTH);
+		final GridData gd_container = new GridData(GridData.FILL_BOTH);
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
-		TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				TableItem[] items = table.getSelection();
-				TableItem selectedItem = items[0];
+				final TableItem[] items = table.getSelection();
+				final TableItem selectedItem = items[0];
 				setSexesPid(Integer.parseInt(selectedItem.getText(0)));
 			}
 		});
@@ -95,28 +95,28 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnHistoricalSex = tableViewerColumn_1.getColumn();
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnHistoricalSex = tableViewerColumn_1.getColumn();
 		tblclmnHistoricalSex.setWidth(100);
 		tblclmnHistoricalSex.setText("Sex");
 
 		try {
-			List<SexTypes> sexTypeList = provider.get();
+			final List<SexTypes> sexTypeList = provider.get();
 			table.removeAll();
 
 			for (int i = 0; i < sexTypeList.size(); i++) {
-				SexTypes type = sexTypeList.get(i);
-				TableItem item = new TableItem(table, SWT.NONE);
+				final SexTypes type = sexTypeList.get(i);
+				final TableItem item = new TableItem(table, SWT.NONE);
 				SexesPid = type.getSexTypePid();
 				item.setText(0, Integer.toString(SexesPid));
 				item.setText(1, type.getLabel());
 			}
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());

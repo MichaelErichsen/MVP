@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
@@ -24,34 +29,39 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.event.providers.EventNameProvider;
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Dialog to create a new event
+ * Dialog to create a new personEvent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 18. jan. 2019
+ * @version 19. jan. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
+	@Inject
+	private IEventBroker eventBroker;
+
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
 	private Text textEventStylePid;
 	private Text textEventStyleLabel;
+	private Text textEventNamePid;
+	private Text textEventNameLabel;
 	private Text textRole;
 	private Text textFromDate;
 	private Text textToDate;
 
 	private final List<String> eventStringList;
-	private int eventPid;
-	private String label;
-	private String role;
+//	private String styleLabel;
+	private String nameLabel;
+	private int eventNamePid;
+	private String role = "";
 	private int fromDatePid;
 	private int toDatePid;
-	private Text textEventNamePid;
-	private Text textEventNameLabel;
 
 	/**
 	 * Create the dialog.
@@ -73,12 +83,13 @@ public class NewEventDialog extends TitleAreaDialog {
 
 		if (dialog.open() == Window.OK) {
 			try {
-				final int eventNamePid = dialog.getEventNamePid();
+				eventNamePid = dialog.getEventNamePid();
 				textEventNamePid.setText(Integer.toString(eventNamePid));
-				label = dialog.getEventNameLabel();
-				textEventNameLabel.setText(label);
+				nameLabel = dialog.getEventNameLabel();
+				textEventNameLabel.setText(nameLabel);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 			}
 		}
 	}
@@ -93,10 +104,11 @@ public class NewEventDialog extends TitleAreaDialog {
 			try {
 				final int eventStylePid = dialog.getEventTypePid();
 				textEventStylePid.setText(Integer.toString(eventStylePid));
-				label = dialog.getEventTypeLabel();
-				textEventStyleLabel.setText(label);
+				final String styleLabel = dialog.getEventTypeLabel();
+				textEventStyleLabel.setText(styleLabel);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 			}
 		}
 	}
@@ -139,8 +151,10 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	protected void clearEventName() {
-		// TODO Auto-generated method stub
-
+		textEventNameLabel.setText("");
+		textEventNamePid.setText("");
+		eventNamePid = 0;
+		nameLabel = "";
 	}
 
 	/**
@@ -149,7 +163,7 @@ public class NewEventDialog extends TitleAreaDialog {
 	protected void clearEventStyle() {
 		textEventStyleLabel.setText("");
 		textEventStylePid.setText("");
-		label = "";
+//		styleLabel = "";
 	}
 
 	/**
@@ -295,6 +309,12 @@ public class NewEventDialog extends TitleAreaDialog {
 		lblRole.setText("Role");
 
 		textRole = new Text(container, SWT.BORDER);
+		textRole.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				role = textRole.getText();
+			}
+		});
 		textRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblFromDate = new Label(container, SWT.NONE);
@@ -386,10 +406,10 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @return the eventPid
+	 * @return the eventNamePid
 	 */
-	public int getEventPid() {
-		return eventPid;
+	public int getEventNamePid() {
+		return eventNamePid;
 	}
 
 	/**
@@ -399,11 +419,7 @@ public class NewEventDialog extends TitleAreaDialog {
 		HDateProvider hdateProvider;
 
 		eventStringList.clear();
-		if (eventPid == 0) {
-			return null;
-		}
-		eventStringList.add(Integer.toString(eventPid));
-		eventStringList.add(label);
+		eventStringList.add(nameLabel);
 		eventStringList.add(role);
 
 		if (fromDatePid != 0) {
@@ -413,6 +429,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (SQLException | MvpException e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("");
 			}
 		} else {
@@ -426,6 +443,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (SQLException | MvpException e) {
 				LOGGER.severe(e.getMessage());
+				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("");
 			}
 		} else {
@@ -450,11 +468,18 @@ public class NewEventDialog extends TitleAreaDialog {
 		return new Point(373, 455);
 	}
 
+//	/**
+//	 * @return the styleLabel
+//	 */
+//	public String getStyleLabel() {
+//		return styleLabel;
+//	}
+
 	/**
-	 * @return the label
+	 * @return the nameLabel
 	 */
-	public String getLabel() {
-		return label;
+	public String getNameLabel() {
+		return nameLabel;
 	}
 
 	/**
@@ -519,10 +544,10 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @param eventPid the eventPid to set
+	 * @param eventNamePid the eventNamePid to set
 	 */
-	public void setEventPid(int eventPid) {
-		this.eventPid = eventPid;
+	public void setEventNamePid(int eventNamePid) {
+		this.eventNamePid = eventNamePid;
 	}
 
 	/**
@@ -532,11 +557,18 @@ public class NewEventDialog extends TitleAreaDialog {
 		this.fromDatePid = fromDatePid;
 	}
 
+//	/**
+//	 * @param styleLabel the styleLabel to set
+//	 */
+//	public void setStyleLabel(String label) {
+//		styleLabel = label;
+//	}
+
 	/**
-	 * @param label the label to set
+	 * @param nameLabel the nameLabel to set
 	 */
-	public void setLabel(String label) {
-		this.label = label;
+	public void setNameLabel(String nameLabel) {
+		this.nameLabel = nameLabel;
 	}
 
 	/**
@@ -564,8 +596,17 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	protected void updateEventName() {
-		// TODO Auto-generated method stub
-
+		try {
+			final EventNameProvider provider = new EventNameProvider();
+			eventNamePid = Integer.parseInt(textEventNamePid.getText());
+			provider.get(eventNamePid);
+			nameLabel = provider.getLabel();
+			textEventNameLabel.setText(nameLabel);
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -575,10 +616,11 @@ public class NewEventDialog extends TitleAreaDialog {
 		try {
 			final EventTypeProvider provider = new EventTypeProvider();
 			provider.get(Integer.parseInt(textEventStylePid.getText()));
-			label = provider.getLabel();
-			textEventStyleLabel.setText(label);
+			final String styleLabel = provider.getLabel();
+			textEventStyleLabel.setText(styleLabel);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}

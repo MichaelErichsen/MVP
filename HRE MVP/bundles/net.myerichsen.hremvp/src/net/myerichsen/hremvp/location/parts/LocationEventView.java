@@ -180,7 +180,7 @@ public class LocationEventView {
 			eventPid = selectedRow.getText(0);
 		}
 
-		LOGGER.info("Setting event pid: " + eventPid);
+		LOGGER.info("Setting personEvent pid: " + eventPid);
 		eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, Integer.parseInt(eventPid));
 	}
 

@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. dec. 2018
+ * @version 18. jan. 2019
  *
  */
 public class EventServer {
@@ -289,13 +289,13 @@ public class EventServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		event.setEventPid(EventPid);
 		event.setTableId(Constants.EVENTS_TABLE_ID);
 		event.setFromDatePid(FromDatePid);
 		event.setToDatePid(ToDatePid);
 		event.setEventNamePid(EventNamePid);
-		event.insert();
+		return event.insert();
 	}
 
 	/**

@@ -51,16 +51,11 @@ import java.util.Objects;
 public class IslamicCalendar extends Almanac {
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1012965259007700581L;
-
-	/**
 	 * The calendar type (astronomical versus civil). This determines the starting
 	 * epoch.
 	 */
 	public enum CalendarType {
-	CIVIL(0), ASTRONOMICAL(1);
+		CIVIL(0), ASTRONOMICAL(1);
 
 		private final int value;
 
@@ -79,6 +74,11 @@ public class IslamicCalendar extends Almanac {
 	public enum LeapYearRule {
 		WEST_ISLAMIC, EAST_ISLAMIC, TAIYABI_ISMAILI, HABASH_AL_HASIB
 	}
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1012965259007700581L;
 
 	public static final String CALENDAR_NAME = "Islamic Calendar";
 	public static final JulianDay EPOCH = new JulianDay(1948439.5);
@@ -106,7 +106,7 @@ public class IslamicCalendar extends Almanac {
 
 	/**
 	 * Constructs a new Islamic Calendar from a {@link java.util.Calendar}.
-	 * 
+	 *
 	 * @param cal a {@link java.util.Calendar}.
 	 */
 	public IslamicCalendar(Calendar cal) {
@@ -195,7 +195,7 @@ public class IslamicCalendar extends Almanac {
 	 * @return an array[12] of month lengths
 	 */
 	public static int[] getDaysPerMonthInYear(int year, LeapYearRule leapYearRule) {
-		int[] days = new int[12];
+		final int[] days = new int[12];
 		for (int i = 0; i < 12; ++i) {
 			days[i] = getNumberOfDaysInMonthInYear(i + 1, year, leapYearRule);
 		}
@@ -269,7 +269,7 @@ public class IslamicCalendar extends Almanac {
 	 */
 	public static int getNumberOfDaysInYear(int year, LeapYearRule leapYearRule) {
 		int sum = 0;
-		int[] days = getDaysPerMonthInYear(year, leapYearRule);
+		final int[] days = getDaysPerMonthInYear(year, leapYearRule);
 		for (int i = 0; i < 12; ++i) {
 			sum += days[i];
 		}
@@ -458,7 +458,7 @@ public class IslamicCalendar extends Almanac {
 	 */
 	@Override
 	public void set(Almanac a) {
-		IslamicCalendar cal = toIslamicCalendar(a);
+		final IslamicCalendar cal = toIslamicCalendar(a);
 		year = cal.getYear();
 		month = cal.getMonth();
 		day = cal.getDay();

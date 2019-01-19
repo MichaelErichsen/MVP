@@ -8,10 +8,10 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.servers.EventServer;
 
 /**
- * Provides all data about an event
+ * Provides all data about an personEvent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jan. 2019
+ * @version 18. jan. 2019
  *
  */
 public class EventProvider {
@@ -226,12 +226,12 @@ public class EventProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		server.setEventPid(EventPid);
 		server.setFromDatePid(FromDatePid);
 		server.setToDatePid(ToDatePid);
 		server.setEventNamePid(EventNamePid);
-		server.insert();
+		return server.insert();
 	}
 
 	/**

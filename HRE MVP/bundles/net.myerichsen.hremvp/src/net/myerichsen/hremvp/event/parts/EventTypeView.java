@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 
 /**
- * Display all data about an event type
+ * Display all data about an personEvent type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 11. dec. 2018

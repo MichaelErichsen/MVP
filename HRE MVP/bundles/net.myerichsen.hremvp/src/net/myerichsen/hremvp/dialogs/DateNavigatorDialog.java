@@ -36,8 +36,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEclipseContext context;
-	private IEventBroker eventBroker;
+	private final IEclipseContext context;
+	private final IEventBroker eventBroker;
 
 	private HDateProvider provider;
 	private Table table;
@@ -55,9 +55,9 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		eventBroker = context.get(IEventBroker.class);
 		try {
 			provider = new HDateProvider();
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -81,14 +81,14 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		setMessage("Select a date. View details by double clicking");
 		setTitle("Dates");
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
+		final Composite area = (Composite) super.createDialogArea(parent);
+		final Composite container = new Composite(area, SWT.NONE);
 		container.setLayout(new GridLayout(1, false));
-		GridData gd_container = new GridData(GridData.FILL_BOTH);
+		final GridData gd_container = new GridData(GridData.FILL_BOTH);
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
-		TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -99,8 +99,8 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				TableItem[] items = table.getSelection();
-				TableItem selectedItem = items[0];
+				final TableItem[] items = table.getSelection();
+				final TableItem selectedItem = items[0];
 				setHdatePid(Integer.parseInt(selectedItem.getText(0)));
 			}
 		});
@@ -108,18 +108,18 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnHistoricalDate = tableViewerColumn_1.getColumn();
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnHistoricalDate = tableViewerColumn_1.getColumn();
 		tblclmnHistoricalDate.setWidth(100);
 		tblclmnHistoricalDate.setText("Historical Date");
 
-		TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnOriginalInputFormat = tableViewerColumn_2.getColumn();
+		final TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnOriginalInputFormat = tableViewerColumn_2.getColumn();
 		tblclmnOriginalInputFormat.setWidth(240);
 		tblclmnOriginalInputFormat.setText("Original Input Format");
 
@@ -127,7 +127,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		String[] sa;
 
 		try {
-			List<String> stringList = provider.get();
+			final List<String> stringList = provider.get();
 			table.removeAll();
 
 			for (int i = 0; i < stringList.size(); i++) {
@@ -135,7 +135,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 				sa = string.split("¤%&");
 
 				if ((sa.length > 1) && (sa[1].trim().length() > 0)) {
-					TableItem item = new TableItem(table, SWT.NONE);
+					final TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(0, sa[0]);
 					item.setText(1, sa[1].trim());
 					if ((sa.length > 2) && (sa[2].trim().length() > 0)) {
@@ -143,7 +143,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 					}
 				}
 			}
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
@@ -173,10 +173,10 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 	 *
 	 */
 	protected void openDateDialog(Shell shell) {
-		TableItem[] items = table.getSelection();
-		TableItem selectedItem = items[0];
+		final TableItem[] items = table.getSelection();
+		final TableItem selectedItem = items[0];
 		setHdatePid(Integer.parseInt(selectedItem.getText(0)));
-		DateDialog dateDialog = new DateDialog(shell, context, hdatePid);
+		final DateDialog dateDialog = new DateDialog(shell, context, hdatePid);
 		dateDialog.open();
 	}
 

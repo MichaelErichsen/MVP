@@ -19,7 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * Singleton class encapsulating a list of project model objects.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 6. jan. 2019
  *
@@ -31,6 +31,12 @@ public class ProjectList {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static List<ProjectModel> models;
+
+	/**
+	 * Exists only to defeat instantiation
+	 */
+	protected ProjectList() {
+	}
 
 	/**
 	 * @param model
@@ -84,7 +90,7 @@ public class ProjectList {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static void readPreferences() {
 		String key;
@@ -97,7 +103,7 @@ public class ProjectList {
 		ProjectModel model;
 
 		if (models == null) {
-			models = new ArrayList<ProjectModel>();
+			models = new ArrayList<>();
 		}
 
 		final int projectCount = store.getInt("projectcount");
@@ -151,11 +157,5 @@ public class ProjectList {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Exists only to defeat instantiation
-	 */
-	protected ProjectList() {
 	}
 }

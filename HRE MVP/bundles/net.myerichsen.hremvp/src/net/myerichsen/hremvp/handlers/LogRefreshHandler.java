@@ -16,7 +16,7 @@ public class LogRefreshHandler {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
-	 * @param eventBroker The Eclipse event broker
+	 * @param eventBroker The Eclipse personEvent broker
 	 */
 	@Execute
 	public void execute(IEventBroker eventBroker) {

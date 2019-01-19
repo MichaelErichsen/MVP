@@ -155,7 +155,7 @@ public class SexServer {
 
 	/**
 	 * Insert a row
-	 * 
+	 *
 	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database

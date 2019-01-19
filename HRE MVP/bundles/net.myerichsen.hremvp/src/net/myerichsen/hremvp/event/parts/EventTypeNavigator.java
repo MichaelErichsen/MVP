@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.TableItem;
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 
 /**
- * Display all event types
+ * Display all personEvent types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 27. nov. 2018
