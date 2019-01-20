@@ -36,13 +36,14 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.project.dialogs.ProjectNameSummaryDialog;
 import net.myerichsen.hremvp.project.models.ProjectList;
 import net.myerichsen.hremvp.project.models.ProjectModel;
+import net.myerichsen.hremvp.project.parts.ProjectNavigator;
 import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
 
 /**
  * Create a new HRE project database.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. jan. 2019
+ * @version 20. jan. 2019
  *
  */
 public class ProjectNewHandler {
@@ -97,7 +98,11 @@ public class ProjectNewHandler {
 			if (conn != null) {
 				conn.createStatement().execute("SHUTDOWN");
 				conn.close();
-				HreH2ConnectionPool.dispose();
+				try {
+					HreH2ConnectionPool.dispose();
+				} catch (Exception e) {
+					LOGGER.info("No connection pool to dispose");
+				}
 			}
 
 			// Connect to the new database
@@ -128,17 +133,21 @@ public class ProjectNewHandler {
 			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
 
+			ProjectNavigator navigator = new ProjectNavigator();
+			navigator.populateTable();
+
+			// FIXME Refresh project navigator
 			// Open Project Navigator
-			final MPart pnPart = MBasicFactory.INSTANCE.createPart();
-			pnPart.setLabel("Projects");
-			pnPart.setContainerData("650");
-			pnPart.setCloseable(true);
-			pnPart.setVisible(true);
-			pnPart.setContributionURI(
-					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator");
+//			final MPart pnPart = MBasicFactory.INSTANCE.createPart();
+//			pnPart.setLabel("Projects");
+//			pnPart.setContainerData("650");
+//			pnPart.setCloseable(true);
+//			pnPart.setVisible(true);
+//			pnPart.setContributionURI(
+//					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator");
 			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-			stacks.get(0).getChildren().add(pnPart);
-			partService.showPart(pnPart, PartState.ACTIVATE);
+//			stacks.get(0).getChildren().add(pnPart);
+//			partService.showPart(pnPart, PartState.ACTIVATE);
 
 			// Open H2 Database Navigator
 			final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();

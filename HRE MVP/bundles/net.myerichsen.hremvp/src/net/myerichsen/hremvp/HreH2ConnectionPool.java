@@ -18,7 +18,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. jan. 2019
+ * @version 20. jan. 2019
  *
  */
 public class HreH2ConnectionPool {
@@ -42,7 +42,12 @@ public class HreH2ConnectionPool {
 	 * @throws BackingStoreException Error in preferences file access
 	 */
 	public static void createNew(String dbName) throws BackingStoreException {
-		connectionPool.dispose();
+		try {
+			connectionPool.dispose();
+		} catch (Exception e) {
+			LOGGER.info("No connection pool to dispose");
+		}
+		dbPath = store.getString("DBPATH");
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
 		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName + ";TRACE_LEVEL_FILE=" + h2TraceLevel
 				+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;

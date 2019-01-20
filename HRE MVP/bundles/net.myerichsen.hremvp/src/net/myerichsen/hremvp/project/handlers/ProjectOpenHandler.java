@@ -33,12 +33,13 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.project.dialogs.ProjectNameSummaryDialog;
 import net.myerichsen.hremvp.project.models.ProjectList;
 import net.myerichsen.hremvp.project.models.ProjectModel;
+import net.myerichsen.hremvp.project.parts.ProjectNavigator;
 
 /**
  * Open an existing project.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 20. jan. 2019
  *
  */
 public class ProjectOpenHandler {
@@ -66,7 +67,7 @@ public class ProjectOpenHandler {
 
 		// Open file dialog
 		final FileDialog dialog = new FileDialog(shell);
-		final String[] extensions = { "*.h2.db", "*.mv.db", "*.*" };
+		final String[] extensions = { "*.mv.db", "*.h2.db", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
@@ -143,17 +144,20 @@ public class ProjectOpenHandler {
 				window.setLabel("HRE v0.1 - " + dbName);
 			}
 
+			ProjectNavigator navigator = new ProjectNavigator();
+			navigator.populateTable();
+
 			// Open Project Navigator
-			final MPart pnPart = MBasicFactory.INSTANCE.createPart();
-			pnPart.setLabel("Projects");
-			pnPart.setContainerData("650");
-			pnPart.setCloseable(true);
-			pnPart.setVisible(true);
-			pnPart.setContributionURI(
-					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator");
+//			final MPart pnPart = MBasicFactory.INSTANCE.createPart();
+//			pnPart.setLabel("Projects");
+//			pnPart.setContainerData("650");
+//			pnPart.setCloseable(true);
+//			pnPart.setVisible(true);
+//			pnPart.setContributionURI(
+//					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator");
 			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-			stacks.get(0).getChildren().add(pnPart);
-			partService.showPart(pnPart, PartState.ACTIVATE);
+//			stacks.get(0).getChildren().add(pnPart);
+//			partService.showPart(pnPart, PartState.ACTIVATE);
 
 			// Open H2 Database Navigator
 			final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();

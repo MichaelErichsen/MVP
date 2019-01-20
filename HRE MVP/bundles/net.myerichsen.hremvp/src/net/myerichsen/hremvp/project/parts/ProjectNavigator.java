@@ -27,8 +27,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -91,12 +89,12 @@ public class ProjectNavigator {
 
 		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				postProjectPid();
-			}
-		});
+//		table.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseDoubleClick(MouseEvent e) {
+//				postProjectPid();
+//			}
+//		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -106,36 +104,29 @@ public class ProjectNavigator {
 		tblclmnProjectName.setWidth(100);
 		tblclmnProjectName.setText("Project Name");
 
-		final int projectCount = store.getInt("projectcount");
-		String key;
-
-		for (int i = 0; i < projectCount; i++) {
-			final TableItem tableItem = new TableItem(table, SWT.NONE);
-			key = new String("project." + i + ".name");
-			tableItem.setText(store.getString(key));
-		}
+		populateTable();
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
-		
-				final MenuItem mntmNew = new MenuItem(menu, SWT.NONE);
-				mntmNew.addSelectionListener(new SelectionAdapter() {
-					/*
-					 * (non-Javadoc)
-					 *
-					 * @see
-					 *
-					 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
-					 * .SelectionEvent)
-					 */
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						final ParameterizedCommand newCommand = commandService
-								.createCommand("net.myerichsen.hremvp.command.projectnew", null);
-						handlerService.executeHandler(newCommand);
-					}
-				});
-				mntmNew.setText("New...");
+
+		final MenuItem mntmNew = new MenuItem(menu, SWT.NONE);
+		mntmNew.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 *
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+			 * .SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final ParameterizedCommand newCommand = commandService
+						.createCommand("net.myerichsen.hremvp.command.projectnew", null);
+				handlerService.executeHandler(newCommand);
+			}
+		});
+		mntmNew.setText("New...");
 
 		final MenuItem mntmOpen = new MenuItem(menu, SWT.NONE);
 		mntmOpen.setToolTipText("Open selected project");
@@ -205,6 +196,21 @@ public class ProjectNavigator {
 		});
 		mntmProperties.setToolTipText("Properties");
 		mntmProperties.setText("Properties");
+	}
+
+	/**
+	 * 
+	 */
+	public void populateTable() {
+		final int projectCount = store.getInt("projectcount");
+		String key;
+
+		for (int i = 0; i < projectCount; i++) {
+			// FIXME java.lang.IllegalArgumentException: Argument cannot be null
+			final TableItem tableItem = new TableItem(table, SWT.NONE);
+			key = new String("project." + i + ".name");
+			tableItem.setText(store.getString(key));
+		}
 	}
 
 	/**
