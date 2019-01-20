@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.serverlogic.LanguageServer;
+import net.myerichsen.hremvp.servers.LanguageServer;
 
 /**
  * Provide a language

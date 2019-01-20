@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dialogs.PersonNavigatorDialog;
+import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
@@ -61,7 +61,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private int motherPid;
 	private int partnerPid;
 	private int childPid;
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
 	/**
 	 * Constructor

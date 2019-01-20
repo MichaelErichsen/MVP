@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.dialogs.NewEventDialog;
+import net.myerichsen.hremvp.event.dialogs.NewEventDialog;
 import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 
@@ -40,7 +40,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 	private Table table;
 
 	private List<Integer> personEventPidList;
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
 	public NewPersonWizardPage5(IEclipseContext context) {
 		super("wizardPage");
@@ -66,16 +66,16 @@ public class NewPersonWizardPage5 extends WizardPage {
 				ep.setEventNamePid(dialog.getEventNamePid());
 				ep.setFromDatePid(dialog.getFromDatePid());
 				ep.setToDatePid(dialog.getToDatePid());
-				int eventPid = ep.insert();
+				final int eventPid = ep.insert();
 
 				// Create a person-personEvent to link them together
-				PersonEventProvider pep = new PersonEventProvider();
+				final PersonEventProvider pep = new PersonEventProvider();
 				pep.setEventPid(eventPid);
 				pep.setPersonPid(personPid);
 				pep.setPrimaryEvent(true);
 				pep.setPrimaryPerson(true);
 				pep.setRole(eventStringList.get(3));
-				int personEventPid = pep.insert();
+				final int personEventPid = pep.insert();
 
 				// Display in view
 				final TableItem item = new TableItem(table, SWT.NONE);
@@ -108,8 +108,8 @@ public class NewPersonWizardPage5 extends WizardPage {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnPersoneventId = tableViewerColumn.getColumn();
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnPersoneventId = tableViewerColumn.getColumn();
 		tblclmnPersoneventId.setWidth(100);
 		tblclmnPersoneventId.setText("PersonEvent ID");
 
@@ -128,13 +128,13 @@ public class NewPersonWizardPage5 extends WizardPage {
 		tblclmnEventRole.setWidth(100);
 		tblclmnEventRole.setText("Role in personEvent");
 
-		TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnFromDate = tableViewerColumnFromDate.getColumn();
+		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnFromDate = tableViewerColumnFromDate.getColumn();
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
 
-		TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
+		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
 
@@ -145,7 +145,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 		mntmNewEvent.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				NewPersonWizard wizard = (NewPersonWizard) getWizard();
+				final NewPersonWizard wizard = (NewPersonWizard) getWizard();
 				addEvent(wizard.getPersonPid());
 			}
 		});
@@ -174,20 +174,20 @@ public class NewPersonWizardPage5 extends WizardPage {
 				// Delete personEvent for person
 				final TableItem selectedRow = selectedRows[0];
 				personEventPid = Integer.parseInt(selectedRow.getText(0));
-				PersonEventProvider pep = new PersonEventProvider();
-				int eventPid = pep.getEventPid();
+				final PersonEventProvider pep = new PersonEventProvider();
+				final int eventPid = pep.getEventPid();
 				pep.delete(personEventPid);
 				personEventPidList.remove(personEventPid);
 				LOGGER.info("Deleted personEvent " + personEventPid);
 
 				// If no more person events then delete event
 				if (pep.areMoreEvents(eventPid) == false) {
-					EventProvider ep = new EventProvider();
+					final EventProvider ep = new EventProvider();
 					ep.delete(eventPid);
 					LOGGER.info("Deleted event " + eventPid);
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -205,6 +205,6 @@ public class NewPersonWizardPage5 extends WizardPage {
 	 * @param personEventPidList the personEventPidList to set
 	 */
 	public void setPersonEventPidList(List<Integer> eventPidList) {
-		this.personEventPidList = eventPidList;
+		personEventPidList = eventPidList;
 	}
 }

@@ -30,7 +30,7 @@ public class NewPersonWizardPage3 extends WizardPage {
 	private int personNameStylePid;
 	private PersonNameMapProvider provider;
 	private List<Text> textFieldList;
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
 	/**
 	 *

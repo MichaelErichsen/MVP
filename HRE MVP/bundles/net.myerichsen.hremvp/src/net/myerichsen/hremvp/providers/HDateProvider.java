@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.serverlogic.HDateServer;
+import net.myerichsen.hremvp.servers.HDateServer;
 
 /**
  * Provides all data for a single historical date

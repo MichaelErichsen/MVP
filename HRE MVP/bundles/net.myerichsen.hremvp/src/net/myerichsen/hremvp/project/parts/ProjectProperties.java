@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.models.ProjectList;
-import net.myerichsen.hremvp.models.ProjectModel;
+import net.myerichsen.hremvp.project.models.ProjectList;
+import net.myerichsen.hremvp.project.models.ProjectModel;
 
 /**
  * GUI part displaying project properties.

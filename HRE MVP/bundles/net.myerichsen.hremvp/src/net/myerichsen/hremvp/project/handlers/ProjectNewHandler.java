@@ -33,9 +33,9 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
-import net.myerichsen.hremvp.dialogs.ProjectNameSummaryDialog;
-import net.myerichsen.hremvp.models.ProjectList;
-import net.myerichsen.hremvp.models.ProjectModel;
+import net.myerichsen.hremvp.project.dialogs.ProjectNameSummaryDialog;
+import net.myerichsen.hremvp.project.models.ProjectList;
+import net.myerichsen.hremvp.project.models.ProjectModel;
 import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
 
 /**

@@ -11,12 +11,14 @@ import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Languages;
+import net.myerichsen.hremvp.dbmodels.LocationEvents;
+import net.myerichsen.hremvp.location.servers.LocationServer;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. jan. 2019
+ * @version 20. jan. 2019
  *
  */
 public class EventServer {
@@ -431,6 +433,33 @@ public class EventServer {
 		event.setToDatePid(ToDatePid);
 		event.setEventNamePid(EventNamePid);
 		event.update();
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> getLocationList(int key) throws SQLException {
+		LocationServer ls;
+
+		List<String> locationStringList = new ArrayList<>();
+
+		LocationEvents locationEvents = new LocationEvents();
+		List<LocationEvents> leList = locationEvents.getFKEventPid(key);
+
+		try {
+			for (LocationEvents le : leList) {
+				ls = new LocationServer();
+				ls.get(le.getLocationPid());
+
+				locationStringList.add(ls.getPrimaryName());
+			}
+		} catch (MvpException e) {
+			e.printStackTrace();
+		}
+
+		return locationStringList;
 	}
 
 }

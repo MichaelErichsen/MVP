@@ -29,7 +29,6 @@ public class AncestorNavigator {
 
 	@Focus
 	public void setFocus() {
-		// TODO Set the focus to control
 	}
 
 }

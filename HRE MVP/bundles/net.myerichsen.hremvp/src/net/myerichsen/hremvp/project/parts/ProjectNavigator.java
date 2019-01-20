@@ -45,14 +45,14 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
-import net.myerichsen.hremvp.models.ProjectList;
-import net.myerichsen.hremvp.models.ProjectModel;
+import net.myerichsen.hremvp.project.models.ProjectList;
+import net.myerichsen.hremvp.project.models.ProjectModel;
 
 /**
- * Navigator part to display all tables in an HRE project.
+ * Navigator part to display all tables in an HRE project
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jan. 2019
+ * @version 20. jan. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -117,6 +117,25 @@ public class ProjectNavigator {
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
+		
+				final MenuItem mntmNew = new MenuItem(menu, SWT.NONE);
+				mntmNew.addSelectionListener(new SelectionAdapter() {
+					/*
+					 * (non-Javadoc)
+					 *
+					 * @see
+					 *
+					 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+					 * .SelectionEvent)
+					 */
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						final ParameterizedCommand newCommand = commandService
+								.createCommand("net.myerichsen.hremvp.command.projectnew", null);
+						handlerService.executeHandler(newCommand);
+					}
+				});
+				mntmNew.setText("New...");
 
 		final MenuItem mntmOpen = new MenuItem(menu, SWT.NONE);
 		mntmOpen.setToolTipText("Open selected project");
@@ -155,25 +174,6 @@ public class ProjectNavigator {
 			}
 		});
 		mntmOpenOther.setText("Open other...");
-
-		final MenuItem mntmNew = new MenuItem(menu, SWT.NONE);
-		mntmNew.addSelectionListener(new SelectionAdapter() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 *
-			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
-			 * .SelectionEvent)
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final ParameterizedCommand newCommand = commandService
-						.createCommand("net.myerichsen.hremvp.command.projectnew", null);
-				handlerService.executeHandler(newCommand);
-			}
-		});
-		mntmNew.setText("New...");
 
 		final MenuItem mntmNewItem = new MenuItem(menu, SWT.NONE);
 		mntmNewItem.setText("Backup...");

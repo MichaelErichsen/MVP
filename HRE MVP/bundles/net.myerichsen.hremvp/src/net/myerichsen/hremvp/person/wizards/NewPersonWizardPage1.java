@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.dialogs.SexTypeNavigatorDialog;
+import net.myerichsen.hremvp.person.dialogs.SexTypeNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
@@ -50,7 +50,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 	private int BirthDatePid;
 	private int DeathDatePid;
 	private int sexTypePid;
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
 	/**
 	 * Constructor
@@ -194,7 +194,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		compositeBirth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeBirth.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnNewBirth = new Button(compositeBirth, SWT.NONE);
+		final Button btnNewBirth = new Button(compositeBirth, SWT.NONE);
 		btnNewBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -203,7 +203,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewBirth.setText("New");
 
-		Button btnBrowseBirth = new Button(compositeBirth, SWT.NONE);
+		final Button btnBrowseBirth = new Button(compositeBirth, SWT.NONE);
 		btnBrowseBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -212,7 +212,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseBirth.setText("Browse");
 
-		Button btnClearBirth = new Button(compositeBirth, SWT.NONE);
+		final Button btnClearBirth = new Button(compositeBirth, SWT.NONE);
 		btnClearBirth.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -246,7 +246,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		compositeDeath.setLayout(new RowLayout(SWT.HORIZONTAL));
 		compositeDeath.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		Button btnNewDeath = new Button(compositeDeath, SWT.NONE);
+		final Button btnNewDeath = new Button(compositeDeath, SWT.NONE);
 		btnNewDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -255,7 +255,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewDeath.setText("New");
 
-		Button btnBrowseDeath = new Button(compositeDeath, SWT.NONE);
+		final Button btnBrowseDeath = new Button(compositeDeath, SWT.NONE);
 		btnBrowseDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -264,7 +264,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseDeath.setText("Browse");
 
-		Button btnClearDeath = new Button(compositeDeath, SWT.NONE);
+		final Button btnClearDeath = new Button(compositeDeath, SWT.NONE);
 		btnClearDeath.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -290,7 +290,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		compositeSex.setLayout(new RowLayout(SWT.HORIZONTAL));
 		compositeSex.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		Button btnBrowseSexes = new Button(compositeSex, SWT.NONE);
+		final Button btnBrowseSexes = new Button(compositeSex, SWT.NONE);
 		btnBrowseSexes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -299,7 +299,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseSexes.setText("Browse");
 
-		Button btnClearSex = new Button(compositeSex, SWT.NONE);
+		final Button btnClearSex = new Button(compositeSex, SWT.NONE);
 		btnClearSex.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {

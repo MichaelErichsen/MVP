@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.event.servers.EventServer;
  * Provides all data about an personEvent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. jan. 2019
+ * @version 20. jan. 2019
  *
  */
 public class EventProvider {
@@ -185,10 +185,10 @@ public class EventProvider {
 	/**
 	 * @param key
 	 * @return
+	 * @throws SQLException 
 	 */
-	public List<String> getLocationList(int key) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> getLocationList(int key) throws SQLException {
+		return server.getLocationList(key);
 	}
 
 	/**

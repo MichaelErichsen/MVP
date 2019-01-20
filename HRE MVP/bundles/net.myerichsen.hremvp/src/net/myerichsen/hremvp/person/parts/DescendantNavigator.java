@@ -29,7 +29,6 @@ public class DescendantNavigator {
 
 	@Focus
 	public void setFocus() {
-		// TODO Set the focus to control
 	}
 
 }

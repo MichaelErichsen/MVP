@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
 public class NewPersonWizard extends Wizard {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
-	
+
 	private NewPersonWizardPage1 page1;
 	private NewPersonWizardPage2 page2;
 	private NewPersonWizardPage3 page3;
@@ -31,7 +31,7 @@ public class NewPersonWizard extends Wizard {
 	private String personName;
 	private int personNameStylePid;
 	private int personPid;
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
 	/**
 	 * Constructor
