@@ -77,7 +77,7 @@ public class ProjectNewHandler {
 		final String shortName = dialog.getFileName();
 		final String[] parts = shortName.split("\\.");
 		final String path = dialog.getFilterPath();
-		final String dbName = parts[0];
+		String dbName = parts[0];
 
 		try {
 			// Create the new database
@@ -125,7 +125,6 @@ public class ProjectNewHandler {
 
 			// Open a dialog for summary
 			final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(shell);
-			pnsDialog.getTextProjectName().setText(dbName);
 			pnsDialog.open();
 
 			// Update the HRE properties

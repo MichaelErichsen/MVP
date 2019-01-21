@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.Constants;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. jan. 2019
+ * @version 21. jan. 2019
  *
  */
 
