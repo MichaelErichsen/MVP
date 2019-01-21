@@ -6,21 +6,17 @@ import java.util.logging.Logger;
 import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
 
 /**
- * @version 2018-06-30
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 21. jan. 2019
  *
  */
 public class CsvFileImporter {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String[] csvFileNames = { "DisplayTypeDefns.csv", "FieldDataTypeDefns.csv",
-			"FieldFormatDefns.csv", "FieldTypeDefns.csv", "HDateCalendarDefns.csv", "HInterval Modifier Defns.csv",
-			"LivingTypeDefns.csv", "NameOutTemplateDefns.csv", "ScriptActionTypeDefinitions.csv", "ScriptDefns.csv",
-			"ScriptGroupDefns.csv", "Sentence Style Defns.csv", "SexDefns.csv", "SubstnParamNames.csv",
-			"SubstnParamValues.csv", "Units Defns.csv" };
-	private static final String[] tableNames = { "DISPLAY_TYPE_DEFNS", "FIELD_DATA_TYPE_DEFNS", "FIELD_FORMAT_DEFNS",
-			"FIELD_TYPE_DEFNS", "HDATE_CALENDAR_DEFNS", "HINTERVAL_MODIFIER_DEFNS", "LIVING_TYPE_DEFNS",
-			"NAME_OUT_TEMPLATE_DEFNS", "SCRIPT_ACTION_TYPE_DEFNS", "SCRIPT_DEFNS", "SCRIPT_GROUP_DEFNS",
-			"SENTENCE_STYLE_DEFNS", "SEX_DEFNS", "SUBSTN_PARAM_NAMES", "SUBSTN_PARAM_VALUES", "UNITS_DEFNS" };
+	private static final String[] csvFileNames = { "hdates.csv", "languages.csv", "sextypes.csv", "eventtypes.csv",
+			"eventnames.csv", "locationnamestyles.csv", "namestyles.csv" };
+
+	private static final String[] tableNames = { "HDATES", "LANGUAGES", "SEX_TYPES", "EVENT_TYPES", "EVENT_NAMES",
+			"LOCATION_NAME_STYLES", "NAME_STYLES" };
 
 	/**
 	 * Import all csv files.

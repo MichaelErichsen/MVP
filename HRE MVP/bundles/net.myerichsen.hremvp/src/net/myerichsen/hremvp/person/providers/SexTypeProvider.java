@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.person.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. jan. 2019
+ * @version 21. jan. 2019
  *
  */
 public class SexTypeProvider {
@@ -95,6 +95,33 @@ public class SexTypeProvider {
 	}
 
 	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<SexTypes> get() throws SQLException {
+		return server.get();
+	}
+
+	/**
+	 * Get a row
+	 *
+	 * @param key The persistent id of the row
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 *
+	 */
+	public void get(int key) throws SQLException, MvpException {
+		server.get(key);
+		setSexTypePid(server.getSexTypePid());
+		setAbbreviation(server.getAbbreviation());
+		setLabel(server.getLabel());
+		setLanguagePid(server.getLanguagePid());
+		setLanguageLabel(server.getLanguageLabel());
+		setIsoCode(server.getIsoCode());
+	}
+
+	/**
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
@@ -104,7 +131,7 @@ public class SexTypeProvider {
 	 *                                 API
 	 * @throws MvpException            Application specific exception
 	 */
-	public void get(int key) throws ClientProtocolException, IOException, MvpException {
+	public void get1(int key) throws ClientProtocolException, IOException, MvpException {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 
@@ -138,25 +165,6 @@ public class SexTypeProvider {
 		setLanguagePid(jsonObject.getInt("languagePid"));
 		setLanguageLabel(jsonObject.getString("languageLabel"));
 		setIsoCode(jsonObject.getString("isoCode"));
-	}
-
-	/**
-	 * Get a row
-	 *
-	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 *
-	 */
-	public void get1(int key) throws SQLException, MvpException {
-		server.get(key);
-		setSexTypePid(server.getSexTypePid());
-		setAbbreviation(server.getAbbreviation());
-		setLabel(server.getLabel());
-		setLanguagePid(server.getLanguagePid());
-		setLanguageLabel(server.getLanguageLabel());
-		setIsoCode(server.getIsoCode());
 	}
 
 	/**
@@ -307,13 +315,5 @@ public class SexTypeProvider {
 		server.setLabel(label);
 		server.setLanguagePid(languagePid);
 		server.update();
-	}
-
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<SexTypes> get() throws SQLException {
-		return server.get();
 	}
 }

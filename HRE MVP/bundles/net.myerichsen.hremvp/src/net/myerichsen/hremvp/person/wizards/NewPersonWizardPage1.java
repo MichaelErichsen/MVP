@@ -20,14 +20,14 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.SexTypeNavigatorDialog;
-import net.myerichsen.hremvp.person.providers.SexProvider;
+import net.myerichsen.hremvp.person.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. jan. 2019
+ * @version 21. jan. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -109,21 +109,22 @@ public class NewPersonWizardPage1 extends WizardPage {
 	/**
 	 *
 	 */
-	protected void browseSexes() {
-		final SexTypeNavigatorDialog dialog = new SexTypeNavigatorDialog(textSexTypePid.getShell(), context);
-		if (dialog.open() == Window.OK) {
-			try {
-				sexTypePid = dialog.getSexesPid();
+	protected void browseSexTypes() {
+		try {
+			final SexTypeNavigatorDialog dialog = new SexTypeNavigatorDialog(textSexTypePid.getShell(), context);
+			if (dialog.open() == Window.OK) {
+
+				sexTypePid = dialog.getSexTypePid();
 				textSexTypePid.setText(Integer.toString(sexTypePid));
 
-				final SexProvider provider = new SexProvider();
+				final SexTypeProvider provider = new SexTypeProvider();
 				provider.get(sexTypePid);
-				textSex.setText(provider.getSexTypeLabel());
-			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
-				eventBroker.post("MESSAGE", e.getMessage());
-				e.printStackTrace();
+				textSex.setText(provider.getLabel());
 			}
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -294,7 +295,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnBrowseSexes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				browseSexes();
+				browseSexTypes();
 			}
 		});
 		btnBrowseSexes.setText("Browse");

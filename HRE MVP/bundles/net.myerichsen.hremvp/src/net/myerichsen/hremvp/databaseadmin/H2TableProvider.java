@@ -156,6 +156,12 @@ public class H2TableProvider implements IContentProvider {
 	 *                      access error or other errors
 	 */
 	public int importCsv(String fileName) throws SQLException {
+		// FIXME org.h2.jdbc.JdbcSQLException: Cannot parse "DATE" constant
+		// "04-07-1776";
+		// SQL statement: INSERT INTO PUBLIC.HDATES (SELECT * from
+		// csvread('./hdates.csv')) -- row #2 ('1', '1', 'US Independence Day',
+		// '04-07-1776', '04-07-1776', 'Precise') [22007-197]
+
 		final String IMPORTCSV = "INSERT INTO PUBLIC." + tableName + " (SELECT * from csvread('" + fileName + "'));";
 		int rowCount = 0;
 

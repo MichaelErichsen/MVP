@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.dialogs;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -29,7 +30,7 @@ import net.myerichsen.hremvp.person.providers.SexTypeProvider;
  * Display all sex types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 21. jan. 2019
  *
  */
 public class SexTypeNavigatorDialog extends TitleAreaDialog {
@@ -39,15 +40,16 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 
 	private final SexTypeProvider provider;
 	private Table table;
-	private int SexesPid;
+	private int sexTypePid;
 
 	/**
 	 * Create the dialog.
 	 *
 	 * @param parentShell
 	 * @param context
+	 * @throws SQLException
 	 */
-	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context) {
+	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context) throws SQLException {
 		super(parentShell);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
@@ -88,7 +90,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 			public void widgetSelected(SelectionEvent e) {
 				final TableItem[] items = table.getSelection();
 				final TableItem selectedItem = items[0];
-				setSexesPid(Integer.parseInt(selectedItem.getText(0)));
+				setSexTypePid(Integer.parseInt(selectedItem.getText(0)));
 			}
 		});
 		table.setLinesVisible(true);
@@ -112,8 +114,8 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 			for (int i = 0; i < sexTypeList.size(); i++) {
 				final SexTypes type = sexTypeList.get(i);
 				final TableItem item = new TableItem(table, SWT.NONE);
-				SexesPid = type.getSexTypePid();
-				item.setText(0, Integer.toString(SexesPid));
+				sexTypePid = type.getSexTypePid();
+				item.setText(0, Integer.toString(sexTypePid));
 				item.setText(1, type.getLabel());
 			}
 		} catch (final Exception e1) {
@@ -136,15 +138,15 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	/**
 	 * @return the sexesPid
 	 */
-	public int getSexesPid() {
-		return SexesPid;
+	public int getSexTypePid() {
+		return sexTypePid;
 	}
 
 	/**
 	 * @param sexesPid the sexesPid to set
 	 */
-	public void setSexesPid(int sexesPid) {
-		SexesPid = sexesPid;
+	public void setSexTypePid(int sexesPid) {
+		sexTypePid = sexesPid;
 	}
 
 }

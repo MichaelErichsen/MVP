@@ -3,9 +3,11 @@ package net.myerichsen.hremvp.project.servers;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 
 import net.myerichsen.hremvp.HreH2ConnectionPool;
+import net.myerichsen.hremvp.providers.CsvFileImporter;
 
 /**
  * Create and open a new HRE project database
@@ -15,6 +17,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  *
  */
 public class ProjectNewDatabaseServer {
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Connection conn = null;
 
 	private Statement stmt;
@@ -224,6 +227,7 @@ public class ProjectNewDatabaseServer {
 	 * @throws BackingStoreException
 	 */
 	public void provide(String dbName) throws SQLException, BackingStoreException {
+		LOGGER.info("Provide the data");
 		HreH2ConnectionPool.createNew(dbName);
 		conn = HreH2ConnectionPool.getConnection();
 		stmt = conn.createStatement();
@@ -234,7 +238,7 @@ public class ProjectNewDatabaseServer {
 
 		stmt.close();
 
-//		CsvFileImporter.importCsv();
+		CsvFileImporter.importCsv();
 
 		conn.close();
 	}

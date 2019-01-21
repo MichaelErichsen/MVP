@@ -13,8 +13,10 @@ import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -27,6 +29,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -89,12 +93,12 @@ public class ProjectNavigator {
 
 		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
-//		table.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseDoubleClick(MouseEvent e) {
-//				postProjectPid();
-//			}
-//		});
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				postProjectPid();
+			}
+		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -199,21 +203,6 @@ public class ProjectNavigator {
 	}
 
 	/**
-	 * 
-	 */
-	public void populateTable() {
-		final int projectCount = store.getInt("projectcount");
-		String key;
-
-		for (int i = 0; i < projectCount; i++) {
-			// FIXME java.lang.IllegalArgumentException: Argument cannot be null
-			final TableItem tableItem = new TableItem(table, SWT.NONE);
-			key = new String("project." + i + ".name");
-			tableItem.setText(store.getString(key));
-		}
-	}
-
-	/**
 	 *
 	 */
 	@PreDestroy
@@ -296,6 +285,22 @@ public class ProjectNavigator {
 	/**
 	 *
 	 */
+	public void populateTable() {
+		final int projectCount = store.getInt("projectcount");
+		String key;
+		table.removeAll();
+
+		for (int i = 0; i < projectCount; i++) {
+			// FIXME java.lang.IllegalArgumentException: Argument cannot be null
+			final TableItem tableItem = new TableItem(table, SWT.NONE);
+			key = new String("project." + i + ".name");
+			tableItem.setText(store.getString(key));
+		}
+	}
+
+	/**
+	 *
+	 */
 	private void postProjectPid() {
 		final int index = table.getSelectionIndex();
 		eventBroker.post(Constants.SELECTION_INDEX_TOPIC, index);
@@ -308,4 +313,12 @@ public class ProjectNavigator {
 	@Focus
 	public void setFocus() {
 	}
+
+	@Inject
+	@Optional
+	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) String dbName) {
+		LOGGER.info("Added project " + dbName);
+		populateTable();
+	}
+
 }

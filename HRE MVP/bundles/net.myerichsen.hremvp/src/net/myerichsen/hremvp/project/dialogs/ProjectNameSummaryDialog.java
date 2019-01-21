@@ -19,8 +19,8 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Dialog to be called by the new project process.
  *
- * @version 2018-06-11
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 21. jan. 2019
  *
  */
 public class ProjectNameSummaryDialog extends TitleAreaDialog {
@@ -106,6 +106,20 @@ public class ProjectNameSummaryDialog extends TitleAreaDialog {
 	 */
 	public String getProjectSummary() {
 		return projectSummary;
+	}
+
+	/**
+	 * @return the textProjectName
+	 */
+	public Text getTextProjectName() {
+		return textProjectName;
+	}
+
+	/**
+	 * @param textProjectName the textProjectName to set
+	 */
+	public void setTextProjectName(Text textProjectName) {
+		this.textProjectName = textProjectName;
 	}
 
 }
