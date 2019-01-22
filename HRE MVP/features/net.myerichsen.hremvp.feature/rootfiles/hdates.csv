@@ -1,0 +1,6 @@
+"HDATE_PID", "TABLE_ID", "ORIGINAL_TEXT", "DATE", "SORT_DATE", "SURETY" 
+"1", "1", "US Independence Day", "04-07-1776", "04-07-1776", "Precise" 
+"2", "1", "Kongelig bekendtgørelse ", "21-06-1794", "21-06-1794", "Precise"
+"3", "1", "Kommunalreform", "01-04-1970", "01-04-1970", "Precise" 
+"4", "1", "Strukturreform", "01-01-2007", "01-01-2007", "Precise"
+"5", "1", "Fremtid", "31-12-2100", "31-12-2100", "Estimated" 

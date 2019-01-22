@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 22. jan. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -46,7 +46,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 
 		// H2
 		store.setDefault("H2TRACELEVEL", "1");
-		store.setDefault("DBPATH", "C:\\Program Files\\HRE\\eclipse");
+		store.setDefault("DBPATH", ".");
 		store.setDefault("DBNAME", "MVP");
 		store.setDefault("USERID", "sa");
 		store.setDefault("PASSWORD", "");
