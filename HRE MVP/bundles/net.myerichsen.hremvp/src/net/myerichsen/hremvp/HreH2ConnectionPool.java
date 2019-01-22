@@ -114,6 +114,7 @@ public class HreH2ConnectionPool {
 			}
 		}
 
+		// FIXME Open other 
 		LOGGER.fine("Reusing connection pool, Max: " + connectionPool.getMaxConnections() + ", Active: "
 				+ connectionPool.getActiveConnections());
 		return connectionPool.getConnection();

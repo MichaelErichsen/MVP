@@ -7,16 +7,16 @@ import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. jan. 2019
+ * @version 22. jan. 2019
  *
  */
 public class CsvFileImporter {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String[] csvFileNames = { "hdates.csv", "languages.csv", "sextypes.csv", "eventtypes.csv",
-			"eventnames.csv", "locationnamestyles.csv", "namestyles.csv" };
+			"eventnames.csv", "locationnamestyles.csv", "locationnamemaps.csv", "namestyles.csv", "namemaps.csv" };
 
 	private static final String[] tableNames = { "HDATES", "LANGUAGES", "SEX_TYPES", "EVENT_TYPES", "EVENT_NAMES",
-			"LOCATION_NAME_STYLES", "NAME_STYLES" };
+			"LOCATION_NAME_STYLES","LOCATION_NAME_MAPS", "NAME_STYLES", "NAME_MAPS" };
 
 	/**
 	 * Import all csv files.
