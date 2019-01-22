@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. jan. 2019
+ * @version 22. jan. 2019
  *
  */
 public class PersonProvider {

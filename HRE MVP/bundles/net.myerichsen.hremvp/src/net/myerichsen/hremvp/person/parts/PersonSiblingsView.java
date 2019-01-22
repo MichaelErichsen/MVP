@@ -43,9 +43,8 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * Display all data about a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. jan. 2019
+ * @version 22. jan. 2019
  */
-// FIXME Add siblings support
 @SuppressWarnings("restriction")
 public class PersonSiblingsView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -62,15 +61,9 @@ public class PersonSiblingsView {
 	private ECommandService commandService;
 	@Inject
 	private EHandlerService handlerService;
+
 	private Table tableSiblings;
 	private TableViewer tableViewerSiblings;
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
 	private final PersonProvider provider;
 
@@ -89,9 +82,7 @@ public class PersonSiblingsView {
 	 *
 	 */
 	private void clear() {
-
 		tableSiblings.removeAll();
-
 	}
 
 	/**
@@ -134,21 +125,11 @@ public class PersonSiblingsView {
 		tblclmnSiblings.setWidth(250);
 		tblclmnSiblings.setText("Siblings");
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewerSiblings, SWT.NONE);
-		final TableColumn tblclmnSiblingRole = tableViewerColumn.getColumn();
-		tblclmnSiblingRole.setWidth(100);
-		tblclmnSiblingRole.setText("Role");
-
-		final TableViewerColumn tableViewerColumnSiblingsPrimary = new TableViewerColumn(tableViewerSiblings, SWT.NONE);
-		final TableColumn tblclmnSiblingsPrimary = tableViewerColumnSiblingsPrimary.getColumn();
-		tblclmnSiblingsPrimary.setWidth(73);
-		tblclmnSiblingsPrimary.setText("Primary");
-
-		composite = new Composite(Sibling, SWT.NONE);
+		Composite composite = new Composite(Sibling, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonSelect = new Button(composite, SWT.NONE);
+		Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -157,7 +138,7 @@ public class PersonSiblingsView {
 		});
 		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
+		Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -166,7 +147,7 @@ public class PersonSiblingsView {
 		});
 		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -175,7 +156,7 @@ public class PersonSiblingsView {
 		});
 		buttonUpdate.setText("Update");
 
-		buttonDelete = new Button(composite, SWT.NONE);
+		Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -184,7 +165,7 @@ public class PersonSiblingsView {
 		});
 		buttonDelete.setText("Delete");
 
-		buttonClear = new Button(composite, SWT.NONE);
+		Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -193,7 +174,7 @@ public class PersonSiblingsView {
 		});
 		buttonClear.setText("Clear");
 
-		buttonClose = new Button(composite, SWT.NONE);
+		Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -213,7 +194,8 @@ public class PersonSiblingsView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -253,7 +235,8 @@ public class PersonSiblingsView {
 
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -266,7 +249,8 @@ public class PersonSiblingsView {
 			provider.insert();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -316,7 +300,8 @@ public class PersonSiblingsView {
 			provider.update();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 

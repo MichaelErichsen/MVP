@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. jan. 2019
+ * @version 22. jan. 2019
  *
  */
 public class PersonServer {
@@ -116,7 +117,7 @@ public class PersonServer {
 		final List<Names> ln = new Names().getFKPersonPid(key);
 		Names name;
 
-		final PersonNameServer ns = new PersonNameServer();
+		final PersonNameServer pns = new PersonNameServer();
 		nameList = new ArrayList<>();
 
 		List<String> ls;
@@ -126,8 +127,8 @@ public class PersonServer {
 			ls = new ArrayList<>();
 			name = ln.get(i);
 			ls.add(Integer.toString(name.getNamePid()));
-			ns.get(name.getNamePid());
-			ls.add(ns.getNameStrings()[i]);
+			pns.get(name.getNamePid());
+			ls.add(pns.getNameStrings()[i]);
 			ls.add(Boolean.toString(name.isPrimaryName()));
 
 			nameList.add(ls);
@@ -152,15 +153,34 @@ public class PersonServer {
 		for (final Parents parent : new Parents().getFKChild(key)) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(parent.getParent()));
-			ls.add(ns.getPrimaryNameString(parent.getParent()));
+			ls.add(pns.getPrimaryNameString(parent.getParent()));
 			ls.add(parent.getParentRole());
 			ls.add(Boolean.toString(parent.isPrimaryParent()));
 
 			parentList.add(ls);
 		}
 
-// FIXME Add siblings
 		siblingList.clear();
+
+		List<Parents> fkParent = new Parents().getFKChild(key);
+
+		for (Parents parents : fkParent) {
+			List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
+			TreeSet<Integer> childList = new TreeSet<Integer>();
+
+			for (Parents parents4 : fkChild) {
+				childList.add(parents4.getChild());
+				childList.remove(key);
+			}
+
+			for (int child : childList) {
+				ls = new ArrayList<>();
+				ls.add(Integer.toString(child));
+				ls.add(pns.getPrimaryNameString(child));
+
+				siblingList.add(ls);
+			}
+		}
 
 		final List<Partners> lpa = new Partners().getFKPartner1(key);
 		lpa.addAll(new Partners().getFKPartner2(key));
@@ -171,10 +191,10 @@ public class PersonServer {
 
 			if (partner.getPartner1() == key) {
 				ls.add(Integer.toString(partner.getPartner2()));
-				ls.add(ns.getPrimaryNameString(partner.getPartner2()));
+				ls.add(pns.getPrimaryNameString(partner.getPartner2()));
 			} else {
 				ls.add(Integer.toString(partner.getPartner1()));
-				ls.add(ns.getPrimaryNameString(partner.getPartner1()));
+				ls.add(pns.getPrimaryNameString(partner.getPartner1()));
 			}
 
 			ls.add(partner.getRole());
@@ -189,7 +209,7 @@ public class PersonServer {
 			ls = new ArrayList<>();
 			final int pid = parent.getChild();
 			ls.add(Integer.toString(pid));
-			ls.add(ns.getPrimaryNameString(pid));
+			ls.add(pns.getPrimaryNameString(pid));
 
 			childrenList.add(ls);
 		}
