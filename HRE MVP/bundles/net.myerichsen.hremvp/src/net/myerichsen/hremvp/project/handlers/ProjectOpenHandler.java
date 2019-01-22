@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.project.parts.ProjectNavigator;
  * Open an existing project.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. jan. 2019
+ * @version 22. jan. 2019
  *
  */
 public class ProjectOpenHandler {
@@ -67,7 +67,7 @@ public class ProjectOpenHandler {
 
 		// Open file dialog
 		final FileDialog dialog = new FileDialog(shell);
-		final String[] extensions = { "*.mv.db", "*.h2.db", "*.*" };
+		final String[] extensions = { "*.h2.db", "*.mv.db", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 

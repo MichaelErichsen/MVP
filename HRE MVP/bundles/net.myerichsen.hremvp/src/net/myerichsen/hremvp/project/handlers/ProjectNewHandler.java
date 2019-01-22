@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
  * Create a new HRE project database.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. jan. 2019
+ * @version 22. jan. 2019
  *
  */
 public class ProjectNewHandler {
@@ -70,7 +70,7 @@ public class ProjectNewHandler {
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
 		dialog.setText("Create new HRE Project");
 		dialog.setFilterPath("./");
-		final String[] extensions = { "*.mv.db", "*.h2.db", "*.*" };
+		final String[] extensions = { "*.h2.db", "*.mv.db", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
