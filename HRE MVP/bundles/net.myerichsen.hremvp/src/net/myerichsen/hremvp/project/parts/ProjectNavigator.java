@@ -288,6 +288,7 @@ public class ProjectNavigator {
 	public void populateTable() {
 		final int projectCount = store.getInt("projectcount");
 		String key;
+		// FIXME Open other returns a null pointer exception
 		table.removeAll();
 
 		for (int i = 0; i < projectCount; i++) {

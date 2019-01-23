@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.project.models.ProjectModel;
  * GUI part displaying project properties.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 23. jan. 2019
  *
  */
 public class ProjectProperties {
@@ -75,6 +75,8 @@ public class ProjectProperties {
 	 * @param table2
 	 */
 	private void createItems(Table table2) {
+		table.removeAll();
+
 		final ProjectModel model = ProjectList.getModel(index);
 
 		final TableItem tableItem = new TableItem(table, SWT.NONE);

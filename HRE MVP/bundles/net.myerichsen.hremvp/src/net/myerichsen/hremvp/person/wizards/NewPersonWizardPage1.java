@@ -336,6 +336,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
+				// FIXME Null pointer exception
 				BirthDatePid = hdp.insert();
 				textBirthDate.setText(dialog.getLocalDate().toString());
 				if (textBirthDateSort.getText().length() == 0) {
