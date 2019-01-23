@@ -29,11 +29,12 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. jan. 2019
+ * @version 23. jan. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final IEclipseContext context;
 
 	private Shell parentShell;
 
@@ -73,6 +74,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		setTitle("Person Primary Parents and Partner");
 		setDescription(
 				"Add primary parents and partner for the new person. More parents and partners can be added later.");
+		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -80,7 +82,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void browseChild() {
-		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell);
+		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
 				childPid = dialog.getPersonPid();
@@ -101,7 +103,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void browseFather() {
-		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell);
+		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
 				fatherPid = dialog.getPersonPid();
@@ -121,7 +123,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void browseMother() {
-		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell);
+		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
 				motherPid = dialog.getPersonPid();
@@ -141,7 +143,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void browsePartner() {
-		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell);
+		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
 				partnerPid = dialog.getPersonPid();

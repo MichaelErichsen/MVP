@@ -3,8 +3,7 @@ package net.myerichsen.hremvp.person.dialogs;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -31,15 +30,13 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all persons.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. jan. 2019
+ * @version 23. jan. 2019
  *
  */
 // TODO Add filtering
 public class PersonNavigatorDialog extends TitleAreaDialog {
-	@Inject
-	private IEventBroker eventBroker;
-
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private IEventBroker eventBroker;
 
 	private PersonProvider provider;
 
@@ -54,9 +51,11 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	 * Create the dialog.
 	 *
 	 * @param parentShell
+	 * @param context
 	 */
-	public PersonNavigatorDialog(Shell parentShell) {
+	public PersonNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
+		eventBroker = context.get(IEventBroker.class);
 		try {
 			provider = new PersonProvider();
 		} catch (final Exception e) {

@@ -54,6 +54,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 	/**
 	 *
 	 */
+	// FIXME Move event creation to main wizard page after creation of person
 	protected void addEvent(int personPid) {
 		final NewEventDialog dialog = new NewEventDialog(table.getShell(), context);
 
