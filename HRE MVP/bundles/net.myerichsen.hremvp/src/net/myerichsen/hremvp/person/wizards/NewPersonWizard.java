@@ -201,7 +201,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
 				parentProvider.setParent(page4.getFatherPid());
-				// TODO Get role
+				// TODO Get role for father
 				parentProvider.setParentRole("Father");
 				parentProvider.setPrimaryParent(true);
 				// TODO Get language pid
@@ -215,7 +215,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
 				parentProvider.setParent(page4.getMotherPid());
-				// TODO Get role
+				// TODO Get role for mother
 				parentProvider.setParentRole("Mother");
 				parentProvider.setPrimaryParent(true);
 				// TODO Get language pid
@@ -230,7 +230,7 @@ public class NewPersonWizard extends Wizard {
 				partnerProvider.setPartner1(personPid);
 				partnerProvider.setPartner2(page4.getPartnerPid());
 				partnerProvider.setPrimaryPartner(true);
-				// TODO Get role, from and to dates
+				// TODO Get role, from and to dates for partner
 				partnerProvider.setRole("Role");
 				partnerProvider.setFromDatePid(0);
 				partnerProvider.setToDatePid(0);
@@ -239,7 +239,7 @@ public class NewPersonWizard extends Wizard {
 			}
 
 			// Create child
-			// TODO Create child
+			// TODO Create child using parent provider
 
 			// Page 5
 			// Events
@@ -248,13 +248,10 @@ public class NewPersonWizard extends Wizard {
 			for (final List<String> list : listOfLists) {
 
 				// Create an Event
-				// Returns Namelabel role from to
 				final EventProvider ep = new EventProvider();
-				// FIXME Returns label, not pid
 				ep.setEventNamePid(Integer.parseInt(list.get(0)));
-				// FIXME Get pids
-				ep.setFromDatePid(Integer.parseInt(list.get(2)));
-				ep.setToDatePid(Integer.parseInt(list.get(3)));
+				ep.setFromDatePid(Integer.parseInt(list.get(3)));
+				ep.setToDatePid(Integer.parseInt(list.get(5)));
 				final int eventPid = ep.insert();
 				LOGGER.info("Inserted event pid " + eventPid);
 
@@ -264,7 +261,7 @@ public class NewPersonWizard extends Wizard {
 				pep.setPersonPid(personPid);
 				pep.setPrimaryEvent(true);
 				pep.setPrimaryPerson(true);
-				pep.setRole(list.get(1));
+				pep.setRole(list.get(2));
 				final int personEventPid = pep.insert();
 				LOGGER.info("Inserted person-event pid " + personEventPid);
 

@@ -164,7 +164,6 @@ public class NewEventDialog extends TitleAreaDialog {
 	protected void clearEventStyle() {
 		textEventStyleLabel.setText("");
 		textEventStylePid.setText("");
-//		styleLabel = "";
 	}
 
 	/**
@@ -414,12 +413,14 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @return the eventStringList
+	 * @return The eventStringList with eventNamePid, nameLabel, role, fromDatePid,
+	 *         FromDate, toDatePid, toDate
 	 */
 	public List<String> getEventStringList() {
 		HDateProvider hdateProvider;
 
 		eventStringList.clear();
+		eventStringList.add(Integer.toString(eventNamePid));
 		eventStringList.add(nameLabel);
 		eventStringList.add(role);
 
@@ -427,6 +428,7 @@ public class NewEventDialog extends TitleAreaDialog {
 			try {
 				hdateProvider = new HDateProvider();
 				hdateProvider.get(fromDatePid);
+				eventStringList.add(Integer.toString(fromDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (SQLException | MvpException e) {
 				LOGGER.severe(e.getMessage());
@@ -434,6 +436,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				eventStringList.add("");
 			}
 		} else {
+			eventStringList.add("0");
 			eventStringList.add("");
 		}
 
@@ -441,10 +444,12 @@ public class NewEventDialog extends TitleAreaDialog {
 			try {
 				hdateProvider = new HDateProvider();
 				hdateProvider.get(toDatePid);
+				eventStringList.add(Integer.toString(toDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (SQLException | MvpException e) {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
+				eventStringList.add("0");
 				eventStringList.add("");
 			}
 		} else {
