@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
@@ -21,10 +22,10 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. jan. 2019
+ * @version 24. jan. 2019
  *
  */
-public class SexTypeServer {
+public class SexTypeServer implements IHREServer {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int sexTypePid;
@@ -55,6 +56,7 @@ public class SexTypeServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		sexType.delete(key);
 	}
@@ -73,6 +75,15 @@ public class SexTypeServer {
 	}
 
 	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	@Override
+	public List<SexTypes> get() throws SQLException {
+		return sexType.get();
+	}
+
+	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
@@ -81,6 +92,7 @@ public class SexTypeServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		sexType.get(key);
 		setSexTypePid(sexType.getSexTypePid());
@@ -177,12 +189,13 @@ public class SexTypeServer {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public void insert() throws SQLException {
+	@Override
+	public int insert() throws SQLException {
 		sexType.setSexTypePid(sexTypePid);
 		sexType.setAbbreviation(abbreviation);
 		sexType.setLabel(label);
 		sexType.setLanguagePid(languagePid);
-		sexType.insert();
+		return sexType.insert();
 	}
 
 	/**
@@ -264,6 +277,7 @@ public class SexTypeServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		sexType.setSexTypePid(sexTypePid);
 		sexType.setAbbreviation(abbreviation);
@@ -302,13 +316,5 @@ public class SexTypeServer {
 		setLabel(jsonObject.getString("label"));
 		setLanguagePid(jsonObject.getInt("languagePid"));
 		update();
-	}
-
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<SexTypes> get() throws SQLException {
-		return sexType.get();
 	}
 }

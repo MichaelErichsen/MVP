@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
 import net.myerichsen.hremvp.dbmodels.LocationNames;
@@ -18,7 +19,7 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  * @version 25. nov. 2018
  *
  */
-public class LocationServer {
+public class LocationServer implements IHREServer {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int locationPid;
@@ -50,6 +51,7 @@ public class LocationServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		location.delete(key);
 	}
@@ -62,6 +64,7 @@ public class LocationServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
@@ -111,6 +114,7 @@ public class LocationServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		location.get(key);
 		setFromDatePid(location.getFromDatePid());
@@ -227,6 +231,7 @@ public class LocationServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		location.setFromDatePid(fromDatePid);
 		location.setLocationPid(locationPid);
@@ -301,6 +306,7 @@ public class LocationServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		location.setFromDatePid(fromDatePid);
 		location.setLocationPid(locationPid);

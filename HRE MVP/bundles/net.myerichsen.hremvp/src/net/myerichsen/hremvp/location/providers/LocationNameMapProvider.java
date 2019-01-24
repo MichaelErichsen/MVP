@@ -1,7 +1,9 @@
 package net.myerichsen.hremvp.location.providers;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.location.servers.LocationNameMapServer;
 
@@ -12,7 +14,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameMapServer;
  * @version 18. sep. 2018
  *
  */
-public class LocationNameMapProvider {
+public class LocationNameMapProvider implements IHREProvider {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNameMapPid;
 	private String label;
@@ -111,13 +113,13 @@ public class LocationNameMapProvider {
 	 *                      access error or other errors.
 	 *
 	 */
-	public void insert() throws SQLException {
+	public int insert() throws SQLException {
 		server.setLabel(label);
 		server.setLocationNameMapPid(locationNameMapPid);
 		server.setLocationNameStylePid(locationNameStylePid);
 		server.setPartNo(partNo);
 		server.setLabelPosition(labelPosition);
-		server.insert();
+		return server.insert();
 	}
 
 	/**
@@ -176,6 +178,17 @@ public class LocationNameMapProvider {
 		server.setPartNo(partNo);
 		server.setLabelPosition(labelPosition);
 		server.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

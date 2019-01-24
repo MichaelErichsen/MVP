@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
@@ -18,7 +19,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  *
  */
 //Use LocalDate
-public class LocationNameStyleServer {
+public class LocationNameStyleServer implements IHREServer {
 	private int locationNameStylePid;
 	private String label;
 	private int languagePid;

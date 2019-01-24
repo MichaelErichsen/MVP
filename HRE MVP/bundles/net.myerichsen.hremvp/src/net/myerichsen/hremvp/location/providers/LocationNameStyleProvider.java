@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.location.servers.LocationNameStyleServer;
@@ -15,7 +16,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameStyleServer;
  * @version 20. nov. 2018
  *
  */
-public class LocationNameStyleProvider {
+public class LocationNameStyleProvider implements IHREProvider {
 	private int locationNameStylePid;
 	private String label;
 	private int languagePid;

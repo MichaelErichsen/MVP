@@ -1,7 +1,9 @@
 package net.myerichsen.hremvp.person.providers;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.servers.PersonNamePartServer;
 
@@ -9,10 +11,10 @@ import net.myerichsen.hremvp.person.servers.PersonNamePartServer;
  * Provides all data for a single name part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. sep. 2018
+ * @version 24. jan. 2019
  *
  */
-public class PersonNamePartProvider {
+public class PersonNamePartProvider implements IHREProvider {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int namePartPid;
 	private int namePid;
@@ -105,20 +107,22 @@ public class PersonNamePartProvider {
 
 	/**
 	 * Insert a row
+	 * 
+	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		server.setLabel(label);
 		server.setName(name);
 		server.setNamePartPid(namePartPid);
 		server.setNamePid(namePid);
 		server.setMapLabel(mapLabel);
 		server.setPartNo(partNo);
-		server.insert();
+		return server.insert();
 	}
 
 	/**
@@ -179,5 +183,14 @@ public class PersonNamePartProvider {
 		server.setMapLabel(mapLabel);
 		server.setPartNo(partNo);
 		server.update();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

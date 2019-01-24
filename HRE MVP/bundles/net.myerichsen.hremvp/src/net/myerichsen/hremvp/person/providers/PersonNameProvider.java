@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.servers.PersonNameServer;
 
@@ -11,10 +12,10 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  * Provides all data for a single name for a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. nov. 2018
+ * @version 24. jan. 2019
  *
  */
-public class PersonNameProvider {
+public class PersonNameProvider implements IHREProvider {
 //	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int namePid;
 	private int personPid;
@@ -154,12 +155,14 @@ public class PersonNameProvider {
 
 	/**
 	 * Insert a row
+	 * 
+	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		server.setNamePid(namePid);
 		server.setPersonPid(personPid);
 		server.setNameType(nameType);
@@ -167,7 +170,7 @@ public class PersonNameProvider {
 		server.setFromDatePid(toDatePid);
 		server.setPrimaryName(primaryName);
 		server.setNameStylePid(nameStylePid);
-		server.insert();
+		return server.insert();
 	}
 
 	/**
@@ -257,6 +260,17 @@ public class PersonNameProvider {
 		server.setPrimaryName(primaryName);
 		server.setNameStylePid(nameStylePid);
 		server.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,7 +1,9 @@
 package net.myerichsen.hremvp.person.servers;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
@@ -11,11 +13,11 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Sexes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 24. jan. 2019
  *
  */
 //Use LocalDate
-public class SexServer {
+public class SexServer implements IHREServer {
 	private int sexesPid;
 	private int personPid;
 	private int sexTypePid;
@@ -271,5 +273,16 @@ public class SexServer {
 		sex.setToDatePid(toDatePid);
 		sex.setPrimarySex(primarySex);
 		sex.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.event.providers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.event.servers.EventNameServer;
@@ -12,7 +13,7 @@ import net.myerichsen.hremvp.event.servers.EventNameServer;
  * @version 19. jan. 2019
  *
  */
-public class EventNameProvider {
+public class EventNameProvider implements IHREProvider {
 	EventNameServer server;
 
 	/**
@@ -45,6 +46,39 @@ public class EventNameProvider {
 	 */
 	public String getLabel() {
 		return server.getLabel();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#insert()
+	 */
+	@Override
+	public int insert() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#update()
+	 */
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

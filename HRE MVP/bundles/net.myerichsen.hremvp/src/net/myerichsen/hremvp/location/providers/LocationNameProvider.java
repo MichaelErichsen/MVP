@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.location.providers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
@@ -15,7 +16,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameServer;
  * @version 12. nov. 2018
  *
  */
-public class LocationNameProvider {
+public class LocationNameProvider implements IHREProvider {
 	private int locationNamePid;
 	private int locationPid;
 	private int fromDatePid;
@@ -275,5 +276,14 @@ public class LocationNameProvider {
 		server.setToDatePid(toDatePid);
 		server.setPreposition(preposition);
 		server.update();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

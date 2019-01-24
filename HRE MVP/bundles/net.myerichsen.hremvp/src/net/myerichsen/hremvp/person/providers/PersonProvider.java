@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Persons;
 import net.myerichsen.hremvp.person.servers.PersonServer;
@@ -15,7 +16,12 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * @version 22. jan. 2019
  *
  */
-public class PersonProvider {
+/**
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 24. jan. 2019
+ *
+ */
+public class PersonProvider implements IHREProvider {
 //	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int personPid;
 	private int birthDatePid;
@@ -46,36 +52,19 @@ public class PersonProvider {
 		eventList = new ArrayList<>();
 	}
 
-	/**
-	 * Delete a row
-	 *
-	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
 	}
 
-	/**
-	 * Get all rows
-	 *
-	 * @return A list persons
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
 	public List<Persons> get() throws SQLException, MvpException {
 		return server.get();
 	}
 
-	/**
-	 * @param key The persistent ID of the person
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setBirthDatePid(server.getBirthDatePid());
@@ -224,12 +213,10 @@ public class PersonProvider {
 		return siblingList;
 	}
 
-	/**
-	 * Insert a row
-	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	public int insert() throws SQLException, MvpException {
 		server.setBirthDatePid(birthDatePid);

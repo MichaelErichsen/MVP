@@ -125,11 +125,11 @@ public class PersonSiblingsView {
 		tblclmnSiblings.setWidth(250);
 		tblclmnSiblings.setText("Siblings");
 
-		Composite composite = new Composite(Sibling, SWT.NONE);
+		final Composite composite = new Composite(Sibling, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button buttonSelect = new Button(composite, SWT.NONE);
+		final Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -138,7 +138,7 @@ public class PersonSiblingsView {
 		});
 		buttonSelect.setText("Select");
 
-		Button buttonInsert = new Button(composite, SWT.NONE);
+		final Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -147,7 +147,7 @@ public class PersonSiblingsView {
 		});
 		buttonInsert.setText("Insert");
 
-		Button buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -156,7 +156,7 @@ public class PersonSiblingsView {
 		});
 		buttonUpdate.setText("Update");
 
-		Button buttonDelete = new Button(composite, SWT.NONE);
+		final Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -165,7 +165,7 @@ public class PersonSiblingsView {
 		});
 		buttonDelete.setText("Delete");
 
-		Button buttonClear = new Button(composite, SWT.NONE);
+		final Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -174,7 +174,7 @@ public class PersonSiblingsView {
 		});
 		buttonClear.setText("Clear");
 
-		Button buttonClose = new Button(composite, SWT.NONE);
+		final Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

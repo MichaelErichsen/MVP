@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONStringer;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
@@ -28,10 +29,10 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. jan. 2019
+ * @version 24. jan. 2019
  *
  */
-public class PersonServer {
+public class PersonServer implements IHREServer {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int personPid;
@@ -236,7 +237,7 @@ public class PersonServer {
 	}
 
 	/**
-	 * Get all rows
+	 * Get all names for the person
 	 *
 	 * @return A list of lists of strings of pids and labels
 	 * @throws SQLException An exception that provides information on a database
@@ -349,7 +350,7 @@ public class PersonServer {
 	}
 
 	/**
-	 * Get a row
+	 * Get a row remotely
 	 *
 	 * @param response Response
 	 * @param target   Target
@@ -494,8 +495,7 @@ public class PersonServer {
 	/**
 	 * Insert a row
 	 *
-	 * @return
-	 *
+	 * @return The pid of the row
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
@@ -608,7 +608,7 @@ public class PersonServer {
 	}
 
 	/**
-	 * Update a row
+	 * Update a row remotely
 	 *
 	 * @param request Request
 	 */

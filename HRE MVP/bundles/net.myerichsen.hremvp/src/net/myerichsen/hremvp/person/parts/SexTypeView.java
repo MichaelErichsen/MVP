@@ -212,7 +212,8 @@ public class SexTypeView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -247,7 +248,8 @@ public class SexTypeView {
 			eventBroker.post("MESSAGE", "Sex Type " + textId.getText() + " has been fetched");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			clear();
 		}
 	}
@@ -266,7 +268,8 @@ public class SexTypeView {
 			eventBroker.post("MESSAGE", "Sex Type " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 

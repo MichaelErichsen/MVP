@@ -216,7 +216,8 @@ public class PersonEventsView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -259,7 +260,8 @@ public class PersonEventsView {
 
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -272,7 +274,8 @@ public class PersonEventsView {
 			provider.insert();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -322,7 +325,8 @@ public class PersonEventsView {
 			provider.update();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 

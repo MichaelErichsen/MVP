@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.location.servers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
@@ -15,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 30. okt. 2018
  */
-public class LocationNamePartServer {
+public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNamePartPid;
 	private int locationNamePid;
@@ -246,5 +247,14 @@ public class LocationNamePartServer {
 			throw new MvpException("Part number " + partNo + " does not exist in matching location name map");
 		}
 		part.update();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

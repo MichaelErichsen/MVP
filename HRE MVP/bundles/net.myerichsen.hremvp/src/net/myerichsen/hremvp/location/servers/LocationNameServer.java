@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
@@ -19,7 +20,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * @version 12. nov. 2018
  *
  */
-public class LocationNameServer {
+public class LocationNameServer implements IHREServer {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNamePid;
 	private int locationPid;
@@ -350,6 +351,15 @@ public class LocationNameServer {
 		name.setToDatePid(toDatePid);
 		name.setPreposition(preposition);
 		name.update();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

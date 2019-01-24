@@ -7,7 +7,10 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
-import net.myerichsen.hremvp.dbmodels.NameParts;
+import net.myerichsen.hremvp.person.providers.ParentProvider;
+import net.myerichsen.hremvp.person.providers.PartnerProvider;
+import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
+import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 
@@ -15,7 +18,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, paprtner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. jan. 2019
+ * @version 24. jan. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -139,12 +142,14 @@ public class NewPersonWizard extends Wizard {
 		try {
 			// Page 1
 			// Birth date, death date and sex
+			// Create a new person
 			final PersonProvider personProvider = new PersonProvider();
 			personProvider.setBirthDatePid(page1.getBirthDatePid());
 			personProvider.setDeathDatePid(page1.getDeathDatePid());
 			personPid = personProvider.insert();
 			LOGGER.info("Inserted person " + personPid);
 
+			// Create a sex for the person
 			final SexProvider sexProvider = new SexProvider();
 			sexProvider.setPersonPid(personPid);
 			sexProvider.setSexTypePid(page1.getSexTypePid());
@@ -154,29 +159,34 @@ public class NewPersonWizard extends Wizard {
 
 			// Page 2
 			// Name validity dates
-			final List<String> nameParts = page3.getNameParts();
 			// Create a new name
-//			private int NamePid;
-//			private int PersonPid;
-//			private boolean PrimaryName;
-//			private int NameStylePid;
-//			private int TableId;
-//			private int FromDatePid;
-//			private int ToDatePid;
+			PersonNameProvider personNameProvider = new PersonNameProvider();
+			personNameProvider.setPersonPid(personPid);
+			personNameProvider.setNameStylePid(page2.getPersonNameStylePid());
+			personNameProvider.setFromDatePid(page2.getFromDatePid());
+			personNameProvider.setToDatePid(page2.getToDatePid());
+			personNameProvider.setPrimaryName(true);
+			int namePid = personNameProvider.insert();
+			LOGGER.info("Inserted name " + namePid + " for person " + personPid);
 
 			// Page 3
 			// Name parts
-			NameParts part;
+			PersonNamePartProvider personNamePartProvider;
+			final List<String> nameParts = page3.getNameParts();
+			String string;
+			int namePartPid;
 
-			for (final String string : nameParts) {
-				if ((string != null) && !(string.equals(""))) {
+			// Create each name part
+			for (int i = 0; i < nameParts.size(); i++) {
+				string = nameParts.get(i);
 
-					part = new NameParts();
-//					private int NamePartPid;
-//					private int NamePid;
-//					private String Label;
-//					private int PartNo;
-					part.setLabel(string);
+				if (string != null) {
+					personNamePartProvider = new PersonNamePartProvider();
+					personNamePartProvider.setNamePid(namePid);
+					personNamePartProvider.setLabel(string);
+					personNamePartProvider.setPartNo(i);
+					namePartPid = personNamePartProvider.insert();
+					LOGGER.info("Inserted name part" + namePartPid + " for person " + personPid);
 				}
 			}
 
@@ -197,8 +207,13 @@ public class NewPersonWizard extends Wizard {
 //			private int FromDatePid;
 //			private int ToDatePid;
 
+			// Create father
+			ParentProvider parentProvider = new ParentProvider();
+
 			page4.getFatherPid();
 			page4.getMotherPid();
+
+			PartnerProvider partnerProvider = new PartnerProvider();
 			page4.getPartnerPid();
 
 			// Page 5

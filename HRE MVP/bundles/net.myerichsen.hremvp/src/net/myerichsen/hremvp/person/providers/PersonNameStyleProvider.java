@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.NameMaps;
 import net.myerichsen.hremvp.dbmodels.NameStyles;
@@ -16,7 +17,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameStyleServer;
  * @version 14. jan. 2019
  *
  */
-public class PersonNameStyleProvider {
+public class PersonNameStyleProvider implements IHREProvider {
 	private int nameStylePid;
 	private String label;
 	private int languagePid;
@@ -127,14 +128,14 @@ public class PersonNameStyleProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		server.setIsoCode(isoCode);
 		server.setLabel(label);
 		server.setLanguageLabel(languageLabel);
 		server.setLanguagePid(languagePid);
 		server.setNameStylePid(nameStylePid);
 		server.setMapList(mapList);
-		server.insert();
+		return server.insert();
 	}
 
 	/**

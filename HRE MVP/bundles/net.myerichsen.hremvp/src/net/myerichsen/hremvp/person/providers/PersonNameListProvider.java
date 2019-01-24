@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Names;
 
 /**
@@ -13,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.Names;
  * @version 28. sep. 2018
  *
  */
-public class PersonNameListProvider {
+public class PersonNameListProvider implements IHREProvider {
 	private List<Names> modelList;
 	private Names model;
 
@@ -57,6 +59,61 @@ public class PersonNameListProvider {
 	 */
 	public void setModelList(List<Names> modelList) {
 		this.modelList = modelList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#insert()
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#update()
+	 */
+	@Override
+	public void update() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

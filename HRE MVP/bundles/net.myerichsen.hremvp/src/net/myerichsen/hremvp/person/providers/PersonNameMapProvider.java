@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.person.providers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.NameMaps;
 import net.myerichsen.hremvp.person.servers.PersonNameMapServer;
@@ -14,7 +15,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameMapServer;
  * @version 14. jan. 2019
  *
  */
-public class PersonNameMapProvider {
+public class PersonNameMapProvider implements IHREProvider {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int nameMapPid;
 	private String label;
@@ -113,12 +114,12 @@ public class PersonNameMapProvider {
 	 *                      access error or other errors.
 	 *
 	 */
-	public void insert() throws SQLException {
+	public int insert() throws SQLException {
 		server.setLabel(label);
 		server.setNameMapPid(nameMapPid);
 		server.setNameStylePid(nameStylePid);
 		server.setPartNo(partNo);
-		server.insert();
+		return server.insert();
 	}
 
 	/**
@@ -169,6 +170,17 @@ public class PersonNameMapProvider {
 		server.setNameStylePid(nameStylePid);
 		server.setPartNo(partNo);
 		server.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

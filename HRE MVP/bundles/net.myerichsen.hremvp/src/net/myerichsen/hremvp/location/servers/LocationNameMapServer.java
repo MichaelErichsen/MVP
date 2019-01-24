@@ -1,7 +1,9 @@
 package net.myerichsen.hremvp.location.servers;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
@@ -14,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  * @version 18. sep. 2018
  *
  */
-public class LocationNameMapServer {
+public class LocationNameMapServer implements IHREServer {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNameMapPid;
 	private String label;
@@ -116,13 +118,13 @@ public class LocationNameMapServer {
 	 *                      access error or other errors.
 	 *
 	 */
-	public void insert() throws SQLException {
+	public int insert() throws SQLException {
 		map.setLabel(label);
 		map.setLocationNameMapPid(locationNameMapPid);
 		map.setLocationNameStylePid(locationNameStylePid);
 		map.setPartNo(partNo);
 		map.setLabelPosition(labelPosition);
-		map.insert();
+		return map.insert();
 	}
 
 	/**
@@ -181,6 +183,15 @@ public class LocationNameMapServer {
 		map.setPartNo(partNo);
 		map.setLabelPosition(labelPosition);
 		map.update();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

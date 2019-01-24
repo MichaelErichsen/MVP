@@ -25,6 +25,7 @@ import org.json.JSONStringer;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
 import net.myerichsen.hremvp.person.servers.SexTypeServer;
@@ -36,7 +37,7 @@ import net.myerichsen.hremvp.person.servers.SexTypeServer;
  * @version 21. jan. 2019
  *
  */
-public class SexTypeProvider {
+public class SexTypeProvider implements IHREProvider {
 	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -66,7 +67,7 @@ public class SexTypeProvider {
 	 * @throws MvpException            Application specific exception
 	 *
 	 */
-	public void delete(int key) throws ClientProtocolException, IOException, MvpException {
+	public void deleteRemote(int key) throws ClientProtocolException, IOException, MvpException {
 		final CloseableHttpClient client = HttpClients.createDefault();
 		final HttpDelete request = new HttpDelete("http://" + store.getString("SERVERADDRESS") + ":"
 				+ store.getString("SERVERPORT") + "/mvp/v100/sextype/" + key);
@@ -131,7 +132,7 @@ public class SexTypeProvider {
 	 *                                 API
 	 * @throws MvpException            Application specific exception
 	 */
-	public void get1(int key) throws ClientProtocolException, IOException, MvpException {
+	public void getRemote(int key) throws ClientProtocolException, IOException, MvpException {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 
@@ -216,7 +217,7 @@ public class SexTypeProvider {
 	 * @throws MvpException   Application specific exception
 	 * @throws IOException    IOException
 	 */
-	public void insert() throws ParseException, IOException, MvpException {
+	public void insertRemote() throws ParseException, IOException, MvpException {
 		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("sexTypePid");
@@ -252,12 +253,12 @@ public class SexTypeProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void insert1() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		server.setSexTypePid(sexTypePid);
 		server.setAbbreviation(abbreviation);
 		server.setLabel(label);
 		server.setLanguagePid(languagePid);
-		server.insert();
+		return server.insert();
 	}
 
 	/**
@@ -315,5 +316,16 @@ public class SexTypeProvider {
 		server.setLabel(label);
 		server.setLanguagePid(languagePid);
 		server.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		server.delete(key);
+
 	}
 }

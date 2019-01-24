@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.person.servers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.NameMaps;
 import net.myerichsen.hremvp.dbmodels.NameStyles;
@@ -11,10 +12,10 @@ import net.myerichsen.hremvp.dbmodels.NameStyles;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.NameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 24. jan. 2019
  *
  */
-public class PersonNameMapServer {
+public class PersonNameMapServer implements IHREServer {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int nameMapPid;
 	private String label;
@@ -116,12 +117,12 @@ public class PersonNameMapServer {
 	 *                      access error or other errors.
 	 *
 	 */
-	public void insert() throws SQLException {
+	public int insert() throws SQLException {
 		map.setLabel(label);
 		map.setNameMapPid(nameMapPid);
 		map.setNameStylePid(nameStylePid);
 		map.setPartNo(partNo);
-		map.insert();
+		return map.insert();
 	}
 
 	/**
@@ -172,6 +173,17 @@ public class PersonNameMapServer {
 		map.setNameStylePid(nameStylePid);
 		map.setPartNo(partNo);
 		map.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

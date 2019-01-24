@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.providers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.servers.LanguageServer;
 
@@ -13,7 +14,7 @@ import net.myerichsen.hremvp.servers.LanguageServer;
  * @version 2. nov. 2018
  *
  */
-public class LanguageProvider {
+public class LanguageProvider implements IHREProvider {
 	private int LanguagePid;
 	private String Isocode;
 	private String Label;
@@ -28,14 +29,37 @@ public class LanguageProvider {
 		server = new LanguageServer();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @return A list of Pids, ISO Codes and labels
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<String> get() throws SQLException, MvpException {
 		return server.get();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -66,6 +90,17 @@ public class LanguageProvider {
 		return TableId;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#insert()
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	/**
 	 * @param isocode the isocode to set
 	 */
@@ -92,6 +127,17 @@ public class LanguageProvider {
 	 */
 	public void setTableId(int tableId) {
 		TableId = tableId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#update()
+	 */
+	@Override
+	public void update() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. jan. 2019
+ * @version 24. jan. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
@@ -40,7 +40,6 @@ public class NewPersonWizardPage2 extends WizardPage {
 	private int personNameStylePid;
 	private int fromDatePid;
 	private int toDatePid;
-//	private IEventBroker eventBroker;
 
 	/**
 	 * Constructor
@@ -49,11 +48,10 @@ public class NewPersonWizardPage2 extends WizardPage {
 	 */
 	public NewPersonWizardPage2(IEclipseContext context) {
 		super("wizardPage");
-		setTitle("Person name style");
+		setTitle("Person name style and dates");
 		setDescription(
 				"Set the name style for the new person and optionally dates limiting the validity of the name. More names can be added later");
 		this.context = context;
-//		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/**
@@ -135,6 +133,9 @@ public class NewPersonWizardPage2 extends WizardPage {
 		textToDate.setText("");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);

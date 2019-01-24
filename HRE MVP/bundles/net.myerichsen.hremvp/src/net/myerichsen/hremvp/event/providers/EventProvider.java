@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.servers.EventServer;
 
@@ -14,7 +15,7 @@ import net.myerichsen.hremvp.event.servers.EventServer;
  * @version 20. jan. 2019
  *
  */
-public class EventProvider {
+public class EventProvider implements IHREProvider {
 	private int EventPid;
 	private int FromDatePid;
 	private String FromDateLabel;
@@ -185,7 +186,7 @@ public class EventProvider {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public List<String> getLocationList(int key) throws SQLException {
 		return server.getLocationList(key);

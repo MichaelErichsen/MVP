@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.NameMaps;
@@ -17,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.NameStyles;
  * @version 14. jan. 2019
  *
  */
-public class PersonNameStyleServer {
+public class PersonNameStyleServer implements IHREServer {
 	private int nameStylePid;
 	private String label;
 	private int languagePid;
@@ -144,11 +145,11 @@ public class PersonNameStyleServer {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public void insert() throws SQLException {
+	public int insert() throws SQLException {
 		style.setLabel(label);
 		style.setLanguagePid(languagePid);
 		style.setNameStylePid(nameStylePid);
-		style.insert();
+		return style.insert();
 	}
 
 	/**

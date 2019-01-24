@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.person.servers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.NameMaps;
 import net.myerichsen.hremvp.dbmodels.NameParts;
@@ -12,9 +13,9 @@ import net.myerichsen.hremvp.dbmodels.Names;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.NameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. sep. 2018
+ * @version 24. jan. 2019
  */
-public class PersonNamePartServer {
+public class PersonNamePartServer implements IHREServer {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int namePartPid;
 	private int namePid;
@@ -141,12 +142,14 @@ public class PersonNamePartServer {
 	/**
 	 * Insert a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.NameMaps}
+	 * 
+	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		part.setLabel(label);
 		part.setNamePartPid(namePartPid);
 		part.setNamePid(namePid);
@@ -171,7 +174,7 @@ public class PersonNamePartServer {
 			throw new MvpException("Part number " + partNo + " does not exist in matching name map");
 		}
 
-		part.insert();
+		return part.insert();
 	}
 
 	/**
@@ -249,5 +252,16 @@ public class PersonNamePartServer {
 			throw new MvpException("Part number " + partNo + " does not exist in matching name map");
 		}
 		part.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.NameMaps;
 import net.myerichsen.hremvp.dbmodels.NameParts;
@@ -15,11 +16,11 @@ import net.myerichsen.hremvp.dbmodels.Names;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 24. jan. 2019
  *
  */
 //Use LocalDate
-public class PersonNameServer {
+public class PersonNameServer implements IHREServer {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int namePid;
 	private int personPid;
@@ -239,19 +240,21 @@ public class PersonNameServer {
 
 	/**
 	 * Insert a row
+	 * 
+	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void insert() throws SQLException, MvpException {
+	public int insert() throws SQLException, MvpException {
 		name.setNamePid(namePid);
 		name.setPersonPid(personPid);
 		name.setFromDatePid(fromDatePid);
 		name.setToDatePid(toDatePid);
 		name.setPrimaryName(primaryName);
 		name.setNameStylePid(nameStylePid);
-		name.insert();
+		return name.insert();
 	}
 
 	/**
@@ -339,5 +342,16 @@ public class PersonNameServer {
 		name.setPrimaryName(primaryName);
 		name.setNameStylePid(nameStylePid);
 		name.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

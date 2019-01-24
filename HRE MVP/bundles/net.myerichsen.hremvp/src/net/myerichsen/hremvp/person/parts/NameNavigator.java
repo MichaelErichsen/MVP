@@ -142,7 +142,8 @@ public class NameNavigator {
 			}
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}

@@ -1,7 +1,9 @@
 package net.myerichsen.hremvp.person.providers;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.servers.SexServer;
 
@@ -12,7 +14,7 @@ import net.myerichsen.hremvp.person.servers.SexServer;
  * @version 14. jan. 2019
  *
  */
-public class SexProvider {
+public class SexProvider implements IHREProvider {
 	private int sexesPid;
 	private int personPid;
 	private int sexTypePid;
@@ -258,5 +260,14 @@ public class SexProvider {
 		server.setToDatePid(toDatePid);
 		server.setPrimarySex(primarySex);
 		server.update();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

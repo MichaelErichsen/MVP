@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.EventTypes;
@@ -16,7 +17,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * @version 27. nov. 2018
  *
  */
-public class EventTypeServer {
+public class EventTypeServer implements IHREServer {
 	// private final static Logger LOGGER =
 	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int EventTypePid;

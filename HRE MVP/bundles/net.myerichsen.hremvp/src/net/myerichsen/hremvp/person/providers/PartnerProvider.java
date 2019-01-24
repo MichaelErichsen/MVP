@@ -1,41 +1,19 @@
-package net.myerichsen.hremvp.location.providers;
+package net.myerichsen.hremvp.person.providers;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.location.servers.LocationEventServer;
+import net.myerichsen.hremvp.person.servers.PartnerServer;
 
 /**
- * Provides all events for a location
- *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
+ * @version 24. jan. 2019
  *
  */
-public class LocationEventProvider implements IHREProvider {
-
-	private final LocationEventServer server;
-
-	/**
-	 * Constructor
-	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 *
-	 */
-	public LocationEventProvider() throws SQLException {
-		server = new LocationEventServer();
-	}
-
-	/**
-	 * @return
-	 * @throws Exception
-	 */
-	public List<List<String>> getEventList(int locationPid) throws Exception {
-		return server.getEventList(locationPid);
-	}
+public class PartnerProvider implements IHREProvider {
+	PartnerServer server;
 
 	/*
 	 * (non-Javadoc)

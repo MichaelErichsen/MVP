@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.location.servers.LocationServer;
 
@@ -14,7 +15,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * @version 25. nov. 2018
  *
  */
-public class LocationProvider {
+public class LocationProvider implements IHREProvider {
 	private int locationPid;
 	private int fromDatePid;
 	private int toDatePid;

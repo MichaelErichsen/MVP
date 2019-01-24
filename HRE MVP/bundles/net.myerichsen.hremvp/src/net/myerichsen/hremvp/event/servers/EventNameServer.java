@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.event.servers;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 
@@ -11,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.EventNames;
  * @version 19. jan. 2019
  *
  */
-public class EventNameServer {
+public class EventNameServer implements IHREServer {
 	EventNames name;
 
 	/**
@@ -45,6 +46,33 @@ public class EventNameServer {
 	 */
 	public String getLabel() {
 		return name.getLabel();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREServer#insert()
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREServer#update()
+	 */
+	@Override
+	public void update() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
