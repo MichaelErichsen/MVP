@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. jan. 2019
+ * @version 24. jan. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -61,7 +61,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 	public NewPersonWizardPage1(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("New Person");
-		setDescription("Create a new person by entering static data for it.");
+		setDescription("Create a new person by entering static data for it. Dates are optional, but sex is mandatory.");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
@@ -281,6 +281,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		textSexTypePid.setToolTipText("More sexes can be added later");
 		textSexTypePid.setEditable(false);
 		textSexTypePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textSexTypePid.setToolTipText("Sex must be selected to continue");
 
 		textSex = new Text(container, SWT.BORDER);
 		textSex.setEditable(false);
@@ -296,6 +297,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseSexTypes();
+				setPageComplete(true);
 			}
 		});
 		btnBrowseSexes.setText("Browse");
@@ -305,9 +307,12 @@ public class NewPersonWizardPage1 extends WizardPage {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearSex();
+				setPageComplete(false);
 			}
 		});
 		btnClearSex.setText("Clear");
+
+		setPageComplete(false);
 	}
 
 	/**

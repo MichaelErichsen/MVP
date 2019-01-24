@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 23. jan. 2019
+ * @version 24. jan. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
@@ -58,10 +58,10 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private Text textPartnerBirthDate;
 	private Text textPartnerDeathDate;
 
-	private int fatherPid;
-	private int motherPid;
-	private int partnerPid;
-	private int childPid;
+	private int fatherPid = 0;
+	private int motherPid = 0;
+	private int partnerPid = 0;
+	private int childPid = 0;
 	private final IEventBroker eventBroker;
 
 	/**
@@ -94,9 +94,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 			}
-
 		}
-
 	}
 
 	/**

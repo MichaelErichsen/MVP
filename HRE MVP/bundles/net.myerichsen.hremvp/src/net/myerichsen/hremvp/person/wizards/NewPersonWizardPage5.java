@@ -23,24 +23,24 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.event.dialogs.NewEventDialog;
-import net.myerichsen.hremvp.event.providers.EventProvider;
-import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 
 /**
  * Person events wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. jan. 2019
+ * @version 24. jan. 2019
  *
  */
+// FIXME Role not in Events?
 public class NewPersonWizardPage5 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
 	private Table table;
 
-	private List<Integer> personEventPidList;
+//	private List<Integer> personEventPidList;
 	private final IEventBroker eventBroker;
+	private List<List<String>> listOfLists;
 
 	public NewPersonWizardPage5(IEclipseContext context) {
 		super("wizardPage");
@@ -48,46 +48,45 @@ public class NewPersonWizardPage5 extends WizardPage {
 		setDescription("Add events for the new person. More events can be added later.");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
-		setPersonEventPidList(new ArrayList<>());
+//		setPersonEventPidList(new ArrayList<>());
+		listOfLists = new ArrayList<>();
 	}
 
 	/**
 	 *
 	 */
-	// FIXME Move event creation to main wizard page after creation of person
 	protected void addEvent(int personPid) {
 		final NewEventDialog dialog = new NewEventDialog(table.getShell(), context);
 
 		if (dialog.open() == Window.OK) {
 			try {
 				final List<String> eventStringList = dialog.getEventStringList();
+				listOfLists.add(eventStringList);
 
-				// Create an personEvent
-				final EventProvider ep = new EventProvider();
-				ep.setEventNamePid(dialog.getEventNamePid());
-				ep.setFromDatePid(dialog.getFromDatePid());
-				ep.setToDatePid(dialog.getToDatePid());
-				final int eventPid = ep.insert();
-
-				// Create a person-personEvent to link them together
-				final PersonEventProvider pep = new PersonEventProvider();
-				pep.setEventPid(eventPid);
-				pep.setPersonPid(personPid);
-				pep.setPrimaryEvent(true);
-				pep.setPrimaryPerson(true);
-				pep.setRole(eventStringList.get(3));
-				final int personEventPid = pep.insert();
+//				// Create an personEvent
+//				final EventProvider ep = new EventProvider();
+//				ep.setEventNamePid(dialog.getEventNamePid());
+//				ep.setFromDatePid(dialog.getFromDatePid());
+//				ep.setToDatePid(dialog.getToDatePid());
+//				final int eventPid = ep.insert();
+//
+//				// Create a person-personEvent to link them together
+//				final PersonEventProvider pep = new PersonEventProvider();
+//				pep.setEventPid(eventPid);
+//				pep.setPersonPid(personPid);
+//				pep.setPrimaryEvent(true);
+//				pep.setPrimaryPerson(true);
+//				pep.setRole(eventStringList.get(3));
+//				final int personEventPid = pep.insert();
 
 				// Display in view
 				final TableItem item = new TableItem(table, SWT.NONE);
-				item.setText(0, Integer.toString(personEventPid));
-				item.setText(1, Integer.toString(eventPid));
-				item.setText(2, eventStringList.get(0));
-				item.setText(3, eventStringList.get(1));
-				item.setText(4, eventStringList.get(2));
-				item.setText(5, eventStringList.get(3));
+				item.setText(0, eventStringList.get(0));
+				item.setText(1, eventStringList.get(1));
+				item.setText(2, eventStringList.get(2));
+				item.setText(3, eventStringList.get(3));
 
-				personEventPidList.add(personEventPid);
+//				personEventPidList.add(0);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
@@ -109,15 +108,15 @@ public class NewPersonWizardPage5 extends WizardPage {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnPersoneventId = tableViewerColumn.getColumn();
-		tblclmnPersoneventId.setWidth(100);
-		tblclmnPersoneventId.setText("PersonEvent ID");
-
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnEventId = tableViewerColumnId.getColumn();
-		tblclmnEventId.setWidth(100);
-		tblclmnEventId.setText("Event ID");
+//		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+//		final TableColumn tblclmnPersoneventId = tableViewerColumn.getColumn();
+//		tblclmnPersoneventId.setWidth(100);
+//		tblclmnPersoneventId.setText("PersonEvent ID");
+//
+//		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+//		final TableColumn tblclmnEventId = tableViewerColumnId.getColumn();
+//		tblclmnEventId.setWidth(100);
+//		tblclmnEventId.setText("Event ID");
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnEventLabel = tableViewerColumnLabel.getColumn();
@@ -167,45 +166,64 @@ public class NewPersonWizardPage5 extends WizardPage {
 	 *
 	 */
 	protected void deleteSelectedEvent() {
-		int personEventPid;
-		final TableItem[] selectedRows = table.getSelection();
+		final int selectionIndex = table.getSelectionIndex();
+		listOfLists.remove(selectionIndex);
+//		int personEventPid;
+//		final TableItem[] selectedRows = table.getSelection();
 
-		try {
-			if (selectedRows.length > 0) {
-				// Delete personEvent for person
-				final TableItem selectedRow = selectedRows[0];
-				personEventPid = Integer.parseInt(selectedRow.getText(0));
-				final PersonEventProvider pep = new PersonEventProvider();
-				final int eventPid = pep.getEventPid();
-				pep.delete(personEventPid);
-				personEventPidList.remove(personEventPid);
-				LOGGER.info("Deleted personEvent " + personEventPid);
+//		try {
+//			if (selectedRows.length > 0) {
+		// Delete personEvent for person
+//				table.getSelectionIndex()
+//				final TableItem selectedRow = selectedRows[0];
+//				listOfLists.remove(selectedRow.i
+//				personEventPid = Integer.parseInt(selectedRow.getText(0));
+//				final PersonEventProvider pep = new PersonEventProvider();
+//				final int eventPid = pep.getEventPid();
+//				pep.delete(personEventPid);
+//				personEventPidList.remove(personEventPid);
+//				LOGGER.info("Deleted personEvent " + personEventPid);
 
-				// If no more person events then delete event
-				if (pep.areMoreEvents(eventPid) == false) {
-					final EventProvider ep = new EventProvider();
-					ep.delete(eventPid);
-					LOGGER.info("Deleted event " + eventPid);
-				}
-			}
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
+		// If no more person events then delete event
+//				if (pep.areMoreEvents(eventPid) == false) {
+//					final EventProvider ep = new EventProvider();
+//					ep.delete(eventPid);
+//					LOGGER.info("Deleted event " + eventPid);
+//				}
+//			}
+//		} catch (final Exception e) {
+//			LOGGER.severe(e.getMessage());
+//			eventBroker.post("MESSAGE", e.getMessage());
+//			e.printStackTrace();
+//		}
 	}
 
 	/**
-	 * @return the personEventPidList
+	 * @return the listOfLists
 	 */
-	public List<Integer> getPersonEventPidList() {
-		return personEventPidList;
+	public List<List<String>> getListOfLists() {
+		return listOfLists;
 	}
 
 	/**
-	 * @param personEventPidList the personEventPidList to set
+	 * @param listOfLists the listOfLists to set
 	 */
-	public void setPersonEventPidList(List<Integer> eventPidList) {
-		personEventPidList = eventPidList;
+	public void setListOfLists(List<List<String>> listOfLists) {
+		this.listOfLists = listOfLists;
 	}
+
+//	/**
+//	 * @return the personEventPidList
+//	 */
+//	public List<Integer> getPersonEventPidList() {
+//		return personEventPidList;
+//	}
+
+//	/**
+//	 * @param personEventPidList the personEventPidList to set
+//	 */
+//	public void setPersonEventPidList(List<Integer> eventPidList) {
+//		personEventPidList = eventPidList;
+//	}
+
 }

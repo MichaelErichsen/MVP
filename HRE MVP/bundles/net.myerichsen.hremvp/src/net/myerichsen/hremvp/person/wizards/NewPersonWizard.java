@@ -7,8 +7,10 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
+import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.person.providers.ParentProvider;
 import net.myerichsen.hremvp.person.providers.PartnerProvider;
+import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
@@ -160,13 +162,13 @@ public class NewPersonWizard extends Wizard {
 			// Page 2
 			// Name validity dates
 			// Create a new name
-			PersonNameProvider personNameProvider = new PersonNameProvider();
+			final PersonNameProvider personNameProvider = new PersonNameProvider();
 			personNameProvider.setPersonPid(personPid);
 			personNameProvider.setNameStylePid(page2.getPersonNameStylePid());
 			personNameProvider.setFromDatePid(page2.getFromDatePid());
 			personNameProvider.setToDatePid(page2.getToDatePid());
 			personNameProvider.setPrimaryName(true);
-			int namePid = personNameProvider.insert();
+			final int namePid = personNameProvider.insert();
 			LOGGER.info("Inserted name " + namePid + " for person " + personPid);
 
 			// Page 3
@@ -186,90 +188,95 @@ public class NewPersonWizard extends Wizard {
 					personNamePartProvider.setLabel(string);
 					personNamePartProvider.setPartNo(i);
 					namePartPid = personNamePartProvider.insert();
-					LOGGER.info("Inserted name part" + namePartPid + " for person " + personPid);
+					LOGGER.info("Inserted name part " + namePartPid + " for person " + personPid);
 				}
 			}
 
 			// Page 4
-			// Primary father, mother and partner
-//			private int ParentPid;
-//			private int Child;
-//			private int Parent;
-//			private String ParentRole;
-//			private boolean PrimaryParent;
-//			private int LanguagePid;
-
-//			private int PartnerPid;
-//			private int Partner1;
-//			private int Partner2;
-//			private boolean PrimaryPartner;
-//			private String Role;
-//			private int FromDatePid;
-//			private int ToDatePid;
+			// Primary father, mother, child and partner
+			ParentProvider parentProvider;
 
 			// Create father
-			ParentProvider parentProvider = new ParentProvider();
+			if (page4.getFatherPid() != 0) {
+				parentProvider = new ParentProvider();
+				parentProvider.setChild(personPid);
+				parentProvider.setParent(page4.getFatherPid());
+				// TODO Get role
+				parentProvider.setParentRole("Father");
+				parentProvider.setPrimaryParent(true);
+				// TODO Get language pid
+				parentProvider.setLanguagePid(1);
+				parentProvider.insert();
+				LOGGER.info("Inserted father pid " + page4.getFatherPid());
+			}
 
-			page4.getFatherPid();
-			page4.getMotherPid();
+			// Create mother
+			if (page4.getMotherPid() != 0) {
+				parentProvider = new ParentProvider();
+				parentProvider.setChild(personPid);
+				parentProvider.setParent(page4.getMotherPid());
+				// TODO Get role
+				parentProvider.setParentRole("Mother");
+				parentProvider.setPrimaryParent(true);
+				// TODO Get language pid
+				parentProvider.setLanguagePid(1);
+				parentProvider.insert();
+				LOGGER.info("Inserted mother pid " + page4.getMotherPid());
+			}
 
-			PartnerProvider partnerProvider = new PartnerProvider();
-			page4.getPartnerPid();
+			// Create partner
+			if (page4.getPartnerPid() != 0) {
+				final PartnerProvider partnerProvider = new PartnerProvider();
+				partnerProvider.setPartner1(personPid);
+				partnerProvider.setPartner2(page4.getPartnerPid());
+				partnerProvider.setPrimaryPartner(true);
+				// TODO Get role, from and to dates
+				partnerProvider.setRole("Role");
+				partnerProvider.setFromDatePid(0);
+				partnerProvider.setToDatePid(0);
+				partnerProvider.insert();
+				LOGGER.info("Inserted partner pid " + page4.getPartnerPid());
+			}
+
+			// Create child
+			// TODO Create child
 
 			// Page 5
 			// Events
+			final List<List<String>> listOfLists = page5.getListOfLists();
 
-//			private int EventPid;
-//			private int FromDatePid;
-//			private int ToDatePid;
-//			private int EventNamePid;
+			for (final List<String> list : listOfLists) {
 
-			// Get all new events
-			// Create person/personEvent objects for each
+				// Create an Event
+				// Returns Namelabel role from to
+				final EventProvider ep = new EventProvider();
+				// FIXME Returns label, not pid
+				ep.setEventNamePid(Integer.parseInt(list.get(0)));
+				// FIXME Get pids
+				ep.setFromDatePid(Integer.parseInt(list.get(2)));
+				ep.setToDatePid(Integer.parseInt(list.get(3)));
+				final int eventPid = ep.insert();
+				LOGGER.info("Inserted event pid " + eventPid);
 
-//			List<Integer> eventPidList = page5.getEventPidList();
-//
-//			for (Integer eventPid : eventPidList) {
-//				EventProvider ep = new EventProvider();
-//				ep.setEventNamePid(eventNamePid);
-//				ep.setFromDatePid(i);
-//				ep.setToDatePid(todate);
-//				ep.insert();
-//			}
+				// Create a person-personEvent to link them together
+				final PersonEventProvider pep = new PersonEventProvider();
+				pep.setEventPid(eventPid);
+				pep.setPersonPid(personPid);
+				pep.setPrimaryEvent(true);
+				pep.setPrimaryPerson(true);
+				pep.setRole(list.get(1));
+				final int personEventPid = pep.insert();
+				LOGGER.info("Inserted person-event pid " + personEventPid);
 
-//			PersonNameProvider lnp = new PersonNameProvider();
-//			lnp.setPersonPid(personPid);
-//			lnp.setFromDatePid(page2.getFromDatePid());
-//			lnp.setToDatePid(page2.getFromDatePid());
-//			lnp.setPrimaryPersonName(true);
-//
-//			String s = page2.getComboPersonNameStyles().getText();
-//			String[] sa = s.split(",");
-//			lnp.setPersonNameStylePid(Integer.parseInt(sa[0]));
-//
-//			lnp.setPrimaryPersonName(page2.getBtnPrimaryPersonName().getSelection());
-//			lnp.setPreposition(page2.getTextPreposition().getText());
-//			int personNamePid = lnp.insert();
-//			LOGGER.info("Inserted person name " + personNamePid);
-//
-//			List<Label> labelList = page3.getLabelList();
-//			List<Text> textList = page3.getTextList();
-//
-//			for (int i = 0; i < labelList.size(); i++) {
-//				PersonNamePartProvider lnpp = new PersonNamePartProvider();
-//				lnpp.setPersonNamePid(personNamePid);
-//				lnpp.setPartNo(i + 1);
-//				lnpp.setLabel(textList.get(i).getText());
-//				int personNamePartPid = lnpp.insert();
-//				LOGGER.info("Inserted person name part " + personNamePartPid);
-//			}
-//
-//			eventBroker.post("MESSAGE", personName + " inserted in the database as no. " + personPid);
+			}
+
+			eventBroker.post("MESSAGE", personName + " inserted in the database as no. " + personPid);
 			return true;
-		} catch (final Exception e) {
+		} catch (
+
+		final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
-//			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 		return false;

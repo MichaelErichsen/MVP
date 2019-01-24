@@ -79,7 +79,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 				context);
 		if (dialog.open() == Window.OK) {
 			try {
-				final int personNameStylePid = dialog.getPersonNameStylePid();
+				personNameStylePid = dialog.getPersonNameStylePid();
 				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
 				pnsp.get(personNameStylePid);
 				textPersonNameStyle.setText(pnsp.getLabel());
@@ -133,8 +133,12 @@ public class NewPersonWizardPage2 extends WizardPage {
 		textToDate.setText("");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
+	 * Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -150,6 +154,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		textPersonNameStyle = new Text(container, SWT.BORDER);
 		textPersonNameStyle.setEditable(false);
 		textPersonNameStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPersonNameStyle.setToolTipText("Person Name Style is mandatory to continue");
 
 		// TODO Bad logic handling next pages
 //		try {

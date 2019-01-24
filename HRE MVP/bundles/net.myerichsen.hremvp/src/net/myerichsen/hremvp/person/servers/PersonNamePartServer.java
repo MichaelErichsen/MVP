@@ -159,20 +159,20 @@ public class PersonNamePartServer implements IHREServer {
 		final Names name = new Names();
 		name.get(namePid);
 
-		final NameMaps map = new NameMaps();
-		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
-		Boolean found = false;
-
-		for (int i = 0; i < mapList.size(); i++) {
-			if (mapList.get(i).getPartNo() == partNo) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			throw new MvpException("Part number " + partNo + " does not exist in matching name map");
-		}
+//		final NameMaps map = new NameMaps();
+//		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+//		Boolean found = false;
+//
+//		for (int i = 0; i < mapList.size(); i++) {
+//			if (mapList.get(i).getPartNo() == partNo) {
+//				found = true;
+//				break;
+//			}
+//		}
+//
+//		if (!found) {
+//			throw new MvpException("Part number " + partNo + " does not exist in matching name map");
+//		}
 
 		return part.insert();
 	}

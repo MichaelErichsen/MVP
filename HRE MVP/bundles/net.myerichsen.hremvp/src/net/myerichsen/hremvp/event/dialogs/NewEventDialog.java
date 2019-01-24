@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a new personEvent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. jan. 2019
+ * @version 24. jan. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -58,7 +58,6 @@ public class NewEventDialog extends TitleAreaDialog {
 	private Text textToDate;
 
 	private final List<String> eventStringList;
-//	private String styleLabel;
 	private String nameLabel;
 	private int eventNamePid;
 	private String role = "";
@@ -470,13 +469,6 @@ public class NewEventDialog extends TitleAreaDialog {
 		return new Point(373, 455);
 	}
 
-//	/**
-//	 * @return the styleLabel
-//	 */
-//	public String getStyleLabel() {
-//		return styleLabel;
-//	}
-
 	/**
 	 * @return the nameLabel
 	 */
@@ -558,13 +550,6 @@ public class NewEventDialog extends TitleAreaDialog {
 	public void setFromDatePid(int fromDatePid) {
 		this.fromDatePid = fromDatePid;
 	}
-
-//	/**
-//	 * @param styleLabel the styleLabel to set
-//	 */
-//	public void setStyleLabel(String label) {
-//		styleLabel = label;
-//	}
 
 	/**
 	 * @param nameLabel the nameLabel to set
