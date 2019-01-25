@@ -16,12 +16,12 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 /**
  * Handler to open the Person view
  *
- * @version 2018-09-14
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 25. jan. 2019
  *
  */
 public class OpenPersonViewHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonViewOld";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonView";
 
 	/**
 	 * @param partService  The Eclipse part service

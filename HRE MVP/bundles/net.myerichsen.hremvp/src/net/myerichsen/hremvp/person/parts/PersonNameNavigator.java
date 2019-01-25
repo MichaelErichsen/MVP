@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.person.providers.PersonNameProvider;
  *
  */
 @SuppressWarnings("restriction")
-public class NameNavigator {
+public class PersonNameNavigator {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private IEventBroker eventBroker;
@@ -53,7 +53,7 @@ public class NameNavigator {
 	 * Constructor
 	 *
 	 */
-	public NameNavigator() {
+	public PersonNameNavigator() {
 		provider = new PersonNameListProvider();
 	}
 

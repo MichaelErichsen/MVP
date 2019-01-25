@@ -51,7 +51,7 @@ import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
  *
  */
 @SuppressWarnings("restriction")
-public class NameStyleView {
+public class PersonNameStyleView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
@@ -90,7 +90,7 @@ public class NameStyleView {
 	 *                      access error or other errors
 	 *
 	 */
-	public NameStyleView() throws SQLException {
+	public PersonNameStyleView() throws SQLException {
 		provider = new PersonNameStyleProvider();
 	}
 

@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.location.providers.LocationPersonProvider;
  * Display all persons for a single location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. nov. 2018
+ * @version 25. jan. 2019
  */
 public class LocationPersonView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -136,7 +136,7 @@ public class LocationPersonView {
 	 *
 	 */
 	protected void openPersonView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.PersonViewOld";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonView";
 
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();

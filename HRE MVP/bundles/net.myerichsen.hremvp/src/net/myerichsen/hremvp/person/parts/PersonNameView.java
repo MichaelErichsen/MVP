@@ -49,7 +49,7 @@ import net.myerichsen.hremvp.person.providers.PersonNameProvider;
  * @version 14. nov. 2018
  */
 @SuppressWarnings("restriction")
-public class NameView {
+public class PersonNameView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
@@ -90,7 +90,7 @@ public class NameView {
 	 *                      access error or other errors
 	 *
 	 */
-	public NameView() throws SQLException {
+	public PersonNameView() throws SQLException {
 		provider = new PersonNameProvider();
 	}
 

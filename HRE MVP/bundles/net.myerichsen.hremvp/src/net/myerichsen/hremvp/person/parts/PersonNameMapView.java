@@ -31,16 +31,16 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.listeners.NumericVerifyListener;
-import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
+import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
 
 /**
- * Display all data about a name part
+ * Display all data about a name map
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 29. sep. 2018
  *
  */
-public class NamePartView {
+public class PersonNameMapView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
@@ -52,10 +52,9 @@ public class NamePartView {
 	private IEventBroker eventBroker;
 
 	private Text textId;
-	private Text textNameId;
-	private Text textName;
+	private Text textStyleId;
+	private Text textStyle;
 	private Text textPartNo;
-	private Text textMapLabel;
 	private Text textLabel;
 	private Composite composite;
 	private Button buttonSelect;
@@ -64,17 +63,17 @@ public class NamePartView {
 	private Button buttonDelete;
 	private Button buttonClear;
 	private Button buttonClose;
-	private final PersonNamePartProvider provider;
+
+	private final PersonNameMapProvider provider;
 
 	/**
 	 * Constructor
 	 *
 	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 *
+	 *                      access error or other errors.
 	 */
-	public NamePartView() throws SQLException {
-		provider = new PersonNamePartProvider();
+	public PersonNameMapView() throws SQLException {
+		provider = new PersonNameMapProvider();
 	}
 
 	/**
@@ -82,9 +81,9 @@ public class NamePartView {
 	 */
 	protected void clear() {
 		textId.setText("0");
-		textNameId.setText("0");
+		textStyleId.setText("0");
+		textStyle.setText("");
 		textPartNo.setText("0");
-		textMapLabel.setText("Label");
 		textLabel.setText("");
 	}
 
@@ -100,7 +99,7 @@ public class NamePartView {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
+	 * @param parent The parent composite.
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
@@ -112,19 +111,20 @@ public class NamePartView {
 		textId = new Text(parent, SWT.BORDER);
 		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textId.addVerifyListener(new NumericVerifyListener());
+
 		new Label(parent, SWT.NONE);
 
-		final Label lblName = new Label(parent, SWT.NONE);
-		lblName.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		lblName.setText("Name ID");
+		final Label lblStyle = new Label(parent, SWT.NONE);
+		lblStyle.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		lblStyle.setText("Style");
 
-		textNameId = new Text(parent, SWT.BORDER);
-		textNameId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textNameId.addVerifyListener(new NumericVerifyListener());
+		textStyleId = new Text(parent, SWT.BORDER);
+		textStyleId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textStyleId.addVerifyListener(new NumericVerifyListener());
 
-		textName = new Text(parent, SWT.BORDER);
-		textName.setEditable(false);
-		textName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textStyle = new Text(parent, SWT.BORDER);
+		textStyle.setEditable(false);
+		textStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblPartNo = new Label(parent, SWT.NONE);
 		lblPartNo.setText("Part no.");
@@ -132,18 +132,17 @@ public class NamePartView {
 		textPartNo = new Text(parent, SWT.BORDER);
 		textPartNo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textPartNo.addVerifyListener(new NumericVerifyListener());
+
 		new Label(parent, SWT.NONE);
 
-		textMapLabel = new Text(parent, SWT.NONE);
-		textMapLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		textMapLabel.setEditable(false);
-		textMapLabel.setText("Label");
+		final Label lblLabel = new Label(parent, SWT.NONE);
+		lblLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
 		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -199,18 +198,19 @@ public class NamePartView {
 			}
 		});
 		buttonClose.setText("Close");
-		new Label(parent, SWT.NONE);
 	}
 
 	/**
+	 * @throws MvpException
+	 * @throws NumberFormatException
 	 *
 	 */
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been deleted");
 			clear();
-		} catch (SQLException | NumberFormatException | MvpException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
@@ -236,18 +236,17 @@ public class NamePartView {
 	private void get(int key) {
 		try {
 			provider.get(key);
-			textId.setText(Integer.toString(provider.getNamePartPid()));
-			textNameId.setText(Integer.toString(provider.getNamePid()));
-			textName.setText(provider.getName());
+
+			textId.setText(Integer.toString(provider.getNameMapPid()));
+			textStyleId.setText(Integer.toString(provider.getNameStylePid()));
+			textStyle.setText(provider.getStyleLabel());
 			textPartNo.setText(Integer.toString(provider.getPartNo()));
-			textMapLabel.setText(provider.getMapLabel());
 			textLabel.setText(provider.getLabel());
-			eventBroker.post("MESSAGE", "Name Part " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been fetched");
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -257,12 +256,12 @@ public class NamePartView {
 	protected void insert() {
 		try {
 			provider.setLabel(textLabel.getText());
-			provider.setNamePartPid(Integer.parseInt(textId.getText()));
-			provider.setNamePid(Integer.parseInt(textNameId.getText()));
+			provider.setNameMapPid(Integer.parseInt(textId.getText()));
+			provider.setNameStylePid(Integer.parseInt(textStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.insert();
-			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been inserted");
-		} catch (final Exception e) {
+			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been inserted");
+		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}
@@ -276,15 +275,14 @@ public class NamePartView {
 	}
 
 	/**
-	 * @param namePartPid
+	 * @param nameMapPid
 	 * @throws SQLException
-	 * @throws MvpException
 	 */
 	@Inject
 	@Optional
-	private void subscribeNamePartUpdateTopic(@UIEventTopic(Constants.NAME_PART_PID_UPDATE_TOPIC) int namePartPid)
-			throws SQLException, MvpException {
-		get(namePartPid);
+	private void subscribeNameMapUpdateTopic(@UIEventTopic(Constants.NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid)
+			throws SQLException {
+		get(nameMapPid);
 	}
 
 	/**
@@ -293,12 +291,12 @@ public class NamePartView {
 	protected void update() {
 		try {
 			provider.setLabel(textLabel.getText());
-			provider.setNamePartPid(Integer.parseInt(textId.getText()));
-			provider.setNamePid(Integer.parseInt(textNameId.getText()));
+			provider.setNameMapPid(Integer.parseInt(textId.getText()));
+			provider.setNameStylePid(Integer.parseInt(textStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.update();
-			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been updated");
-		} catch (final Exception e) {
+			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been updated");
+		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
 		}

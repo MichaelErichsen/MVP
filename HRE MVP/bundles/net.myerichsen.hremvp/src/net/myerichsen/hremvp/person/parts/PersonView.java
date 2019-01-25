@@ -38,7 +38,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display static data about a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. jan. 2019
+ * @version 25. jan. 2019
  */
 // FIXME Displays twice
 public class PersonView {
@@ -50,27 +50,10 @@ public class PersonView {
 	private Text textId;
 	private Text textBirthDatePid;
 	private Text textBirthDate;
-	private Button birthDateUpdateButton;
-	private Button birthDateClearButton;
 	private Text textDeathDatePid;
 	private Text textDeathDate;
-	private Button deathDateUpdateButton;
-	private Button deathDateClearButton;
-
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
 
 	private final PersonProvider provider;
-	private Composite composite_1;
-	private Composite composite_2;
-	private Button birthDateBrowseButton;
-	private Button deathDateBrowseButton;
-	private Composite composite_3;
-	private Composite composite_4;
 
 	/**
 	 * Constructor
@@ -114,7 +97,7 @@ public class PersonView {
 		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textId.addListener(SWT.Verify, new IntegerListener());
 
-		composite_3 = new Composite(parent, SWT.BORDER);
+		Composite composite_3 = new Composite(parent, SWT.BORDER);
 		composite_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		composite_3.setLayout(new GridLayout(3, false));
 
@@ -127,11 +110,11 @@ public class PersonView {
 		textBirthDate = new Text(composite_3, SWT.BORDER);
 		textBirthDate.setEditable(false);
 
-		composite_1 = new Composite(composite_3, SWT.NONE);
+		Composite composite_1 = new Composite(composite_3, SWT.NONE);
 		composite_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite_1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		birthDateUpdateButton = new Button(composite_1, SWT.NONE);
+		Button birthDateUpdateButton = new Button(composite_1, SWT.NONE);
 		birthDateUpdateButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -159,7 +142,7 @@ public class PersonView {
 		});
 		birthDateUpdateButton.setText("Update");
 
-		birthDateBrowseButton = new Button(composite_1, SWT.NONE);
+		Button birthDateBrowseButton = new Button(composite_1, SWT.NONE);
 		birthDateBrowseButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -179,7 +162,7 @@ public class PersonView {
 		});
 		birthDateBrowseButton.setText("Browse");
 
-		birthDateClearButton = new Button(composite_1, SWT.NONE);
+		Button birthDateClearButton = new Button(composite_1, SWT.NONE);
 		birthDateClearButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -189,7 +172,7 @@ public class PersonView {
 		});
 		birthDateClearButton.setText("Clear");
 
-		composite_4 = new Composite(parent, SWT.BORDER);
+		Composite composite_4 = new Composite(parent, SWT.BORDER);
 		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		composite_4.setLayout(new GridLayout(3, false));
 
@@ -205,12 +188,12 @@ public class PersonView {
 		textDeathDate.setSize(120, 21);
 		textDeathDate.setEditable(false);
 
-		composite_2 = new Composite(composite_4, SWT.NONE);
+		Composite composite_2 = new Composite(composite_4, SWT.NONE);
 		composite_2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite_2.setSize(151, 31);
 		composite_2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		deathDateUpdateButton = new Button(composite_2, SWT.NONE);
+		Button deathDateUpdateButton = new Button(composite_2, SWT.NONE);
 		deathDateUpdateButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -238,7 +221,7 @@ public class PersonView {
 		});
 		deathDateUpdateButton.setText("Update");
 
-		deathDateBrowseButton = new Button(composite_2, SWT.NONE);
+		Button deathDateBrowseButton = new Button(composite_2, SWT.NONE);
 		deathDateBrowseButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -258,7 +241,7 @@ public class PersonView {
 		});
 		deathDateBrowseButton.setText("Browse");
 
-		deathDateClearButton = new Button(composite_2, SWT.NONE);
+		Button deathDateClearButton = new Button(composite_2, SWT.NONE);
 		deathDateClearButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -268,11 +251,11 @@ public class PersonView {
 		});
 		deathDateClearButton.setText("Clear");
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonSelect = new Button(composite, SWT.NONE);
+		Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -282,7 +265,7 @@ public class PersonView {
 		});
 		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
+		Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -291,7 +274,7 @@ public class PersonView {
 		});
 		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -300,7 +283,7 @@ public class PersonView {
 		});
 		buttonUpdate.setText("Update");
 
-		buttonDelete = new Button(composite, SWT.NONE);
+		Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -309,7 +292,7 @@ public class PersonView {
 		});
 		buttonDelete.setText("Delete");
 
-		buttonClear = new Button(composite, SWT.NONE);
+		Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -318,7 +301,7 @@ public class PersonView {
 		});
 		buttonClear.setText("Clear");
 
-		get(1);
+//		get(1);
 	}
 
 	/**
@@ -331,7 +314,8 @@ public class PersonView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -379,7 +363,8 @@ public class PersonView {
 				textDeathDate.setText("");
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -396,7 +381,8 @@ public class PersonView {
 			eventBroker.post("MESSAGE", "Person " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -431,7 +417,8 @@ public class PersonView {
 			eventBroker.post("MESSAGE", "Person " + textId.getText() + " has been updated");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
