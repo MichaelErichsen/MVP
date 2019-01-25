@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 25. jan. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
@@ -85,6 +85,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 				textPersonNameStyle.setText(pnsp.getLabel());
 				final NewPersonWizard wizard = (NewPersonWizard) getWizard();
 				wizard.setPersonNameStylePid(personNameStylePid);
+				wizard.setLanguagePid(pnsp.getLanguagePid());
 				setPageComplete(true);
 				wizard.addBackPages();
 				wizard.getContainer().updateButtons();

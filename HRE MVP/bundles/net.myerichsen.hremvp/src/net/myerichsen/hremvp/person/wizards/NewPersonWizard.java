@@ -20,12 +20,13 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, paprtner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 25. jan. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
+	private final IEventBroker eventBroker;
 
 	private NewPersonWizardPage1 page1;
 	private NewPersonWizardPage2 page2;
@@ -36,7 +37,7 @@ public class NewPersonWizard extends Wizard {
 	private String personName;
 	private int personNameStylePid;
 	private int personPid;
-	private final IEventBroker eventBroker;
+	private int languagePid;
 
 	/**
 	 * Constructor
@@ -74,6 +75,13 @@ public class NewPersonWizard extends Wizard {
 		addPage(page1);
 		page2 = new NewPersonWizardPage2(context);
 		addPage(page2);
+	}
+
+	/**
+	 * @return the languagePid
+	 */
+	public int getLanguagePid() {
+		return languagePid;
 	}
 
 	/**
@@ -201,11 +209,9 @@ public class NewPersonWizard extends Wizard {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
 				parentProvider.setParent(page4.getFatherPid());
-				// TODO Get role for father
-				parentProvider.setParentRole("Father");
+				parentProvider.setParentRole(page4.getFatherRole());
 				parentProvider.setPrimaryParent(true);
-				// TODO Get language pid
-				parentProvider.setLanguagePid(1);
+				parentProvider.setLanguagePid(languagePid);
 				parentProvider.insert();
 				LOGGER.info("Inserted father pid " + page4.getFatherPid());
 			}
@@ -215,13 +221,23 @@ public class NewPersonWizard extends Wizard {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
 				parentProvider.setParent(page4.getMotherPid());
-				// TODO Get role for mother
-				parentProvider.setParentRole("Mother");
+				parentProvider.setParentRole(page4.getMotherRole());
 				parentProvider.setPrimaryParent(true);
-				// TODO Get language pid
-				parentProvider.setLanguagePid(1);
+				parentProvider.setLanguagePid(languagePid);
 				parentProvider.insert();
 				LOGGER.info("Inserted mother pid " + page4.getMotherPid());
+			}
+
+			// Create child
+			if (page4.getChildPid() != 0) {
+				parentProvider = new ParentProvider();
+				parentProvider.setParent(personPid);
+				parentProvider.setChild(page4.getChildPid());
+				parentProvider.setParentRole(page4.getChildRole());
+				parentProvider.setPrimaryParent(true);
+				parentProvider.setLanguagePid(languagePid);
+				parentProvider.insert();
+				LOGGER.info("Inserted child pid " + page4.getChildPid());
 			}
 
 			// Create partner
@@ -230,16 +246,13 @@ public class NewPersonWizard extends Wizard {
 				partnerProvider.setPartner1(personPid);
 				partnerProvider.setPartner2(page4.getPartnerPid());
 				partnerProvider.setPrimaryPartner(true);
-				// TODO Get role, from and to dates for partner
-				partnerProvider.setRole("Role");
+				// TODO Get from and to dates for partner
+				partnerProvider.setRole(page4.getPartnerRole());
 				partnerProvider.setFromDatePid(0);
 				partnerProvider.setToDatePid(0);
 				partnerProvider.insert();
 				LOGGER.info("Inserted partner pid " + page4.getPartnerPid());
 			}
-
-			// Create child
-			// TODO Create child using parent provider
 
 			// Page 5
 			// Events
@@ -277,6 +290,13 @@ public class NewPersonWizard extends Wizard {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	/**
+	 * @param languagePid the languagePid to set
+	 */
+	public void setLanguagePid(int languagePid) {
+		this.languagePid = languagePid;
 	}
 
 	/**

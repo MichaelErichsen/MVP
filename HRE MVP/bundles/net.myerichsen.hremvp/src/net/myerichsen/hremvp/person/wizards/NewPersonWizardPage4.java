@@ -8,6 +8,8 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -29,12 +31,13 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 25. jan. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
+	private final IEventBroker eventBroker;
 
 	private Shell parentShell;
 
@@ -42,27 +45,34 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private Text textFatherName;
 	private Text textFatherBirthDate;
 	private Text textFatherDeathDate;
+	private Text textFatherRole;
 
 	private Text textMotherPersonPid;
 	private Text textMotherName;
 	private Text textMotherBirthDate;
 	private Text textMotherDeathDate;
+	private Text textMotherRole;
 
 	private Text textChildPersonPid;
 	private Text textChildName;
 	private Text textChildBirthDate;
 	private Text textChildDeathDate;
+	private Text textChildRole;
 
 	private Text textPartnerPersonPid;
 	private Text textPartnerName;
 	private Text textPartnerBirthDate;
 	private Text textPartnerDeathDate;
+	private Text textPartnerRole;
 
 	private int fatherPid = 0;
 	private int motherPid = 0;
 	private int partnerPid = 0;
 	private int childPid = 0;
-	private final IEventBroker eventBroker;
+	private String fatherRole = "";
+	private String motherRole = "";
+	private String childRole = "";
+	private String partnerRole = "";
 
 	/**
 	 * Constructor
@@ -70,7 +80,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 * @param context
 	 */
 	public NewPersonWizardPage4(IEclipseContext context) {
-		super("wizardPage");
+		super("New Person Wizard Page 4");
 		setTitle("Person Primary Parents and Partner");
 		setDescription(
 				"Add primary parents and partner for the new person. More parents and partners can be added later.");
@@ -113,7 +123,6 @@ public class NewPersonWizardPage4 extends WizardPage {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 			}
-
 		}
 	}
 
@@ -133,7 +142,6 @@ public class NewPersonWizardPage4 extends WizardPage {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 			}
-
 		}
 	}
 
@@ -153,9 +161,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 			}
-
 		}
-
 	}
 
 	/**
@@ -208,30 +214,16 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(2, false));
+		container.setLayout(new GridLayout(3, false));
 
 		final Label lblFather = new Label(container, SWT.NONE);
 		lblFather.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
-		lblFather.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblFather.setText("Father");
 
 		textFatherPersonPid = new Text(container, SWT.BORDER);
 		textFatherPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textFatherName = new Text(container, SWT.BORDER);
-		textFatherName.setEditable(false);
-		textFatherName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textFatherBirthDate = new Text(container, SWT.BORDER);
-		textFatherBirthDate.setEditable(false);
-		textFatherBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textFatherDeathDate = new Text(container, SWT.BORDER);
-		textFatherDeathDate.setEditable(false);
-		textFatherDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		Composite composite = new Composite(container, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnUpdateFather = new Button(composite, SWT.NONE);
@@ -261,28 +253,38 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearFather.setText("Clear");
 
+		textFatherName = new Text(container, SWT.BORDER);
+		textFatherName.setEditable(false);
+		textFatherName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textFatherBirthDate = new Text(container, SWT.BORDER);
+		textFatherBirthDate.setEditable(false);
+		textFatherBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textFatherDeathDate = new Text(container, SWT.BORDER);
+		textFatherDeathDate.setEditable(false);
+		textFatherDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+		final Label lblFatherRole = new Label(container, SWT.NONE);
+		lblFatherRole.setText("Father role");
+
+		textFatherRole = new Text(container, SWT.BORDER);
+		textFatherRole.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				fatherRole = textFatherRole.getText();
+			}
+		});
+		textFatherRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(container, SWT.NONE);
+
 		final Label lblMother = new Label(container, SWT.NONE);
 		lblMother.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
-		lblMother.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblMother.setText("Mother");
 
 		textMotherPersonPid = new Text(container, SWT.BORDER);
 		textMotherPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textMotherName = new Text(container, SWT.BORDER);
-		textMotherName.setEditable(false);
-		textMotherName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textMotherBirthDate = new Text(container, SWT.BORDER);
-		textMotherBirthDate.setEditable(false);
-		textMotherBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textMotherDeathDate = new Text(container, SWT.BORDER);
-		textMotherDeathDate.setEditable(false);
-		textMotherDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		composite = new Composite(container, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnUpdateMother = new Button(composite, SWT.NONE);
@@ -312,28 +314,37 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearMother.setText("Clear");
 
+		textMotherName = new Text(container, SWT.BORDER);
+		textMotherName.setEditable(false);
+		textMotherName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textMotherBirthDate = new Text(container, SWT.BORDER);
+		textMotherBirthDate.setEditable(false);
+		textMotherBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textMotherDeathDate = new Text(container, SWT.BORDER);
+		textMotherDeathDate.setEditable(false);
+		textMotherDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+		final Label lblMotherRole = new Label(container, SWT.NONE);
+		lblMotherRole.setText("Mother role");
+
+		textMotherRole = new Text(container, SWT.BORDER);
+		textMotherRole.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				motherRole = textMotherRole.getText();
+			}
+		});
+		textMotherRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+
 		final Label lblChild = new Label(container, SWT.NONE);
 		lblChild.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
-		lblChild.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblChild.setText("Child");
 
 		textChildPersonPid = new Text(container, SWT.BORDER);
 		textChildPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textChildName = new Text(container, SWT.BORDER);
-		textChildName.setEditable(false);
-		textChildName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textChildBirthDate = new Text(container, SWT.BORDER);
-		textChildBirthDate.setEditable(false);
-		textChildBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textChildDeathDate = new Text(container, SWT.BORDER);
-		textChildDeathDate.setEditable(false);
-		textChildDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		composite = new Composite(container, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnUpdateChild = new Button(composite, SWT.NONE);
@@ -363,28 +374,40 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearChild.setText("Clear");
 
+		textChildName = new Text(container, SWT.BORDER);
+		textChildName.setEditable(false);
+		textChildName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textChildBirthDate = new Text(container, SWT.BORDER);
+		textChildBirthDate.setEditable(false);
+		textChildBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textChildDeathDate = new Text(container, SWT.BORDER);
+		textChildDeathDate.setEditable(false);
+		textChildDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+
+		final Label lblChildRole = new Label(container, SWT.NONE);
+		lblChildRole.setText("Child role");
+
+		textChildRole = new Text(container, SWT.BORDER);
+		textChildRole.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				childRole = textChildRole.getText();
+			}
+		});
+		textChildRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+
 		final Label lblPartner = new Label(container, SWT.NONE);
 		lblPartner.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
-		lblPartner.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblPartner.setText("Partner");
 
 		textPartnerPersonPid = new Text(container, SWT.BORDER);
 		textPartnerPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textPartnerName = new Text(container, SWT.BORDER);
-		textPartnerName.setEditable(false);
-		textPartnerName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textPartnerBirthDate = new Text(container, SWT.BORDER);
-		textPartnerBirthDate.setEditable(false);
-		textPartnerBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textPartnerDeathDate = new Text(container, SWT.BORDER);
-		textPartnerDeathDate.setEditable(false);
-		textPartnerDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		composite = new Composite(container, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnUpdatePartner = new Button(composite, SWT.NONE);
@@ -414,6 +437,29 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearPartner.setText("Clear");
 
+		textPartnerName = new Text(container, SWT.BORDER);
+		textPartnerName.setEditable(false);
+		textPartnerName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textPartnerBirthDate = new Text(container, SWT.BORDER);
+		textPartnerBirthDate.setEditable(false);
+		textPartnerBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		textPartnerDeathDate = new Text(container, SWT.BORDER);
+		textPartnerDeathDate.setEditable(false);
+		textPartnerDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+		final Label lblPartnerRole = new Label(container, SWT.NONE);
+		lblPartnerRole.setText("Partner role");
+
+		textPartnerRole = new Text(container, SWT.BORDER);
+		textPartnerRole.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				partnerRole = textPartnerRole.getText();
+			}
+		});
+		textPartnerRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+
 	}
 
 	/**
@@ -424,10 +470,24 @@ public class NewPersonWizardPage4 extends WizardPage {
 	}
 
 	/**
+	 * @return the childRole
+	 */
+	public String getChildRole() {
+		return childRole;
+	}
+
+	/**
 	 * @return the fatherPid
 	 */
 	public int getFatherPid() {
 		return fatherPid;
+	}
+
+	/**
+	 * @return the fatherRole
+	 */
+	public String getFatherRole() {
+		return fatherRole;
 	}
 
 	/**
@@ -438,6 +498,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 	}
 
 	/**
+	 * @return the motherRole
+	 */
+	public String getMotherRole() {
+		return motherRole;
+	}
+
+	/**
 	 * @return the partnerPid
 	 */
 	public int getPartnerPid() {
@@ -445,31 +512,10 @@ public class NewPersonWizardPage4 extends WizardPage {
 	}
 
 	/**
-	 * @param childPid the childPid to set
+	 * @return the partnerRole
 	 */
-	public void setChildPid(int childPid) {
-		this.childPid = childPid;
-	}
-
-	/**
-	 * @param fatherPid the fatherPid to set
-	 */
-	public void setFatherPid(int fatherPid) {
-		this.fatherPid = fatherPid;
-	}
-
-	/**
-	 * @param motherPid the motherPid to set
-	 */
-	public void setMotherPid(int motherPid) {
-		this.motherPid = motherPid;
-	}
-
-	/**
-	 * @param partnerPid the partnerPid to set
-	 */
-	public void setPartnerPid(int partnerPid) {
-		this.partnerPid = partnerPid;
+	public String getPartnerRole() {
+		return partnerRole;
 	}
 
 	/**
@@ -563,5 +609,4 @@ public class NewPersonWizardPage4 extends WizardPage {
 			e.printStackTrace();
 		}
 	}
-
 }

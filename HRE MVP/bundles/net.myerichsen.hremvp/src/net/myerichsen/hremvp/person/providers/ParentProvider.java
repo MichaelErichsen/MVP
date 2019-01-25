@@ -9,8 +9,7 @@ import net.myerichsen.hremvp.person.servers.ParentServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
- *
+ * @version 25. jan. 2019
  */
 public class ParentProvider implements IHREProvider {
 	private int ParentPid;
@@ -29,6 +28,37 @@ public class ParentProvider implements IHREProvider {
 	 */
 	public ParentProvider() {
 		server = new ParentServer();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		server.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		return server.get();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -64,6 +94,17 @@ public class ParentProvider implements IHREProvider {
 	 */
 	public String getParentRole() {
 		return ParentRole;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#insert()
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	/**
@@ -117,51 +158,7 @@ public class ParentProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#insert()
-	 */
-	@Override
-	public int insert() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
