@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.wizards;
+package net.myerichsen.hremvp.event.wizards;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,6 +13,10 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
 import net.myerichsen.hremvp.location.providers.LocationNameProvider;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage1;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage2;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage3;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
 
 /**
  * Wizard to add a new location

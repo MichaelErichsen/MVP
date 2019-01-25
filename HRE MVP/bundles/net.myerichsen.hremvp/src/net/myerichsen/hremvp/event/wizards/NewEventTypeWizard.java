@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.wizards;
+package net.myerichsen.hremvp.event.wizards;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.IDialogSettings;

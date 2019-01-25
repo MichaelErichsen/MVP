@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.wizards;
+package net.myerichsen.hremvp.location.wizards;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

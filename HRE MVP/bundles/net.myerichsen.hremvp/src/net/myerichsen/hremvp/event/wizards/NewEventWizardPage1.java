@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.wizards;
+package net.myerichsen.hremvp.event.wizards;
 
 import java.util.logging.Logger;
 

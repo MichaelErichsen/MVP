@@ -5,7 +5,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import net.myerichsen.hremvp.wizards.NewLocationWizard;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 
 /**
  * Open the new location wizard

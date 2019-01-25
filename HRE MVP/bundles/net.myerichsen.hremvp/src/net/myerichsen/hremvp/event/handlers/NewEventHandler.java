@@ -5,7 +5,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import net.myerichsen.hremvp.wizards.NewEventWizard;
+import net.myerichsen.hremvp.event.wizards.NewEventWizard;
 
 /**
  * Open the new personEvent wizard
