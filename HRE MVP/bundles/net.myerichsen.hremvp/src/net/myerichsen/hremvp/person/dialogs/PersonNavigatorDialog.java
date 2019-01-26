@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.dialogs;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -7,9 +8,13 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -17,12 +22,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.dbmodels.Persons;
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.filters.PersonFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
@@ -30,10 +38,9 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all persons.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 23. jan. 2019
+ * @version 26. jan. 2019
  *
  */
-// TODO Add filtering
 public class PersonNavigatorDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private IEventBroker eventBroker;
@@ -46,6 +53,9 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	private String personName;
 	private String birthDate;
 	private String deathDate;
+	private Text textNameFilter;
+	private TableViewer tableViewer;
+	private PersonFilter personFilter;
 
 	/**
 	 * Create the dialog.
@@ -56,8 +66,11 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	public PersonNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
 		eventBroker = context.get(IEventBroker.class);
+		personFilter = new PersonFilter();
+
 		try {
 			provider = new PersonProvider();
+			new HDateProvider();
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -87,10 +100,13 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		setTitle("Persons");
 		final Composite area = (Composite) super.createDialogArea(parent);
 		final Composite container = new Composite(area, SWT.NONE);
-		container.setLayout(new GridLayout(1, false));
+		container.setLayout(new GridLayout(2, false));
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+
+		tableViewer.addFilter(personFilter);
+
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -105,48 +121,108 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 				setDeathDate(selectedItem.getText(3));
 			}
 		});
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnName = tableViewerColumn_1.getColumn();
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				List<String> stringList = (List<String>) element;
+				return stringList.get(0);
+			}
+		});
+
+		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
+		tableViewerColumnName.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnBirthDate = tableViewerColumn_2.getColumn();
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				List<String> stringList = (List<String>) element;
+				return stringList.get(1);
+			}
+		});
+
+		final TableViewerColumn tableViewerColumnBirthDate = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnBirthDate = tableViewerColumnBirthDate.getColumn();
 		tblclmnBirthDate.setWidth(100);
 		tblclmnBirthDate.setText("Birth Date");
+		tableViewerColumnBirthDate.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnDeathDate = tableViewerColumn_3.getColumn();
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				List<String> stringList = (List<String>) element;
+				return stringList.get(2);
+			}
+		});
+
+		final TableViewerColumn tableViewerColumnDeathDate = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnDeathDate = tableViewerColumnDeathDate.getColumn();
 		tblclmnDeathDate.setWidth(100);
 		tblclmnDeathDate.setText("Death Date");
+		tableViewerColumnDeathDate.setLabelProvider(new ColumnLabelProvider() {
 
-		try {
-			final List<Persons> personList = provider.get();
-			table.removeAll();
-			final HDateProvider dateProvider = new HDateProvider();
-			int loopPid;
-
-			for (final Persons person : personList) {
-				final TableItem item = new TableItem(table, SWT.NONE);
-				loopPid = person.getPersonPid();
-				item.setText(0, Integer.toString(loopPid));
-				provider.get(loopPid);
-				item.setText(1, provider.getPrimaryName());
-				dateProvider.get(provider.getBirthDatePid());
-				item.setText(2, dateProvider.getDate().toString());
-				dateProvider.get(provider.getDeathDatePid());
-				item.setText(3, dateProvider.getDate().toString());
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				List<String> stringList = (List<String>) element;
+				return stringList.get(3);
 			}
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
+		});
+
+		Label lblNameFilter = new Label(container, SWT.NONE);
+		lblNameFilter.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNameFilter.setText("Name Filter");
+
+		textNameFilter = new Text(container, SWT.BORDER);
+		textNameFilter.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				personFilter.setSearchText(textNameFilter.getText());
+				LOGGER.info("Filter string: " + textNameFilter.getText());
+				tableViewer.refresh();
+			}
+		});
+
+		textNameFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getPersonList());
+		} catch (SQLException | MvpException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 
 		return area;

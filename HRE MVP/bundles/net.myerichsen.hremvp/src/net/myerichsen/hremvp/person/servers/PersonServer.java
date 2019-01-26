@@ -17,6 +17,7 @@ import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
+import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Names;
 import net.myerichsen.hremvp.dbmodels.Parents;
 import net.myerichsen.hremvp.dbmodels.Partners;
@@ -29,7 +30,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 26. jan. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -40,6 +41,7 @@ public class PersonServer implements IHREServer {
 	private int deathDatePid;
 	private List<List<String>> nameList;
 	private List<List<String>> sexesList;
+	private List<List<String>> personList;
 	private List<List<String>> parentList;
 	private List<List<String>> partnerList;
 	private final List<List<String>> childrenList;
@@ -57,6 +59,7 @@ public class PersonServer implements IHREServer {
 		person = new Persons();
 		nameList = new ArrayList<>();
 		sexesList = new ArrayList<>();
+		personList = new ArrayList<>();
 		parentList = new ArrayList<>();
 		partnerList = new ArrayList<>();
 		childrenList = new ArrayList<>();
@@ -73,6 +76,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		person.delete(key);
 	}
@@ -95,6 +99,7 @@ public class PersonServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<Persons> get() throws SQLException, MvpException {
 		return person.get();
 	}
@@ -108,6 +113,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		person.get(key);
 		setBirthDatePid(person.getBirthDatePid());
@@ -163,18 +169,18 @@ public class PersonServer implements IHREServer {
 
 		siblingList.clear();
 
-		List<Parents> fkParent = new Parents().getFKChild(key);
+		final List<Parents> fkParent = new Parents().getFKChild(key);
 
-		for (Parents parents : fkParent) {
-			List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
-			TreeSet<Integer> childList = new TreeSet<Integer>();
+		for (final Parents parents : fkParent) {
+			final List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
+			final TreeSet<Integer> childList = new TreeSet<>();
 
-			for (Parents parents4 : fkChild) {
+			for (final Parents parents4 : fkChild) {
 				childList.add(parents4.getChild());
 				childList.remove(key);
 			}
 
-			for (int child : childList) {
+			for (final int child : childList) {
 				ls = new ArrayList<>();
 				ls.add(Integer.toString(child));
 				ls.add(pns.getPrimaryNameString(child));
@@ -331,6 +337,43 @@ public class PersonServer implements IHREServer {
 	 */
 	public List<List<String>> getPersonEventList() {
 		return personEventList;
+	}
+
+	/**
+	 * List all persons
+	 * 
+	 * @return the personList
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getPersonList() throws SQLException, MvpException {
+		List<String> ls = new ArrayList<>();
+		final PersonNameServer pns = new PersonNameServer();
+
+		personList.clear();
+		final Hdates hdates = new Hdates();
+		String s;
+
+		for (final Persons person : get()) {
+			ls = new ArrayList<>();
+			ls.add(Integer.toString(person.getPersonPid()));
+			ls.add(pns.getPrimaryNameString(person.getPersonPid()));
+			s = "";
+			if (person.getBirthDatePid() > 0) {
+				hdates.get(person.getBirthDatePid());
+				s = hdates.getDate().toString();
+			}
+			ls.add(s);
+			s = "";
+			if (person.getDeathDatePid() > 0) {
+				hdates.get(person.getDeathDatePid());
+				s = hdates.getDate().toString();
+			}
+			ls.add(s);
+			personList.add(ls);
+		}
+
+		return personList;
 	}
 
 	/**
@@ -500,6 +543,7 @@ public class PersonServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		person.setBirthDatePid(birthDatePid);
 		person.setDeathDatePid(deathDatePid);
@@ -573,6 +617,13 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param personList the personList to set
+	 */
+	public void setPersonList(List<List<String>> personList) {
+		this.personList = personList;
+	}
+
+	/**
 	 * @param personPid the personPid to set
 	 */
 	public void setPersonPid(int personPid) {
@@ -600,6 +651,7 @@ public class PersonServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		person.setBirthDatePid(birthDatePid);
 		person.setDeathDatePid(deathDatePid);

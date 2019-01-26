@@ -24,8 +24,12 @@
       <children xsi:type="advanced:Perspective" xmi:id="_GjFOUBKqEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.perspective.personperspective" label="Person" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PersonIcon.png" tooltip="Person">
         <children xsi:type="basic:PartSashContainer" xmi:id="_fY_igBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.11" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_m-D2cBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.16" containerData="380" accessibilityPhrase="">
-            <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNavigator" label="Person Navigator"/>
-            <children xsi:type="basic:Part" xmi:id="__ROskBSyEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.ancestornaviogator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Ancestor Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNavigator" label="Person Navigator">
+              <menus xsi:type="menu:PopupMenu" xmi:id="__TeNMCF0EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.popupmenu.personnavigatormenu" label="Person Navigator Menu">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_FDUr8CF1EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.handledmenuitem.personnew" label="New Person..." tooltip="Create a new person" command="_MLUs4BZSEemhsNWp6W2Hdw"/>
+              </menus>
+            </children>
+            <children xsi:type="basic:Part" xmi:id="__ROskBSyEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.ancestornavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Ancestor Navigator"/>
             <children xsi:type="basic:Part" xmi:id="_G-ujwBSzEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.descendantnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Descendant Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_oZFC8BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.12" containerData="900">
@@ -268,6 +272,7 @@
   <commands xmi:id="_C1cPYA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.command.helphrewebsite" commandName="HelpHREWebSite" category="_BE5M4BymEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_0GArQBNHEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.command.switchtopersonperspective" commandName="switchToPersonPerspective" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_MLUs4BZSEemhsNWp6W2Hdw" elementId="net.myerichsen.hremvp.command.personnew" commandName="PersonNew" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_gN7cECF1EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.command.personwebsearch" commandName="personWebSearch" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

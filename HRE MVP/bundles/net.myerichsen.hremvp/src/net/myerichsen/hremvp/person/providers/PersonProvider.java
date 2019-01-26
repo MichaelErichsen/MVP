@@ -13,12 +13,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. jan. 2019
- *
- */
-/**
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 26. jan. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -28,6 +23,8 @@ public class PersonProvider implements IHREProvider {
 	private int deathDatePid;
 	private List<List<String>> nameList;
 	private List<List<String>> sexesList;
+	@SuppressWarnings("unused")
+	private List<List<String>> personList;
 	private List<List<String>> parentList;
 	private List<List<String>> partnerList;
 	private List<List<String>> childrenList;
@@ -54,17 +51,20 @@ public class PersonProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
 	}
 
+	@Override
 	public List<Persons> get() throws SQLException, MvpException {
 		return server.get();
 	}
 
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setBirthDatePid(server.getBirthDatePid());
@@ -215,9 +215,10 @@ public class PersonProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setBirthDatePid(birthDatePid);
 		server.setDeathDatePid(deathDatePid);
@@ -309,10 +310,27 @@ public class PersonProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setBirthDatePid(birthDatePid);
 		server.setDeathDatePid(deathDatePid);
 		server.setPersonPid(personPid);
 		server.update();
+	}
+
+	/**
+	 * @return the personList
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getPersonList() throws SQLException, MvpException {
+		return server.getPersonList();
+	}
+
+	/**
+	 * @param personList the personList to set
+	 */
+	public void setPersonList(List<List<String>> personList) {
+		this.personList = personList;
 	}
 }

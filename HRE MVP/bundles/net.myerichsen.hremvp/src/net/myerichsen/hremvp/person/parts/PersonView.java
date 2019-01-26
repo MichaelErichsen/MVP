@@ -38,7 +38,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display static data about a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. jan. 2019
+ * @version 26. jan. 2019
  */
 // FIXME Displays twice
 public class PersonView {
@@ -86,6 +86,7 @@ public class PersonView {
 	@PostConstruct
 	@Inject
 	public void createControls(Composite parent, IEclipseContext context) {
+		// FIXME Being called twice during initalization
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label lblId = new Label(parent, SWT.NONE);
