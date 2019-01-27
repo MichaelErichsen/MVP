@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_6wlLcMgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.application" bindingContexts="_6wlLecgZEeSyMNYR5xypkQ">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_6wlLccgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.window.main" label="HRE MVP V0.2" tooltip="Genealogy Minimum Viable Product" width="1280" height="720">
-    <children xsi:type="advanced:PerspectiveStack" xmi:id="_LhRoYOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspectivestack.0" selectedElement="_GjFOUBKqEemNAMxJdnZnGA">
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_LhRoYOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspectivestack.0" selectedElement="_MY4l0OTQEeiOQPtyES1FZg">
       <children xsi:type="advanced:Perspective" xmi:id="_MY4l0OTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspective.baseperspective" label="Project" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/FamilyTreeIcon.png" tooltip="Project">
         <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.partsashcontainer.sample" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_Fu-b0KRUEeivq68TpLbBuw" elementId="net.myerichsen.hremvp.partstack.0" containerData="380" selectedElement="_UduHwBKrEemNAMxJdnZnGA">
-            <children xsi:type="basic:Part" xmi:id="_UduHwBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.projectnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator" label="Project Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="_UduHwBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.projectnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator" label="Project Navigator">
+              <menus xsi:type="menu:PopupMenu" xmi:id="_-EMOACIhEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.popupmenu.projectnavigatormenu" label="">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="__uZtECIhEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectnew" label="New Project..." command="_nkUAgA39Eemn86hhplJLfQ"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_GtqlQCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectopenselected" label="Open selected Project" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_S0LrICIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectopenexisting" label="Open existing Project..." command="_bWEzsCIiEemTBOqLjKcE9w"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_iwQGQCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectbackup" label="Backup..." command="_i3iLQCIoEemTBOqLjKcE9w"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_lkP34CIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectrestore" label="Restore" command="_ndfpwCIoEemTBOqLjKcE9w"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_vYBfECIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectcopyas" label="Copy as..." command="_qoY4cCIoEemTBOqLjKcE9w"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_zNdfkCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectrename" label="Rename..." command="_CApYUCIpEemTBOqLjKcE9w"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_2b2uMCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.dprojectelete" label="Delete..." command="_uqPkUCIoEemTBOqLjKcE9w"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="_6q-aACIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.menuseparator.1"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_8h77oCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectproperties" label="Project Properties" command="_tmGj0A39Eemn86hhplJLfQ"/>
+              </menus>
+            </children>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_m_sw4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partsashcontainer.0" containerData="900">
             <children xsi:type="basic:PartStack" xmi:id="_owicYLAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.2" containerData="8000" accessibilityPhrase="">
@@ -222,6 +235,12 @@
   <handlers xmi:id="_68QQIA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.handler.33" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.help.handlers.HelpHreWebsiteHandler" command="_C1cPYA3-Eemn86hhplJLfQ"/>
   <handlers xmi:id="_VDQvcBNIEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.handler.29" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.PersonPerspectiveHandler" command="_0GArQBNHEemEvqVth7AYPg"/>
   <handlers xmi:id="_OpLPYBZSEemhsNWp6W2Hdw" elementId="net.myerichsen.hremvp.handler.34" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.NewPersonHandler" command="_MLUs4BZSEemhsNWp6W2Hdw"/>
+  <handlers xmi:id="_Rxx9gCIjEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.35" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectOpenExistingHandler" command="_bWEzsCIiEemTBOqLjKcE9w"/>
+  <handlers xmi:id="_PBcVICIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.36" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectBackupHandler" command="_i3iLQCIoEemTBOqLjKcE9w"/>
+  <handlers xmi:id="_ZQ7n8CIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.37" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectRestoreHandler" command="_ndfpwCIoEemTBOqLjKcE9w"/>
+  <handlers xmi:id="_dgD60CIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.38" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectCopyAsHandler" command="_qoY4cCIoEemTBOqLjKcE9w"/>
+  <handlers xmi:id="_hvyqoCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.39" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectDeleteHandler" command="_uqPkUCIoEemTBOqLjKcE9w"/>
+  <handlers xmi:id="_mA8WwCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.40" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectRenameHandler" command="_CApYUCIpEemTBOqLjKcE9w"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
@@ -273,6 +292,12 @@
   <commands xmi:id="_0GArQBNHEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.command.switchtopersonperspective" commandName="switchToPersonPerspective" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_MLUs4BZSEemhsNWp6W2Hdw" elementId="net.myerichsen.hremvp.command.personnew" commandName="PersonNew" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_gN7cECF1EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.command.personwebsearch" commandName="personWebSearch" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_bWEzsCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectopenexisting" commandName="ProjectOpenExisting" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_i3iLQCIoEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectbackup" commandName="ProjectBackup" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_ndfpwCIoEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectrestore" commandName="ProjectRestore" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_qoY4cCIoEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectcopyas" commandName="ProjectCopyAs" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_uqPkUCIoEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectdelete" commandName="ProjectDelete" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_CApYUCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectrename" commandName="ProjectRename" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

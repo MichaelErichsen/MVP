@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. jan. 2019
+ * @version 27. jan. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -79,7 +79,7 @@ public class PersonProvider implements IHREProvider {
 		setSiblingList(server.getSiblingList());
 	}
 
-//	public void get(int key) throws ClientProtocolException, IOException, MvpException {
+//	public void getremote(int key) throws ClientProtocolException, IOException, MvpException {
 //		StringBuilder sb = new StringBuilder();
 //		String s = "";
 //
@@ -108,8 +108,8 @@ public class PersonProvider implements IHREProvider {
 //		LOGGER.info(jsonObject.toString(2));
 //
 //		setPersonPid(jsonObject.getInt("personPid"));
-//		setBirthDate(jsonObject.getString("birthDatePid"));
-//		setDeathDate(jsonObject.getString("deathDatePid"));
+//		setBirthDatePid(jsonObject.getString("birthDatePid"));
+//		setDeathDatePid(jsonObject.getString("deathDatePid"));
 //
 //		setEventList(jsonObject.getJSONArray("eventList"));
 //		setNameList(jsonObject.getNameList());

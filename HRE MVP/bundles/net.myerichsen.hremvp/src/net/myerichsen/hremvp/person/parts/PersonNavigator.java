@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * Display a list of all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. jan. 2019
+ * @version 27. jan. 2019
  *
  */
 public class PersonNavigator {
@@ -118,34 +118,6 @@ public class PersonNavigator {
 				return list.get(1);
 			}
 		});
-
-//		final MenuItem mntmCopyAs = new MenuItem(menu, SWT.NONE);
-//		mntmCopyAs.setText("Copy as...");
-//
-//		final MenuItem mntmRename = new MenuItem(menu, SWT.NONE);
-//		mntmRename.setText("Rename...");
-//
-//		final MenuItem mntmDelete = new MenuItem(menu, SWT.NONE);
-//		mntmDelete.setText("Delete");
-//
-//		final MenuItem mntmWebSearch = new MenuItem(menu, SWT.NONE);
-//		mntmWebSearch.addSelectionListener(new SelectionAdapter() {
-//			/*
-//			 * (non-Javadoc)
-//			 *
-//			 * @see
-//			 *
-//			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
-//			 * .SelectionEvent)
-//			 */
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				final ParameterizedCommand newCommand = commandService
-//						.createCommand("net.myerichsen.hremvp.command.personwebsearch", null);
-//				handlerService.executeHandler(newCommand);
-//			}
-//		});
-//		mntmWebSearch.setText("Web Search...");
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
