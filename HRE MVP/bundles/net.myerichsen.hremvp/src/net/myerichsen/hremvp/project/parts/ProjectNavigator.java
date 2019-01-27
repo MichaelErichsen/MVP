@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.project.models.ProjectModel;
  * Navigator part to display all tables in an HRE project
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. jan. 2019
+ * @version 27. jan. 2019
  *
  */
 @SuppressWarnings("restriction")

@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 26. jan. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -341,6 +341,10 @@ public class NewPersonWizardPage1 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
+				// FIXME org.h2.jdbc.JdbcSQLException: NULL not allowed for column "DATE"; SQL
+				// statement:
+				// INSERT INTO PUBLIC.HDATES( HDATE_PID, TABLE_ID, ORIGINAL_TEXT, DATE,
+				// SORT_DATE, SURETY) VALUES (?, ?, ?, ?, ?, ?) [23502-197]
 				BirthDatePid = hdp.insert();
 				textBirthDate.setText(dialog.getLocalDate().toString());
 				if (textBirthDateSort.getText().length() == 0) {
