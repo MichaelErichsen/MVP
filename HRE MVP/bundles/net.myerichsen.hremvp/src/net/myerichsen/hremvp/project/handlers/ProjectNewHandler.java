@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
  * Create a new HRE project database.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. jan. 2019
+ * @version 28. jan. 2019
  *
  */
 public class ProjectNewHandler {
@@ -133,7 +133,11 @@ public class ProjectNewHandler {
 			final Date timestamp = Date.from(zdt.toInstant());
 			final ProjectModel model = new ProjectModel(pnsDialog.getProjectName(), timestamp,
 					pnsDialog.getProjectSummary(), "LOCAL", dbName);
-			ProjectList.add(model);
+
+			LOGGER.info("New properties " + pnsDialog.getProjectName() + " " + timestamp.toString() + " "
+					+ pnsDialog.getProjectSummary() + " LOCAL " + dbName);
+
+			int index = ProjectList.add(model);
 
 			// Set database name in title bar
 			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
@@ -152,7 +156,7 @@ public class ProjectNewHandler {
 			partService.showPart(h2dnPart, PartState.ACTIVATE);
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
-			eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, dbName);
+			eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
 			eventBroker.post("MESSAGE", "Project database " + dbName + " has been created");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());

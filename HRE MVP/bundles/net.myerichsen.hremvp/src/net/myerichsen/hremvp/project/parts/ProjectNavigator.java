@@ -67,6 +67,7 @@ public class ProjectNavigator {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, EMenuService menuService) {
+		LOGGER.info("Creating controls");
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -124,6 +125,7 @@ public class ProjectNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.get());
+			LOGGER.info("Set input");
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -158,9 +160,10 @@ public class ProjectNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) String dbName) {
-		LOGGER.info("Added project " + dbName);
-		tableViewer.refresh();
+	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int index) {
+		LOGGER.info("Added project " + index);
+		// FIXME Does not refresh
+		tableViewer.refresh(true);
 	}
 
 }

@@ -21,7 +21,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Singleton class encapsulating a list of project model objects.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 28. jan. 2019
  *
  */
 public class ProjectList {
@@ -41,11 +41,12 @@ public class ProjectList {
 	/**
 	 * @param model
 	 */
-	public static void add(ProjectModel model) {
+	public static int add(ProjectModel model) {
 		readPreferences();
 		models.add(model);
 
 		int count = store.getInt("projectcount");
+		count++;
 
 		store.setValue("project." + count + ".name", model.getName());
 		final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -53,8 +54,9 @@ public class ProjectList {
 		store.setValue("project." + count + ".summary", model.getSummary());
 		store.setValue("project." + count + ".localserver", model.getLocalServer());
 		store.setValue("project." + count + ".path", model.getPath());
-		count++;
 		store.setValue("projectcount", count);
+		LOGGER.info("Added " + model.getName() + " as project " + count);
+		return count;
 	}
 
 	/**
@@ -109,7 +111,7 @@ public class ProjectList {
 		final int projectCount = store.getInt("projectcount");
 
 		try {
-			for (int i = 0; i < projectCount; i++) {
+			for (int i = 1; i <= projectCount; i++) {
 				key = new String("project." + i + ".name");
 				name = store.getString(key);
 

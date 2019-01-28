@@ -103,5 +103,4 @@ public class ProjectModel {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-
 }

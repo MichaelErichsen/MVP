@@ -51,6 +51,7 @@ public class ProjectServer implements IHREServer {
 			ls.add(Integer.toString(i));
 			key = new String("project." + i + ".name");
 			ls.add(store.getString(key));
+			LOGGER.info("Found Name: " + store.getString(key));
 		}
 
 		lls.add(ls);
