@@ -30,17 +30,14 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.listeners.IntegerListener;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Display static data about a person
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 29. jan. 2019
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. jan. 2019
  */
-// FIXME Displays twice
 public class PersonView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -49,28 +46,59 @@ public class PersonView {
 
 	private Text textId;
 	private Text textBirthDatePid;
-	private Text textBirthDate;
 	private Text textDeathDatePid;
+	private Text textBirthDate;
 	private Text textDeathDate;
 
 	private final PersonProvider provider;
+	private int personPid;
+	private int birthDatePid;
+	private int deathDatePid;
 
-	/**
-	 * Constructor
-	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 *
-	 */
 	public PersonView() throws SQLException {
 		provider = new PersonProvider();
-		LOGGER.info("C:tor");
+	}
+
+	/**
+	 * @param context
+	 */
+	private void browseBirthDate(IEclipseContext context) {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(textBirthDatePid.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textBirthDatePid.setText(Integer.toString(hdp.getHdatePid()));
+				textBirthDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * @param context
+	 */
+	private void browseDeathDate(IEclipseContext context) {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(textDeathDatePid.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textDeathDatePid.setText(Integer.toString(hdp.getHdatePid()));
+				textDeathDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 *
 	 */
-	private void clear() {
+	protected void clear() {
 		textId.setText("");
 		textBirthDatePid.setText("");
 		textBirthDate.setText("");
@@ -79,194 +107,141 @@ public class PersonView {
 	}
 
 	/**
-	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
+	 */
+	private void clearBirthDate() {
+		textBirthDatePid.setText("0");
+		textBirthDate.setText("");
+	}
+
+	/**
+	 *
+	 */
+	private void clearDeathDate() {
+		textDeathDatePid.setText("0");
+		textDeathDate.setText("");
+	}
+
+	/**
+	 * Create contents of the view part.
 	 */
 	@PostConstruct
-	@Inject
 	public void createControls(Composite parent, IEclipseContext context) {
-		// FIXME Being called twice during initalization
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label lblId = new Label(parent, SWT.NONE);
+		lblId.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblId.setText("ID");
 
-		LOGGER.info("Creating controls");
 		textId = new Text(parent, SWT.BORDER);
-		textId.setToolTipText("Doubleclick to edit");
 		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textId.addListener(SWT.Verify, new IntegerListener());
 
-		Composite composite_3 = new Composite(parent, SWT.BORDER);
-		composite_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		composite_3.setLayout(new GridLayout(3, false));
+		final Composite compositeBirthDate = new Composite(parent, SWT.BORDER);
+		compositeBirthDate.setLayout(new GridLayout(3, false));
+		compositeBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		final Label lblBirthDate = new Label(composite_3, SWT.NONE);
+		final Label lblBirthDate = new Label(compositeBirthDate, SWT.NONE);
 		lblBirthDate.setText("Birth Date");
 
-		textBirthDatePid = new Text(composite_3, SWT.BORDER);
-		textBirthDatePid.addListener(SWT.Verify, new IntegerListener());
+		textBirthDatePid = new Text(compositeBirthDate, SWT.BORDER);
+		textBirthDatePid.setEditable(false);
+		textBirthDatePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textBirthDate = new Text(composite_3, SWT.BORDER);
+		textBirthDate = new Text(compositeBirthDate, SWT.BORDER);
 		textBirthDate.setEditable(false);
+		textBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Composite composite_1 = new Composite(composite_3, SWT.NONE);
-		composite_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
-		composite_1.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeBirthButtons = new Composite(compositeBirthDate, SWT.NONE);
+		compositeBirthButtons.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		compositeBirthButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button birthDateUpdateButton = new Button(composite_1, SWT.NONE);
-		birthDateUpdateButton.addMouseListener(new MouseAdapter() {
+		final Button birthDateNewButton = new Button(compositeBirthButtons, SWT.NONE);
+		birthDateNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textBirthDatePid.getShell(), context);
-				final int birthDatePid = Integer.parseInt(textBirthDatePid.getText());
-				dialog.sethDatePid(birthDatePid);
-
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setHdatePid(birthDatePid);
-						hdp.setDate(dialog.getLocalDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						hdp.update();
-						textBirthDatePid.setText(Integer.toString(birthDatePid));
-						textBirthDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
-						e1.printStackTrace();
-					}
-				}
+				getNewBirthDate(context);
 			}
 		});
-		birthDateUpdateButton.setText("Update");
+		birthDateNewButton.setText("New");
 
-		Button birthDateBrowseButton = new Button(composite_1, SWT.NONE);
+		final Button birthDateBrowseButton = new Button(compositeBirthButtons, SWT.NONE);
 		birthDateBrowseButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textBirthDatePid.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						textBirthDatePid.setText(Integer.toString(hdp.getHdatePid()));
-						textBirthDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
-				}
+				browseBirthDate(context);
 			}
 		});
 		birthDateBrowseButton.setText("Browse");
 
-		Button birthDateClearButton = new Button(composite_1, SWT.NONE);
+		final Button birthDateClearButton = new Button(compositeBirthButtons, SWT.NONE);
 		birthDateClearButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				textBirthDatePid.setText("0");
-				textBirthDate.setText("");
+				clearBirthDate();
 			}
 		});
 		birthDateClearButton.setText("Clear");
 
-		Composite composite_4 = new Composite(parent, SWT.BORDER);
-		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		composite_4.setLayout(new GridLayout(3, false));
+		final Composite compositeDeathDate = new Composite(parent, SWT.BORDER);
+		compositeDeathDate.setLayout(new GridLayout(3, false));
+		compositeDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		final Label lblDeathDate = new Label(composite_4, SWT.NONE);
-		lblDeathDate.setSize(58, 15);
+		final Label lblDeathDate = new Label(compositeDeathDate, SWT.NONE);
 		lblDeathDate.setText("Death Date");
 
-		textDeathDatePid = new Text(composite_4, SWT.BORDER);
-		textDeathDatePid.setSize(250, 21);
-		textDeathDatePid.addListener(SWT.Verify, new IntegerListener());
+		textDeathDatePid = new Text(compositeDeathDate, SWT.BORDER);
+		textDeathDatePid.setEditable(false);
+		textDeathDatePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textDeathDate = new Text(composite_4, SWT.BORDER);
-		textDeathDate.setSize(120, 21);
+		textDeathDate = new Text(compositeDeathDate, SWT.BORDER);
 		textDeathDate.setEditable(false);
+		textDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Composite composite_2 = new Composite(composite_4, SWT.NONE);
-		composite_2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
-		composite_2.setSize(151, 31);
-		composite_2.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeDeathButtons = new Composite(compositeDeathDate, SWT.NONE);
+		compositeDeathButtons.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		compositeDeathButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button deathDateUpdateButton = new Button(composite_2, SWT.NONE);
-		deathDateUpdateButton.addMouseListener(new MouseAdapter() {
+		final Button deathDateNewButton = new Button(compositeDeathButtons, SWT.NONE);
+		deathDateNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textDeathDatePid.getShell(), context);
-				final int deathDatePid = Integer.parseInt(textDeathDatePid.getText());
-				dialog.sethDatePid(deathDatePid);
-
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setHdatePid(deathDatePid);
-						hdp.setDate(dialog.getLocalDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						hdp.update();
-						textDeathDatePid.setText(Integer.toString(deathDatePid));
-						textDeathDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
-						e1.printStackTrace();
-					}
-				}
+				getNewDeathDate(context);
 			}
 		});
-		deathDateUpdateButton.setText("Update");
+		deathDateNewButton.setText("New");
 
-		Button deathDateBrowseButton = new Button(composite_2, SWT.NONE);
+		final Button deathDateBrowseButton = new Button(compositeDeathButtons, SWT.NONE);
 		deathDateBrowseButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textDeathDatePid.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						textDeathDatePid.setText(Integer.toString(hdp.getHdatePid()));
-						textDeathDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
-				}
+				browseDeathDate(context);
 			}
 		});
 		deathDateBrowseButton.setText("Browse");
 
-		Button deathDateClearButton = new Button(composite_2, SWT.NONE);
+		final Button deathDateClearButton = new Button(compositeDeathButtons, SWT.NONE);
 		deathDateClearButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				textDeathDatePid.setText("0");
-				textDeathDate.setText("");
+				clearDeathDate();
 			}
 		});
 		deathDateClearButton.setText("Clear");
 
-		Composite composite = new Composite(parent, SWT.NONE);
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button buttonSelect = new Button(composite, SWT.NONE);
+		final Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				get();
-				// FIXME Post events for buttons
 			}
 		});
 		buttonSelect.setText("Select");
 
-		Button buttonInsert = new Button(composite, SWT.NONE);
+		final Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -275,7 +250,7 @@ public class PersonView {
 		});
 		buttonInsert.setText("Insert");
 
-		Button buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -284,7 +259,7 @@ public class PersonView {
 		});
 		buttonUpdate.setText("Update");
 
-		Button buttonDelete = new Button(composite, SWT.NONE);
+		final Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -293,7 +268,7 @@ public class PersonView {
 		});
 		buttonDelete.setText("Delete");
 
-		Button buttonClear = new Button(composite, SWT.NONE);
+		final Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -302,7 +277,8 @@ public class PersonView {
 		});
 		buttonClear.setText("Clear");
 
-//		get(1);
+		personPid = 1;
+		get(personPid);
 	}
 
 	/**
@@ -313,15 +289,15 @@ public class PersonView {
 			provider.delete(Integer.parseInt(textId.getText()));
 			eventBroker.post("MESSAGE", "Person" + textId.getText() + " has been deleted");
 			clear();
+			eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
+	 *
 	 */
 	@PreDestroy
 	public void dispose() {
@@ -343,7 +319,7 @@ public class PersonView {
 
 			textId.setText(Integer.toString(personPid));
 			try {
-				final int birthDatePid = provider.getBirthDatePid();
+				birthDatePid = provider.getBirthDatePid();
 				textBirthDatePid.setText(Integer.toString(birthDatePid));
 				final Hdates birthDate = new Hdates();
 				birthDate.get(birthDatePid);
@@ -354,7 +330,7 @@ public class PersonView {
 			}
 
 			try {
-				final int deathDatePid = provider.getDeathDatePid();
+				deathDatePid = provider.getDeathDatePid();
 				textDeathDatePid.setText(Integer.toString(deathDatePid));
 				final Hdates deathDate = new Hdates();
 				deathDate.get(deathDatePid);
@@ -373,22 +349,65 @@ public class PersonView {
 	/**
 	 *
 	 */
-	protected void insert() {
-		try {
-			provider.setBirthDatePid(Integer.parseInt(textBirthDatePid.getText()));
-			provider.setDeathDatePid(Integer.parseInt(textDeathDatePid.getText()));
-			provider.setPersonPid(Integer.parseInt(textId.getText()));
-			provider.insert();
-			eventBroker.post("MESSAGE", "Person " + textId.getText() + " has been inserted");
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
+	private void getNewBirthDate(IEclipseContext context) {
+		final DateDialog dialog = new DateDialog(textBirthDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				birthDatePid = hdp.insert();
+				textBirthDatePid.setText(Integer.toString(birthDatePid));
+				textBirthDate.setText(dialog.getLocalDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	/**
-	 * The UI element has received the focus
+	 *
+	 */
+	private void getNewDeathDate(IEclipseContext context) {
+		final DateDialog dialog = new DateDialog(textDeathDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				deathDatePid = hdp.insert();
+				textDeathDatePid.setText(Integer.toString(deathDatePid));
+				textDeathDate.setText(dialog.getLocalDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.severe(e1.getMessage());
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	protected void insert() {
+		try {
+			provider.setBirthDatePid(Integer.parseInt(textBirthDatePid.getText()));
+			provider.setDeathDatePid(Integer.parseInt(textDeathDatePid.getText()));
+			personPid = Integer.parseInt(textId.getText());
+			provider.setPersonPid(personPid);
+			provider.insert();
+			eventBroker.post("MESSAGE", "Person " + textId.getText() + " has been inserted");
+			eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
+		} catch (final Exception e) {
+			eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+		}
+	}
+
+	/**
+	 *
 	 */
 	@Focus
 	public void setFocus() {
@@ -413,14 +432,14 @@ public class PersonView {
 		try {
 			provider.setBirthDatePid(Integer.parseInt(textBirthDatePid.getText()));
 			provider.setDeathDatePid(Integer.parseInt(textDeathDatePid.getText()));
-			provider.setPersonPid(Integer.parseInt(textId.getText()));
+			personPid = Integer.parseInt(textId.getText());
+			provider.setPersonPid(personPid);
 			provider.update();
 			eventBroker.post("MESSAGE", "Person " + textId.getText() + " has been updated");
+			eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
-
 }

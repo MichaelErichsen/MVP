@@ -347,7 +347,7 @@ public class PersonServer implements IHREServer {
 	 * @throws SQLException
 	 */
 	public List<List<String>> getPersonList() throws SQLException, MvpException {
-		List<String> ls = new ArrayList<>();
+		List<String> ls;
 		final PersonNameServer pns = new PersonNameServer();
 
 		personList.clear();

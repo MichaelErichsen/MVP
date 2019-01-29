@@ -37,10 +37,9 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a date in several formats
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. jan. 2019
+ * @version 28. jan. 2019
  *
  */
-// FIXME Setting date from the calender wrongly fills out the original date field
 public class DateDialog extends TitleAreaDialog {
 	/**
 	 * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
@@ -621,10 +620,10 @@ public class DateDialog extends TitleAreaDialog {
 			final GregorianCalendar calendar = new GregorianCalendar(year, month, day);
 			final String date = calendar.getDate();
 			textGregorianOutput.setText(date);
-			if (textOriginal.getText().length() == 0) {
-				textOriginal.setText(date);
-				setOriginal(date);
-			}
+//			if (textOriginal.getText().length() == 0) {
+			textOriginal.setText(date);
+			setOriginal(date);
+//			}
 		} else {
 			textGregorianOutput.setText("");
 		}

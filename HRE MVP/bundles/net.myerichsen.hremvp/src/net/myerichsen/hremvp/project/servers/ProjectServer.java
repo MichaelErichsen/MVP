@@ -43,18 +43,18 @@ public class ProjectServer implements IHREServer {
 	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
 		List<List<String>> lls = new ArrayList<List<String>>();
-		List<String> ls = new ArrayList<String>();
+		List<String> ls;
 		final int projectCount = store.getInt("projectcount");
 		String key;
 
 		for (int i = 1; i <= projectCount; i++) {
+			ls = new ArrayList<String>();
 			ls.add(Integer.toString(i));
 			key = new String("project." + i + ".name");
 			ls.add(store.getString(key));
 			LOGGER.info("Found Name: " + store.getString(key));
+			lls.add(ls);
 		}
-
-		lls.add(ls);
 
 		return lls;
 	}

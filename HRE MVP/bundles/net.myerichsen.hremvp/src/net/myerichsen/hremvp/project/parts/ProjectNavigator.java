@@ -163,7 +163,7 @@ public class ProjectNavigator {
 	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int index) {
 		LOGGER.info("Added project " + index);
 		// FIXME Does not refresh
-		tableViewer.refresh(true);
+		tableViewer.refresh();
 	}
 
 }

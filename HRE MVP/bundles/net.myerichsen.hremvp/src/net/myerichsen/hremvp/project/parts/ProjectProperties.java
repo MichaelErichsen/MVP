@@ -132,7 +132,7 @@ public class ProjectProperties {
 	 */
 	@Inject
 	@Optional
-	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.SELECTION_INDEX_TOPIC) int index) {
+	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int index) {
 		LOGGER.info("Received index " + index);
 		this.index = index;
 		tableViewer.refresh();
