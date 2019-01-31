@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dialogs.DateDialog;
+import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
@@ -31,7 +33,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 25. jan. 2019
+ * @version 31. jan. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
@@ -64,6 +66,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private Text textPartnerBirthDate;
 	private Text textPartnerDeathDate;
 	private Text textPartnerRole;
+	private Text textPartnershipStartDate;
+	private Text textPartnershipEndDate;
 
 	private int fatherPid = 0;
 	private int motherPid = 0;
@@ -73,6 +77,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private String motherRole = "";
 	private String childRole = "";
 	private String partnerRole = "";
+	private int partnerFromDatePid = 0;
+	private int partnerToDatePid = 0;
 
 	/**
 	 * Constructor
@@ -167,6 +173,42 @@ public class NewPersonWizardPage4 extends WizardPage {
 	/**
 	 *
 	 */
+	protected void browsePartnerEnd() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(textPartnershipEndDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				partnerToDatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(partnerToDatePid);
+				textPartnershipEndDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+
+	}
+
+	/**
+	 *
+	 */
+	protected void browsePartnerStart() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(textPartnershipStartDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				partnerFromDatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(partnerFromDatePid);
+				textPartnershipStartDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+
+	}
+
+	/**
+	 *
+	 */
 	protected void clearChild() {
 		childPid = 0;
 		textChildPersonPid.setText("");
@@ -208,6 +250,22 @@ public class NewPersonWizardPage4 extends WizardPage {
 		textPartnerDeathDate.setText("");
 	}
 
+	/**
+	 *
+	 */
+	protected void clearPartnerEnd() {
+		textPartnershipEndDate.setText("");
+		partnerToDatePid = 0;
+	}
+
+	/**
+	 *
+	 */
+	protected void clearPartnerStart() {
+		textPartnershipStartDate.setText("");
+		partnerFromDatePid = 0;
+	}
+
 	@Override
 	public void createControl(Composite parent) {
 		parentShell = parent.getShell();
@@ -223,10 +281,10 @@ public class NewPersonWizardPage4 extends WizardPage {
 		textFatherPersonPid = new Text(container, SWT.BORDER);
 		textFatherPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Composite composite = new Composite(container, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeFather = new Composite(container, SWT.NONE);
+		compositeFather.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateFather = new Button(composite, SWT.NONE);
+		final Button btnUpdateFather = new Button(compositeFather, SWT.NONE);
 		btnUpdateFather.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -235,7 +293,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnUpdateFather.setText("Update");
 
-		final Button btnBrowseFather = new Button(composite, SWT.NONE);
+		final Button btnBrowseFather = new Button(compositeFather, SWT.NONE);
 		btnBrowseFather.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -244,7 +302,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowseFather.setText("Browse");
 
-		final Button btnClearFather = new Button(composite, SWT.NONE);
+		final Button btnClearFather = new Button(compositeFather, SWT.NONE);
 		btnClearFather.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -270,6 +328,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 
 		textFatherRole = new Text(container, SWT.BORDER);
 		textFatherRole.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				fatherRole = textFatherRole.getText();
 			}
@@ -284,10 +343,10 @@ public class NewPersonWizardPage4 extends WizardPage {
 		textMotherPersonPid = new Text(container, SWT.BORDER);
 		textMotherPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		composite = new Composite(container, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeMother = new Composite(container, SWT.NONE);
+		compositeMother.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateMother = new Button(composite, SWT.NONE);
+		final Button btnUpdateMother = new Button(compositeMother, SWT.NONE);
 		btnUpdateMother.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -296,7 +355,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnUpdateMother.setText("Update");
 
-		final Button btnBrowseMother = new Button(composite, SWT.NONE);
+		final Button btnBrowseMother = new Button(compositeMother, SWT.NONE);
 		btnBrowseMother.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -305,7 +364,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowseMother.setText("Browse");
 
-		final Button btnClearMother = new Button(composite, SWT.NONE);
+		final Button btnClearMother = new Button(compositeMother, SWT.NONE);
 		btnClearMother.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -331,6 +390,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 
 		textMotherRole = new Text(container, SWT.BORDER);
 		textMotherRole.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				motherRole = textMotherRole.getText();
 			}
@@ -344,10 +404,10 @@ public class NewPersonWizardPage4 extends WizardPage {
 		textChildPersonPid = new Text(container, SWT.BORDER);
 		textChildPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		composite = new Composite(container, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeChild = new Composite(container, SWT.NONE);
+		compositeChild.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateChild = new Button(composite, SWT.NONE);
+		final Button btnUpdateChild = new Button(compositeChild, SWT.NONE);
 		btnUpdateChild.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -356,7 +416,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnUpdateChild.setText("Update");
 
-		final Button btnBrowseChild = new Button(composite, SWT.NONE);
+		final Button btnBrowseChild = new Button(compositeChild, SWT.NONE);
 		btnBrowseChild.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -365,7 +425,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowseChild.setText("Browse");
 
-		final Button btnClearChild = new Button(composite, SWT.NONE);
+		final Button btnClearChild = new Button(compositeChild, SWT.NONE);
 		btnClearChild.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -394,6 +454,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 
 		textChildRole = new Text(container, SWT.BORDER);
 		textChildRole.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				childRole = textChildRole.getText();
 			}
@@ -407,10 +468,10 @@ public class NewPersonWizardPage4 extends WizardPage {
 		textPartnerPersonPid = new Text(container, SWT.BORDER);
 		textPartnerPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		composite = new Composite(container, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositePartner = new Composite(container, SWT.NONE);
+		compositePartner.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdatePartner = new Button(composite, SWT.NONE);
+		final Button btnUpdatePartner = new Button(compositePartner, SWT.NONE);
 		btnUpdatePartner.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -419,7 +480,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnUpdatePartner.setText("Update");
 
-		final Button btnBrowsePartner = new Button(composite, SWT.NONE);
+		final Button btnBrowsePartner = new Button(compositePartner, SWT.NONE);
 		btnBrowsePartner.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -428,7 +489,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowsePartner.setText("Browse");
 
-		final Button btnClearPartner = new Button(composite, SWT.NONE);
+		final Button btnClearPartner = new Button(compositePartner, SWT.NONE);
 		btnClearPartner.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -454,11 +515,86 @@ public class NewPersonWizardPage4 extends WizardPage {
 
 		textPartnerRole = new Text(container, SWT.BORDER);
 		textPartnerRole.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				partnerRole = textPartnerRole.getText();
 			}
 		});
 		textPartnerRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+
+		final Label lblStartOfPartnership = new Label(container, SWT.NONE);
+		lblStartOfPartnership.setText("Start of partnership");
+
+		textPartnershipStartDate = new Text(container, SWT.BORDER);
+		textPartnershipStartDate.setEditable(false);
+		textPartnershipStartDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		final Composite compositePartnerStart = new Composite(container, SWT.NONE);
+		compositePartnerStart.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button buttonNewPartnerStart = new Button(compositePartnerStart, SWT.NONE);
+		buttonNewPartnerStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				newPartnerStart();
+			}
+		});
+		buttonNewPartnerStart.setText("New");
+
+		final Button buttonBrowsePartnerStart = new Button(compositePartnerStart, SWT.NONE);
+		buttonBrowsePartnerStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browsePartnerStart();
+			}
+		});
+		buttonBrowsePartnerStart.setText("Browse");
+
+		final Button buttonClearPartnerStart = new Button(compositePartnerStart, SWT.NONE);
+		buttonClearPartnerStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearPartnerStart();
+			}
+		});
+		buttonClearPartnerStart.setText("Clear");
+
+		final Label lblEndOfPartnership = new Label(container, SWT.NONE);
+		lblEndOfPartnership.setText("End of partnership");
+
+		textPartnershipEndDate = new Text(container, SWT.BORDER);
+		textPartnershipEndDate.setEditable(false);
+		textPartnershipEndDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		final Composite composite_1 = new Composite(container, SWT.NONE);
+		composite_1.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button buttonNewPartnerEnd = new Button(composite_1, SWT.NONE);
+		buttonNewPartnerEnd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				newPartnerEnd();
+			}
+		});
+		buttonNewPartnerEnd.setText("New");
+
+		final Button buttonBrowsePartnerEnd = new Button(composite_1, SWT.NONE);
+		buttonBrowsePartnerEnd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browsePartnerEnd();
+			}
+		});
+		buttonBrowsePartnerEnd.setText("Browse");
+
+		final Button buttonClearBrowserEnd = new Button(composite_1, SWT.NONE);
+		buttonClearBrowserEnd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearPartnerEnd();
+			}
+		});
+		buttonClearBrowserEnd.setText("Clear");
 
 	}
 
@@ -505,6 +641,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 	}
 
 	/**
+	 * @return the partnerFromDatePid
+	 */
+	public int getPartnerFromDatePid() {
+		return partnerFromDatePid;
+	}
+
+	/**
 	 * @return the partnerPid
 	 */
 	public int getPartnerPid() {
@@ -516,6 +659,55 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 */
 	public String getPartnerRole() {
 		return partnerRole;
+	}
+
+	/**
+	 * @return the partnerToDatePid
+	 */
+	public int getPartnerToDatePid() {
+		return partnerToDatePid;
+	}
+
+	/**
+	 *
+	 */
+	protected void newPartnerEnd() {
+		final DateDialog dialog = new DateDialog(textPartnershipEndDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				partnerToDatePid = hdp.insert();
+				textPartnershipEndDate.setText(dialog.getLocalDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.severe(e1.getMessage());
+			}
+		}
+
+	}
+
+	/**
+	 *
+	 */
+	protected void newPartnerStart() {
+		final DateDialog dialog = new DateDialog(textPartnershipStartDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				partnerFromDatePid = hdp.insert();
+				textPartnershipStartDate.setText(dialog.getLocalDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.severe(e1.getMessage());
+			}
+		}
+
 	}
 
 	/**

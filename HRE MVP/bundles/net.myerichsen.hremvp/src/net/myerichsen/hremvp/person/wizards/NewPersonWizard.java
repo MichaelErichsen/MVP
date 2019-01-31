@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, paprtner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. jan. 2019
+ * @version 31. jan. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -246,10 +246,9 @@ public class NewPersonWizard extends Wizard {
 				partnerProvider.setPartner1(personPid);
 				partnerProvider.setPartner2(page4.getPartnerPid());
 				partnerProvider.setPrimaryPartner(true);
-				// TODO Get from and to dates for partner
 				partnerProvider.setRole(page4.getPartnerRole());
-				partnerProvider.setFromDatePid(0);
-				partnerProvider.setToDatePid(0);
+				partnerProvider.setFromDatePid(page4.getPartnerFromDatePid());
+				partnerProvider.setToDatePid(page4.getPartnerToDatePid());
 				partnerProvider.insert();
 				LOGGER.info("Inserted partner pid " + page4.getPartnerPid());
 			}
