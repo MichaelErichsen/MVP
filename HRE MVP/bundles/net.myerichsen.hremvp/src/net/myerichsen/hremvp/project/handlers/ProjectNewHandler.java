@@ -138,21 +138,7 @@ public class ProjectNewHandler {
 					+ pnsDialog.getProjectSummary() + " LOCAL " + dbName);
 
 			int index = ProjectList.add(model);
-
-			// List properties to LOGGER
-			LOGGER.info("--------------------------------------");
-			LOGGER.info("Project count: " + store.getString("projectcount"));
-			int i = Integer.parseInt(store.getString("projectcount"));
-
-			for (int j = 1; j < i + 1; j++) {
-				LOGGER.info(store.getString("project." + j + ".name"));
-				LOGGER.info(store.getString("project." + j + ".lastupdated"));
-				LOGGER.info(store.getString("project." + j + ".summary"));
-				LOGGER.info(store.getString("project." + j + ".localserver"));
-				LOGGER.info(store.getString("project." + j + ".path"));
-			}
-			LOGGER.info("--------------------------------------");
-
+			
 			// Set database name in title bar
 			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);

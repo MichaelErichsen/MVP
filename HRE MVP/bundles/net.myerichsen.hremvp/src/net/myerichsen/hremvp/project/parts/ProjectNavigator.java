@@ -20,18 +20,23 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.project.providers.ProjectProvider;
 
 /**
@@ -48,9 +53,10 @@ public class ProjectNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private Table table;
 	private ProjectProvider provider;
 	private TableViewer tableViewer;
+	private NavigatorFilter navigatorFilter;
+	private Text textNameFilter;
 
 	/**
 	 * Constructor
@@ -59,6 +65,7 @@ public class ProjectNavigator {
 	public ProjectNavigator() {
 		try {
 			provider = new ProjectProvider();
+			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -71,11 +78,13 @@ public class ProjectNavigator {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, EMenuService menuService) {
-		LOGGER.info("Creating controls");
-		parent.setLayout(new GridLayout(1, false));
+		LOGGER.fine("Creating controls");
+		parent.setLayout(new GridLayout(2, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer.addFilter(navigatorFilter);
+
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -86,7 +95,9 @@ public class ProjectNavigator {
 				"net.myerichsen.hremvp.popupmenu.projectnavigatormenu");
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+		gd_table.widthHint = 394;
+		table.setLayoutData(gd_table);
 
 		final TableViewerColumn tableViewerColumnProjectId = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnProjectId = tableViewerColumnProjectId.getColumn();
@@ -126,10 +137,45 @@ public class ProjectNavigator {
 			}
 		});
 
+		TableViewerColumn tableViewerColumnLocation = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn tblclmnLocation = tableViewerColumnLocation.getColumn();
+		tblclmnLocation.setWidth(100);
+		tblclmnLocation.setText("Location");
+		tableViewerColumnLocation.setLabelProvider(new ColumnLabelProvider() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(2);
+			}
+		});
+
+		Label lblNameFilter = new Label(parent, SWT.NONE);
+		lblNameFilter.setText("Name Filter");
+
+		textNameFilter = new Text(parent, SWT.BORDER);
+		textNameFilter.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				navigatorFilter.setSearchText(textNameFilter.getText());
+				LOGGER.info("Filter string: " + textNameFilter.getText());
+				tableViewer.refresh();
+			}
+		});
+
+		textNameFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.get());
-			LOGGER.info("Set input");
+			LOGGER.fine("Set input");
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -147,10 +193,10 @@ public class ProjectNavigator {
 	 *
 	 */
 	private void postProjectPid() {
-		final int index = table.getSelectionIndex() + 1;
+		final int index = tableViewer.getTable().getSelectionIndex() + 1;
 		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
 		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, store.getString("DBNAME"));
-		LOGGER.info("Project Navigator posted selection index " + index);
+		LOGGER.fine("Project Navigator posted selection index " + index);
 	}
 
 	/**
@@ -166,7 +212,7 @@ public class ProjectNavigator {
 	@Inject
 	@Optional
 	private void subscribeProjectListUpdateTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
-		LOGGER.info("Received project index " + key);
+		LOGGER.fine("Received project index " + key);
 		try {
 			tableViewer.setInput(provider.get());
 			tableViewer.refresh();
@@ -175,5 +221,4 @@ public class ProjectNavigator {
 			e.printStackTrace();
 		}
 	}
-
 }

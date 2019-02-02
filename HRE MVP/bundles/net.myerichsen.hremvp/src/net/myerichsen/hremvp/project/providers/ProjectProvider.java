@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
@@ -16,7 +15,7 @@ import net.myerichsen.hremvp.project.servers.ProjectServer;
  *
  */
 public class ProjectProvider implements IHREProvider {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	ProjectServer server;
 
 	/**
@@ -45,7 +44,6 @@ public class ProjectProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
-		LOGGER.info("get");
 		return server.get();
 	}
 

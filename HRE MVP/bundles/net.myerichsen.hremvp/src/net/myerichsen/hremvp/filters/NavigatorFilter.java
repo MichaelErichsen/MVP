@@ -8,9 +8,9 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 26. jan. 2019
+ * @version 2. feb. 2019
  */
-public class PersonFilter extends ViewerFilter {
+public class NavigatorFilter extends ViewerFilter {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String searchString;
 
@@ -36,7 +36,7 @@ public class PersonFilter extends ViewerFilter {
 		@SuppressWarnings("unchecked")
 		List<String> ls = (List<String>) element;
 
-		LOGGER.info("Filter string: " + searchString + ", Element: " + ls.get(1));
+		LOGGER.fine("Filter string: " + searchString + ", Element: " + ls.get(1));
 
 		if (ls.get(1).toLowerCase().matches(searchString)) {
 			return true;

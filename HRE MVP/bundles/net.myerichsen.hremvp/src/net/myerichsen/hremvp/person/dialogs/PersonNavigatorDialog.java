@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.filters.PersonFilter;
+import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
@@ -38,7 +38,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all persons.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 26. jan. 2019
+ * @version 2. feb. 2019
  *
  */
 public class PersonNavigatorDialog extends TitleAreaDialog {
@@ -47,15 +47,13 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 
 	private PersonProvider provider;
 
-	private Table table;
-
 	private int personPid;
 	private String personName;
 	private String birthDate;
 	private String deathDate;
 	private Text textNameFilter;
 	private TableViewer tableViewer;
-	private PersonFilter personFilter;
+	private NavigatorFilter navigatorFilter;
 
 	/**
 	 * Create the dialog.
@@ -66,7 +64,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	public PersonNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
 		eventBroker = context.get(IEventBroker.class);
-		personFilter = new PersonFilter();
+		navigatorFilter = new NavigatorFilter();
 
 		try {
 			provider = new PersonProvider();
@@ -104,10 +102,9 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer.addFilter(navigatorFilter);
 
-		tableViewer.addFilter(personFilter);
-
-		table = tableViewer.getTable();
+		Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.addSelectionListener(new SelectionAdapter() {
@@ -209,7 +206,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				personFilter.setSearchText(textNameFilter.getText());
+				navigatorFilter.setSearchText(textNameFilter.getText());
 				LOGGER.info("Filter string: " + textNameFilter.getText());
 				tableViewer.refresh();
 			}

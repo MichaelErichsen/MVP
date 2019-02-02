@@ -17,7 +17,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. jan. 2019
+ * @version 2. feb. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -56,6 +56,21 @@ public class Activator implements BundleActivator {
 		for (int i = 0; i < args.length; i++) {
 			LOGGER.fine("CLI " + i + ": " + args[i]);
 		}
+
+		// List properties to LOGGER
+		LOGGER.info("--------------------------------------");
+		LOGGER.info("Project preferences:");
+		LOGGER.info("Project count: " + store.getString("projectcount"));
+		int i = Integer.parseInt(store.getString("projectcount"));
+
+		for (int j = 1; j < i + 1; j++) {
+			LOGGER.info(store.getString("project." + j + ".name"));
+			LOGGER.info(store.getString("project." + j + ".lastupdated"));
+			LOGGER.info(store.getString("project." + j + ".summary"));
+			LOGGER.info(store.getString("project." + j + ".localserver"));
+			LOGGER.info(store.getString("project." + j + ".path"));
+		}
+		LOGGER.info("--------------------------------------");
 
 		final String csMode = store.getString("CSMODE");
 		LOGGER.info("Client/server mode " + csMode);
