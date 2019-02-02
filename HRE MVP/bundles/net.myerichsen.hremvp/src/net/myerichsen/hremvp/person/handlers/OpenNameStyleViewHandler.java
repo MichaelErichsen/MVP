@@ -19,7 +19,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  *
  */
 public class OpenNameStyleViewHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.NameStyleView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.NameStyleView";
 
 	/**
 	 * @param partService  The Eclipse part service

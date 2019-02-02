@@ -15,6 +15,7 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -29,12 +30,13 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.project.models.ProjectList;
 import net.myerichsen.hremvp.project.models.ProjectModel;
+import net.myerichsen.hremvp.project.parts.ProjectNavigator;
 
 /**
  * Open an existing project.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. jan. 2019
+ * @version 2. feb. 2019
  *
  */
 public class ProjectOpenHandler {
@@ -44,6 +46,7 @@ public class ProjectOpenHandler {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
 			"net.myerichsen.hremvp");
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator";
 
 	/**
 	 * Select a database and open it
@@ -67,38 +70,66 @@ public class ProjectOpenHandler {
 				conn.createStatement().execute("SHUTDOWN");
 				conn.close();
 				conn = null;
-				HreH2ConnectionPool.dispose();
+				try {
+					HreH2ConnectionPool.dispose();
+				} catch (Exception e) {
+					LOGGER.info("Already disposed");
+				}
 			}
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 
-		// FIXME Find selected database
-//		final int index = table.getSele	ctionIndex();
-		final int index = 0;
+		// Find selected database
+		int index = 0;
+
+		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		MPart part = MBasicFactory.INSTANCE.createPart();
+
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			for (int i = 0; i < a.size(); i++) {
+				part = (MPart) a.get(i);
+				if (part.getContributionURI().equals(contributionURI)) {
+					ProjectNavigator pn = (ProjectNavigator) part.getObject();
+					index = pn.getTableViewer().getTable().getSelectionIndex();
+					LOGGER.info("Selected index: " + index);
+					break;
+				}
+			}
+
+			if (index > 0) {
+				break;
+			}
+		}
 
 		final ProjectModel model = ProjectList.getModel(index);
 		final String dbName = model.getName();
 
 		final String path = model.getPath();
-		final int length = path.length() - dbName.length();
 
 		store.setValue("DBNAME", dbName);
-		store.setValue("DBPATH", path.substring(0, length - 1));
+		store.setValue("DBPATH", path);
 
 		try {
 			conn = HreH2ConnectionPool.getConnection(dbName);
 
 			if (conn != null) {
-				// Not valid before H2 V1.4
-				// final PreparedStatement ps = conn
-				// .prepareStatement("SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM
-				// INFORMATION_SCHEMA.TABLES "
-				// + "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
-				final PreparedStatement ps = conn
-						.prepareStatement("SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
-								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				final String h2Version = store.getString("H2VERSION");
+				LOGGER.info("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
+				PreparedStatement ps;
+
+				if (h2Version.substring(0, 3).equals("1.3")) {
+					ps = conn.prepareStatement("SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				} else {
+					ps = conn.prepareStatement("SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				}
+
 				ps.executeQuery();
 				conn.close();
 			}
@@ -115,11 +146,16 @@ public class ProjectOpenHandler {
 			h2dnPart.setVisible(true);
 			h2dnPart.setContributionURI(
 					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
-			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 			stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
 			partService.showPart(h2dnPart, PartState.ACTIVATE);
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
+
+			if (index > 0) {
+				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index + 1);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index + 1);
+			}
+
 			eventBroker.post("MESSAGE", "Project database " + dbName + " has been opened");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());

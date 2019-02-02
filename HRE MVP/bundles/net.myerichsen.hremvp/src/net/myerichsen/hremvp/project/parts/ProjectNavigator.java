@@ -84,7 +84,7 @@ public class ProjectNavigator {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.addFilter(navigatorFilter);
 
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -95,7 +95,7 @@ public class ProjectNavigator {
 				"net.myerichsen.hremvp.popupmenu.projectnavigatormenu");
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gd_table.widthHint = 394;
 		table.setLayoutData(gd_table);
 
@@ -137,8 +137,8 @@ public class ProjectNavigator {
 			}
 		});
 
-		TableViewerColumn tableViewerColumnLocation = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnLocation = tableViewerColumnLocation.getColumn();
+		final TableViewerColumn tableViewerColumnLocation = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnLocation = tableViewerColumnLocation.getColumn();
 		tblclmnLocation.setWidth(100);
 		tblclmnLocation.setText("Location");
 		tableViewerColumnLocation.setLabelProvider(new ColumnLabelProvider() {
@@ -156,7 +156,7 @@ public class ProjectNavigator {
 			}
 		});
 
-		Label lblNameFilter = new Label(parent, SWT.NONE);
+		final Label lblNameFilter = new Label(parent, SWT.NONE);
 		lblNameFilter.setText("Name Filter");
 
 		textNameFilter = new Text(parent, SWT.BORDER);
@@ -187,6 +187,13 @@ public class ProjectNavigator {
 	 */
 	@PreDestroy
 	public void dispose() {
+	}
+
+	/**
+	 * @return the tableViewer
+	 */
+	public TableViewer getTableViewer() {
+		return tableViewer;
 	}
 
 	/**

@@ -38,7 +38,7 @@ import net.myerichsen.hremvp.project.models.ProjectModel;
  * Open an existing project.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. jan. 2019
+ * @version 2. feb. 2019
  *
  */
 public class ProjectOpenExistingHandler {
@@ -61,7 +61,7 @@ public class ProjectOpenExistingHandler {
 	 */
 	@Execute
 	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell) {
-
+		int index = 0;
 		Connection conn = null;
 
 		// Open file dialog
@@ -97,14 +97,18 @@ public class ProjectOpenExistingHandler {
 			conn = HreH2ConnectionPool.getConnection(dbName);
 
 			if (conn != null) {
-				// Not valid before H2 V1.4
-				// final PreparedStatement ps = conn
-				// .prepareStatement("SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM
-				// INFORMATION_SCHEMA.TABLES "
-				// + "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
-				final PreparedStatement ps = conn
-						.prepareStatement("SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
-								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				final String h2Version = store.getString("H2VERSION");
+				LOGGER.info("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
+				PreparedStatement ps;
+
+				if (h2Version.substring(0, 3).equals("1.3")) {
+					ps = conn.prepareStatement("SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				} else {
+					ps = conn.prepareStatement("SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				}
+
 				ps.executeQuery();
 				conn.close();
 			}
@@ -118,6 +122,7 @@ public class ProjectOpenExistingHandler {
 				if (store.contains(key)) {
 					if (dbName.equals(store.getString(key))) {
 						alreadyRegistered = true;
+						LOGGER.info("Project " + dbName + " already registered");
 						break;
 					}
 				}
@@ -135,30 +140,16 @@ public class ProjectOpenExistingHandler {
 				}
 				final Date timestamp = new Date(file.lastModified());
 				final ProjectModel model = new ProjectModel(pnsDialog.getProjectName(), timestamp,
-						pnsDialog.getProjectSummary(), "LOCAL", dbName);
-				ProjectList.add(model);
+						pnsDialog.getProjectSummary(), "LOCAL", path + "\\" + dbName);
+				index = ProjectList.add(model);
 
 				// Set database name in title bar
 				final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
-				window.setLabel("HRE v0.1 - " + dbName);
+				window.setLabel("HRE v0.2 - " + dbName);
 			}
 
-//			ProjectNavigator navigator = new ProjectNavigator();
-//			navigator.populateTable();
-
-			// Open Project Navigator
-//			final MPart pnPart = MBasicFactory.INSTANCE.createPart();
-//			pnPart.setLabel("Projects");
-//			pnPart.setContainerData("650");
-//			pnPart.setCloseable(true);
-//			pnPart.setVisible(true);
-//			pnPart.setContributionURI(
-//					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.navigators.ProjectNavigator");
-			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-//			stacks.get(0).getChildren().add(pnPart);
-//			partService.showPart(pnPart, PartState.ACTIVATE);
-
 			// Open H2 Database Navigator
+			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 			final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
 			h2dnPart.setLabel("Database Tables");
 			h2dnPart.setContainerData("650");
@@ -170,10 +161,14 @@ public class ProjectOpenExistingHandler {
 			partService.showPart(h2dnPart, PartState.ACTIVATE);
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
-			eventBroker.post("MESSAGE", "Project database " + dbName + " has been opened");
-		} catch (
 
-		final Exception e1) {
+			if (index > 0) {
+				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
+			}
+
+			eventBroker.post("MESSAGE", "Project database " + dbName + " has been opened");
+		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();

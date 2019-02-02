@@ -51,11 +51,6 @@ public class ProjectNewHandler {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
-	@Inject
-	MApplication application;
-	@Inject
-	EModelService modelService;
-
 	private ProjectNewDatabaseProvider provider;
 
 	/**
@@ -65,7 +60,8 @@ public class ProjectNewHandler {
 	 * @throws SQLException When failing
 	 */
 	@Execute
-	public void execute(EPartService partService, Shell shell) throws SQLException {
+	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell)
+			throws SQLException {
 		// Open file dialog
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
 		dialog.setText("Create new HRE Project");
@@ -77,7 +73,7 @@ public class ProjectNewHandler {
 		final String shortName = dialog.getFileName();
 		final String[] parts = shortName.split("\\.");
 		final String path = dialog.getFilterPath();
-		String dbName = parts[0];
+		final String dbName = parts[0];
 
 		try {
 			// Create the new database
@@ -132,13 +128,13 @@ public class ProjectNewHandler {
 			final ZonedDateTime zdt = now.atZone(ZoneId.systemDefault());
 			final Date timestamp = Date.from(zdt.toInstant());
 			final ProjectModel model = new ProjectModel(pnsDialog.getProjectName(), timestamp,
-					pnsDialog.getProjectSummary(), "LOCAL", dbName);
+					pnsDialog.getProjectSummary(), "LOCAL", path + "\\" + dbName);
 
 			LOGGER.info("New properties " + pnsDialog.getProjectName() + " " + timestamp.toString() + " "
 					+ pnsDialog.getProjectSummary() + " LOCAL " + dbName);
 
-			int index = ProjectList.add(model);
-			
+			final int index = ProjectList.add(model);
+
 			// Set database name in title bar
 			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
