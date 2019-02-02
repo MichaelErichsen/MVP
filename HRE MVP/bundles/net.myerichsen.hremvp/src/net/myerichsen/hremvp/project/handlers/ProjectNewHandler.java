@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
  * Create a new HRE project database.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. jan. 2019
+ * @version 2. feb. 2019
  *
  */
 public class ProjectNewHandler {
@@ -139,6 +139,20 @@ public class ProjectNewHandler {
 
 			int index = ProjectList.add(model);
 
+			// List properties to LOGGER
+			LOGGER.info("--------------------------------------");
+			LOGGER.info("Project count: " + store.getString("projectcount"));
+			int i = Integer.parseInt(store.getString("projectcount"));
+
+			for (int j = 1; j < i + 1; j++) {
+				LOGGER.info(store.getString("project." + j + ".name"));
+				LOGGER.info(store.getString("project." + j + ".lastupdated"));
+				LOGGER.info(store.getString("project." + j + ".summary"));
+				LOGGER.info(store.getString("project." + j + ".localserver"));
+				LOGGER.info(store.getString("project." + j + ".path"));
+			}
+			LOGGER.info("--------------------------------------");
+
 			// Set database name in title bar
 			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
@@ -157,6 +171,7 @@ public class ProjectNewHandler {
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 			eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
+			eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
 			eventBroker.post("MESSAGE", "Project database " + dbName + " has been created");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());

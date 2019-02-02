@@ -8,11 +8,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -26,6 +28,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.ProjectProvider;
@@ -34,11 +38,11 @@ import net.myerichsen.hremvp.project.providers.ProjectProvider;
  * Navigator part to display all tables in an HRE project
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. jan. 2019
+ * @version 2. feb. 2019
  *
  */
 public class ProjectNavigator {
-//	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
@@ -92,13 +96,13 @@ public class ProjectNavigator {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(0);
 			}
 		});
@@ -111,13 +115,13 @@ public class ProjectNavigator {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(1);
 			}
 		});
@@ -143,8 +147,9 @@ public class ProjectNavigator {
 	 *
 	 */
 	private void postProjectPid() {
-		final int index = table.getSelectionIndex();
-		eventBroker.post(Constants.SELECTION_INDEX_TOPIC, index);
+		final int index = table.getSelectionIndex() + 1;
+		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
+		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, store.getString("DBNAME"));
 		LOGGER.info("Project Navigator posted selection index " + index);
 	}
 
@@ -160,10 +165,15 @@ public class ProjectNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int index) {
-		LOGGER.info("Added project " + index);
-		// FIXME Does not refresh
-		tableViewer.refresh();
+	private void subscribeProjectListUpdateTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
+		LOGGER.info("Received project index " + key);
+		try {
+			tableViewer.setInput(provider.get());
+			tableViewer.refresh();
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 }

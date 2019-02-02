@@ -18,8 +18,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. jan. 2019
- *
+ * @version 1. feb. 2019
  */
 public class HreH2ConnectionPool {
 	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
@@ -114,9 +113,10 @@ public class HreH2ConnectionPool {
 			}
 		}
 
-		// FIXME Open other 
+		// FIXME Open other
 		LOGGER.fine("Reusing connection pool, Max: " + connectionPool.getMaxConnections() + ", Active: "
 				+ connectionPool.getActiveConnections());
+		// FIXME 2019-02-01 17:53:38 jdbc[3]: java.lang.Exception: Open Stack Trace
 		return connectionPool.getConnection();
 	}
 

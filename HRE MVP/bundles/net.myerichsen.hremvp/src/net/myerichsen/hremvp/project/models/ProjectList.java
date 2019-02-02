@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.project.models;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,8 +41,9 @@ public class ProjectList {
 
 	/**
 	 * @param model
+	 * @throws IOException
 	 */
-	public static int add(ProjectModel model) {
+	public static int add(ProjectModel model) throws IOException {
 		readPreferences();
 		models.add(model);
 
@@ -55,6 +57,7 @@ public class ProjectList {
 		store.setValue("project." + count + ".localserver", model.getLocalServer());
 		store.setValue("project." + count + ".path", model.getPath());
 		store.setValue("projectcount", count);
+		((ScopedPreferenceStore) store).save();
 		LOGGER.info("Added " + model.getName() + " as project " + count);
 		return count;
 	}

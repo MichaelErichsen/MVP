@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.project.providers.ProjectProvider;
  * GUI part displaying project properties.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. jan. 2019
+ * @version 2. feb. 2019
  *
  */
 public class ProjectProperties {
@@ -132,9 +132,11 @@ public class ProjectProperties {
 	 */
 	@Inject
 	@Optional
-	private void subscribeSelectionIndexTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int index) {
+	private void subscribeProjectPropertiesUpdateTopic(
+			@UIEventTopic(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC) int index) {
 		LOGGER.info("Received index " + index);
 		this.index = index;
+		tableViewer.setInput(provider.getProperties(index));
 		tableViewer.refresh();
 
 	}
