@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.project.handlers;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,7 +23,6 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.osgi.service.prefs.BackingStoreException;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
@@ -56,8 +54,6 @@ public class ProjectOpenExistingHandler {
 	 * @param application
 	 * @param modelService
 	 * @param shell
-	 * @throws SQLException
-	 * @throws BackingStoreException
 	 */
 	@Execute
 	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell) {

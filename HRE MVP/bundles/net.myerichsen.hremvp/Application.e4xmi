@@ -11,7 +11,7 @@
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_GtqlQCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectopenselected" label="Open selected Project" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_S0LrICIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectopenexisting" label="Open existing Project..." command="_bWEzsCIiEemTBOqLjKcE9w"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_iwQGQCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectbackup" label="Backup..." command="_i3iLQCIoEemTBOqLjKcE9w"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_lkP34CIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectrestore" label="Restore" command="_ndfpwCIoEemTBOqLjKcE9w"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_lkP34CIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectrestore" label="Restore..." command="_ndfpwCIoEemTBOqLjKcE9w"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_vYBfECIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectcopyas" label="Copy as..." command="_qoY4cCIoEemTBOqLjKcE9w"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_zNdfkCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectrename" label="Rename..." command="_CApYUCIpEemTBOqLjKcE9w"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_2b2uMCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.dprojectelete" label="Delete..." command="_uqPkUCIoEemTBOqLjKcE9w"/>
