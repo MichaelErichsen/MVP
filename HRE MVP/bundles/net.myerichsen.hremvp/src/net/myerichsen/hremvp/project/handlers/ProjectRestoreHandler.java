@@ -26,7 +26,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.h2.tools.Restore;
+import org.h2.tools.RunScript;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
@@ -59,12 +59,12 @@ public class ProjectRestoreHandler {
 	public void execute(IWorkbench workbench, EPartService partService, MApplication application,
 			EModelService modelService, Shell shell) {
 		int index = 0;
-		
+
 		// Open file dialog
 		final FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 		dialog.setText("Restore an HRE Project");
 		dialog.setFilterPath("./");
-		final String[] extensions = { "*Backup.zip", "*.*" };
+		final String[] extensions = { "*.zip", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
@@ -94,15 +94,26 @@ public class ProjectRestoreHandler {
 				}
 			}
 
-			File file = new File(path + "\\" + dbName);
+			String fullPath = path + "\\" + dbName + ".h2.db";
+			File file = new File(fullPath);
 
-			boolean result = Files.deleteIfExists(file.toPath());
+			boolean result = false;
+
+			result = Files.deleteIfExists(file.toPath());
+
+			if (!result) {
+				fullPath = path + "\\" + dbName + ".mv.db";
+				file = new File(fullPath);
+				result = Files.deleteIfExists(file.toPath());
+			}
 
 			if (result) {
 				LOGGER.info("Existing database " + dbName + " has been deleted");
 			}
 
-			Restore.execute(shortName, path, null);
+			String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName, "-user", store.getString("USERID"), "-script",
+					path + "\\" + dbName + ".zip", "-options", "compression", "zip" };
+			RunScript.main(bkp);
 
 			final int projectCount = store.getInt("projectcount");
 			String key;

@@ -22,7 +22,7 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Shell;
-import org.h2.tools.Backup;
+import org.h2.tools.Script;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
@@ -32,8 +32,8 @@ import net.myerichsen.hremvp.project.models.ProjectModel;
 import net.myerichsen.hremvp.project.parts.ProjectNavigator;
 
 /**
- * Back up the selected project. Closes the database if open. Back up to a zip
- * file.
+ * Back up the selected project. Closes the database if open. Back up to a human
+ * readable, and database version independent backup.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 3. feb. 2019
@@ -107,12 +107,14 @@ public class ProjectBackupHandler {
 				file = new File(path + ".mv.db");
 			}
 			path = file.getParent();
-			
-			Backup.execute(dbName + "Backup.zip", path, dbName, false);
+			String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName, "-user", store.getString("USERID"), "-password",
+					store.getString("PASSWORD"), "-script", path + "\\" + dbName + ".zip", "-options", "compression",
+					"zip" };
+			Script.main(bkp);
 
-			LOGGER.info("Project database " + dbName + " has been backed up to " + dbName + "Backup.zip");
+			LOGGER.info("Project database " + dbName + " has been backed up to " + path + "\\" + dbName + ".zip");
 			eventBroker.post("MESSAGE",
-					"Project database " + dbName + " has been backed up to " + dbName + "Backup.zip");
+					"Project database " + dbName + " has been backed up to " + path + "\\" + dbName + ".zip");
 		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
