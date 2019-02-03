@@ -1,8 +1,10 @@
 
 package net.myerichsen.hremvp.project.handlers;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -10,25 +12,31 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.IWorkbench;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.h2.tools.Backup;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.HreH2ConnectionPool;
+import net.myerichsen.hremvp.project.models.ProjectList;
+import net.myerichsen.hremvp.project.models.ProjectModel;
+import net.myerichsen.hremvp.project.parts.ProjectNavigator;
 
 /**
- * Opens a dialog to select database and target location. Closes the database if
- * open. Uses the H2 script tool to create a compressed SQL script file. This
- * will result in a small, human readable, and database version independent
- * backup
+ * Back up the selected project. Closes the database if open. Back up to a zip
+ * file.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. feb. 2019
+ * @version 3. feb. 2019
  *
  */
 public class ProjectBackupHandler {
@@ -37,25 +45,42 @@ public class ProjectBackupHandler {
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator";
 
 	/**
 	 * @param workbench
 	 * @param shell
 	 */
 	@Execute
-	public void execute(IWorkbench workbench, Shell shell) {
-		// Open file dialog
-		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-		dialog.setText("Back up an HRE Project");
-		dialog.setFilterPath("./");
-		final String[] extensions = { "*.h2.db", "*.mv.db", "*.*" };
-		dialog.setFilterExtensions(extensions);
-		dialog.open();
+	public void execute(IWorkbench workbench, EPartService partService, MApplication application,
+			EModelService modelService, Shell shell) {
+		// Find selected database
+		int index = 0;
 
-		final String shortName = dialog.getFileName();
-		final String[] parts = shortName.split("\\.");
-		final String path = dialog.getFilterPath();
-		final String dbName = parts[0];
+		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		MPart part = MBasicFactory.INSTANCE.createPart();
+
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			for (int i = 0; i < a.size(); i++) {
+				part = (MPart) a.get(i);
+				if (part.getContributionURI().equals(contributionURI)) {
+					ProjectNavigator pn = (ProjectNavigator) part.getObject();
+					index = pn.getTableViewer().getTable().getSelectionIndex();
+					LOGGER.info("Selected index: " + index);
+					break;
+				}
+			}
+
+			if (index > 0) {
+				break;
+			}
+		}
+
+		// CLose if active
+		final ProjectModel model = ProjectList.getModel(index);
+		final String dbName = model.getName();
 
 		try {
 			String activeName = store.getString("DBNAME");
@@ -76,11 +101,18 @@ public class ProjectBackupHandler {
 				}
 			}
 
-			Backup.execute(shortName + "Backup.zip", path, dbName, false);
+			String path = model.getPath();
+			File file = new File(path + ".h2.db");
+			if (file.exists() == false) {
+				file = new File(path + ".mv.db");
+			}
+			path = file.getParent();
+			
+			Backup.execute(dbName + "Backup.zip", path, dbName, false);
 
-			LOGGER.info("Project database " + dbName + " has been backed up to " + shortName + "Backup.zip");
+			LOGGER.info("Project database " + dbName + " has been backed up to " + dbName + "Backup.zip");
 			eventBroker.post("MESSAGE",
-					"Project database " + dbName + " has been backed up to " + shortName + "Backup.zip");
+					"Project database " + dbName + " has been backed up to " + dbName + "Backup.zip");
 		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

@@ -41,7 +41,7 @@ import net.myerichsen.hremvp.project.models.ProjectModel;
  * Deletes it if it exists. Uses the H2 script tool.
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. feb. 2019
+ * @version 3. feb. 2019
  *
  */
 public class ProjectRestoreHandler {
@@ -125,7 +125,6 @@ public class ProjectRestoreHandler {
 				pnsDialog.open();
 
 				// Update the HRE properties
-//				File file = new File(dbName + ".h2.db");
 				if (file.exists() == false) {
 					file = new File(dbName + ".mv.db");
 				}

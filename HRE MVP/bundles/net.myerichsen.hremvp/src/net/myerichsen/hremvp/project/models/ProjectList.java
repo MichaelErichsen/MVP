@@ -22,7 +22,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Singleton class encapsulating a list of project model objects.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. jan. 2019
+ * @version 3. feb. 2019
  *
  */
 public class ProjectList {
@@ -142,13 +142,38 @@ public class ProjectList {
 	}
 
 	/**
+	 * Remove project from model and preferences
+	 * 
+	 * @param index
 	 * @param model
 	 */
-	public static void remove(ProjectModel model) {
-		readPreferences();
+	public static void remove(int index, String dbName) {
+		ProjectModel model = getModel(index);
 		models.remove(model);
+
+		int count = store.getInt("projectcount");
+
+		for (int i = index; i < count; i++) {
+			store.setValue("project." + i + ".name", store.getString("project." + (i + 1) + ".name"));
+			store.setValue("project." + i + ".lastupdated", store.getString("project." + (i + 1) + ".lastupdated"));
+			store.setValue("project." + i + ".summary", store.getString("project." + (i + 1) + ".summary"));
+			store.setValue("project." + i + ".localserver", store.getString("project." + (i + 1) + ".localserver"));
+			store.setValue("project." + i + ".path", store.getString("project." + (i + 1) + ".path"));
+		}
+
+		store.setToDefault("project." + count + ".name");
+		store.setToDefault("project." + count + ".lastupdated");
+		store.setToDefault("project." + count + ".summary");
+		store.setToDefault("project." + count + ".localserver");
+		store.setToDefault("project." + count + ".path");
+
+		count--;
+		store.setValue("projectcount", count);
 	}
 
+	/**
+	 * @return
+	 */
 	public static boolean verify() {
 		for (final ProjectModel projectModel : models) {
 			if (projectModel.getLocalServer().equalsIgnoreCase("LOCAL")) {
