@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.handlers;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ import net.myerichsen.hremvp.project.parts.ProjectNavigator;
  * Open an existing project.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. feb. 2019
+ * @version 4. feb. 2019
  *
  */
 public class ProjectOpenHandler {
@@ -87,6 +88,7 @@ public class ProjectOpenHandler {
 
 		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
+		boolean found = false;
 
 		for (final MPartStack mPartStack : stacks) {
 			final List<MStackElement> a = mPartStack.getChildren();
@@ -96,12 +98,13 @@ public class ProjectOpenHandler {
 				if (part.getContributionURI().equals(contributionURI)) {
 					ProjectNavigator pn = (ProjectNavigator) part.getObject();
 					index = pn.getTableViewer().getTable().getSelectionIndex();
+					found = true;
 					LOGGER.info("Selected index: " + index);
 					break;
 				}
 			}
 
-			if (index > 0) {
+			if (found) {
 				break;
 			}
 		}
@@ -109,7 +112,16 @@ public class ProjectOpenHandler {
 		final ProjectModel model = ProjectList.getModel(index);
 		final String dbName = model.getName();
 
-		final String path = model.getPath();
+		String path = model.getPath();
+		File file = new File(path + ".h2.db");
+		if (file.exists()) {
+			path = file.getParent();
+		} else {
+			file = new File(path + ".mv.db");
+			if (file.exists()) {
+				path = file.getParent();
+			}
+		}
 
 		store.setValue("DBNAME", dbName);
 		store.setValue("DBPATH", path);

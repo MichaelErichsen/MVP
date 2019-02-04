@@ -16,23 +16,27 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
  * Display a list of all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. jan. 2019
+ * @version 4. feb. 2019
  *
  */
 public class PersonNavigator {
@@ -41,8 +45,10 @@ public class PersonNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private Table table;
 	private PersonProvider provider;
+	private TableViewer tableViewer;
+	private NavigatorFilter navigatorFilter;
+	private Text textNameFilter;
 
 	/**
 	 * Constructor
@@ -51,6 +57,7 @@ public class PersonNavigator {
 	public PersonNavigator() {
 		try {
 			provider = new PersonProvider();
+			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -61,17 +68,27 @@ public class PersonNavigator {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
+	 * @param parent      The parent composite
+	 * @param menuService
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, EMenuService menuService) {
-		parent.setLayout(new GridLayout(1, false));
+		parent.setLayout(new GridLayout(2, false));
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer.addFilter(navigatorFilter);
+
+		Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.
+			 * MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				postPersonPid();
@@ -79,7 +96,7 @@ public class PersonNavigator {
 		});
 		menuService.registerContextMenu(tableViewer.getControl(),
 				"net.myerichsen.hremvp.popupmenu.personnavigatormenu");
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
@@ -119,6 +136,22 @@ public class PersonNavigator {
 			}
 		});
 
+		final Label lblNameFilter = new Label(parent, SWT.NONE);
+		lblNameFilter.setText("Name Filter");
+
+		textNameFilter = new Text(parent, SWT.BORDER);
+		textNameFilter.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				navigatorFilter.setSearchText(textNameFilter.getText());
+				LOGGER.info("Filter string: " + textNameFilter.getText());
+				tableViewer.refresh();
+			}
+		});
+
+		textNameFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getAllNames());
@@ -139,15 +172,7 @@ public class PersonNavigator {
 	 *
 	 */
 	private void postPersonPid() {
-		int personPid = 0;
-
-		final TableItem[] selectedRows = table.getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			personPid = Integer.parseInt(selectedRow.getText(0));
-		}
-
+		int personPid = tableViewer.getTable().getSelectionIndex() + 1;
 		LOGGER.info("Posting person pid " + personPid);
 		eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}

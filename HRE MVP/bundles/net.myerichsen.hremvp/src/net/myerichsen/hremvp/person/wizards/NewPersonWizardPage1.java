@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. jan. 2019
+ * @version 3. feb. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -81,7 +81,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 				textBirthOriginal.setText(hdp.getOriginalText());
 				textBirthSurety.setText(hdp.getSurety());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+//				e1.printStackTrace();
 			}
 		}
 	}

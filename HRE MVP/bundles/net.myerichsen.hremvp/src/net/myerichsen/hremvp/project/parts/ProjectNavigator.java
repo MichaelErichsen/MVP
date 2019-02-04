@@ -43,7 +43,7 @@ import net.myerichsen.hremvp.project.providers.ProjectProvider;
  * Navigator part to display all tables in an HRE project
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. feb. 2019
+ * @version 4. feb. 2019
  *
  */
 public class ProjectNavigator {
@@ -75,10 +75,12 @@ public class ProjectNavigator {
 
 	/**
 	 * Create contents of the view part
+	 * 
+	 * @param parent
+	 * @param menuService
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, EMenuService menuService) {
-		LOGGER.fine("Creating controls");
 		parent.setLayout(new GridLayout(2, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -86,6 +88,13 @@ public class ProjectNavigator {
 
 		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.
+			 * MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				postProjectPid();
@@ -200,10 +209,10 @@ public class ProjectNavigator {
 	 *
 	 */
 	private void postProjectPid() {
-		final int index = tableViewer.getTable().getSelectionIndex() + 1;
-		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
+		final int projectPid = tableViewer.getTable().getSelectionIndex() + 1;
+		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, projectPid);
 		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, store.getString("DBNAME"));
-		LOGGER.fine("Project Navigator posted selection index " + index);
+		LOGGER.fine("Project Navigator posted selection index " + projectPid);
 	}
 
 	/**

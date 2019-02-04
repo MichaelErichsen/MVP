@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. jan. 2019
+ * @version 3. feb. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -59,11 +59,11 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("JETTYLOGLEVEL", "INFO");
 		store.setDefault("SERVERLIST", "127.0.0.1:8000");
 
-		store.setDefault("projectcount", "1");
-		store.setDefault("project.1.name", "MVP");
-		store.setDefault("project.1.lastupdated", "2019-01-28 12:41:36");
-		store.setDefault("project.1.summary", "This is the Default project");
-		store.setDefault("project.1.localserver", "LOCAL");
-		store.setDefault("project.1.path", "C:/Program Files/HRE/eclipse/MVP");
+		store.setDefault("projectcount", "0");
+//		store.setDefault("project.1.name", "MVP");
+//		store.setDefault("project.1.lastupdated", "2019-01-28 12:41:36");
+//		store.setDefault("project.1.summary", "This is the Default project");
+//		store.setDefault("project.1.localserver", "LOCAL");
+//		store.setDefault("project.1.path", "C:/Program Files/HRE/eclipse/MVP");
 	}
 }

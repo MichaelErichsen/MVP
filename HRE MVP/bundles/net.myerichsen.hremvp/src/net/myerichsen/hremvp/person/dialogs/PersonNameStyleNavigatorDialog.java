@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. jan. 2019
+ * @version 4. feb. 2019
  *
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
@@ -60,8 +60,6 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 	 */
 	public PersonNameStyleNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
-//		this.context = context;
-//		eventBroker = context.get(IEventBroker.class);
 		try {
 			provider = new PersonNameStyleProvider();
 		} catch (final SQLException e) {

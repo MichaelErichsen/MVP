@@ -17,7 +17,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. feb. 2019
+ * @version 3. feb. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -47,7 +47,7 @@ public class Activator implements BundleActivator {
 
 		HreLogger.setup();
 
-		LOGGER.info("HRE MVP v0.2 has been started");
+		LOGGER.fine("HRE MVP v0.2 has been started");
 		LOGGER.fine("Command line arguments:");
 
 		final ServiceReference<EnvironmentInfo> envRef = context.getServiceReference(EnvironmentInfo.class);
@@ -58,23 +58,23 @@ public class Activator implements BundleActivator {
 		}
 
 		// List properties to LOGGER
-		LOGGER.info("--------------------------------------");
-		LOGGER.info("Project preferences:");
-		LOGGER.info("Project count: " + store.getString("projectcount"));
+		LOGGER.fine("--------------------------------------");
+		LOGGER.fine("Project preferences:");
+		LOGGER.fine("Project count: " + store.getString("projectcount"));
 		int i = Integer.parseInt(store.getString("projectcount"));
 
 		for (int j = 1; j < i + 1; j++) {
-			LOGGER.info(store.getString("project." + j + ".name"));
-			LOGGER.info(store.getString("project." + j + ".lastupdated"));
-			LOGGER.info(store.getString("project." + j + ".summary"));
-			LOGGER.info(store.getString("project." + j + ".localserver"));
-			LOGGER.info(store.getString("project." + j + ".path"));
+			LOGGER.fine(store.getString("project." + j + ".name"));
+			LOGGER.fine(store.getString("project." + j + ".lastupdated"));
+			LOGGER.fine(store.getString("project." + j + ".summary"));
+			LOGGER.fine(store.getString("project." + j + ".localserver"));
+			LOGGER.fine(store.getString("project." + j + ".path"));
 		}
-		LOGGER.info("--------------------------------------");
+		LOGGER.fine("--------------------------------------");
 
 		final String csMode = store.getString("CSMODE");
-		LOGGER.info("Client/server mode " + csMode);
-		LOGGER.info("HRE Absolute path: " + new File(".").getAbsolutePath());
+		LOGGER.fine("Client/server mode " + csMode);
+		LOGGER.fine("HRE Absolute path: " + new File(".").getAbsolutePath());
 		LOGGER.fine("HRE Font: " + store.getString("HREFONT"));
 
 		final int port = store.getInt("HELPSYSTEMPORT");
@@ -83,10 +83,10 @@ public class Activator implements BundleActivator {
 				+ " -product net.myerichsen.hremvp.helpsystem -clean";
 
 		try {
-			LOGGER.info("Help System is being started at port " + port);
+			LOGGER.fine("Help System is being started at port " + port);
 			final Process helpProcess = Runtime.getRuntime().exec(command);
 			if (helpProcess.isAlive()) {
-				LOGGER.info("Help system start command: " + command);
+				LOGGER.fine("Help system start command: " + command);
 			} else {
 				throw new MvpException("Could not start help system process");
 			}
@@ -110,7 +110,7 @@ public class Activator implements BundleActivator {
 
 		try {
 			Runtime.getRuntime().exec(command);
-			LOGGER.info("Help System is being stopped");
+			LOGGER.fine("Help System is being stopped");
 		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage());
 		}

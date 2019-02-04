@@ -43,7 +43,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * Display all events for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. jan. 2019
+ * @version 3. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonEventsView {
@@ -262,7 +262,7 @@ public class PersonEventsView {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

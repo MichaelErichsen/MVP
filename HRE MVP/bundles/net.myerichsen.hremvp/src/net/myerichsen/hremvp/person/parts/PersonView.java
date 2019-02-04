@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 29. jan. 2019
+ * @version 3. feb. 2019
  *
  */
 public class PersonView {
@@ -342,7 +342,6 @@ public class PersonView {
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 

@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.Hdates;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.HDates}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. nov. 2018
+ * @version 4. feb. 2019
  *
  */
 public class HDateServer {
@@ -49,21 +49,26 @@ public class HDateServer {
 	/**
 	 * Get all rows
 	 *
-	 * @return A list of strings of pids and labels
+	 * @return A list of lists of strings of pids and labels
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<String> get() throws SQLException, MvpException {
-		final List<String> stringList = new ArrayList<>();
+	public List<List<String>> get() throws SQLException, MvpException {
+		List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
 
 		final List<Hdates> hdateList = date.get();
 
 		for (final Hdates hdate : hdateList) {
-			stringList.add(hdate.getHdatePid() + "¤%&" + hdate.getDate().toString() + "¤%&" + hdate.getOriginalText());
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(hdate.getHdatePid()));
+			stringList.add(hdate.getDate().toString());
+			stringList.add(hdate.getOriginalText());
+			lls.add(stringList);
 		}
 
-		return stringList;
+		return lls;
 	}
 
 	/**

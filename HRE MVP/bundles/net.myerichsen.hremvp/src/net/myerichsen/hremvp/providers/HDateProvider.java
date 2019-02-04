@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.servers.HDateServer;
  * Provides all data for a single historical date
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. nov. 2018
+ * @version 4. feb. 2019
  *
  */
 public class HDateProvider {
@@ -50,12 +50,12 @@ public class HDateProvider {
 	/**
 	 * Get all rows
 	 *
-	 * @return A list of strings with pids and labels
+	 * @return A list of lists of strings with pids and labels
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<String> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws SQLException, MvpException {
 		return server.get();
 	}
 

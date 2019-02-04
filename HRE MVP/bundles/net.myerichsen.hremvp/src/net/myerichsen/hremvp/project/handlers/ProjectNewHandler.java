@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
  * Create a new HRE project database.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. feb. 2019
+ * @version 3. feb. 2019
  *
  */
 public class ProjectNewHandler {
@@ -77,7 +77,7 @@ public class ProjectNewHandler {
 
 		try {
 			// Create the new database
-			LOGGER.info("New database name: " + path + "\\" + dbName);
+			LOGGER.fine("New database name: " + path + "\\" + dbName);
 
 			store.setValue("DBPATH", path);
 			store.setValue("DBNAME", dbName);
@@ -97,7 +97,7 @@ public class ProjectNewHandler {
 				try {
 					HreH2ConnectionPool.dispose();
 				} catch (final Exception e) {
-					LOGGER.info("No connection pool to dispose");
+					LOGGER.fine("No connection pool to dispose");
 				}
 			}
 
@@ -105,7 +105,7 @@ public class ProjectNewHandler {
 			conn = HreH2ConnectionPool.getConnection(dbName);
 
 			final String h2Version = store.getString("H2VERSION");
-			LOGGER.info("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
+			LOGGER.fine("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
 			PreparedStatement ps;
 
 			if (h2Version.substring(0, 3).equals("1.3")) {
@@ -130,7 +130,7 @@ public class ProjectNewHandler {
 			final ProjectModel model = new ProjectModel(pnsDialog.getProjectName(), timestamp,
 					pnsDialog.getProjectSummary(), "LOCAL", path + "\\" + dbName);
 
-			LOGGER.info("New properties " + pnsDialog.getProjectName() + " " + timestamp.toString() + " "
+			LOGGER.fine("New properties " + pnsDialog.getProjectName() + " " + timestamp.toString() + " "
 					+ pnsDialog.getProjectSummary() + " LOCAL " + dbName);
 
 			final int index = ProjectList.add(model);

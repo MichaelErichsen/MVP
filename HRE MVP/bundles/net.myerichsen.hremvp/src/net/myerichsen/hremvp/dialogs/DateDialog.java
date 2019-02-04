@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a date in several formats
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. jan. 2019
+ * @version 4. feb. 2019
  *
  */
 public class DateDialog extends TitleAreaDialog {
@@ -284,7 +284,7 @@ public class DateDialog extends TitleAreaDialog {
 	private int hDatePid = 0;
 
 	/**
-	 * Create the dialog.
+	 * Constructor
 	 *
 	 * @param parentShell
 	 * @param context
@@ -320,13 +320,14 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * Create contents of the dialog.
+	 * Create contents of the dialog
 	 *
 	 * @param parent
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setMessage("Historical Dates");
+		setMessage(
+				"Historical Dates. Use the calendar or the \"Stored Format\" field in the YYYY-MM-DD format for a Gregorian date");
 		setTitle("Date");
 		final Composite area = (Composite) super.createDialogArea(parent);
 		final Composite container = new Composite(area, SWT.NONE);
