@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
  * @version 12. jan. 2019
  *
  */
-public class NewPersonHandler {
+public class PersonNewHandler {
 	/**
 	 * @param shell   The parent shell
 	 * @param context The Eclipse Context

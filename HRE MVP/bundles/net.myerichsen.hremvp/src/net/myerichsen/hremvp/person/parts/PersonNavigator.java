@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * Display a list of all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. feb. 2019
+ * @version 5. feb. 2019
  *
  */
 public class PersonNavigator {
@@ -48,7 +48,6 @@ public class PersonNavigator {
 	private PersonProvider provider;
 	private TableViewer tableViewer;
 	private NavigatorFilter navigatorFilter;
-	private Text textNameFilter;
 
 	/**
 	 * Constructor
@@ -78,13 +77,13 @@ public class PersonNavigator {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.addFilter(navigatorFilter);
 
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.
 			 * MouseEvent)
@@ -106,13 +105,13 @@ public class PersonNavigator {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(0);
 			}
 		});
@@ -125,13 +124,13 @@ public class PersonNavigator {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(1);
 			}
 		});
@@ -139,7 +138,7 @@ public class PersonNavigator {
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
 		lblNameFilter.setText("Name Filter");
 
-		textNameFilter = new Text(parent, SWT.BORDER);
+		final Text textNameFilter = new Text(parent, SWT.BORDER);
 		textNameFilter.addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -169,10 +168,17 @@ public class PersonNavigator {
 	}
 
 	/**
+	 * @return
+	 */
+	public TableViewer getTableViewer() {
+		return tableViewer;
+	}
+
+	/**
 	 *
 	 */
 	private void postPersonPid() {
-		int personPid = tableViewer.getTable().getSelectionIndex() + 1;
+		final int personPid = tableViewer.getTable().getSelectionIndex() + 1;
 		LOGGER.info("Posting person pid " + personPid);
 		eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}

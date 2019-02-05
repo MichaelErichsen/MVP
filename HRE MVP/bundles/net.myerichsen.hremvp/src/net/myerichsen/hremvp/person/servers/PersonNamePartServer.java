@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Names;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.NameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 5. feb. 2019
  */
 public class PersonNamePartServer implements IHREServer {
 	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -43,8 +43,20 @@ public class PersonNamePartServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		part.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -56,6 +68,7 @@ public class PersonNamePartServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		part.get(key);
 		setLabel(part.getLabel());
@@ -95,6 +108,15 @@ public class PersonNamePartServer implements IHREServer {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NameParts> getFKNamePid(int key) throws SQLException {
+		return part.getFKNamePid(key);
 	}
 
 	/**
@@ -142,13 +164,14 @@ public class PersonNamePartServer implements IHREServer {
 	/**
 	 * Insert a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.NameMaps}
-	 * 
+	 *
 	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		part.setLabel(label);
 		part.setNamePartPid(namePartPid);
@@ -227,6 +250,7 @@ public class PersonNamePartServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		part.setLabel(label);
 		part.setNamePartPid(namePartPid);
@@ -252,16 +276,5 @@ public class PersonNamePartServer implements IHREServer {
 			throw new MvpException("Part number " + partNo + " does not exist in matching name map");
 		}
 		part.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

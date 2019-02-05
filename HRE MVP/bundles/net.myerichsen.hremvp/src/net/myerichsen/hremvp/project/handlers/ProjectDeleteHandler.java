@@ -53,6 +53,9 @@ public class ProjectDeleteHandler {
 	 * Select a project and delete it
 	 *
 	 * @param workbench
+	 * @param partService
+	 * @param application
+	 * @param modelService
 	 * @param shell
 	 */
 	@Execute

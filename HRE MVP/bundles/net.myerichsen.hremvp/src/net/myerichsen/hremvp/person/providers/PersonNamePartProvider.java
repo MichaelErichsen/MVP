@@ -5,13 +5,14 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.NameParts;
 import net.myerichsen.hremvp.person.servers.PersonNamePartServer;
 
 /**
  * Provides all data for a single name part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 5. feb. 2019
  *
  */
 public class PersonNamePartProvider implements IHREProvider {
@@ -41,8 +42,20 @@ public class PersonNamePartProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -53,6 +66,7 @@ public class PersonNamePartProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setLabel(server.getLabel());
@@ -61,6 +75,15 @@ public class PersonNamePartProvider implements IHREProvider {
 		setMapLabel(server.getMapLabel());
 		setName(server.getName());
 		setPartNo(server.getPartNo());
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NameParts> getFKNamePid(int key) throws SQLException {
+		return server.getFKNamePid(key);
 	}
 
 	/**
@@ -107,7 +130,7 @@ public class PersonNamePartProvider implements IHREProvider {
 
 	/**
 	 * Insert a row
-	 * 
+	 *
 	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
@@ -115,6 +138,7 @@ public class PersonNamePartProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setLabel(label);
 		server.setName(name);
@@ -175,6 +199,7 @@ public class PersonNamePartProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setLabel(label);
 		server.setName(name);
@@ -183,14 +208,5 @@ public class PersonNamePartProvider implements IHREProvider {
 		server.setMapLabel(mapLabel);
 		server.setPartNo(partNo);
 		server.update();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

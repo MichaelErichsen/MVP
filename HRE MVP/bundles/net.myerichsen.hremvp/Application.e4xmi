@@ -38,6 +38,7 @@
             <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNavigator" label="Person Navigator">
               <menus xsi:type="menu:PopupMenu" xmi:id="__TeNMCF0EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.popupmenu.personnavigatormenu" label="Person Navigator Menu">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_FDUr8CF1EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.handledmenuitem.personnew" label="New Person..." tooltip="Create a new person" command="_MLUs4BZSEemhsNWp6W2Hdw"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_R1IjkCliEemnBvsVE1QsUw" elementId="net.myerichsen.hremvp.handledmenuitem.deleteselectedperson" label="Delete selected person..." command="_YlGbgCliEemnBvsVE1QsUw"/>
               </menus>
             </children>
             <children xsi:type="basic:Part" xmi:id="__ROskBSyEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.ancestornavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Ancestor Navigator"/>
@@ -232,13 +233,14 @@
   <handlers xmi:id="_5OkmUA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.handler.32" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.help.handlers.HelpContentsHandler" command="_Az1kAA3-Eemn86hhplJLfQ"/>
   <handlers xmi:id="_68QQIA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.handler.33" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.help.handlers.HelpHreWebsiteHandler" command="_C1cPYA3-Eemn86hhplJLfQ"/>
   <handlers xmi:id="_VDQvcBNIEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.handler.29" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.PersonPerspectiveHandler" command="_0GArQBNHEemEvqVth7AYPg"/>
-  <handlers xmi:id="_OpLPYBZSEemhsNWp6W2Hdw" elementId="net.myerichsen.hremvp.handler.34" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.NewPersonHandler" command="_MLUs4BZSEemhsNWp6W2Hdw"/>
+  <handlers xmi:id="_OpLPYBZSEemhsNWp6W2Hdw" elementId="net.myerichsen.hremvp.handler.34" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.PersonNewHandler" command="_MLUs4BZSEemhsNWp6W2Hdw"/>
   <handlers xmi:id="_Rxx9gCIjEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.35" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectOpenExistingHandler" command="_bWEzsCIiEemTBOqLjKcE9w"/>
   <handlers xmi:id="_PBcVICIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.36" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectBackupHandler" command="_i3iLQCIoEemTBOqLjKcE9w"/>
   <handlers xmi:id="_ZQ7n8CIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.37" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectRestoreHandler" command="_ndfpwCIoEemTBOqLjKcE9w"/>
   <handlers xmi:id="_dgD60CIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.38" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectCopyAsHandler" command="_qoY4cCIoEemTBOqLjKcE9w"/>
   <handlers xmi:id="_hvyqoCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.39" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectDeleteHandler" command="_uqPkUCIoEemTBOqLjKcE9w"/>
   <handlers xmi:id="_mA8WwCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.40" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectRenameHandler" command="_CApYUCIpEemTBOqLjKcE9w"/>
+  <handlers xmi:id="_gDb1UCliEemnBvsVE1QsUw" elementId="net.myerichsen.hremvp.handler.41" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.PersonDeleteHandler" command="_YlGbgCliEemnBvsVE1QsUw"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
@@ -296,6 +298,7 @@
   <commands xmi:id="_qoY4cCIoEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectcopyas" commandName="ProjectCopyAs" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_uqPkUCIoEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectdelete" commandName="ProjectDelete" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_CApYUCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectrename" commandName="ProjectRename" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_YlGbgCliEemnBvsVE1QsUw" elementId="net.myerichsen.hremvp.command.persondelete" commandName="PersonDelete" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
