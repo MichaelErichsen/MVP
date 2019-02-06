@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. jan. 2019
+ * @version 6. feb. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -21,10 +21,7 @@ public class PersonProvider implements IHREProvider {
 	private int personPid;
 	private int birthDatePid;
 	private int deathDatePid;
-	private List<List<String>> nameList;
 	private List<List<String>> sexesList;
-	@SuppressWarnings("unused")
-	private List<List<String>> personList;
 	private List<List<String>> parentList;
 	private List<List<String>> partnerList;
 	private List<List<String>> childrenList;
@@ -42,7 +39,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public PersonProvider() throws SQLException {
 		server = new PersonServer();
-		nameList = new ArrayList<>();
 		sexesList = new ArrayList<>();
 		parentList = new ArrayList<>();
 		partnerList = new ArrayList<>();
@@ -71,7 +67,6 @@ public class PersonProvider implements IHREProvider {
 		setDeathDatePid(server.getDeathDatePid());
 		setPersonPid(key);
 		setEventList(server.getEventList());
-		setNameList(server.getNameList());
 		setParentList(server.getParentList());
 		setPartnerList(server.getPartnerList());
 		setChildrenList(server.getChildrenList());
@@ -160,7 +155,7 @@ public class PersonProvider implements IHREProvider {
 	 * @return the nameList
 	 */
 	public List<List<String>> getNameList() {
-		return nameList;
+		return server.getNameList();
 	}
 
 	/**
@@ -255,13 +250,6 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param nameList the nameList to set
-	 */
-	public void setNameList(List<List<String>> nameList) {
-		this.nameList = nameList;
-	}
-
-	/**
 	 * @param parentList the parentList to set
 	 */
 	public void setParentList(List<List<String>> parentList) {
@@ -325,12 +313,5 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public List<List<String>> getPersonList() throws SQLException, MvpException {
 		return server.getPersonList();
-	}
-
-	/**
-	 * @param personList the personList to set
-	 */
-	public void setPersonList(List<List<String>> personList) {
-		this.personList = personList;
 	}
 }

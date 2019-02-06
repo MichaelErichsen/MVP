@@ -22,17 +22,16 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
 
+import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameParts;
 import net.myerichsen.hremvp.person.parts.PersonNavigator;
-import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
  * Delete the selected person
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 5. feb. 2019
+ * @version 6. feb. 2019
  *
  */
 public class PersonDeleteHandler {
@@ -86,7 +85,7 @@ public class PersonDeleteHandler {
 
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell, "Delete Person " + primaryName, null,
-				"Are you sure that you will delete person " + personPid + " " + primaryName + "?",
+				"Are you sure that you will delete person " + personPid + ", " + primaryName + "?",
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
 
 		if (dialog.open() == Window.CANCEL) {
@@ -99,17 +98,8 @@ public class PersonDeleteHandler {
 			provider.delete(personPid);
 
 			LOGGER.info("Person " + primaryName + " has been deleted");
-
-			PersonNamePartProvider pnpp = new PersonNamePartProvider();
-			List<NameParts> fkNamePid = pnpp.getFKNamePid(personPid);
-
-			for (NameParts namePart : fkNamePid) {
-				pnpp.delete(namePart.getNamePid());
-				LOGGER.info("Person name part " + namePart.getLabel() + " has been deleted");
-			}
-
 			eventBroker.post("MESSAGE", "Person " + primaryName + " has been deleted");
-			viewer.refresh();
+			eventBroker.post(Constants.PERSON_LIST_UPDATE_TOPIC, personPid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

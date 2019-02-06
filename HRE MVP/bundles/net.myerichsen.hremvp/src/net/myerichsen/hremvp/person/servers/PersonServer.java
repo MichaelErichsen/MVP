@@ -18,6 +18,7 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
+import net.myerichsen.hremvp.dbmodels.NameParts;
 import net.myerichsen.hremvp.dbmodels.Names;
 import net.myerichsen.hremvp.dbmodels.Parents;
 import net.myerichsen.hremvp.dbmodels.Partners;
@@ -30,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. jan. 2019
+ * @version 6. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -78,6 +79,39 @@ public class PersonServer implements IHREServer {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
+		// Delete all person_sexes
+		Sexes sex = new Sexes();
+
+		for (Sexes sexes : sex.getFKPersonPid(key)) {
+			sex.delete(sexes.getSexesPid());
+		}
+
+		// Delete all person names
+		Names name = new Names();
+		int namePid = 0;
+
+		for (Names names : name.getFKPersonPid(key)) {
+			namePid = names.getNamePid();
+
+			// Delete all name parts
+			NameParts part = new NameParts();
+
+			for (NameParts namePart : part.getFKNamePid(namePid)) {
+				part.delete(namePart.getNamePartPid());
+			}
+
+			name.delete(namePid);
+		}
+
+		// Delete all person events
+		PersonEvents event = new PersonEvents();
+
+		for (PersonEvents events : event.getFKPersonPid(key)) {
+// FIXME ID not found
+			event.delete(events.getEventPid());
+		}
+
+		// Delete person
 		person.delete(key);
 	}
 
@@ -340,7 +374,7 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * List all persons
+	 * List all persons.
 	 * 
 	 * @return the personList
 	 * @throws MvpException
