@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 
 /**
- * Wizard to add a new person with sex, name, parents, paprtner and events
+ * Wizard to add a new person with sex, name, parents, partner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 6. feb. 2019
