@@ -14,27 +14,20 @@ public class NavigatorFilter extends ViewerFilter {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String searchString;
 
-	/**
-	 * @param s
-	 */
-	public void setSearchText(String s) {
-		this.searchString = ".*" + s.toLowerCase() + ".*";
-	}
-
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.
 	 * Viewer, java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		if (searchString == null || searchString.length() == 0) {
+		if ((searchString == null) || (searchString.length() == 0)) {
 			return true;
 		}
 
 		@SuppressWarnings("unchecked")
-		List<String> ls = (List<String>) element;
+		final List<String> ls = (List<String>) element;
 
 		LOGGER.fine("Filter string: " + searchString + ", Element: " + ls.get(1));
 
@@ -43,5 +36,12 @@ public class NavigatorFilter extends ViewerFilter {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param s
+	 */
+	public void setSearchText(String s) {
+		searchString = ".*" + s.toLowerCase() + ".*";
 	}
 }

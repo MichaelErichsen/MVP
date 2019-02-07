@@ -53,7 +53,8 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 		try {
 			provider = new EventNameProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}

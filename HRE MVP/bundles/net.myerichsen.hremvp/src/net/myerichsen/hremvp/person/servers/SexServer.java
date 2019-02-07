@@ -53,8 +53,20 @@ public class SexServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		sex.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -66,6 +78,7 @@ public class SexServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		sex.get(key);
 		setSexesPid(sex.getSexesPid());
@@ -164,6 +177,7 @@ public class SexServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		sex.setSexesPid(sexesPid);
 		sex.setPersonPid(personPid);
@@ -265,6 +279,7 @@ public class SexServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		sex.setSexesPid(sexesPid);
 		sex.setPersonPid(personPid);
@@ -273,16 +288,5 @@ public class SexServer implements IHREServer {
 		sex.setToDatePid(toDatePid);
 		sex.setPrimarySex(primarySex);
 		sex.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

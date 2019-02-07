@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, paprtner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. jan. 2019
+ * @version 6. feb. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -279,7 +279,10 @@ public class NewPersonWizard extends Wizard {
 
 			}
 
-			eventBroker.post("MESSAGE", personName + " inserted in the database as no. " + personPid);
+			eventBroker.post("MESSAGE",
+					personProvider.getPrimaryName() + " inserted in the database as no. " + personPid);
+			eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
+			eventBroker.post(net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC, namePid);
 			return true;
 		} catch (
 

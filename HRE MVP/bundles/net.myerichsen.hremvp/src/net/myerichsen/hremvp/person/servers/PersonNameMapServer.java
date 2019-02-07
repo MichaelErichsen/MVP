@@ -43,8 +43,20 @@ public class PersonNameMapServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		map.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -55,6 +67,7 @@ public class PersonNameMapServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		map.get(key);
 		setLabel(map.getLabel());
@@ -117,6 +130,7 @@ public class PersonNameMapServer implements IHREServer {
 	 *                      access error or other errors.
 	 *
 	 */
+	@Override
 	public int insert() throws SQLException {
 		map.setLabel(label);
 		map.setNameMapPid(nameMapPid);
@@ -167,23 +181,13 @@ public class PersonNameMapServer implements IHREServer {
 	 *                      access error or other errors.
 	 *
 	 */
+	@Override
 	public void update() throws SQLException {
 		map.setLabel(label);
 		map.setNameMapPid(nameMapPid);
 		map.setNameStylePid(nameStylePid);
 		map.setPartNo(partNo);
 		map.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

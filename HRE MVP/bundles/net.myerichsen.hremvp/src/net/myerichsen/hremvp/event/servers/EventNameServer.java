@@ -23,10 +23,22 @@ public class EventNameServer implements IHREServer {
 		name = new EventNames();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public List<EventNames> get() throws SQLException {
 		return name.get();
 	}
@@ -37,6 +49,7 @@ public class EventNameServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		name.get(key);
 	}
@@ -48,16 +61,9 @@ public class EventNameServer implements IHREServer {
 		return name.getLabel();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
@@ -66,13 +72,15 @@ public class EventNameServer implements IHREServer {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

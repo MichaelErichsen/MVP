@@ -49,8 +49,20 @@ public class LocationNameProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -61,6 +73,7 @@ public class LocationNameProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 
@@ -172,6 +185,7 @@ public class LocationNameProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setFromDatePid(fromDatePid);
 		server.setLocationNamePid(locationNamePid);
@@ -267,6 +281,7 @@ public class LocationNameProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setFromDatePid(fromDatePid);
 		server.setLocationNamePid(locationNamePid);
@@ -276,14 +291,5 @@ public class LocationNameProvider implements IHREProvider {
 		server.setToDatePid(toDatePid);
 		server.setPreposition(preposition);
 		server.update();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

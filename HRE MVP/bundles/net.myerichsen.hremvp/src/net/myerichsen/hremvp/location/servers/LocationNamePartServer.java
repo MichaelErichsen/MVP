@@ -44,8 +44,20 @@ public class LocationNamePartServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		part.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -57,6 +69,7 @@ public class LocationNamePartServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		part.get(key);
 		setLabel(part.getLabel());
@@ -144,6 +157,7 @@ public class LocationNamePartServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		part.setLabel(label);
 		part.setLocationNamePartPid(locationNamePartPid);
@@ -222,6 +236,7 @@ public class LocationNamePartServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		part.setLabel(label);
 		part.setLocationNamePartPid(locationNamePartPid);
@@ -247,14 +262,5 @@ public class LocationNamePartServer implements IHREServer {
 			throw new MvpException("Part number " + partNo + " does not exist in matching location name map");
 		}
 		part.update();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

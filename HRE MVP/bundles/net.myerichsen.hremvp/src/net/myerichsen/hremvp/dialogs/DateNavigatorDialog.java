@@ -103,7 +103,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.addFilter(navigatorFilter);
 
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -130,13 +130,13 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(0);
 			}
 		});
@@ -149,13 +149,13 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(1);
 			}
 		});
@@ -168,13 +168,13 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(2);
 			}
 		});

@@ -61,9 +61,9 @@ public class Activator implements BundleActivator {
 		LOGGER.fine("--------------------------------------");
 		LOGGER.fine("Project preferences:");
 		LOGGER.fine("Project count: " + store.getString("projectcount"));
-		int i = Integer.parseInt(store.getString("projectcount"));
+		final int i = Integer.parseInt(store.getString("projectcount"));
 
-		for (int j = 1; j < i + 1; j++) {
+		for (int j = 1; j < (i + 1); j++) {
 			LOGGER.fine(store.getString("project." + j + ".name"));
 			LOGGER.fine(store.getString("project." + j + ".lastupdated"));
 			LOGGER.fine(store.getString("project." + j + ".summary"));

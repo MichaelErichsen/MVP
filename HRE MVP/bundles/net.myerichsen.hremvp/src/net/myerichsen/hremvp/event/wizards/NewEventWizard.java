@@ -37,7 +37,7 @@ public class NewEventWizard extends Wizard {
 	private int locationNameStyle = 0;
 	private String locationName;
 
-	private IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
 	/**
 	 * Constructor

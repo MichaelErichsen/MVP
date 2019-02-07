@@ -48,7 +48,12 @@
             <children xsi:type="basic:PartSashContainer" xmi:id="_y8_toBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.13" horizontal="true">
               <children xsi:type="basic:PartStack" xmi:id="_3zEEsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.17" selectedElement="_Ce7rkCDQEem6D-QYMdFPXg">
                 <children xsi:type="basic:Part" xmi:id="_Ce7rkCDQEem6D-QYMdFPXg" elementId="net.myerichsen.hremvp.part.person" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonView" label="Person" tooltip="Person"/>
-                <children xsi:type="basic:Part" xmi:id="_-PNBsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.namesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNamesView" label="Names for Person"/>
+                <children xsi:type="basic:Part" xmi:id="_-PNBsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.namesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNamesView" label="Names for Person">
+                  <menus xsi:type="menu:PopupMenu" xmi:id="_oEqUICr_EemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.popupmenu.personnameviewmenu">
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_AqQJ0CsAEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handledmenuitem.newname" label="New name..."/>
+                    <children xsi:type="menu:HandledMenuItem" xmi:id="_Evoq0CsAEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handledmenuitem.deleteselectedname" label="Delete selected name..."/>
+                  </menus>
+                </children>
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_4TvI0BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.18" selectedElement="_Z2uXUBKsEemNAMxJdnZnGA">
                 <children xsi:type="basic:Part" xmi:id="_Z2uXUBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.eventsforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonEventsView" label="Events for Person"/>
@@ -241,6 +246,7 @@
   <handlers xmi:id="_hvyqoCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.39" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectDeleteHandler" command="_uqPkUCIoEemTBOqLjKcE9w"/>
   <handlers xmi:id="_mA8WwCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handler.40" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectRenameHandler" command="_CApYUCIpEemTBOqLjKcE9w"/>
   <handlers xmi:id="_gDb1UCliEemnBvsVE1QsUw" elementId="net.myerichsen.hremvp.handler.41" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.PersonDeleteHandler" command="_YlGbgCliEemnBvsVE1QsUw"/>
+  <handlers xmi:id="_81Z30CsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handler.42" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenPersonNamePartNavigatorHandler" command="_1hj2wCsCEemcPL7Gvwj8Zw"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
@@ -299,6 +305,7 @@
   <commands xmi:id="_uqPkUCIoEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectdelete" commandName="ProjectDelete" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_CApYUCIpEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.command.projectrename" commandName="ProjectRename" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_YlGbgCliEemnBvsVE1QsUw" elementId="net.myerichsen.hremvp.command.persondelete" commandName="PersonDelete" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_1hj2wCsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.command.openpersonnamepartnavigator" commandName="openPersonNamePartNavigator" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

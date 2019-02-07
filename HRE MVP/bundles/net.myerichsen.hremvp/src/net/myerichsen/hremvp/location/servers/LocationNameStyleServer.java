@@ -53,6 +53,7 @@ public class LocationNameStyleServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		style.delete(key);
 	}
@@ -65,6 +66,7 @@ public class LocationNameStyleServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<String> get() throws SQLException, MvpException {
 		final List<String> stringList = new ArrayList<>();
 
@@ -85,6 +87,7 @@ public class LocationNameStyleServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		style.get(key);
 		setLabel(style.getLabel());
@@ -176,6 +179,7 @@ public class LocationNameStyleServer implements IHREServer {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
+	@Override
 	public int insert() throws SQLException {
 		style.setLabel(label);
 		style.setLanguagePid(languagePid);
@@ -261,6 +265,7 @@ public class LocationNameStyleServer implements IHREServer {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
+	@Override
 	public void update() throws SQLException {
 		style.setLabel(label);
 		style.setLanguagePid(languagePid);

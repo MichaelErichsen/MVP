@@ -143,12 +143,12 @@ public class ProjectList {
 
 	/**
 	 * Remove project from model and preferences
-	 * 
+	 *
 	 * @param index
 	 * @param model
 	 */
 	public static void remove(int index, String dbName) {
-		ProjectModel model = getModel(index);
+		final ProjectModel model = getModel(index);
 		models.remove(model);
 
 		int count = store.getInt("projectcount");

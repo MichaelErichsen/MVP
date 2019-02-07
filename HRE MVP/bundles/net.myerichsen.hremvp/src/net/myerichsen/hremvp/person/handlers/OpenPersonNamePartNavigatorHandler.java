@@ -13,14 +13,14 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 /**
- * Handler to open the person Name Part view
+ * Handler to open the person Name Part navigator
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 7. feb. 2019
  */
-public class OpenNamePartViewHandler {
+public class OpenPersonNamePartNavigatorHandler {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNamePartView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNamePartNavigator";
 
 	/**
 	 * @param partService  The Eclipse part service
@@ -38,7 +38,7 @@ public class OpenNamePartViewHandler {
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(contributionURI);
-		stacks.get(stacks.size() - 2).getChildren().add(part);
+		stacks.get(stacks.size() - 4).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 		LOGGER.fine("Opening new window");
 	}

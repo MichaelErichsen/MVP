@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.project.models.ProjectModel;
 /**
  * Opens a dialog to select a backup zip file. Closes the database if open.
  * Deletes it if it exists. Uses the H2 script tool.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 3. feb. 2019
  *
@@ -74,7 +74,7 @@ public class ProjectRestoreHandler {
 		final String dbName = parts[0];
 
 		try {
-			String activeName = store.getString("DBNAME");
+			final String activeName = store.getString("DBNAME");
 
 			if (activeName.equals(dbName)) {
 				Connection conn = null;
@@ -111,8 +111,8 @@ public class ProjectRestoreHandler {
 				LOGGER.info("Existing database " + dbName + " has been deleted");
 			}
 
-			String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName, "-user", store.getString("USERID"), "-script",
-					path + "\\" + dbName + ".zip", "-options", "compression", "zip" };
+			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName, "-user", store.getString("USERID"),
+					"-script", path + "\\" + dbName + ".zip", "-options", "compression", "zip" };
 			RunScript.main(bkp);
 
 			final int projectCount = store.getInt("projectcount");
@@ -170,7 +170,7 @@ public class ProjectRestoreHandler {
 
 			LOGGER.info("Project database has been restored from " + shortName);
 			eventBroker.post("MESSAGE", "Project database has been restored from " + shortName);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

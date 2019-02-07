@@ -221,7 +221,7 @@ public class ProjectNewDatabaseServer {
 
 	/**
 	 * Provide the data
-	 * 
+	 *
 	 * @param dbName
 	 * @throws SQLException
 	 * @throws BackingStoreException

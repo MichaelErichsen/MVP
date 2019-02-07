@@ -12,14 +12,14 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 /**
- * Handler to open the Name style view
+ * Handler to open the Person Name style view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. sep. 2018
+ * @version 7. feb. 2019
  *
  */
 public class OpenNameStyleViewHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.NameStyleView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNameStyleView";
 
 	/**
 	 * @param partService  The Eclipse part service

@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. feb. 2019
+ * @version 7. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -80,23 +80,23 @@ public class PersonServer implements IHREServer {
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		// Delete all person_sexes
-		Sexes sex = new Sexes();
+		final Sexes sex = new Sexes();
 
-		for (Sexes sexes : sex.getFKPersonPid(key)) {
+		for (final Sexes sexes : sex.getFKPersonPid(key)) {
 			sex.delete(sexes.getSexesPid());
 		}
 
 		// Delete all person names
-		Names name = new Names();
+		final Names name = new Names();
 		int namePid = 0;
 
-		for (Names names : name.getFKPersonPid(key)) {
+		for (final Names names : name.getFKPersonPid(key)) {
 			namePid = names.getNamePid();
 
 			// Delete all name parts
-			NameParts part = new NameParts();
+			final NameParts part = new NameParts();
 
-			for (NameParts namePart : part.getFKNamePid(namePid)) {
+			for (final NameParts namePart : part.getFKNamePid(namePid)) {
 				part.delete(namePart.getNamePartPid());
 			}
 
@@ -104,11 +104,36 @@ public class PersonServer implements IHREServer {
 		}
 
 		// Delete all person events
-		PersonEvents event = new PersonEvents();
+		final PersonEvents event = new PersonEvents();
 
-		for (PersonEvents events : event.getFKPersonPid(key)) {
-// FIXME ID not found
-			event.delete(events.getEventPid());
+		for (final PersonEvents events : event.getFKPersonPid(key)) {
+			event.delete(events.getPersonEventPid());
+		}
+
+		// Delete all partner links
+		Partners partner = new Partners();
+
+		for (final Partners p : partner.getFKPartner1(key)) {
+			partner.delete(p.getPartnerPid());
+		}
+
+		partner = new Partners();
+
+		for (final Partners p : partner.getFKPartner2(key)) {
+			partner.delete(p.getPartnerPid());
+		}
+
+		// Delete all parent links
+		Parents parent = new Parents();
+
+		for (final Parents p : parent.getFKChild(key)) {
+			parent.delete(p.getParentPid());
+		}
+
+		parent = new Parents();
+
+		for (final Parents p : parent.getFKParent(key)) {
+			parent.delete(p.getParentPid());
 		}
 
 		// Delete person
@@ -375,7 +400,7 @@ public class PersonServer implements IHREServer {
 
 	/**
 	 * List all persons.
-	 * 
+	 *
 	 * @return the personList
 	 * @throws MvpException
 	 * @throws SQLException
@@ -408,6 +433,75 @@ public class PersonServer implements IHREServer {
 		}
 
 		return personList;
+	}
+
+	/**
+	 * Get a list of all names for the person
+	 *
+	 * @param key
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getPersonNameList(int key) throws SQLException, MvpException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		if (key == 0) {
+			stringList = new ArrayList<>();
+			stringList.add("0");
+			stringList.add("");
+			stringList.add("");
+			stringList.add("");
+			stringList.add("false");
+			lls.add(stringList);
+			return lls;
+		}
+
+		final Names name = new Names();
+		int namePid = 0;
+		StringBuilder sb;
+
+		for (final Names names : name.getFKPersonPid(key)) {
+			stringList = new ArrayList<>();
+
+			namePid = names.getNamePid();
+			stringList.add(Integer.toString(namePid));
+
+			sb = new StringBuilder();
+			final NameParts part = new NameParts();
+
+			for (final NameParts namePart : part.getFKNamePid(namePid)) {
+				sb.append(namePart.getLabel() + " ");
+			}
+			stringList.add(sb.toString().trim());
+
+			final Hdates date = new Hdates();
+
+			int datePid = name.getFromDatePid();
+
+			if (datePid == 0) {
+				stringList.add("");
+			} else {
+				date.get();
+				stringList.add(date.getDate().toString());
+			}
+
+			datePid = name.getToDatePid();
+
+			if (datePid == 0) {
+				stringList.add("");
+			} else {
+				date.get();
+				stringList.add(date.getDate().toString());
+			}
+
+			stringList.add(Boolean.toString(name.isPrimaryName()));
+
+			lls.add(stringList);
+		}
+
+		return lls;
 	}
 
 	/**

@@ -48,6 +48,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
 	}
@@ -60,6 +61,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<String> get() throws SQLException, MvpException {
 		return server.get();
 	}
@@ -72,6 +74,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 
@@ -149,6 +152,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setIsoCode(isoCode);
 		server.setLabel(label);
@@ -225,6 +229,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setIsoCode(isoCode);
 		server.setLabel(label);

@@ -73,7 +73,7 @@ public class ProjectOpenHandler {
 				conn = null;
 				try {
 					HreH2ConnectionPool.dispose();
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					LOGGER.info("Already disposed");
 				}
 			}
@@ -96,7 +96,7 @@ public class ProjectOpenHandler {
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
 				if (part.getContributionURI().equals(contributionURI)) {
-					ProjectNavigator pn = (ProjectNavigator) part.getObject();
+					final ProjectNavigator pn = (ProjectNavigator) part.getObject();
 					index = pn.getTableViewer().getTable().getSelectionIndex();
 					found = true;
 					LOGGER.info("Selected index: " + index);

@@ -43,10 +43,10 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	@Inject
 	private IEventBroker eventBroker;
-
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
 	private Text textEventStylePid;

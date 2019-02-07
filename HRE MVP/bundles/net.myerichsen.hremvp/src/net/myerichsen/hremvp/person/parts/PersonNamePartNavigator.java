@@ -46,10 +46,11 @@ import net.myerichsen.hremvp.person.providers.PersonNameProvider;
  * Display all data about a name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. nov. 2018
+ * @version 7. feb. 2019
  */
+//FIXME Change table to JFace
 @SuppressWarnings("restriction")
-public class PersonNameView {
+public class PersonNamePartNavigator {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
@@ -72,16 +73,10 @@ public class PersonNameView {
 	private Text textDateFrom;
 	private Text textDateTo;
 	private Button btnPrimaryName;
-	private Table tableNameParts;
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
 	private final PersonNameProvider provider;
+
+	private TableViewer tableViewer;
 
 	/**
 	 * Constructor
@@ -90,7 +85,7 @@ public class PersonNameView {
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonNameView() throws SQLException {
+	public PersonNamePartNavigator() throws SQLException {
 		provider = new PersonNameProvider();
 	}
 
@@ -104,7 +99,7 @@ public class PersonNameView {
 		textNameStyleLabel.setText("");
 		textDateFrom.setText("");
 		textDateTo.setText("");
-		tableNameParts.removeAll();
+		tableViewer.getTable().removeAll();
 	}
 
 	/**
@@ -175,8 +170,8 @@ public class PersonNameView {
 		final Label lblNameParts = new Label(parent, SWT.NONE);
 		lblNameParts.setText("Name Parts\r\nDblclk to open");
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		tableNameParts = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		Table tableNameParts = tableViewer.getTable();
 		tableNameParts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -202,11 +197,11 @@ public class PersonNameView {
 		tblclmnValueFromPart.setWidth(100);
 		tblclmnValueFromPart.setText("Value from Part");
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonSelect = new Button(composite, SWT.NONE);
+		Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -215,7 +210,7 @@ public class PersonNameView {
 		});
 		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
+		Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -224,7 +219,7 @@ public class PersonNameView {
 		});
 		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -233,7 +228,7 @@ public class PersonNameView {
 		});
 		buttonUpdate.setText("Update");
 
-		buttonDelete = new Button(composite, SWT.NONE);
+		Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -242,7 +237,7 @@ public class PersonNameView {
 		});
 		buttonDelete.setText("Delete");
 
-		buttonClear = new Button(composite, SWT.NONE);
+		Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -251,7 +246,7 @@ public class PersonNameView {
 		});
 		buttonClear.setText("Clear");
 
-		buttonClose = new Button(composite, SWT.NONE);
+		Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -260,7 +255,7 @@ public class PersonNameView {
 		});
 		buttonClose.setText("Close");
 
-		get(1);
+//		get(1);
 	}
 
 	/**
@@ -273,7 +268,7 @@ public class PersonNameView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -317,14 +312,14 @@ public class PersonNameView {
 
 			btnPrimaryName.setSelection(provider.isPrimaryName());
 
-			tableNameParts.removeAll();
+			tableViewer.getTable().removeAll();
 
 			final List<List<String>> nameList = provider.getNameList();
 			List<String> ls;
 
 			for (int i = 0; i < nameList.size(); i++) {
 				ls = nameList.get(i);
-				final TableItem item = new TableItem(tableNameParts, SWT.NONE);
+				final TableItem item = new TableItem(tableViewer.getTable(), SWT.NONE);
 				item.setText(0, ls.get(0));
 				item.setText(1, ls.get(1));
 				item.setText(2, ls.get(2));
@@ -334,7 +329,8 @@ public class PersonNameView {
 
 		} catch (final SQLException | MvpException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -378,7 +374,7 @@ public class PersonNameView {
 				.createCommand("net.myerichsen.hremvp.command.opennamepartview", null);
 		handlerService.executeHandler(command);
 
-		final TableItem[] selectedRows = tableNameParts.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];

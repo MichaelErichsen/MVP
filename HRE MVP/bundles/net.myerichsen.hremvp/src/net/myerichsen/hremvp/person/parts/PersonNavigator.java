@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
@@ -39,7 +40,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * Display a list of all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. feb. 2019
+ * @version 7. feb. 2019
  *
  */
 public class PersonNavigator {
@@ -181,7 +182,8 @@ public class PersonNavigator {
 	 *
 	 */
 	private void postPersonPid() {
-		final int personPid = tableViewer.getTable().getSelectionIndex() + 1;
+		TableItem[] selection = tableViewer.getTable().getSelection();
+		int personPid = Integer.parseInt(selection[0].getText(0));
 		LOGGER.info("Posting person pid " + personPid);
 		eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}
@@ -191,7 +193,7 @@ public class PersonNavigator {
 	}
 
 	/**
-	 * @param dbName
+	 * @param personPid
 	 */
 	@Inject
 	@Optional

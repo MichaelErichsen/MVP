@@ -64,7 +64,7 @@ public class ProjectProperties {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -78,13 +78,13 @@ public class ProjectProperties {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(0);
 			}
 		});
@@ -98,13 +98,13 @@ public class ProjectProperties {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 			 */
 			@Override
 			public String getText(Object element) {
 				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) element;
+				final List<String> list = (List<String>) element;
 				return list.get(1);
 			}
 		});
@@ -114,14 +114,14 @@ public class ProjectProperties {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@PreDestroy
 	public void dispose() {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Focus
 	public void setFocus() {

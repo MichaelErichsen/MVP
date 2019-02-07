@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 3. feb. 2019
+ * @version 6. feb. 2019
  *
  */
 public class PersonView {
@@ -421,6 +421,7 @@ public class PersonView {
 	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid)
 			throws SQLException {
 		LOGGER.info("Receiving person pid " + personPid);
+		this.personPid = personPid;
 		get(personPid);
 	}
 

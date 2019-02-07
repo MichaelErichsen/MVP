@@ -31,12 +31,45 @@ public class PersonEventProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 *
+	 */
+	public boolean areMoreEvents(int key) throws SQLException {
+		return server.areMoreEvents(key);
+	}
+
+	/**
 	 * @param personEventPid2
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -45,16 +78,6 @@ public class PersonEventProvider implements IHREProvider {
 	 */
 	public int getEventPid() {
 		return EventPid;
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws SQLException
-	 *
-	 */
-	public boolean areMoreEvents(int key) throws SQLException {
-		return server.areMoreEvents(key);
 	}
 
 	/**
@@ -82,6 +105,7 @@ public class PersonEventProvider implements IHREProvider {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public int insert() throws SQLException {
 		server.setEventPid(EventPid);
 		server.setPersonPid(PersonPid);
@@ -148,30 +172,14 @@ public class PersonEventProvider implements IHREProvider {
 		Role = role;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

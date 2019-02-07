@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. feb. 2019
+ * @version 7. feb. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -180,6 +180,25 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return the personList
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getPersonList() throws SQLException, MvpException {
+		return server.getPersonList();
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getPersonNameList(int key) throws SQLException, MvpException {
+		return server.getPersonNameList(key);
+	}
+
+	/**
 	 * @return the personPid
 	 */
 	public int getPersonPid() {
@@ -304,14 +323,5 @@ public class PersonProvider implements IHREProvider {
 		server.setDeathDatePid(deathDatePid);
 		server.setPersonPid(personPid);
 		server.update();
-	}
-
-	/**
-	 * @return the personList
-	 * @throws MvpException
-	 * @throws SQLException
-	 */
-	public List<List<String>> getPersonList() throws SQLException, MvpException {
-		return server.getPersonList();
 	}
 }

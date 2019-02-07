@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
  * Display all data about a name part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. sep. 2018
+ * @version 7. feb. 2019
  *
  */
 public class PersonNamePartView {
@@ -57,13 +57,7 @@ public class PersonNamePartView {
 	private Text textPartNo;
 	private Text textMapLabel;
 	private Text textLabel;
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
+
 	private final PersonNamePartProvider provider;
 
 	/**
@@ -142,11 +136,11 @@ public class PersonNamePartView {
 		textLabel = new Text(parent, SWT.BORDER);
 		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonSelect = new Button(composite, SWT.NONE);
+		Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -155,7 +149,7 @@ public class PersonNamePartView {
 		});
 		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
+		Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -164,7 +158,7 @@ public class PersonNamePartView {
 		});
 		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -173,7 +167,7 @@ public class PersonNamePartView {
 		});
 		buttonUpdate.setText("Update");
 
-		buttonDelete = new Button(composite, SWT.NONE);
+		Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -182,7 +176,7 @@ public class PersonNamePartView {
 		});
 		buttonDelete.setText("Delete");
 
-		buttonClear = new Button(composite, SWT.NONE);
+		Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -191,7 +185,7 @@ public class PersonNamePartView {
 		});
 		buttonClear.setText("Clear");
 
-		buttonClose = new Button(composite, SWT.NONE);
+		Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -212,7 +206,7 @@ public class PersonNamePartView {
 			clear();
 		} catch (SQLException | NumberFormatException | MvpException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
 		}
 	}
 
@@ -246,7 +240,7 @@ public class PersonNamePartView {
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -264,7 +258,7 @@ public class PersonNamePartView {
 			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
 		}
 	}
 
@@ -284,7 +278,9 @@ public class PersonNamePartView {
 	@Optional
 	private void subscribeNamePartUpdateTopic(@UIEventTopic(Constants.NAME_PART_PID_UPDATE_TOPIC) int namePartPid)
 			throws SQLException, MvpException {
-		get(namePartPid);
+		if (namePartPid > 0) {
+			get(namePartPid);
+		}
 	}
 
 	/**
@@ -300,7 +296,7 @@ public class PersonNamePartView {
 			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been updated");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
 		}
 	}
 }

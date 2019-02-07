@@ -46,8 +46,20 @@ public class SexProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -59,6 +71,7 @@ public class SexProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setSexesPid(server.getSexesPid());
@@ -151,6 +164,7 @@ public class SexProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 * @return
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setSexesPid(sexesPid);
 		server.setPersonPid(personPid);
@@ -252,6 +266,7 @@ public class SexProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setSexesPid(sexesPid);
 		server.setPersonPid(personPid);
@@ -260,14 +275,5 @@ public class SexProvider implements IHREProvider {
 		server.setToDatePid(toDatePid);
 		server.setPrimarySex(primarySex);
 		server.update();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

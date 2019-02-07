@@ -49,8 +49,20 @@ public class PersonNameProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -61,6 +73,7 @@ public class PersonNameProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setNamePid(key);
@@ -155,13 +168,14 @@ public class PersonNameProvider implements IHREProvider {
 
 	/**
 	 * Insert a row
-	 * 
+	 *
 	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setNamePid(namePid);
 		server.setPersonPid(personPid);
@@ -250,6 +264,7 @@ public class PersonNameProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setNamePid(namePid);
 		server.setPersonPid(personPid);
@@ -260,17 +275,6 @@ public class PersonNameProvider implements IHREProvider {
 		server.setPrimaryName(primaryName);
 		server.setNameStylePid(nameStylePid);
 		server.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

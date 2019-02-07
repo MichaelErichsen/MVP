@@ -24,10 +24,22 @@ public class EventNameProvider implements IHREProvider {
 		server = new EventNameServer();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public List<EventNames> get() throws SQLException {
 		return server.get();
 	}
@@ -37,6 +49,7 @@ public class EventNameProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 	}
@@ -50,7 +63,7 @@ public class EventNameProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
@@ -61,22 +74,11 @@ public class EventNameProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
 		// TODO Auto-generated method stub
 
 	}

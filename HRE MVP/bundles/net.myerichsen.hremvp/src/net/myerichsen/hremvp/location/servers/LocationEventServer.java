@@ -21,6 +21,39 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
 public class LocationEventServer implements IHREServer {
 //	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @param locationPid The persistent ID of the row
 	 * @return A list of lists of strings of pids and labels
@@ -54,34 +87,9 @@ public class LocationEventServer implements IHREServer {
 		return lls;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
@@ -90,13 +98,15 @@ public class LocationEventServer implements IHREServer {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
