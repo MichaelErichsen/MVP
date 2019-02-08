@@ -201,7 +201,8 @@ public class PersonChildrenView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -240,7 +241,8 @@ public class PersonChildrenView {
 
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -252,7 +254,8 @@ public class PersonChildrenView {
 		try {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -302,7 +305,8 @@ public class PersonChildrenView {
 			provider.update();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 

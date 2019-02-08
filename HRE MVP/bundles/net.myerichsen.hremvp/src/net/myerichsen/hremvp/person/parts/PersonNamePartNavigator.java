@@ -20,6 +20,8 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -46,9 +48,8 @@ import net.myerichsen.hremvp.person.providers.PersonNameProvider;
  * Display all data about a name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. feb. 2019
+ * @version 8. feb. 2019
  */
-//FIXME Change table to JFace
 @SuppressWarnings("restriction")
 public class PersonNamePartNavigator {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -171,7 +172,7 @@ public class PersonNamePartNavigator {
 		lblNameParts.setText("Name Parts\r\nDblclk to open");
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table tableNameParts = tableViewer.getTable();
+		final Table tableNameParts = tableViewer.getTable();
 		tableNameParts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -186,31 +187,64 @@ public class PersonNamePartNavigator {
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(0);
+			}
+		});
 
 		final TableViewerColumn tableViewerColumnMap = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnLabelFromMap = tableViewerColumnMap.getColumn();
 		tblclmnLabelFromMap.setWidth(100);
 		tblclmnLabelFromMap.setText("Label from Map");
+		tableViewerColumnMap.setLabelProvider(new ColumnLabelProvider() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(1);
+			}
+		});
 
 		final TableViewerColumn tableViewerColumnPart = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnValueFromPart = tableViewerColumnPart.getColumn();
 		tblclmnValueFromPart.setWidth(100);
 		tblclmnValueFromPart.setText("Value from Part");
+		tableViewerColumnPart.setLabelProvider(new ColumnLabelProvider() {
 
-		Composite composite = new Composite(parent, SWT.NONE);
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(2);
+			}
+		});
+
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
-			}
-		});
-		buttonSelect.setText("Select");
-
-		Button buttonInsert = new Button(composite, SWT.NONE);
+		final Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -219,7 +253,7 @@ public class PersonNamePartNavigator {
 		});
 		buttonInsert.setText("Insert");
 
-		Button buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -228,7 +262,7 @@ public class PersonNamePartNavigator {
 		});
 		buttonUpdate.setText("Update");
 
-		Button buttonDelete = new Button(composite, SWT.NONE);
+		final Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -237,7 +271,7 @@ public class PersonNamePartNavigator {
 		});
 		buttonDelete.setText("Delete");
 
-		Button buttonClear = new Button(composite, SWT.NONE);
+		final Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -246,7 +280,7 @@ public class PersonNamePartNavigator {
 		});
 		buttonClear.setText("Clear");
 
-		Button buttonClose = new Button(composite, SWT.NONE);
+		final Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -255,7 +289,8 @@ public class PersonNamePartNavigator {
 		});
 		buttonClose.setText("Close");
 
-//		get(1);
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		tableViewer.setInput(provider.getNameList());
 	}
 
 	/**
@@ -278,61 +313,6 @@ public class PersonNamePartNavigator {
 	 */
 	@PreDestroy
 	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	private void get() {
-		get(Integer.parseInt(textId.getText()));
-	}
-
-	/**
-	 * @param key
-	 */
-	private void get(int key) {
-		try {
-			provider.get(key);
-			textId.setText(Integer.toString(provider.getNamePid()));
-			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
-			textNameStylePid.setText(Integer.toString(provider.getNameStylePid()));
-			textNameStyleLabel.setText(provider.getNameTypeLabel());
-
-			try {
-				textDateFrom.setText(Integer.toString(provider.getFromDatePid()));
-			} catch (final Exception e) {
-				textDateFrom.setText("");
-			}
-
-			try {
-				textDateTo.setText(Integer.toString(provider.getFromDatePid()));
-			} catch (final Exception e) {
-				textDateTo.setText("");
-			}
-
-			btnPrimaryName.setSelection(provider.isPrimaryName());
-
-			tableViewer.getTable().removeAll();
-
-			final List<List<String>> nameList = provider.getNameList();
-			List<String> ls;
-
-			for (int i = 0; i < nameList.size(); i++) {
-				ls = nameList.get(i);
-				final TableItem item = new TableItem(tableViewer.getTable(), SWT.NONE);
-				item.setText(0, ls.get(0));
-				item.setText(1, ls.get(1));
-				item.setText(2, ls.get(2));
-			}
-
-			eventBroker.post("MESSAGE", "Name " + textId.getText() + " has been fetched");
-
-		} catch (final SQLException | MvpException e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -408,13 +388,39 @@ public class PersonNamePartNavigator {
 	}
 
 	/**
-	 * @param key
-	 * @throws MvpException
+	 * @param personPid
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int key) throws MvpException {
-		get(key);
+	private void subscribeNamePidUpdateTopic(@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int key) {
+		LOGGER.fine("Received name id " + key);
+		try {
+			provider.get(key);
+			textId.setText(Integer.toString(provider.getNamePid()));
+			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
+			textNameStylePid.setText(Integer.toString(provider.getNameStylePid()));
+			textNameStyleLabel.setText(provider.getNameTypeLabel());
+
+			try {
+				textDateFrom.setText(Integer.toString(provider.getFromDatePid()));
+			} catch (final Exception e) {
+				textDateFrom.setText("");
+			}
+
+			try {
+				textDateTo.setText(Integer.toString(provider.getFromDatePid()));
+			} catch (final Exception e) {
+				textDateTo.setText("");
+			}
+
+			btnPrimaryName.setSelection(provider.isPrimaryName());
+
+			tableViewer.setInput(provider.getNameList());
+			tableViewer.refresh();
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**

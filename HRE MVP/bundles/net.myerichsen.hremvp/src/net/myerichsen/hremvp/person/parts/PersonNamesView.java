@@ -223,8 +223,8 @@ public class PersonNamesView {
 				.createCommand("net.myerichsen.hremvp.command.openpersonnamepartnavigator", null);
 		handlerService.executeHandler(command);
 
-		TableItem[] selection = tableViewer.getTable().getSelection();
-		int namePid = Integer.parseInt(selection[0].getText(0));
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+		final int namePid = Integer.parseInt(selection[0].getText(0));
 		LOGGER.info("Setting name pid: " + namePid);
 		eventBroker.post(Constants.NAME_PID_UPDATE_TOPIC, namePid);
 	}

@@ -182,8 +182,8 @@ public class PersonNavigator {
 	 *
 	 */
 	private void postPersonPid() {
-		TableItem[] selection = tableViewer.getTable().getSelection();
-		int personPid = Integer.parseInt(selection[0].getText(0));
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+		final int personPid = Integer.parseInt(selection[0].getText(0));
 		LOGGER.info("Posting person pid " + personPid);
 		eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}

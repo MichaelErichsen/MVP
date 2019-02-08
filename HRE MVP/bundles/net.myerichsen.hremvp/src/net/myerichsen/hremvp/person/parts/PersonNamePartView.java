@@ -136,11 +136,11 @@ public class PersonNamePartView {
 		textLabel = new Text(parent, SWT.BORDER);
 		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Composite composite = new Composite(parent, SWT.NONE);
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button buttonSelect = new Button(composite, SWT.NONE);
+		final Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -149,7 +149,7 @@ public class PersonNamePartView {
 		});
 		buttonSelect.setText("Select");
 
-		Button buttonInsert = new Button(composite, SWT.NONE);
+		final Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -158,7 +158,7 @@ public class PersonNamePartView {
 		});
 		buttonInsert.setText("Insert");
 
-		Button buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -167,7 +167,7 @@ public class PersonNamePartView {
 		});
 		buttonUpdate.setText("Update");
 
-		Button buttonDelete = new Button(composite, SWT.NONE);
+		final Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -176,7 +176,7 @@ public class PersonNamePartView {
 		});
 		buttonDelete.setText("Delete");
 
-		Button buttonClear = new Button(composite, SWT.NONE);
+		final Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -185,7 +185,7 @@ public class PersonNamePartView {
 		});
 		buttonClear.setText("Clear");
 
-		Button buttonClose = new Button(composite, SWT.NONE);
+		final Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
