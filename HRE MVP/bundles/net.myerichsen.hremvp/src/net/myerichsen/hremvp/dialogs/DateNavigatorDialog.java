@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all historical dates
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. feb. 2019
+ * @version 8. feb. 2019
  *
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
@@ -179,10 +179,10 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 			}
 		});
 
-		final Label lblDateFilter = new Label(parent, SWT.NONE);
+		final Label lblDateFilter = new Label(container, SWT.NONE);
 		lblDateFilter.setText("Date Filter");
 
-		textDateFilter = new Text(parent, SWT.BORDER);
+		textDateFilter = new Text(container, SWT.BORDER);
 		textDateFilter.addKeyListener(new KeyAdapter() {
 
 			@Override

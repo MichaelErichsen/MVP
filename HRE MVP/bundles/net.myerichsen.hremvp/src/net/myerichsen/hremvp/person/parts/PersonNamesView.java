@@ -40,10 +40,11 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * View all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 7. feb. 2019
+ * @version 8. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
+// FIXME Add name type with a language specific label
 public class PersonNamesView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -57,6 +58,7 @@ public class PersonNamesView {
 	private Text textId;
 	private TableViewer tableViewer;
 	private PersonProvider provider;
+	private int personPid = 0;
 
 	/**
 	 * Constructor
@@ -204,7 +206,7 @@ public class PersonNamesView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getPersonNameList(0));
+			tableViewer.setInput(provider.getPersonNameList(personPid));
 		} catch (SQLException | MvpException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -213,6 +215,13 @@ public class PersonNamesView {
 
 	@PreDestroy
 	public void dispose() {
+	}
+
+	/**
+	 * @return the tableViewer
+	 */
+	public TableViewer getTableViewer() {
+		return tableViewer;
 	}
 
 	/**
@@ -234,12 +243,29 @@ public class PersonNamesView {
 	}
 
 	/**
+	 * @param namePid
+	 */
+	@Inject
+	@Optional
+	private void subscribeNamePidUpdateTopic(@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int namePid) {
+		LOGGER.fine("Received name id " + namePid);
+		try {
+			tableViewer.setInput(provider.getPersonNameList(personPid));
+			tableViewer.refresh();
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * @param personPid
 	 */
 	@Inject
 	@Optional
 	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
+		this.personPid = personPid;
 		try {
 			textId.setText(Integer.toString(personPid));
 			tableViewer.setInput(provider.getPersonNameList(personPid));

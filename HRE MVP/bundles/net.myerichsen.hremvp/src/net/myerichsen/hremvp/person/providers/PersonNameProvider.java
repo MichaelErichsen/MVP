@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  * Provides all data for a single name for a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 8. feb. 2019
  *
  */
 public class PersonNameProvider implements IHREProvider {
@@ -181,7 +181,7 @@ public class PersonNameProvider implements IHREProvider {
 		server.setPersonPid(personPid);
 		server.setNameType(nameType);
 		server.setFromDatePid(fromDatePid);
-		server.setFromDatePid(toDatePid);
+		server.setToDatePid(toDatePid);
 		server.setPrimaryName(primaryName);
 		server.setNameStylePid(nameStylePid);
 		return server.insert();

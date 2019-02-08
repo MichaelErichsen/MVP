@@ -19,9 +19,10 @@ import net.myerichsen.hremvp.dbmodels.NameMaps;
 import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
 
 /**
+ * Wizard page to ad a person name
+ * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 7. feb. 2019
- *
+ * @version 8. feb. 2019
  */
 
 public class NewPersonNameWizardPage2 extends WizardPage {
@@ -60,7 +61,7 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 		container.setLayout(new GridLayout(2, false));
 
 		try {
-			final NewPersonWizard wizard = (NewPersonWizard) getWizard();
+			final NewPersonNameWizard wizard = (NewPersonNameWizard) getWizard();
 			personNameStylePid = wizard.getPersonNameStylePid();
 
 			provider = new PersonNameMapProvider();

@@ -478,21 +478,21 @@ public class PersonServer implements IHREServer {
 
 			final Hdates date = new Hdates();
 
-			int datePid = name.getFromDatePid();
+			int datePid = names.getFromDatePid();
 
 			if (datePid == 0) {
 				stringList.add("");
 			} else {
-				date.get();
+				date.get(datePid);
 				stringList.add(date.getDate().toString());
 			}
 
-			datePid = name.getToDatePid();
+			datePid = names.getToDatePid();
 
 			if (datePid == 0) {
 				stringList.add("");
 			} else {
-				date.get();
+				date.get(datePid);
 				stringList.add(date.getDate().toString());
 			}
 

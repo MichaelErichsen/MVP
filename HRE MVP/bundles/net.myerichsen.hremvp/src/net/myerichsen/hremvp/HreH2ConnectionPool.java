@@ -113,10 +113,9 @@ public class HreH2ConnectionPool {
 			}
 		}
 
-		// FIXME Open other
 		LOGGER.fine("Reusing connection pool, Max: " + connectionPool.getMaxConnections() + ", Active: "
 				+ connectionPool.getActiveConnections());
-		// FIXME 2019-02-01 17:53:38 jdbc[3]: java.lang.Exception: Open Stack Trace
+		// TODO 2019-02-01 17:53:38 jdbc[3]: java.lang.Exception: Open Stack Trace
 		return connectionPool.getConnection();
 	}
 

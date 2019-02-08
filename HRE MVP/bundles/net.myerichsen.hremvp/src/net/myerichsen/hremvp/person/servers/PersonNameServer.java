@@ -53,6 +53,13 @@ public class PersonNameServer implements IHREServer {
 	 *
 	 */
 	public void delete(int key) throws SQLException, MvpException {
+		NameParts part = new NameParts();
+		part.getFKNamePid(key);
+
+		for (NameParts np : part.getFKNamePid(key)) {
+			np.delete(np.getNamePartPid());
+		}
+
 		name.delete(key);
 	}
 

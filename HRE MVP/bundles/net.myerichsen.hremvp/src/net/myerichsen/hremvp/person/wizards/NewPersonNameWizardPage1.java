@@ -26,9 +26,10 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 7. feb. 2019
+ * @version 8. feb. 2019
  *
  */
+// FIXME Add primary check button and name type
 public class NewPersonNameWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
@@ -61,9 +62,9 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				final int hdatePid = dialog.getHdatePid();
+				fromDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get(hdatePid);
+				hdp.get(fromDatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
@@ -102,9 +103,9 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				final int hdatePid = dialog.getHdatePid();
+				toDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get(hdatePid);
+				hdp.get(toDatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
@@ -117,6 +118,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 */
 	private void clearFromDate() {
 		textFromDate.setText("");
+		fromDatePid = 0;
 	}
 
 	/**
@@ -124,6 +126,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 */
 	protected void clearNameStyles() {
 		textPersonNameStyle.setText("");
+		personNameStylePid = 0;
 		setPageComplete(false);
 	}
 
@@ -132,6 +135,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 */
 	private void clearToDate() {
 		textToDate.setText("");
+		toDatePid = 0;
 	}
 
 	/*
@@ -156,17 +160,6 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		textPersonNameStyle.setEditable(false);
 		textPersonNameStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textPersonNameStyle.setToolTipText("Person Name Style is mandatory to continue");
-
-		// TODO Bad logic handling next pages
-//		try {
-//			int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
-//			PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
-//			pnsp.get(defaultStyle);
-//			textPersonNameStyle.setText(pnsp.getLabel());
-//		} catch (SQLException | MvpException e1) {
-//			LOGGER.severe(e1.getMessage());
-//			e1.printStackTrace();
-//		}
 
 		final Composite compositeNameStyle = new Composite(container, SWT.NONE);
 		compositeNameStyle.setLayout(new RowLayout(SWT.HORIZONTAL));

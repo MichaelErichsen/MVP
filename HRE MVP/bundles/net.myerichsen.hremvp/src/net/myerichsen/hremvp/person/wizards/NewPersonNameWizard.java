@@ -28,20 +28,22 @@ public class NewPersonNameWizard extends Wizard {
 	private int personPid;
 	private String personName;
 	private int personNameStylePid;
-	private int personNamePid;
+//	private int personNamePid;
 	private int languagePid;
 
 	/**
 	 * Constructor
-	 *
-	 * @param context The Eclipse Context
+	 * 
+	 * @param personPid
+	 * @param context   The Eclipse Context
 	 *
 	 */
-	public NewPersonNameWizard(IEclipseContext context) {
+	public NewPersonNameWizard(int personPid, IEclipseContext context) {
 		setWindowTitle("New Person Name");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
+		this.personPid = personPid;
 	}
 
 	/**
@@ -99,6 +101,13 @@ public class NewPersonNameWizard extends Wizard {
 	}
 
 	/**
+	 * @return the personPid
+	 */
+	public int getPersonPid() {
+		return personPid;
+	}
+
+	/**
 	 * /* (non-Javadoc)
 	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
@@ -109,7 +118,6 @@ public class NewPersonNameWizard extends Wizard {
 
 		try {
 			// Page 1
-			// Name validity dates
 			// Create a new name
 			final PersonNameProvider personNameProvider = new PersonNameProvider();
 			personNameProvider.setPersonPid(personPid);
@@ -183,5 +191,4 @@ public class NewPersonNameWizard extends Wizard {
 	public void setPersonPid(int personPid) {
 		this.personPid = personPid;
 	}
-
 }

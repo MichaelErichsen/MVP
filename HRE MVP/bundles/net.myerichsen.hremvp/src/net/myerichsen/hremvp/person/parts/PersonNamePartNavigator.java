@@ -394,6 +394,11 @@ public class PersonNamePartNavigator {
 	@Optional
 	private void subscribeNamePidUpdateTopic(@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int key) {
 		LOGGER.fine("Received name id " + key);
+
+		if (key == 0) {
+			return;
+		}
+
 		try {
 			provider.get(key);
 			textId.setText(Integer.toString(provider.getNamePid()));
