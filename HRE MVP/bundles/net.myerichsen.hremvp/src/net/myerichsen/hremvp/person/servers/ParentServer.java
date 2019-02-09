@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.dbmodels.Parents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 9. feb. 2019
  *
  */
 public class ParentServer implements IHREServer {
@@ -154,8 +154,12 @@ public class ParentServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return 0;
+		parentRelation.setChild(Child);
+		parentRelation.setParent(Parent);
+		parentRelation.setParentRole(ParentRole);
+		parentRelation.setPrimaryParent(PrimaryParent);
+		parentRelation.setLanguagePid(LanguagePid);
+		return parentRelation.insert();
 	}
 
 	/*

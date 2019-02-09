@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. feb. 2019
+ * @version 9. feb. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -203,6 +203,7 @@ public class NewPersonWizard extends Wizard {
 			// Page 4
 			// Primary father, mother, child and partner
 			ParentProvider parentProvider;
+			int parentPid;
 
 			// Create father
 			if (page4.getFatherPid() != 0) {
@@ -212,8 +213,8 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRole(page4.getFatherRole());
 				parentProvider.setPrimaryParent(true);
 				parentProvider.setLanguagePid(languagePid);
-				parentProvider.insert();
-				LOGGER.info("Inserted father pid " + page4.getFatherPid());
+				parentPid = parentProvider.insert();
+				LOGGER.info("Inserted father pid " + parentPid);
 			}
 
 			// Create mother
@@ -224,8 +225,8 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRole(page4.getMotherRole());
 				parentProvider.setPrimaryParent(true);
 				parentProvider.setLanguagePid(languagePid);
-				parentProvider.insert();
-				LOGGER.info("Inserted mother pid " + page4.getMotherPid());
+				parentPid = parentProvider.insert();
+				LOGGER.info("Inserted mother pid " + parentPid);
 			}
 
 			// Create child
@@ -236,8 +237,8 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRole(page4.getChildRole());
 				parentProvider.setPrimaryParent(true);
 				parentProvider.setLanguagePid(languagePid);
-				parentProvider.insert();
-				LOGGER.info("Inserted child pid " + page4.getChildPid());
+				parentPid = parentProvider.insert();
+				LOGGER.info("Inserted child pid " + parentPid);
 			}
 
 			// Create partner
@@ -283,6 +284,7 @@ public class NewPersonWizard extends Wizard {
 					personProvider.getPrimaryName() + " inserted in the database as no. " + personPid);
 			eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 			eventBroker.post(net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC, namePid);
+// FIXME Does not refresh person navigator
 			return true;
 		} catch (
 

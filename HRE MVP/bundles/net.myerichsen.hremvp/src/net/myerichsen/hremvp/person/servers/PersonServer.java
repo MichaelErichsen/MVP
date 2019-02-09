@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. feb. 2019
+ * @version 9. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -48,7 +48,6 @@ public class PersonServer implements IHREServer {
 	private final List<List<String>> childrenList;
 	private List<List<String>> personEventList;
 	private List<List<String>> eventList;
-	private List<List<String>> siblingList;
 
 	private final Persons person;
 
@@ -65,7 +64,7 @@ public class PersonServer implements IHREServer {
 		partnerList = new ArrayList<>();
 		childrenList = new ArrayList<>();
 		eventList = new ArrayList<>();
-		siblingList = new ArrayList<>();
+//		siblingList = new ArrayList<>();
 	}
 
 	/**
@@ -226,27 +225,29 @@ public class PersonServer implements IHREServer {
 			parentList.add(ls);
 		}
 
-		siblingList.clear();
-
-		final List<Parents> fkParent = new Parents().getFKChild(key);
-
-		for (final Parents parents : fkParent) {
-			final List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
-			final TreeSet<Integer> childList = new TreeSet<>();
-
-			for (final Parents parents4 : fkChild) {
-				childList.add(parents4.getChild());
-				childList.remove(key);
-			}
-
-			for (final int child : childList) {
-				ls = new ArrayList<>();
-				ls.add(Integer.toString(child));
-				ls.add(pns.getPrimaryNameString(child));
-
-				siblingList.add(ls);
-			}
-		}
+//		siblingList.clear();
+//
+//		final List<Parents> fkParent = new Parents().getFKChild(key);
+//
+//		for (final Parents parents : fkParent) {
+//			LOGGER.info("Parent id: " + parents.getParentPid());
+//			final List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
+//			final TreeSet<Integer> childList = new TreeSet<>();
+//
+//			for (final Parents parents4 : fkChild) {
+//				LOGGER.info("Child id: " + parents4.getChild());
+//				childList.add(parents4.getChild());
+//				childList.remove(key);
+//			}
+//
+//			for (final int child : childList) {
+//				ls = new ArrayList<>();
+//				ls.add(Integer.toString(child));
+//				ls.add(pns.getPrimaryNameString(child));
+//
+//				siblingList.add(ls);
+//			}
+//		}
 
 		final List<Partners> lpa = new Partners().getFKPartner1(key);
 		lpa.addAll(new Partners().getFKPartner2(key));
@@ -658,8 +659,38 @@ public class PersonServer implements IHREServer {
 
 	/**
 	 * @return the siblingList
+	 * @throws SQLException
 	 */
-	public List<List<String>> getSiblingList() {
+	public List<List<String>> getSiblingList(int personPid) throws SQLException {
+		List<List<String>> siblingList = new ArrayList<>();
+		List<String> ls;
+
+		if (personPid == 0) {
+			return siblingList;
+		}
+
+		PersonNameServer pns = new PersonNameServer();
+		final List<Parents> fkParent = new Parents().getFKChild(personPid);
+
+		for (final Parents parents : fkParent) {
+			LOGGER.info("Parent id: " + parents.getParentPid());
+			final List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
+			final TreeSet<Integer> childList = new TreeSet<>();
+
+			for (final Parents parents4 : fkChild) {
+				LOGGER.info("Child id: " + parents4.getChild());
+				childList.add(parents4.getChild());
+//				childList.remove(key);
+			}
+
+			for (final int child : childList) {
+				ls = new ArrayList<>();
+				ls.add(Integer.toString(child));
+				ls.add(pns.getPrimaryNameString(child));
+
+				siblingList.add(ls);
+			}
+		}
 		return siblingList;
 	}
 
@@ -763,13 +794,6 @@ public class PersonServer implements IHREServer {
 	 */
 	public void setSexesList(List<List<String>> sexesList) {
 		this.sexesList = sexesList;
-	}
-
-	/**
-	 * @param siblingList the siblingList to set
-	 */
-	public void setSiblingList(List<List<String>> siblingList) {
-		this.siblingList = siblingList;
 	}
 
 	/**

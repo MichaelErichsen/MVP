@@ -45,6 +45,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 8. jan. 2019
  */
+// TODO Change to Jface
 @SuppressWarnings("restriction")
 public class PersonPartnersView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

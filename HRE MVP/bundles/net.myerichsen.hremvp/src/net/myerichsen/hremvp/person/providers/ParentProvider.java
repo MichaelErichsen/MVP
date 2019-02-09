@@ -103,8 +103,12 @@ public class ParentProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return 0;
+		server.setChild(Child);
+		server.setParent(Parent);
+		server.setParentRole(ParentRole);
+		server.setPrimaryParent(PrimaryParent);
+		server.setLanguagePid(LanguagePid);
+		return server.insert();
 	}
 
 	/**

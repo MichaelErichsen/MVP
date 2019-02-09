@@ -46,6 +46,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * @version 8. jan. 2019
  */
 @SuppressWarnings("restriction")
+// TODO Change to jface
 public class PersonChildrenView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

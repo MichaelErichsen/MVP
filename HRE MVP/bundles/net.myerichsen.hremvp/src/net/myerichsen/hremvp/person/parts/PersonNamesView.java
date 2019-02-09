@@ -44,7 +44,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  *
  */
 @SuppressWarnings("restriction")
-// FIXME Add name type with a language specific label
+// TODO Add name type with a language specific label
 public class PersonNamesView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

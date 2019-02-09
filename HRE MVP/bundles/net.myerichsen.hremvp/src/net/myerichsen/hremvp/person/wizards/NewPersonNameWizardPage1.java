@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 8. feb. 2019
  *
  */
-// FIXME Add primary check button and name type
+// TODO Add primary check button and name type
 public class NewPersonNameWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;

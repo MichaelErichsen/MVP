@@ -15,22 +15,16 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -40,21 +34,15 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
- * Display all data about a single person
+ * Display all siblings of a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. feb. 2019
+ * @version 9. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonSiblingsView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
@@ -62,8 +50,7 @@ public class PersonSiblingsView {
 	@Inject
 	private EHandlerService handlerService;
 
-	private Table tableSiblings;
-	private TableViewer tableViewerSiblings;
+	private TableViewer tableViewer;
 
 	private final PersonProvider provider;
 
@@ -79,123 +66,70 @@ public class PersonSiblingsView {
 	}
 
 	/**
-	 *
-	 */
-	private void clear() {
-		tableSiblings.removeAll();
-	}
-
-	/**
-	 *
-	 */
-	private void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
-		partService.hidePart(part, true);
-	}
-
-	/**
 	 * Create contents of the view part
 	 *
 	 * @param Sibling The Sibling composite
 	 */
 	@PostConstruct
-	public void createControls(Composite Sibling) {
-		Sibling.setLayout(new GridLayout(5, false));
+	public void createControls(Composite parent, EMenuService menuService) {
+		parent.setLayout(new GridLayout(2, false));
 
-		tableViewerSiblings = new TableViewer(Sibling, SWT.BORDER | SWT.FULL_SELECTION);
-		tableSiblings = tableViewerSiblings.getTable();
-		tableSiblings.addMouseListener(new MouseAdapter() {
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = tableViewer.getTable();
+		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openSiblingView();
 			}
 		});
-		tableSiblings.setLinesVisible(true);
-		tableSiblings.setHeaderVisible(true);
-		tableSiblings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnSiblingsId = new TableViewerColumn(tableViewerSiblings, SWT.NONE);
+		final TableViewerColumn tableViewerColumnSiblingsId = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnSiblingsId = tableViewerColumnSiblingsId.getColumn();
 		tblclmnSiblingsId.setWidth(100);
 		tblclmnSiblingsId.setText("ID");
+		tableViewerColumnSiblingsId.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumnSiblingsLabel = new TableViewerColumn(tableViewerSiblings, SWT.NONE);
-		final TableColumn tblclmnSiblings = tableViewerColumnSiblingsLabel.getColumn();
-		tblclmnSiblings.setWidth(250);
-		tblclmnSiblings.setText("Siblings");
-
-		final Composite composite = new Composite(Sibling, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		final Button buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(0);
 			}
 		});
-		buttonSelect.setText("Select");
 
-		final Button buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
+		final TableViewerColumn tableViewerColumnSiblingsLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnSibling = tableViewerColumnSiblingsLabel.getColumn();
+		tblclmnSibling.setWidth(250);
+		tblclmnSibling.setText("Siblings");
+		tableViewerColumnSiblingsLabel.setLabelProvider(new ColumnLabelProvider() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(1);
 			}
 		});
-		buttonInsert.setText("Insert");
 
-		final Button buttonUpdate = new Button(composite, SWT.NONE);
-		buttonUpdate.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				update();
-			}
-		});
-		buttonUpdate.setText("Update");
-
-		final Button buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		final Button buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		final Button buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-
-		get(1);
-	}
-
-	/**
-	 *
-	 */
-	protected void delete() {
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			clear();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
+			tableViewer.setInput(provider.getSiblingList(0));
+		} catch (SQLException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 	}
 
@@ -209,53 +143,6 @@ public class PersonSiblingsView {
 	/**
 	 *
 	 */
-	private void get() {
-	}
-
-	/**
-	 * @param key
-	 */
-	private void get(int key) {
-		try {
-			provider.get(key);
-			tableSiblings.removeAll();
-
-			List<String> ls;
-
-			final List<List<String>> SiblingsList = provider.getSiblingList();
-
-			for (int i = 0; i < SiblingsList.size(); i++) {
-				final TableItem item = new TableItem(tableSiblings, SWT.NONE);
-				ls = SiblingsList.get(i);
-				item.setText(0, ls.get(0));
-				item.setText(1, ls.get(1));
-				item.setText(2, ls.get(2));
-				item.setText(3, ls.get(3));
-			}
-
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-//			e.printStackTrace();
-		}
-	}
-
-	/**
-	 *
-	 */
-	protected void insert() {
-		try {
-			provider.insert();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 */
 	protected void openSiblingView() {
 		int personPid = 0;
 
@@ -263,7 +150,7 @@ public class PersonSiblingsView {
 				.createCommand("net.myerichsen.hremvp.command.openpersonview", null);
 		handlerService.executeHandler(command);
 
-		final TableItem[] selectedRows = tableSiblings.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -282,26 +169,19 @@ public class PersonSiblingsView {
 	}
 
 	/**
-	 * @param key
-	 * @throws SQLException
+	 * @param personPid
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int key) throws SQLException {
-		get(key);
-	}
-
-	/**
-	 *
-	 */
-	protected void update() {
+	private void subscribePersonListUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+		LOGGER.fine("Received person id " + personPid);
 		try {
-			provider.update();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
+			tableViewer.setInput(provider.getSiblingList(personPid));
+		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
 		}
+		tableViewer.refresh();
 	}
 
 }

@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Tree;
  *
  */
 public class DescendantNavigator {
-
+// TODO Populate
 	public DescendantNavigator() {
 	}
 

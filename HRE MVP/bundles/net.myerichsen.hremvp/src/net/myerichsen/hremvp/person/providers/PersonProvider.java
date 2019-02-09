@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. feb. 2019
+ * @version 9. feb. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -27,7 +27,6 @@ public class PersonProvider implements IHREProvider {
 	private List<List<String>> childrenList;
 	private List<List<String>> personEventList;
 	private List<List<String>> eventList;
-	private List<List<String>> siblingList;
 	private final PersonServer server;
 
 	/**
@@ -71,7 +70,6 @@ public class PersonProvider implements IHREProvider {
 		setPartnerList(server.getPartnerList());
 		setChildrenList(server.getChildrenList());
 		setSexesList(server.getSexesList());
-		setSiblingList(server.getSiblingList());
 	}
 
 //	public void getremote(int key) throws ClientProtocolException, IOException, MvpException {
@@ -222,9 +220,10 @@ public class PersonProvider implements IHREProvider {
 
 	/**
 	 * @return the siblingList
+	 * @throws SQLException
 	 */
-	public List<List<String>> getSiblingList() {
-		return siblingList;
+	public List<List<String>> getSiblingList(int personPid) throws SQLException {
+		return server.getSiblingList(personPid);
 	}
 
 	/*
@@ -301,13 +300,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public void setSexesList(List<List<String>> sexesList) {
 		this.sexesList = sexesList;
-	}
-
-	/**
-	 * @param siblingList the siblingList to set
-	 */
-	public void setSiblingList(List<List<String>> siblingList) {
-		this.siblingList = siblingList;
 	}
 
 	/**

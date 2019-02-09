@@ -46,6 +46,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  * @version 3. feb. 2019
  */
 @SuppressWarnings("restriction")
+// TODO Change to Jface
 public class PersonEventsView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

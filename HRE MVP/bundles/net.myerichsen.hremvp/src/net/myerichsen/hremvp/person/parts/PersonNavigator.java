@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
- * Display a list of all persons with their primary names
+ * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 7. feb. 2019
