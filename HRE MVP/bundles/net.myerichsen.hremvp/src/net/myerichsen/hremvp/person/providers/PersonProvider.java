@@ -316,4 +316,15 @@ public class PersonProvider implements IHREProvider {
 		server.setPersonPid(personPid);
 		server.update();
 	}
+
+	/**
+	 * @param key
+	 * @param generations
+	 * @return
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
+		return server.getDescendantList(key, generations);
+	}
 }

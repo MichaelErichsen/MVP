@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +17,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.DescendantTreeContentProvider;
+import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
@@ -25,12 +28,19 @@ import net.myerichsen.hremvp.person.providers.DescendantTreeContentProvider;
  */
 public class DescendantNavigator {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	PersonProvider provider;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public DescendantNavigator() {
+		try {
+			provider = new PersonProvider();
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -46,35 +56,24 @@ public class DescendantNavigator {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		composite.setLayout(new GridLayout(2, false));
 
-//		Label lblNewLabel = new Label(composite, SWT.NONE);
-//		lblNewLabel.setText("Generations");
-//
-//		Spinner spinnerGenerations = new Spinner(composite, SWT.BORDER);
-//		spinnerGenerations.setData("DESCENDANT_GENERATIONS", 5);
-//		LOGGER.info("Generations: " + spinnerGenerations.getText());
-
 		TreeViewer treeViewer = new TreeViewer(composite, SWT.BORDER);
 		treeViewer.setContentProvider(new DescendantTreeContentProvider());
 		Tree tree = treeViewer.getTree();
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-//		tree.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				TreeItem item = (TreeItem) e.item;
-//				if (item.getItemCount() > 0) {
-//					item.setExpanded(!item.getExpanded());
-//					// update the viewer
-//					treeViewer.refresh();
-//				}
-//			}
-//		});
 
 		TreeViewerColumn treeViewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
 		TreeColumn trclmnDescendants = treeViewerColumn.getColumn();
 		trclmnDescendants.setWidth(100);
 		trclmnDescendants.setText("Descendants");
 
-		treeViewer.setInput(new String[] { "Simon Scholz", "Lars Vogel", "Dirk Fauth", "Wim Jongman", "Tom Schindl" });
+		int key = 1;
+		int generations = 1;
+		try {
+			treeViewer.setInput(provider.getDescendantList(key, generations));
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 
 		GridLayoutFactory.fillDefaults().generateLayout(parent);
 	}

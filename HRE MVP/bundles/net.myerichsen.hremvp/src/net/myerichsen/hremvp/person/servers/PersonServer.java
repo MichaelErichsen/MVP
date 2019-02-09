@@ -821,4 +821,36 @@ public class PersonServer implements IHREServer {
 
 	}
 
+	/**
+	 * @param key
+	 * @param generations
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
+		List<List<String>> lls = new ArrayList<>();
+		int parentPid;
+
+		Persons person = new Persons();
+		person.get(key);
+
+		Parents parentRelation = new Parents();
+
+		for (Parents parent : parentRelation.getFKParent(key)) {
+			if (generations-- > 0) {
+				return getDescendantList(generations, parent.getChild());
+			} else {
+				List<String> ls = new ArrayList<String>();
+				parentPid = parent.getParent();
+				ls.add(Integer.toString(parentPid));
+				ls.add(Integer.toString(parent.getChild()));
+				ls.add(new PersonNameServer().getPrimaryNameString(parentPid));
+				lls.add(ls);
+				return lls;
+			}
+		}
+
+		return lls;
+	}
 }
