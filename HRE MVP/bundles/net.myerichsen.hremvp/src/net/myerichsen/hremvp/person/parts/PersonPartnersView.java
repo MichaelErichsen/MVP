@@ -14,6 +14,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -28,6 +29,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all partners for a single person
@@ -81,25 +83,37 @@ public class PersonPartnersView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
 
-		final TableViewerColumn tableViewerColumnPartnersId = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnPartnersId = tableViewerColumnPartnersId.getColumn();
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnPartnersId = tableViewerColumnId.getColumn();
 		tblclmnPartnersId.setWidth(100);
 		tblclmnPartnersId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnPartnersLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnPartners = tableViewerColumnPartnersLabel.getColumn();
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnPartners = tableViewerColumnLabel.getColumn();
 		tblclmnPartners.setWidth(250);
 		tblclmnPartners.setText("Partners");
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnPartnerRole = tableViewerColumnRole.getColumn();
 		tblclmnPartnerRole.setWidth(100);
 		tblclmnPartnerRole.setText("Role");
+		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(2));
 
-		final TableViewerColumn tableViewerColumnPartnersPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnPartnersPrimary = tableViewerColumnPartnersPrimary.getColumn();
+		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnPartnersPrimary = tableViewerColumnPrimary.getColumn();
 		tblclmnPartnersPrimary.setWidth(73);
 		tblclmnPartnersPrimary.setText("Primary");
+		tableViewerColumnPrimary.setLabelProvider(new HREColumnLabelProvider(3));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getPartnerList(0));
+		} catch (SQLException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 
 	}
 
@@ -139,12 +153,18 @@ public class PersonPartnersView {
 	}
 
 	/**
-	 * @param key
-	 * @throws SQLException
+	 * @param personPid
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int key) throws SQLException {
+	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+		LOGGER.fine("Received person id " + personPid);
+		try {
+			tableViewer.setInput(provider.getPartnerList(personPid));
+			tableViewer.refresh();
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
-
 }

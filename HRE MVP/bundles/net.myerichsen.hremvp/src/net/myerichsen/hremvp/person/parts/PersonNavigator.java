@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -14,7 +13,6 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -35,12 +33,13 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 public class PersonNavigator {
@@ -105,39 +104,13 @@ public class PersonNavigator {
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
-		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(0);
-			}
-		});
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnPrimaryName = tableViewerColumnName.getColumn();
 		tblclmnPrimaryName.setWidth(300);
 		tblclmnPrimaryName.setText("Primary Name");
-		tableViewerColumnName.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
 		lblNameFilter.setText("Name Filter");

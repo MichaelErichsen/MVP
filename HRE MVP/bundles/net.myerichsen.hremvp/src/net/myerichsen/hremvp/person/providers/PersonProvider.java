@@ -22,8 +22,6 @@ public class PersonProvider implements IHREProvider {
 	private int birthDatePid;
 	private int deathDatePid;
 	private List<List<String>> sexesList;
-	private List<List<String>> parentList;
-	private List<List<String>> partnerList;
 	private List<List<String>> childrenList;
 //	private List<List<String>> eventList;
 	private final PersonServer server;
@@ -38,9 +36,6 @@ public class PersonProvider implements IHREProvider {
 	public PersonProvider() throws SQLException {
 		server = new PersonServer();
 		sexesList = new ArrayList<>();
-		parentList = new ArrayList<>();
-		partnerList = new ArrayList<>();
-//		eventList = new ArrayList<>();
 	}
 
 	/*
@@ -64,9 +59,6 @@ public class PersonProvider implements IHREProvider {
 		setBirthDatePid(server.getBirthDatePid());
 		setDeathDatePid(server.getDeathDatePid());
 		setPersonPid(key);
-//		setEventList(server.getEventList());
-//		setParentList(server.getParentList());
-		setPartnerList(server.getPartnerList());
 		setChildrenList(server.getChildrenList());
 		setSexesList(server.getSexesList());
 	}
@@ -149,17 +141,12 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the parentList
-	 */
-	public List<List<String>> getParentList() {
-		return parentList;
-	}
-
-	/**
+	 * @param key
 	 * @return the partnerList
+	 * @throws SQLException
 	 */
-	public List<List<String>> getPartnerList() {
-		return partnerList;
+	public List<List<String>> getPartnerList(int key) throws SQLException {
+		return server.getPartnerList(key);
 	}
 
 	/**
@@ -253,20 +240,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public void setDeathDatePid(int i) {
 		deathDatePid = i;
-	}
-
-	/**
-	 * @param parentList the parentList to set
-	 */
-	public void setParentList(List<List<String>> parentList) {
-		this.parentList = parentList;
-	}
-
-	/**
-	 * @param partnerList the partnerList to set
-	 */
-	public void setPartnerList(List<List<String>> partnerList) {
-		this.partnerList = partnerList;
 	}
 
 	/**

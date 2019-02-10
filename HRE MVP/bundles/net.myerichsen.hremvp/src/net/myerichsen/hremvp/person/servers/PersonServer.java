@@ -43,7 +43,6 @@ public class PersonServer implements IHREServer {
 	private List<List<String>> nameList;
 	private List<List<String>> sexesList;
 	private List<List<String>> personList;
-	private List<List<String>> partnerList;
 	private final List<List<String>> childrenList;
 
 	private final Persons person;
@@ -57,7 +56,6 @@ public class PersonServer implements IHREServer {
 		nameList = new ArrayList<>();
 		sexesList = new ArrayList<>();
 		personList = new ArrayList<>();
-		partnerList = new ArrayList<>();
 		childrenList = new ArrayList<>();
 	}
 
@@ -207,27 +205,6 @@ public class PersonServer implements IHREServer {
 			sexesList.add(ls);
 		}
 
-		final List<Partners> lpa = new Partners().getFKPartner1(key);
-		lpa.addAll(new Partners().getFKPartner2(key));
-		partnerList.clear();
-
-		for (final Partners partner : lpa) {
-			ls = new ArrayList<>();
-
-			if (partner.getPartner1() == key) {
-				ls.add(Integer.toString(partner.getPartner2()));
-				ls.add(pns.getPrimaryNameString(partner.getPartner2()));
-			} else {
-				ls.add(Integer.toString(partner.getPartner1()));
-				ls.add(pns.getPrimaryNameString(partner.getPartner1()));
-			}
-
-			ls.add(partner.getRole());
-			ls.add(Boolean.toString(partner.isPrimaryPartner()));
-
-			partnerList.add(ls);
-		}
-
 		childrenList.clear();
 
 		for (final Parents parent : new Parents().getFKParent(key)) {
@@ -344,9 +321,35 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param key
 	 * @return the partnerList
+	 * @throws SQLException
 	 */
-	public List<List<String>> getPartnerList() {
+	public List<List<String>> getPartnerList(int key) throws SQLException {
+		List<String> ls;
+
+		PersonNameServer pns = new PersonNameServer();
+		List<List<String>> partnerList = new ArrayList<>();
+		List<Partners> lpa = new Partners().getFKPartner1(key);
+		lpa.addAll(new Partners().getFKPartner2(key));
+
+		for (final Partners partner : lpa) {
+			ls = new ArrayList<>();
+
+			if (partner.getPartner1() == key) {
+				ls.add(Integer.toString(partner.getPartner2()));
+				ls.add(pns.getPrimaryNameString(partner.getPartner2()));
+			} else {
+				ls.add(Integer.toString(partner.getPartner1()));
+				ls.add(pns.getPrimaryNameString(partner.getPartner1()));
+			}
+
+			ls.add(partner.getRole());
+			ls.add(Boolean.toString(partner.isPrimaryPartner()));
+
+			partnerList.add(ls);
+		}
+
 		return partnerList;
 	}
 
@@ -513,6 +516,7 @@ public class PersonServer implements IHREServer {
 		final List<List<String>> parentList = new ArrayList<>();
 		List<String> ls;
 		int parentPid;
+		PersonNameServer pns = new PersonNameServer();
 
 		if (key == 0) {
 			return parentList;
@@ -522,7 +526,7 @@ public class PersonServer implements IHREServer {
 			ls = new ArrayList<>();
 			parentPid = parent.getParent();
 			ls.add(Integer.toString(parentPid));
-			ls.add(new PersonNameServer().getPrimaryNameString(parentPid));
+			ls.add(pns.getPrimaryNameString(parentPid));
 			ls.add(parent.getParentRole());
 			ls.add(Boolean.toString(parent.isPrimaryParent()));
 
@@ -771,13 +775,6 @@ public class PersonServer implements IHREServer {
 	 */
 	public void setNameList(List<List<String>> nameList) {
 		this.nameList = nameList;
-	}
-
-	/**
-	 * @param partnerList the partnerList to set
-	 */
-	public void setPartnerList(List<List<String>> partnerList) {
-		this.partnerList = partnerList;
 	}
 
 	/**

@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.project.parts;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +15,6 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -38,12 +36,13 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.project.providers.ProjectProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Navigator part to display all tables in an HRE project
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 public class ProjectNavigator {
@@ -112,58 +111,19 @@ public class ProjectNavigator {
 		final TableColumn tblclmnProjectId = tableViewerColumnProjectId.getColumn();
 		tblclmnProjectId.setWidth(100);
 		tblclmnProjectId.setText("Project Id");
-		tableViewerColumnProjectId.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(0);
-			}
-		});
+		tableViewerColumnProjectId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnProjectName = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnProjectName = tableViewerColumnProjectName.getColumn();
 		tblclmnProjectName.setWidth(100);
 		tblclmnProjectName.setText("Project Name");
-		tableViewerColumnProjectName.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnProjectName.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnLocation = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnLocation = tableViewerColumnLocation.getColumn();
 		tblclmnLocation.setWidth(100);
 		tblclmnLocation.setText("Location");
-		tableViewerColumnLocation.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(2);
-			}
-		});
+		tableViewerColumnLocation.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
 		lblNameFilter.setText("Name Filter");

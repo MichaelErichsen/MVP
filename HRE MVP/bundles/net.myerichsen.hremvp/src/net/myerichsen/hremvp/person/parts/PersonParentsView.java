@@ -129,7 +129,7 @@ public class PersonParentsView {
 	 *
 	 */
 	protected void openParentView() {
-		// FIXME Doubleclick does not work any more. Probably the recursive event post?
+		// FIXME Doubleclick does not work any more
 		int personPid = 0;
 
 		final ParameterizedCommand command = commandService
