@@ -41,7 +41,6 @@ public class PersonServer implements IHREServer {
 	private int birthDatePid;
 	private int deathDatePid;
 	private List<List<String>> nameList;
-	private List<List<String>> sexesList;
 	private List<List<String>> personList;
 	private final List<List<String>> childrenList;
 
@@ -54,7 +53,6 @@ public class PersonServer implements IHREServer {
 	public PersonServer() {
 		person = new Persons();
 		nameList = new ArrayList<>();
-		sexesList = new ArrayList<>();
 		personList = new ArrayList<>();
 		childrenList = new ArrayList<>();
 	}
@@ -189,20 +187,6 @@ public class PersonServer implements IHREServer {
 			ls.add(Boolean.toString(name.isPrimaryName()));
 
 			nameList.add(ls);
-		}
-
-		SexTypes st;
-		sexesList.clear();
-
-		for (final Sexes sex : new Sexes().getFKPersonPid(key)) {
-			ls = new ArrayList<>();
-			st = new SexTypes();
-			st.get(sex.getSexTypePid());
-			ls.add(Integer.toString(sex.getSexTypePid()));
-			ls.add(st.getLabel());
-			ls.add(Boolean.toString(sex.isPrimarySex()));
-
-			sexesList.add(ls);
 		}
 
 		childrenList.clear();
@@ -681,9 +665,31 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param key
 	 * @return the sexesList
+	 * @throws MvpException
+	 * @throws SQLException
 	 */
-	public List<List<String>> getSexesList() {
+	public List<List<String>> getSexesList(int key) throws SQLException, MvpException {
+		SexTypes st = new SexTypes();
+		List<String> ls;
+
+		List<List<String>> sexesList = new ArrayList<List<String>>();
+
+		if (key == 0) {
+			return sexesList;
+		}
+
+		for (final Sexes sex : new Sexes().getFKPersonPid(key)) {
+			ls = new ArrayList<>();
+			st.get(sex.getSexTypePid());
+			ls.add(Integer.toString(sex.getSexTypePid()));
+			ls.add(st.getLabel());
+			ls.add(Boolean.toString(sex.isPrimarySex()));
+
+			sexesList.add(ls);
+		}
+
 		return sexesList;
 	}
 
@@ -789,13 +795,6 @@ public class PersonServer implements IHREServer {
 	 */
 	public void setPersonPid(int personPid) {
 		this.personPid = personPid;
-	}
-
-	/**
-	 * @param sexesList the sexesList to set
-	 */
-	public void setSexesList(List<List<String>> sexesList) {
-		this.sexesList = sexesList;
 	}
 
 	/**

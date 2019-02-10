@@ -135,7 +135,7 @@ public class PersonEventsView {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textFilter.getText());
-				LOGGER.info("Filter string: " + textFilter.getText());
+				LOGGER.fine("Filter string: " + textFilter.getText());
 				tableViewer.refresh();
 			}
 		});

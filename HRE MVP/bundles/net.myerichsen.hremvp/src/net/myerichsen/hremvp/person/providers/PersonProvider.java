@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.person.providers;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -21,7 +20,6 @@ public class PersonProvider implements IHREProvider {
 	private int personPid;
 	private int birthDatePid;
 	private int deathDatePid;
-	private List<List<String>> sexesList;
 	private List<List<String>> childrenList;
 //	private List<List<String>> eventList;
 	private final PersonServer server;
@@ -35,7 +33,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public PersonProvider() throws SQLException {
 		server = new PersonServer();
-		sexesList = new ArrayList<>();
 	}
 
 	/*
@@ -60,7 +57,6 @@ public class PersonProvider implements IHREProvider {
 		setDeathDatePid(server.getDeathDatePid());
 		setPersonPid(key);
 		setChildrenList(server.getChildrenList());
-		setSexesList(server.getSexesList());
 	}
 
 //	public void getremote(int key) throws ClientProtocolException, IOException, MvpException {
@@ -194,10 +190,13 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param key
 	 * @return the sexesList
+	 * @throws MvpException
+	 * @throws SQLException
 	 */
-	public List<List<String>> getSexesList() {
-		return sexesList;
+	public List<List<String>> getSexesList(int key) throws SQLException, MvpException {
+		return server.getSexesList(key);
 	}
 
 	/**
@@ -247,13 +246,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public void setPersonPid(int personPid) {
 		this.personPid = personPid;
-	}
-
-	/**
-	 * @param sexesList the sexesList to set
-	 */
-	public void setSexesList(List<List<String>> sexesList) {
-		this.sexesList = sexesList;
 	}
 
 	/**

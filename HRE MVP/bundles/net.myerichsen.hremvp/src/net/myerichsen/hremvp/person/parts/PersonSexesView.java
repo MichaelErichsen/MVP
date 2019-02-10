@@ -14,6 +14,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -27,7 +28,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all sexes for a single person
@@ -81,21 +84,31 @@ public class PersonSexesView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
 
-		final TableViewerColumn tableViewerColumnSexId = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnSexId = tableViewerColumnSexId.getColumn();
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnSexId = tableViewerColumnId.getColumn();
 		tblclmnSexId.setWidth(100);
 		tblclmnSexId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnSexLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnSex = tableViewerColumnSexLabel.getColumn();
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnSex = tableViewerColumnLabel.getColumn();
 		tblclmnSex.setWidth(250);
 		tblclmnSex.setText("Sex");
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnSexPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnSexPrimary = tableViewerColumnSexPrimary.getColumn();
+		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnSexPrimary = tableViewerColumnPrimary.getColumn();
 		tblclmnSexPrimary.setWidth(83);
 		tblclmnSexPrimary.setText("Primary");
+		tableViewerColumnPrimary.setLabelProvider(new HREColumnLabelProvider(2));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getSexesList(0));
+		} catch (SQLException | MvpException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -134,12 +147,19 @@ public class PersonSexesView {
 	}
 
 	/**
-	 * @param key
-	 * @throws SQLException
+	 * @param personPid
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int key) throws SQLException {
+	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+		LOGGER.fine("Received person id " + personPid);
+		try {
+			tableViewer.setInput(provider.getSexesList(personPid));
+			tableViewer.refresh();
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 }

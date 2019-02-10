@@ -121,7 +121,7 @@ public class PersonNavigator {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
-				LOGGER.info("Filter string: " + textNameFilter.getText());
+				LOGGER.fine("Filter string: " + textNameFilter.getText());
 				tableViewer.refresh();
 			}
 		});

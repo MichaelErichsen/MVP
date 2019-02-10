@@ -188,7 +188,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textDateFilter.getText());
-				LOGGER.info("Filter string: " + textDateFilter.getText());
+				LOGGER.fine("Filter string: " + textDateFilter.getText());
 				tableViewer.refresh();
 			}
 		});
