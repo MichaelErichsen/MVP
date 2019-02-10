@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +15,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -30,8 +28,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all parents for a single person
@@ -41,6 +39,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
  */
 @SuppressWarnings("restriction")
 public class PersonParentsView {
+
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
@@ -90,82 +89,30 @@ public class PersonParentsView {
 		final TableColumn tblclmnParentsId = tableViewerColumnId.getColumn();
 		tblclmnParentsId.setWidth(100);
 		tblclmnParentsId.setText("ID");
-		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(0);
-			}
-		});
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnParents = tableViewerColumnLabel.getColumn();
 		tblclmnParents.setWidth(250);
 		tblclmnParents.setText("Parents");
-		tableViewerColumnLabel.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnParentRole = tableViewerColumnRole.getColumn();
 		tblclmnParentRole.setWidth(100);
 		tblclmnParentRole.setText("Role");
-		tableViewerColumnLabel.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnParentsPrimary = tableViewerColumnPrimary.getColumn();
 		tblclmnParentsPrimary.setWidth(73);
 		tblclmnParentsPrimary.setText("Primary");
-		tableViewerColumnLabel.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnPrimary.setLabelProvider(new HREColumnLabelProvider(3));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getPersonEventList(0));
-		} catch (SQLException | MvpException e1) {
+			tableViewer.setInput(provider.getParentList(0));
+		} catch (SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -182,6 +129,7 @@ public class PersonParentsView {
 	 *
 	 */
 	protected void openParentView() {
+		// FIXME Doubleclick does not work any more. Probably the recursive event post?
 		int personPid = 0;
 
 		final ParameterizedCommand command = commandService
@@ -214,12 +162,11 @@ public class PersonParentsView {
 	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
 		try {
-			tableViewer.setInput(provider.getPersonEventList(personPid));
+			tableViewer.setInput(provider.getParentList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
 	}
-
 }

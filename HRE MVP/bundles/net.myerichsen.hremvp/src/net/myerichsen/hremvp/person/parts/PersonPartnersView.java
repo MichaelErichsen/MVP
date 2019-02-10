@@ -101,7 +101,7 @@ public class PersonPartnersView {
 		tblclmnPartnersPrimary.setWidth(73);
 		tblclmnPartnersPrimary.setText("Primary");
 
-		composite =	}
+	}
 
 	/**
 	 * The object is not needed anymore, but not yet destroyed
@@ -145,7 +145,6 @@ public class PersonPartnersView {
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int key) throws SQLException {
-		get(key);
 	}
 
 }

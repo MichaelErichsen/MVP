@@ -43,9 +43,8 @@ public class PersonServer implements IHREServer {
 	private List<List<String>> nameList;
 	private List<List<String>> sexesList;
 	private List<List<String>> personList;
-	private List<List<String>> parentList;
 	private List<List<String>> partnerList;
-	private List<List<String>> childrenList;
+	private final List<List<String>> childrenList;
 
 	private final Persons person;
 
@@ -58,7 +57,6 @@ public class PersonServer implements IHREServer {
 		nameList = new ArrayList<>();
 		sexesList = new ArrayList<>();
 		personList = new ArrayList<>();
-		parentList = new ArrayList<>();
 		partnerList = new ArrayList<>();
 		childrenList = new ArrayList<>();
 	}
@@ -209,18 +207,6 @@ public class PersonServer implements IHREServer {
 			sexesList.add(ls);
 		}
 
-		parentList.clear();
-
-		for (final Parents parent : new Parents().getFKChild(key)) {
-			ls = new ArrayList<>();
-			ls.add(Integer.toString(parent.getParent()));
-			ls.add(pns.getPrimaryNameString(parent.getParent()));
-			ls.add(parent.getParentRole());
-			ls.add(Boolean.toString(parent.isPrimaryParent()));
-
-			parentList.add(ls);
-		}
-
 		final List<Partners> lpa = new Partners().getFKPartner1(key);
 		lpa.addAll(new Partners().getFKPartner2(key));
 		partnerList.clear();
@@ -318,17 +304,43 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param key
+	 * @param generations
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
+		final List<List<String>> descendantList = new ArrayList<>();
+		int parentPid;
+
+		final Persons person = new Persons();
+		person.get(key);
+
+		final Parents parentRelation = new Parents();
+
+		for (final Parents parent : parentRelation.getFKParent(key)) {
+			if (generations-- > 0) {
+				return getDescendantList(generations, parent.getChild());
+			} else {
+				final List<String> ls = new ArrayList<>();
+				parentPid = parent.getParent();
+				ls.add(Integer.toString(parentPid));
+				ls.add(Integer.toString(parent.getChild()));
+				ls.add(new PersonNameServer().getPrimaryNameString(parentPid));
+				descendantList.add(ls);
+				return descendantList;
+			}
+		}
+
+		return descendantList;
+	}
+
+	/**
 	 * @return the nameList
 	 */
 	public List<List<String>> getNameList() {
 		return nameList;
-	}
-
-	/**
-	 * @return the parentList
-	 */
-	public List<List<String>> getParentList() {
-		return parentList;
 	}
 
 	/**
@@ -348,8 +360,9 @@ public class PersonServer implements IHREServer {
 		Events event;
 		EventNames eventName;
 		List<String> ls;
-		List<List<String>> eventList = new ArrayList<>();
-		Hdates date = new Hdates();
+		final List<List<String>> eventList = new ArrayList<>();
+		final Hdates date = new Hdates();
+		int datePid;
 
 		if (key == 0) {
 			return eventList;
@@ -365,10 +378,20 @@ public class PersonServer implements IHREServer {
 			ls.add(Integer.toString(event.getEventPid()));
 			ls.add(eventName.getLabel());
 			ls.add(personEvent.getRole());
-			date.get(event.getFromDatePid());
-			ls.add(date.getDate().toString());
-			date.get(event.getToDatePid());
-			ls.add(date.getDate().toString());
+			datePid = event.getFromDatePid();
+			if (datePid == 0) {
+				ls.add("");
+			} else {
+				date.get(datePid);
+				ls.add(date.getDate().toString());
+			}
+			datePid = event.getToDatePid();
+			if (datePid == 0) {
+				ls.add("");
+			} else {
+				date.get(datePid);
+				ls.add(date.getDate().toString());
+			}
 
 			eventList.add(ls);
 		}
@@ -479,6 +502,33 @@ public class PersonServer implements IHREServer {
 		}
 
 		return personNameList;
+	}
+
+	/**
+	 * @param i
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getParentList(int key) throws SQLException {
+		final List<List<String>> parentList = new ArrayList<>();
+		List<String> ls;
+		int parentPid;
+
+		if (key == 0) {
+			return parentList;
+		}
+
+		for (final Parents parent : new Parents().getFKChild(key)) {
+			ls = new ArrayList<>();
+			parentPid = parent.getParent();
+			ls.add(Integer.toString(parentPid));
+			ls.add(new PersonNameServer().getPrimaryNameString(parentPid));
+			ls.add(parent.getParentRole());
+			ls.add(Boolean.toString(parent.isPrimaryParent()));
+
+			parentList.add(ls);
+		}
+		return parentList;
 	}
 
 	/**
@@ -638,14 +688,14 @@ public class PersonServer implements IHREServer {
 	 * @throws SQLException
 	 */
 	public List<List<String>> getSiblingList(int personPid) throws SQLException {
-		List<List<String>> siblingList = new ArrayList<>();
+		final List<List<String>> siblingList = new ArrayList<>();
 		List<String> ls;
 
 		if (personPid == 0) {
 			return siblingList;
 		}
 
-		PersonNameServer pns = new PersonNameServer();
+		final PersonNameServer pns = new PersonNameServer();
 		final List<Parents> fkParent = new Parents().getFKChild(personPid);
 
 		for (final Parents parents : fkParent) {
@@ -724,13 +774,6 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * @param parentList the parentList to set
-	 */
-	public void setParentList(List<List<String>> parentList) {
-		this.parentList = parentList;
-	}
-
-	/**
 	 * @param partnerList the partnerList to set
 	 */
 	public void setPartnerList(List<List<String>> partnerList) {
@@ -781,38 +824,5 @@ public class PersonServer implements IHREServer {
 	public void updateRemote(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 
-	}
-
-	/**
-	 * @param key
-	 * @param generations
-	 * @return
-	 * @throws MvpException
-	 * @throws SQLException
-	 */
-	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
-		List<List<String>> lls = new ArrayList<>();
-		int parentPid;
-
-		Persons person = new Persons();
-		person.get(key);
-
-		Parents parentRelation = new Parents();
-
-		for (Parents parent : parentRelation.getFKParent(key)) {
-			if (generations-- > 0) {
-				return getDescendantList(generations, parent.getChild());
-			} else {
-				List<String> ls = new ArrayList<String>();
-				parentPid = parent.getParent();
-				ls.add(Integer.toString(parentPid));
-				ls.add(Integer.toString(parent.getChild()));
-				ls.add(new PersonNameServer().getPrimaryNameString(parentPid));
-				lls.add(ls);
-				return lls;
-			}
-		}
-
-		return lls;
 	}
 }

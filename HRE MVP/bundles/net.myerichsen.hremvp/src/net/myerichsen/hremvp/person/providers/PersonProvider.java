@@ -65,7 +65,7 @@ public class PersonProvider implements IHREProvider {
 		setDeathDatePid(server.getDeathDatePid());
 		setPersonPid(key);
 //		setEventList(server.getEventList());
-		setParentList(server.getParentList());
+//		setParentList(server.getParentList());
 		setPartnerList(server.getPartnerList());
 		setChildrenList(server.getChildrenList());
 		setSexesList(server.getSexesList());
@@ -307,5 +307,14 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
 		return server.getDescendantList(key, generations);
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getParentList(int key) throws SQLException {
+		return server.getParentList(key);
 	}
 }
