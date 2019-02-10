@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.dialogs;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -9,7 +8,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -34,12 +32,13 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all historical dates
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
@@ -126,58 +125,19 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
-		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(0);
-			}
-		});
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnHistoricalDate = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnHistoricalDate = tableViewerColumnHistoricalDate.getColumn();
 		tblclmnHistoricalDate.setWidth(100);
 		tblclmnHistoricalDate.setText("Historical Date");
-		tableViewerColumnHistoricalDate.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnHistoricalDate.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnOriginalInputFormat = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnOriginalInputFormat = tableViewerColumnOriginalInputFormat.getColumn();
 		tblclmnOriginalInputFormat.setWidth(240);
 		tblclmnOriginalInputFormat.setText("Original Input Format");
-		tableViewerColumnOriginalInputFormat.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(2);
-			}
-		});
+		tableViewerColumnOriginalInputFormat.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final Label lblDateFilter = new Label(container, SWT.NONE);
 		lblDateFilter.setText("Date Filter");

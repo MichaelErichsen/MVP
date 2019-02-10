@@ -55,7 +55,7 @@
 //		/* 52 */ TableColumn tblclmnName = tableViewerColumn.getColumn();
 //		/* 53 */ tblclmnName.setWidth(200);
 //		/* 54 */ tblclmnName.setText("Name");
-//		/* 55 */ tableViewerColumn.setLabelProvider(new ColumnLabelProvider()
+//		/* 55 */ tableViewerColumn.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
 //				/* 58 */ FamilySearchModel item = (FamilySearchModel) element;
@@ -67,7 +67,7 @@
 //		/* 64 */ TableColumn tblclmnGender = tableViewerColumn_5.getColumn();
 //		/* 65 */ tblclmnGender.setWidth(75);
 //		/* 66 */ tblclmnGender.setText("Gender");
-//		/* 67 */ tableViewerColumn_5.setLabelProvider(new ColumnLabelProvider()
+//		/* 67 */ tableViewerColumn_5.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
 //				/* 70 */ FamilySearchModel item = (FamilySearchModel) element;
@@ -79,7 +79,7 @@
 //		/* 76 */ TableColumn tblclmnBirthDate = tableViewerColumn_1.getColumn();
 //		/* 77 */ tblclmnBirthDate.setWidth(100);
 //		/* 78 */ tblclmnBirthDate.setText("Birth Date");
-//		/* 79 */ tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider()
+//		/* 79 */ tableViewerColumn_1.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
 //				/* 82 */ FamilySearchModel item = (FamilySearchModel) element;
@@ -91,7 +91,7 @@
 //		/* 88 */ TableColumn tblclmnBirthPlace = tableViewerColumn_2.getColumn();
 //		/* 89 */ tblclmnBirthPlace.setWidth(200);
 //		/* 90 */ tblclmnBirthPlace.setText("Birth Place");
-//		/* 91 */ tableViewerColumn_2.setLabelProvider(new ColumnLabelProvider()
+//		/* 91 */ tableViewerColumn_2.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
 //				/* 94 */ FamilySearchModel item = (FamilySearchModel) element;
@@ -103,7 +103,7 @@
 //		/* 100 */ TableColumn tblclmnDeathDate = tableViewerColumn_3.getColumn();
 //		/* 101 */ tblclmnDeathDate.setWidth(100);
 //		/* 102 */ tblclmnDeathDate.setText("Death Date");
-//		/* 103 */ tableViewerColumn_3.setLabelProvider(new ColumnLabelProvider()
+//		/* 103 */ tableViewerColumn_3.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
 //				/* 106 */ FamilySearchModel item = (FamilySearchModel) element;
@@ -115,7 +115,7 @@
 //		/* 112 */ TableColumn tblclmnDeathPlace = tableViewerColumn_4.getColumn();
 //		/* 113 */ tblclmnDeathPlace.setWidth(200);
 //		/* 114 */ tblclmnDeathPlace.setText("Death Place");
-//		/* 115 */ tableViewerColumn_4.setLabelProvider(new ColumnLabelProvider()
+//		/* 115 */ tableViewerColumn_4.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
 //				/* 118 */ FamilySearchModel item = (FamilySearchModel) element;

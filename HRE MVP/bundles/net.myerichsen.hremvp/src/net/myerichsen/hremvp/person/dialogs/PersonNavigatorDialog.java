@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.person.dialogs;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -9,7 +8,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -33,12 +31,13 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all persons.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 2. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 public class PersonNavigatorDialog extends TitleAreaDialog {
@@ -124,78 +123,25 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
-		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				List<String> stringList = (List<String>) element;
-				return stringList.get(0);
-			}
-		});
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
-		tableViewerColumnName.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				List<String> stringList = (List<String>) element;
-				return stringList.get(1);
-			}
-		});
+		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnBirthDate = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnBirthDate = tableViewerColumnBirthDate.getColumn();
 		tblclmnBirthDate.setWidth(100);
 		tblclmnBirthDate.setText("Birth Date");
-		tableViewerColumnBirthDate.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				List<String> stringList = (List<String>) element;
-				return stringList.get(2);
-			}
-		});
+		tableViewerColumnBirthDate.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnDeathDate = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnDeathDate = tableViewerColumnDeathDate.getColumn();
 		tblclmnDeathDate.setWidth(100);
 		tblclmnDeathDate.setText("Death Date");
-		tableViewerColumnDeathDate.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				List<String> stringList = (List<String>) element;
-				return stringList.get(3);
-			}
-		});
+		tableViewerColumnDeathDate.setLabelProvider(new HREColumnLabelProvider(3));
 
 		Label lblNameFilter = new Label(container, SWT.NONE);
 		lblNameFilter.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));

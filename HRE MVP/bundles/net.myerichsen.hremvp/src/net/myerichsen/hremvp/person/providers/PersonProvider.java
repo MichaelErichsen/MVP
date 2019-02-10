@@ -20,8 +20,7 @@ public class PersonProvider implements IHREProvider {
 	private int personPid;
 	private int birthDatePid;
 	private int deathDatePid;
-	private List<List<String>> childrenList;
-//	private List<List<String>> eventList;
+
 	private final PersonServer server;
 
 	/**
@@ -56,7 +55,6 @@ public class PersonProvider implements IHREProvider {
 		setBirthDatePid(server.getBirthDatePid());
 		setDeathDatePid(server.getDeathDatePid());
 		setPersonPid(key);
-		setChildrenList(server.getChildrenList());
 	}
 
 //	public void getremote(int key) throws ClientProtocolException, IOException, MvpException {
@@ -116,10 +114,12 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the list of children
+	 * @param key
+	 * @return
+	 * @throws SQLException
 	 */
-	public List<List<String>> getChildrenList() {
-		return childrenList;
+	public List<List<String>> getChildrenList(int key) throws SQLException {
+		return server.getChildrenList(key);
 	}
 
 	/**
@@ -130,10 +130,30 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param key
+	 * @param generations
+	 * @return
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
+		return server.getDescendantList(key, generations);
+	}
+
+	/**
 	 * @return the nameList
 	 */
 	public List<List<String>> getNameList() {
 		return server.getNameList();
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getParentList(int key) throws SQLException {
+		return server.getParentList(key);
 	}
 
 	/**
@@ -228,13 +248,6 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param childrenList the childrenList to set
-	 */
-	public void setChildrenList(List<List<String>> childrenList) {
-		this.childrenList = childrenList;
-	}
-
-	/**
 	 * @param i the deathDatePid to set
 	 */
 	public void setDeathDatePid(int i) {
@@ -261,25 +274,5 @@ public class PersonProvider implements IHREProvider {
 		server.setDeathDatePid(deathDatePid);
 		server.setPersonPid(personPid);
 		server.update();
-	}
-
-	/**
-	 * @param key
-	 * @param generations
-	 * @return
-	 * @throws SQLException
-	 * @throws MvpException
-	 */
-	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
-		return server.getDescendantList(key, generations);
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<List<String>> getParentList(int key) throws SQLException {
-		return server.getParentList(key);
 	}
 }

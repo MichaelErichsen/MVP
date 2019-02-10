@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +16,6 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -35,12 +33,13 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * View all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 8. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -114,95 +113,31 @@ public class PersonNamesView {
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("Id");
-		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(0);
-			}
-		});
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(200);
 		tblclmnName.setText("Name");
-		tableViewerColumnName.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnFrom = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnFromDate = tableViewerColumnFrom.getColumn();
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
-		tableViewerColumnFrom.setLabelProvider(new ColumnLabelProvider() {
+		tableViewerColumnFrom.setLabelProvider(new HREColumnLabelProvider(2));
 
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(2);
-			}
-		});
 		final TableViewerColumn tableViewerColumnTo = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnToDate = tableViewerColumnTo.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
-		tableViewerColumnTo.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(3);
-			}
-		});
+		tableViewerColumnTo.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnPrimary = tableViewerColumnPrimary.getColumn();
 		tblclmnPrimary.setWidth(50);
 		tblclmnPrimary.setText("Primary");
-		tableViewerColumnPrimary.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(4);
-			}
-		});
+		tableViewerColumnPrimary.setLabelProvider(new HREColumnLabelProvider(4));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

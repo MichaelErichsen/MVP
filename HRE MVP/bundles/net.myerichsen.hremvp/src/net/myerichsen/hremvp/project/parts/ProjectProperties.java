@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.parts;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +11,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -24,12 +22,13 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.project.providers.ProjectProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * GUI part displaying project properties.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 public class ProjectProperties {
@@ -74,40 +73,14 @@ public class ProjectProperties {
 		tblclmnProjectName.setToolTipText("Property");
 		tblclmnProjectName.setWidth(100);
 		tblclmnProjectName.setText("Property");
-		tableViewerColumnProperty.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(0);
-			}
-		});
+		tableViewerColumnProperty.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnValue = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnLastEdited = tableViewerColumnValue.getColumn();
 		tblclmnLastEdited.setToolTipText("Value");
 		tblclmnLastEdited.setWidth(800);
 		tblclmnLastEdited.setText("Value");
-		tableViewerColumnValue.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnValue.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		tableViewer.setInput(provider.getProperties(index));

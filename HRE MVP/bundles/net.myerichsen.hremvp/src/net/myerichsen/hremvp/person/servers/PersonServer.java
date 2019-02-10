@@ -42,7 +42,6 @@ public class PersonServer implements IHREServer {
 	private int deathDatePid;
 	private List<List<String>> nameList;
 	private List<List<String>> personList;
-	private final List<List<String>> childrenList;
 
 	private final Persons person;
 
@@ -54,7 +53,6 @@ public class PersonServer implements IHREServer {
 		person = new Persons();
 		nameList = new ArrayList<>();
 		personList = new ArrayList<>();
-		childrenList = new ArrayList<>();
 	}
 
 	/**
@@ -189,17 +187,6 @@ public class PersonServer implements IHREServer {
 			nameList.add(ls);
 		}
 
-		childrenList.clear();
-
-		for (final Parents parent : new Parents().getFKParent(key)) {
-			ls = new ArrayList<>();
-			final int pid = parent.getChild();
-			ls.add(Integer.toString(pid));
-			ls.add(pns.getPrimaryNameString(pid));
-
-			childrenList.add(ls);
-		}
-
 	}
 
 	/**
@@ -251,9 +238,26 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param key
 	 * @return the list of children
+	 * @throws SQLException
 	 */
-	public List<List<String>> getChildrenList() {
+	public List<List<String>> getChildrenList(int key) throws SQLException {
+		List<String> ls;
+
+		PersonNameServer pns = new PersonNameServer();
+		List<List<String>> childrenList = new ArrayList<List<String>>();
+
+		for (final Parents parent : new Parents().getFKParent(key)) {
+			ls = new ArrayList<>();
+			final int pid = parent.getChild();
+			ls.add(Integer.toString(pid));
+
+			ls.add(pns.getPrimaryNameString(pid));
+
+			childrenList.add(ls);
+		}
+
 		return childrenList;
 	}
 

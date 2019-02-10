@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +16,6 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -32,12 +30,13 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all siblings of a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. feb. 2019
+ * @version 10. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonSiblingsView {
@@ -86,43 +85,17 @@ public class PersonSiblingsView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnSiblingsId = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnSiblingsId = tableViewerColumnSiblingsId.getColumn();
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnSiblingsId = tableViewerColumnId.getColumn();
 		tblclmnSiblingsId.setWidth(100);
 		tblclmnSiblingsId.setText("ID");
-		tableViewerColumnSiblingsId.setLabelProvider(new ColumnLabelProvider() {
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(0);
-			}
-		});
-
-		final TableViewerColumn tableViewerColumnSiblingsLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnSibling = tableViewerColumnSiblingsLabel.getColumn();
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnSibling = tableViewerColumnLabel.getColumn();
 		tblclmnSibling.setWidth(250);
 		tblclmnSibling.setText("Siblings");
-		tableViewerColumnSiblingsLabel.setLabelProvider(new ColumnLabelProvider() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-			 */
-			@Override
-			public String getText(Object element) {
-				@SuppressWarnings("unchecked")
-				final List<String> list = (List<String>) element;
-				return list.get(1);
-			}
-		});
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
