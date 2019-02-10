@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -45,9 +45,7 @@ public class PersonServer implements IHREServer {
 	private List<List<String>> personList;
 	private List<List<String>> parentList;
 	private List<List<String>> partnerList;
-	private final List<List<String>> childrenList;
-	private List<List<String>> personEventList;
-	private List<List<String>> eventList;
+	private List<List<String>> childrenList;
 
 	private final Persons person;
 
@@ -63,8 +61,6 @@ public class PersonServer implements IHREServer {
 		parentList = new ArrayList<>();
 		partnerList = new ArrayList<>();
 		childrenList = new ArrayList<>();
-		eventList = new ArrayList<>();
-//		siblingList = new ArrayList<>();
 	}
 
 	/**
@@ -225,30 +221,6 @@ public class PersonServer implements IHREServer {
 			parentList.add(ls);
 		}
 
-//		siblingList.clear();
-//
-//		final List<Parents> fkParent = new Parents().getFKChild(key);
-//
-//		for (final Parents parents : fkParent) {
-//			LOGGER.info("Parent id: " + parents.getParentPid());
-//			final List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
-//			final TreeSet<Integer> childList = new TreeSet<>();
-//
-//			for (final Parents parents4 : fkChild) {
-//				LOGGER.info("Child id: " + parents4.getChild());
-//				childList.add(parents4.getChild());
-//				childList.remove(key);
-//			}
-//
-//			for (final int child : childList) {
-//				ls = new ArrayList<>();
-//				ls.add(Integer.toString(child));
-//				ls.add(pns.getPrimaryNameString(child));
-//
-//				siblingList.add(ls);
-//			}
-//		}
-
 		final List<Partners> lpa = new Partners().getFKPartner1(key);
 		lpa.addAll(new Partners().getFKPartner2(key));
 		partnerList.clear();
@@ -281,25 +253,6 @@ public class PersonServer implements IHREServer {
 			childrenList.add(ls);
 		}
 
-		Events event;
-		EventNames eventName;
-		eventList.clear();
-
-		for (final PersonEvents personEvent : new PersonEvents().getFKPersonPid(key)) {
-			event = new Events();
-			event.get(personEvent.getEventPid());
-			eventName = new EventNames();
-			eventName.get(event.getEventNamePid());
-
-			ls = new ArrayList<>();
-			ls.add(Integer.toString(event.getEventPid()));
-			ls.add(eventName.getLabel());
-			ls.add(personEvent.getRole());
-			ls.add(Integer.toString(event.getFromDatePid()));
-			ls.add(Integer.toString(event.getToDatePid()));
-
-			eventList.add(ls);
-		}
 	}
 
 	/**
@@ -311,7 +264,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 */
 	public List<List<String>> getAllNames() throws SQLException, MvpException {
-		final List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> allNamesList = new ArrayList<>();
 		List<String> stringList;
 
 		final List<Persons> lnsl = person.get();
@@ -333,14 +286,14 @@ public class PersonServer implements IHREServer {
 					stringList.add(Integer.toString(name.getNamePid()));
 					ns.get(name.getNamePid());
 					stringList.add(ns.getNameStrings()[i]);
-					lls.add(stringList);
+					allNamesList.add(stringList);
 					break;
 				}
 			}
 
 		}
 
-		return lls;
+		return allNamesList;
 	}
 
 	/**
@@ -365,13 +318,6 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * @return the eventList
-	 */
-	public List<List<String>> getEventList() {
-		return eventList;
-	}
-
-	/**
 	 * @return the nameList
 	 */
 	public List<List<String>> getNameList() {
@@ -393,10 +339,40 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param key
 	 * @return the personEventList
+	 * @throws MvpException
+	 * @throws SQLException
 	 */
-	public List<List<String>> getPersonEventList() {
-		return personEventList;
+	public List<List<String>> getPersonEventList(int key) throws SQLException, MvpException {
+		Events event;
+		EventNames eventName;
+		List<String> ls;
+		List<List<String>> eventList = new ArrayList<>();
+		Hdates date = new Hdates();
+
+		if (key == 0) {
+			return eventList;
+		}
+
+		for (final PersonEvents personEvent : new PersonEvents().getFKPersonPid(key)) {
+			event = new Events();
+			event.get(personEvent.getEventPid());
+			eventName = new EventNames();
+			eventName.get(event.getEventNamePid());
+
+			ls = new ArrayList<>();
+			ls.add(Integer.toString(event.getEventPid()));
+			ls.add(eventName.getLabel());
+			ls.add(personEvent.getRole());
+			date.get(event.getFromDatePid());
+			ls.add(date.getDate().toString());
+			date.get(event.getToDatePid());
+			ls.add(date.getDate().toString());
+
+			eventList.add(ls);
+		}
+		return eventList;
 	}
 
 	/**
@@ -445,7 +421,7 @@ public class PersonServer implements IHREServer {
 	 * @throws SQLException
 	 */
 	public List<List<String>> getPersonNameList(int key) throws SQLException, MvpException {
-		final List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> personNameList = new ArrayList<>();
 		List<String> stringList;
 
 		if (key == 0) {
@@ -455,8 +431,8 @@ public class PersonServer implements IHREServer {
 			stringList.add("");
 			stringList.add("");
 			stringList.add("false");
-			lls.add(stringList);
-			return lls;
+			personNameList.add(stringList);
+			return personNameList;
 		}
 
 		final Names name = new Names();
@@ -499,10 +475,10 @@ public class PersonServer implements IHREServer {
 
 			stringList.add(Boolean.toString(name.isPrimaryName()));
 
-			lls.add(stringList);
+			personNameList.add(stringList);
 		}
 
-		return lls;
+		return personNameList;
 	}
 
 	/**
@@ -542,110 +518,110 @@ public class PersonServer implements IHREServer {
 	 *                               classes when things are amiss
 	 */
 	public String getRemote(HttpServletResponse response, String target) throws Exception {
-		final String[] targetParts = target.split("/");
-		final int targetSize = targetParts.length;
-
-		get(Integer.parseInt(targetParts[targetSize - 1]));
-
+//		final String[] targetParts = target.split("/");
+//		final int targetSize = targetParts.length;
+//
+//		get(Integer.parseInt(targetParts[targetSize - 1]));
+//
 		final JSONStringer js = new JSONStringer();
-		js.object();
-		js.key("personPid");
-		js.value(personPid);
-		js.key("birthDatePid");
-		js.value(birthDatePid);
-		js.key("deathDatePid");
-		js.value(deathDatePid);
-
-		js.key("nameList");
-		js.array();
-
-		for (final List<String> list : nameList) {
-			js.object();
-			js.key("namePid");
-			js.value(list.get(0));
-			js.key("nameString");
-			js.value(list.get(1));
-			js.key("primaryName");
-			js.value(list.get(2));
-			js.endObject();
-		}
-
-		js.endArray();
-
-		js.key("sexTypeList");
-		js.array();
-
-		for (final List<String> list : sexesList) {
-			js.object();
-			js.key("sexTypePid");
-			js.value(list.get(0));
-			js.key("sexTypeLabel");
-			js.value(list.get(1));
-			js.key("primarySex");
-			js.value(list.get(2));
-			js.endObject();
-		}
-
-		js.endArray();
-
-		js.key("parentList");
-		js.array();
-
-		for (final List<String> list : parentList) {
-			js.object();
-			js.key("namePid");
-			js.value(list.get(0));
-			js.key("nameString");
-			js.value(list.get(1));
-			js.key("role");
-			js.value(list.get(2));
-			js.key("primaryParent");
-			js.value(list.get(3));
-			js.endObject();
-		}
-
-		js.endArray();
-
-		js.key("partnerList");
-		js.array();
-
-		for (final List<String> list : partnerList) {
-			js.object();
-			js.key("namePid");
-			js.value(list.get(0));
-			js.key("nameString");
-			js.value(list.get(1));
-			js.key("role");
-			js.value(list.get(2));
-			js.key("primaryPartner");
-			js.value(list.get(3));
-			js.endObject();
-		}
-
-		js.endArray();
-
-		js.key("eventList");
-		js.array();
-
-		for (final List<String> list : eventList) {
-			js.object();
-			js.key("eventPid");
-			js.value(list.get(0));
-			js.key("label");
-			js.value(list.get(1));
-			js.key("role");
-			js.value(list.get(2));
-			js.key("fromDate");
-			js.value(list.get(3));
-			js.key("toDate");
-			js.value(list.get(4));
-			js.endObject();
-		}
-
-		js.endArray();
-		js.endObject();
-
-		LOGGER.fine(js.toString());
+//		js.object();
+//		js.key("personPid");
+//		js.value(personPid);
+//		js.key("birthDatePid");
+//		js.value(birthDatePid);
+//		js.key("deathDatePid");
+//		js.value(deathDatePid);
+//
+//		js.key("nameList");
+//		js.array();
+//
+//		for (final List<String> list : nameList) {
+//			js.object();
+//			js.key("namePid");
+//			js.value(list.get(0));
+//			js.key("nameString");
+//			js.value(list.get(1));
+//			js.key("primaryName");
+//			js.value(list.get(2));
+//			js.endObject();
+//		}
+//
+//		js.endArray();
+//
+//		js.key("sexTypeList");
+//		js.array();
+//
+//		for (final List<String> list : sexesList) {
+//			js.object();
+//			js.key("sexTypePid");
+//			js.value(list.get(0));
+//			js.key("sexTypeLabel");
+//			js.value(list.get(1));
+//			js.key("primarySex");
+//			js.value(list.get(2));
+//			js.endObject();
+//		}
+//
+//		js.endArray();
+//
+//		js.key("parentList");
+//		js.array();
+//
+//		for (final List<String> list : parentList) {
+//			js.object();
+//			js.key("namePid");
+//			js.value(list.get(0));
+//			js.key("nameString");
+//			js.value(list.get(1));
+//			js.key("role");
+//			js.value(list.get(2));
+//			js.key("primaryParent");
+//			js.value(list.get(3));
+//			js.endObject();
+//		}
+//
+//		js.endArray();
+//
+//		js.key("partnerList");
+//		js.array();
+//
+//		for (final List<String> list : partnerList) {
+//			js.object();
+//			js.key("namePid");
+//			js.value(list.get(0));
+//			js.key("nameString");
+//			js.value(list.get(1));
+//			js.key("role");
+//			js.value(list.get(2));
+//			js.key("primaryPartner");
+//			js.value(list.get(3));
+//			js.endObject();
+//		}
+//
+//		js.endArray();
+//
+//		js.key("eventList");
+//		js.array();
+//
+//		for (final List<String> list : eventList) {
+//			js.object();
+//			js.key("eventPid");
+//			js.value(list.get(0));
+//			js.key("label");
+//			js.value(list.get(1));
+//			js.key("role");
+//			js.value(list.get(2));
+//			js.key("fromDate");
+//			js.value(list.get(3));
+//			js.key("toDate");
+//			js.value(list.get(4));
+//			js.endObject();
+//		}
+//
+//		js.endArray();
+//		js.endObject();
+//
+//		LOGGER.fine(js.toString());
 
 		return js.toString();
 	}
@@ -680,7 +656,7 @@ public class PersonServer implements IHREServer {
 			for (final Parents parents4 : fkChild) {
 				LOGGER.info("Child id: " + parents4.getChild());
 				childList.add(parents4.getChild());
-//				childList.remove(key);
+				childList.remove(personPid);
 			}
 
 			for (final int child : childList) {
@@ -741,13 +717,6 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * @param eventList the eventList to set
-	 */
-	public void setEventList(List<List<String>> eventList) {
-		this.eventList = eventList;
-	}
-
-	/**
 	 * @param nameList the nameList to set
 	 */
 	public void setNameList(List<List<String>> nameList) {
@@ -766,13 +735,6 @@ public class PersonServer implements IHREServer {
 	 */
 	public void setPartnerList(List<List<String>> partnerList) {
 		this.partnerList = partnerList;
-	}
-
-	/**
-	 * @param personEventList the personEventList to set
-	 */
-	public void setPersonEventList(List<List<String>> personEventList) {
-		this.personEventList = personEventList;
 	}
 
 	/**

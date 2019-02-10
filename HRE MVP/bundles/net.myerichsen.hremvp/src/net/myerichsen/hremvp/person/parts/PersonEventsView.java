@@ -15,91 +15,63 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
  * Display all events for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. feb. 2019
+ * @version 10. feb. 2019
  */
 @SuppressWarnings("restriction")
-// TODO Change to Jface
 public class PersonEventsView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
 	private ECommandService commandService;
 	@Inject
 	private EHandlerService handlerService;
-	private Table tableEvents;
-	private TableViewer tableViewerEvents;
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
-	private final PersonProvider provider;
+	private TableViewer tableViewer;
+	private PersonProvider provider;
+	private NavigatorFilter navigatorFilter;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 *
 	 */
-	public PersonEventsView() throws SQLException {
-		provider = new PersonProvider();
-	}
-
-	/**
-	 *
-	 */
-	private void clear() {
-
-		tableEvents.removeAll();
-	}
-
-	/**
-	 *
-	 */
-	private void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
-		partService.hidePart(part, true);
+	public PersonEventsView() {
+		try {
+			provider = new PersonProvider();
+			navigatorFilter = new NavigatorFilter();
+		} catch (Exception e) {
+			e.printStackTrace();
+			eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.severe(e.getMessage());
+		}
 	}
 
 	/**
@@ -109,116 +81,139 @@ public class PersonEventsView {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
-		parent.setLayout(new GridLayout(1, false));
+		parent.setLayout(new GridLayout(2, false));
 
-		tableViewerEvents = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		tableEvents = tableViewerEvents.getTable();
-		tableEvents.addMouseListener(new MouseAdapter() {
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer.addFilter(navigatorFilter);
+
+		Table table = tableViewer.getTable();
+		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openEventView();
 			}
 		});
-		tableEvents.setLinesVisible(true);
-		tableEvents.setHeaderVisible(true);
-		tableEvents.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 
-		final TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(tableViewerEvents, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(tableViewerEvents, SWT.NONE);
-		final TableColumn tblclmnEvent = tableViewerColumnEventLabel.getColumn();
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(0);
+			}
+		});
+
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnEvent = tableViewerColumnLabel.getColumn();
 		tblclmnEvent.setWidth(100);
 		tblclmnEvent.setText("Event");
+		tableViewerColumnLabel.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumnEventRole = new TableViewerColumn(tableViewerEvents, SWT.NONE);
-		final TableColumn tblclmnRole = tableViewerColumnEventRole.getColumn();
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(1);
+			}
+		});
+
+		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableColumn tblclmnRole = tableViewerColumnRole.getColumn();
 		tblclmnRole.setWidth(100);
 		tblclmnRole.setText("Role");
+		tableViewerColumnRole.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(tableViewerEvents, SWT.NONE);
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(2);
+			}
+		});
+
+		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnFromDate = tableViewerColumnFromDate.getColumn();
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
+		tableViewerColumnFromDate.setLabelProvider(new ColumnLabelProvider() {
 
-		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(tableViewerEvents, SWT.NONE);
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
+			@Override
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(3);
+			}
+		});
+
+		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(tableViewer, SWT.NONE);
 		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
+		tableViewerColumnToDate.setLabelProvider(new ColumnLabelProvider() {
 
-		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+			 */
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
+			public String getText(Object element) {
+				@SuppressWarnings("unchecked")
+				final List<String> list = (List<String>) element;
+				return list.get(4);
 			}
 		});
-		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
+		final Label lblFilter = new Label(parent, SWT.NONE);
+		lblFilter.setText("Event Filter");
+
+		final Text textFilter = new Text(parent, SWT.BORDER);
+		textFilter.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
+			public void keyReleased(KeyEvent e) {
+				navigatorFilter.setSearchText(textFilter.getText());
+				LOGGER.info("Filter string: " + textFilter.getText());
+				tableViewer.refresh();
 			}
 		});
-		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
-		buttonUpdate.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				update();
-			}
-		});
-		buttonUpdate.setText("Update");
+		textFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-
-		get(1);
-	}
-
-	/**
-	 *
-	 */
-	protected void delete() {
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			clear();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
+			tableViewer.setInput(provider.getPersonEventList(0));
+		} catch (SQLException | MvpException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 	}
 
@@ -232,51 +227,12 @@ public class PersonEventsView {
 	/**
 	 *
 	 */
-	private void get() {
-//		get(Integer.parseInt(textId.getText()));
-	}
-
-	/**
-	 * @param key
-	 */
-	private void get(int key) {
-		try {
-			provider.get(key);
-
-			tableEvents.removeAll();
-
-			List<String> ls;
-
-			final List<List<String>> eventsList = provider.getEventList();
-
-			for (int i = 0; i < eventsList.size(); i++) {
-				final TableItem item = new TableItem(tableEvents, SWT.NONE);
-				ls = eventsList.get(i);
-				item.setText(0, ls.get(0));
-				item.setText(1, ls.get(1));
-				item.setText(2, ls.get(2));
-				item.setText(3, ls.get(3));
-				item.setText(4, ls.get(4));
-			}
-
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-//			e.printStackTrace();
-		}
-	}
-
-	/**
-	 *
-	 */
 	protected void insert() {
 		try {
 			provider.insert();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -290,7 +246,7 @@ public class PersonEventsView {
 				null);
 		handlerService.executeHandler(command);
 
-		final TableItem[] selectedRows = tableEvents.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -309,13 +265,19 @@ public class PersonEventsView {
 	}
 
 	/**
-	 * @param key
-	 * @throws SQLException
+	 * @param personPid
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int key) throws SQLException {
-		get(key);
+	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+		LOGGER.fine("Received person id " + personPid);
+		try {
+			tableViewer.setInput(provider.getPersonEventList(personPid));
+			tableViewer.refresh();
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -327,7 +289,6 @@ public class PersonEventsView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 

@@ -15,11 +15,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -51,26 +46,13 @@ public class PersonSexesView {
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
-	@Inject
 	private IEventBroker eventBroker;
 	@Inject
 	private ECommandService commandService;
 	@Inject
 	private EHandlerService handlerService;
-	private Table tableSex;
+
 	private TableViewer tableViewerSex;
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
 	private final PersonProvider provider;
 
@@ -86,22 +68,6 @@ public class PersonSexesView {
 	}
 
 	/**
-	 *
-	 */
-	private void clear() {
-		tableSex.removeAll();
-	}
-
-	/**
-	 *
-	 */
-	private void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
-		partService.hidePart(part, true);
-	}
-
-	/**
 	 * Create contents of the view part
 	 *
 	 * @param parent The parent composite
@@ -111,7 +77,7 @@ public class PersonSexesView {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewerSex = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		tableSex = tableViewerSex.getTable();
+		Table tableSex = tableViewerSex.getTable();
 		tableSex.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -137,11 +103,11 @@ public class PersonSexesView {
 		tblclmnSexPrimary.setWidth(83);
 		tblclmnSexPrimary.setText("Primary");
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonSelect = new Button(composite, SWT.NONE);
+		Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -150,7 +116,7 @@ public class PersonSexesView {
 		});
 		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
+		Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -159,7 +125,7 @@ public class PersonSexesView {
 		});
 		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -168,7 +134,7 @@ public class PersonSexesView {
 		});
 		buttonUpdate.setText("Update");
 
-		buttonDelete = new Button(composite, SWT.NONE);
+		Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -177,25 +143,6 @@ public class PersonSexesView {
 		});
 		buttonDelete.setText("Delete");
 
-		buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-
-		get(1);
 	}
 
 	/**
@@ -203,11 +150,9 @@ public class PersonSexesView {
 	 */
 	protected void delete() {
 		try {
-			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -230,14 +175,13 @@ public class PersonSexesView {
 	private void get(int key) {
 		try {
 			provider.get(key);
-			tableSex.removeAll();
 
 			List<String> ls;
 
 			final List<List<String>> sexesList = provider.getSexesList();
 
 			for (int i = 0; i < sexesList.size(); i++) {
-				final TableItem item = new TableItem(tableSex, SWT.NONE);
+				final TableItem item = new TableItem(tableViewerSex.getTable(), SWT.NONE);
 				ls = sexesList.get(i);
 				item.setText(0, ls.get(0));
 				item.setText(1, ls.get(1));
@@ -247,7 +191,6 @@ public class PersonSexesView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -261,7 +204,6 @@ public class PersonSexesView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -275,7 +217,7 @@ public class PersonSexesView {
 				null);
 		handlerService.executeHandler(command);
 
-		final TableItem[] selectedRows = tableSex.getSelection();
+		final TableItem[] selectedRows = tableViewerSex.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];

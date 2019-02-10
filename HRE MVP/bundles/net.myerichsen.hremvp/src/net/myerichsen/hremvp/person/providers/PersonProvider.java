@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. feb. 2019
+ * @version 10. feb. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -25,8 +25,7 @@ public class PersonProvider implements IHREProvider {
 	private List<List<String>> parentList;
 	private List<List<String>> partnerList;
 	private List<List<String>> childrenList;
-	private List<List<String>> personEventList;
-	private List<List<String>> eventList;
+//	private List<List<String>> eventList;
 	private final PersonServer server;
 
 	/**
@@ -41,7 +40,7 @@ public class PersonProvider implements IHREProvider {
 		sexesList = new ArrayList<>();
 		parentList = new ArrayList<>();
 		partnerList = new ArrayList<>();
-		eventList = new ArrayList<>();
+//		eventList = new ArrayList<>();
 	}
 
 	/*
@@ -65,7 +64,7 @@ public class PersonProvider implements IHREProvider {
 		setBirthDatePid(server.getBirthDatePid());
 		setDeathDatePid(server.getDeathDatePid());
 		setPersonPid(key);
-		setEventList(server.getEventList());
+//		setEventList(server.getEventList());
 		setParentList(server.getParentList());
 		setPartnerList(server.getPartnerList());
 		setChildrenList(server.getChildrenList());
@@ -143,13 +142,6 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the eventList
-	 */
-	public List<List<String>> getEventList() {
-		return eventList;
-	}
-
-	/**
 	 * @return the nameList
 	 */
 	public List<List<String>> getNameList() {
@@ -171,10 +163,13 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param personPid2
 	 * @return the personEventList
+	 * @throws MvpException
+	 * @throws SQLException
 	 */
-	public List<List<String>> getPersonEventList() {
-		return personEventList;
+	public List<List<String>> getPersonEventList(int key) throws SQLException, MvpException {
+		return server.getPersonEventList(key);
 	}
 
 	/**
@@ -261,13 +256,6 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param eventList the eventList to set
-	 */
-	public void setEventList(List<List<String>> eventList) {
-		this.eventList = eventList;
-	}
-
-	/**
 	 * @param parentList the parentList to set
 	 */
 	public void setParentList(List<List<String>> parentList) {
@@ -279,13 +267,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public void setPartnerList(List<List<String>> partnerList) {
 		this.partnerList = partnerList;
-	}
-
-	/**
-	 * @param personEventList the personEventList to set
-	 */
-	public void setPersonEventList(List<List<String>> personEventList) {
-		this.personEventList = personEventList;
 	}
 
 	/**
