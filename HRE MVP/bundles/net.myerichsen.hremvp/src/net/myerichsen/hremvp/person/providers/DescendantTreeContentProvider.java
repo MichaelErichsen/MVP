@@ -1,11 +1,13 @@
 package net.myerichsen.hremvp.person.providers;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 9. feb. 2019
+ * @version 11. feb. 2019
  *
  */
 public class DescendantTreeContentProvider implements ITreeContentProvider {
@@ -43,7 +45,12 @@ public class DescendantTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
+//		List<String> ls = (List<String>) parentElement;
+//		if (ls.get(1).equals("0")) {
+//			return null;
+//		}
 		// TODO Auto-generated method stub
+		// Find each child element
 		return null;
 	}
 
@@ -60,7 +67,9 @@ public class DescendantTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public Object getParent(Object element) {
+		List<String> ls = (List<String>) element;
 		// TODO Auto-generated method stub
+		// Get parent element
 		return null;
 	}
 
@@ -76,8 +85,10 @@ public class DescendantTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		// TODO Auto-generated method stub
-		return false;
+		List<String> ls = (List<String>) element;
+		if (ls.get(1).equals("0"))
+			return false;
+		return true;
 	}
 
 }

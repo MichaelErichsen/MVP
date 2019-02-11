@@ -107,6 +107,17 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param personId
+	 * @param parseInt
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getAncestorList(int personId, int generations) throws SQLException, MvpException {
+		return server.getAncestorList(personId, 0, generations);
+	}
+
+	/**
 	 * @return the birthDatePid
 	 */
 	public int getBirthDatePid() {
@@ -137,7 +148,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 */
 	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
-		return server.getDescendantList(key, generations);
+		return server.getDescendantList(key, 0, generations);
 	}
 
 	/**

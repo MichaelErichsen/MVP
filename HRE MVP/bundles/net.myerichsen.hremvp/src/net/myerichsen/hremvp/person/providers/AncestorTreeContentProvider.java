@@ -1,5 +1,7 @@
 package net.myerichsen.hremvp.person.providers;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
@@ -53,7 +55,9 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		// TODO Auto-generated method stub
+		List<String> ls = (List<String>) element;
+		if (ls.get(1).equals("0"))
+			return false;
 		return false;
 	}
 

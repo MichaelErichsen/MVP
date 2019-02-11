@@ -5,30 +5,46 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeColumn;
 
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
+import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.DescendantTreeContentProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 9. feb. 2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 11. feb. 2019
  *
  */
 public class DescendantNavigator {
+	private final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	PersonProvider provider;
+	private PersonProvider provider;
+	private int personId = 1;
+	private Spinner spinnerGenerations;
+	private TreeViewer treeViewer;
 
 	/**
 	 * Constructor
@@ -44,46 +60,72 @@ public class DescendantNavigator {
 	}
 
 	/**
-	 * Create contents of the view part.
+	 * Create contents of the view part
 	 * 
 	 * @param parent
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
-		parent.setLayout(new GridLayout(1, false));
+		parent.setLayout(new GridLayout(2, false));
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		composite.setLayout(new GridLayout(2, false));
+		Label lblGenerations = new Label(parent, SWT.NONE);
+		lblGenerations.setText("Generations");
 
-		TreeViewer treeViewer = new TreeViewer(composite, SWT.BORDER);
+		spinnerGenerations = new Spinner(parent, SWT.BORDER);
+		spinnerGenerations.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				store.setValue("TREEGENERATIONS", spinnerGenerations.getSelection());
+			}
+		});
+		spinnerGenerations.setSelection(store.getInt("TREEGENERATIONS"));
+
+		treeViewer = new TreeViewer(parent, SWT.BORDER);
 		treeViewer.setContentProvider(new DescendantTreeContentProvider());
+
 		Tree tree = treeViewer.getTree();
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		TreeViewerColumn treeViewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
-		TreeColumn trclmnDescendants = treeViewerColumn.getColumn();
-		trclmnDescendants.setWidth(100);
-		trclmnDescendants.setText("Descendants");
-
-		int key = 1;
-		int generations = 1;
+		TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
+		viewerColumn.getColumn().setWidth(444);
 		try {
-			treeViewer.setInput(provider.getDescendantList(key, generations));
-		} catch (SQLException | MvpException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+			viewerColumn.setLabelProvider(new ColumnLabelProvider());
+			treeViewer.setInput(provider.getDescendantList(personId, Integer.parseInt(spinnerGenerations.getText())));
+		} catch (SQLException | MvpException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 
 		GridLayoutFactory.fillDefaults().generateLayout(parent);
 	}
 
+	/**
+	 * 
+	 */
 	@PreDestroy
 	public void dispose() {
 	}
 
+	/**
+	 * 
+	 */
 	@Focus
 	public void setFocus() {
 	}
 
+	/**
+	 * @param personPid
+	 */
+	@Inject
+	@Optional
+	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+		LOGGER.fine("Received person id " + personPid);
+		try {
+			treeViewer.setInput(provider.getAncestorList(personPid, spinnerGenerations.getSelection()));
+			treeViewer.refresh();
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }

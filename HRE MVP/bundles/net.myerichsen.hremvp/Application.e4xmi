@@ -41,8 +41,8 @@
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_R1IjkCliEemnBvsVE1QsUw" elementId="net.myerichsen.hremvp.handledmenuitem.deleteselectedperson" label="Delete selected person..." command="_YlGbgCliEemnBvsVE1QsUw"/>
               </menus>
             </children>
-            <children xsi:type="basic:Part" xmi:id="__ROskBSyEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.ancestornavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Ancestor Navigator"/>
-            <children xsi:type="basic:Part" xmi:id="_G-ujwBSzEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.descendantnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Descendant Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="_uBK-YC06Eemcp-DUi5EAZw" elementId="net.myerichsen.hremvp.part.ancestornavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Ancestor Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="_G-ujwBSzEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.descendantnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.DescendantNavigator" label="Descendant Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_oZFC8BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.12" containerData="900">
             <children xsi:type="basic:PartSashContainer" xmi:id="_y8_toBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.13" horizontal="true">

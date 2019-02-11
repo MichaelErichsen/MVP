@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 11. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -224,10 +224,42 @@ public class PersonServer implements IHREServer {
 					break;
 				}
 			}
-
 		}
 
 		return allNamesList;
+	}
+
+	/**
+	 * Recursive call for ancestors
+	 * 
+	 * @param key
+	 * @param childPid
+	 * @param generations
+	 * @return
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public List<List<String>> getAncestorList(int key, int childPid, int generations)
+			throws SQLException, MvpException {
+		final List<List<String>> ancestorList = new ArrayList<>();
+		final PersonNameServer pnp = new PersonNameServer();
+
+		final Parents parentRelation = new Parents();
+		final List<Parents> fkChild = parentRelation.getFKChild(key);
+
+		final List<String> ls = new ArrayList<>();
+		ls.add(Integer.toString(key));
+		ls.add(Integer.toString(childPid));
+		ls.add(pnp.getPrimaryNameString(key));
+		ancestorList.add(ls);
+
+		if (generations-- > 0) {
+			for (final Parents parent : fkChild) {
+				ancestorList.addAll(getAncestorList(parent.getParent(), key, generations));
+			}
+		}
+
+		return ancestorList;
 	}
 
 	/**
@@ -245,8 +277,8 @@ public class PersonServer implements IHREServer {
 	public List<List<String>> getChildrenList(int key) throws SQLException {
 		List<String> ls;
 
-		PersonNameServer pns = new PersonNameServer();
-		List<List<String>> childrenList = new ArrayList<List<String>>();
+		final PersonNameServer pns = new PersonNameServer();
+		final List<List<String>> childrenList = new ArrayList<>();
 
 		for (final Parents parent : new Parents().getFKParent(key)) {
 			ls = new ArrayList<>();
@@ -269,32 +301,32 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * Recursive call for descendants
+	 *
 	 * @param key
+	 * @param parentPid
 	 * @param generations
 	 * @return
-	 * @throws MvpException
 	 * @throws SQLException
+	 * @throws MvpException
 	 */
-	public List<List<String>> getDescendantList(int key, int generations) throws SQLException, MvpException {
+	public List<List<String>> getDescendantList(int key, int parentPid, int generations)
+			throws SQLException, MvpException {
 		final List<List<String>> descendantList = new ArrayList<>();
-		int parentPid;
-
-		final Persons person = new Persons();
-		person.get(key);
+		final PersonNameServer pnp = new PersonNameServer();
 
 		final Parents parentRelation = new Parents();
+		final List<Parents> fkParent = parentRelation.getFKParent(key);
 
-		for (final Parents parent : parentRelation.getFKParent(key)) {
-			if (generations-- > 0) {
-				return getDescendantList(generations, parent.getChild());
-			} else {
-				final List<String> ls = new ArrayList<>();
-				parentPid = parent.getParent();
-				ls.add(Integer.toString(parentPid));
-				ls.add(Integer.toString(parent.getChild()));
-				ls.add(new PersonNameServer().getPrimaryNameString(parentPid));
-				descendantList.add(ls);
-				return descendantList;
+		final List<String> ls = new ArrayList<>();
+		ls.add(Integer.toString(key));
+		ls.add(Integer.toString(parentPid));
+		ls.add(pnp.getPrimaryNameString(key));
+		descendantList.add(ls);
+
+		if (generations-- > 0) {
+			for (final Parents parent : fkParent) {
+				descendantList.addAll(getDescendantList(parent.getChild(), key, generations));
 			}
 		}
 
@@ -309,6 +341,34 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param i
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getParentList(int key) throws SQLException {
+		final List<List<String>> parentList = new ArrayList<>();
+		List<String> ls;
+		int parentPid;
+		final PersonNameServer pns = new PersonNameServer();
+
+		if (key == 0) {
+			return parentList;
+		}
+
+		for (final Parents parent : new Parents().getFKChild(key)) {
+			ls = new ArrayList<>();
+			parentPid = parent.getParent();
+			ls.add(Integer.toString(parentPid));
+			ls.add(pns.getPrimaryNameString(parentPid));
+			ls.add(parent.getParentRole());
+			ls.add(Boolean.toString(parent.isPrimaryParent()));
+
+			parentList.add(ls);
+		}
+		return parentList;
+	}
+
+	/**
 	 * @param key
 	 * @return the partnerList
 	 * @throws SQLException
@@ -316,9 +376,9 @@ public class PersonServer implements IHREServer {
 	public List<List<String>> getPartnerList(int key) throws SQLException {
 		List<String> ls;
 
-		PersonNameServer pns = new PersonNameServer();
-		List<List<String>> partnerList = new ArrayList<>();
-		List<Partners> lpa = new Partners().getFKPartner1(key);
+		final PersonNameServer pns = new PersonNameServer();
+		final List<List<String>> partnerList = new ArrayList<>();
+		final List<Partners> lpa = new Partners().getFKPartner1(key);
 		lpa.addAll(new Partners().getFKPartner2(key));
 
 		for (final Partners partner : lpa) {
@@ -496,34 +556,6 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * @param i
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<List<String>> getParentList(int key) throws SQLException {
-		final List<List<String>> parentList = new ArrayList<>();
-		List<String> ls;
-		int parentPid;
-		PersonNameServer pns = new PersonNameServer();
-
-		if (key == 0) {
-			return parentList;
-		}
-
-		for (final Parents parent : new Parents().getFKChild(key)) {
-			ls = new ArrayList<>();
-			parentPid = parent.getParent();
-			ls.add(Integer.toString(parentPid));
-			ls.add(pns.getPrimaryNameString(parentPid));
-			ls.add(parent.getParentRole());
-			ls.add(Boolean.toString(parent.isPrimaryParent()));
-
-			parentList.add(ls);
-		}
-		return parentList;
-	}
-
-	/**
 	 * @return the personPid
 	 */
 	public int getPersonPid() {
@@ -675,10 +707,10 @@ public class PersonServer implements IHREServer {
 	 * @throws SQLException
 	 */
 	public List<List<String>> getSexesList(int key) throws SQLException, MvpException {
-		SexTypes st = new SexTypes();
+		final SexTypes st = new SexTypes();
 		List<String> ls;
 
-		List<List<String>> sexesList = new ArrayList<List<String>>();
+		final List<List<String>> sexesList = new ArrayList<>();
 
 		if (key == 0) {
 			return sexesList;
@@ -823,6 +855,5 @@ public class PersonServer implements IHREServer {
 	 */
 	public void updateRemote(HttpServletRequest request) {
 		// TODO Auto-generated method stub
-
 	}
 }
