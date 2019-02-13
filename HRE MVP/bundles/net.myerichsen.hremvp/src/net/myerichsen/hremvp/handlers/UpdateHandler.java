@@ -35,7 +35,7 @@
 /*     */
 /*     */ public class UpdateHandler
 /*     */ {
-	/* 35 */ private static final Logger LOGGER = Logger.getLogger("global");
+	 private static final Logger LOGGER = Logger.getLogger("global");
 	/*     */
 	/*     */
 	/*     */
@@ -52,43 +52,43 @@
 	/*     */ private void configureProvisioningJob(ProvisioningJob provisioningJob, final Shell shell,
 			final UISynchronize sync, final IWorkbench workbench, IProgressMonitor monitor)
 	/*     */ {
-		/* 50 */ LOGGER.fine("Configure Provisioning job");
-		/* 51 */ SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
-		/* 52 */ subMonitor.beginTask("Configure Provisioning Job", 25);
+		 LOGGER.fine("Configure Provisioning job");
+		 SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
+		 subMonitor.beginTask("Configure Provisioning Job", 25);
 		/*     */
-		/* 54 */ provisioningJob.addJobChangeListener(new JobChangeAdapter()
+		 provisioningJob.addJobChangeListener(new JobChangeAdapter()
 		/*     */ {
 			/*     */ public void done(IJobChangeEvent event) {
-				/* 57 */ if (event.getResult().isOK()) {
-					/* 58 */ sync.syncExec(new Runnable()
+				 if (event.getResult().isOK()) {
+					 sync.syncExec(new Runnable()
 					/*     */ {
 						/*     */ public void run()
 						/*     */ {
-							/* 62 */ boolean restart = MessageDialog.openQuestion(shell, "Updates installed, restart?",
-									/* 63 */ "Updates for HRE have been installed from "
+							 boolean restart = MessageDialog.openQuestion(shell, "Updates installed, restart?",
+									 "Updates for HRE have been installed from "
 											+ UpdateHandler.this.store.getString("UPDATESITE") +
-							/* 64 */ ". Do you want to restart?");
-							/* 65 */ if (restart) {
-								/* 66 */ workbench.restart();
+							 ". Do you want to restart?");
+							 if (restart) {
+								 workbench.restart();
 								/*     */ }
 							/*     */
 							/*     */ }
 						/*     */ });
 					/*     */ } else {
-					/* 72 */ sync.syncExec(new Runnable()
+					 sync.syncExec(new Runnable()
 					/*     */ {
 						/*     */ public void run()
 						/*     */ {
-							/* 76 */ MessageDialog.openWarning(shell, "Update failed", /* 77 */ "Update of HRE from "
+							 MessageDialog.openWarning(shell, "Update failed",  "Update of HRE from "
 									+ UpdateHandler.this.store.getString("UPDATESITE") + " have failed");
 							/*     */ }
 						/*     */ });
 					/*     */ }
-				/* 81 */ super.done(event);
+				 super.done(event);
 
 				/*     */ }
-			/* 83 */ });
-		/* 84 */ subMonitor.worked(25);
+			 });
+		 subMonitor.worked(25);
 		/*     */ }
 
 	/*     */
@@ -101,23 +101,23 @@
 	/*     */
 	/*     */ private UpdateOperation configureUpdate(UpdateOperation operation, IProgressMonitor monitor)
 	/*     */ {
-		/* 96 */ SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
-		/* 97 */ subMonitor.beginTask("Configure Update", 25);
-		/* 98 */ LOGGER.fine("Configure Update");
+		 SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
+		 subMonitor.beginTask("Configure Update", 25);
+		 LOGGER.fine("Configure Update");
 		/*     */
-		/* 100 */ URI uri = null;
+		 URI uri = null;
 		/*     */ try {
-			/* 102 */ uri = new URI(this.store.getString("UPDATESITE"));
+			 uri = new URI(this.store.getString("UPDATESITE"));
 			/*     */ } catch (URISyntaxException e) {
-			/* 104 */ LOGGER
+			 LOGGER
 					.severe(e.getClass() + ": " + e.getMessage() + " at line " + e.getStackTrace()[0].getLineNumber());
-			/* 105 */ return null;
+			 return null;
 			/*     */ }
 		/*     */
-// TODO		/* 108 */ operation.getProvisioningContext().setArtifactRepositories(new URI[] { uri });
-//		/* 109 */ operation.getProvisioningContext().setMetadataRepositories(new URI[] { uri });
-		/* 110 */ subMonitor.worked(25);
-		/* 111 */ return operation;
+// TODO		 operation.getProvisioningContext().setArtifactRepositories(new URI[] { uri });
+//		 operation.getProvisioningContext().setMetadataRepositories(new URI[] { uri });
+		 subMonitor.worked(25);
+		 return operation;
 		/*     */ }
 
 	/*     */
@@ -131,13 +131,13 @@
 	/*     */ public void execute(final IProvisioningAgent agent, final Shell shell, final UISynchronize sync,
 			final IWorkbench workbench)
 	/*     */ {
-		/* 123 */ this.store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+		 this.store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
 				"org.historyresearchenvironment.usergui");
-		/* 124 */ LOGGER.fine("Repository location: " + this.store.getString("UPDATESITE"));
+		 LOGGER.fine("Repository location: " + this.store.getString("UPDATESITE"));
 		/*     */ try
 		/*     */ {
-			/* 127 */ ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
-			/* 128 */ dialog.run(true, true, new IRunnableWithProgress()
+			 ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+			 dialog.run(true, true, new IRunnableWithProgress()
 			/*     */ {
 				/*     */
 				/*     */
@@ -147,45 +147,45 @@
 					/*     */
 					/*     */
 					/*     */
-					/* 138 */ SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
+					 SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
 					/*     */
-					/* 140 */ UpdateHandler.LOGGER.fine("Check for updates");
+					 UpdateHandler.LOGGER.fine("Check for updates");
 					/*     */
-					/* 142 */ ProvisioningSession session = new ProvisioningSession(agent);
-					/* 143 */ UpdateOperation operation = new UpdateOperation(session);
-					/* 144 */ UpdateHandler.this.configureUpdate(operation, subMonitor.split(25, 0));
-					/*     */
-					/*     */
-					/* 147 */ IStatus status = UpdateHandler.this.resolveModal(monitor, operation,
-							/* 148 */ subMonitor.split(25, 0));
+					 ProvisioningSession session = new ProvisioningSession(agent);
+					 UpdateOperation operation = new UpdateOperation(session);
+					 UpdateHandler.this.configureUpdate(operation, subMonitor.split(25, 0));
 					/*     */
 					/*     */
-					/* 151 */ if (status.getCode() == 10000) {
-						/* 152 */ UpdateHandler.this.showMessage(shell, sync);
-						/* 153 */ return;
+					 IStatus status = UpdateHandler.this.resolveModal(monitor, operation,
+							 subMonitor.split(25, 0));
+					/*     */
+					/*     */
+					 if (status.getCode() == 10000) {
+						 UpdateHandler.this.showMessage(shell, sync);
+						 return;
 						/*     */ }
 					/*     */
 					/*     */
-					/* 157 */ ProvisioningJob provisioningJob = UpdateHandler.this.getProvisioningJob(monitor,
-							operation, /* 158 */ subMonitor.split(25, 0));
+					 ProvisioningJob provisioningJob = UpdateHandler.this.getProvisioningJob(monitor,
+							operation,  subMonitor.split(25, 0));
 					/*     */
 					/*     */
-					/* 161 */ if (provisioningJob == null) {
-						/* 162 */ UpdateHandler.LOGGER
+					 if (provisioningJob == null) {
+						 UpdateHandler.LOGGER
 								.severe("Trying to update from the Eclipse IDE? This won't work!");
-						/* 163 */ return;
+						 return;
 						/*     */ }
-					/* 165 */ UpdateHandler.this.configureProvisioningJob(provisioningJob, shell, sync, workbench,
-							/* 166 */ subMonitor.split(25, 0));
+					 UpdateHandler.this.configureProvisioningJob(provisioningJob, shell, sync, workbench,
+							 subMonitor.split(25, 0));
 					/*     */
-					/* 168 */ provisioningJob.schedule();
+					 provisioningJob.schedule();
 					/*     */ }
 				/*     */ });
 			/*     */ }
 		/*     */ catch (InvocationTargetException e) {
-			/* 173 */ LOGGER.severe(e.getClass() + ": " + e.getMessage());
+			 LOGGER.severe(e.getClass() + ": " + e.getMessage());
 			/*     */ } catch (InterruptedException e) {
-			/* 175 */ LOGGER.severe(e.getClass() + ": " + e.getMessage());
+			 LOGGER.severe(e.getClass() + ": " + e.getMessage());
 			/*     */ }
 		/*     */ }
 
@@ -199,12 +199,12 @@
 	/*     */ private ProvisioningJob getProvisioningJob(IProgressMonitor monitor, UpdateOperation operation,
 			IProgressMonitor monitor2)
 	/*     */ {
-		/* 187 */ SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
-		/* 188 */ subMonitor.beginTask("Get Provisioning Job", 25);
-		/* 189 */ LOGGER.info("Get Provisioning Job");
-		/* 190 */ ProvisioningJob provisioningJob = operation.getProvisioningJob(monitor);
-		/* 191 */ subMonitor.worked(25);
-		/* 192 */ return provisioningJob;
+		 SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
+		 subMonitor.beginTask("Get Provisioning Job", 25);
+		 LOGGER.info("Get Provisioning Job");
+		 ProvisioningJob provisioningJob = operation.getProvisioningJob(monitor);
+		 subMonitor.worked(25);
+		 return provisioningJob;
 		/*     */ }
 
 	/*     */
@@ -217,12 +217,12 @@
 	/*     */ private IStatus resolveModal(IProgressMonitor monitor, UpdateOperation operation,
 			IProgressMonitor monitor2)
 	/*     */ {
-		/* 203 */ SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
-		/* 204 */ subMonitor.beginTask("Resolve Modal Operation", 25);
-		/* 205 */ LOGGER.info("Resolve Modal Operation");
-		/* 206 */ IStatus status = operation.resolveModal(monitor);
-		/* 207 */ subMonitor.worked(25);
-		/* 208 */ return status;
+		 SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
+		 subMonitor.beginTask("Resolve Modal Operation", 25);
+		 LOGGER.info("Resolve Modal Operation");
+		 IStatus status = operation.resolveModal(monitor);
+		 subMonitor.worked(25);
+		 return status;
 		/*     */ }
 
 	/*     */
@@ -231,8 +231,8 @@
 	/*     */
 	/*     */ private void showMessage(final Shell parent, UISynchronize sync)
 	/*     */ {
-		/* 216 */ LOGGER.fine("Show message");
-		/* 217 */ sync.syncExec(new Runnable()
+		 LOGGER.fine("Show message");
+		 sync.syncExec(new Runnable()
 		/*     */ {
 			/*     */
 			/*     */
@@ -241,8 +241,8 @@
 			/*     */ {
 				/*     */
 				/*     */
-				/* 226 */ MessageDialog.openWarning(parent, "No update",
-						/* 227 */ "No updates for HRE have been found at "
+				 MessageDialog.openWarning(parent, "No update",
+						 "No updates for HRE have been found at "
 								+ UpdateHandler.this.store.getString("UPDATESITE"));
 				/*     */ }
 			/*     */ });

@@ -14,7 +14,7 @@
 
 public class GoogleSearchHandler
 /*    */ {
-/* 21 */   protected static final Logger LOGGER = Logger.getLogger("global");
+   protected static final Logger LOGGER = Logger.getLogger("global");
 /*    */   
 /*    */ 
 /*    */ 
@@ -23,19 +23,19 @@ public class GoogleSearchHandler
 /*    */   @Execute
 /*    */   public void execute(EPartService partService, MApplication application, EModelService modelService)
 /*    */   {
-/* 30 */     LOGGER.info("execute");
+     LOGGER.info("execute");
 /*    */     
-/* 32 */     MPart part = MBasicFactory.INSTANCE.createPart();
-/* 33 */     part.setLabel("Google Search");
-/* 34 */     part.setCloseable(true);
-/* 35 */     part.setContainerData("500");
-/* 36 */     part.setVisible(true);
-/* 37 */     part.setContributionURI(
-/* 38 */       "bundleclass://org.historyresearchenvironment.usergui/org.historyresearchenvironment.usergui.parts.GoogleBrowser");
-/* 39 */     List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-/* 40 */     ((MPartStack)stacks.get(stacks.size() - 1)).getChildren().add(part);
-/* 41 */     partService.showPart(part, EPartService.PartState.ACTIVATE);
-/* 42 */     LOGGER.info("executed");
+     MPart part = MBasicFactory.INSTANCE.createPart();
+     part.setLabel("Google Search");
+     part.setCloseable(true);
+     part.setContainerData("500");
+     part.setVisible(true);
+     part.setContributionURI(
+       "bundleclass://org.historyresearchenvironment.usergui/org.historyresearchenvironment.usergui.parts.GoogleBrowser");
+     List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+     ((MPartStack)stacks.get(stacks.size() - 1)).getChildren().add(part);
+     partService.showPart(part, EPartService.PartState.ACTIVATE);
+     LOGGER.info("executed");
 /*    */   }
 /*    */ }
 

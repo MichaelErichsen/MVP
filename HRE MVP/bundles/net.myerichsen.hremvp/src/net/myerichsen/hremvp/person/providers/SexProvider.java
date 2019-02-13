@@ -53,7 +53,7 @@ public class SexProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
 	@Override

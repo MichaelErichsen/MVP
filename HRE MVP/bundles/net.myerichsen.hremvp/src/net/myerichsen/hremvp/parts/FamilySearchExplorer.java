@@ -45,95 +45,95 @@
 //	/*     */ @PostConstruct
 //	/*     */ public void createControls(Composite parent)
 //	/*     */ {
-//		/* 45 */ LOGGER.fine("Create Controls");
-//		/* 46 */ this.shell = parent.getShell();
-//		/* 47 */ parent.setLayout(new GridLayout(1, false));
+//		 LOGGER.fine("Create Controls");
+//		 this.shell = parent.getShell();
+//		 parent.setLayout(new GridLayout(1, false));
 //		/*     */
-//		/* 49 */ this.tableViewerFSSearch = new TableViewer(parent, 67584);
+//		 this.tableViewerFSSearch = new TableViewer(parent, 67584);
 //		/*     */
-//		/* 51 */ TableViewerColumn tableViewerColumn = new TableViewerColumn(this.tableViewerFSSearch, 0);
-//		/* 52 */ TableColumn tblclmnName = tableViewerColumn.getColumn();
-//		/* 53 */ tblclmnName.setWidth(200);
-//		/* 54 */ tblclmnName.setText("Name");
-//		/* 55 */ tableViewerColumn.setLabelProvider(new HREColumnLabelProvider()
+//		 TableViewerColumn tableViewerColumn = new TableViewerColumn(this.tableViewerFSSearch, 0);
+//		 TableColumn tblclmnName = tableViewerColumn.getColumn();
+//		 tblclmnName.setWidth(200);
+//		 tblclmnName.setText("Name");
+//		 tableViewerColumn.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
-//				/* 58 */ FamilySearchModel item = (FamilySearchModel) element;
-//				/* 59 */ return item.getName();
+//				 FamilySearchModel item = (FamilySearchModel) element;
+//				 return item.getName();
 //				/*     */ }
 //			/*     */
-//			/* 62 */ });
-//		/* 63 */ TableViewerColumn tableViewerColumn_5 = new TableViewerColumn(this.tableViewerFSSearch, 0);
-//		/* 64 */ TableColumn tblclmnGender = tableViewerColumn_5.getColumn();
-//		/* 65 */ tblclmnGender.setWidth(75);
-//		/* 66 */ tblclmnGender.setText("Gender");
-//		/* 67 */ tableViewerColumn_5.setLabelProvider(new HREColumnLabelProvider()
+//			 });
+//		 TableViewerColumn tableViewerColumn_5 = new TableViewerColumn(this.tableViewerFSSearch, 0);
+//		 TableColumn tblclmnGender = tableViewerColumn_5.getColumn();
+//		 tblclmnGender.setWidth(75);
+//		 tblclmnGender.setText("Gender");
+//		 tableViewerColumn_5.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
-//				/* 70 */ FamilySearchModel item = (FamilySearchModel) element;
-//				/* 71 */ return item.getGender();
+//				 FamilySearchModel item = (FamilySearchModel) element;
+//				 return item.getGender();
 //				/*     */ }
 //			/*     */
-//			/* 74 */ });
-//		/* 75 */ TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(this.tableViewerFSSearch, 0);
-//		/* 76 */ TableColumn tblclmnBirthDate = tableViewerColumn_1.getColumn();
-//		/* 77 */ tblclmnBirthDate.setWidth(100);
-//		/* 78 */ tblclmnBirthDate.setText("Birth Date");
-//		/* 79 */ tableViewerColumn_1.setLabelProvider(new HREColumnLabelProvider()
+//			 });
+//		 TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(this.tableViewerFSSearch, 0);
+//		 TableColumn tblclmnBirthDate = tableViewerColumn_1.getColumn();
+//		 tblclmnBirthDate.setWidth(100);
+//		 tblclmnBirthDate.setText("Birth Date");
+//		 tableViewerColumn_1.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
-//				/* 82 */ FamilySearchModel item = (FamilySearchModel) element;
-//				/* 83 */ return item.getBirthDate();
+//				 FamilySearchModel item = (FamilySearchModel) element;
+//				 return item.getBirthDate();
 //				/*     */ }
 //			/*     */
-//			/* 86 */ });
-//		/* 87 */ TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(this.tableViewerFSSearch, 0);
-//		/* 88 */ TableColumn tblclmnBirthPlace = tableViewerColumn_2.getColumn();
-//		/* 89 */ tblclmnBirthPlace.setWidth(200);
-//		/* 90 */ tblclmnBirthPlace.setText("Birth Place");
-//		/* 91 */ tableViewerColumn_2.setLabelProvider(new HREColumnLabelProvider()
+//			 });
+//		 TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(this.tableViewerFSSearch, 0);
+//		 TableColumn tblclmnBirthPlace = tableViewerColumn_2.getColumn();
+//		 tblclmnBirthPlace.setWidth(200);
+//		 tblclmnBirthPlace.setText("Birth Place");
+//		 tableViewerColumn_2.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
-//				/* 94 */ FamilySearchModel item = (FamilySearchModel) element;
-//				/* 95 */ return item.getBirthPlace();
+//				 FamilySearchModel item = (FamilySearchModel) element;
+//				 return item.getBirthPlace();
 //				/*     */ }
 //			/*     */
-//			/* 98 */ });
-//		/* 99 */ TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(this.tableViewerFSSearch, 0);
-//		/* 100 */ TableColumn tblclmnDeathDate = tableViewerColumn_3.getColumn();
-//		/* 101 */ tblclmnDeathDate.setWidth(100);
-//		/* 102 */ tblclmnDeathDate.setText("Death Date");
-//		/* 103 */ tableViewerColumn_3.setLabelProvider(new HREColumnLabelProvider()
+//			 });
+//		 TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(this.tableViewerFSSearch, 0);
+//		 TableColumn tblclmnDeathDate = tableViewerColumn_3.getColumn();
+//		 tblclmnDeathDate.setWidth(100);
+//		 tblclmnDeathDate.setText("Death Date");
+//		 tableViewerColumn_3.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
-//				/* 106 */ FamilySearchModel item = (FamilySearchModel) element;
-//				/* 107 */ return item.getDeathDate();
+//				 FamilySearchModel item = (FamilySearchModel) element;
+//				 return item.getDeathDate();
 //				/*     */ }
 //			/*     */
-//			/* 110 */ });
-//		/* 111 */ TableViewerColumn tableViewerColumn_4 = new TableViewerColumn(this.tableViewerFSSearch, 0);
-//		/* 112 */ TableColumn tblclmnDeathPlace = tableViewerColumn_4.getColumn();
-//		/* 113 */ tblclmnDeathPlace.setWidth(200);
-//		/* 114 */ tblclmnDeathPlace.setText("Death Place");
-//		/* 115 */ tableViewerColumn_4.setLabelProvider(new HREColumnLabelProvider()
+//			 });
+//		 TableViewerColumn tableViewerColumn_4 = new TableViewerColumn(this.tableViewerFSSearch, 0);
+//		 TableColumn tblclmnDeathPlace = tableViewerColumn_4.getColumn();
+//		 tblclmnDeathPlace.setWidth(200);
+//		 tblclmnDeathPlace.setText("Death Place");
+//		 tableViewerColumn_4.setLabelProvider(new HREColumnLabelProvider()
 //		/*     */ {
 //			/*     */ public String getText(Object element) {
-//				/* 118 */ FamilySearchModel item = (FamilySearchModel) element;
-//				/* 119 */ return item.getDeathPlace();
+//				 FamilySearchModel item = (FamilySearchModel) element;
+//				 return item.getDeathPlace();
 //				/*     */ }
 //			/*     */
-//			/* 122 */ });
-//		/* 123 */ this.tableFSSearch = this.tableViewerFSSearch.getTable();
-//		/* 124 */ this.tableFSSearch.setLayoutData(new GridData(4, 4, true, true, 1, 1));
-//		/* 125 */ this.tableFSSearch.setLinesVisible(true);
-//		/* 126 */ this.tableFSSearch.setHeaderVisible(true);
-//		/* 127 */ this.tableFSSearch.setFont(getHreFont(parent));
+//			 });
+//		 this.tableFSSearch = this.tableViewerFSSearch.getTable();
+//		 this.tableFSSearch.setLayoutData(new GridData(4, 4, true, true, 1, 1));
+//		 this.tableFSSearch.setLinesVisible(true);
+//		 this.tableFSSearch.setHeaderVisible(true);
+//		 this.tableFSSearch.setFont(getHreFont(parent));
 //		/*     */
-//		/* 129 */ this.tableViewerFSSearch.setContentProvider(ArrayContentProvider.getInstance());
+//		 this.tableViewerFSSearch.setContentProvider(ArrayContentProvider.getInstance());
 //		/*     */
-//		/* 131 */ this.model = new FamilySearchProvider(this.shell);
-//		/* 132 */ this.tableViewerFSSearch.setInput(this.model.getItemList());
-//		/* 133 */ this.tableViewerFSSearch.refresh();
+//		 this.model = new FamilySearchProvider(this.shell);
+//		 this.tableViewerFSSearch.setInput(this.model.getItemList());
+//		 this.tableViewerFSSearch.refresh();
 //		/*     */ }
 //
 //	/*     */
@@ -152,25 +152,25 @@
 //	/*     */ @Optional
 //	/*     */ private void subscribeNameUpdateTopic(@UIEventTopic("NAME_UPDATE_TOPIC") String perName)
 //	/*     */ {
-//		/* 147 */ LOGGER.fine("Subscribing to " + perName);
+//		 LOGGER.fine("Subscribing to " + perName);
 //		/*     */
-//		/* 149 */ if ((this.tableFSSearch != null) && (this.tableViewerFSSearch != null)
+//		 if ((this.tableFSSearch != null) && (this.tableViewerFSSearch != null)
 //				&& (this.tableFSSearch.isVisible())) {
-//			/* 150 */ updateGui();
+//			 updateGui();
 //			/*     */ } else {
-//			/* 152 */ LOGGER.fine("Not visible");
+//			 LOGGER.fine("Not visible");
 //			/*     */ }
 //		/*     */ }
 //
 //	/*     */
 //	/*     */ protected void updateGui()
 //	/*     */ {
-//		/* 158 */ LOGGER.fine("Updating GUI");
+//		 LOGGER.fine("Updating GUI");
 //		/*     */
-//		/* 160 */ this.model = new FamilySearchProvider(this.shell);
-//		/* 161 */ LOGGER.fine("Set input: Get item list");
-//		/* 162 */ this.tableViewerFSSearch.setInput(this.model.getItemList());
-//		/* 163 */ LOGGER.fine("Refresh");
-//		/* 164 */ this.tableViewerFSSearch.refresh();
+//		 this.model = new FamilySearchProvider(this.shell);
+//		 LOGGER.fine("Set input: Get item list");
+//		 this.tableViewerFSSearch.setInput(this.model.getItemList());
+//		 LOGGER.fine("Refresh");
+//		 this.tableViewerFSSearch.refresh();
 //		/*     */ }
 //	/*     */ }

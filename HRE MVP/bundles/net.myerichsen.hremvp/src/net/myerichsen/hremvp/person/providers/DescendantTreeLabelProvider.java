@@ -4,14 +4,18 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 
 /**
- * @author  Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 10. feb. 2019
  *
  */
 public class DescendantTreeLabelProvider implements IBaseLabelProvider {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.jface.viewers.ILabelProviderListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.jface.
+	 * viewers.ILabelProviderListener)
 	 */
 	@Override
 	public void addListener(ILabelProviderListener listener) {
@@ -19,7 +23,9 @@ public class DescendantTreeLabelProvider implements IBaseLabelProvider {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
 	 */
 	@Override
@@ -28,8 +34,11 @@ public class DescendantTreeLabelProvider implements IBaseLabelProvider {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.
+	 * Object, java.lang.String)
 	 */
 	@Override
 	public boolean isLabelProperty(Object element, String property) {
@@ -37,8 +46,12 @@ public class DescendantTreeLabelProvider implements IBaseLabelProvider {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface
+	 * .viewers.ILabelProviderListener)
 	 */
 	@Override
 	public void removeListener(ILabelProviderListener listener) {

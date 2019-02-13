@@ -37,20 +37,20 @@
 ///*    */   @PostConstruct
 ///*    */   public void createControls(Composite parent)
 ///*    */   {
-///* 40 */     parent.setLayout(new GridLayout(1, false));
+//     parent.setLayout(new GridLayout(1, false));
 ///*    */     
-///* 42 */     CLabel lblNewLabel = new CLabel(parent, 0);
-///* 43 */     lblNewLabel
-///* 44 */       .setImage(ResourceManager.getPluginImage("org.historyresearchenvironment.usergui", "pictures/UK.jpg"));
-///* 45 */     CLabel lblNewLabel2 = new CLabel(parent, 0);
-///* 46 */     lblNewLabel2.setText("The Church of St Christopher at Willingale Doe, Essex.\r\nFrederick and Charlotte Davis ran the school attached\r\nto the church");
+//     CLabel lblNewLabel = new CLabel(parent, 0);
+//     lblNewLabel
+//       .setImage(ResourceManager.getPluginImage("org.historyresearchenvironment.usergui", "pictures/UK.jpg"));
+//     CLabel lblNewLabel2 = new CLabel(parent, 0);
+//     lblNewLabel2.setText("The Church of St Christopher at Willingale Doe, Essex.\r\nFrederick and Charlotte Davis ran the school attached\r\nto the church");
 ///*    */     
-///* 48 */     lblNewLabel2.setFont(getHreFont(parent));
+//     lblNewLabel2.setFont(getHreFont(parent));
 ///*    */   }
 ///*    */   
 ///*    */   @PreDestroy
 ///*    */   public void dispose() {
-///* 53 */     this.i.dispose();
+//     this.i.dispose();
 ///*    */   }
 ///*    */   
 ///*    */   @Focus

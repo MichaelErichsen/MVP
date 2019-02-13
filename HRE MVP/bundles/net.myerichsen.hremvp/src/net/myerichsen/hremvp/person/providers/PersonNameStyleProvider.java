@@ -47,6 +47,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
 	}
@@ -55,6 +56,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public List<NameStyles> get() throws SQLException {
 		return server.get();
 	}
@@ -67,6 +69,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 
@@ -128,6 +131,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setIsoCode(isoCode);
 		server.setLabel(label);
@@ -188,6 +192,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setIsoCode(isoCode);
 		server.setLabel(label);

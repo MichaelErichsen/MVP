@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. feb. 2019
+ * @version 13. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -235,7 +235,7 @@ public class PersonServer implements IHREServer {
 	 * @param key
 	 * @param childPid
 	 * @param generations
-	 * @return
+	 * @return List of lists of id, child id and primary name
 	 * @throws SQLException
 	 * @throws MvpException
 	 */

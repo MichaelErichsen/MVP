@@ -53,7 +53,7 @@ public class PersonEventProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
 	@Override
@@ -64,7 +64,7 @@ public class PersonEventProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
@@ -174,7 +174,7 @@ public class PersonEventProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override

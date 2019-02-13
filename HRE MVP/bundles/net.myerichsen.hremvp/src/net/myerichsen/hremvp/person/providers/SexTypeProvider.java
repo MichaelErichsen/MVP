@@ -58,6 +58,30 @@ public class SexTypeProvider implements IHREProvider {
 		server = new SexTypeServer();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		server.delete(key);
+
+	}
+
+	/**
+	 * Delete a row
+	 *
+	 * @param key The persistent ID of the row
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 *
+	 */
+	public void delete1(int key) throws SQLException, MvpException {
+		server.delete(key);
+	}
+
 	/**
 	 * Delete a row
 	 *
@@ -83,22 +107,10 @@ public class SexTypeProvider implements IHREProvider {
 	}
 
 	/**
-	 * Delete a row
-	 *
-	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 *
-	 */
-	public void delete1(int key) throws SQLException, MvpException {
-		server.delete(key);
-	}
-
-	/**
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public List<SexTypes> get() throws SQLException {
 		return server.get();
 	}
@@ -112,6 +124,7 @@ public class SexTypeProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setSexTypePid(server.getSexTypePid());
@@ -120,6 +133,41 @@ public class SexTypeProvider implements IHREProvider {
 		setLanguagePid(server.getLanguagePid());
 		setLanguageLabel(server.getLanguageLabel());
 		setIsoCode(server.getIsoCode());
+	}
+
+	/**
+	 * @return the abbreviation
+	 */
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	/**
+	 * @return the isoCode
+	 */
+	public String getIsoCode() {
+		return isoCode;
+	}
+
+	/**
+	 * @return the label
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * @return the languageLabel
+	 */
+	public String getLanguageLabel() {
+		return languageLabel;
+	}
+
+	/**
+	 * @return the languagePid
+	 */
+	public int getLanguagePid() {
+		return languagePid;
 	}
 
 	/**
@@ -169,45 +217,26 @@ public class SexTypeProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the abbreviation
-	 */
-	public String getAbbreviation() {
-		return abbreviation;
-	}
-
-	/**
-	 * @return the isoCode
-	 */
-	public String getIsoCode() {
-		return isoCode;
-	}
-
-	/**
-	 * @return the label
-	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @return the languageLabel
-	 */
-	public String getLanguageLabel() {
-		return languageLabel;
-	}
-
-	/**
-	 * @return the languagePid
-	 */
-	public int getLanguagePid() {
-		return languagePid;
-	}
-
-	/**
 	 * @return the sexTypePid
 	 */
 	public int getSexTypePid() {
 		return sexTypePid;
+	}
+
+	/**
+	 * Insert a row
+	 *
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		server.setSexTypePid(sexTypePid);
+		server.setAbbreviation(abbreviation);
+		server.setLabel(label);
+		server.setLanguagePid(languagePid);
+		return server.insert();
 	}
 
 	/**
@@ -244,21 +273,6 @@ public class SexTypeProvider implements IHREProvider {
 
 		result.close();
 		client.close();
-	}
-
-	/**
-	 * Insert a row
-	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	public int insert() throws SQLException, MvpException {
-		server.setSexTypePid(sexTypePid);
-		server.setAbbreviation(abbreviation);
-		server.setLabel(label);
-		server.setLanguagePid(languagePid);
-		return server.insert();
 	}
 
 	/**
@@ -310,22 +324,12 @@ public class SexTypeProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setSexTypePid(sexTypePid);
 		server.setAbbreviation(abbreviation);
 		server.setLabel(label);
 		server.setLanguagePid(languagePid);
 		server.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		server.delete(key);
-
 	}
 }

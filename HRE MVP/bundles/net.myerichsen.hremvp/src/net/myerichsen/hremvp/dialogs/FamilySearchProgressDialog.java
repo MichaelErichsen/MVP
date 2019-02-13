@@ -99,90 +99,90 @@
 ///*  99 */         sb.append(s);
 ///*     */       }
 ///*     */       
-///* 102 */       JSONObject jsonObject = new JSONObject(sb.toString());
-///* 103 */       int results = jsonObject.getInt("results");
-///* 104 */       LOGGER.info("Results: " + results);
+//       JSONObject jsonObject = new JSONObject(sb.toString());
+//       int results = jsonObject.getInt("results");
+//       LOGGER.info("Results: " + results);
 ///*     */       
-///* 106 */       JSONArray entries = (JSONArray)jsonObject.get("entries");
+//       JSONArray entries = (JSONArray)jsonObject.get("entries");
 ///*     */       
-///* 108 */       int lim = entries.length();
-///* 109 */       LOGGER.info("Entries: " + lim);
-///* 110 */       if (lim > 10) {
-///* 111 */         lim = 10;
+//       int lim = entries.length();
+//       LOGGER.info("Entries: " + lim);
+//       if (lim > 10) {
+//         lim = 10;
 ///*     */       }
 ///*     */       
-///* 114 */       for (int i = 0; i < lim; i++) {
-///* 115 */         JSONObject content = (JSONObject)entries.get(i);
-///* 116 */         JSONObject content2 = (JSONObject)content.get("content");
-///* 117 */         JSONObject gedcomx = (JSONObject)content2.get("gedcomx");
-///* 118 */         JSONArray persons = (JSONArray)gedcomx.get("persons");
+//       for (int i = 0; i < lim; i++) {
+//         JSONObject content = (JSONObject)entries.get(i);
+//         JSONObject content2 = (JSONObject)content.get("content");
+//         JSONObject gedcomx = (JSONObject)content2.get("gedcomx");
+//         JSONArray persons = (JSONArray)gedcomx.get("persons");
 ///*     */         
-///* 120 */         int arrayLength = persons.length();
-///* 121 */         LOGGER.info("Persons: " + arrayLength);
-///* 122 */         if (arrayLength > 10) {
-///* 123 */           arrayLength = 10;
+//         int arrayLength = persons.length();
+//         LOGGER.info("Persons: " + arrayLength);
+//         if (arrayLength > 10) {
+//           arrayLength = 10;
 ///*     */         }
 ///*     */         
-///* 126 */         for (int j = 0; j < arrayLength; j++) {
-///* 127 */           JSONObject person = (JSONObject)persons.get(j);
-///* 128 */           JSONObject display = (JSONObject)person.get("display");
+//         for (int j = 0; j < arrayLength; j++) {
+//           JSONObject person = (JSONObject)persons.get(j);
+//           JSONObject display = (JSONObject)person.get("display");
 ///*     */           
-///* 130 */           LOGGER.fine("Item " + j + ": " + display.toString(2));
+//           LOGGER.fine("Item " + j + ": " + display.toString(2));
 ///*     */           
-///* 132 */           FamilySearchModel item = new FamilySearchModel();
+//           FamilySearchModel item = new FamilySearchModel();
 ///*     */           try
 ///*     */           {
-///* 135 */             item.setName(display.getString("name"));
+//             item.setName(display.getString("name"));
 ///*     */           }
 ///*     */           catch (Exception localException1) {}
 ///*     */           try {
-///* 139 */             item.setGender(display.getString("gender"));
+//             item.setGender(display.getString("gender"));
 ///*     */           }
 ///*     */           catch (Exception localException2) {}
 ///*     */           try {
-///* 143 */             item.setBirthDate(display.getString("birthDate"));
+//             item.setBirthDate(display.getString("birthDate"));
 ///*     */           }
 ///*     */           catch (Exception localException3) {}
 ///*     */           try {
-///* 147 */             item.setBirthPlace(display.getString("birthPlace"));
+//             item.setBirthPlace(display.getString("birthPlace"));
 ///*     */           }
 ///*     */           catch (Exception localException4) {}
 ///*     */           try {
-///* 151 */             item.setDeathDate(display.getString("deathDate"));
+//             item.setDeathDate(display.getString("deathDate"));
 ///*     */           }
 ///*     */           catch (Exception localException5) {}
 ///*     */           try {
-///* 155 */             item.setDeathPlace(display.getString("deathPlace"));
+//             item.setDeathPlace(display.getString("deathPlace"));
 ///*     */           }
 ///*     */           catch (Exception localException6) {}
 ///*     */           
 ///*     */ 
-///* 160 */           if (monitor.isCanceled()) {
-///* 161 */             monitor.done();
-///* 162 */             return;
+//           if (monitor.isCanceled()) {
+//             monitor.done();
+//             return;
 ///*     */           }
 ///*     */           
-///* 165 */           wait(100L);
-///* 166 */           monitor.subTask("Getting person " + counter++ + " of " + results);
-///* 167 */           this.itemList.add(item);
-///* 168 */           monitor.worked(1);
+//           wait(100L);
+//           monitor.subTask("Getting person " + counter++ + " of " + results);
+//           this.itemList.add(item);
+//           monitor.worked(1);
 ///*     */           
-///* 170 */           if (this.itemList.size() > 50) {
-///* 171 */             message = "Items added: " + (this.itemList.size() - 1) + " (" + results + " was found)";
-///* 172 */             LOGGER.info(message);
+//           if (this.itemList.size() > 50) {
+//             message = "Items added: " + (this.itemList.size() - 1) + " (" + results + " was found)";
+//             LOGGER.info(message);
 ///*     */             
-///* 174 */             eventBroker.post("MESSAGE", message);
-///* 175 */             monitor.done();
-///* 176 */             return;
+//             eventBroker.post("MESSAGE", message);
+//             monitor.done();
+//             return;
 ///*     */           }
 ///*     */         }
 ///*     */       }
-///* 180 */       message = "Items added: " + (this.itemList.size() - 1);
-///* 181 */       LOGGER.info(message);
-///* 182 */       this.familySearchProvider.setItemList(this.itemList);
-///* 183 */       monitor.done();
+//       message = "Items added: " + (this.itemList.size() - 1);
+//       LOGGER.info(message);
+//       this.familySearchProvider.setItemList(this.itemList);
+//       monitor.done();
 ///*     */     } catch (IOException|JSONException e) {
-///* 185 */       LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line " + e.getStackTrace()[0].getLineNumber());
+//       LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line " + e.getStackTrace()[0].getLineNumber());
 ///*     */     }
 ///*     */   }
 ///*     */ }

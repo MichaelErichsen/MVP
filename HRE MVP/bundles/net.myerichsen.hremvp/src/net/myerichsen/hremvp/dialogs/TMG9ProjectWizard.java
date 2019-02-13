@@ -18,7 +18,7 @@
 ///*    */   
 ///*    */   public TMG9ProjectWizard()
 ///*    */   {
-///* 21 */     setNeedsProgressMonitor(true);
+//     setNeedsProgressMonitor(true);
 ///*    */   }
 ///*    */   
 ///*    */ 
@@ -28,8 +28,8 @@
 ///*    */ 
 ///*    */   public void addPages()
 ///*    */   {
-///* 31 */     this.wizardPage = new TMG9ProjectWizardPage();
-///* 32 */     addPage(this.wizardPage);
+//     this.wizardPage = new TMG9ProjectWizardPage();
+//     addPage(this.wizardPage);
 ///*    */   }
 ///*    */   
 ///*    */ 
@@ -39,7 +39,7 @@
 ///*    */ 
 ///*    */   public String getWindowTitle()
 ///*    */   {
-///* 42 */     return "Convert TMG9 Project";
+//     return "Convert TMG9 Project";
 ///*    */   }
 ///*    */   
 ///*    */ 
@@ -50,7 +50,7 @@
 ///*    */ 
 ///*    */   public boolean performFinish()
 ///*    */   {
-///* 53 */     return true;
+//     return true;
 ///*    */   }
 ///*    */ }
 //
