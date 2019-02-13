@@ -99,10 +99,16 @@ public class AncestorNavigator {
 		treeViewer.setInput(treePersonList);
 	}
 
+	/**
+	 * 
+	 */
 	@PreDestroy
 	public void dispose() {
 	}
 
+	/**
+	 * 
+	 */
 	@Focus
 	public void setFocus() {
 	}

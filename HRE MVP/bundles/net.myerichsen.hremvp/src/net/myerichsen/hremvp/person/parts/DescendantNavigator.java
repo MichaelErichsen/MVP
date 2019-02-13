@@ -1,6 +1,8 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -11,11 +13,8 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -31,20 +30,23 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.DescendantTreeContentProvider;
+import net.myerichsen.hremvp.person.providers.DescendantTreeLabelProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.person.providers.TreePerson;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 11. feb. 2019
+ * @version 13. feb. 2019
  *
  */
 public class DescendantNavigator {
 	private final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private PersonProvider provider;
-	private int personId = 1;
+	private int personPid = 2;
 	private Spinner spinnerGenerations;
 	private TreeViewer treeViewer;
+	private List<TreePerson> treePersonList;
 
 	/**
 	 * Constructor
@@ -53,7 +55,14 @@ public class DescendantNavigator {
 	public DescendantNavigator() {
 		try {
 			provider = new PersonProvider();
-		} catch (SQLException e) {
+			treePersonList = new ArrayList<TreePerson>();
+			TreePerson treePerson;
+
+			for (List<String> list : provider.getDescendantList(personPid, 99999)) {
+				treePerson = new TreePerson(list.get(0), list.get(1), 0, list.get(2));
+				treePersonList.add(treePerson);
+			}
+		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -81,22 +90,13 @@ public class DescendantNavigator {
 		spinnerGenerations.setSelection(store.getInt("TREEGENERATIONS"));
 
 		treeViewer = new TreeViewer(parent, SWT.BORDER);
-		treeViewer.setContentProvider(new DescendantTreeContentProvider());
+		treeViewer.setContentProvider(new DescendantTreeContentProvider(treePersonList));
+		treeViewer.setLabelProvider(new DescendantTreeLabelProvider());
 
 		Tree tree = treeViewer.getTree();
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
-		viewerColumn.getColumn().setWidth(444);
-		try {
-			viewerColumn.setLabelProvider(new ColumnLabelProvider());
-			treeViewer.setInput(provider.getDescendantList(personId, Integer.parseInt(spinnerGenerations.getText())));
-		} catch (SQLException | MvpException e1) {
-			LOGGER.severe(e1.getMessage());
-			e1.printStackTrace();
-		}
-
-		GridLayoutFactory.fillDefaults().generateLayout(parent);
+		treeViewer.setInput(treePersonList);
 	}
 
 	/**
@@ -120,12 +120,7 @@ public class DescendantNavigator {
 	@Optional
 	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
-		try {
-			treeViewer.setInput(provider.getAncestorList(personPid, spinnerGenerations.getSelection()));
-			treeViewer.refresh();
-		} catch (SQLException | MvpException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
+		treeViewer.setInput(treePersonList);
+		treeViewer.refresh();
 	}
 }

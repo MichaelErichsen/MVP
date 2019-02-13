@@ -7,7 +7,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 9. feb. 2019
+ * @version 13. feb. 2019
  *
  */
 public class AncestorTreeContentProvider implements ITreeContentProvider {
@@ -19,9 +19,9 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 *
 	 * @param tpList
 	 */
-	public AncestorTreeContentProvider(List<TreePerson> tpList) {
+	public AncestorTreeContentProvider(List<TreePerson> treePersonList) {
 		super();
-		this.tpList = tpList;
+		tpList = treePersonList;
 	}
 
 	/*
@@ -69,7 +69,6 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public Object getParent(Object element) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.providers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -7,10 +8,22 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 11. feb. 2019
+ * @version 13. feb. 2019
  *
  */
 public class DescendantTreeContentProvider implements ITreeContentProvider {
+	private static final Object[] EMPTY_ARRAY = new Object[0];
+	private List<TreePerson> tpList;
+
+	/**
+	 * Constructor
+	 *
+	 * @param treePersonList
+	 */
+	public DescendantTreeContentProvider(List<TreePerson> treePersonList) {
+		super();
+		tpList = treePersonList;
+	}
 
 	/*
 	 * The tree viewer calls its content provider’s getChildren method when it needs
@@ -25,13 +38,17 @@ public class DescendantTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
-//		List<String> ls = (List<String>) parentElement;
-//		if (ls.get(1).equals("0")) {
-//			return null;
-//		}
-		// TODO Auto-generated method stub
-		// Find each child element
-		return null;
+		List<TreePerson> childList = new ArrayList<>();
+
+		if (parentElement instanceof TreePerson) {
+			for (TreePerson treePerson : tpList) {
+				if (treePerson.getPersonPid() == ((TreePerson) parentElement).getChildPid()) {
+					childList.add(treePerson);
+				}
+			}
+		}
+
+		return childList.toArray();
 	}
 
 	/*
@@ -65,11 +82,14 @@ public class DescendantTreeContentProvider implements ITreeContentProvider {
 	 * @see
 	 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getParent(Object element) {
-		// TODO Auto-generated method stub
-		// Get parent element
-		return null;
+	public Object getParent(Object inputElement) {
+		if (inputElement instanceof List) {
+			return ((List<TreePerson>) inputElement).toArray();
+		} else {
+			return EMPTY_ARRAY;
+		}
 	}
 
 	/*
@@ -84,11 +104,11 @@ public class DescendantTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		final List<String> ls = (List<String>) element;
-		if (ls.get(1).equals("0")) {
-			return false;
+		if (element instanceof TreePerson) {
+			if (((TreePerson) element).getParentPid() > 0) {
+				return true;
+			}
 		}
-		return true;
+		return false;
 	}
-
 }
