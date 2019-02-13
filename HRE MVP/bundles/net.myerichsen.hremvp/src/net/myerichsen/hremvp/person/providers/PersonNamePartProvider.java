@@ -16,7 +16,8 @@ import net.myerichsen.hremvp.person.servers.PersonNamePartServer;
  *
  */
 public class PersonNamePartProvider implements IHREProvider {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int namePartPid;
 	private int namePid;
 	private String name;

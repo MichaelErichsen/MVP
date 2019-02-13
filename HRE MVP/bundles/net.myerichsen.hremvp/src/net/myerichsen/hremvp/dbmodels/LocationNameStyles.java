@@ -119,7 +119,8 @@ public class LocationNameStyles {
 		conn.close();
 	}
 
-	public List<LocationNameStyles> getFKFromDatePid(int key) throws SQLException {
+	public List<LocationNameStyles> getFKFromDatePid(int key)
+			throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
@@ -139,7 +140,8 @@ public class LocationNameStyles {
 		return modelList;
 	}
 
-	public List<LocationNameStyles> getFKLanguagePid(int key) throws SQLException {
+	public List<LocationNameStyles> getFKLanguagePid(int key)
+			throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LANGUAGE_PID);
 		ps.setInt(1, key);
@@ -159,7 +161,8 @@ public class LocationNameStyles {
 		return modelList;
 	}
 
-	public List<LocationNameStyles> getFKToDatePid(int key) throws SQLException {
+	public List<LocationNameStyles> getFKToDatePid(int key)
+			throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
@@ -293,7 +296,8 @@ public class LocationNameStyles {
 	/**
 	 * Set the LocationNameStylePid field
 	 *
-	 * @param LocationNameStylePid Contents of the LOCATION_NAME_STYLE_PID column
+	 * @param LocationNameStylePid Contents of the LOCATION_NAME_STYLE_PID
+	 *                             column
 	 */
 	public void setLocationNameStylePid(int LocationNameStylePid) {
 		this.LocationNameStylePid = LocationNameStylePid;

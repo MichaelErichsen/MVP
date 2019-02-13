@@ -146,9 +146,9 @@ public final class JulianDay extends Almanac {
 	}
 
 	/**
-	 * Gets the Modified Julian Day (MJD). The Modified Julian Day is an adjusted
-	 * version of the Julian Day by setting the Epoch to midnight, November 17,
-	 * 1858.
+	 * Gets the Modified Julian Day (MJD). The Modified Julian Day is an
+	 * adjusted version of the Julian Day by setting the Epoch to midnight,
+	 * November 17, 1858.
 	 *
 	 * @return The Modified Julian Day.
 	 */
@@ -167,8 +167,8 @@ public final class JulianDay extends Almanac {
 	}
 
 	/**
-	 * Gets the number of days in a month. Note: Overloaded function; only returns
-	 * one for this calendar.
+	 * Gets the number of days in a month. Note: Overloaded function; only
+	 * returns one for this calendar.
 	 *
 	 * @return the number of days in a month.
 	 */
@@ -178,8 +178,8 @@ public final class JulianDay extends Almanac {
 	}
 
 	/**
-	 * Gets the number of days in a week. Note: Overloaded function; only returns
-	 * one for this calendar.
+	 * Gets the number of days in a week. Note: Overloaded function; only
+	 * returns one for this calendar.
 	 *
 	 * @return the number of days in a week.
 	 */

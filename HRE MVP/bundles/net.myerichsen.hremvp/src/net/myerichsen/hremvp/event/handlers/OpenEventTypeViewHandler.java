@@ -28,8 +28,10 @@ public class OpenEventTypeViewHandler {
 	 *
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService) {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService) {
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		final MPart part = MBasicFactory.INSTANCE.createPart();
 
 		part.setLabel("Sex Type");

@@ -41,13 +41,16 @@ public class LogViewer {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		tableViewerLog = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewerLog = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableLog = tableViewerLog.getTable();
-		tableLog.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tableLog.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		provider = new MvpLogProvider();
 		tableViewerLog.setContentProvider(provider);
 		LOGGER.fine("Created contentprovider");
-		tableViewerLog.setInput("C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt");
+		tableViewerLog
+				.setInput("C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt");
 	}
 
 	/**
@@ -69,11 +72,13 @@ public class LogViewer {
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.LOG_REFRESH_UPDATE_TOPIC) int i) {
+	private void subscribeKeyUpdateTopic(
+			@UIEventTopic(Constants.LOG_REFRESH_UPDATE_TOPIC) int i) {
 		LOGGER.fine("Update topic received");
 		tableLog.removeAll();
 		tableViewerLog.setContentProvider(provider);
-		tableViewerLog.setInput("C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt");
+		tableViewerLog
+				.setInput("C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt");
 		tableLog.setTopIndex(tableLog.getItemCount() - 1);
 	}
 

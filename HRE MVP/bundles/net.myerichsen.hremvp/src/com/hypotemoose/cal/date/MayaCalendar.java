@@ -69,8 +69,8 @@ public class MayaCalendar extends Almanac {
 	private int _baktun;
 
 	/**
-	 * Constructs a date in the Maya calendar. The calendar will default to today's
-	 * date.
+	 * Constructs a date in the Maya calendar. The calendar will default to
+	 * today's date.
 	 */
 	public MayaCalendar() {
 		this(new JulianDay());
@@ -113,7 +113,8 @@ public class MayaCalendar extends Almanac {
 	 * @param cal a Maya calendar.
 	 */
 	public MayaCalendar(MayaCalendar cal) {
-		this(cal.getBaktun(), cal.getKatun(), cal.getTun(), cal.getUinal(), cal.getKin());
+		this(cal.getBaktun(), cal.getKatun(), cal.getTun(), cal.getUinal(),
+				cal.getKin());
 	}
 
 	@Override
@@ -127,13 +128,14 @@ public class MayaCalendar extends Almanac {
 
 		final MayaCalendar date = (MayaCalendar) obj;
 
-		return (_kin == date.getKin()) && (_uinal == date.getUinal()) && (_tun == date.getTun())
-				&& (_katun == date.getKatun()) && (_baktun == date.getBaktun());
+		return (_kin == date.getKin()) && (_uinal == date.getUinal())
+				&& (_tun == date.getTun()) && (_katun == date.getKatun())
+				&& (_baktun == date.getBaktun());
 	}
 
 	/**
-	 * Gets this B'aktun. A B'aktun is equal to 20 K'atun which is equal to 144,000
-	 * days.
+	 * Gets this B'aktun. A B'aktun is equal to 20 K'atun which is equal to
+	 * 144,000 days.
 	 *
 	 * @return This B'aktun.
 	 */
@@ -148,11 +150,13 @@ public class MayaCalendar extends Almanac {
 	 */
 	@Override
 	public String getDate() {
-		return new String(_baktun + "." + _katun + "." + _tun + "." + _uinal + "." + _kin);
+		return new String(_baktun + "." + _katun + "." + _tun + "." + _uinal
+				+ "." + _kin);
 	}
 
 	/**
-	 * Gets this K'atun. A K'atun is equal to 20 Tun, which is equal to 7,200 days.
+	 * Gets this K'atun. A K'atun is equal to 20 Tun, which is equal to 7,200
+	 * days.
 	 *
 	 * @return This K'atun.
 	 */
@@ -161,8 +165,8 @@ public class MayaCalendar extends Almanac {
 	}
 
 	/**
-	 * Gets this K'in. The K'in is the smallest unit of Maya calendar time. It is
-	 * equal to 1 day.
+	 * Gets this K'in. The K'in is the smallest unit of Maya calendar time. It
+	 * is equal to 1 day.
 	 *
 	 * @return This K'in.
 	 */
@@ -186,8 +190,8 @@ public class MayaCalendar extends Almanac {
 	}
 
 	/**
-	 * Gets the number of days in a week. In the Maya calendar, there is no concept
-	 * of a week, so the value returned is one.
+	 * Gets the number of days in a week. In the Maya calendar, there is no
+	 * concept of a week, so the value returned is one.
 	 *
 	 * @return the number of days in a week.
 	 */

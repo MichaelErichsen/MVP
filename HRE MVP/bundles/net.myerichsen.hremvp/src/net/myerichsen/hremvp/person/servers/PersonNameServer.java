@@ -52,15 +52,27 @@ public class PersonNameServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		NameParts part = new NameParts();
+		final NameParts part = new NameParts();
 		part.getFKNamePid(key);
 
-		for (NameParts np : part.getFKNamePid(key)) {
+		for (final NameParts np : part.getFKNamePid(key)) {
 			np.delete(np.getNamePartPid());
 		}
 
 		name.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -72,6 +84,7 @@ public class PersonNameServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		name.get(key);
 		setNamePid(key);
@@ -153,13 +166,16 @@ public class PersonNameServer implements IHREServer {
 		for (int i = 0; i < nameList.size(); i++) {
 			sb = new StringBuilder();
 			name = nameList.get(i);
-			LOGGER.fine("Name " + name.getNamePid() + ", person " + name.getPersonPid());
-			final List<NameParts> npl = new NameParts().getFKNamePid(name.getNamePid());
+			LOGGER.fine("Name " + name.getNamePid() + ", person "
+					+ name.getPersonPid());
+			final List<NameParts> npl = new NameParts()
+					.getFKNamePid(name.getNamePid());
 
 			LOGGER.fine("List size " + npl.size());
 			// Concatenate non-null name parts
 			for (final NameParts nameParts : npl) {
-				LOGGER.fine("Name part " + nameParts.getNamePartPid() + ", name " + nameParts.getNamePid());
+				LOGGER.fine("Name part " + nameParts.getNamePartPid()
+						+ ", name " + nameParts.getNamePid());
 				if (nameParts.getNamePid() == name.getNamePid()) {
 					if (nameParts.getLabel() != null) {
 						sb.append(nameParts.getLabel().trim() + " ");
@@ -221,7 +237,8 @@ public class PersonNameServer implements IHREServer {
 			name = nameList.get(i);
 
 			if (name.isPrimaryName()) {
-				final List<NameParts> npl = new NameParts().getFKNamePid(name.getNamePid());
+				final List<NameParts> npl = new NameParts()
+						.getFKNamePid(name.getNamePid());
 
 				// Concatenate non-null name parts
 				for (final NameParts nameParts : npl) {
@@ -247,13 +264,14 @@ public class PersonNameServer implements IHREServer {
 
 	/**
 	 * Insert a row
-	 * 
+	 *
 	 * @return
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		name.setNamePid(namePid);
 		name.setPersonPid(personPid);
@@ -341,6 +359,7 @@ public class PersonNameServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		name.setNamePid(namePid);
 		name.setPersonPid(personPid);
@@ -349,16 +368,5 @@ public class PersonNameServer implements IHREServer {
 		name.setPrimaryName(primaryName);
 		name.setNameStylePid(nameStylePid);
 		name.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

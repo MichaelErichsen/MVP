@@ -36,14 +36,15 @@ import org.eclipse.swt.widgets.Control;
  * @version $Revision: 1.1 $
  * @author scheglov_ke
  */
-public abstract class FieldLayoutPreferencePage extends PreferencePage implements IPropertyChangeListener {
+public abstract class FieldLayoutPreferencePage extends PreferencePage
+		implements IPropertyChangeListener {
 	/**
 	 * The field editors.
 	 */
 	private final List<FieldEditor> m_fields = new ArrayList<>();
 	/**
-	 * The first invalid field editor, or <code>null</code> if all field editors are
-	 * valid.
+	 * The first invalid field editor, or <code>null</code> if all field editors
+	 * are valid.
 	 */
 	private FieldEditor m_invalidFieldEditor;
 
@@ -53,10 +54,12 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	//
 	////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Creates a new field editor preference page with an empty title, and no image.
+	 * Creates a new field editor preference page with an empty title, and no
+	 * image.
 	 */
 	protected FieldLayoutPreferencePage() {
-		// Create a new field editor preference page with an empty title, and no image
+		// Create a new field editor preference page with an empty title, and no
+		// image
 	}
 
 	/**
@@ -70,10 +73,12 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	}
 
 	/**
-	 * Creates a new field editor preference page with the given image, and style.
+	 * Creates a new field editor preference page with the given image, and
+	 * style.
 	 *
 	 * @param title the title of this preference page
-	 * @param image the image for this preference page, or <code>null</code> if none
+	 * @param image the image for this preference page, or <code>null</code> if
+	 *              none
 	 */
 	protected FieldLayoutPreferencePage(String title, ImageDescriptor image) {
 		super(title, image);
@@ -94,8 +99,8 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	}
 
 	/**
-	 * Recomputes the page's error state by calling <code>isValid</code> for every
-	 * field editor.
+	 * Recomputes the page's error state by calling <code>isValid</code> for
+	 * every field editor.
 	 */
 	protected void checkState() {
 		boolean valid = true;
@@ -132,9 +137,10 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	 * preference page under the given parent composite.
 	 * <p>
 	 * This framework method must be implemented by concrete subclasses. Any
-	 * subclass returning a <code>Composite</code> object whose <code>Layout</code>
-	 * has default margins (for example, a <code>GridLayout</code>) are expected to
-	 * set the margins of this <code>Layout</code> to 0 pixels.
+	 * subclass returning a <code>Composite</code> object whose
+	 * <code>Layout</code> has default margins (for example, a
+	 * <code>GridLayout</code>) are expected to set the margins of this
+	 * <code>Layout</code> to 0 pixels.
 	 * </p>
 	 *
 	 * @param parent the parent composite
@@ -144,9 +150,9 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 
 	/**
 	 * The field editor preference page implementation of an
-	 * <code>IDialogPage</code> method disposes of this page's controls and images.
-	 * Subclasses may override to release their own allocated SWT resources, but
-	 * must call <code>super.dispose</code>.
+	 * <code>IDialogPage</code> method disposes of this page's controls and
+	 * images. Subclasses may override to release their own allocated SWT
+	 * resources, but must call <code>super.dispose</code>.
 	 */
 	@Override
 	public void dispose() {
@@ -201,8 +207,8 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	 * The field editor preference page implementation of this
 	 * <code>PreferencePage</code> method saves all field editors by calling
 	 * <code>FieldEditor.store</code>. Note that this method does not save the
-	 * preference store itself; it just stores the values back into the preference
-	 * store.
+	 * preference store itself; it just stores the values back into the
+	 * preference store.
 	 *
 	 * @see FieldEditor#store()
 	 */
@@ -221,13 +227,14 @@ public abstract class FieldLayoutPreferencePage extends PreferencePage implement
 	/**
 	 * The field editor preference page implementation of this
 	 * <code>IPreferencePage</code> (and <code>IPropertyChangeListener</code>)
-	 * method intercepts <code>IS_VALID</code> events but passes other events on to
-	 * its superclass.
+	 * method intercepts <code>IS_VALID</code> events but passes other events on
+	 * to its superclass.
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getProperty().equals(FieldEditor.IS_VALID)) {
-			final boolean newValue = ((Boolean) event.getNewValue()).booleanValue();
+			final boolean newValue = ((Boolean) event.getNewValue())
+					.booleanValue();
 			// If the new value is true then we must check all field editors.
 			// If it is false, then the page is invalid in any case.
 			if (newValue) {

@@ -18,8 +18,9 @@ public class ProjectRenameHandler {
 	 */
 	@Execute
 	public void execute(IWorkbench workbench, Shell shell) {
-		MessageDialog dialog = new MessageDialog(shell, "Rename", null, "Not yet implemented",
-				MessageDialog.INFORMATION, 0, new String[] { "OK" });
+		final MessageDialog dialog = new MessageDialog(shell, "Rename", null,
+				"Not yet implemented", MessageDialog.INFORMATION, 0,
+				new String[] { "OK" });
 		dialog.open();
 	}
 

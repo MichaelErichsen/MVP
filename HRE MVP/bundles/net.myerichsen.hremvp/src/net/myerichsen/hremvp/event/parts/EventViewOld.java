@@ -55,7 +55,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 @SuppressWarnings("restriction")
 public class EventViewOld {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -134,8 +135,10 @@ public class EventViewOld {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -152,44 +155,52 @@ public class EventViewOld {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblLabel = new Label(parent, SWT.NONE);
 		lblLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblFromDate = new Label(parent, SWT.NONE);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(parent, SWT.BORDER);
 		textFromDate.setEditable(false);
-		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textFromDateSort = new Text(parent, SWT.BORDER);
 		textFromDateSort.setEditable(false);
-		textFromDateSort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDateSort.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 
 		textFromOriginal = new Text(parent, SWT.BORDER);
 		textFromOriginal.setEditable(false);
-		textFromOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textFromSurety = new Text(parent, SWT.BORDER);
 		textFromSurety.setEditable(false);
-		textFromSurety.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+		textFromSurety.setLayoutData(
+				new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 
 		final Composite compositeFrom = new Composite(parent, SWT.NONE);
-		compositeFrom.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeFrom.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		btnNewFrom = new Button(compositeFrom, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -200,7 +211,8 @@ public class EventViewOld {
 						hdp.insert();
 						textFromDate.setText(dialog.getLocalDate().toString());
 						if (textFromDateSort.getText().length() == 0) {
-							textFromDateSort.setText(dialog.getSortDate().toString());
+							textFromDateSort
+									.setText(dialog.getSortDate().toString());
 						}
 						textFromOriginal.setText(dialog.getOriginal());
 						textFromSurety.setText(dialog.getSurety());
@@ -216,7 +228,8 @@ public class EventViewOld {
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -251,25 +264,30 @@ public class EventViewOld {
 
 		textToDate = new Text(parent, SWT.BORDER);
 		textToDate.setEditable(false);
-		textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textToDateSort = new Text(parent, SWT.BORDER);
 		textToDateSort.setEditable(false);
-		textToDateSort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDateSort.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 
 		textToOriginal = new Text(parent, SWT.BORDER);
 		textToOriginal.setEditable(false);
-		textToOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textToSurety = new Text(parent, SWT.BORDER);
 		textToSurety.setEditable(false);
-		textToSurety.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToSurety.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 
 		final Composite compositeTo = new Composite(parent, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeTo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeTo.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
 		btnCopyFromTo = new Button(compositeTo, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
@@ -289,7 +307,8 @@ public class EventViewOld {
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textToDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(textToDate.getShell(),
+						context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -314,7 +333,8 @@ public class EventViewOld {
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textToDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -347,7 +367,8 @@ public class EventViewOld {
 		final Label lblPersons = new Label(parent, SWT.NONE);
 		lblPersons.setText("Persons\r\nDblclk to open");
 
-		tableViewerPersons = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewerPersons = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tablePersons = tableViewerPersons.getTable();
 		tablePersons.setToolTipText("Double click to edit persons");
 		tablePersons.addMouseListener(new MouseAdapter() {
@@ -358,19 +379,23 @@ public class EventViewOld {
 		});
 		tablePersons.setLinesVisible(true);
 		tablePersons.setHeaderVisible(true);
-		tablePersons.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tablePersons.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumnPersonId = new TableViewerColumn(tableViewerPersons, SWT.NONE);
+		final TableViewerColumn tableViewerColumnPersonId = new TableViewerColumn(
+				tableViewerPersons, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnPersonId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnPersonName = new TableViewerColumn(tableViewerPersons, SWT.NONE);
+		final TableViewerColumn tableViewerColumnPersonName = new TableViewerColumn(
+				tableViewerPersons, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnPersonName.getColumn();
 		tblclmnName.setWidth(200);
 		tblclmnName.setText("Name");
 
-		final TableViewerColumn tableViewerColumnPersonRole = new TableViewerColumn(tableViewerPersons, SWT.NONE);
+		final TableViewerColumn tableViewerColumnPersonRole = new TableViewerColumn(
+				tableViewerPersons, SWT.NONE);
 		final TableColumn tblclmnRole = tableViewerColumnPersonRole.getColumn();
 		tblclmnRole.setWidth(100);
 		tblclmnRole.setText("Role");
@@ -378,7 +403,8 @@ public class EventViewOld {
 		final Label lblLocations = new Label(parent, SWT.NONE);
 		lblLocations.setText("Locations\r\nDblclk to open");
 
-		tableViewerLocations = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewerLocations = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableLocations = tableViewerLocations.getTable();
 		tableLocations.setToolTipText("Double click to edit locatios");
 		tableLocations.addMouseListener(new MouseAdapter() {
@@ -389,20 +415,26 @@ public class EventViewOld {
 		});
 		tableLocations.setLinesVisible(true);
 		tableLocations.setHeaderVisible(true);
-		tableLocations.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tableLocations.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumnLocationId = new TableViewerColumn(tableViewerLocations, SWT.NONE);
-		final TableColumn tblclmnLocationId = tableViewerColumnLocationId.getColumn();
+		final TableViewerColumn tableViewerColumnLocationId = new TableViewerColumn(
+				tableViewerLocations, SWT.NONE);
+		final TableColumn tblclmnLocationId = tableViewerColumnLocationId
+				.getColumn();
 		tblclmnLocationId.setWidth(50);
 		tblclmnLocationId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnLocationName = new TableViewerColumn(tableViewerLocations, SWT.NONE);
-		final TableColumn tblclmnLocation = tableViewerColumnLocationName.getColumn();
+		final TableViewerColumn tableViewerColumnLocationName = new TableViewerColumn(
+				tableViewerLocations, SWT.NONE);
+		final TableColumn tblclmnLocation = tableViewerColumnLocationName
+				.getColumn();
 		tblclmnLocation.setWidth(300);
 		tblclmnLocation.setText("Location");
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -468,7 +500,8 @@ public class EventViewOld {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Event " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Event " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -525,7 +558,8 @@ public class EventViewOld {
 				item.setText(0, ls.get(0));
 				item.setText(1, ls.get(1));
 			}
-			eventBroker.post("MESSAGE", "Event " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE",
+					"Event " + textId.getText() + " has been fetched");
 
 		} catch (final Exception e) {
 			clear();
@@ -545,7 +579,8 @@ public class EventViewOld {
 			provider.setToDatePid(Integer.parseInt(textToDate.getText()));
 //			provider.setLabel(textLabel.getText());
 			provider.insert();
-			eventBroker.post("MESSAGE", "Event " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Event " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -559,8 +594,8 @@ public class EventViewOld {
 	protected void openLocationView() {
 		int locationPid = 0;
 
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openlocationview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openlocationview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableLocations.getSelection();
@@ -580,8 +615,8 @@ public class EventViewOld {
 	protected void openPersonView() {
 		int personPid = 0;
 
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openpersonview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openpersonview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tablePersons.getSelection();
@@ -607,7 +642,8 @@ public class EventViewOld {
 	 */
 	@Inject
 	@Optional
-	private void subscribeLocationPidUpdateTopic(@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int key) {
+	private void subscribeLocationPidUpdateTopic(
+			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int key) {
 		get(key);
 	}
 
@@ -621,7 +657,8 @@ public class EventViewOld {
 			provider.setToDatePid(Integer.parseInt(textToDate.getText()));
 //			provider.setLabel(textLabel.getText());
 			provider.update();
-			eventBroker.post("MESSAGE", "Location Name " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Location Name " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

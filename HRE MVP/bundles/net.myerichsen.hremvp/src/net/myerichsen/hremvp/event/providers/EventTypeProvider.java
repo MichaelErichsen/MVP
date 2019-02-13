@@ -38,6 +38,7 @@ public class EventTypeProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
 	}
@@ -50,6 +51,7 @@ public class EventTypeProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
 		return server.get();
 	}
@@ -62,6 +64,7 @@ public class EventTypeProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setEventTypePid(server.getEventTypePid());
@@ -89,7 +92,8 @@ public class EventTypeProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
-	public List<List<String>> getNameList(int key) throws SQLException, MvpException {
+	public List<List<String>> getNameList(int key)
+			throws SQLException, MvpException {
 		return server.getNameList(key);
 	}
 
@@ -109,6 +113,7 @@ public class EventTypeProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setEventTypePid(EventTypePid);
 		server.setLabel(Label);
@@ -143,6 +148,7 @@ public class EventTypeProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setEventTypePid(EventTypePid);
 		server.setLabel(Label);

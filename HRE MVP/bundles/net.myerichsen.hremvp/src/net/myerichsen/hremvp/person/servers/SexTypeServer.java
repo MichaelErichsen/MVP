@@ -26,7 +26,8 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  *
  */
 public class SexTypeServer implements IHREServer {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int sexTypePid;
 	private String abbreviation;
@@ -68,7 +69,8 @@ public class SexTypeServer implements IHREServer {
 	 *                               database access error or other errors
 	 * @throws MvpException          Application specific exception
 	 */
-	public void deleteRemote(String target) throws NumberFormatException, SQLException, MvpException {
+	public void deleteRemote(String target)
+			throws NumberFormatException, SQLException, MvpException {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 		delete(Integer.parseInt(targetParts[targetSize - 1]));
@@ -152,7 +154,8 @@ public class SexTypeServer implements IHREServer {
 	 * @throws JSONException         JSONException
 	 */
 	public String getRemote(HttpServletResponse response, String target)
-			throws NumberFormatException, SQLException, MvpException, IOException, JSONException {
+			throws NumberFormatException, SQLException, MvpException,
+			IOException, JSONException {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
@@ -206,7 +209,8 @@ public class SexTypeServer implements IHREServer {
 	 * @throws JSONException JSONException
 	 * @throws SQLException  SQLException
 	 */
-	public void insertRemote(HttpServletRequest request) throws IOException, JSONException, SQLException {
+	public void insertRemote(HttpServletRequest request)
+			throws IOException, JSONException, SQLException {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 		final BufferedReader br = request.getReader();
@@ -292,11 +296,12 @@ public class SexTypeServer implements IHREServer {
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
 	 * @throws JSONException JSONException
-	 * @throws SQLException  An exception that provides information on a database
-	 *                       access error or other errors
+	 * @throws SQLException  An exception that provides information on a
+	 *                       database access error or other errors
 	 * @throws MvpException  Application specific exception
 	 */
-	public void updateRemote(HttpServletRequest request) throws IOException, JSONException, SQLException, MvpException {
+	public void updateRemote(HttpServletRequest request)
+			throws IOException, JSONException, SQLException, MvpException {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 		final BufferedReader br = request.getReader();

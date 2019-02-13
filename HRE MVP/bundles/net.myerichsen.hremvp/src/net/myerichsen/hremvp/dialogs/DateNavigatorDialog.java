@@ -42,7 +42,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
@@ -79,8 +80,10 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -99,7 +102,8 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
-		tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.addFilter(navigatorFilter);
 
 		final Table table = tableViewer.getTable();
@@ -121,23 +125,30 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnHistoricalDate = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnHistoricalDate = tableViewerColumnHistoricalDate.getColumn();
+		final TableViewerColumn tableViewerColumnHistoricalDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnHistoricalDate = tableViewerColumnHistoricalDate
+				.getColumn();
 		tblclmnHistoricalDate.setWidth(100);
 		tblclmnHistoricalDate.setText("Historical Date");
-		tableViewerColumnHistoricalDate.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnHistoricalDate
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnOriginalInputFormat = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnOriginalInputFormat = tableViewerColumnOriginalInputFormat.getColumn();
+		final TableViewerColumn tableViewerColumnOriginalInputFormat = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnOriginalInputFormat = tableViewerColumnOriginalInputFormat
+				.getColumn();
 		tblclmnOriginalInputFormat.setWidth(240);
 		tblclmnOriginalInputFormat.setText("Original Input Format");
-		tableViewerColumnOriginalInputFormat.setLabelProvider(new HREColumnLabelProvider(2));
+		tableViewerColumnOriginalInputFormat
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final Label lblDateFilter = new Label(container, SWT.NONE);
 		lblDateFilter.setText("Date Filter");
@@ -153,7 +164,8 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 			}
 		});
 
-		textDateFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textDateFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

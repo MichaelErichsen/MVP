@@ -27,7 +27,8 @@ import net.myerichsen.hremvp.dialogs.ServerListDialog;
  * @version 6. jan. 2019
  *
  */
-public class ServerPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class ServerPreferencePage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private FieldEditor comboFieldEditorJettyLogLevel;
 
@@ -43,29 +44,36 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
+	 * ()
 	 */
 	@Override
 	protected void createFieldEditors() {
 		final Composite composite = getFieldEditorParent();
 
-		addField(new StringFieldEditor("SERVERADDRESS", "Server Address", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE,
-				composite));
-		addField(new StringFieldEditor("SERVERROOT", "Server Root", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE,
-				composite));
-		final IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor("SERVERPORT", "Server Port", composite);
+		addField(new StringFieldEditor("SERVERADDRESS", "Server Address", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite));
+		addField(new StringFieldEditor("SERVERROOT", "Server Root", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite));
+		final IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor(
+				"SERVERPORT", "Server Port", composite);
 		integerFieldEditor.setTextLimit(5);
 		addField(integerFieldEditor);
-		comboFieldEditorJettyLogLevel = new ComboFieldEditor("JETTYLOGLEVEL", "Jetty Log Level", new String[][] {
-				{ "OFF", "OFF" }, { "DEBUG", "DEBUG" }, { "INFO", "INFO" }, { "WARN", "WARN" }, { "ALL", "ALL" } },
+		comboFieldEditorJettyLogLevel = new ComboFieldEditor("JETTYLOGLEVEL",
+				"Jetty Log Level",
+				new String[][] { { "OFF", "OFF" }, { "DEBUG", "DEBUG" },
+						{ "INFO", "INFO" }, { "WARN", "WARN" },
+						{ "ALL", "ALL" } },
 				composite);
 		addField(comboFieldEditorJettyLogLevel);
 
-		final BooleanFieldEditor booleanFieldEditorTls = new BooleanFieldEditor("TLS", "Secure Connection",
-				BooleanFieldEditor.DEFAULT, composite);
+		final BooleanFieldEditor booleanFieldEditorTls = new BooleanFieldEditor(
+				"TLS", "Secure Connection", BooleanFieldEditor.DEFAULT,
+				composite);
 		addField(booleanFieldEditorTls);
 
-		addField(new ListEditor("SERVERLIST", "Server addresses and ports", getFieldEditorParent()) {
+		addField(new ListEditor("SERVERLIST", "Server addresses and ports",
+				getFieldEditorParent()) {
 
 			@Override
 			protected String createList(String[] items) {
@@ -80,7 +88,8 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 
 			@Override
 			protected String getNewInputObject() {
-				final ServerListDialog dialog = new ServerListDialog(getFieldEditorParent().getShell());
+				final ServerListDialog dialog = new ServerListDialog(
+						getFieldEditorParent().getShell());
 
 				final int a = dialog.open();
 
@@ -101,7 +110,8 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+	 * @see
+	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	@Override
 	public void init(IWorkbench workbench) {
@@ -111,22 +121,26 @@ public class ServerPreferencePage extends FieldEditorPreferencePage implements I
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.
-	 * eclipse.jface.util.PropertyChangeEvent)
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(
+	 * org. eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				"net.myerichsen.hremvp");
 
 		super.propertyChange(event);
 
-		LOGGER.info(
-				"Changed property: " + event.getProperty() + ", " + event.getOldValue() + " to " + event.getNewValue());
+		LOGGER.info("Changed property: " + event.getProperty() + ", "
+				+ event.getOldValue() + " to " + event.getNewValue());
 
 		if (event.getSource() == comboFieldEditorJettyLogLevel) {
-			LOGGER.info("Changed property " + comboFieldEditorJettyLogLevel.getPreferenceName() + " from "
-					+ event.getOldValue() + " to " + event.getNewValue());
-			System.setProperty("org.eclipse.jetty.LEVEL", event.getNewValue().toString());
+			LOGGER.info("Changed property "
+					+ comboFieldEditorJettyLogLevel.getPreferenceName()
+					+ " from " + event.getOldValue() + " to "
+					+ event.getNewValue());
+			System.setProperty("org.eclipse.jetty.LEVEL",
+					event.getNewValue().toString());
 		}
 	}
 }

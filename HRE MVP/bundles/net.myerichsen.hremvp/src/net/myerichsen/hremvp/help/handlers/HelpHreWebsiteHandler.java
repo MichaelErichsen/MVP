@@ -20,14 +20,17 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  */
 public class HelpHreWebsiteHandler {
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService) {
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService) {
 		final MPart part = MBasicFactory.INSTANCE.createPart();
 		part.setLabel("HRE Web Site");
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
-		part.setContributionURI("bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HelpHreWebsite");
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		part.setContributionURI(
+				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HelpHreWebsite");
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 

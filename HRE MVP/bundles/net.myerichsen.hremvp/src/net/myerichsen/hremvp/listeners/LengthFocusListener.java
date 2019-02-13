@@ -27,7 +27,8 @@ public class LengthFocusListener implements FocusListener {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.
+	 * @see
+	 * org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.
 	 * FocusEvent)
 	 */
 	@Override
@@ -37,7 +38,8 @@ public class LengthFocusListener implements FocusListener {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.
+	 * @see
+	 * org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.
 	 * FocusEvent)
 	 */
 	@Override

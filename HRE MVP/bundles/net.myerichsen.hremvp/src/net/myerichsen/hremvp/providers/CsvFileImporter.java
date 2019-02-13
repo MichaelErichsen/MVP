@@ -11,12 +11,16 @@ import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
  *
  */
 public class CsvFileImporter {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String[] csvFileNames = { "hdates.csv", "languages.csv", "sextypes.csv", "eventtypes.csv",
-			"eventnames.csv", "locationnamestyles.csv", "locationnamemaps.csv", "namestyles.csv", "namemaps.csv" };
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final String[] csvFileNames = { "hdates.csv",
+			"languages.csv", "sextypes.csv", "eventtypes.csv", "eventnames.csv",
+			"locationnamestyles.csv", "locationnamemaps.csv", "namestyles.csv",
+			"namemaps.csv" };
 
-	private static final String[] tableNames = { "HDATES", "LANGUAGES", "SEX_TYPES", "EVENT_TYPES", "EVENT_NAMES",
-			"LOCATION_NAME_STYLES","LOCATION_NAME_MAPS", "NAME_STYLES", "NAME_MAPS" };
+	private static final String[] tableNames = { "HDATES", "LANGUAGES",
+			"SEX_TYPES", "EVENT_TYPES", "EVENT_NAMES", "LOCATION_NAME_STYLES",
+			"LOCATION_NAME_MAPS", "NAME_STYLES", "NAME_MAPS" };
 
 	/**
 	 * Import all csv files.
@@ -26,9 +30,11 @@ public class CsvFileImporter {
 
 			int rowCount = 0;
 			try {
-				final H2TableProvider provider = new H2TableProvider(tableNames[i]);
+				final H2TableProvider provider = new H2TableProvider(
+						tableNames[i]);
 				rowCount = provider.importCsv("./" + csvFileNames[i]);
-				LOGGER.info(rowCount + " rows has been imported from " + csvFileNames[i]);
+				LOGGER.info(rowCount + " rows has been imported from "
+						+ csvFileNames[i]);
 
 			} catch (final SQLException e1) {
 				e1.printStackTrace();

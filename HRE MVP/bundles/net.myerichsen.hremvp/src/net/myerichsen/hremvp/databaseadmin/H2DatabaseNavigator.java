@@ -42,8 +42,10 @@ import net.myerichsen.hremvp.Constants;
  */
 @SuppressWarnings("restriction")
 public class H2DatabaseNavigator {
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private ECommandService commandService;
 	@Inject
@@ -71,7 +73,8 @@ public class H2DatabaseNavigator {
 		LOGGER.info("Creating controls");
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
@@ -80,7 +83,9 @@ public class H2DatabaseNavigator {
 				final String tableName = selectedRow.getText(0);
 
 				final ParameterizedCommand command = commandService
-						.createCommand("net.myerichsen.hremvp.command.tablenavigatoropen", null);
+						.createCommand(
+								"net.myerichsen.hremvp.command.tablenavigatoropen",
+								null);
 				handlerService.executeHandler(command);
 				eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
 				eventBroker.post("MESSAGE", tableName + " has been opened");
@@ -91,12 +96,14 @@ public class H2DatabaseNavigator {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnTableName = tableViewerColumn.getColumn();
 		tblclmnTableName.setWidth(405);
 		tblclmnTableName.setText("Table Name");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnRowCount = tableViewerColumn_1.getColumn();
 		tblclmnRowCount.setWidth(70);
 		tblclmnRowCount.setText("Row Count");
@@ -123,7 +130,8 @@ public class H2DatabaseNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeDatabaseNameUpdateTopic(@UIEventTopic(Constants.DATABASE_UPDATE_TOPIC) String dbName2) {
+	private void subscribeDatabaseNameUpdateTopic(
+			@UIEventTopic(Constants.DATABASE_UPDATE_TOPIC) String dbName2) {
 		dbName = dbName2;
 		LOGGER.info(dbName2);
 		updateGui();

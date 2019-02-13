@@ -19,7 +19,8 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  *
  */
 public class LocationPersonServer implements IHREServer {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final ArrayList<String> stringList;
 	private final LocationEvents leLink;
 	private final PersonEvents peLink;
@@ -34,6 +35,39 @@ public class LocationPersonServer implements IHREServer {
 		peLink = new PersonEvents();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @return
 	 * @throws Exception
@@ -45,7 +79,8 @@ public class LocationPersonServer implements IHREServer {
 		int personPid;
 		PersonNameServer ns;
 
-		final List<LocationEvents> leList = leLink.getFKLocationPid(locationPid);
+		final List<LocationEvents> leList = leLink
+				.getFKLocationPid(locationPid);
 		stringList.clear();
 
 		for (final LocationEvents eventLink : leList) {
@@ -55,7 +90,8 @@ public class LocationPersonServer implements IHREServer {
 			for (final PersonEvents personLink : peList) {
 				personPid = personLink.getPersonPid();
 				ns = new PersonNameServer();
-				string = Integer.toString(personPid) + "," + ns.getPrimaryNameString(personPid);
+				string = Integer.toString(personPid) + ","
+						+ ns.getPrimaryNameString(personPid);
 				LOGGER.info(string);
 				stringList.add(string);
 			}
@@ -64,34 +100,9 @@ public class LocationPersonServer implements IHREServer {
 		return stringList;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
@@ -100,13 +111,15 @@ public class LocationPersonServer implements IHREServer {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

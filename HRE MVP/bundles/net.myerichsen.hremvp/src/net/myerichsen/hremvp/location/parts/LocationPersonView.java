@@ -42,7 +42,8 @@ import net.myerichsen.hremvp.location.providers.LocationPersonProvider;
  * @version 25. jan. 2019
  */
 public class LocationPersonView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private EPartService partService;
@@ -89,13 +90,16 @@ public class LocationPersonView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 
-		final TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnPerson = tableViewerColumnEventLabel.getColumn();
+		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnPerson = tableViewerColumnEventLabel
+				.getColumn();
 		tblclmnPerson.setWidth(300);
 		tblclmnPerson.setText("Person");
 	}
@@ -138,7 +142,8 @@ public class LocationPersonView {
 	protected void openPersonView() {
 		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonView";
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
@@ -175,7 +180,8 @@ public class LocationPersonView {
 		}
 
 		LOGGER.info("Setting person pid: " + personPid);
-		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, Integer.parseInt(personPid));
+		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC,
+				Integer.parseInt(personPid));
 
 	}
 
@@ -192,7 +198,8 @@ public class LocationPersonView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
+	private void subscribeKeyUpdateTopic(
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
 			throws SQLException {
 		get(key);
 	}

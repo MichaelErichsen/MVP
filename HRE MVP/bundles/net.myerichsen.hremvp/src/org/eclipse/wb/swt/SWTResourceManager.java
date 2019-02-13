@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Display;
  * <p>
  * This class may be freely distributed as part of any application or plugin.
  * <p>
- * 
+ *
  * @author scheglov_ke
  * @author Dan Rubel
  */
@@ -61,11 +61,13 @@ public class SWTResourceManager {
 	private static Map<String, Image> m_imageMap = new HashMap<>();
 	private static final int MISSING_IMAGE_SIZE = 10;
 	/**
-	 * Style constant for placing decorator image in top left corner of base image.
+	 * Style constant for placing decorator image in top left corner of base
+	 * image.
 	 */
 	public static final int TOP_LEFT = 1;
 	/**
-	 * Style constant for placing decorator image in top right corner of base image.
+	 * Style constant for placing decorator image in top right corner of base
+	 * image.
 	 */
 	public static final int TOP_RIGHT = 2;
 	/**
@@ -111,7 +113,8 @@ public class SWTResourceManager {
 	private static Map<Integer, Cursor> m_idToCursorMap = new HashMap<>();
 
 	/**
-	 * Returns an {@link Image} composed of a base image decorated by another image.
+	 * Returns an {@link Image} composed of a base image decorated by another
+	 * image.
 	 *
 	 * @param baseImage the base {@link Image} that should be decorated
 	 * @param decorator the {@link Image} to decorate the base image
@@ -122,14 +125,16 @@ public class SWTResourceManager {
 	}
 
 	/**
-	 * Returns an {@link Image} composed of a base image decorated by another image.
+	 * Returns an {@link Image} composed of a base image decorated by another
+	 * image.
 	 *
 	 * @param baseImage the base {@link Image} that should be decorated
 	 * @param decorator the {@link Image} to decorate the base image
 	 * @param corner    the corner to place decorator image
 	 * @return the resulting decorated {@link Image}
 	 */
-	public static Image decorateImage(final Image baseImage, final Image decorator, final int corner) {
+	public static Image decorateImage(final Image baseImage,
+			final Image decorator, final int corner) {
 		if ((corner <= 0) || (corner >= LAST_CORNER_KEY)) {
 			throw new IllegalArgumentException("Wrong decorate corner");
 		}
@@ -160,7 +165,8 @@ public class SWTResourceManager {
 			} else if (corner == BOTTOM_LEFT) {
 				gc.drawImage(decorator, 0, bib.height - dib.height);
 			} else if (corner == BOTTOM_RIGHT) {
-				gc.drawImage(decorator, bib.width - dib.width, bib.height - dib.height);
+				gc.drawImage(decorator, bib.width - dib.width,
+						bib.height - dib.height);
 			}
 			gc.dispose();
 			//
@@ -175,9 +181,9 @@ public class SWTResourceManager {
 	//
 	////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Dispose of cached objects and their underlying OS resources. This should only
-	 * be called when the cached objects are no longer needed (e.g. on application
-	 * shutdown).
+	 * Dispose of cached objects and their underlying OS resources. This should
+	 * only be called when the cached objects are no longer needed (e.g. on
+	 * application shutdown).
 	 */
 	public static void dispose() {
 		disposeColors();
@@ -236,7 +242,8 @@ public class SWTResourceManager {
 		// dispose decorated images
 		for (final Map<Image, Map<Image, Image>> cornerDecoratedImageMap : m_decoratedImageMap) {
 			if (cornerDecoratedImageMap != null) {
-				for (final Map<Image, Image> decoratedMap : cornerDecoratedImageMap.values()) {
+				for (final Map<Image, Image> decoratedMap : cornerDecoratedImageMap
+						.values()) {
 					for (final Image image : decoratedMap.values()) {
 						image.dispose();
 					}
@@ -258,7 +265,8 @@ public class SWTResourceManager {
 		if (font == null) {
 			final FontData fontDatas[] = baseFont.getFontData();
 			final FontData data = fontDatas[0];
-			font = new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.BOLD);
+			font = new Font(Display.getCurrent(), data.getName(),
+					data.getHeight(), SWT.BOLD);
 			m_fontToBoldFontMap.put(baseFont, font);
 		}
 		return font;
@@ -281,8 +289,8 @@ public class SWTResourceManager {
 	 * @param r the red component of the color
 	 * @param g the green component of the color
 	 * @param b the blue component of the color
-	 * @return the {@link Color} matching the given red, green and blue component
-	 *         values
+	 * @return the {@link Color} matching the given red, green and blue
+	 *         component values
 	 */
 	public static Color getColor(int r, int g, int b) {
 		return getColor(new RGB(r, g, b));
@@ -333,37 +341,43 @@ public class SWTResourceManager {
 	}
 
 	/**
-	 * Returns a {@link Font} based on its name, height and style. Windows-specific
-	 * strikeout and underline flags are also supported.
+	 * Returns a {@link Font} based on its name, height and style.
+	 * Windows-specific strikeout and underline flags are also supported.
 	 *
 	 * @param name      the name of the font
 	 * @param size      the size of the font
 	 * @param style     the style of the font
 	 * @param strikeout the strikeout flag (warning: Windows only)
 	 * @param underline the underline flag (warning: Windows only)
-	 * @return {@link Font} The font matching the name, height, style, strikeout and
-	 *         underline
+	 * @return {@link Font} The font matching the name, height, style, strikeout
+	 *         and underline
 	 */
-	public static Font getFont(String name, int size, int style, boolean strikeout, boolean underline) {
-		final String fontName = name + '|' + size + '|' + style + '|' + strikeout + '|' + underline;
+	public static Font getFont(String name, int size, int style,
+			boolean strikeout, boolean underline) {
+		final String fontName = name + '|' + size + '|' + style + '|'
+				+ strikeout + '|' + underline;
 		Font font = m_fontMap.get(fontName);
 		if (font == null) {
 			final FontData fontData = new FontData(name, size, style);
 			if (strikeout || underline) {
 				try {
-					final Class<?> logFontClass = Class.forName("org.eclipse.swt.internal.win32.LOGFONT"); //$NON-NLS-1$
-					final Object logFont = FontData.class.getField("data").get(fontData); //$NON-NLS-1$
+					final Class<?> logFontClass = Class
+							.forName("org.eclipse.swt.internal.win32.LOGFONT"); //$NON-NLS-1$
+					final Object logFont = FontData.class.getField("data") //$NON-NLS-1$
+							.get(fontData);
 					if ((logFont != null) && (logFontClass != null)) {
 						if (strikeout) {
-							logFontClass.getField("lfStrikeOut").set(logFont, Byte.valueOf((byte) 1)); //$NON-NLS-1$
+							logFontClass.getField("lfStrikeOut").set(logFont, //$NON-NLS-1$
+									Byte.valueOf((byte) 1));
 						}
 						if (underline) {
-							logFontClass.getField("lfUnderline").set(logFont, Byte.valueOf((byte) 1)); //$NON-NLS-1$
+							logFontClass.getField("lfUnderline").set(logFont, //$NON-NLS-1$
+									Byte.valueOf((byte) 1));
 						}
 					}
 				} catch (final Throwable e) {
-					System.err.println(
-							"Unable to set underline or strikeout" + " (probably on a non-Windows platform). " + e); //$NON-NLS-1$ //$NON-NLS-2$
+					System.err.println("Unable to set underline or strikeout" //$NON-NLS-1$
+							+ " (probably on a non-Windows platform). " + e); //$NON-NLS-1$
 				}
 			}
 			font = new Font(Display.getCurrent(), fontData);
@@ -373,8 +387,8 @@ public class SWTResourceManager {
 	}
 
 	/**
-	 * Returns an {@link Image} stored in the file at the specified path relative to
-	 * the specified class.
+	 * Returns an {@link Image} stored in the file at the specified path
+	 * relative to the specified class.
 	 *
 	 * @param clazz the {@link Class} relative to which to find the image
 	 * @param path  the path to the image file, if starts with <code>'/'</code>
@@ -435,11 +449,12 @@ public class SWTResourceManager {
 	}
 
 	/**
-	 * @return the small {@link Image} that can be used as placeholder for missing
-	 *         image.
+	 * @return the small {@link Image} that can be used as placeholder for
+	 *         missing image.
 	 */
 	private static Image getMissingImage() {
-		final Image image = new Image(Display.getCurrent(), MISSING_IMAGE_SIZE, MISSING_IMAGE_SIZE);
+		final Image image = new Image(Display.getCurrent(), MISSING_IMAGE_SIZE,
+				MISSING_IMAGE_SIZE);
 		//
 		final GC gc = new GC(image);
 		gc.setBackground(getColor(SWT.COLOR_RED));

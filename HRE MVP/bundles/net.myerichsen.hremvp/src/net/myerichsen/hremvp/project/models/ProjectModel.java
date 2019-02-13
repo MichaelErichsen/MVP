@@ -25,7 +25,8 @@ public class ProjectModel {
 	 * @param localServer
 	 * @param path
 	 */
-	public ProjectModel(String name, Date lastEdited, String summary, String localServer, String path) {
+	public ProjectModel(String name, Date lastEdited, String summary,
+			String localServer, String path) {
 		super();
 		this.name = name;
 		this.lastEdited = lastEdited;

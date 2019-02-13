@@ -15,7 +15,8 @@ public class NumericVerifyListener implements VerifyListener {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.
+	 * @see
+	 * org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.
 	 * VerifyEvent)
 	 */
 	@Override
@@ -24,7 +25,8 @@ public class NumericVerifyListener implements VerifyListener {
 
 		// get old text and create new text by using the VerifyEvent.text
 		final String oldS = text.getText();
-		final String newS = oldS.substring(0, e.start) + e.text + oldS.substring(e.end);
+		final String newS = oldS.substring(0, e.start) + e.text
+				+ oldS.substring(e.end);
 
 		boolean isFloat = true;
 		try {

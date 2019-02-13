@@ -12,7 +12,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
  */
 public class AncestorTreeContentProvider implements ITreeContentProvider {
 	private static final Object[] EMPTY_ARRAY = new Object[0];
-	private List<TreePerson> tpList;
+	private final List<TreePerson> tpList;
 
 	/**
 	 * Constructor
@@ -28,15 +28,17 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.
+	 * Object)
 	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		List<TreePerson> parentList = new ArrayList<>();
+		final List<TreePerson> parentList = new ArrayList<>();
 
 		if (parentElement instanceof TreePerson) {
-			for (TreePerson treePerson : tpList) {
-				if (treePerson.getPersonPid() == ((TreePerson) parentElement).getChildPid()) {
+			for (final TreePerson treePerson : tpList) {
+				if (treePerson.getPersonPid() == ((TreePerson) parentElement)
+						.getChildPid()) {
 					parentList.add(treePerson);
 				}
 			}
@@ -49,7 +51,8 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
+	 * org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.
+	 * Object)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -64,8 +67,8 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.
+	 * Object)
 	 */
 	@Override
 	public Object getParent(Object element) {
@@ -76,12 +79,13 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+	 * org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.
+	 * Object)
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
 		if (element instanceof TreePerson) {
-			if (((TreePerson) element).getParentPid() > 0) {
+			if (((TreePerson) element).getAncestorList().size() > 0) {
 				return true;
 			}
 		}

@@ -41,7 +41,8 @@ public class ServerListDialog extends Dialog {
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 * org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.
+	 * Shell)
 	 */
 	@Override
 	protected void configureShell(Shell shell) {
@@ -56,8 +57,10 @@ public class ServerListDialog extends Dialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -85,16 +88,20 @@ public class ServerListDialog extends Dialog {
 			}
 		});
 		textIpAddress.addListener(SWT.Verify, new IpAddressListener());
-		textIpAddress.setToolTipText("Format: 255.255.255.255 (\"Dotted Quad\")");
-		textIpAddress.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textIpAddress
+				.setToolTipText("Format: 255.255.255.255 (\"Dotted Quad\")");
+		textIpAddress.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblPortNumber = new Label(container, SWT.NONE);
-		lblPortNumber.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblPortNumber.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPortNumber.setText("Port number");
 
 		textPortNo = new Text(container, SWT.BORDER);
 		textPortNo.addListener(SWT.Verify, new IntegerListener());
-		textPortNo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPortNo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		return container;
 	}

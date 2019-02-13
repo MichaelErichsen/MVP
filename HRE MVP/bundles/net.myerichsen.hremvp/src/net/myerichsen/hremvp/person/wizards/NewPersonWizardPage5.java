@@ -32,7 +32,8 @@ import net.myerichsen.hremvp.event.dialogs.NewEventDialog;
  *
  */
 public class NewPersonWizardPage5 extends WizardPage {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
 	private Table table;
@@ -48,7 +49,8 @@ public class NewPersonWizardPage5 extends WizardPage {
 	public NewPersonWizardPage5(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("Person Events");
-		setDescription("Add events for the new person. More events can be added later.");
+		setDescription(
+				"Add events for the new person. More events can be added later.");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 		listOfLists = new ArrayList<>();
@@ -58,11 +60,13 @@ public class NewPersonWizardPage5 extends WizardPage {
 	 *
 	 */
 	protected void addEvent(int personPid) {
-		final NewEventDialog dialog = new NewEventDialog(table.getShell(), context);
+		final NewEventDialog dialog = new NewEventDialog(table.getShell(),
+				context);
 
 		if (dialog.open() == Window.OK) {
 			try {
-				final List<String> eventStringList = dialog.getEventStringList();
+				final List<String> eventStringList = dialog
+						.getEventStringList();
 				listOfLists.add(eventStringList);
 
 				// Display in view
@@ -86,28 +90,35 @@ public class NewPersonWizardPage5 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
 
-		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnEventLabel = tableViewerColumnLabel.getColumn();
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnEventLabel = tableViewerColumnLabel
+				.getColumn();
 		tblclmnEventLabel.setWidth(100);
 		tblclmnEventLabel.setText("Event label");
 
-		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnEventRole = tableViewerColumnRole.getColumn();
 		tblclmnEventRole.setWidth(100);
 		tblclmnEventRole.setText("Role in personEvent");
 
-		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnFromDate = tableViewerColumnFromDate.getColumn();
+		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnFromDate = tableViewerColumnFromDate
+				.getColumn();
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
 
-		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");

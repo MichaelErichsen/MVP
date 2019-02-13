@@ -16,7 +16,8 @@ import net.myerichsen.hremvp.person.servers.PersonNameMapServer;
  *
  */
 public class PersonNameMapProvider implements IHREProvider {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int nameMapPid;
 	private String label;
 	private int partNo;

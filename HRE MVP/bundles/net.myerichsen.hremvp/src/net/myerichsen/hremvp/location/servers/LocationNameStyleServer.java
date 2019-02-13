@@ -73,7 +73,8 @@ public class LocationNameStyleServer implements IHREServer {
 		final List<LocationNameStyles> lnsl = style.get();
 
 		for (final LocationNameStyles style : lnsl) {
-			stringList.add(style.getLocationNameStylePid() + "," + style.getLabel());
+			stringList.add(
+					style.getLocationNameStylePid() + "," + style.getLabel());
 		}
 
 		return stringList;
@@ -100,7 +101,8 @@ public class LocationNameStyleServer implements IHREServer {
 		setLanguageLabel(language.getLabel());
 		setIsoCode(language.getIsocode());
 
-		mapList = new LocationNameMaps().getFKLocationNameStylePid(locationNameStylePid);
+		mapList = new LocationNameMaps()
+				.getFKLocationNameStylePid(locationNameStylePid);
 	}
 
 	/**

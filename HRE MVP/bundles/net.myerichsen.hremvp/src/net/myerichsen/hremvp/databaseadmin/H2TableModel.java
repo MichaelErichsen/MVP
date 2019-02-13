@@ -33,7 +33,8 @@ public class H2TableModel {
 	 * @param precision Column precision
 	 * @param scale     Column scale
 	 */
-	public H2TableModel(String name, String type, String value, int precision, int scale) {
+	public H2TableModel(String name, String type, String value, int precision,
+			int scale) {
 		super();
 		this.name = name;
 		this.type = type;

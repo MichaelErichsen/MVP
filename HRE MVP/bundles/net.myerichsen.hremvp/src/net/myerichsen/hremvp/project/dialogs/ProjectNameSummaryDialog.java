@@ -46,7 +46,8 @@ public class ProjectNameSummaryDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		final Button button = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		final Button button = createButton(parent, IDialogConstants.OK_ID,
+				IDialogConstants.OK_LABEL, true);
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -74,14 +75,17 @@ public class ProjectNameSummaryDialog extends TitleAreaDialog {
 		lblProjectName.setText("Project Name");
 
 		textProjectName = new Text(container, SWT.BORDER);
-		textProjectName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textProjectName.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblProjectSummary = new Label(container, SWT.NONE);
-		lblProjectSummary.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblProjectSummary.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblProjectSummary.setText("Project Summary");
 
 		styledTextProjectSummary = new StyledText(container, SWT.BORDER);
-		styledTextProjectSummary.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		styledTextProjectSummary.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		return area;
 	}

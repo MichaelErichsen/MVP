@@ -45,7 +45,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  */
 @SuppressWarnings("restriction")
 public class PersonEventsView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -66,7 +67,7 @@ public class PersonEventsView {
 		try {
 			provider = new PersonProvider();
 			navigatorFilter = new NavigatorFilter();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -85,7 +86,7 @@ public class PersonEventsView {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.addFilter(navigatorFilter);
 
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -96,31 +97,38 @@ public class PersonEventsView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnEvent = tableViewerColumnLabel.getColumn();
 		tblclmnEvent.setWidth(100);
 		tblclmnEvent.setText("Event");
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnRole = tableViewerColumnRole.getColumn();
 		tblclmnRole.setWidth(100);
 		tblclmnRole.setText("Role");
 		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(2));
 
-		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnFromDate = tableViewerColumnFromDate.getColumn();
+		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnFromDate = tableViewerColumnFromDate
+				.getColumn();
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
-		tableViewerColumnFromDate.setLabelProvider(new HREColumnLabelProvider(3));
+		tableViewerColumnFromDate
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
-		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
@@ -140,7 +148,8 @@ public class PersonEventsView {
 			}
 		});
 
-		textFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
@@ -176,8 +185,8 @@ public class PersonEventsView {
 	protected void openEventView() {
 		int eventPid = 0;
 
-		final ParameterizedCommand command = commandService.createCommand("net.myerichsen.hremvp.command.openeventview",
-				null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openeventview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
@@ -203,7 +212,8 @@ public class PersonEventsView {
 	 */
 	@Inject
 	@Optional
-	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+	private void subscribePersonPidUpdateTopic(
+			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
 		try {
 			tableViewer.setInput(provider.getPersonEventList(personPid));

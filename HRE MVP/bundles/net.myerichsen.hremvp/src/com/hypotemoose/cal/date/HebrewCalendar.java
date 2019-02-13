@@ -114,7 +114,8 @@ public class HebrewCalendar extends Almanac {
 	 * @return the name of the month.
 	 * @throws IndexOutOfBoundsException
 	 */
-	public static String getMonthName(int month) throws IndexOutOfBoundsException {
+	public static String getMonthName(int month)
+			throws IndexOutOfBoundsException {
 		return monthNames[month - 1];
 	}
 
@@ -128,7 +129,8 @@ public class HebrewCalendar extends Almanac {
 	public static int getNumberOfDaysInMonth(int year, int month) {
 
 		// Fixed 29-day months.
-		if ((month == 2) || (month == 4) || (month == 6) || (month == 10) || (month == 13)) {
+		if ((month == 2) || (month == 4) || (month == 6) || (month == 10)
+				|| (month == 13)) {
 			return 29;
 		}
 
@@ -189,7 +191,8 @@ public class HebrewCalendar extends Almanac {
 
 		final HebrewCalendar date = (HebrewCalendar) obj;
 
-		return (year == date.getYear()) && (month == date.getMonth()) && (day == date.getDay());
+		return (year == date.getYear()) && (month == date.getMonth())
+				&& (day == date.getDay());
 	}
 
 	/**

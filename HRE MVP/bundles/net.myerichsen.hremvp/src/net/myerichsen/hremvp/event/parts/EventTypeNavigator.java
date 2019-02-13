@@ -40,7 +40,8 @@ import net.myerichsen.hremvp.event.providers.EventTypeProvider;
  *
  */
 public class EventTypeNavigator {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -77,7 +78,8 @@ public class EventTypeNavigator {
 	public void createControls(Composite parent, EMenuService menuService) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -85,17 +87,20 @@ public class EventTypeNavigator {
 				openEventTypeView();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(), "net.myerichsen.hremvp.popupmenu.eventtypemenu");
+		menuService.registerContextMenu(tableViewer.getControl(),
+				"net.myerichsen.hremvp.popupmenu.eventtypemenu");
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(40);
 		tblclmnId.setText("Event Type ID");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnEventType = tableViewerColumn_1.getColumn();
 		tblclmnEventType.setWidth(230);
 		tblclmnEventType.setText("Event Type");
@@ -139,7 +144,8 @@ public class EventTypeNavigator {
 	protected void openEventTypeView() {
 		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeView";
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
@@ -175,7 +181,9 @@ public class EventTypeNavigator {
 			eventTypePid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_TYPE_PID_UPDATE_TOPIC, eventTypePid);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.EVENT_TYPE_PID_UPDATE_TOPIC,
+				eventTypePid);
 		LOGGER.info("Event Type Pid: " + eventTypePid);
 	}
 

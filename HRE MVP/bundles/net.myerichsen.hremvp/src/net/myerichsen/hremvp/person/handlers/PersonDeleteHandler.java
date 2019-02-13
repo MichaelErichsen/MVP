@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
 
 /**
  * Delete the selected person
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 6. feb. 2019
  *
@@ -38,12 +38,13 @@ public class PersonDeleteHandler {
 	@Inject
 	private static IEventBroker eventBroker;
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNavigator";
 
 	/**
 	 * Select a person and delete it
-	 * 
+	 *
 	 * @param workbench
 	 * @param partService
 	 * @param application
@@ -51,14 +52,15 @@ public class PersonDeleteHandler {
 	 * @param shell
 	 */
 	@Execute
-	public void execute(IWorkbench workbench, EPartService partService, MApplication application,
-			EModelService modelService, Shell shell) {
+	public void execute(IWorkbench workbench, EPartService partService,
+			MApplication application, EModelService modelService, Shell shell) {
 		// Find selected person
 		int personPid = 0;
 		String primaryName = "";
 		TableViewer viewer = null;
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		for (final MPartStack mPartStack : stacks) {
@@ -67,10 +69,12 @@ public class PersonDeleteHandler {
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
 				if (part.getContributionURI().equals(contributionURI)) {
-					final PersonNavigator pn = (PersonNavigator) part.getObject();
+					final PersonNavigator pn = (PersonNavigator) part
+							.getObject();
 					viewer = pn.getTableViewer();
-					TableItem[] selection = viewer.getTable().getSelection();
-					TableItem item = selection[0];
+					final TableItem[] selection = viewer.getTable()
+							.getSelection();
+					final TableItem item = selection[0];
 					personPid = Integer.parseInt(item.getText(0));
 					primaryName = item.getText(1);
 					LOGGER.info("Selected: " + personPid + " " + primaryName);
@@ -84,21 +88,25 @@ public class PersonDeleteHandler {
 		}
 
 		// Last chance to regret
-		final MessageDialog dialog = new MessageDialog(shell, "Delete Person " + primaryName, null,
-				"Are you sure that you will delete person " + personPid + ", " + primaryName + "?",
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete Person " + primaryName, null,
+				"Are you sure that you will delete person " + personPid + ", "
+						+ primaryName + "?",
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
 
 		if (dialog.open() == Window.CANCEL) {
-			eventBroker.post("MESSAGE", "Deletion of person " + primaryName + " has been canceled");
+			eventBroker.post("MESSAGE",
+					"Deletion of person " + primaryName + " has been canceled");
 			return;
 		}
 
 		try {
-			PersonProvider provider = new PersonProvider();
+			final PersonProvider provider = new PersonProvider();
 			provider.delete(personPid);
 
 			LOGGER.info("Person " + primaryName + " has been deleted");
-			eventBroker.post("MESSAGE", "Person " + primaryName + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Person " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_LIST_UPDATE_TOPIC, personPid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());

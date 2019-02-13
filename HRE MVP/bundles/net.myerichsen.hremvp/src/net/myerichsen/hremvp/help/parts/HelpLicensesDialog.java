@@ -42,7 +42,8 @@ public class HelpLicensesDialog extends Dialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
 	}
 
 	/**
@@ -54,7 +55,8 @@ public class HelpLicensesDialog extends Dialog {
 	protected Control createDialogArea(Composite parent) {
 		final Composite container = (Composite) super.createDialogArea(parent);
 
-		final StyledText styledText = new StyledText(container, SWT.BORDER | SWT.WRAP);
+		final StyledText styledText = new StyledText(container,
+				SWT.BORDER | SWT.WRAP);
 		styledText.setDoubleClickEnabled(false);
 		styledText.setFont(SWTResourceManager.getFont("Calibri", 12, SWT.BOLD));
 		styledText.setAlwaysShowScrollBars(false);
@@ -69,7 +71,8 @@ public class HelpLicensesDialog extends Dialog {
 						+ "The license includes this restriction: \"The software shall be used for good, not evil.\"\r\n\r\n"
 						+ "Almanac Conversion code by Chris Engelsma is used from https://github.com/chrisengelsma/almanac-converter.\r\n"
 						+ "It is licensed under the Apache License 2.0");
-		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		styledText.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		return container;
 	}

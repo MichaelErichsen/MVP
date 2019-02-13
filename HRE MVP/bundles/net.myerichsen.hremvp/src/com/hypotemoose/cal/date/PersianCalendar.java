@@ -105,7 +105,8 @@ public class PersianCalendar extends Almanac {
 	 * @return the name of the month.
 	 * @throws IndexOutOfBoundsException
 	 */
-	public static String getMonthName(int month) throws IndexOutOfBoundsException {
+	public static String getMonthName(int month)
+			throws IndexOutOfBoundsException {
 		return monthNames[month - 1];
 	}
 
@@ -152,7 +153,8 @@ public class PersianCalendar extends Almanac {
 
 		final PersianCalendar date = (PersianCalendar) obj;
 
-		return (day == date.getDay()) && (month == date.getMonth()) && (year == date.getYear());
+		return (day == date.getDay()) && (month == date.getMonth())
+				&& (year == date.getYear());
 	}
 
 	@Override

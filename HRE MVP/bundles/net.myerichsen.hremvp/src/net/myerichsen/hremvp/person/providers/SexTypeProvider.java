@@ -38,7 +38,8 @@ import net.myerichsen.hremvp.person.servers.SexTypeServer;
  *
  */
 public class SexTypeProvider implements IHREProvider {
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int sexTypePid;
@@ -91,9 +92,11 @@ public class SexTypeProvider implements IHREProvider {
 	 * @throws MvpException            Application specific exception
 	 *
 	 */
-	public void deleteRemote(int key) throws ClientProtocolException, IOException, MvpException {
+	public void deleteRemote(int key)
+			throws ClientProtocolException, IOException, MvpException {
 		final CloseableHttpClient client = HttpClients.createDefault();
-		final HttpDelete request = new HttpDelete("http://" + store.getString("SERVERADDRESS") + ":"
+		final HttpDelete request = new HttpDelete("http://"
+				+ store.getString("SERVERADDRESS") + ":"
 				+ store.getString("SERVERPORT") + "/mvp/v100/sextype/" + key);
 		final CloseableHttpResponse response = client.execute(request);
 		final StatusLine statusLine = response.getStatusLine();
@@ -176,16 +179,18 @@ public class SexTypeProvider implements IHREProvider {
 	 * @param key The persistent ID of the row
 	 * @throws ClientProtocolException Signals an error in the HTTP protocol
 	 * @throws IOException             IOException
-	 * @throws JSONException           Thrown to indicate a problem with the JSON
-	 *                                 API
+	 * @throws JSONException           Thrown to indicate a problem with the
+	 *                                 JSON API
 	 * @throws MvpException            Application specific exception
 	 */
-	public void getRemote(int key) throws ClientProtocolException, IOException, MvpException {
+	public void getRemote(int key)
+			throws ClientProtocolException, IOException, MvpException {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 
 		final CloseableHttpClient client = HttpClients.createDefault();
-		final HttpGet request = new HttpGet("http://127.0.0.1:8000/mvp/v100/sextype/" + key);
+		final HttpGet request = new HttpGet(
+				"http://127.0.0.1:8000/mvp/v100/sextype/" + key);
 		final CloseableHttpResponse response = client.execute(request);
 
 		final StatusLine statusLine = response.getStatusLine();
@@ -194,7 +199,8 @@ public class SexTypeProvider implements IHREProvider {
 			throw new MvpException(statusLine.getReasonPhrase());
 		}
 
-		final BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+		final BufferedReader br = new BufferedReader(
+				new InputStreamReader(response.getEntity().getContent()));
 
 		while (null != (s = br.readLine())) {
 			sb.append(s);
@@ -246,7 +252,8 @@ public class SexTypeProvider implements IHREProvider {
 	 * @throws MvpException   Application specific exception
 	 * @throws IOException    IOException
 	 */
-	public void insertRemote() throws ParseException, IOException, MvpException {
+	public void insertRemote()
+			throws ParseException, IOException, MvpException {
 		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("sexTypePid");
@@ -260,7 +267,8 @@ public class SexTypeProvider implements IHREProvider {
 		js.endObject();
 
 		final CloseableHttpClient client = HttpClients.createDefault();
-		final HttpPost request = new HttpPost("http://127.0.0.1:8000/mvp/v100/sextype/");
+		final HttpPost request = new HttpPost(
+				"http://127.0.0.1:8000/mvp/v100/sextype/");
 		final StringEntity params = new StringEntity(js.toString());
 		request.addHeader("content-type", "application/json");
 		request.setEntity(params);

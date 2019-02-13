@@ -19,7 +19,9 @@ public class PersonPerspectiveHandler {
 	 * @param modelService
 	 */
 	@Execute
-	public void execute(MApplication app, EPartService partService, EModelService modelService) {
-		partService.switchPerspective("net.myerichsen.hremvp.perspective.personperspective");
+	public void execute(MApplication app, EPartService partService,
+			EModelService modelService) {
+		partService.switchPerspective(
+				"net.myerichsen.hremvp.perspective.personperspective");
 	}
 }

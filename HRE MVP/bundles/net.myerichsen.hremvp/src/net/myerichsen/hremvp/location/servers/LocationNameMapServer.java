@@ -17,7 +17,8 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  *
  */
 public class LocationNameMapServer implements IHREServer {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNameMapPid;
 	private String label;
 	private int partNo;
@@ -52,7 +53,7 @@ public class LocationNameMapServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
 	@Override

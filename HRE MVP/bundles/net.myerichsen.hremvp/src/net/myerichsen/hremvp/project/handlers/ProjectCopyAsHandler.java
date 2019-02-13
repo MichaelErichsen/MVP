@@ -18,8 +18,9 @@ public class ProjectCopyAsHandler {
 	 */
 	@Execute
 	public void execute(IWorkbench workbench, Shell shell) {
-		final MessageDialog dialog = new MessageDialog(shell, "Copy As", null, "Not yet implemented",
-				MessageDialog.INFORMATION, 0, new String[] { "OK" });
+		final MessageDialog dialog = new MessageDialog(shell, "Copy As", null,
+				"Not yet implemented", MessageDialog.INFORMATION, 0,
+				new String[] { "OK" });
 		dialog.open();
 	}
 

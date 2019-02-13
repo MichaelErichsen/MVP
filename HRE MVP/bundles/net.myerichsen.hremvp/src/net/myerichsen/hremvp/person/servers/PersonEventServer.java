@@ -32,11 +32,47 @@ public class PersonEventServer implements IHREServer {
 
 	/**
 	 * @param key
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean areMoreEvents(int key) throws SQLException {
+		final List<PersonEvents> peList = personEvent.getFKEventPid(key);
+		if (peList.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param key
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		personEvent.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -44,19 +80,6 @@ public class PersonEventServer implements IHREServer {
 	 */
 	public int getEventPid() {
 		return EventPid;
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean areMoreEvents(int key) throws SQLException {
-		List<PersonEvents> peList = personEvent.getFKEventPid(key);
-		if (peList.size() > 0) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -84,6 +107,7 @@ public class PersonEventServer implements IHREServer {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public int insert() throws SQLException {
 		personEvent.setEventPid(EventPid);
 		personEvent.setPersonPid(PersonPid);
@@ -151,29 +175,7 @@ public class PersonEventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#update()
 	 */
 	@Override

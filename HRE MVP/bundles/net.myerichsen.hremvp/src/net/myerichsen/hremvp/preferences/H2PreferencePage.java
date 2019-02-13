@@ -23,7 +23,8 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * @version 6. jan. 2019
  *
  */
-public class H2PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class H2PreferencePage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private ComboFieldEditor comboFieldEditorH2TraceLevel;
 
@@ -39,21 +40,27 @@ public class H2PreferencePage extends FieldEditorPreferencePage implements IWork
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
+	 * ()
 	 */
 	@Override
 	protected void createFieldEditors() {
 		final Composite composite = getFieldEditorParent();
-		addField(new DirectoryFieldEditor("DBPATH", "H2 Database Path", composite));
-		addField(new StringFieldEditor("DBNAME", "H2 Database Name", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE,
+		addField(new DirectoryFieldEditor("DBPATH", "H2 Database Path",
 				composite));
-		addField(new StringFieldEditor("USERID", "H2 Userid", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite));
-		addField(new StringFieldEditor("PASSWORD", "H2 Password", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE,
-				composite));
-		comboFieldEditorH2TraceLevel = new ComboFieldEditor("H2TRACELEVEL", "H2 Trace Level",
-				new String[][] { { "OFF", "0" }, { "ERROR", "1" }, { "INFO", "2" }, { "DEBUG", "3" } }, composite);
+		addField(new StringFieldEditor("DBNAME", "H2 Database Name", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite));
+		addField(new StringFieldEditor("USERID", "H2 Userid", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite));
+		addField(new StringFieldEditor("PASSWORD", "H2 Password", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite));
+		comboFieldEditorH2TraceLevel = new ComboFieldEditor("H2TRACELEVEL",
+				"H2 Trace Level", new String[][] { { "OFF", "0" },
+						{ "ERROR", "1" }, { "INFO", "2" }, { "DEBUG", "3" } },
+				composite);
 		addField(comboFieldEditorH2TraceLevel);
-		final StringFieldEditor h2versionStringFieldEditor = new StringFieldEditor("H2VERSION", "H2 Version", -1,
+		final StringFieldEditor h2versionStringFieldEditor = new StringFieldEditor(
+				"H2VERSION", "H2 Version", -1,
 				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite);
 		h2versionStringFieldEditor.getTextControl(composite).setEditable(false);
 		addField(h2versionStringFieldEditor);
@@ -62,7 +69,8 @@ public class H2PreferencePage extends FieldEditorPreferencePage implements IWork
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+	 * @see
+	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	@Override
 	public void init(IWorkbench workbench) {
@@ -72,8 +80,8 @@ public class H2PreferencePage extends FieldEditorPreferencePage implements IWork
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.
-	 * eclipse.jface.util.PropertyChangeEvent)
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(
+	 * org. eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
@@ -86,7 +94,8 @@ public class H2PreferencePage extends FieldEditorPreferencePage implements IWork
 
 			try {
 				final Connection conn = HreH2ConnectionPool.getConnection();
-				PreparedStatement prep = conn.prepareStatement("SET TRACE_LEVEL_SYSTEM_OUT ?");
+				PreparedStatement prep = conn
+						.prepareStatement("SET TRACE_LEVEL_SYSTEM_OUT ?");
 				prep.setInt(1, h2TraceLevel);
 				prep.executeUpdate();
 				prep = conn.prepareStatement("SET TRACE_LEVEL_FILE ?");
@@ -95,11 +104,14 @@ public class H2PreferencePage extends FieldEditorPreferencePage implements IWork
 				prep.close();
 				conn.close();
 			} catch (final SQLException e) {
-				LOGGER.severe(e.getMessage() + ", " + e.getErrorCode() + ", " + e.getSQLState());
+				LOGGER.severe(e.getMessage() + ", " + e.getErrorCode() + ", "
+						+ e.getSQLState());
 			}
 
-			LOGGER.info("Changed property " + comboFieldEditorH2TraceLevel.getPreferenceName() + " from "
-					+ event.getOldValue() + " to " + event.getNewValue());
+			LOGGER.info("Changed property "
+					+ comboFieldEditorH2TraceLevel.getPreferenceName()
+					+ " from " + event.getOldValue() + " to "
+					+ event.getNewValue());
 		}
 	}
 }

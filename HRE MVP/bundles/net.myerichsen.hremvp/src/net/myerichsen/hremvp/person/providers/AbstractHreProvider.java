@@ -21,8 +21,8 @@ public abstract class AbstractHreProvider {
 	@Inject
 	protected static IEventBroker eventBroker;
 	protected static final Logger LOGGER = Logger.getLogger("global");
-	protected ScopedPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
-			"org.historyresearchenvironment.usergui");
+	protected ScopedPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "org.historyresearchenvironment.usergui");
 	protected Connection conn = null;
 
 	protected PreparedStatement pst = null;
@@ -172,11 +172,13 @@ public abstract class AbstractHreProvider {
 				final String type = field.getType().toString();
 
 				if (type.contains("[[[")) {
-					throw new Exception("Too many array levels for this implementation");
+					throw new Exception(
+							"Too many array levels for this implementation");
 				}
 
 				if (type.contains("[[")) {
-					throw new Exception("Too many array levels for this implementation, so far");
+					throw new Exception(
+							"Too many array levels for this implementation, so far");
 				}
 
 				if (type.contains("[")) {
@@ -248,7 +250,8 @@ public abstract class AbstractHreProvider {
 					jw.key(key);
 					String value1;
 					if (type.equals("int")) {
-						value1 = Integer.toString(((Integer) field.get(this)).intValue());
+						value1 = Integer.toString(
+								((Integer) field.get(this)).intValue());
 					} else {
 						value1 = (String) field.get(this);
 					}
@@ -258,7 +261,8 @@ public abstract class AbstractHreProvider {
 			}
 			jw.endObject();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line " + e.getStackTrace()[0].getLineNumber());
+			LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line "
+					+ e.getStackTrace()[0].getLineNumber());
 		}
 		LOGGER.info(sw.toString());
 		return sw.toString();

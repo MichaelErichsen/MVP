@@ -72,7 +72,8 @@ public final class GregorianCalendar extends Almanac {
 	 * @param cal a {@link java.util.Calendar}.
 	 */
 	public GregorianCalendar(Calendar cal) {
-		this(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
+		this(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
+				cal.get(Calendar.DAY_OF_MONTH));
 	}
 
 	/**
@@ -127,7 +128,8 @@ public final class GregorianCalendar extends Almanac {
 	 * @return the name of the month.
 	 * @throws IndexOutOfBoundsException
 	 */
-	public static String getMonthName(int month) throws IndexOutOfBoundsException {
+	public static String getMonthName(int month)
+			throws IndexOutOfBoundsException {
 		return monthNames[month - 1];
 	}
 
@@ -164,12 +166,13 @@ public final class GregorianCalendar extends Almanac {
 
 	/**
 	 * Determines whether a given year is a leap year. This method optionally
-	 * determines whether the current date exists before or after the creation of
-	 * the Gregorian calendar, and follows that calendar's leap year rule. As a
-	 * result, there are "missing dates" (October 4 - 14, 1582).
+	 * determines whether the current date exists before or after the creation
+	 * of the Gregorian calendar, and follows that calendar's leap year rule. As
+	 * a result, there are "missing dates" (October 4 - 14, 1582).
 	 *
 	 * @param year         a given year.
-	 * @param useProleptic true, if using a proleptic calendar; false, otherwise.
+	 * @param useProleptic true, if using a proleptic calendar; false,
+	 *                     otherwise.
 	 * @return true, if year is a leap year; false, otherwise.
 	 */
 	public static boolean isLeapYear(int year, boolean useProleptic) {
@@ -202,7 +205,8 @@ public final class GregorianCalendar extends Almanac {
 		}
 
 		final GregorianCalendar date = (GregorianCalendar) obj;
-		return (year == date.getYear()) && (month == date.getMonth()) && (day == date.getDay());
+		return (year == date.getYear()) && (month == date.getMonth())
+				&& (day == date.getDay());
 	}
 
 	/**
@@ -317,8 +321,8 @@ public final class GregorianCalendar extends Almanac {
 	 * Determines whether this date's year is a leap year.
 	 * <p>
 	 * This method will assume that the leap year is proleptic, meaning it will
-	 * back-project the Gregorian Calendar to before it was implemented, making it
-	 * not historically accurate prior to October 15, 1582.
+	 * back-project the Gregorian Calendar to before it was implemented, making
+	 * it not historically accurate prior to October 15, 1582.
 	 *
 	 * @return true, if this is a leap year; false, otherwise.
 	 */

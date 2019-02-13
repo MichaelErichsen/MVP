@@ -1,5 +1,8 @@
 package net.myerichsen.hremvp.person.providers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A person displayed in a TreeViewer
  *
@@ -8,6 +11,8 @@ package net.myerichsen.hremvp.person.providers;
  *
  */
 public class TreePerson {
+	private List<TreePerson> descendantList;
+	private List<TreePerson> ancestorList;
 	private int personPid;
 	private int childPid;
 	private int parentPid;
@@ -23,10 +28,12 @@ public class TreePerson {
 	 */
 	public TreePerson(String sPersonPid, int parentpid, String sChildPid, String name) {
 		super();
-		this.personPid = Integer.parseInt(sPersonPid);
-		this.parentPid = 0;
-		this.childPid = Integer.parseInt(sChildPid);
+		personPid = Integer.parseInt(sPersonPid);
+		parentPid = 0;
+		childPid = Integer.parseInt(sChildPid);
 		Name = name;
+		descendantList = new ArrayList<>();
+		ancestorList = new ArrayList<>();
 	}
 
 	/**
@@ -39,10 +46,33 @@ public class TreePerson {
 	 */
 	public TreePerson(String sPersonPid, String sParentpid, int childPid, String name) {
 		super();
-		this.personPid = Integer.parseInt(sPersonPid);
-		this.parentPid = Integer.parseInt(sParentpid);
+		personPid = Integer.parseInt(sPersonPid);
+		parentPid = Integer.parseInt(sParentpid);
 		this.childPid = 0;
 		Name = name;
+		descendantList = new ArrayList<>();
+		ancestorList = new ArrayList<>();
+	}
+
+	/**
+	 * @param child
+	 */
+	public void addChild(TreePerson child) {
+		descendantList.add(child);
+	}
+
+	/**
+	 * @param parent
+	 */
+	public void addParent(TreePerson parent) {
+		ancestorList.add(parent);
+	}
+
+	/**
+	 * @return the ancestorList
+	 */
+	public List<TreePerson> getAncestorList() {
+		return ancestorList;
 	}
 
 	/**
@@ -50,6 +80,13 @@ public class TreePerson {
 	 */
 	public int getChildPid() {
 		return childPid;
+	}
+
+	/**
+	 * @return the descendantList
+	 */
+	public List<TreePerson> getDescendantList() {
+		return descendantList;
 	}
 
 	/**
@@ -74,10 +111,24 @@ public class TreePerson {
 	}
 
 	/**
+	 * @param ancestorList the ancestorList to set
+	 */
+	public void setAncestorList(List<TreePerson> ancestorList) {
+		this.ancestorList = ancestorList;
+	}
+
+	/**
 	 * @param childPid the childPid to set
 	 */
 	public void setChildPid(int childPid) {
 		this.childPid = childPid;
+	}
+
+	/**
+	 * @param descendantList the descendantList to set
+	 */
+	public void setDescendantList(List<TreePerson> descendantList) {
+		this.descendantList = descendantList;
 	}
 
 	/**

@@ -21,8 +21,10 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * @version 1. feb. 2019
  */
 public class HreH2ConnectionPool {
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static JdbcConnectionPool connectionPool = null;
 	private static int h2TraceLevel = 1;
 	private static String dbPath = null;
@@ -43,12 +45,13 @@ public class HreH2ConnectionPool {
 	public static void createNew(String dbName) throws BackingStoreException {
 		try {
 			connectionPool.dispose();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.info("No connection pool to dispose");
 		}
 		dbPath = store.getString("DBPATH");
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
-		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName + ";TRACE_LEVEL_FILE=" + h2TraceLevel
+		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName
+				+ ";TRACE_LEVEL_FILE=" + h2TraceLevel
 				+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
 		LOGGER.info("JDBC URL: " + jdbcUrl);
 		connectionPool = JdbcConnectionPool.create(jdbcUrl, "sa", "");
@@ -87,16 +90,19 @@ public class HreH2ConnectionPool {
 
 		if (connectionPool == null) {
 			h2TraceLevel = store.getInt("H2TRACELEVEL");
-			final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName + ";IFEXISTS=TRUE;TRACE_LEVEL_FILE="
-					+ h2TraceLevel + ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
+			final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName
+					+ ";IFEXISTS=TRUE;TRACE_LEVEL_FILE=" + h2TraceLevel
+					+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
 			LOGGER.info("JDBC URL: " + jdbcUrl);
-			connectionPool = JdbcConnectionPool.create(jdbcUrl, store.getString("USERID"), store.getString("PASSWORD"));
+			connectionPool = JdbcConnectionPool.create(jdbcUrl,
+					store.getString("USERID"), store.getString("PASSWORD"));
 			connectionPool.setMaxConnections(500);
 			String h2Version = store.getString("H2VERSION");
 
 			try {
 				final Connection conn = connectionPool.getConnection();
-				final PreparedStatement ps = conn.prepareStatement(GETH2VERSION);
+				final PreparedStatement ps = conn
+						.prepareStatement(GETH2VERSION);
 				final ResultSet rs = ps.executeQuery();
 
 				if (rs.next()) {
@@ -113,9 +119,11 @@ public class HreH2ConnectionPool {
 			}
 		}
 
-		LOGGER.fine("Reusing connection pool, Max: " + connectionPool.getMaxConnections() + ", Active: "
+		LOGGER.fine("Reusing connection pool, Max: "
+				+ connectionPool.getMaxConnections() + ", Active: "
 				+ connectionPool.getActiveConnections());
-		// TODO 2019-02-01 17:53:38 jdbc[3]: java.lang.Exception: Open Stack Trace
+		// TODO 2019-02-01 17:53:38 jdbc[3]: java.lang.Exception: Open Stack
+		// Trace
 		return connectionPool.getConnection();
 	}
 
@@ -130,7 +138,8 @@ public class HreH2ConnectionPool {
 	public static Connection getConnection(String dbName) throws SQLException {
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
 		dbPath = store.getString("DBPATH");
-		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName + ";IFEXISTS=TRUE;TRACE_LEVEL_FILE=" + h2TraceLevel
+		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName
+				+ ";IFEXISTS=TRUE;TRACE_LEVEL_FILE=" + h2TraceLevel
 				+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
 		LOGGER.info("JDBC URL: " + jdbcUrl);
 		connectionPool = JdbcConnectionPool.create(jdbcUrl, "sa", "");

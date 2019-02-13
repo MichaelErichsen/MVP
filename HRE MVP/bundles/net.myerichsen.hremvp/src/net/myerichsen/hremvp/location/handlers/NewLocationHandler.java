@@ -21,7 +21,8 @@ public class NewLocationHandler {
 	 */
 	@Execute
 	public void execute(Shell shell, IEclipseContext context) {
-		final WizardDialog dialog = new WizardDialog(shell, new NewLocationWizard(context));
+		final WizardDialog dialog = new WizardDialog(shell,
+				new NewLocationWizard(context));
 		dialog.open();
 
 	}

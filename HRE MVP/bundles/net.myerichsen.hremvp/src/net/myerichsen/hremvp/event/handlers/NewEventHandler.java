@@ -21,7 +21,8 @@ public class NewEventHandler {
 	 */
 	@Execute
 	public void execute(Shell shell, IEclipseContext context) {
-		final WizardDialog dialog = new WizardDialog(shell, new NewEventWizard(context));
+		final WizardDialog dialog = new WizardDialog(shell,
+				new NewEventWizard(context));
 		dialog.open();
 
 	}

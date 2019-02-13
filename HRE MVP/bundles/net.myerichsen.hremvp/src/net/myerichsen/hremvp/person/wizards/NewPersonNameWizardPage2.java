@@ -20,13 +20,14 @@ import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
 
 /**
  * Wizard page to ad a person name
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
  * @version 8. feb. 2019
  */
 
 public class NewPersonNameWizardPage2 extends WizardPage {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int personNameStylePid;
 	private PersonNameMapProvider provider;
@@ -49,9 +50,8 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
-	 * Composite)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets. Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -65,7 +65,8 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 			personNameStylePid = wizard.getPersonNameStylePid();
 
 			provider = new PersonNameMapProvider();
-			final List<NameMaps> mapList = provider.getFKNameStylePid(personNameStylePid);
+			final List<NameMaps> mapList = provider
+					.getFKNameStylePid(personNameStylePid);
 			textFieldList = new ArrayList<>();
 
 			for (int i = 0; i < mapList.size(); i++) {
@@ -73,7 +74,8 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 				lblNewLabel.setText(mapList.get(i).getLabel());
 
 				final Text text = new Text(container, SWT.BORDER);
-				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				text.setLayoutData(
+						new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				textFieldList.add(text);
 			}
 		} catch (final SQLException e) {

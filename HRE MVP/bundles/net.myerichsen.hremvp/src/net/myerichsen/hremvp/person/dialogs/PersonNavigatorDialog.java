@@ -41,8 +41,9 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class PersonNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEventBroker eventBroker;
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final IEventBroker eventBroker;
 
 	private PersonProvider provider;
 
@@ -52,7 +53,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	private String deathDate;
 	private Text textNameFilter;
 	private TableViewer tableViewer;
-	private NavigatorFilter navigatorFilter;
+	private final NavigatorFilter navigatorFilter;
 
 	/**
 	 * Create the dialog.
@@ -82,8 +83,10 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -100,10 +103,11 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		container.setLayout(new GridLayout(2, false));
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.addFilter(navigatorFilter);
 
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.addSelectionListener(new SelectionAdapter() {
@@ -119,32 +123,41 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		});
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
 		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnBirthDate = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnBirthDate = tableViewerColumnBirthDate.getColumn();
+		final TableViewerColumn tableViewerColumnBirthDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnBirthDate = tableViewerColumnBirthDate
+				.getColumn();
 		tblclmnBirthDate.setWidth(100);
 		tblclmnBirthDate.setText("Birth Date");
-		tableViewerColumnBirthDate.setLabelProvider(new HREColumnLabelProvider(2));
+		tableViewerColumnBirthDate
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
-		final TableViewerColumn tableViewerColumnDeathDate = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnDeathDate = tableViewerColumnDeathDate.getColumn();
+		final TableViewerColumn tableViewerColumnDeathDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnDeathDate = tableViewerColumnDeathDate
+				.getColumn();
 		tblclmnDeathDate.setWidth(100);
 		tblclmnDeathDate.setText("Death Date");
-		tableViewerColumnDeathDate.setLabelProvider(new HREColumnLabelProvider(3));
+		tableViewerColumnDeathDate
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
-		Label lblNameFilter = new Label(container, SWT.NONE);
-		lblNameFilter.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		final Label lblNameFilter = new Label(container, SWT.NONE);
+		lblNameFilter.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNameFilter.setText("Name Filter");
 
 		textNameFilter = new Text(container, SWT.BORDER);
@@ -158,7 +171,8 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 			}
 		});
 
-		textNameFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textNameFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

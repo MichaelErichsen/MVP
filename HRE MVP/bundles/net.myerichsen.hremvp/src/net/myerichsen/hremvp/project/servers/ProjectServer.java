@@ -21,8 +21,10 @@ import net.myerichsen.hremvp.MvpException;
  *
  */
 public class ProjectServer implements IHREServer {
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int projectId = 0;
 	private String projectName = "";
@@ -57,7 +59,7 @@ public class ProjectServer implements IHREServer {
 			ls.add(store.getString(key));
 			key = new String("project." + i + ".localserver");
 			ls.add(store.getString(key));
-			
+
 			LOGGER.fine("Found Name: " + store.getString(key));
 			lls.add(ls);
 		}
@@ -100,7 +102,8 @@ public class ProjectServer implements IHREServer {
 		List<String> ls;
 
 		final List<List<String>> lls = new ArrayList<>();
-		final String[] labelArray = { "Project Name", "Last Edited", "Summary", "Local/Server", "Path" };
+		final String[] labelArray = { "Project Name", "Last Edited", "Summary",
+				"Local/Server", "Path" };
 
 		for (int i = 0; i < labelArray.length; i++) {
 			ls = new ArrayList<>();

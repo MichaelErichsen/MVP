@@ -19,7 +19,9 @@ public class EventPerspectiveHandler {
 	 * @param modelService
 	 */
 	@Execute
-	public void execute(MApplication app, EPartService partService, EModelService modelService) {
-		partService.switchPerspective("net.myerichsen.hremvp.perspective.eventperspective");
+	public void execute(MApplication app, EPartService partService,
+			EModelService modelService) {
+		partService.switchPerspective(
+				"net.myerichsen.hremvp.perspective.eventperspective");
 	}
 }

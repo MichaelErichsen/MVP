@@ -110,7 +110,8 @@ public class H2TableProvider implements IContentProvider {
 			s = "SEXES";
 		}
 
-		final String DELETE = "DELETE FROM PUBLIC." + tableName + " WHERE " + s + "_PID = ?";
+		final String DELETE = "DELETE FROM PUBLIC." + tableName + " WHERE " + s
+				+ "_PID = ?";
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, recordNum);
 		ps.executeUpdate();
@@ -164,7 +165,8 @@ public class H2TableProvider implements IContentProvider {
 					+ "TABLE_ID, ORIGINAL_TEXT, CONVERT(PARSEDATETIME(DATE, 'dd-MM-yyyy'), DATE), "
 					+ "CONVERT(PARSEDATETIME(SORT_DATE, 'dd-MM-yyyy'), DATE), SURETY from csvread('hdates.csv'));";
 		} else {
-			IMPORTCSV = "INSERT INTO PUBLIC." + tableName + " (SELECT * from csvread('" + fileName + "'));";
+			IMPORTCSV = "INSERT INTO PUBLIC." + tableName
+					+ " (SELECT * from csvread('" + fileName + "'));";
 		}
 
 		ps = conn.prepareStatement(IMPORTCSV);
@@ -304,7 +306,8 @@ public class H2TableProvider implements IContentProvider {
 			s = "SEXES";
 		}
 
-		final String SELECT = "SELECT * FROM PUBLIC." + tableName + " WHERE " + s + "_PID = ?";
+		final String SELECT = "SELECT * FROM PUBLIC." + tableName + " WHERE "
+				+ s + "_PID = ?";
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, recordNum);
 		rs = ps.executeQuery();
@@ -377,7 +380,8 @@ public class H2TableProvider implements IContentProvider {
 			s = "SEXES";
 		}
 
-		final String SELECTALL = "SELECT * FROM PUBLIC." + tableName + " ORDER BY " + s + "_PID";
+		final String SELECTALL = "SELECT * FROM PUBLIC." + tableName
+				+ " ORDER BY " + s + "_PID";
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
 
@@ -414,20 +418,24 @@ public class H2TableProvider implements IContentProvider {
 		if (iterator.hasNext()) {
 			h2TableModel = iterator.next();
 
-			if ((h2TableModel.getNumericType() == Constants.DATE) && (h2TableModel.getValue() == "")) {
+			if ((h2TableModel.getNumericType() == Constants.DATE)
+					&& (h2TableModel.getValue() == "")) {
 				sb.append(h2TableModel.getName() + " =  null");
 			} else {
-				sb.append(h2TableModel.getName() + "='" + h2TableModel.getValue() + "'");
+				sb.append(h2TableModel.getName() + "='"
+						+ h2TableModel.getValue() + "'");
 			}
 		}
 
 		while (iterator.hasNext()) {
 			h2TableModel = iterator.next();
 
-			if ((h2TableModel.getNumericType() == Constants.DATE) && (h2TableModel.getValue() == "")) {
+			if ((h2TableModel.getNumericType() == Constants.DATE)
+					&& (h2TableModel.getValue() == "")) {
 				sb.append(", " + h2TableModel.getName() + " =  null");
 			} else {
-				sb.append(", " + h2TableModel.getName() + "='" + h2TableModel.getValue() + "'");
+				sb.append(", " + h2TableModel.getName() + "='"
+						+ h2TableModel.getValue() + "'");
 			}
 		}
 

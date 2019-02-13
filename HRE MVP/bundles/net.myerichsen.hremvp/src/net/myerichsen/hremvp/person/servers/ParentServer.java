@@ -20,7 +20,7 @@ public class ParentServer implements IHREServer {
 	private boolean PrimaryParent;
 	private int LanguagePid;
 
-	private Parents parentRelation;
+	private final Parents parentRelation;
 
 	/**
 	 * Constructor
@@ -28,6 +28,39 @@ public class ParentServer implements IHREServer {
 	 */
 	public ParentServer() {
 		parentRelation = new Parents();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -63,6 +96,21 @@ public class ParentServer implements IHREServer {
 	 */
 	public String getParentRole() {
 		return ParentRole;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.servers.IHREServer#insert()
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		parentRelation.setChild(Child);
+		parentRelation.setParent(Parent);
+		parentRelation.setParentRole(ParentRole);
+		parentRelation.setPrimaryParent(PrimaryParent);
+		parentRelation.setLanguagePid(LanguagePid);
+		return parentRelation.insert();
 	}
 
 	/**
@@ -116,55 +164,7 @@ public class ParentServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.servers.IHREServer#insert()
-	 */
-	@Override
-	public int insert() throws SQLException, MvpException {
-		parentRelation.setChild(Child);
-		parentRelation.setParent(Parent);
-		parentRelation.setParentRole(ParentRole);
-		parentRelation.setPrimaryParent(PrimaryParent);
-		parentRelation.setLanguagePid(LanguagePid);
-		return parentRelation.insert();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#update()
 	 */
 	@Override

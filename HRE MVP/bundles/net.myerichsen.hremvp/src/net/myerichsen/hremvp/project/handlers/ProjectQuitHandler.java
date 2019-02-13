@@ -15,7 +15,8 @@ import org.eclipse.swt.widgets.Shell;
 public class ProjectQuitHandler {
 	@Execute
 	public void execute(IWorkbench workbench, Shell shell) {
-		if (MessageDialog.openConfirm(shell, "Confirmation", "Do you want to exit?")) {
+		if (MessageDialog.openConfirm(shell, "Confirmation",
+				"Do you want to exit?")) {
 			workbench.close();
 		}
 	}

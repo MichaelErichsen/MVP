@@ -29,8 +29,10 @@ public class ProjectList {
 	@Inject
 	private static IEventBroker eventBroker;
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static List<ProjectModel> models;
 
 	/**
@@ -52,9 +54,11 @@ public class ProjectList {
 
 		store.setValue("project." + count + ".name", model.getName());
 		final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		store.setValue("project." + count + ".lastupdated", df.format(model.getLastEdited()));
+		store.setValue("project." + count + ".lastupdated",
+				df.format(model.getLastEdited()));
 		store.setValue("project." + count + ".summary", model.getSummary());
-		store.setValue("project." + count + ".localserver", model.getLocalServer());
+		store.setValue("project." + count + ".localserver",
+				model.getLocalServer());
 		store.setValue("project." + count + ".path", model.getPath());
 		store.setValue("projectcount", count);
 		((ScopedPreferenceStore) store).save();
@@ -120,7 +124,8 @@ public class ProjectList {
 
 				key = new String("project." + i + ".lastupdated");
 				lastEditedString = store.getString(key);
-				final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				final DateFormat df = new SimpleDateFormat(
+						"yyyy-MM-dd hh:mm:ss");
 				lastEdited = df.parse(lastEditedString);
 
 				key = new String("project." + i + ".summary");
@@ -132,7 +137,8 @@ public class ProjectList {
 				key = new String("project." + i + ".path");
 				path = store.getString(key);
 
-				model = new ProjectModel(name, lastEdited, summary, localServer, path);
+				model = new ProjectModel(name, lastEdited, summary, localServer,
+						path);
 				models.add(model);
 			}
 		} catch (final ParseException e) {
@@ -154,11 +160,16 @@ public class ProjectList {
 		int count = store.getInt("projectcount");
 
 		for (int i = index; i < count; i++) {
-			store.setValue("project." + i + ".name", store.getString("project." + (i + 1) + ".name"));
-			store.setValue("project." + i + ".lastupdated", store.getString("project." + (i + 1) + ".lastupdated"));
-			store.setValue("project." + i + ".summary", store.getString("project." + (i + 1) + ".summary"));
-			store.setValue("project." + i + ".localserver", store.getString("project." + (i + 1) + ".localserver"));
-			store.setValue("project." + i + ".path", store.getString("project." + (i + 1) + ".path"));
+			store.setValue("project." + i + ".name",
+					store.getString("project." + (i + 1) + ".name"));
+			store.setValue("project." + i + ".lastupdated",
+					store.getString("project." + (i + 1) + ".lastupdated"));
+			store.setValue("project." + i + ".summary",
+					store.getString("project." + (i + 1) + ".summary"));
+			store.setValue("project." + i + ".localserver",
+					store.getString("project." + (i + 1) + ".localserver"));
+			store.setValue("project." + i + ".path",
+					store.getString("project." + (i + 1) + ".path"));
 		}
 
 		store.setToDefault("project." + count + ".name");
@@ -180,8 +191,10 @@ public class ProjectList {
 				final String path = projectModel.getPath();
 				final File file = new File(path);
 				if (file.exists() == false) {
-					LOGGER.severe("File " + projectModel.getName() + " does not exist");
-					eventBroker.post("MESSAGE", "File " + projectModel.getName() + " does not exist");
+					LOGGER.severe("File " + projectModel.getName()
+							+ " does not exist");
+					eventBroker.post("MESSAGE", "File " + projectModel.getName()
+							+ " does not exist");
 					return false;
 				}
 			}

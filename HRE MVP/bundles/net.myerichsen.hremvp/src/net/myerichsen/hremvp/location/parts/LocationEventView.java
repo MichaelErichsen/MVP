@@ -43,7 +43,8 @@ import net.myerichsen.hremvp.location.providers.LocationEventProvider;
  */
 
 public class LocationEventView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -90,13 +91,16 @@ public class LocationEventView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 
-		final TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnEvent = tableViewerColumnEventLabel.getColumn();
+		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnEvent = tableViewerColumnEventLabel
+				.getColumn();
 		tblclmnEvent.setWidth(300);
 		tblclmnEvent.setText("Event");
 	}
@@ -144,7 +148,8 @@ public class LocationEventView {
 	protected void openEventView() {
 		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventView";
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
@@ -181,7 +186,8 @@ public class LocationEventView {
 		}
 
 		LOGGER.info("Setting personEvent pid: " + eventPid);
-		eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, Integer.parseInt(eventPid));
+		eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC,
+				Integer.parseInt(eventPid));
 	}
 
 	/**
@@ -197,7 +203,8 @@ public class LocationEventView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
+	private void subscribeKeyUpdateTopic(
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
 			throws SQLException {
 		get(key);
 	}

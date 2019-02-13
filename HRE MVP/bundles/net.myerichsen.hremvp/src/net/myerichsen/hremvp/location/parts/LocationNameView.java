@@ -43,7 +43,8 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * @version 11. jan. 2019
  */
 public class LocationNameView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -80,8 +81,10 @@ public class LocationNameView {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		scrolledComposite = new ScrolledComposite(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		final GridData gd_scrolledComposite = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		scrolledComposite = new ScrolledComposite(parent,
+				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		final GridData gd_scrolledComposite = new GridData(SWT.FILL, SWT.FILL,
+				true, true, 1, 1);
 		gd_scrolledComposite.widthHint = 674;
 		scrolledComposite.setLayoutData(gd_scrolledComposite);
 		scrolledComposite.setExpandHorizontal(true);
@@ -90,9 +93,11 @@ public class LocationNameView {
 		composite_1 = new Composite(scrolledComposite, SWT.NONE);
 		composite_1.setLayout(new GridLayout(2, false));
 
-		tableViewerNames = new TableViewer(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewerNames = new TableViewer(composite_1,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableNames = tableViewerNames.getTable();
-		tableNames.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
+		tableNames.setLayoutData(
+				new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
 		tableNames.setToolTipText("Double click to edit name part");
 		tableNames.addMouseListener(new MouseAdapter() {
 			@Override
@@ -103,33 +108,39 @@ public class LocationNameView {
 		tableNames.setLinesVisible(true);
 		tableNames.setHeaderVisible(true);
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewerNames, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewerNames, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewerNames, SWT.NONE);
+		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(
+				tableViewerNames, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(200);
 		tblclmnName.setText("Name");
 
-		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewerNames, SWT.NONE);
+		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(
+				tableViewerNames, SWT.NONE);
 		final TableColumn tblclmnPrimary = tableViewerColumnPrimary.getColumn();
 		tblclmnPrimary.setWidth(60);
 		tblclmnPrimary.setText("Primary");
 
-		final TableViewerColumn tableViewerColumnFrom = new TableViewerColumn(tableViewerNames, SWT.NONE);
+		final TableViewerColumn tableViewerColumnFrom = new TableViewerColumn(
+				tableViewerNames, SWT.NONE);
 		final TableColumn tblclmnFrom = tableViewerColumnFrom.getColumn();
 		tblclmnFrom.setWidth(100);
 		tblclmnFrom.setText("From");
 
-		final TableViewerColumn tableViewerColumnTo = new TableViewerColumn(tableViewerNames, SWT.NONE);
+		final TableViewerColumn tableViewerColumnTo = new TableViewerColumn(
+				tableViewerNames, SWT.NONE);
 		final TableColumn tblclmnTo = tableViewerColumnTo.getColumn();
 		tblclmnTo.setWidth(100);
 		tblclmnTo.setText("To");
 
 		scrolledComposite.setContent(composite_1);
-		scrolledComposite.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		scrolledComposite
+				.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
 	/**
@@ -176,7 +187,8 @@ public class LocationNameView {
 	private void openGoogleMaps() {
 		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationGoogleMapBrowser";
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
@@ -212,7 +224,8 @@ public class LocationNameView {
 	protected void openLocationNameView() {
 		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationNameViewOld";
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
@@ -249,7 +262,8 @@ public class LocationNameView {
 		}
 
 		LOGGER.info("Setting location name pid: " + locationNamePid);
-		eventBroker.post(Constants.LOCATION_NAME_PID_UPDATE_TOPIC, Integer.parseInt(locationNamePid));
+		eventBroker.post(Constants.LOCATION_NAME_PID_UPDATE_TOPIC,
+				Integer.parseInt(locationNamePid));
 	}
 
 	/**
@@ -264,7 +278,8 @@ public class LocationNameView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeLocationPidUpdateTopic(@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key) {
+	private void subscribeLocationPidUpdateTopic(
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key) {
 		get(key);
 	}
 }

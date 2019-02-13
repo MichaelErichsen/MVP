@@ -115,7 +115,8 @@ public final class JulianCalendar extends Almanac {
 	 * @return the name of the month.
 	 * @throws IndexOutOfBoundsException
 	 */
-	public static String getMonthName(int month) throws IndexOutOfBoundsException {
+	public static String getMonthName(int month)
+			throws IndexOutOfBoundsException {
 		return JulianCalendar.getMonthName(month, false);
 	}
 
@@ -127,7 +128,8 @@ public final class JulianCalendar extends Almanac {
 	 * @return the name of the month.
 	 * @throws IndexOutOfBoundsException
 	 */
-	public static String getMonthName(int month, boolean latin) throws IndexOutOfBoundsException {
+	public static String getMonthName(int month, boolean latin)
+			throws IndexOutOfBoundsException {
 		final int l = (latin) ? 1 : 0;
 		return monthNames[(2 * (month - 1)) + l];
 	}
@@ -171,8 +173,8 @@ public final class JulianCalendar extends Almanac {
 	/**
 	 * Determines whether a given year is a leap year.
 	 *
-	 * A year is considered a leap year in the Julian calendar if it is divisible by
-	 * four.
+	 * A year is considered a leap year in the Julian calendar if it is
+	 * divisible by four.
 	 *
 	 * @param year a given year.
 	 * @return true, if is a leap year; false, otherwise.
@@ -192,7 +194,8 @@ public final class JulianCalendar extends Almanac {
 
 		final JulianCalendar date = (JulianCalendar) obj;
 
-		return (year == date.getYear()) && (month == date.getMonth()) && (day == date.getDay());
+		return (year == date.getYear()) && (month == date.getMonth())
+				&& (day == date.getDay());
 	}
 
 	/**
@@ -294,11 +297,11 @@ public final class JulianCalendar extends Almanac {
 	/**
 	 * Determines whether this date's year is a leap year.
 	 * <p>
-	 * This method determines whether the the current date exists during the Julian
-	 * calendar or the Gregorian Calendar. The only difference between the two is
-	 * that for the Gregorian Calendar leap years must be evenly divisible by 4,
-	 * unless the year is divisible by 100 - with the exception of years evenly
-	 * divisble by 400.
+	 * This method determines whether the the current date exists during the
+	 * Julian calendar or the Gregorian Calendar. The only difference between
+	 * the two is that for the Gregorian Calendar leap years must be evenly
+	 * divisible by 4, unless the year is divisible by 100 - with the exception
+	 * of years evenly divisble by 400.
 	 *
 	 * @return true, if this is a leap year; false, otherwise.
 	 */

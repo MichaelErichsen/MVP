@@ -19,8 +19,10 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  */
 @SuppressWarnings("restriction")
 public class HelpContentsHandler {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	/**
 	 *
@@ -29,7 +31,8 @@ public class HelpContentsHandler {
 	public void execute() {
 		try {
 			BaseHelpSystem.ensureWebappRunning();
-			final String helpURL = "http://127.0.0.1:" + store.getInt("HELPSYSTEMPORT") + "/help/index.jsp";
+			final String helpURL = "http://127.0.0.1:"
+					+ store.getInt("HELPSYSTEMPORT") + "/help/index.jsp";
 
 			BaseHelpSystem.getHelpBrowser(true).displayURL(helpURL);
 			LOGGER.info("Browser pointing at " + helpURL);

@@ -100,7 +100,8 @@ public class CDL {
 		for (;;) {
 			final String value = getValue(x);
 			char c = x.next();
-			if ((value == null) || ((ja.length() == 0) && (value.length() == 0) && (c != ','))) {
+			if ((value == null) || ((ja.length() == 0) && (value.length() == 0)
+					&& (c != ','))) {
 				return null;
 			}
 			ja.put(value);
@@ -112,7 +113,8 @@ public class CDL {
 					if ((c == '\n') || (c == '\r') || (c == 0)) {
 						return ja;
 					}
-					throw x.syntaxError("Bad character '" + c + "' (" + (int) c + ").");
+					throw x.syntaxError(
+							"Bad character '" + c + "' (" + (int) c + ").");
 				}
 				c = x.next();
 			}
@@ -123,21 +125,23 @@ public class CDL {
 	 * Produce a JSONObject from a row of comma delimited text, using a parallel
 	 * JSONArray of strings to provides the names of the elements.
 	 *
-	 * @param names A JSONArray of names. This is commonly obtained from the first
-	 *              row of a comma delimited text file using the rowToJSONArray
-	 *              method.
+	 * @param names A JSONArray of names. This is commonly obtained from the
+	 *              first row of a comma delimited text file using the
+	 *              rowToJSONArray method.
 	 * @param x     A JSONTokener of the source text.
 	 * @return A JSONObject combining the names and values.
 	 * @throws JSONException
 	 */
-	public static JSONObject rowToJSONObject(JSONArray names, JSONTokener x) throws JSONException {
+	public static JSONObject rowToJSONObject(JSONArray names, JSONTokener x)
+			throws JSONException {
 		final JSONArray ja = rowToJSONArray(x);
 		return ja != null ? ja.toJSONObject(names) : null;
 	}
 
 	/**
-	 * Produce a comma delimited text row from a JSONArray. Values containing the
-	 * comma character will be quoted. Troublesome characters may be removed.
+	 * Produce a comma delimited text row from a JSONArray. Values containing
+	 * the comma character will be quoted. Troublesome characters may be
+	 * removed.
 	 *
 	 * @param ja A JSONArray of strings.
 	 * @return A string ending in NEWLINE.
@@ -151,8 +155,11 @@ public class CDL {
 			final Object object = ja.opt(i);
 			if (object != null) {
 				final String string = object.toString();
-				if ((string.length() > 0) && ((string.indexOf(',') >= 0) || (string.indexOf('\n') >= 0)
-						|| (string.indexOf('\r') >= 0) || (string.indexOf(0) >= 0) || (string.charAt(0) == '"'))) {
+				if ((string.length() > 0) && ((string.indexOf(',') >= 0)
+						|| (string.indexOf('\n') >= 0)
+						|| (string.indexOf('\r') >= 0)
+						|| (string.indexOf(0) >= 0)
+						|| (string.charAt(0) == '"'))) {
 					sb.append('"');
 					final int length = string.length();
 					for (int j = 0; j < length; j += 1) {
@@ -172,15 +179,16 @@ public class CDL {
 	}
 
 	/**
-	 * Produce a JSONArray of JSONObjects from a comma delimited text string using a
-	 * supplied JSONArray as the source of element names.
+	 * Produce a JSONArray of JSONObjects from a comma delimited text string
+	 * using a supplied JSONArray as the source of element names.
 	 *
 	 * @param names A JSONArray of strings.
 	 * @param x     A JSONTokener of the source text.
 	 * @return A JSONArray of JSONObjects.
 	 * @throws JSONException
 	 */
-	public static JSONArray toJSONArray(JSONArray names, JSONTokener x) throws JSONException {
+	public static JSONArray toJSONArray(JSONArray names, JSONTokener x)
+			throws JSONException {
 		if ((names == null) || (names.length() == 0)) {
 			return null;
 		}
@@ -199,21 +207,22 @@ public class CDL {
 	}
 
 	/**
-	 * Produce a JSONArray of JSONObjects from a comma delimited text string using a
-	 * supplied JSONArray as the source of element names.
+	 * Produce a JSONArray of JSONObjects from a comma delimited text string
+	 * using a supplied JSONArray as the source of element names.
 	 *
 	 * @param names  A JSONArray of strings.
 	 * @param string The comma delimited text.
 	 * @return A JSONArray of JSONObjects.
 	 * @throws JSONException
 	 */
-	public static JSONArray toJSONArray(JSONArray names, String string) throws JSONException {
+	public static JSONArray toJSONArray(JSONArray names, String string)
+			throws JSONException {
 		return toJSONArray(names, new JSONTokener(string));
 	}
 
 	/**
-	 * Produce a JSONArray of JSONObjects from a comma delimited text string, using
-	 * the first row as a source of names.
+	 * Produce a JSONArray of JSONObjects from a comma delimited text string,
+	 * using the first row as a source of names.
 	 *
 	 * @param x The JSONTokener containing the comma delimited text.
 	 * @return A JSONArray of JSONObjects.
@@ -224,8 +233,8 @@ public class CDL {
 	}
 
 	/**
-	 * Produce a JSONArray of JSONObjects from a comma delimited text string, using
-	 * the first row as a source of names.
+	 * Produce a JSONArray of JSONObjects from a comma delimited text string,
+	 * using the first row as a source of names.
 	 *
 	 * @param string The comma delimited text.
 	 * @return A JSONArray of JSONObjects.
@@ -236,8 +245,8 @@ public class CDL {
 	}
 
 	/**
-	 * Produce a comma delimited text from a JSONArray of JSONObjects. The first row
-	 * will be a list of names obtained by inspecting the first JSONObject.
+	 * Produce a comma delimited text from a JSONArray of JSONObjects. The first
+	 * row will be a list of names obtained by inspecting the first JSONObject.
 	 *
 	 * @param ja A JSONArray of JSONObjects.
 	 * @return A comma delimited text.
@@ -263,7 +272,8 @@ public class CDL {
 	 * @return A comma delimited text.
 	 * @throws JSONException
 	 */
-	public static String toString(JSONArray names, JSONArray ja) throws JSONException {
+	public static String toString(JSONArray names, JSONArray ja)
+			throws JSONException {
 		if ((names == null) || (names.length() == 0)) {
 			return null;
 		}

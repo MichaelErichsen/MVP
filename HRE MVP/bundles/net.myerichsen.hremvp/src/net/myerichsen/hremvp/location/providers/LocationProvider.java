@@ -46,6 +46,7 @@ public class LocationProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
 	}
@@ -58,6 +59,7 @@ public class LocationProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
 		return server.get();
 	}
@@ -70,6 +72,7 @@ public class LocationProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setFromDatePid(server.getFromDatePid());
@@ -151,6 +154,7 @@ public class LocationProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setFromDatePid(fromDatePid);
 		server.setLocationPid(locationPid);
@@ -232,6 +236,7 @@ public class LocationProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setFromDatePid(fromDatePid);
 		server.setLocationPid(locationPid);

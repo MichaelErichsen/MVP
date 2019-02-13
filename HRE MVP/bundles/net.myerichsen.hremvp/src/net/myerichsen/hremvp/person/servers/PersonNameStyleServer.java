@@ -50,6 +50,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		style.delete(key);
 	}
@@ -58,6 +59,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public List<NameStyles> get() throws SQLException {
 		return style.get();
 	}
@@ -70,6 +72,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		style.get(key);
 		setLabel(style.getLabel());
@@ -145,6 +148,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
+	@Override
 	public int insert() throws SQLException {
 		style.setLabel(label);
 		style.setLanguagePid(languagePid);
@@ -214,6 +218,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
+	@Override
 	public void update() throws SQLException {
 		style.setLabel(label);
 		style.setLanguagePid(languagePid);

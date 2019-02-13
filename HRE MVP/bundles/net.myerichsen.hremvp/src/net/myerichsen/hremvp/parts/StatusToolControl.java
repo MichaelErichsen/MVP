@@ -37,7 +37,8 @@ public class StatusToolControl {
 		parent.setLayout(new GridLayout(1, false));
 		textStatus = new Text(parent, SWT.NONE);
 		textStatus.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		final GridData gd_textStatus = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		final GridData gd_textStatus = new GridData(SWT.FILL, SWT.CENTER, false,
+				false, 1, 1);
 		gd_textStatus.heightHint = 24;
 		gd_textStatus.widthHint = 1920;
 		textStatus.setLayoutData(gd_textStatus);
@@ -52,7 +53,8 @@ public class StatusToolControl {
 	@Optional
 	public void messageHandler(@UIEventTopic("MESSAGE") String s) {
 		setMessage(s);
-		eventBroker.post(net.myerichsen.hremvp.Constants.LOG_REFRESH_UPDATE_TOPIC, 0);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.LOG_REFRESH_UPDATE_TOPIC, 0);
 	}
 
 	/**

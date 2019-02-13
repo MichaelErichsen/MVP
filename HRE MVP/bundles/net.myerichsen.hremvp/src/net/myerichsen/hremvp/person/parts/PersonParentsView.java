@@ -40,7 +40,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 @SuppressWarnings("restriction")
 public class PersonParentsView {
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -74,7 +75,7 @@ public class PersonParentsView {
 		parent.setLayout(new GridLayout(5, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -85,34 +86,40 @@ public class PersonParentsView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnParentsId = tableViewerColumnId.getColumn();
 		tblclmnParentsId.setWidth(100);
 		tblclmnParentsId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnParents = tableViewerColumnLabel.getColumn();
 		tblclmnParents.setWidth(250);
 		tblclmnParents.setText("Parents");
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnParentRole = tableViewerColumnRole.getColumn();
 		tblclmnParentRole.setWidth(100);
 		tblclmnParentRole.setText("Role");
 		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(2));
 
-		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnParentsPrimary = tableViewerColumnPrimary.getColumn();
+		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnParentsPrimary = tableViewerColumnPrimary
+				.getColumn();
 		tblclmnParentsPrimary.setWidth(73);
 		tblclmnParentsPrimary.setText("Primary");
-		tableViewerColumnPrimary.setLabelProvider(new HREColumnLabelProvider(3));
+		tableViewerColumnPrimary
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getParentList(0));
-		} catch (SQLException e1) {
+		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -132,8 +139,8 @@ public class PersonParentsView {
 		// FIXME Doubleclick does not work any more
 		int personPid = 0;
 
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openpersonview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openpersonview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
@@ -159,12 +166,13 @@ public class PersonParentsView {
 	 */
 	@Inject
 	@Optional
-	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+	private void subscribePersonPidUpdateTopic(
+			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
 		try {
 			tableViewer.setInput(provider.getParentList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

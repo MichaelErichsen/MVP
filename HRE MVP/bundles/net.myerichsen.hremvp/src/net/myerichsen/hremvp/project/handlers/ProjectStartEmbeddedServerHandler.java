@@ -30,8 +30,10 @@ import net.myerichsen.hremvp.requesthandlers.SexTypeHttpRequestHandler;
  *
  */
 public class ProjectStartEmbeddedServerHandler {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+			"net.myerichsen.hremvp");
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -53,8 +55,10 @@ public class ProjectStartEmbeddedServerHandler {
 				final Server server = new Server(store.getInt("SERVERPORT"));
 
 				try {
-					server.getConnectors()[0].getConnectionFactory(HttpConnectionFactory.class);
-					final ContextHandlerCollection contexts = HreContextHandlerCollection.getContexts();
+					server.getConnectors()[0]
+							.getConnectionFactory(HttpConnectionFactory.class);
+					final ContextHandlerCollection contexts = HreContextHandlerCollection
+							.getContexts();
 
 					ContextHandler context = new ContextHandler();
 					context.setContextPath("/mvp/v100/sextype/");
@@ -74,7 +78,8 @@ public class ProjectStartEmbeddedServerHandler {
 					final Handler[] handlerList = contexts.getHandlers();
 
 					for (final Handler handler : handlerList) {
-						LOGGER.info("Server handler: " + ((ContextHandler) handler).getContextPath());
+						LOGGER.info("Server handler: "
+								+ ((ContextHandler) handler).getContextPath());
 					}
 
 					server.setHandler(contexts);
@@ -82,13 +87,15 @@ public class ProjectStartEmbeddedServerHandler {
 					server.start();
 
 					LOGGER.info("The server is running at " + server.getURI());
-					eventBroker.post("MESSAGE", "The server is running at " + server.getURI());
+					eventBroker.post("MESSAGE",
+							"The server is running at " + server.getURI());
 
 					// server.join();
 				} catch (final Exception e) {
 					e.printStackTrace();
 					LOGGER.severe(
-							e.getClass() + ": " + e.getMessage() + " at line " + e.getStackTrace()[0].getLineNumber());
+							e.getClass() + ": " + e.getMessage() + " at line "
+									+ e.getStackTrace()[0].getLineNumber());
 				}
 			}
 		};

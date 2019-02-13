@@ -17,7 +17,8 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * @version 30. okt. 2018
  */
 public class LocationNamePartServer implements IHREServer {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNamePartPid;
 	private int locationNamePid;
 	private String locationName;
@@ -51,7 +52,7 @@ public class LocationNamePartServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
 	@Override
@@ -79,7 +80,8 @@ public class LocationNamePartServer implements IHREServer {
 
 		// Get location name
 		final StringBuilder sb = new StringBuilder();
-		final List<LocationNameParts> partList = new LocationNameParts().getFKLocationNamePid(locationNamePid);
+		final List<LocationNameParts> partList = new LocationNameParts()
+				.getFKLocationNamePid(locationNamePid);
 
 		for (final LocationNameParts locationNameParts : partList) {
 			if (locationNameParts.getLocationNamePid() == locationNamePid) {
@@ -95,7 +97,8 @@ public class LocationNamePartServer implements IHREServer {
 		name.get(locationNamePid);
 
 		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map.getFKLocationNameStylePid(name.getLocationNameStylePid());
+		final List<LocationNameMaps> mapList = map
+				.getFKLocationNameStylePid(name.getLocationNameStylePid());
 
 		for (int i = 0; i < mapList.size(); i++) {
 			if (mapList.get(i).getPartNo() == partNo) {
@@ -169,7 +172,8 @@ public class LocationNamePartServer implements IHREServer {
 		name.get(locationNamePid);
 
 		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map.getFKLocationNameStylePid(name.getLocationNameStylePid());
+		final List<LocationNameMaps> mapList = map
+				.getFKLocationNameStylePid(name.getLocationNameStylePid());
 		Boolean found = false;
 
 		for (int i = 0; i < mapList.size(); i++) {
@@ -180,7 +184,8 @@ public class LocationNamePartServer implements IHREServer {
 		}
 
 		if (!found) {
-			throw new MvpException("Part number " + partNo + " does not exist in matching location name map");
+			throw new MvpException("Part number " + partNo
+					+ " does not exist in matching location name map");
 		}
 
 		return part.insert();
@@ -248,7 +253,8 @@ public class LocationNamePartServer implements IHREServer {
 		name.get(locationNamePid);
 
 		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map.getFKLocationNameStylePid(name.getLocationNameStylePid());
+		final List<LocationNameMaps> mapList = map
+				.getFKLocationNameStylePid(name.getLocationNameStylePid());
 		Boolean found = false;
 
 		for (int i = 0; i < mapList.size(); i++) {
@@ -259,7 +265,8 @@ public class LocationNamePartServer implements IHREServer {
 		}
 
 		if (!found) {
-			throw new MvpException("Part number " + partNo + " does not exist in matching location name map");
+			throw new MvpException("Part number " + partNo
+					+ " does not exist in matching location name map");
 		}
 		part.update();
 	}

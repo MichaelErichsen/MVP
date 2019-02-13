@@ -129,7 +129,8 @@ public class EventNames {
 		return EventTypePid;
 	}
 
-	public List<EventNames> getFKCombined(int languagePid, int eventTypePid) throws SQLException {
+	public List<EventNames> getFKCombined(int languagePid, int eventTypePid)
+			throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LANGUAGE_PID_EVENT_TYPE_PID);
 		ps.setInt(1, languagePid);

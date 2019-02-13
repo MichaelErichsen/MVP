@@ -23,8 +23,8 @@ public class MvpLogProvider implements IStructuredContentProvider {
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.
-	 * Object)
+	 * org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.
+	 * lang. Object)
 	 */
 	@Override
 	public Object[] getElements(Object inputElement) {

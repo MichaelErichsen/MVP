@@ -34,7 +34,8 @@ import net.myerichsen.hremvp.person.providers.SexTypeProvider;
  *
  */
 public class SexTypeNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	IEclipseContext context;
 	private final IEventBroker eventBroker;
 
@@ -49,7 +50,8 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	 * @param context
 	 * @throws SQLException
 	 */
-	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context) throws SQLException {
+	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context)
+			throws SQLException {
 		super(parentShell);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
@@ -63,8 +65,10 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -83,7 +87,8 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
-		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -97,13 +102,16 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnHistoricalSex = tableViewerColumn_1.getColumn();
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnHistoricalSex = tableViewerColumn_1
+				.getColumn();
 		tblclmnHistoricalSex.setWidth(100);
 		tblclmnHistoricalSex.setText("Sex");
 

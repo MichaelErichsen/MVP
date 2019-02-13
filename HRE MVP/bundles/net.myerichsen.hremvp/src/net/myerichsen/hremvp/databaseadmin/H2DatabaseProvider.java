@@ -24,8 +24,10 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  *
  */
 public class H2DatabaseProvider implements IContentProvider {
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String SELECT13 = "SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
 			+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME";
 	private static final String SELECT = "SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
@@ -50,7 +52,8 @@ public class H2DatabaseProvider implements IContentProvider {
 		conn = HreH2ConnectionPool.getConnection(dbName);
 		PreparedStatement ps;
 		final String h2Version = store.getString("H2VERSION");
-		LOGGER.info("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
+		LOGGER.info("Retrieved H2 version from preferences: "
+				+ h2Version.substring(0, 3));
 
 		if (h2Version.substring(0, 3).equals("1.3")) {
 			ps = conn.prepareStatement(SELECT13);

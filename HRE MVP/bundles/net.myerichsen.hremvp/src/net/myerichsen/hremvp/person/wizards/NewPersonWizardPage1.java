@@ -31,7 +31,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
 	private Text textBirthDate;
@@ -61,7 +62,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 	public NewPersonWizardPage1(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("New Person");
-		setDescription("Create a new person by entering static data for it. Dates are optional, but sex is mandatory.");
+		setDescription(
+				"Create a new person by entering static data for it. Dates are optional, but sex is mandatory.");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
@@ -70,7 +72,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void browseBirthDates() {
-		final DateNavigatorDialog dialog = new DateNavigatorDialog(textBirthDate.getShell(), context);
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textBirthDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final int hdatePid = dialog.getHdatePid();
@@ -91,7 +94,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void browseDeathDates() {
-		final DateNavigatorDialog dialog = new DateNavigatorDialog(textDeathDate.getShell(), context);
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textDeathDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final int hdatePid = dialog.getHdatePid();
@@ -112,7 +116,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 */
 	protected void browseSexTypes() {
 		try {
-			final SexTypeNavigatorDialog dialog = new SexTypeNavigatorDialog(textSexTypePid.getShell(), context);
+			final SexTypeNavigatorDialog dialog = new SexTypeNavigatorDialog(
+					textSexTypePid.getShell(), context);
 			if (dialog.open() == Window.OK) {
 
 				sexTypePid = dialog.getSexTypePid();
@@ -160,9 +165,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
-	 * Composite)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets. Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -176,24 +180,29 @@ public class NewPersonWizardPage1 extends WizardPage {
 
 		textBirthDate = new Text(container, SWT.BORDER);
 		textBirthDate.setEditable(false);
-		textBirthDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textBirthDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textBirthDateSort = new Text(container, SWT.BORDER);
 		textBirthDateSort.setEditable(false);
-		textBirthDateSort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textBirthDateSort.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		textBirthOriginal = new Text(container, SWT.BORDER);
 		textBirthOriginal.setEditable(false);
-		textBirthOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textBirthOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textBirthSurety = new Text(container, SWT.BORDER);
 		textBirthSurety.setEditable(false);
-		textBirthSurety.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+		textBirthSurety.setLayoutData(
+				new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		final Composite compositeBirth = new Composite(container, SWT.NONE);
-		compositeBirth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeBirth.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeBirth.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewBirth = new Button(compositeBirth, SWT.NONE);
@@ -228,25 +237,30 @@ public class NewPersonWizardPage1 extends WizardPage {
 
 		textDeathDate = new Text(container, SWT.BORDER);
 		textDeathDate.setEditable(false);
-		textDeathDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textDeathDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textDeathDateSort = new Text(container, SWT.BORDER);
 		textDeathDateSort.setEditable(false);
-		textDeathDateSort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textDeathDateSort.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		textDeathOriginal = new Text(container, SWT.BORDER);
 		textDeathOriginal.setEditable(false);
-		textDeathOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textDeathOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textDeathSurety = new Text(container, SWT.BORDER);
 		textDeathSurety.setEditable(false);
-		textDeathSurety.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textDeathSurety.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		final Composite compositeDeath = new Composite(container, SWT.NONE);
 		compositeDeath.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeDeath.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeDeath.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
 		final Button btnNewDeath = new Button(compositeDeath, SWT.NONE);
 		btnNewDeath.addMouseListener(new MouseAdapter() {
@@ -281,17 +295,20 @@ public class NewPersonWizardPage1 extends WizardPage {
 		textSexTypePid = new Text(container, SWT.BORDER);
 		textSexTypePid.setToolTipText("More sexes can be added later");
 		textSexTypePid.setEditable(false);
-		textSexTypePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textSexTypePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textSexTypePid.setToolTipText("Sex must be selected to continue");
 
 		textSex = new Text(container, SWT.BORDER);
 		textSex.setEditable(false);
-		textSex.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textSex.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		final Composite compositeSex = new Composite(container, SWT.NONE);
 		compositeSex.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeSex.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeSex.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
 		final Button btnBrowseSexes = new Button(compositeSex, SWT.NONE);
 		btnBrowseSexes.addMouseListener(new MouseAdapter() {
@@ -334,7 +351,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void getNewBirthDate() {
-		final DateDialog dialog = new DateDialog(textBirthDate.getShell(), context);
+		final DateDialog dialog = new DateDialog(textBirthDate.getShell(),
+				context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
@@ -342,9 +360,11 @@ public class NewPersonWizardPage1 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				// FIXME org.h2.jdbc.JdbcSQLException: NULL not allowed for column "DATE"; SQL
+				// FIXME org.h2.jdbc.JdbcSQLException: NULL not allowed for
+				// column "DATE"; SQL
 				// statement:
-				// INSERT INTO PUBLIC.HDATES( HDATE_PID, TABLE_ID, ORIGINAL_TEXT, DATE,
+				// INSERT INTO PUBLIC.HDATES( HDATE_PID, TABLE_ID,
+				// ORIGINAL_TEXT, DATE,
 				// SORT_DATE, SURETY) VALUES (?, ?, ?, ?, ?, ?) [23502-197]
 				BirthDatePid = hdp.insert();
 				textBirthDate.setText(dialog.getLocalDate().toString());
@@ -363,7 +383,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void getNewDeathDate() {
-		final DateDialog dialog = new DateDialog(textDeathDate.getShell(), context);
+		final DateDialog dialog = new DateDialog(textDeathDate.getShell(),
+				context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();

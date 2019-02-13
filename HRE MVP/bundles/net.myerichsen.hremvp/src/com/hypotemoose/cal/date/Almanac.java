@@ -128,9 +128,9 @@ public abstract class Almanac implements Serializable {
 	}
 
 	/**
-	 * Returns the weekday of a 7-day week. The returned value will be an integer
-	 * representing the day number of the week starting at Sunday (0) and ending on
-	 * Saturday (6).
+	 * Returns the weekday of a 7-day week. The returned value will be an
+	 * integer representing the day number of the week starting at Sunday (0)
+	 * and ending on Saturday (6).
 	 *
 	 * @return a weekday in the range [0,6].
 	 */

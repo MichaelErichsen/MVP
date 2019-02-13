@@ -15,7 +15,8 @@ import net.myerichsen.hremvp.location.servers.LocationNameMapServer;
  *
  */
 public class LocationNameMapProvider implements IHREProvider {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNameMapPid;
 	private String label;
 	private int partNo;

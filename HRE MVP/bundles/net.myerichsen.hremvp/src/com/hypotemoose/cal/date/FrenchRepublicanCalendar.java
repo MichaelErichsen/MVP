@@ -108,7 +108,8 @@ public final class FrenchRepublicanCalendar extends Almanac {
 	}
 
 	/**
-	 * Constructs a French Republican Calendar with given year, month, week and day.
+	 * Constructs a French Republican Calendar with given year, month, week and
+	 * day.
 	 *
 	 * @param year  the year
 	 * @param month the month
@@ -148,7 +149,8 @@ public final class FrenchRepublicanCalendar extends Almanac {
 	 * @return a month name
 	 * @throws IndexOutOfBoundsException
 	 */
-	public static String getMonthName(int month) throws IndexOutOfBoundsException {
+	public static String getMonthName(int month)
+			throws IndexOutOfBoundsException {
 		return monthNames[month - 1];
 	}
 
@@ -164,15 +166,17 @@ public final class FrenchRepublicanCalendar extends Almanac {
 	}
 
 	/**
-	 * Determines if a given year is a leap year. A leap year is determined by the
-	 * day of the autumnal solstice.
+	 * Determines if a given year is a leap year. A leap year is determined by
+	 * the day of the autumnal solstice.
 	 *
 	 * @param year a year.
 	 * @return true, if a leap year; false, otherwise.
 	 */
 	public static boolean isLeapYear(int year) {
-		final JulianDay jday1 = new JulianDay(new FrenchRepublicanCalendar(year, 1, 1));
-		final JulianDay jday2 = new JulianDay(new FrenchRepublicanCalendar(year + 1, 1, 1));
+		final JulianDay jday1 = new JulianDay(
+				new FrenchRepublicanCalendar(year, 1, 1));
+		final JulianDay jday2 = new JulianDay(
+				new FrenchRepublicanCalendar(year + 1, 1, 1));
 		final int val1 = (int) jday1.atNoon().getValue();
 		final int val2 = (int) jday2.atNoon().getValue();
 		return ((val2 - val1) > 365);
@@ -189,8 +193,8 @@ public final class FrenchRepublicanCalendar extends Almanac {
 
 		final FrenchRepublicanCalendar date = (FrenchRepublicanCalendar) obj;
 
-		return (year == date.getYear()) && (month == date.getMonth()) && (day == date.getDay(false))
-				&& (_week == date.getWeek());
+		return (year == date.getYear()) && (month == date.getMonth())
+				&& (day == date.getDay(false)) && (_week == date.getWeek());
 	}
 
 	/**
@@ -200,7 +204,10 @@ public final class FrenchRepublicanCalendar extends Almanac {
 	 */
 	@Override
 	public String getDate() {
-		return (year >= 1) ? getDay(true) + " " + getMonthName() + ", " + toRoman(getYear()) : "";
+		return (year >= 1)
+				? getDay(true) + " " + getMonthName() + ", "
+						+ toRoman(getYear())
+				: "";
 	}
 
 	/**

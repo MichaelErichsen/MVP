@@ -27,8 +27,10 @@ package com.hypotemoose.cal.util;
  */
 public final class RomanNumeralGenerator {
 
-	private static int[] _numbers = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-	private static String[] _letters = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+	private static int[] _numbers = { 1000, 900, 500, 400, 100, 90, 50, 40, 10,
+			9, 5, 4, 1 };
+	private static String[] _letters = { "M", "CM", "D", "CD", "C", "XC", "L",
+			"XL", "X", "IX", "V", "IV", "I" };
 
 	/**
 	 * Converts an Arabic number to a Roman numeral.
@@ -59,7 +61,8 @@ public final class RomanNumeralGenerator {
 		case 'M':
 			return 1000;
 		default:
-			throw new NumberFormatException("\"" + letter + "\" not an acceptable roman numeral");
+			throw new NumberFormatException(
+					"\"" + letter + "\" not an acceptable roman numeral");
 		}
 	}
 
@@ -88,7 +91,8 @@ public final class RomanNumeralGenerator {
 		int arabic = 0;
 		int i = 0;
 		if (roman.length() == 0) {
-			throw new NumberFormatException("Roman numeral string can't be empty");
+			throw new NumberFormatException(
+					"Roman numeral string can't be empty");
 		}
 		roman = roman.toUpperCase();
 		while (i < roman.length()) {
@@ -121,16 +125,17 @@ public final class RomanNumeralGenerator {
 		String roman = "";
 
 		/*
-		 * The concept of zero and negative numbers wasn't realized until the arabic
-		 * number system much later in history.
+		 * The concept of zero and negative numbers wasn't realized until the
+		 * arabic number system much later in history.
 		 */
 		if (arabic < 1) {
 			throw new NumberFormatException("Roman numeral must be positive");
 		}
 
 		/*
-		 * Roman Numerals starting at 4000 have a horizontal line above the first
-		 * numeral denoting "x 1000", and there's no easy way to show that here.
+		 * Roman Numerals starting at 4000 have a horizontal line above the
+		 * first numeral denoting "x 1000", and there's no easy way to show that
+		 * here.
 		 */
 		if (arabic > 3999) {
 			throw new NumberFormatException("Value must be 3999 or less");

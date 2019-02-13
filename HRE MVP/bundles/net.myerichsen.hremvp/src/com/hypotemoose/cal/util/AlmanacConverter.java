@@ -51,7 +51,8 @@ public class AlmanacConverter {
 		final int week = date.getWeek();
 		final int day = date.getDay(false);
 
-		double guess = FrenchRepublicanCalendar.EPOCH.getValue() + (Meeus.TROPICAL_YEAR * ((year - 1) - 1));
+		double guess = FrenchRepublicanCalendar.EPOCH.getValue()
+				+ (Meeus.TROPICAL_YEAR * ((year - 1) - 1));
 		double[] adr = new double[2];
 		adr[0] = year - 1;
 		adr[1] = 0;
@@ -62,7 +63,8 @@ public class AlmanacConverter {
 		}
 		final double equinox = adr[1];
 
-		final double jd = equinox + (30 * (month - 1)) + (10 * (week - 1)) + (day - 1);
+		final double jd = equinox + (30 * (month - 1)) + (10 * (week - 1))
+				+ (day - 1);
 
 		return new JulianDay(jd);
 	}
@@ -89,7 +91,8 @@ public class AlmanacConverter {
 		final int month = date.getMonth();
 		final int year = date.getYear();
 		final int months = date.getNumberOfMonthsInYear();
-		double jd = HebrewCalendar.EPOCH.getValue() + delayHebrewYear(year) + delayHebrewYearAdjacent(year) + day + 1;
+		double jd = HebrewCalendar.EPOCH.getValue() + delayHebrewYear(year)
+				+ delayHebrewYearAdjacent(year) + day + 1;
 
 		if (month < 7) {
 			for (int i = 7; i <= months; ++i) {
@@ -115,7 +118,8 @@ public class AlmanacConverter {
 		double jd;
 		final boolean isLeap = IndianCivilCalendar.isLeapYear(year);
 
-		final GregorianCalendar cal = new GregorianCalendar(year + 78, 3, isLeap ? 21 : 22);
+		final GregorianCalendar cal = new GregorianCalendar(year + 78, 3,
+				isLeap ? 21 : 22);
 		final double start = _g2jd(cal).getValue();
 		final int caitra = isLeap ? 31 : 30;
 
@@ -140,7 +144,8 @@ public class AlmanacConverter {
 		final int month = date.getMonth();
 		final int year = date.getYear();
 		final int astro = date.getCalendarType().getValue();
-		final double jd = (day + Math.ceil(29.5 * (month - 1)) + ((year - 1) * 354) + Math.floor((3 + (11 * year)) / 30)
+		final double jd = (day + Math.ceil(29.5 * (month - 1))
+				+ ((year - 1) * 354) + Math.floor((3 + (11 * year)) / 30)
 				+ (IslamicCalendar.EPOCH.getValue() - astro)) - 1;
 		return new JulianDay(jd);
 	}
@@ -192,7 +197,8 @@ public class AlmanacConverter {
 		int year, month, day;
 		final double epoch = HebrewCalendar.EPOCH.getValue();
 		final double jday = jd.atMidnight().getValue();
-		final int count = (int) Math.floor(((jday - epoch) * 98496.0) / 35975351.0);
+		final int count = (int) Math
+				.floor(((jday - epoch) * 98496.0) / 35975351.0);
 
 		year = count - 1;
 
@@ -204,13 +210,16 @@ public class AlmanacConverter {
 			guess = _he2jd(cal).getValue();
 		}
 
-		final int first = (jday < _he2jd(new HebrewCalendar(year, 1, 1)).getValue()) ? 7 : 1;
+		final int first = (jday < _he2jd(new HebrewCalendar(year, 1, 1))
+				.getValue()) ? 7 : 1;
 		month = first;
 
-		cal.set(year, first, HebrewCalendar.getNumberOfDaysInMonth(year, first));
+		cal.set(year, first,
+				HebrewCalendar.getNumberOfDaysInMonth(year, first));
 
-		for (int i = first; jday > _he2jd(new HebrewCalendar(year, i, HebrewCalendar.getNumberOfDaysInMonth(year, i)))
-				.getValue(); ++i) {
+		for (int i = first; jday > _he2jd(new HebrewCalendar(year, i,
+				HebrewCalendar.getNumberOfDaysInMonth(year, i)))
+						.getValue(); ++i) {
 			++month;
 		}
 		cal.set(year, month, 1);
@@ -227,10 +236,12 @@ public class AlmanacConverter {
 
 		final double jday = Math.floor(jd.getValue()) + 0.5;
 		final GregorianCalendar gr = _jd2g(new JulianDay(jday));
-		final boolean isLeap = GregorianCalendar.isLeapYear(gr.getYear(), false);
+		final boolean isLeap = GregorianCalendar.isLeapYear(gr.getYear(),
+				false);
 
 		year = gr.getYear() - saka;
-		final double gr0 = _g2jd(new GregorianCalendar(gr.getYear(), 1, 1)).getValue();
+		final double gr0 = _g2jd(new GregorianCalendar(gr.getYear(), 1, 1))
+				.getValue();
 		int yday = (int) (jday - gr0);
 		final int caitra = isLeap ? 31 : 30;
 
@@ -262,12 +273,16 @@ public class AlmanacConverter {
 	private static IslamicCalendar _jd2is(JulianDay jd) {
 		final double epoch = IslamicCalendar.EPOCH.getValue();
 		final double jday = jd.atMidnight().getValue();
-		final int year = (int) Math.floor(((30 * (jday - epoch)) + 10646) / 10631);
+		final int year = (int) Math
+				.floor(((30 * (jday - epoch)) + 10646) / 10631);
 
-		final double guessy = _is2jd(new IslamicCalendar(year, 1, 1)).getValue();
-		final int month = (int) Math.min(12, Math.ceil((jday - (29 + guessy)) / 29.5) + 1);
+		final double guessy = _is2jd(new IslamicCalendar(year, 1, 1))
+				.getValue();
+		final int month = (int) Math.min(12,
+				Math.ceil((jday - (29 + guessy)) / 29.5) + 1);
 
-		final double guessm = _is2jd(new IslamicCalendar(year, month, 1)).getValue();
+		final double guessm = _is2jd(new IslamicCalendar(year, month, 1))
+				.getValue();
 		final int day = (int) (jday - guessm) + 1;
 
 		return new IslamicCalendar(year, month, day);
@@ -312,9 +327,12 @@ public class AlmanacConverter {
 		final double jday = jd.atMidnight().getValue();
 		final double[] adr = persianAstronomicalYear(jday);
 		final int year = (int) adr[0];
-		final double yearDay = (Math.floor(jday) - Math.floor(_pe2jd(new PersianCalendar(year, 1, 1)).getValue())) + 1;
-		final int month = (yearDay <= 186) ? (int) Math.ceil(yearDay / 31.0) : (int) (Math.ceil((yearDay - 6) / 30.0));
-		final int day = (int) (Math.floor(jday) - Math.floor(_pe2jd(new PersianCalendar(year, month, 1)).getValue()))
+		final double yearDay = (Math.floor(jday) - Math
+				.floor(_pe2jd(new PersianCalendar(year, 1, 1)).getValue())) + 1;
+		final int month = (yearDay <= 186) ? (int) Math.ceil(yearDay / 31.0)
+				: (int) (Math.ceil((yearDay - 6) / 30.0));
+		final int day = (int) (Math.floor(jday) - Math
+				.floor(_pe2jd(new PersianCalendar(year, month, 1)).getValue()))
 				+ 1;
 		return new PersianCalendar(year, month, day);
 	}
@@ -332,7 +350,8 @@ public class AlmanacConverter {
 			month += 12;
 		}
 
-		final double jd = (Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day) - 1524.5;
+		final double jd = (Math.floor(365.25 * (year + 4716))
+				+ Math.floor(30.6001 * (month + 1)) + day) - 1524.5;
 
 		return new JulianDay(jd);
 	}
@@ -344,8 +363,8 @@ public class AlmanacConverter {
 		final int uinal = date.getUinal();
 		final int kin = date.getKin();
 
-		final double jd = MayaCalendar.EPOCH.getValue() + (baktun * 144000) + (katun * 7200) + (tun * 360)
-				+ (uinal * 20) + kin;
+		final double jd = MayaCalendar.EPOCH.getValue() + (baktun * 144000)
+				+ (katun * 7200) + (tun * 360) + (uinal * 20) + kin;
 		return new JulianDay(jd);
 	}
 
@@ -353,7 +372,8 @@ public class AlmanacConverter {
 		final double eqJED = Meeus.equinox(year, Season.AUTUMN);
 		final double eqJD = eqJED - (Meeus.deltat(year) / (24.0 * 60.0 * 60.0));
 		final double eqAPP = eqJD + Meeus.equationOfTime(eqJED);
-		final double dtParis = (2.0 + (20.0 / 60.0) + (15.0 / (60.0 * 60.0))) / 360.0;
+		final double dtParis = (2.0 + (20.0 / 60.0) + (15.0 / (60.0 * 60.0)))
+				/ 360.0;
 		double eqParis = eqAPP + dtParis;
 		eqParis = Math.floor(eqParis - 0.5) + 0.5;
 		return eqParis;
@@ -371,7 +391,8 @@ public class AlmanacConverter {
 			guess = adr[1] + Meeus.TROPICAL_YEAR + 2;
 		}
 		final double equinox = adr[1];
-		double jd = equinox + (day - 1) + ((month <= 7) ? ((month - 1) * 31) : (((month - 1) * 30) + 6));
+		double jd = equinox + (day - 1) + ((month <= 7) ? ((month - 1) * 31)
+				: (((month - 1) * 30) + 6));
 		jd += 0.5;
 		return new JulianDay(jd);
 	}
@@ -408,7 +429,8 @@ public class AlmanacConverter {
 	}
 
 	/**
-	 * Delay start of new year so it doesn't fall on Sunday, Wednesday or Friday.
+	 * Delay start of new year so it doesn't fall on Sunday, Wednesday or
+	 * Friday.
 	 *
 	 * @param year a year.
 	 * @return the delay in days.
@@ -433,7 +455,8 @@ public class AlmanacConverter {
 		final int last = delayHebrewYear(year - 1);
 		final int now = delayHebrewYear(year);
 		final int next = delayHebrewYear(year + 1);
-		final int val = ((next - now) == 356) ? 2 : (((now - last) == 382) ? 1 : 0);
+		final int val = ((next - now) == 356) ? 2
+				: (((now - last) == 382) ? 1 : 0);
 		return val;
 	}
 
@@ -462,7 +485,8 @@ public class AlmanacConverter {
 	 * @param a an Almanac.
 	 * @return the French Republican date.
 	 */
-	public static FrenchRepublicanCalendar toFrenchRepublicanCalendar(Almanac a) {
+	public static FrenchRepublicanCalendar toFrenchRepublicanCalendar(
+			Almanac a) {
 		if (a instanceof FrenchRepublicanCalendar) {
 			return (FrenchRepublicanCalendar) a;
 		} else {

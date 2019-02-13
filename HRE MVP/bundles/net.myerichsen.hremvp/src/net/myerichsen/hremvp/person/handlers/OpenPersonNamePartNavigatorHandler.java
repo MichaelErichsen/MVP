@@ -19,7 +19,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * @version 7. feb. 2019
  */
 public class OpenPersonNamePartNavigatorHandler {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNamePartNavigator";
 
 	/**
@@ -29,8 +30,10 @@ public class OpenPersonNamePartNavigatorHandler {
 	 *
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService) {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService) {
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		final MPart part = MBasicFactory.INSTANCE.createPart();
 
 		part.setLabel("Name Part");

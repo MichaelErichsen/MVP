@@ -250,6 +250,33 @@ public class EventServer {
 	}
 
 	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> getLocationList(int key) throws SQLException {
+		LocationServer ls;
+
+		final List<String> locationStringList = new ArrayList<>();
+
+		final LocationEvents locationEvents = new LocationEvents();
+		final List<LocationEvents> leList = locationEvents.getFKEventPid(key);
+
+		try {
+			for (final LocationEvents le : leList) {
+				ls = new LocationServer();
+				ls.get(le.getLocationPid());
+
+				locationStringList.add(ls.getPrimaryName());
+			}
+		} catch (final MvpException e) {
+			e.printStackTrace();
+		}
+
+		return locationStringList;
+	}
+
+	/**
 	 * @return the personList
 	 */
 	public List<List<String>> getPersonList() {
@@ -433,33 +460,6 @@ public class EventServer {
 		event.setToDatePid(ToDatePid);
 		event.setEventNamePid(EventNamePid);
 		event.update();
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<String> getLocationList(int key) throws SQLException {
-		LocationServer ls;
-
-		List<String> locationStringList = new ArrayList<>();
-
-		LocationEvents locationEvents = new LocationEvents();
-		List<LocationEvents> leList = locationEvents.getFKEventPid(key);
-
-		try {
-			for (LocationEvents le : leList) {
-				ls = new LocationServer();
-				ls.get(le.getLocationPid());
-
-				locationStringList.add(ls.getPrimaryName());
-			}
-		} catch (MvpException e) {
-			e.printStackTrace();
-		}
-
-		return locationStringList;
 	}
 
 }

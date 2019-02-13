@@ -29,8 +29,10 @@ public class OpenEventViewHandler {
 	 *
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService) {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService) {
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		final MPart part = MBasicFactory.INSTANCE.createPart();
 
 //		for (final MPartStack mPartStack : stacks) {

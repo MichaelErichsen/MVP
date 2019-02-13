@@ -26,14 +26,17 @@ public class HelpBrowserHandler {
 	 * @param modelService
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService) {
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService) {
 		final MPart part = MBasicFactory.INSTANCE.createPart();
 		part.setLabel("HRE Help");
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
-		part.setContributionURI("bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HelpSystemBrowser");
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		part.setContributionURI(
+				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HelpSystemBrowser");
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 	}

@@ -105,7 +105,8 @@ public class LocationNameParts {
 		conn.close();
 	}
 
-	public List<LocationNameParts> getFKLocationNamePid(int key) throws SQLException {
+	public List<LocationNameParts> getFKLocationNamePid(int key)
+			throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LOCATION_NAME_PID);
 		ps.setInt(1, key);

@@ -40,7 +40,8 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  *
  */
 public class LocationNavigator {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -77,7 +78,8 @@ public class LocationNavigator {
 	public void createControls(Composite parent, EMenuService menuService) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -85,18 +87,22 @@ public class LocationNavigator {
 				openLocationView();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(), "net.myerichsen.hremvp.popupmenu.locationmenu");
+		menuService.registerContextMenu(tableViewer.getControl(),
+				"net.myerichsen.hremvp.popupmenu.locationmenu");
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnPrimaryLocationName = tableViewerColumn_1.getColumn();
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnPrimaryLocationName = tableViewerColumn_1
+				.getColumn();
 		tblclmnPrimaryLocationName.setWidth(400);
 		tblclmnPrimaryLocationName.setText("Primary Location Name");
 
@@ -136,7 +142,8 @@ public class LocationNavigator {
 	protected void openLocationView() {
 		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView";
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
@@ -173,7 +180,9 @@ public class LocationNavigator {
 			locationPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.LOCATION_PID_UPDATE_TOPIC,
+				locationPid);
 		LOGGER.info("Location Pid: " + locationPid);
 	}
 

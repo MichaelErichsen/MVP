@@ -32,7 +32,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class ProjectProperties {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -68,15 +69,20 @@ public class ProjectProperties {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumnProperty = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnProjectName = tableViewerColumnProperty.getColumn();
+		final TableViewerColumn tableViewerColumnProperty = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnProjectName = tableViewerColumnProperty
+				.getColumn();
 		tblclmnProjectName.setToolTipText("Property");
 		tblclmnProjectName.setWidth(100);
 		tblclmnProjectName.setText("Property");
-		tableViewerColumnProperty.setLabelProvider(new HREColumnLabelProvider(0));
+		tableViewerColumnProperty
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnValue = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnLastEdited = tableViewerColumnValue.getColumn();
+		final TableViewerColumn tableViewerColumnValue = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLastEdited = tableViewerColumnValue
+				.getColumn();
 		tblclmnLastEdited.setToolTipText("Value");
 		tblclmnLastEdited.setWidth(800);
 		tblclmnLastEdited.setText("Value");

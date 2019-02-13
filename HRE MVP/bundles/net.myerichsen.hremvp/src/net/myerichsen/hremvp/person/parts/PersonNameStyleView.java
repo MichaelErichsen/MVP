@@ -52,7 +52,8 @@ import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
  */
 @SuppressWarnings("restriction")
 public class PersonNameStyleView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -111,8 +112,10 @@ public class PersonNameStyleView {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -130,7 +133,8 @@ public class PersonNameStyleView {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
@@ -138,26 +142,31 @@ public class PersonNameStyleView {
 		lblLanguage.setText("Language");
 
 		textLanguageId = new Text(parent, SWT.BORDER);
-		textLanguageId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLanguageId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textLanguage = new Text(parent, SWT.BORDER);
 		textLanguage.setEditable(false);
-		textLanguage.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLanguage.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textIsoCode = new Text(parent, SWT.BORDER);
 		textIsoCode.setEditable(false);
-		textIsoCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textIsoCode.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblName = new Label(parent, SWT.NONE);
 		lblName.setText("Name");
 
 		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		textLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		final Label lblNameMaps = new Label(parent, SWT.NONE);
 		lblNameMaps.setText(" Name Maps\r\nDblclk to open");
 
-		tableViewerMaps = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewerMaps = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableMaps = tableViewerMaps.getTable();
 		tableMaps.setToolTipText("Double click to edit name map");
 		tableMaps.addMouseListener(new MouseAdapter() {
@@ -168,30 +177,36 @@ public class PersonNameStyleView {
 		});
 		tableMaps.setLinesVisible(true);
 		tableMaps.setHeaderVisible(true);
-		tableMaps.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		tableMaps.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewerMaps, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(
+				tableViewerMaps, SWT.NONE);
 		final TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
 		tblclmnPartNo.setWidth(50);
 		tblclmnPartNo.setText("Part No.");
 
-		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+				tableViewerMaps, SWT.NONE);
 		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
 		tblclmnLabel.setWidth(200);
 		tblclmnLabel.setText("Label");
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewerMaps, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewerMaps, SWT.NONE);
 		final TableColumn tblclmnLabelPosition = tableViewerColumn.getColumn();
 		tblclmnLabelPosition.setWidth(100);
 		tblclmnLabelPosition.setText("Label Position");
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -255,7 +270,8 @@ public class PersonNameStyleView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", " Name Part " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					" Name Part " + textId.getText() + " has been deleted");
 			clear();
 		} catch (SQLException | NumberFormatException | MvpException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -334,8 +350,8 @@ public class PersonNameStyleView {
 		int nameMapPid = 0;
 
 		// Open Name Map View
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.opennamemapview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.opennamemapview", null);
 		handlerService.executeHandler(command);
 
 		// Post name map pid
@@ -346,7 +362,9 @@ public class PersonNameStyleView {
 			nameMapPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.NAME_MAP_PID_UPDATE_TOPIC, nameMapPid);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.NAME_MAP_PID_UPDATE_TOPIC,
+				nameMapPid);
 	}
 
 	@Focus
@@ -360,7 +378,8 @@ public class PersonNameStyleView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNameStyleUpdateTopic(@UIEventTopic(Constants.NAME_STYLE_PID_UPDATE_TOPIC) int nameStylePid)
+	private void subscribeNameStyleUpdateTopic(
+			@UIEventTopic(Constants.NAME_STYLE_PID_UPDATE_TOPIC) int nameStylePid)
 			throws SQLException, MvpException {
 		LOGGER.info("Got pid " + nameStylePid);
 		get(nameStylePid);

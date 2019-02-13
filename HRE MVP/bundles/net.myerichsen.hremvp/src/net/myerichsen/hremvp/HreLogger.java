@@ -20,7 +20,8 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  *
  */
 public class HreLogger {
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	static private FileHandler handler;
 
 	/**
@@ -33,7 +34,8 @@ public class HreLogger {
 
 		final String logFilePath = store.getString("LOGFILEPATH");
 
-		handler = new FileHandler(logFilePath + "mvp-log.%u.%g.txt", 1024 * 1024, 10, true);
+		handler = new FileHandler(logFilePath + "mvp-log.%u.%g.txt",
+				1024 * 1024, 10, true);
 		handler.setFormatter(new SimpleFormatter());
 		LOGGER.addHandler(handler);
 

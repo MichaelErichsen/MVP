@@ -48,16 +48,18 @@ public class ProjectRestoreHandler {
 	@Inject
 	private static IEventBroker eventBroker;
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	/**
 	 * @param workbench
 	 * @param shell
 	 */
 	@Execute
-	public void execute(IWorkbench workbench, EPartService partService, MApplication application,
-			EModelService modelService, Shell shell) {
+	public void execute(IWorkbench workbench, EPartService partService,
+			MApplication application, EModelService modelService, Shell shell) {
 		int index = 0;
 
 		// Open file dialog
@@ -84,7 +86,8 @@ public class ProjectRestoreHandler {
 				if (conn != null) {
 					conn.createStatement().execute("SHUTDOWN");
 					conn.close();
-					LOGGER.info("Existing database " + dbName + " has been closed");
+					LOGGER.info(
+							"Existing database " + dbName + " has been closed");
 
 					try {
 						HreH2ConnectionPool.dispose();
@@ -108,11 +111,14 @@ public class ProjectRestoreHandler {
 			}
 
 			if (result) {
-				LOGGER.info("Existing database " + dbName + " has been deleted");
+				LOGGER.info(
+						"Existing database " + dbName + " has been deleted");
 			}
 
-			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName, "-user", store.getString("USERID"),
-					"-script", path + "\\" + dbName + ".zip", "-options", "compression", "zip" };
+			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
+					"-user", store.getString("USERID"), "-script",
+					path + "\\" + dbName + ".zip", "-options", "compression",
+					"zip" };
 			RunScript.main(bkp);
 
 			final int projectCount = store.getInt("projectcount");
@@ -124,7 +130,8 @@ public class ProjectRestoreHandler {
 				if (store.contains(key)) {
 					if (dbName.equals(store.getString(key))) {
 						alreadyRegistered = true;
-						LOGGER.info("Project " + dbName + " already registered");
+						LOGGER.info(
+								"Project " + dbName + " already registered");
 						break;
 					}
 				}
@@ -132,7 +139,8 @@ public class ProjectRestoreHandler {
 
 			if (!alreadyRegistered) {
 				// Open a dialog for summary
-				final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(shell);
+				final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(
+						shell);
 				pnsDialog.open();
 
 				// Update the HRE properties
@@ -140,17 +148,21 @@ public class ProjectRestoreHandler {
 					file = new File(dbName + ".mv.db");
 				}
 				final Date timestamp = new Date(file.lastModified());
-				final ProjectModel model = new ProjectModel(pnsDialog.getProjectName(), timestamp,
-						pnsDialog.getProjectSummary(), "LOCAL", path + "\\" + dbName);
+				final ProjectModel model = new ProjectModel(
+						pnsDialog.getProjectName(), timestamp,
+						pnsDialog.getProjectSummary(), "LOCAL",
+						path + "\\" + dbName);
 				index = ProjectList.add(model);
 
 				// Set database name in title bar
-				final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
+				final MWindow window = (MWindow) modelService
+						.find("net.myerichsen.hremvp.window.main", application);
 				window.setLabel("HRE v0.2 - " + dbName);
 			}
 
 			// Open H2 Database Navigator
-			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+			final List<MPartStack> stacks = modelService
+					.findElements(application, null, MPartStack.class, null);
 			final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
 			h2dnPart.setLabel("Database Tables");
 			h2dnPart.setContainerData("650");
@@ -165,11 +177,13 @@ public class ProjectRestoreHandler {
 
 			if (index > 0) {
 				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
-				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC,
+						index);
 			}
 
 			LOGGER.info("Project database has been restored from " + shortName);
-			eventBroker.post("MESSAGE", "Project database has been restored from " + shortName);
+			eventBroker.post("MESSAGE",
+					"Project database has been restored from " + shortName);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

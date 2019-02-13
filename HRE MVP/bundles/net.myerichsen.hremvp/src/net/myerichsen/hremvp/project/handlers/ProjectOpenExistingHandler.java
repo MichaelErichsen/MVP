@@ -43,9 +43,10 @@ public class ProjectOpenExistingHandler {
 	@Inject
 	private static IEventBroker eventBroker;
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
-			"net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	/**
 	 * Select a database and open it
@@ -56,7 +57,8 @@ public class ProjectOpenExistingHandler {
 	 * @param shell
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell) {
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService, Shell shell) {
 		int index = 0;
 		Connection conn = null;
 
@@ -94,15 +96,18 @@ public class ProjectOpenExistingHandler {
 
 			if (conn != null) {
 				final String h2Version = store.getString("H2VERSION");
-				LOGGER.info("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
+				LOGGER.info("Retrieved H2 version from preferences: "
+						+ h2Version.substring(0, 3));
 				PreparedStatement ps;
 
 				if (h2Version.substring(0, 3).equals("1.3")) {
-					ps = conn.prepareStatement("SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
-							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
 				} else {
-					ps = conn.prepareStatement("SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
-							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
 				}
 
 				ps.executeQuery();
@@ -118,7 +123,8 @@ public class ProjectOpenExistingHandler {
 				if (store.contains(key)) {
 					if (dbName.equals(store.getString(key))) {
 						alreadyRegistered = true;
-						LOGGER.info("Project " + dbName + " already registered");
+						LOGGER.info(
+								"Project " + dbName + " already registered");
 						break;
 					}
 				}
@@ -126,7 +132,8 @@ public class ProjectOpenExistingHandler {
 
 			if (!alreadyRegistered) {
 				// Open a dialog for summary
-				final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(shell);
+				final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(
+						shell);
 				pnsDialog.open();
 
 				// Update the HRE properties
@@ -135,17 +142,21 @@ public class ProjectOpenExistingHandler {
 					file = new File(dbName + ".mv.db");
 				}
 				final Date timestamp = new Date(file.lastModified());
-				final ProjectModel model = new ProjectModel(pnsDialog.getProjectName(), timestamp,
-						pnsDialog.getProjectSummary(), "LOCAL", path + "\\" + dbName);
+				final ProjectModel model = new ProjectModel(
+						pnsDialog.getProjectName(), timestamp,
+						pnsDialog.getProjectSummary(), "LOCAL",
+						path + "\\" + dbName);
 				index = ProjectList.add(model);
 
 				// Set database name in title bar
-				final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
+				final MWindow window = (MWindow) modelService
+						.find("net.myerichsen.hremvp.window.main", application);
 				window.setLabel("HRE v0.2 - " + dbName);
 			}
 
 			// Open H2 Database Navigator
-			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+			final List<MPartStack> stacks = modelService
+					.findElements(application, null, MPartStack.class, null);
 			final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
 			h2dnPart.setLabel("Database Tables");
 			h2dnPart.setContainerData("650");
@@ -160,10 +171,12 @@ public class ProjectOpenExistingHandler {
 
 			if (index > 0) {
 				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
-				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC,
+						index);
 			}
 
-			eventBroker.post("MESSAGE", "Project database " + dbName + " has been opened");
+			eventBroker.post("MESSAGE",
+					"Project database " + dbName + " has been opened");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());

@@ -65,7 +65,8 @@ public class IndianCivilCalendar extends Almanac {
 	}
 
 	/**
-	 * Constructs a new Indian Civil Calendar using a {@link java.util.Calendar}.
+	 * Constructs a new Indian Civil Calendar using a
+	 * {@link java.util.Calendar}.
 	 *
 	 * @param cal a calendar.
 	 */
@@ -74,7 +75,8 @@ public class IndianCivilCalendar extends Almanac {
 	}
 
 	/**
-	 * Constructs a new Indian Civil Calendar from another Indian Civil Calendar.
+	 * Constructs a new Indian Civil Calendar from another Indian Civil
+	 * Calendar.
 	 *
 	 * @param date a calendar.
 	 */
@@ -102,7 +104,8 @@ public class IndianCivilCalendar extends Almanac {
 	 * @return the name of the month.
 	 * @throws IndexOutOfBoundsException
 	 */
-	public static String getMonthName(int month) throws IndexOutOfBoundsException {
+	public static String getMonthName(int month)
+			throws IndexOutOfBoundsException {
 		return monthNames[month - 1];
 	}
 
@@ -126,7 +129,8 @@ public class IndianCivilCalendar extends Almanac {
 		}
 
 		final IndianCivilCalendar date = (IndianCivilCalendar) obj;
-		return (day == date.getDay()) && (month == date.getMonth()) && (year == date.getYear());
+		return (day == date.getDay()) && (month == date.getMonth())
+				&& (year == date.getYear());
 	}
 
 	@Override

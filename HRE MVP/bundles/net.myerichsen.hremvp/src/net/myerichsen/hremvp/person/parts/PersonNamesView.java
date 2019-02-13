@@ -45,7 +45,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 @SuppressWarnings("restriction")
 // TODO Add name type with a language specific label
 public class PersonNamesView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -81,16 +82,19 @@ public class PersonNamesView {
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label lblId = new Label(parent, SWT.NONE);
-		lblId.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblId.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblId.setText("Person Id");
 
 		textId = new Text(parent, SWT.BORDER);
 		textId.setEditable(false);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
-		table.setToolTipText("Double click to edit. Right click to add or delete");
+		table.setToolTipText(
+				"Double click to edit. Right click to add or delete");
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.addMouseListener(new MouseAdapter() {
@@ -98,46 +102,53 @@ public class PersonNamesView {
 			 * (non-Javadoc)
 			 *
 			 * @see
-			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.
-			 * MouseEvent)
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events. MouseEvent)
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openNamePartNavigator();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(), "net.myerichsen.hremvp.popupmenu.personnameviewmenu");
+		menuService.registerContextMenu(tableViewer.getControl(),
+				"net.myerichsen.hremvp.popupmenu.personnameviewmenu");
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("Id");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(200);
 		tblclmnName.setText("Name");
 		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnFrom = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnFrom = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnFromDate = tableViewerColumnFrom.getColumn();
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
 		tableViewerColumnFrom.setLabelProvider(new HREColumnLabelProvider(2));
 
-		final TableViewerColumn tableViewerColumnTo = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnTo = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnToDate = tableViewerColumnTo.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
 		tableViewerColumnTo.setLabelProvider(new HREColumnLabelProvider(3));
 
-		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnPrimary = tableViewerColumnPrimary.getColumn();
 		tblclmnPrimary.setWidth(50);
 		tblclmnPrimary.setText("Primary");
-		tableViewerColumnPrimary.setLabelProvider(new HREColumnLabelProvider(4));
+		tableViewerColumnPrimary
+				.setLabelProvider(new HREColumnLabelProvider(4));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
@@ -163,8 +174,9 @@ public class PersonNamesView {
 	 *
 	 */
 	protected void openNamePartNavigator() {
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openpersonnamepartnavigator", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openpersonnamepartnavigator",
+				null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selection = tableViewer.getTable().getSelection();
@@ -182,7 +194,8 @@ public class PersonNamesView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNamePidUpdateTopic(@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int namePid) {
+	private void subscribeNamePidUpdateTopic(
+			@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int namePid) {
 		LOGGER.fine("Received name id " + namePid);
 		try {
 			tableViewer.setInput(provider.getPersonNameList(personPid));
@@ -198,7 +211,8 @@ public class PersonNamesView {
 	 */
 	@Inject
 	@Optional
-	private void subscribePersonPidUpdateTopic(@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+	private void subscribePersonPidUpdateTopic(
+			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
 		this.personPid = personPid;
 		try {

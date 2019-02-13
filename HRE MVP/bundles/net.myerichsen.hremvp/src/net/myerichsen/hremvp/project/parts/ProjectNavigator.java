@@ -46,8 +46,10 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class ProjectNavigator {
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -74,7 +76,7 @@ public class ProjectNavigator {
 
 	/**
 	 * Create contents of the view part
-	 * 
+	 *
 	 * @param parent
 	 * @param menuService
 	 */
@@ -89,10 +91,10 @@ public class ProjectNavigator {
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
-			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.
-			 * MouseEvent)
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events. MouseEvent)
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -103,27 +105,37 @@ public class ProjectNavigator {
 				"net.myerichsen.hremvp.popupmenu.projectnavigatormenu");
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true,
+				2, 1);
 		gd_table.widthHint = 394;
 		table.setLayoutData(gd_table);
 
-		final TableViewerColumn tableViewerColumnProjectId = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnProjectId = tableViewerColumnProjectId.getColumn();
+		final TableViewerColumn tableViewerColumnProjectId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnProjectId = tableViewerColumnProjectId
+				.getColumn();
 		tblclmnProjectId.setWidth(100);
 		tblclmnProjectId.setText("Project Id");
-		tableViewerColumnProjectId.setLabelProvider(new HREColumnLabelProvider(0));
+		tableViewerColumnProjectId
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnProjectName = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnProjectName = tableViewerColumnProjectName.getColumn();
+		final TableViewerColumn tableViewerColumnProjectName = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnProjectName = tableViewerColumnProjectName
+				.getColumn();
 		tblclmnProjectName.setWidth(100);
 		tblclmnProjectName.setText("Project Name");
-		tableViewerColumnProjectName.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnProjectName
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnLocation = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnLocation = tableViewerColumnLocation.getColumn();
+		final TableViewerColumn tableViewerColumnLocation = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLocation = tableViewerColumnLocation
+				.getColumn();
 		tblclmnLocation.setWidth(100);
 		tblclmnLocation.setText("Location");
-		tableViewerColumnLocation.setLabelProvider(new HREColumnLabelProvider(2));
+		tableViewerColumnLocation
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
 		lblNameFilter.setText("Name Filter");
@@ -139,7 +151,8 @@ public class ProjectNavigator {
 			}
 		});
 
-		textNameFilter.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textNameFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
@@ -171,7 +184,8 @@ public class ProjectNavigator {
 	private void postProjectPid() {
 		final int projectPid = tableViewer.getTable().getSelectionIndex() + 1;
 		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, projectPid);
-		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, store.getString("DBNAME"));
+		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC,
+				store.getString("DBNAME"));
 		LOGGER.fine("Project Navigator posted selection index " + projectPid);
 	}
 
@@ -187,7 +201,8 @@ public class ProjectNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeProjectListUpdateTopic(@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
+	private void subscribeProjectListUpdateTopic(
+			@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
 		LOGGER.fine("Received project index " + key);
 		try {
 			tableViewer.setInput(provider.get());

@@ -43,7 +43,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -80,7 +81,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	protected void browseEventNames() {
-		final EventNameNavigatorDialog dialog = new EventNameNavigatorDialog(textEventNamePid.getShell(), context);
+		final EventNameNavigatorDialog dialog = new EventNameNavigatorDialog(
+				textEventNamePid.getShell(), context);
 
 		if (dialog.open() == Window.OK) {
 			try {
@@ -99,7 +101,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	protected void browseEventStyles() {
-		final EventStyleNavigatorDialog dialog = new EventStyleNavigatorDialog(textEventStylePid.getShell(), context);
+		final EventStyleNavigatorDialog dialog = new EventStyleNavigatorDialog(
+				textEventStylePid.getShell(), context);
 
 		if (dialog.open() == Window.OK) {
 			try {
@@ -118,7 +121,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	private void browseFromDates() {
-		final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textFromDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
 				fromDatePid = dialog.getHdatePid();
@@ -135,7 +139,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	private void browseToDates() {
-		final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textToDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
 				toDatePid = dialog.getHdatePid();
@@ -198,8 +203,10 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -216,9 +223,11 @@ public class NewEventDialog extends TitleAreaDialog {
 		container.setLayout(new GridLayout(2, false));
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final Composite compositeEventStyle = new Composite(container, SWT.BORDER);
+		final Composite compositeEventStyle = new Composite(container,
+				SWT.BORDER);
 		compositeEventStyle.setLayout(new GridLayout(3, false));
-		compositeEventStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeEventStyle.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblEventStyle = new Label(compositeEventStyle, SWT.NONE);
 		lblEventStyle.setText("Event Style");
@@ -226,14 +235,18 @@ public class NewEventDialog extends TitleAreaDialog {
 		textEventStylePid = new Text(compositeEventStyle, SWT.BORDER);
 
 		textEventStyleLabel = new Text(compositeEventStyle, SWT.BORDER);
-		textEventStyleLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textEventStyleLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textEventStyleLabel.setEditable(false);
 
-		final Composite compositeEventStyleButtons = new Composite(compositeEventStyle, SWT.NONE);
-		compositeEventStyleButtons.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		final Composite compositeEventStyleButtons = new Composite(
+				compositeEventStyle, SWT.NONE);
+		compositeEventStyleButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		compositeEventStyleButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateEventStyle = new Button(compositeEventStyleButtons, SWT.NONE);
+		final Button btnUpdateEventStyle = new Button(
+				compositeEventStyleButtons, SWT.NONE);
 		btnUpdateEventStyle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -242,7 +255,8 @@ public class NewEventDialog extends TitleAreaDialog {
 		});
 		btnUpdateEventStyle.setText("Update");
 
-		final Button btnBrowseEventStyle = new Button(compositeEventStyleButtons, SWT.NONE);
+		final Button btnBrowseEventStyle = new Button(
+				compositeEventStyleButtons, SWT.NONE);
 		btnBrowseEventStyle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -251,7 +265,8 @@ public class NewEventDialog extends TitleAreaDialog {
 		});
 		btnBrowseEventStyle.setText("Browse");
 
-		final Button btnClearEventStyle = new Button(compositeEventStyleButtons, SWT.NONE);
+		final Button btnClearEventStyle = new Button(compositeEventStyleButtons,
+				SWT.NONE);
 		btnClearEventStyle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -260,9 +275,11 @@ public class NewEventDialog extends TitleAreaDialog {
 		});
 		btnClearEventStyle.setText("Clear");
 
-		final Composite compositeEventName = new Composite(container, SWT.BORDER);
+		final Composite compositeEventName = new Composite(container,
+				SWT.BORDER);
 		compositeEventName.setLayout(new GridLayout(3, false));
-		compositeEventName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeEventName.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblEventName = new Label(compositeEventName, SWT.NONE);
 		lblEventName.setText("Event Name");
@@ -270,15 +287,18 @@ public class NewEventDialog extends TitleAreaDialog {
 		textEventNamePid = new Text(compositeEventName, SWT.BORDER);
 
 		textEventNameLabel = new Text(compositeEventName, SWT.BORDER);
-		textEventNameLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textEventNameLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textEventNameLabel.setEditable(false);
 
 		Composite compositeEventNameButtons;
 		compositeEventNameButtons = new Composite(compositeEventName, SWT.NONE);
-		compositeEventNameButtons.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		compositeEventNameButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		compositeEventNameButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateEventName = new Button(compositeEventNameButtons, SWT.NONE);
+		final Button btnUpdateEventName = new Button(compositeEventNameButtons,
+				SWT.NONE);
 		btnUpdateEventName.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -287,7 +307,8 @@ public class NewEventDialog extends TitleAreaDialog {
 		});
 		btnUpdateEventName.setText("Update");
 
-		final Button btnBrowseEventName = new Button(compositeEventNameButtons, SWT.NONE);
+		final Button btnBrowseEventName = new Button(compositeEventNameButtons,
+				SWT.NONE);
 		btnBrowseEventName.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -296,7 +317,8 @@ public class NewEventDialog extends TitleAreaDialog {
 		});
 		btnBrowseEventName.setText("Browse");
 
-		final Button btnClearEventName = new Button(compositeEventNameButtons, SWT.NONE);
+		final Button btnClearEventName = new Button(compositeEventNameButtons,
+				SWT.NONE);
 		btnClearEventName.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -315,17 +337,20 @@ public class NewEventDialog extends TitleAreaDialog {
 				role = textRole.getText();
 			}
 		});
-		textRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textRole.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblFromDate = new Label(container, SWT.NONE);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(container, SWT.BORDER);
 		textFromDate.setEditable(false);
-		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite compositeFrom = new Composite(container, SWT.NONE);
-		compositeFrom.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeFrom.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
@@ -360,10 +385,12 @@ public class NewEventDialog extends TitleAreaDialog {
 
 		textToDate = new Text(container, SWT.BORDER);
 		textToDate.setEditable(false);
-		textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite compositeTo = new Composite(container, SWT.NONE);
-		compositeTo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeTo.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnCopyDates = new Button(compositeTo, SWT.NONE);
@@ -413,8 +440,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @return The eventStringList with eventNamePid, nameLabel, role, fromDatePid,
-	 *         FromDate, toDatePid, toDate
+	 * @return The eventStringList with eventNamePid, nameLabel, role,
+	 *         fromDatePid, FromDate, toDatePid, toDate
 	 */
 	public List<String> getEventStringList() {
 		HDateProvider hdateProvider;
@@ -485,7 +512,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	private void getNewFromDate() {
-		final DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
+		final DateDialog dialog = new DateDialog(textFromDate.getShell(),
+				context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
@@ -505,7 +533,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	private void getNewToDate() {
-		final DateDialog dialog = new DateDialog(textToDate.getShell(), context);
+		final DateDialog dialog = new DateDialog(textToDate.getShell(),
+				context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();

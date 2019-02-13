@@ -28,7 +28,8 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  *
  */
 public class LocationGoogleMapBrowser {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Text textLocationId;
 	private Text textLocationName;
 	private Browser browser;
@@ -56,14 +57,17 @@ public class LocationGoogleMapBrowser {
 
 		textLocationId = new Text(parent, SWT.BORDER);
 		textLocationId.setEditable(false);
-		textLocationId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLocationId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textLocationName = new Text(parent, SWT.BORDER);
 		textLocationName.setEditable(false);
-		textLocationName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLocationName.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		browser = new Browser(parent, SWT.NONE);
-		final GridData gd_browser = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
+		final GridData gd_browser = new GridData(SWT.FILL, SWT.FILL, true, true,
+				3, 1);
 		gd_browser.heightHint = 260;
 		browser.setLayoutData(gd_browser);
 	}
@@ -75,12 +79,17 @@ public class LocationGoogleMapBrowser {
 	@Inject
 	@Optional
 	private void subscribeLocationGoogleMapBrowserUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_GOOGLE_MAP_UPDATE_TOPIC) LocationProvider provider) throws SQLException {
+			@UIEventTopic(Constants.LOCATION_GOOGLE_MAP_UPDATE_TOPIC) LocationProvider provider)
+			throws SQLException {
 		textLocationId.setText(Integer.toString(provider.getLocationPid()));
 		final LocationNameProvider lnp = new LocationNameProvider();
-		textLocationName.setText(lnp.getPrimaryNameString(provider.getLocationPid()));
-		LOGGER.fine("Lat Long: " + provider.getxCoordinate() + ", " + provider.getyCoordinate());
-		browser.setUrl("http://www.google.com/maps/@?api=1&map_action=map&center=" + provider.getxCoordinate() + ", "
-				+ provider.getyCoordinate() + "&basemap=terrain");
+		textLocationName
+				.setText(lnp.getPrimaryNameString(provider.getLocationPid()));
+		LOGGER.fine("Lat Long: " + provider.getxCoordinate() + ", "
+				+ provider.getyCoordinate());
+		browser.setUrl(
+				"http://www.google.com/maps/@?api=1&map_action=map&center="
+						+ provider.getxCoordinate() + ", "
+						+ provider.getyCoordinate() + "&basemap=terrain");
 	}
 }

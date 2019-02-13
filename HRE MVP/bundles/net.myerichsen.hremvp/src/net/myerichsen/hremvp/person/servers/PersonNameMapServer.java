@@ -16,7 +16,8 @@ import net.myerichsen.hremvp.dbmodels.NameStyles;
  *
  */
 public class PersonNameMapServer implements IHREServer {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int nameMapPid;
 	private String label;
 	private int partNo;

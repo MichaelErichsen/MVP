@@ -30,7 +30,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  */
 // FIXME Create
 public class NewEventWizardPage1 extends WizardPage {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
 	private Text textFromDate;
@@ -67,16 +68,16 @@ public class NewEventWizardPage1 extends WizardPage {
 	public NewEventWizardPage1(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("New Location");
-		setDescription("Create a new location by entering immutable data for it.\r\nCoordinates can be set later");
+		setDescription(
+				"Create a new location by entering immutable data for it.\r\nCoordinates can be set later");
 		this.context = context;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
-	 * Composite)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets. Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -90,31 +91,37 @@ public class NewEventWizardPage1 extends WizardPage {
 
 		textFromDate = new Text(container, SWT.BORDER);
 		textFromDate.setEditable(false);
-		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textFromDateSort = new Text(container, SWT.BORDER);
 		textFromDateSort.setEditable(false);
-		textFromDateSort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDateSort.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		textFromOriginal = new Text(container, SWT.BORDER);
 		textFromOriginal.setEditable(false);
-		textFromOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textFromSurety = new Text(container, SWT.BORDER);
 		textFromSurety.setEditable(false);
-		textFromSurety.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+		textFromSurety.setLayoutData(
+				new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		final Composite compositeFrom = new Composite(container, SWT.NONE);
-		compositeFrom.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeFrom.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		btnNewFrom = new Button(compositeFrom, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -125,7 +132,8 @@ public class NewEventWizardPage1 extends WizardPage {
 						fromDatePid = hdp.insert();
 						textFromDate.setText(dialog.getLocalDate().toString());
 						if (textFromDateSort.getText().length() == 0) {
-							textFromDateSort.setText(dialog.getSortDate().toString());
+							textFromDateSort
+									.setText(dialog.getSortDate().toString());
 						}
 						textFromOriginal.setText(dialog.getOriginal());
 						textFromSurety.setText(dialog.getSurety());
@@ -141,7 +149,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -176,25 +185,30 @@ public class NewEventWizardPage1 extends WizardPage {
 
 		textToDate = new Text(container, SWT.BORDER);
 		textToDate.setEditable(false);
-		textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textToDateSort = new Text(container, SWT.BORDER);
 		textToDateSort.setEditable(false);
-		textToDateSort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDateSort.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		textToOriginal = new Text(container, SWT.BORDER);
 		textToOriginal.setEditable(false);
-		textToOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textToSurety = new Text(container, SWT.BORDER);
 		textToSurety.setEditable(false);
-		textToSurety.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToSurety.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(container, SWT.NONE);
 
 		final Composite compositeTo = new Composite(container, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeTo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeTo.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
 		btnCopyFromTo = new Button(compositeTo, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
@@ -214,7 +228,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textToDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(textToDate.getShell(),
+						context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -239,7 +254,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textToDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -275,7 +291,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		textXCoordinate = new Text(container, SWT.BORDER);
 		textXCoordinate.setText("0");
 		textXCoordinate.setToolTipText("Latitude (-180 to 180)");
-		textXCoordinate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textXCoordinate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textXCoordinate.addListener(SWT.Verify, new DoubleListener());
 		new Label(container, SWT.NONE);
 
@@ -285,7 +302,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		textYCoordinate = new Text(container, SWT.BORDER);
 		textYCoordinate.setText("0");
 		textYCoordinate.setToolTipText("Longitude (-90 to 90)");
-		textYCoordinate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textYCoordinate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textYCoordinate.addListener(SWT.Verify, new DoubleListener());
 		new Label(container, SWT.NONE);
 
@@ -295,7 +313,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		textZCoordinate = new Text(container, SWT.BORDER);
 		textZCoordinate.setText("0");
 		textZCoordinate.setToolTipText("Elevation above sea level in meters");
-		textZCoordinate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textZCoordinate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textZCoordinate.addListener(SWT.Verify, new DoubleListener());
 		new Label(container, SWT.NONE);
 
@@ -304,7 +323,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnCheckButtonPrimary = new Button(container, SWT.CHECK);
 		btnCheckButtonPrimary.setToolTipText("Default");
 		btnCheckButtonPrimary.setSelection(true);
-		btnCheckButtonPrimary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		btnCheckButtonPrimary.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		btnCheckButtonPrimary.setText("Primary Location");
 		new Label(container, SWT.NONE);
 	}

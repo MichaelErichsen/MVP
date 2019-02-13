@@ -46,7 +46,8 @@ import net.myerichsen.hremvp.event.providers.EventTypeProvider;
  */
 
 public class EventTypeView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -103,8 +104,10 @@ public class EventTypeView {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -121,13 +124,15 @@ public class EventTypeView {
 		lblId.setText("Event Type ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblLabel = new Label(parent, SWT.NONE);
 		lblLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		lblEventTypeNames = new Label(parent, SWT.NONE);
 		lblEventTypeNames.setText("Event Type Names");
@@ -142,7 +147,8 @@ public class EventTypeView {
 		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true,
+				1, 1);
 		gd_table.widthHint = 473;
 		table.setLayoutData(gd_table);
 
@@ -156,7 +162,8 @@ public class EventTypeView {
 		tblclmnLabel.setWidth(100);
 		tblclmnLabel.setText("Label");
 
-		tableViewerColumnLanguage = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumnLanguage = new TableViewerColumn(tableViewer,
+				SWT.NONE);
 		tblclmnLanguage = tableViewerColumnLanguage.getColumn();
 		tblclmnLanguage.setWidth(100);
 		tblclmnLanguage.setText("Language");
@@ -167,7 +174,8 @@ public class EventTypeView {
 		tblclmnIsoCode.setText("ISO Code");
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -231,7 +239,8 @@ public class EventTypeView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Event Type " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Event Type " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -290,7 +299,8 @@ public class EventTypeView {
 		try {
 			provider.setLabel(textLabel.getText());
 			provider.insert();
-			eventBroker.post("MESSAGE", "Event Type " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Event Type " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -318,7 +328,8 @@ public class EventTypeView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeEventTypePidUpdateTopic(@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int key) {
+	private void subscribeEventTypePidUpdateTopic(
+			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int key) {
 		get(key);
 	}
 
@@ -329,7 +340,8 @@ public class EventTypeView {
 		try {
 			provider.setLabel(textLabel.getText());
 			provider.update();
-			eventBroker.post("MESSAGE", "Event Type " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Event Type " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

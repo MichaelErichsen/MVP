@@ -98,7 +98,8 @@ public class LocationNames {
 			model = new LocationNames();
 			model.setLocationNamePid(rs.getInt("LOCATION_NAME_PID"));
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
-			model.setPrimaryLocationName(rs.getBoolean("PRIMARY_LOCATION_NAME"));
+			model.setPrimaryLocationName(
+					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
@@ -140,7 +141,8 @@ public class LocationNames {
 			model = new LocationNames();
 			model.setLocationNamePid(rs.getInt("LOCATION_NAME_PID"));
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
-			model.setPrimaryLocationName(rs.getBoolean("PRIMARY_LOCATION_NAME"));
+			model.setPrimaryLocationName(
+					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
@@ -152,7 +154,8 @@ public class LocationNames {
 		return modelList;
 	}
 
-	public List<LocationNames> getFKLocationNameStylePid(int key) throws SQLException {
+	public List<LocationNames> getFKLocationNameStylePid(int key)
+			throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LOCATION_NAME_STYLE_PID);
 		ps.setInt(1, key);
@@ -162,7 +165,8 @@ public class LocationNames {
 			model = new LocationNames();
 			model.setLocationNamePid(rs.getInt("LOCATION_NAME_PID"));
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
-			model.setPrimaryLocationName(rs.getBoolean("PRIMARY_LOCATION_NAME"));
+			model.setPrimaryLocationName(
+					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
@@ -184,7 +188,8 @@ public class LocationNames {
 			model = new LocationNames();
 			model.setLocationNamePid(rs.getInt("LOCATION_NAME_PID"));
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
-			model.setPrimaryLocationName(rs.getBoolean("PRIMARY_LOCATION_NAME"));
+			model.setPrimaryLocationName(
+					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
@@ -206,7 +211,8 @@ public class LocationNames {
 			model = new LocationNames();
 			model.setLocationNamePid(rs.getInt("LOCATION_NAME_PID"));
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
-			model.setPrimaryLocationName(rs.getBoolean("PRIMARY_LOCATION_NAME"));
+			model.setPrimaryLocationName(
+					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
@@ -343,7 +349,8 @@ public class LocationNames {
 	/**
 	 * Set the LocationNameStylePid field
 	 *
-	 * @param LocationNameStylePid Contents of the LOCATION_NAME_STYLE_PID column
+	 * @param LocationNameStylePid Contents of the LOCATION_NAME_STYLE_PID
+	 *                             column
 	 */
 	public void setLocationNameStylePid(int LocationNameStylePid) {
 		this.LocationNameStylePid = LocationNameStylePid;

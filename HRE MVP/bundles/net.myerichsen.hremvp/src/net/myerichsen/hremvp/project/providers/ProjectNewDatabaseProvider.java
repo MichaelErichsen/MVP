@@ -34,7 +34,8 @@ public class ProjectNewDatabaseProvider {
 	 * @throws                       java.util.prefs.BackingStoreException
 	 * @throws                       org.osgi.service.prefs.BackingStoreException
 	 */
-	public void provide(String dbName) throws SQLException, BackingStoreException {
+	public void provide(String dbName)
+			throws SQLException, BackingStoreException {
 		server.provide(dbName);
 	}
 }

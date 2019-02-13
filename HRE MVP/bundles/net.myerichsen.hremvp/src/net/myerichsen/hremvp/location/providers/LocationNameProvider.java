@@ -56,7 +56,7 @@ public class LocationNameProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
 	@Override

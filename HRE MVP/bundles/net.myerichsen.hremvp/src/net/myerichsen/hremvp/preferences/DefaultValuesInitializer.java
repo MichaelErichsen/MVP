@@ -30,7 +30,8 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 	 */
 	@Override
 	public void initializeDefaultPreferences() {
-		final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		final IPreferenceStore store = new ScopedPreferenceStore(
+				InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 		// MVP
 		store.setDefault("CSMODE", "STANDALONE");
@@ -38,9 +39,11 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("LOGFILEPATH", ".");
 		store.setDefault("GUILANGUAGE", "ENGLISH");
 		store.setDefault("HELPSYSTEMPORT", "8081");
-		store.setDefault("HREFONT", "1|Segoe UI|12.0|0|WINDOWS|1|-16|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI");
+		store.setDefault("HREFONT",
+				"1|Segoe UI|12.0|0|WINDOWS|1|-16|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI");
 		store.setDefault("TLS", "true");
-		store.setDefault("UPDATESITE", "http://www.myerichsen.net/HRERepository");
+		store.setDefault("UPDATESITE",
+				"http://www.myerichsen.net/HRERepository");
 		store.setDefault("WEBSITELIST", "https://www.google.dk/search?oq=");
 		store.setDefault("DEFAULTPERSONNAMESTYLE", "1");
 		store.setDefault("TREEGENERATIONS", 5);

@@ -19,7 +19,9 @@ public class AdministrationPerspectiveHandler {
 	 * @param modelService
 	 */
 	@Execute
-	public void execute(MApplication app, EPartService partService, EModelService modelService) {
-		partService.switchPerspective("net.myerichsen.hremvp.perspective.administrationperspective");
+	public void execute(MApplication app, EPartService partService,
+			EModelService modelService) {
+		partService.switchPerspective(
+				"net.myerichsen.hremvp.perspective.administrationperspective");
 	}
 }

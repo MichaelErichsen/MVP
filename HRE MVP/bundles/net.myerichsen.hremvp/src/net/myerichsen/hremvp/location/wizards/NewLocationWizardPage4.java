@@ -28,9 +28,8 @@ public class NewLocationWizardPage4 extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
-	 * Composite)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets. Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -41,10 +40,14 @@ public class NewLocationWizardPage4 extends WizardPage {
 
 		final NewLocationWizard wizard = (NewLocationWizard) getWizard();
 		final Browser browser = new Browser(container, SWT.NONE);
-		browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		browser.setUrl("http://www.google.com/maps/@?api=1&map_action=map&center="
-				+ wizard.getPage1().getTextXCoordinate().getText() + ", "
-				+ wizard.getPage1().getTextYCoordinate().getText() + "&basemap=terrain");
+		browser.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		browser.setUrl(
+				"http://www.google.com/maps/@?api=1&map_action=map&center="
+						+ wizard.getPage1().getTextXCoordinate().getText()
+						+ ", "
+						+ wizard.getPage1().getTextYCoordinate().getText()
+						+ "&basemap=terrain");
 
 	}
 }

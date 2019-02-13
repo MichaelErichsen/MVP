@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.project.parts.ProjectNavigator;
 /**
  * Back up the selected project. Closes the database if open. Back up to a human
  * readable, and database version independent backup.
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 3. feb. 2019
  *
@@ -43,8 +43,10 @@ public class ProjectBackupHandler {
 	@Inject
 	private static IEventBroker eventBroker;
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator";
 
 	/**
@@ -52,12 +54,13 @@ public class ProjectBackupHandler {
 	 * @param shell
 	 */
 	@Execute
-	public void execute(IWorkbench workbench, EPartService partService, MApplication application,
-			EModelService modelService, Shell shell) {
+	public void execute(IWorkbench workbench, EPartService partService,
+			MApplication application, EModelService modelService, Shell shell) {
 		// Find selected database
 		int index = 0;
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		for (final MPartStack mPartStack : stacks) {
@@ -66,7 +69,8 @@ public class ProjectBackupHandler {
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
 				if (part.getContributionURI().equals(contributionURI)) {
-					ProjectNavigator pn = (ProjectNavigator) part.getObject();
+					final ProjectNavigator pn = (ProjectNavigator) part
+							.getObject();
 					index = pn.getTableViewer().getTable().getSelectionIndex();
 					LOGGER.info("Selected index: " + index);
 					break;
@@ -83,7 +87,7 @@ public class ProjectBackupHandler {
 		final String dbName = model.getName();
 
 		try {
-			String activeName = store.getString("DBNAME");
+			final String activeName = store.getString("DBNAME");
 
 			if (activeName.equals(dbName)) {
 				Connection conn = null;
@@ -107,15 +111,19 @@ public class ProjectBackupHandler {
 				file = new File(path + ".mv.db");
 			}
 			path = file.getParent();
-			String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName, "-user", store.getString("USERID"), "-password",
-					store.getString("PASSWORD"), "-script", path + "\\" + dbName + ".zip", "-options", "compression",
+			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
+					"-user", store.getString("USERID"), "-password",
+					store.getString("PASSWORD"), "-script",
+					path + "\\" + dbName + ".zip", "-options", "compression",
 					"zip" };
 			Script.main(bkp);
 
-			LOGGER.info("Project database " + dbName + " has been backed up to " + path + "\\" + dbName + ".zip");
+			LOGGER.info("Project database " + dbName + " has been backed up to "
+					+ path + "\\" + dbName + ".zip");
 			eventBroker.post("MESSAGE",
-					"Project database " + dbName + " has been backed up to " + path + "\\" + dbName + ".zip");
-		} catch (SQLException e) {
+					"Project database " + dbName + " has been backed up to "
+							+ path + "\\" + dbName + ".zip");
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

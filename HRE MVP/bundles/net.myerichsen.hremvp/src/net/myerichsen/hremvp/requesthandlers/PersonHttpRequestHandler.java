@@ -21,14 +21,14 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  *
  */
 public class PersonHttpRequestHandler implements Handler {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jetty.util.component.LifeCycle#addLifeCycleListener(org.eclipse.
-	 * jetty.util.component.LifeCycle.Listener)
+	 * @see org.eclipse.jetty.util.component.LifeCycle#addLifeCycleListener(org.
+	 * eclipse. jetty.util.component.LifeCycle.Listener)
 	 */
 	@Override
 	public void addLifeCycleListener(Listener arg0) {
@@ -64,8 +64,10 @@ public class PersonHttpRequestHandler implements Handler {
 	 * javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.fine("Target: " + target + "\r\nRequest" + baseRequest + "\r\nHttpServletRequest" + request);
+	public void handle(String target, Request baseRequest,
+			HttpServletRequest request, HttpServletResponse response) {
+		LOGGER.fine("Target: " + target + "\r\nRequest" + baseRequest
+				+ "\r\nHttpServletRequest" + request);
 
 		// TODO Generalize request handler. Use class.forname() for server class
 		final PersonServer server = new PersonServer();
@@ -170,7 +172,8 @@ public class PersonHttpRequestHandler implements Handler {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.jetty.util.component.LifeCycle#removeLifeCycleListener(org.
+	 * @see
+	 * org.eclipse.jetty.util.component.LifeCycle#removeLifeCycleListener(org.
 	 * eclipse.jetty.util.component.LifeCycle.Listener)
 	 */
 	@Override
@@ -181,8 +184,8 @@ public class PersonHttpRequestHandler implements Handler {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jetty.server.Handler#setServer(org.eclipse.jetty.server.Server)
+	 * @see org.eclipse.jetty.server.Handler#setServer(org.eclipse.jetty.server.
+	 * Server)
 	 */
 	@Override
 	public void setServer(Server server) {

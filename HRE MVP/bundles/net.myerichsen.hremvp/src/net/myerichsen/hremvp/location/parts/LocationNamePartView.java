@@ -41,7 +41,8 @@ import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
  *
  */
 public class LocationNamePartView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -92,8 +93,10 @@ public class LocationNamePartView {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -110,40 +113,48 @@ public class LocationNamePartView {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textId.addVerifyListener(new NumericVerifyListener());
 		new Label(parent, SWT.NONE);
 
 		final Label lblLocationName = new Label(parent, SWT.NONE);
-		lblLocationName.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		lblLocationName.setLayoutData(
+				new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		lblLocationName.setText("Location Name ID");
 
 		textLocationNameId = new Text(parent, SWT.BORDER);
-		textLocationNameId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLocationNameId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textLocationNameId.addVerifyListener(new NumericVerifyListener());
 
 		textLocationName = new Text(parent, SWT.BORDER);
 		textLocationName.setEditable(false);
-		textLocationName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLocationName.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblPartNo = new Label(parent, SWT.NONE);
 		lblPartNo.setText("Part no.");
 
 		textPartNo = new Text(parent, SWT.BORDER);
-		textPartNo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPartNo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textPartNo.addVerifyListener(new NumericVerifyListener());
 		new Label(parent, SWT.NONE);
 
 		textMapLabel = new Text(parent, SWT.NONE);
-		textMapLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textMapLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		textMapLabel.setEditable(false);
 		textMapLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		textLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -208,7 +219,8 @@ public class LocationNamePartView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText()
+					+ " has been deleted");
 			clear();
 		} catch (SQLException | NumberFormatException | MvpException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -239,12 +251,14 @@ public class LocationNamePartView {
 
 			textId.setText(Integer.toString(provider.getLocationNamePartPid()));
 
-			textLocationNameId.setText(Integer.toString(provider.getLocationNamePid()));
+			textLocationNameId
+					.setText(Integer.toString(provider.getLocationNamePid()));
 			textLocationName.setText(provider.getLocationName());
 			textPartNo.setText(Integer.toString(provider.getPartNo()));
 			textMapLabel.setText(provider.getMapLabel());
 			textLabel.setText(provider.getLabel());
-			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText()
+					+ " has been fetched");
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -259,10 +273,12 @@ public class LocationNamePartView {
 		try {
 			provider.setLabel(textLabel.getText());
 			provider.setLocationNamePartPid(Integer.parseInt(textId.getText()));
-			provider.setLocationNamePid(Integer.parseInt(textLocationNameId.getText()));
+			provider.setLocationNamePid(
+					Integer.parseInt(textLocationNameId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.insert();
-			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText()
+					+ " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -296,10 +312,12 @@ public class LocationNamePartView {
 		try {
 			provider.setLabel(textLabel.getText());
 			provider.setLocationNamePartPid(Integer.parseInt(textId.getText()));
-			provider.setLocationNamePid(Integer.parseInt(textLocationNameId.getText()));
+			provider.setLocationNamePid(
+					Integer.parseInt(textLocationNameId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.update();
-			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText() + " has been updated");
+			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText()
+					+ " has been updated");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

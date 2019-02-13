@@ -52,7 +52,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  */
 @SuppressWarnings("restriction")
 public class PersonNamePartNavigator {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private EPartService partService;
@@ -107,8 +108,10 @@ public class PersonNamePartNavigator {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -125,14 +128,16 @@ public class PersonNamePartNavigator {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 
 		final Label lblPersonId = new Label(parent, SWT.NONE);
 		lblPersonId.setText("Person ID");
 
 		textPersonPid = new Text(parent, SWT.BORDER);
-		textPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPersonPid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 
 		final Label lblNameStyle = new Label(parent, SWT.NONE);
@@ -145,11 +150,13 @@ public class PersonNamePartNavigator {
 				openNameStyleView();
 			}
 		});
-		textNameStylePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textNameStylePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		textNameStyleLabel = new Text(parent, SWT.BORDER);
 		textNameStyleLabel.setEditable(false);
-		textNameStyleLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textNameStyleLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblFromDate = new Label(parent, SWT.NONE);
 		lblFromDate.setText("From Date");
@@ -181,28 +188,35 @@ public class PersonNamePartNavigator {
 		});
 		tableNameParts.setLinesVisible(true);
 		tableNameParts.setHeaderVisible(true);
-		tableNameParts.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		tableNameParts.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnMap = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnLabelFromMap = tableViewerColumnMap.getColumn();
+		final TableViewerColumn tableViewerColumnMap = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLabelFromMap = tableViewerColumnMap
+				.getColumn();
 		tblclmnLabelFromMap.setWidth(100);
 		tblclmnLabelFromMap.setText("Label from Map");
 		tableViewerColumnMap.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnPart = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnValueFromPart = tableViewerColumnPart.getColumn();
+		final TableViewerColumn tableViewerColumnPart = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnValueFromPart = tableViewerColumnPart
+				.getColumn();
 		tblclmnValueFromPart.setWidth(100);
 		tblclmnValueFromPart.setText("Value from Part");
 		tableViewerColumnPart.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button buttonInsert = new Button(composite, SWT.NONE);
@@ -260,7 +274,8 @@ public class PersonNamePartNavigator {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Name " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Name " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -288,13 +303,15 @@ public class PersonNamePartNavigator {
 		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));
 		// provider.setNameType(Integer.parseInt(textNameType.getText()));
 		//
-		// provider.setFromdate(dateTimeFrom.getYear() + "-" + dateTimeFrom.getMonth() +
+		// provider.setFromdate(dateTimeFrom.getYear() + "-" +
+		// dateTimeFrom.getMonth() +
 		// "-" + dateTimeFrom.getDay());
 		// Calendar calendar = Calendar.getInstance();
 		// dateTimeFrom.setDate(calendar.get(Calendar.YEAR),
 		// calendar.get(Calendar.MONTH),
 		// calendar.get(Calendar.DATE));
-		// dateTimeTo.setDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+		// dateTimeTo.setDate(calendar.get(Calendar.YEAR),
+		// calendar.get(Calendar.MONTH),
 		// calendar.get(Calendar.DATE));
 		// table.removeAll();
 		// provider.insert();
@@ -311,8 +328,8 @@ public class PersonNamePartNavigator {
 
 		// Open an editor
 		LOGGER.fine("Opening Name Part View");
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.opennamepartview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.opennamepartview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
@@ -323,7 +340,8 @@ public class PersonNamePartNavigator {
 		}
 
 		LOGGER.info("Setting name part pid: " + namePartPid);
-		eventBroker.post(Constants.NAME_PART_PID_UPDATE_TOPIC, Integer.parseInt(namePartPid));
+		eventBroker.post(Constants.NAME_PART_PID_UPDATE_TOPIC,
+				Integer.parseInt(namePartPid));
 	}
 
 	/**
@@ -332,8 +350,8 @@ public class PersonNamePartNavigator {
 	protected void openNameStyleView() {
 		// Open an editor
 		LOGGER.fine("Opening Name Style View");
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.opennamestyleview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.opennamestyleview", null);
 		handlerService.executeHandler(command);
 
 		final int nameStylePid = Integer.parseInt(textNameStylePid.getText());
@@ -353,7 +371,8 @@ public class PersonNamePartNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNamePidUpdateTopic(@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int key) {
+	private void subscribeNamePidUpdateTopic(
+			@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int key) {
 		LOGGER.fine("Received name id " + key);
 
 		if (key == 0) {
@@ -364,11 +383,13 @@ public class PersonNamePartNavigator {
 			provider.get(key);
 			textId.setText(Integer.toString(provider.getNamePid()));
 			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
-			textNameStylePid.setText(Integer.toString(provider.getNameStylePid()));
+			textNameStylePid
+					.setText(Integer.toString(provider.getNameStylePid()));
 			textNameStyleLabel.setText(provider.getNameTypeLabel());
 
 			try {
-				textDateFrom.setText(Integer.toString(provider.getFromDatePid()));
+				textDateFrom
+						.setText(Integer.toString(provider.getFromDatePid()));
 			} catch (final Exception e) {
 				textDateFrom.setText("");
 			}

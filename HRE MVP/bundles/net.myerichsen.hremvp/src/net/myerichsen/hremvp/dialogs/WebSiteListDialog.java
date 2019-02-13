@@ -38,12 +38,14 @@ public class WebSiteListDialog extends Dialog {
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 * org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.
+	 * Shell)
 	 */
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText("Define a web site by its IP Address and search string template");
+		shell.setText(
+				"Define a web site by its IP Address and search string template");
 	}
 
 	/**
@@ -53,8 +55,10 @@ public class WebSiteListDialog extends Dialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -71,14 +75,17 @@ public class WebSiteListDialog extends Dialog {
 		lblIpAddress.setText("Web Site Address");
 
 		textWebSite = new Text(container, SWT.BORDER);
-		textWebSite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textWebSite.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblTemplate = new Label(container, SWT.NONE);
-		lblTemplate.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblTemplate.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTemplate.setText("Template");
 
 		textSearchTemplate = new Text(container, SWT.BORDER);
-		textSearchTemplate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textSearchTemplate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		return container;
 	}

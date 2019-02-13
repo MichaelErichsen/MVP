@@ -32,7 +32,8 @@ public class HelpHreWebsite {
 		final Browser browser = new Browser(parent, SWT.NONE);
 		browser.setToolTipText("HRE Web Site");
 		browser.setUrl("https://historyresearchenvironment.org/");
-		browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		browser.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 	}
 
 	@PreDestroy

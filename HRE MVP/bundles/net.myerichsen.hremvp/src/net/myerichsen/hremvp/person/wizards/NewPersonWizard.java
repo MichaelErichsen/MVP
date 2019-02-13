@@ -24,7 +24,8 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  *
  */
 public class NewPersonWizard extends Wizard {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
@@ -177,7 +178,8 @@ public class NewPersonWizard extends Wizard {
 			personNameProvider.setToDatePid(page2.getToDatePid());
 			personNameProvider.setPrimaryName(true);
 			final int namePid = personNameProvider.insert();
-			LOGGER.info("Inserted name " + namePid + " for person " + personPid);
+			LOGGER.info(
+					"Inserted name " + namePid + " for person " + personPid);
 
 			// Page 3
 			// Name parts
@@ -196,7 +198,8 @@ public class NewPersonWizard extends Wizard {
 					personNamePartProvider.setLabel(string);
 					personNamePartProvider.setPartNo(i);
 					namePartPid = personNamePartProvider.insert();
-					LOGGER.info("Inserted name part " + namePartPid + " for person " + personPid);
+					LOGGER.info("Inserted name part " + namePartPid
+							+ " for person " + personPid);
 				}
 			}
 
@@ -280,10 +283,14 @@ public class NewPersonWizard extends Wizard {
 
 			}
 
-			eventBroker.post("MESSAGE",
-					personProvider.getPrimaryName() + " inserted in the database as no. " + personPid);
-			eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
-			eventBroker.post(net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC, namePid);
+			eventBroker.post("MESSAGE", personProvider.getPrimaryName()
+					+ " inserted in the database as no. " + personPid);
+			eventBroker.post(
+					net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
+					personPid);
+			eventBroker.post(
+					net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC,
+					namePid);
 // FIXME Does not refresh person navigator
 			return true;
 		} catch (

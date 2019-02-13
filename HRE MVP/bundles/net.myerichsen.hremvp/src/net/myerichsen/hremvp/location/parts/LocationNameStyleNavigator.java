@@ -38,7 +38,8 @@ import net.myerichsen.hremvp.location.providers.LocationNameStyleProvider;
 // FIXME Reopens view
 @SuppressWarnings("restriction")
 public class LocationNameStyleNavigator {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private ECommandService commandService;
 	@Inject
@@ -66,7 +67,8 @@ public class LocationNameStyleNavigator {
 	public void createControls(Composite parent, EMenuService menuService) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -80,13 +82,16 @@ public class LocationNameStyleNavigator {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(40);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnLocationNameStyle = tableViewerColumn_1.getColumn();
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLocationNameStyle = tableViewerColumn_1
+				.getColumn();
 		tblclmnLocationNameStyle.setWidth(230);
 		tblclmnLocationNameStyle.setText("Location Name Style");
 
@@ -122,8 +127,9 @@ public class LocationNameStyleNavigator {
 		int locationNameStylePid = 0;
 
 		// Open Location Name View
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openlocationnamestyleview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openlocationnamestyleview",
+				null);
 		handlerService.executeHandler(command);
 
 		// Post name style pid
@@ -134,7 +140,9 @@ public class LocationNameStyleNavigator {
 			locationNameStylePid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC, locationNameStylePid);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC,
+				locationNameStylePid);
 		LOGGER.info("Location Name Style Pid: " + locationNameStylePid);
 	}
 

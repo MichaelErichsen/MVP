@@ -48,8 +48,10 @@ import net.myerichsen.hremvp.project.providers.ProjectNewDatabaseProvider;
 public class ProjectNewHandler {
 	@Inject
 	private static IEventBroker eventBroker;
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	private ProjectNewDatabaseProvider provider;
 
@@ -60,8 +62,8 @@ public class ProjectNewHandler {
 	 * @throws SQLException When failing
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell)
-			throws SQLException {
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService, Shell shell) throws SQLException {
 		// Open file dialog
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
 		dialog.setText("Create new HRE Project");
@@ -105,38 +107,46 @@ public class ProjectNewHandler {
 			conn = HreH2ConnectionPool.getConnection(dbName);
 
 			final String h2Version = store.getString("H2VERSION");
-			LOGGER.fine("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
+			LOGGER.fine("Retrieved H2 version from preferences: "
+					+ h2Version.substring(0, 3));
 			PreparedStatement ps;
 
 			if (h2Version.substring(0, 3).equals("1.3")) {
-				ps = conn.prepareStatement("SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
-						+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				ps = conn.prepareStatement(
+						"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
 			} else {
-				ps = conn.prepareStatement("SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
-						+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				ps = conn.prepareStatement(
+						"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
 			}
 
 			ps.executeQuery();
 			conn.close();
 
 			// Open a dialog for summary
-			final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(shell);
+			final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(
+					shell);
 			pnsDialog.open();
 
 			// Update the HRE properties
 			final LocalDateTime now = LocalDateTime.now();
 			final ZonedDateTime zdt = now.atZone(ZoneId.systemDefault());
 			final Date timestamp = Date.from(zdt.toInstant());
-			final ProjectModel model = new ProjectModel(pnsDialog.getProjectName(), timestamp,
-					pnsDialog.getProjectSummary(), "LOCAL", path + "\\" + dbName);
+			final ProjectModel model = new ProjectModel(
+					pnsDialog.getProjectName(), timestamp,
+					pnsDialog.getProjectSummary(), "LOCAL",
+					path + "\\" + dbName);
 
-			LOGGER.fine("New properties " + pnsDialog.getProjectName() + " " + timestamp.toString() + " "
-					+ pnsDialog.getProjectSummary() + " LOCAL " + dbName);
+			LOGGER.fine("New properties " + pnsDialog.getProjectName() + " "
+					+ timestamp.toString() + " " + pnsDialog.getProjectSummary()
+					+ " LOCAL " + dbName);
 
 			final int index = ProjectList.add(model);
 
 			// Set database name in title bar
-			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
+			final MWindow window = (MWindow) modelService
+					.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
 
 			// Open H2 Database Navigator
@@ -147,14 +157,16 @@ public class ProjectNewHandler {
 			h2dnPart.setVisible(true);
 			h2dnPart.setContributionURI(
 					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
-			final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+			final List<MPartStack> stacks = modelService
+					.findElements(application, null, MPartStack.class, null);
 			stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
 			partService.showPart(h2dnPart, PartState.ACTIVATE);
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 			eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
 			eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
-			eventBroker.post("MESSAGE", "Project database " + dbName + " has been created");
+			eventBroker.post("MESSAGE",
+					"Project database " + dbName + " has been created");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());

@@ -20,7 +20,8 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  *
  */
 public class LocationServer implements IHREServer {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int locationPid;
 	private int fromDatePid;
@@ -82,14 +83,17 @@ public class LocationServer implements IHREServer {
 			lp = location.getLocationPid();
 			stringList.add(Integer.toString(lp));
 
-			final List<LocationNames> lnl = new LocationNames().getFKLocationPid(lp);
+			final List<LocationNames> lnl = new LocationNames()
+					.getFKLocationPid(lp);
 
 			for (final LocationNames name : lnl) {
 				if (name.isPrimaryLocationName()) {
-					partList = part.getFKLocationNamePid(name.getLocationNamePid());
+					partList = part
+							.getFKLocationNamePid(name.getLocationNamePid());
 
 					for (int i = 0; i < partList.size(); i++) {
-						if ((partList.get(i) != null) && (partList.get(i).getLabel().trim().length() > 0)) {
+						if ((partList.get(i) != null) && (partList.get(i)
+								.getLabel().trim().length() > 0)) {
 							sb.append(partList.get(i).getLabel() + ", ");
 						}
 					}
@@ -127,7 +131,8 @@ public class LocationServer implements IHREServer {
 
 		nameList = new ArrayList<>();
 
-		final List<LocationNames> lnl = new LocationNames().getFKLocationPid(key);
+		final List<LocationNames> lnl = new LocationNames()
+				.getFKLocationPid(key);
 
 		final LocationNameServer lns = new LocationNameServer();
 		List<String> sl;
@@ -176,7 +181,8 @@ public class LocationServer implements IHREServer {
 		final StringBuilder sb = new StringBuilder();
 		final LocationNameParts part = new LocationNameParts();
 		List<LocationNameParts> partList;
-		final List<LocationNames> lnl = new LocationNames().getFKLocationPid(locationPid);
+		final List<LocationNames> lnl = new LocationNames()
+				.getFKLocationPid(locationPid);
 
 		for (final LocationNames name : lnl) {
 			if (name.isPrimaryLocationName()) {

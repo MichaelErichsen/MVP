@@ -13,7 +13,8 @@ import org.eclipse.e4.core.services.events.IEventBroker;
  *
  */
 public class LogRefreshHandler {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
 	 * @param eventBroker The Eclipse personEvent broker
@@ -22,7 +23,8 @@ public class LogRefreshHandler {
 	public void execute(IEventBroker eventBroker) {
 		final int i = 0;
 		LOGGER.fine("Refreshing log");
-		eventBroker.post(net.myerichsen.hremvp.Constants.LOG_REFRESH_UPDATE_TOPIC, i);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.LOG_REFRESH_UPDATE_TOPIC, i);
 
 	}
 

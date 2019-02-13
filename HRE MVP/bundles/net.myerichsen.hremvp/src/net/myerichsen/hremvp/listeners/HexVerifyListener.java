@@ -14,7 +14,8 @@ public class HexVerifyListener implements VerifyListener {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.
+	 * @see
+	 * org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.
 	 * VerifyEvent)
 	 */
 	@Override

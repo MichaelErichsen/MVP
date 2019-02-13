@@ -22,7 +22,8 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  *
  */
 public class NewLocationWizard extends Wizard {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private final IEclipseContext context;
 	private NewLocationWizardPage1 page1;
@@ -128,10 +129,14 @@ public class NewLocationWizard extends Wizard {
 			final LocationProvider lp = new LocationProvider();
 			lp.setFromDatePid(page1.getFromDatePid());
 			lp.setToDatePid(page1.getFromDatePid());
-			lp.setxCoordinate(new BigDecimal(page1.getTextXCoordinate().getText()));
-			lp.setyCoordinate(new BigDecimal(page1.getTextYCoordinate().getText()));
-			lp.setzCoordinate(new BigDecimal(page1.getTextZCoordinate().getText()));
-			lp.setPrimaryLocation(page1.getBtnCheckButtonPrimary().getSelection());
+			lp.setxCoordinate(
+					new BigDecimal(page1.getTextXCoordinate().getText()));
+			lp.setyCoordinate(
+					new BigDecimal(page1.getTextYCoordinate().getText()));
+			lp.setzCoordinate(
+					new BigDecimal(page1.getTextZCoordinate().getText()));
+			lp.setPrimaryLocation(
+					page1.getBtnCheckButtonPrimary().getSelection());
 			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 
@@ -145,7 +150,8 @@ public class NewLocationWizard extends Wizard {
 			final String[] sa = s.split(",");
 			lnp.setLocationNameStylePid(Integer.parseInt(sa[0]));
 
-			lnp.setPrimaryLocationName(page2.getBtnPrimaryLocationName().getSelection());
+			lnp.setPrimaryLocationName(
+					page2.getBtnPrimaryLocationName().getSelection());
 			lnp.setPreposition(page2.getTextPreposition().getText());
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
@@ -159,10 +165,12 @@ public class NewLocationWizard extends Wizard {
 				lnpp.setPartNo(i + 1);
 				lnpp.setLabel(textList.get(i).getText());
 				final int locationNamePartPid = lnpp.insert();
-				LOGGER.info("Inserted location name part " + locationNamePartPid);
+				LOGGER.info(
+						"Inserted location name part " + locationNamePartPid);
 			}
 
-			eventBroker.post("MESSAGE", locationName + " inserted in the database as no. " + locationPid);
+			eventBroker.post("MESSAGE", locationName
+					+ " inserted in the database as no. " + locationPid);
 			return true;
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());

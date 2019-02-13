@@ -21,7 +21,8 @@ import net.myerichsen.hremvp.dialogs.WebSiteListDialog;
  * @version 10. jan. 2019
  *
  */
-public class WebSearchPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class WebSearchPreferencePage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
@@ -36,12 +37,14 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
+	 * ()
 	 */
 	@Override
 	protected void createFieldEditors() {
 		// FIXME web sites and search templates
-		addField(new ListEditor("WEBSITELIST", "Web sites and search templates", getFieldEditorParent()) {
+		addField(new ListEditor("WEBSITELIST", "Web sites and search templates",
+				getFieldEditorParent()) {
 
 			@Override
 			protected String createList(String[] items) {
@@ -56,7 +59,8 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 
 			@Override
 			protected String getNewInputObject() {
-				final WebSiteListDialog dialog = new WebSiteListDialog(getFieldEditorParent().getShell());
+				final WebSiteListDialog dialog = new WebSiteListDialog(
+						getFieldEditorParent().getShell());
 
 				final int a = dialog.open();
 
@@ -77,7 +81,8 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+	 * @see
+	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	@Override
 	public void init(IWorkbench workbench) {
@@ -87,16 +92,17 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage implement
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.
-	 * eclipse.jface.util.PropertyChangeEvent)
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(
+	 * org. eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				"net.myerichsen.hremvp");
 
 		super.propertyChange(event);
 
-		LOGGER.info(
-				"Changed property: " + event.getProperty() + ", " + event.getOldValue() + " to " + event.getNewValue());
+		LOGGER.info("Changed property: " + event.getProperty() + ", "
+				+ event.getOldValue() + " to " + event.getNewValue());
 	}
 }

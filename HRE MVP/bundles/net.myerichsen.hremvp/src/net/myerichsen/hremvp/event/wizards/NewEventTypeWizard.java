@@ -50,9 +50,8 @@ public class NewEventTypeWizard implements IWizard {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.wizard.IWizard#createPageControls(org.eclipse.swt.widgets.
-	 * Composite)
+	 * @see org.eclipse.jface.wizard.IWizard#createPageControls(org.eclipse.swt.
+	 * widgets. Composite)
 	 */
 	@Override
 	public void createPageControls(Composite pageContainer) {
@@ -107,7 +106,8 @@ public class NewEventTypeWizard implements IWizard {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.jface.wizard.IWizard#getNextPage(org.eclipse.jface.wizard.
+	 * @see
+	 * org.eclipse.jface.wizard.IWizard#getNextPage(org.eclipse.jface.wizard.
 	 * IWizardPage)
 	 */
 	@Override
@@ -152,9 +152,8 @@ public class NewEventTypeWizard implements IWizard {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.wizard.IWizard#getPreviousPage(org.eclipse.jface.wizard.
-	 * IWizardPage)
+	 * @see org.eclipse.jface.wizard.IWizard#getPreviousPage(org.eclipse.jface.
+	 * wizard. IWizardPage)
 	 */
 	@Override
 	public IWizardPage getPreviousPage(IWizardPage page) {
@@ -253,7 +252,8 @@ public class NewEventTypeWizard implements IWizard {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.jface.wizard.IWizard#setContainer(org.eclipse.jface.wizard.
+	 * @see
+	 * org.eclipse.jface.wizard.IWizard#setContainer(org.eclipse.jface.wizard.
 	 * IWizardContainer)
 	 */
 	@Override

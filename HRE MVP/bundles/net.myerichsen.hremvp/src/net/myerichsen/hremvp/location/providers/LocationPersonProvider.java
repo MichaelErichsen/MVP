@@ -28,17 +28,9 @@ public class LocationPersonProvider implements IHREProvider {
 		server = new LocationPersonServer();
 	}
 
-	/**
-	 * @return
-	 * @throws Exception
-	 */
-	public List<String> getPersonList(int locationPid) throws Exception {
-		return server.getPersonList(locationPid);
-	}
-
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
@@ -49,7 +41,7 @@ public class LocationPersonProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
 	@Override
@@ -60,7 +52,7 @@ public class LocationPersonProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
@@ -69,9 +61,17 @@ public class LocationPersonProvider implements IHREProvider {
 
 	}
 
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getPersonList(int locationPid) throws Exception {
+		return server.getPersonList(locationPid);
+	}
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
@@ -82,7 +82,7 @@ public class LocationPersonProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override

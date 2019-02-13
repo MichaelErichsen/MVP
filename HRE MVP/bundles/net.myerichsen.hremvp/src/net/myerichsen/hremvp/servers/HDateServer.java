@@ -55,7 +55,7 @@ public class HDateServer {
 	 * @throws MvpException Application specific exception
 	 */
 	public List<List<String>> get() throws SQLException, MvpException {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
 		final List<Hdates> hdateList = date.get();

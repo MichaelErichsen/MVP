@@ -16,7 +16,8 @@ import net.myerichsen.hremvp.dbmodels.Names;
  * @version 5. feb. 2019
  */
 public class PersonNamePartServer implements IHREServer {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int namePartPid;
 	private int namePid;
 	private String name;
@@ -96,10 +97,12 @@ public class PersonNamePartServer implements IHREServer {
 		name.get(namePid);
 
 		final NameMaps map = new NameMaps();
-		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+		final List<NameMaps> mapList = map
+				.getFKNameStylePid(name.getNameStylePid());
 
 		if (mapList.size() != partList.size()) {
-			throw new MvpException("Map list size: " + mapList.size() + ", part list size: " + partList.size());
+			throw new MvpException("Map list size: " + mapList.size()
+					+ ", part list size: " + partList.size());
 		}
 
 		for (int i = 0; i < mapList.size(); i++) {
@@ -262,7 +265,8 @@ public class PersonNamePartServer implements IHREServer {
 		name.get(namePid);
 
 		final NameMaps map = new NameMaps();
-		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+		final List<NameMaps> mapList = map
+				.getFKNameStylePid(name.getNameStylePid());
 		Boolean found = false;
 
 		for (int i = 0; i < mapList.size(); i++) {
@@ -273,7 +277,8 @@ public class PersonNamePartServer implements IHREServer {
 		}
 
 		if (!found) {
-			throw new MvpException("Part number " + partNo + " does not exist in matching name map");
+			throw new MvpException("Part number " + partNo
+					+ " does not exist in matching name map");
 		}
 		part.update();
 	}

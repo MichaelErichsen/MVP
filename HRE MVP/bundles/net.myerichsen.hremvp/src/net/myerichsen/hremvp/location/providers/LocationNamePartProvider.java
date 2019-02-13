@@ -15,7 +15,8 @@ import net.myerichsen.hremvp.location.servers.LocationNamePartServer;
  *
  */
 public class LocationNamePartProvider implements IHREProvider {
-	// private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	// private static Logger LOGGER =
+	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNamePartPid;
 	private int locationNamePid;
 	private String locationName;
@@ -41,8 +42,20 @@ public class LocationNamePartProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -53,6 +66,7 @@ public class LocationNamePartProvider implements IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 
@@ -116,6 +130,7 @@ public class LocationNamePartProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setLabel(label);
 		server.setLocationName(locationName);
@@ -176,6 +191,7 @@ public class LocationNamePartProvider implements IHREProvider {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		server.setLabel(label);
 		server.setLocationName(locationName);
@@ -184,14 +200,5 @@ public class LocationNamePartProvider implements IHREProvider {
 		server.setMapLabel(mapLabel);
 		server.setPartNo(partNo);
 		server.update();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

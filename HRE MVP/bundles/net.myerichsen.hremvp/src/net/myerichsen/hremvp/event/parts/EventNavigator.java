@@ -41,7 +41,8 @@ import net.myerichsen.hremvp.event.providers.EventProvider;
  */
 // FIXME Reopens blank Event View
 public class EventNavigator {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -78,43 +79,52 @@ public class EventNavigator {
 	public void createControls(Composite parent, EMenuService menuService) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
 			 *
 			 * @see
-			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.
-			 * MouseEvent)
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events. MouseEvent)
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openEventView();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(), "net.myerichsen.hremvp.popupmenu.eventmenu");
+		menuService.registerContextMenu(tableViewer.getControl(),
+				"net.myerichsen.hremvp.popupmenu.eventmenu");
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumnID = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnID = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnID.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("Event ID");
 
-		final TableViewerColumn tableViewerColumnEventName = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnPrimaryEventName = tableViewerColumnEventName.getColumn();
+		final TableViewerColumn tableViewerColumnEventName = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnPrimaryEventName = tableViewerColumnEventName
+				.getColumn();
 		tblclmnPrimaryEventName.setWidth(100);
 		tblclmnPrimaryEventName.setText(" Event Name");
 
-		final TableViewerColumn tableViewerColumnEventType = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnEventType = tableViewerColumnEventType.getColumn();
+		final TableViewerColumn tableViewerColumnEventType = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnEventType = tableViewerColumnEventType
+				.getColumn();
 		tblclmnEventType.setWidth(100);
 		tblclmnEventType.setText("Event Type");
 
-		final TableViewerColumn tableViewerColumnLanguage = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnLanguage = tableViewerColumnLanguage.getColumn();
+		final TableViewerColumn tableViewerColumnLanguage = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLanguage = tableViewerColumnLanguage
+				.getColumn();
 		tblclmnLanguage.setWidth(100);
 		tblclmnLanguage.setText("Language");
 
@@ -157,7 +167,8 @@ public class EventNavigator {
 	protected void openEventView() {
 		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
@@ -193,7 +204,8 @@ public class EventNavigator {
 			eventPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
+		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
+				eventPid);
 		LOGGER.info("Event Pid: " + eventPid);
 	}
 

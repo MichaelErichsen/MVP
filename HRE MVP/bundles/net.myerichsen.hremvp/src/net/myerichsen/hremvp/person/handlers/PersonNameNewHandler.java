@@ -31,7 +31,7 @@ public class PersonNameNewHandler {
 
 	/**
 	 * Find person pid and open a wizard to add another name to it
-	 * 
+	 *
 	 * @param workbench
 	 * @param partService
 	 * @param application
@@ -39,13 +39,15 @@ public class PersonNameNewHandler {
 	 * @param shell
 	 */
 	@Execute
-	public void execute(IWorkbench workbench, EPartService partService, MApplication application,
-			EModelService modelService, Shell shell, IEclipseContext context) {
+	public void execute(IWorkbench workbench, EPartService partService,
+			MApplication application, EModelService modelService, Shell shell,
+			IEclipseContext context) {
 		// Find selected person
 		int personPid = 0;
 		TableViewer viewer = null;
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		for (final MPartStack mPartStack : stacks) {
@@ -54,10 +56,12 @@ public class PersonNameNewHandler {
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
 				if (part.getContributionURI().equals(contributionURI)) {
-					final PersonNavigator pn = (PersonNavigator) part.getObject();
+					final PersonNavigator pn = (PersonNavigator) part
+							.getObject();
 					viewer = pn.getTableViewer();
-					TableItem[] selection = viewer.getTable().getSelection();
-					TableItem item = selection[0];
+					final TableItem[] selection = viewer.getTable()
+							.getSelection();
+					final TableItem item = selection[0];
 					personPid = Integer.parseInt(item.getText(0));
 					break;
 				}
@@ -68,7 +72,8 @@ public class PersonNameNewHandler {
 			}
 		}
 
-		final WizardDialog dialog = new WizardDialog(shell, new NewPersonNameWizard(personPid, context));
+		final WizardDialog dialog = new WizardDialog(shell,
+				new NewPersonNameWizard(personPid, context));
 		dialog.open();
 	}
 }

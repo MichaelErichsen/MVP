@@ -84,13 +84,14 @@ public class ResourceManager extends SWTResourceManager {
 	private static Map<String, Image> m_URLImageMap = new HashMap<>();
 
 	/**
-	 * Instance of {@link PluginResourceProvider}, used by WindowBuilder at design
-	 * time.
+	 * Instance of {@link PluginResourceProvider}, used by WindowBuilder at
+	 * design time.
 	 */
 	private static PluginResourceProvider m_designTimePluginResourceProvider = null;
 
 	/**
-	 * Returns an {@link Image} composed of a base image decorated by another image.
+	 * Returns an {@link Image} composed of a base image decorated by another
+	 * image.
 	 *
 	 * @param baseImage the base {@link Image} that should be decorated.
 	 * @param decorator the {@link Image} to decorate the base image.
@@ -101,14 +102,16 @@ public class ResourceManager extends SWTResourceManager {
 	}
 
 	/**
-	 * Returns an {@link Image} composed of a base image decorated by another image.
+	 * Returns an {@link Image} composed of a base image decorated by another
+	 * image.
 	 *
 	 * @param baseImage the base {@link Image} that should be decorated.
 	 * @param decorator the {@link Image} to decorate the base image.
 	 * @param corner    the corner to place decorator image.
 	 * @return the resulting decorated {@link Image}.
 	 */
-	public static Image decorateImage(final Image baseImage, final Image decorator, final int corner) {
+	public static Image decorateImage(final Image baseImage,
+			final Image decorator, final int corner) {
 		if ((corner <= 0) || (corner >= LAST_CORNER_KEY)) {
 			throw new IllegalArgumentException("Wrong decorate corner");
 		}
@@ -133,14 +136,23 @@ public class ResourceManager extends SWTResourceManager {
 				protected void drawCompositeImage(int width, int height) {
 					drawImage(createCachedImageDataProvider(baseImage), 0, 0);
 					if (corner == TOP_LEFT) {
-						drawImage(getUnzoomedImageDataProvider(decorator.getImageData()), 0, 0);
+						drawImage(getUnzoomedImageDataProvider(
+								decorator.getImageData()), 0, 0);
 					} else if (corner == TOP_RIGHT) {
-						drawImage(getUnzoomedImageDataProvider(decorator.getImageData()), bib.width - dib.width, 0);
+						drawImage(
+								getUnzoomedImageDataProvider(
+										decorator.getImageData()),
+								bib.width - dib.width, 0);
 					} else if (corner == BOTTOM_LEFT) {
-						drawImage(getUnzoomedImageDataProvider(decorator.getImageData()), 0, bib.height - dib.height);
+						drawImage(
+								getUnzoomedImageDataProvider(
+										decorator.getImageData()),
+								0, bib.height - dib.height);
 					} else if (corner == BOTTOM_RIGHT) {
-						drawImage(getUnzoomedImageDataProvider(decorator.getImageData()), bib.width - dib.width,
-								bib.height - dib.height);
+						drawImage(
+								getUnzoomedImageDataProvider(
+										decorator.getImageData()),
+								bib.width - dib.width, bib.height - dib.height);
 					}
 				}
 
@@ -162,9 +174,9 @@ public class ResourceManager extends SWTResourceManager {
 	//
 	////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Dispose of cached objects and their underlying OS resources. This should only
-	 * be called when the cached objects are no longer needed (e.g. on application
-	 * shutdown).
+	 * Dispose of cached objects and their underlying OS resources. This should
+	 * only be called when the cached objects are no longer needed (e.g. on
+	 * application shutdown).
 	 */
 	public static void dispose() {
 		disposeColors();
@@ -187,7 +199,8 @@ public class ResourceManager extends SWTResourceManager {
 		// dispose decorated images
 		for (final Map<Image, Map<Image, Image>> cornerDecoratedImageMap : m_decoratedImageMap) {
 			if (cornerDecoratedImageMap != null) {
-				for (final Map<Image, Image> decoratedMap : cornerDecoratedImageMap.values()) {
+				for (final Map<Image, Image> decoratedMap : cornerDecoratedImageMap
+						.values()) {
 					for (final Image image : decoratedMap.values()) {
 						image.dispose();
 					}
@@ -224,27 +237,32 @@ public class ResourceManager extends SWTResourceManager {
 	}
 
 	/**
-	 * Returns an {@link ImageDescriptor} stored in the file at the specified path
-	 * relative to the specified class.
+	 * Returns an {@link ImageDescriptor} stored in the file at the specified
+	 * path relative to the specified class.
 	 *
 	 * @param clazz the {@link Class} relative to which to find the image
 	 *              descriptor.
 	 * @param path  the path to the image file.
-	 * @return the {@link ImageDescriptor} stored in the file at the specified path.
+	 * @return the {@link ImageDescriptor} stored in the file at the specified
+	 *         path.
 	 */
-	public static ImageDescriptor getImageDescriptor(Class<?> clazz, String path) {
+	public static ImageDescriptor getImageDescriptor(Class<?> clazz,
+			String path) {
 		return ImageDescriptor.createFromFile(clazz, path);
 	}
 
 	/**
-	 * Returns an {@link ImageDescriptor} stored in the file at the specified path.
+	 * Returns an {@link ImageDescriptor} stored in the file at the specified
+	 * path.
 	 *
 	 * @param path the path to the image file.
-	 * @return the {@link ImageDescriptor} stored in the file at the specified path.
+	 * @return the {@link ImageDescriptor} stored in the file at the specified
+	 *         path.
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		try {
-			return ImageDescriptor.createFromURL(new File(path).toURI().toURL());
+			return ImageDescriptor
+					.createFromURL(new File(path).toURI().toURL());
 		} catch (final MalformedURLException e) {
 			return null;
 		}
@@ -273,7 +291,8 @@ public class ResourceManager extends SWTResourceManager {
 	}
 
 	/**
-	 * Returns an {@link Image} based on a {@link Bundle} and resource entry path.
+	 * Returns an {@link Image} based on a {@link Bundle} and resource entry
+	 * path.
 	 *
 	 * @param symbolicName the symbolic name of the {@link Bundle}.
 	 * @param path         the path of the resource entry.
@@ -296,12 +315,15 @@ public class ResourceManager extends SWTResourceManager {
 	 *
 	 * @param plugin the plugin {@link Object} containing the image.
 	 * @param name   the path to th eimage within the plugin.
-	 * @return the {@link ImageDescriptor} stored in the file at the specified path.
+	 * @return the {@link ImageDescriptor} stored in the file at the specified
+	 *         path.
 	 *
-	 * @deprecated Use {@link #getPluginImageDescriptor(String, String)} instead.
+	 * @deprecated Use {@link #getPluginImageDescriptor(String, String)}
+	 *             instead.
 	 */
 	@Deprecated
-	public static ImageDescriptor getPluginImageDescriptor(Object plugin, String name) {
+	public static ImageDescriptor getPluginImageDescriptor(Object plugin,
+			String name) {
 		try {
 			try {
 				final URL url = getPluginImageURL(plugin, name);
@@ -321,10 +343,11 @@ public class ResourceManager extends SWTResourceManager {
 	 *
 	 * @param symbolicName the symbolic name of the {@link Bundle}.
 	 * @param path         the path of the resource entry.
-	 * @return the {@link ImageDescriptor} based on a {@link Bundle} and resource
-	 *         entry path.
+	 * @return the {@link ImageDescriptor} based on a {@link Bundle} and
+	 *         resource entry path.
 	 */
-	public static ImageDescriptor getPluginImageDescriptor(String symbolicName, String path) {
+	public static ImageDescriptor getPluginImageDescriptor(String symbolicName,
+			String path) {
 		try {
 			final URL url = getPluginImageURL(symbolicName, path);
 			if (url != null) {
@@ -371,38 +394,56 @@ public class ResourceManager extends SWTResourceManager {
 	 * @return the {@link URL} representing the file at the specified path.
 	 * @throws Exception
 	 */
-	private static URL getPluginImageURL(Object plugin, String name) throws Exception {
+	private static URL getPluginImageURL(Object plugin, String name)
+			throws Exception {
 		// try to work with 'plugin' as with OSGI BundleContext
 		try {
-			final Class<?> BundleClass = Class.forName("org.osgi.framework.Bundle"); //$NON-NLS-1$
-			final Class<?> BundleContextClass = Class.forName("org.osgi.framework.BundleContext"); //$NON-NLS-1$
+			final Class<?> BundleClass = Class
+					.forName("org.osgi.framework.Bundle"); //$NON-NLS-1$
+			final Class<?> BundleContextClass = Class
+					.forName("org.osgi.framework.BundleContext"); //$NON-NLS-1$
 			if (BundleContextClass.isAssignableFrom(plugin.getClass())) {
-				final Method getBundleMethod = BundleContextClass.getMethod("getBundle", new Class[0]); //$NON-NLS-1$
-				final Object bundle = getBundleMethod.invoke(plugin, new Object[0]);
+				final Method getBundleMethod = BundleContextClass
+						.getMethod("getBundle", new Class[0]); //$NON-NLS-1$
+				final Object bundle = getBundleMethod.invoke(plugin,
+						new Object[0]);
 				//
-				final Class<?> PathClass = Class.forName("org.eclipse.core.runtime.Path"); //$NON-NLS-1$
-				final Constructor<?> pathConstructor = PathClass.getConstructor(new Class[] { String.class });
-				final Object path = pathConstructor.newInstance(new Object[] { name });
+				final Class<?> PathClass = Class
+						.forName("org.eclipse.core.runtime.Path"); //$NON-NLS-1$
+				final Constructor<?> pathConstructor = PathClass
+						.getConstructor(new Class[] { String.class });
+				final Object path = pathConstructor
+						.newInstance(new Object[] { name });
 				//
-				final Class<?> IPathClass = Class.forName("org.eclipse.core.runtime.IPath"); //$NON-NLS-1$
-				final Class<?> PlatformClass = Class.forName("org.eclipse.core.runtime.Platform"); //$NON-NLS-1$
-				final Method findMethod = PlatformClass.getMethod("find", new Class[] { BundleClass, IPathClass }); //$NON-NLS-1$
-				return (URL) findMethod.invoke(null, new Object[] { bundle, path });
+				final Class<?> IPathClass = Class
+						.forName("org.eclipse.core.runtime.IPath"); //$NON-NLS-1$
+				final Class<?> PlatformClass = Class
+						.forName("org.eclipse.core.runtime.Platform"); //$NON-NLS-1$
+				final Method findMethod = PlatformClass.getMethod("find", //$NON-NLS-1$
+						new Class[] { BundleClass, IPathClass });
+				return (URL) findMethod.invoke(null,
+						new Object[] { bundle, path });
 			}
 		} catch (final Throwable e) {
 			// Ignore any exceptions
 		}
 		// else work with 'plugin' as with usual Eclipse plugin
 		{
-			final Class<?> PluginClass = Class.forName("org.eclipse.core.runtime.Plugin"); //$NON-NLS-1$
+			final Class<?> PluginClass = Class
+					.forName("org.eclipse.core.runtime.Plugin"); //$NON-NLS-1$
 			if (PluginClass.isAssignableFrom(plugin.getClass())) {
 				//
-				final Class<?> PathClass = Class.forName("org.eclipse.core.runtime.Path"); //$NON-NLS-1$
-				final Constructor<?> pathConstructor = PathClass.getConstructor(new Class[] { String.class });
-				final Object path = pathConstructor.newInstance(new Object[] { name });
+				final Class<?> PathClass = Class
+						.forName("org.eclipse.core.runtime.Path"); //$NON-NLS-1$
+				final Constructor<?> pathConstructor = PathClass
+						.getConstructor(new Class[] { String.class });
+				final Object path = pathConstructor
+						.newInstance(new Object[] { name });
 				//
-				final Class<?> IPathClass = Class.forName("org.eclipse.core.runtime.IPath"); //$NON-NLS-1$
-				final Method findMethod = PluginClass.getMethod("find", new Class[] { IPathClass }); //$NON-NLS-1$
+				final Class<?> IPathClass = Class
+						.forName("org.eclipse.core.runtime.IPath"); //$NON-NLS-1$
+				final Method findMethod = PluginClass.getMethod("find", //$NON-NLS-1$
+						new Class[] { IPathClass });
 				return (URL) findMethod.invoke(plugin, new Object[] { path });
 			}
 		}
@@ -422,13 +463,15 @@ public class ResourceManager extends SWTResourceManager {
 		}
 		// try design time provider
 		if (m_designTimePluginResourceProvider != null) {
-			return m_designTimePluginResourceProvider.getEntry(symbolicName, path);
+			return m_designTimePluginResourceProvider.getEntry(symbolicName,
+					path);
 		}
 		// no such resource
 		return null;
 	}
 
-	private static ImageDataProvider getUnzoomedImageDataProvider(ImageData imageData) {
+	private static ImageDataProvider getUnzoomedImageDataProvider(
+			ImageData imageData) {
 		return zoom -> zoom == 100 ? imageData : null;
 	}
 }

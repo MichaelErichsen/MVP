@@ -27,7 +27,8 @@ public class TableNavigatorHandler {
 	 * @param modelService Eclipse model service
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService) {
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService) {
 		final MPart part = MBasicFactory.INSTANCE.createPart();
 		part.setLabel("Database Tables");
 		part.setContainerData("650");
@@ -35,7 +36,8 @@ public class TableNavigatorHandler {
 		part.setVisible(true);
 		part.setContributionURI(
 				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableNavigator");
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 	}

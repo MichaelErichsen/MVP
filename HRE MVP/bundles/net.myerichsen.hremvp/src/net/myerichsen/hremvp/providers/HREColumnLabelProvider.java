@@ -6,13 +6,13 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 /**
  * Default JFace table label provider
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 10. feb. 2019
  *
  */
 public class HREColumnLabelProvider extends ColumnLabelProvider {
-	private int column;
+	private final int column;
 
 	/**
 	 * Constructor
@@ -27,7 +27,8 @@ public class HREColumnLabelProvider extends ColumnLabelProvider {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+	 * @see
+	 * org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
 	 */
 	@Override
 	public String getText(Object element) {

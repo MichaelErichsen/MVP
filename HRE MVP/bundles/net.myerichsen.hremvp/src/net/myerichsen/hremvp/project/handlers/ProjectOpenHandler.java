@@ -44,9 +44,10 @@ public class ProjectOpenHandler {
 	@Inject
 	private static IEventBroker eventBroker;
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
-			"net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator";
 
 	/**
@@ -60,7 +61,8 @@ public class ProjectOpenHandler {
 	 * @throws BackingStoreException
 	 */
 	@Execute
-	public void execute(EPartService partService, MApplication application, EModelService modelService, Shell shell) {
+	public void execute(EPartService partService, MApplication application,
+			EModelService modelService, Shell shell) {
 		Connection conn = null;
 
 		// Disconnect from any currently connected database
@@ -86,7 +88,8 @@ public class ProjectOpenHandler {
 		// Find selected database
 		int index = 0;
 
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 		boolean found = false;
 
@@ -96,7 +99,8 @@ public class ProjectOpenHandler {
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
 				if (part.getContributionURI().equals(contributionURI)) {
-					final ProjectNavigator pn = (ProjectNavigator) part.getObject();
+					final ProjectNavigator pn = (ProjectNavigator) part
+							.getObject();
 					index = pn.getTableViewer().getTable().getSelectionIndex();
 					found = true;
 					LOGGER.info("Selected index: " + index);
@@ -131,15 +135,18 @@ public class ProjectOpenHandler {
 
 			if (conn != null) {
 				final String h2Version = store.getString("H2VERSION");
-				LOGGER.info("Retrieved H2 version from preferences: " + h2Version.substring(0, 3));
+				LOGGER.info("Retrieved H2 version from preferences: "
+						+ h2Version.substring(0, 3));
 				PreparedStatement ps;
 
 				if (h2Version.substring(0, 3).equals("1.3")) {
-					ps = conn.prepareStatement("SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
-							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
 				} else {
-					ps = conn.prepareStatement("SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
-							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
 				}
 
 				ps.executeQuery();
@@ -147,7 +154,8 @@ public class ProjectOpenHandler {
 			}
 
 			// Set database name in title bar
-			final MWindow window = (MWindow) modelService.find("net.myerichsen.hremvp.window.main", application);
+			final MWindow window = (MWindow) modelService
+					.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
 
 			// Open H2 Database Navigator
@@ -164,11 +172,14 @@ public class ProjectOpenHandler {
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 
 			if (index > 0) {
-				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index + 1);
-				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index + 1);
+				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC,
+						index + 1);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC,
+						index + 1);
 			}
 
-			eventBroker.post("MESSAGE", "Project database " + dbName + " has been opened");
+			eventBroker.post("MESSAGE",
+					"Project database " + dbName + " has been opened");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());

@@ -26,7 +26,8 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * @version 14. jan. 2019
  *
  */
-public class ClientPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class ClientPreferencePage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private ComboFieldEditor comboFieldEditorLogLevel;
 	private ComboFieldEditor comboFieldEditorCsMode;
@@ -48,56 +49,69 @@ public class ClientPreferencePage extends FieldEditorPreferencePage implements I
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
+	 * ()
 	 */
 	@Override
 	protected void createFieldEditors() {
 		final Composite composite = getFieldEditorParent();
 
-		comboFieldEditorCsMode = new ComboFieldEditor("CSMODE", "Client/Server Mode",
-				new String[][] { { "STANDALONE", "STANDALONE" }, { "CLIENT", "CLIENT" }, { "SERVER", "SERVER" } },
+		comboFieldEditorCsMode = new ComboFieldEditor("CSMODE",
+				"Client/Server Mode",
+				new String[][] { { "STANDALONE", "STANDALONE" },
+						{ "CLIENT", "CLIENT" }, { "SERVER", "SERVER" } },
 				composite);
 		addField(comboFieldEditorCsMode);
 
-		addField(new StringFieldEditor("LOGFILEPATH", "MVP Log File Path", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE,
-				composite));
-		comboFieldEditorLogLevel = new ComboFieldEditor("LOGLEVEL", "MVP Log Level",
-				new String[][] { { "OFF", "OFF" }, { "SEVERE", "SEVERE" }, { "WARNING", "WARNING" }, { "INFO", "INFO" },
-						{ "CONFIG", "CONFIG" }, { "FINE", "FINE" }, { "FINER", "FINER" }, { "FINEST", "FINEST" },
+		addField(new StringFieldEditor("LOGFILEPATH", "MVP Log File Path", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite));
+		comboFieldEditorLogLevel = new ComboFieldEditor("LOGLEVEL",
+				"MVP Log Level",
+				new String[][] { { "OFF", "OFF" }, { "SEVERE", "SEVERE" },
+						{ "WARNING", "WARNING" }, { "INFO", "INFO" },
+						{ "CONFIG", "CONFIG" }, { "FINE", "FINE" },
+						{ "FINER", "FINER" }, { "FINEST", "FINEST" },
 						{ "ALL", "ALL" } },
 				composite);
 		addField(comboFieldEditorLogLevel);
 
-		fontFieldEditor = new FontFieldEditor("HREFONT", "Font Selection", null, getFieldEditorParent());
+		fontFieldEditor = new FontFieldEditor("HREFONT", "Font Selection", null,
+				getFieldEditorParent());
 		addField(fontFieldEditor);
 
-		updateSiteFieldEditor = new StringFieldEditor("UPDATESITE", "HRE Update Site", -1,
-				StringFieldEditor.VALIDATE_ON_KEY_STROKE, getFieldEditorParent());
+		updateSiteFieldEditor = new StringFieldEditor("UPDATESITE",
+				"HRE Update Site", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE,
+				getFieldEditorParent());
 		addField(updateSiteFieldEditor);
 
-		helpportIntegerFieldEditor = new IntegerFieldEditor("HELPSYSTEMPORT", "Port number for Help System",
-				getFieldEditorParent());
+		helpportIntegerFieldEditor = new IntegerFieldEditor("HELPSYSTEMPORT",
+				"Port number for Help System", getFieldEditorParent());
 		addField(helpportIntegerFieldEditor);
 
-		serverportIntegerFieldEditor = new IntegerFieldEditor("SERVERPORT", "Port Number for local HRE Server",
-				getFieldEditorParent());
+		serverportIntegerFieldEditor = new IntegerFieldEditor("SERVERPORT",
+				"Port Number for local HRE Server", getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
-		comboGuiLanguage = new ComboFieldEditor(
-				"GUILANGUAGE", "GUI Language", new String[][] { { "Australian", "AUSTRALIAN" }, { "Dansk", "DANISH" },
-						{ "English", "ENGLISH" }, { "Norsk", "NORWEGIAN" }, { "US English", "USENGLISH" } },
+		comboGuiLanguage = new ComboFieldEditor("GUILANGUAGE", "GUI Language",
+				new String[][] { { "Australian", "AUSTRALIAN" },
+						{ "Dansk", "DANISH" }, { "English", "ENGLISH" },
+						{ "Norsk", "NORWEGIAN" },
+						{ "US English", "USENGLISH" } },
 				getFieldEditorParent());
 		addField(comboGuiLanguage);
 
 		// FIXME Should be populated from database table
-		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
-				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } }, getFieldEditorParent()));
+		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE",
+				"Default Person Name Style",
+				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } },
+				getFieldEditorParent()));
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+	 * @see
+	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	@Override
 	public void init(IWorkbench workbench) {
@@ -108,37 +122,42 @@ public class ClientPreferencePage extends FieldEditorPreferencePage implements I
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.
-	 * eclipse.jface.util.PropertyChangeEvent)
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(
+	 * org. eclipse.jface.util.PropertyChangeEvent)
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		final IPreferenceStore store = new ScopedPreferenceStore(
+				InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 		super.propertyChange(event);
 
 		if (event.getSource() == comboFieldEditorCsMode) {
 			final String newValue = event.getNewValue().toString();
 
-			if ((newValue.equals("STANDALONE")) || (newValue.equals("SERVER"))) {
+			if ((newValue.equals("STANDALONE"))
+					|| (newValue.equals("SERVER"))) {
 				final String dbName = store.getString("DBNAME");
 				final String userId = store.getString("USERID");
 				final String passWord = store.getString("PASSWORD");
 
 				Connection conn = null;
 				try {
-					conn = DriverManager.getConnection("jdbc:h2:" + dbName, userId, passWord);
+					conn = DriverManager.getConnection("jdbc:h2:" + dbName,
+							userId, passWord);
 				} catch (final Exception e) {
 					LOGGER.severe(e.getClass() + " " + e.getMessage());
 				}
-				LOGGER.info("Changed property " + comboFieldEditorCsMode.getPreferenceName() + " from "
+				LOGGER.info("Changed property "
+						+ comboFieldEditorCsMode.getPreferenceName() + " from "
 						+ event.getOldValue() + " to " + event.getNewValue());
 				LOGGER.info("Database connection " + conn);
 			}
 		} else if (event.getSource() == comboFieldEditorLogLevel) {
 			LOGGER.setLevel(Level.parse(event.getNewValue().toString()));
 
-			LOGGER.info("Changed property " + comboFieldEditorLogLevel.getPreferenceName() + " from "
+			LOGGER.info("Changed property "
+					+ comboFieldEditorLogLevel.getPreferenceName() + " from "
 					+ event.getOldValue() + " to " + event.getNewValue());
 		}
 	}

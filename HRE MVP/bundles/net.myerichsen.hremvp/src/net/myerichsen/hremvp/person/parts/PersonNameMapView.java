@@ -41,7 +41,8 @@ import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
  *
  */
 public class PersonNameMapView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -91,8 +92,10 @@ public class PersonNameMapView {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -109,28 +112,33 @@ public class PersonNameMapView {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textId.addVerifyListener(new NumericVerifyListener());
 
 		new Label(parent, SWT.NONE);
 
 		final Label lblStyle = new Label(parent, SWT.NONE);
-		lblStyle.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		lblStyle.setLayoutData(
+				new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		lblStyle.setText("Style");
 
 		textStyleId = new Text(parent, SWT.BORDER);
-		textStyleId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textStyleId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textStyleId.addVerifyListener(new NumericVerifyListener());
 
 		textStyle = new Text(parent, SWT.BORDER);
 		textStyle.setEditable(false);
-		textStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textStyle.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblPartNo = new Label(parent, SWT.NONE);
 		lblPartNo.setText("Part no.");
 
 		textPartNo = new Text(parent, SWT.BORDER);
-		textPartNo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPartNo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textPartNo.addVerifyListener(new NumericVerifyListener());
 
 		new Label(parent, SWT.NONE);
@@ -139,10 +147,12 @@ public class PersonNameMapView {
 		lblLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		textLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -208,7 +218,8 @@ public class PersonNameMapView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Name Map " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -243,7 +254,8 @@ public class PersonNameMapView {
 			textStyle.setText(provider.getStyleLabel());
 			textPartNo.setText(Integer.toString(provider.getPartNo()));
 			textLabel.setText(provider.getLabel());
-			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE",
+					"Name Map " + textId.getText() + " has been fetched");
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -262,7 +274,8 @@ public class PersonNameMapView {
 			provider.setNameStylePid(Integer.parseInt(textStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.insert();
-			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Name Map " + textId.getText() + " has been inserted");
 		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -283,7 +296,8 @@ public class PersonNameMapView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNameMapUpdateTopic(@UIEventTopic(Constants.NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid)
+	private void subscribeNameMapUpdateTopic(
+			@UIEventTopic(Constants.NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid)
 			throws SQLException {
 		get(nameMapPid);
 	}
@@ -298,7 +312,8 @@ public class PersonNameMapView {
 			provider.setNameStylePid(Integer.parseInt(textStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.update();
-			eventBroker.post("MESSAGE", "Name Map " + textId.getText() + " has been updated");
+			eventBroker.post("MESSAGE",
+					"Name Map " + textId.getText() + " has been updated");
 		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

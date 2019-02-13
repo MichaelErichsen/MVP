@@ -20,14 +20,14 @@ import org.eclipse.jetty.server.Server;
  *
  */
 public class RootHttpRequestHandler implements Handler {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jetty.util.component.LifeCycle#addLifeCycleListener(org.eclipse.
-	 * jetty.util.component.LifeCycle.Listener)
+	 * @see org.eclipse.jetty.util.component.LifeCycle#addLifeCycleListener(org.
+	 * eclipse. jetty.util.component.LifeCycle.Listener)
 	 */
 	@Override
 	public void addLifeCycleListener(Listener arg0) {
@@ -63,7 +63,8 @@ public class RootHttpRequestHandler implements Handler {
 	 * javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
+	public void handle(String target, Request baseRequest,
+			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
@@ -76,7 +77,8 @@ public class RootHttpRequestHandler implements Handler {
 		out.println("}");
 		baseRequest.setHandled(true);
 
-		LOGGER.info("{\r\n\"Method\": " + request.getMethod() + ",\r\n\"Target\": " + target.substring(1) + "\r\n})");
+		LOGGER.info("{\r\n\"Method\": " + request.getMethod()
+				+ ",\r\n\"Target\": " + target.substring(1) + "\r\n})");
 	}
 
 	/*
@@ -148,7 +150,8 @@ public class RootHttpRequestHandler implements Handler {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.eclipse.jetty.util.component.LifeCycle#removeLifeCycleListener(org.
+	 * @see
+	 * org.eclipse.jetty.util.component.LifeCycle#removeLifeCycleListener(org.
 	 * eclipse.jetty.util.component.LifeCycle.Listener)
 	 */
 	@Override
@@ -159,8 +162,8 @@ public class RootHttpRequestHandler implements Handler {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jetty.server.Handler#setServer(org.eclipse.jetty.server.Server)
+	 * @see org.eclipse.jetty.server.Handler#setServer(org.eclipse.jetty.server.
+	 * Server)
 	 */
 	@Override
 	public void setServer(Server server) {

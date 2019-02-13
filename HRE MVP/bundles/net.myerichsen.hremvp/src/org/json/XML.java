@@ -117,7 +117,8 @@ public class XML {
 		}
 		for (i = 0; i < length; i += 1) {
 			if (Character.isWhitespace(string.charAt(i))) {
-				throw new JSONException("'" + string + "' contains a space character.");
+				throw new JSONException(
+						"'" + string + "' contains a space character.");
 			}
 		}
 	}
@@ -131,7 +132,8 @@ public class XML {
 	 * @return true if the close tag is processed.
 	 * @throws JSONException
 	 */
-	private static boolean parse(XMLTokener x, JSONObject context, String name) throws JSONException {
+	private static boolean parse(XMLTokener x, JSONObject context, String name)
+			throws JSONException {
 		char c;
 		int i;
 		JSONObject jsonobject = null;
@@ -232,7 +234,8 @@ public class XML {
 						if (!(token instanceof String)) {
 							throw x.syntaxError("Missing value");
 						}
-						jsonobject.accumulate(string, XML.stringToValue((String) token));
+						jsonobject.accumulate(string,
+								XML.stringToValue((String) token));
 						token = null;
 					} else {
 						jsonobject.accumulate(string, "");
@@ -264,7 +267,8 @@ public class XML {
 						} else if (token instanceof String) {
 							string = (String) token;
 							if (string.length() > 0) {
-								jsonobject.accumulate("content", XML.stringToValue(string));
+								jsonobject.accumulate("content",
+										XML.stringToValue(string));
 							}
 
 // Nested element
@@ -273,8 +277,11 @@ public class XML {
 							if (parse(x, jsonobject, tagName)) {
 								if (jsonobject.length() == 0) {
 									context.accumulate(tagName, "");
-								} else if ((jsonobject.length() == 1) && (jsonobject.opt("content") != null)) {
-									context.accumulate(tagName, jsonobject.opt("content"));
+								} else if ((jsonobject.length() == 1)
+										&& (jsonobject
+												.opt("content") != null)) {
+									context.accumulate(tagName,
+											jsonobject.opt("content"));
 								} else {
 									context.accumulate(tagName, jsonobject);
 								}
@@ -290,10 +297,11 @@ public class XML {
 	}
 
 	/**
-	 * Try to convert a string into a number, boolean, or null. If the string can't
-	 * be converted, return the string. This is much less ambitious than
-	 * JSONObject.stringToValue, especially because it does not attempt to convert
-	 * plus forms, octal forms, hex forms, or E forms lacking decimal points.
+	 * Try to convert a string into a number, boolean, or null. If the string
+	 * can't be converted, return the string. This is much less ambitious than
+	 * JSONObject.stringToValue, especially because it does not attempt to
+	 * convert plus forms, octal forms, hex forms, or E forms lacking decimal
+	 * points.
 	 *
 	 * @param string A String.
 	 * @return A simple JSON value.
@@ -331,7 +339,8 @@ public class XML {
 			if (((initial >= '0') && (initial <= '9'))) {
 				if (string.indexOf('.') >= 0) {
 					return Double.valueOf(string);
-				} else if ((string.indexOf('e') < 0) && (string.indexOf('E') < 0)) {
+				} else if ((string.indexOf('e') < 0)
+						&& (string.indexOf('E') < 0)) {
 					final Long myLong = new Long(string);
 					if (myLong.longValue() == myLong.intValue()) {
 						return new Integer(myLong.intValue());
@@ -347,13 +356,14 @@ public class XML {
 
 	/**
 	 * Convert a well-formed (but not necessarily valid) XML string into a
-	 * JSONObject. Some information may be lost in this transformation because JSON
-	 * is a data format and XML is a document format. XML uses elements, attributes,
-	 * and content text, while JSON uses unordered collections of name/value pairs
-	 * and arrays of values. JSON does not does not like to distinguish between
-	 * elements and attributes. Sequences of similar elements are represented as
-	 * JSONArrays. Content text may be placed in a "content" member. Comments,
-	 * prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
+	 * JSONObject. Some information may be lost in this transformation because
+	 * JSON is a data format and XML is a document format. XML uses elements,
+	 * attributes, and content text, while JSON uses unordered collections of
+	 * name/value pairs and arrays of values. JSON does not does not like to
+	 * distinguish between elements and attributes. Sequences of similar
+	 * elements are represented as JSONArrays. Content text may be placed in a
+	 * "content" member. Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code>
+	 * are ignored.
 	 *
 	 * @param string The source string.
 	 * @return A JSONObject containing the structured data from the XML string.
@@ -388,7 +398,8 @@ public class XML {
 	 * @throws JSONException
 	 */
 	@SuppressWarnings("rawtypes")
-	public static String toString(Object object, String tagName) throws JSONException {
+	public static String toString(Object object, String tagName)
+			throws JSONException {
 		final StringBuffer sb = new StringBuffer();
 		int i;
 		JSONArray ja;
@@ -491,14 +502,16 @@ public class XML {
 				ja = (JSONArray) object;
 				length = ja.length();
 				for (i = 0; i < length; i += 1) {
-					sb.append(toString(ja.opt(i), tagName == null ? "array" : tagName));
+					sb.append(toString(ja.opt(i),
+							tagName == null ? "array" : tagName));
 				}
 				return sb.toString();
 			} else {
 				string = (object == null) ? "null" : escape(object.toString());
 				return (tagName == null) ? "\"" + string + "\""
 						: (string.length() == 0) ? "<" + tagName + "/>"
-								: "<" + tagName + ">" + string + "</" + tagName + ">";
+								: "<" + tagName + ">" + string + "</" + tagName
+										+ ">";
 			}
 		}
 	}

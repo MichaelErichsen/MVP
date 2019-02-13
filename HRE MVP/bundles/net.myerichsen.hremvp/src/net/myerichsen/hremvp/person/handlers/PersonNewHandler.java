@@ -21,7 +21,8 @@ public class PersonNewHandler {
 	 */
 	@Execute
 	public void execute(Shell shell, IEclipseContext context) {
-		final WizardDialog dialog = new WizardDialog(shell, new NewPersonWizard(context));
+		final WizardDialog dialog = new WizardDialog(shell,
+				new NewPersonWizard(context));
 		dialog.open();
 
 	}

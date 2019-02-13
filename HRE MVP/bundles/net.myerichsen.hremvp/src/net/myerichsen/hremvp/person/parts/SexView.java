@@ -46,7 +46,8 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  */
 @SuppressWarnings("restriction")
 public class SexView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private EPartService partService;
@@ -112,8 +113,10 @@ public class SexView {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -130,25 +133,29 @@ public class SexView {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblPerson = new Label(parent, SWT.NONE);
 		lblPerson.setText("Person");
 
 		textPersonPid = new Text(parent, SWT.BORDER);
-		textPersonPid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPersonPid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblFromDate = new Label(parent, SWT.NONE);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(parent, SWT.BORDER);
-		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblToDate = new Label(parent, SWT.NONE);
 		lblToDate.setText("To Date");
 
 		textToDate = new Text(parent, SWT.BORDER);
-		textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 
 		btnPrimarySex = new Button(parent, SWT.CHECK);
@@ -165,44 +172,51 @@ public class SexView {
 				openSexTypeView();
 			}
 		});
-		textSexType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textSexType.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblAbbreviation = new Label(parent, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");
 
 		textAbbreviation = new Text(parent, SWT.BORDER);
 		textAbbreviation.setEditable(false);
-		textAbbreviation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textAbbreviation.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblLabel = new Label(parent, SWT.NONE);
 		lblLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
 		textLabel.setEditable(false);
-		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblLanguageId = new Label(parent, SWT.NONE);
 		lblLanguageId.setText("Language Id");
 
 		textLanguagePid = new Text(parent, SWT.BORDER);
-		textLanguagePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLanguagePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblLanguage = new Label(parent, SWT.NONE);
 		lblLanguage.setText("Language");
 
 		textLanguageLabel = new Text(parent, SWT.BORDER);
 		textLanguageLabel.setEditable(false);
-		textLanguageLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLanguageLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblIsoCode = new Label(parent, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
 
 		textIsoCode = new Text(parent, SWT.BORDER);
 		textIsoCode.setEditable(false);
-		textIsoCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textIsoCode.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -268,7 +282,8 @@ public class SexView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Sex " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Sex " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -301,7 +316,8 @@ public class SexView {
 			textId.setText(Integer.toString(provider.getSexesPid()));
 			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
 			try {
-				textFromDate.setText(Integer.toString(provider.getFromDatePid()));
+				textFromDate
+						.setText(Integer.toString(provider.getFromDatePid()));
 			} catch (final Exception e) {
 				textFromDate.setText("");
 			}
@@ -314,11 +330,13 @@ public class SexView {
 			textSexType.setText(Integer.toString(provider.getSexTypePid()));
 			textAbbreviation.setText(provider.getAbbreviation());
 			textLabel.setText(provider.getSexTypeLabel());
-			textLanguagePid.setText(Integer.toString(provider.getLanguagePid()));
+			textLanguagePid
+					.setText(Integer.toString(provider.getLanguagePid()));
 			textLanguageLabel.setText(provider.getLanguageLabel());
 			textIsoCode.setText(provider.getIsocode());
 
-			eventBroker.post("MESSAGE", "Name " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE",
+					"Name " + textId.getText() + " has been fetched");
 		} catch (final SQLException | MvpException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -339,13 +357,15 @@ public class SexView {
 		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));
 		// provider.setNameType(Integer.parseInt(textNameType.getText()));
 		//
-		// provider.setFromdate(dateTimeFrom.getYear() + "-" + dateTimeFrom.getMonth() +
+		// provider.setFromdate(dateTimeFrom.getYear() + "-" +
+		// dateTimeFrom.getMonth() +
 		// "-" + dateTimeFrom.getDay());
 		// Calendar calendar = Calendar.getInstance();
 		// dateTimeFrom.setDate(calendar.get(Calendar.YEAR),
 		// calendar.get(Calendar.MONTH),
 		// calendar.get(Calendar.DATE));
-		// dateTimeTo.setDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+		// dateTimeTo.setDate(calendar.get(Calendar.YEAR),
+		// calendar.get(Calendar.MONTH),
 		// calendar.get(Calendar.DATE));
 		// table.removeAll();
 		// provider.insert();
@@ -358,8 +378,8 @@ public class SexView {
 	 *
 	 */
 	protected void openSexTypeView() {
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.opensextypeview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.opensextypeview", null);
 		handlerService.executeHandler(command);
 
 		final int sexTypePid = Integer.parseInt(textSexType.getText());
@@ -381,7 +401,9 @@ public class SexView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(@UIEventTopic(Constants.SEX_PID_UPDATE_TOPIC) int key) throws MvpException {
+	private void subscribeKeyUpdateTopic(
+			@UIEventTopic(Constants.SEX_PID_UPDATE_TOPIC) int key)
+			throws MvpException {
 		get(key);
 	}
 

@@ -24,8 +24,10 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  *
  */
 public class HelpSystemBrowser {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	public HelpSystemBrowser() {
 	}
@@ -39,9 +41,11 @@ public class HelpSystemBrowser {
 
 		final Browser browser = new Browser(parent, SWT.NONE);
 		browser.setToolTipText("HRE Help");
-		browser.setUrl("http://127.0.0.1:" + store.getInt("HELPSYSTEMPORT") + "/help/index.jsp");
+		browser.setUrl("http://127.0.0.1:" + store.getInt("HELPSYSTEMPORT")
+				+ "/help/index.jsp");
 		LOGGER.info("Browser pointing at " + browser.getUrl());
-		browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		browser.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 	}
 
 	@PreDestroy
