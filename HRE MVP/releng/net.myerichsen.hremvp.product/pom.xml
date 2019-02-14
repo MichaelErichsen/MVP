@@ -10,11 +10,8 @@
 		<version>0.2.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.myerichsen.hremvp</groupId>
 	<artifactId>net.myerichsen.hremvp.product</artifactId>
 	<packaging>eclipse-repository</packaging>
-	<version>0.2.0-SNAPSHOT</version>
-
 	<build>
 		<plugins>
 			<plugin>

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='net.myerichsen.hremvp' version='0.2.0.201902141114' generation='2'>
+    <update id='net.myerichsen.hremvp' range='[0.0.0,0.2.0.201902141114)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='HRE MVP'/>
+      <property name='org.eclipse.equinox.p2.provider' value='Michael Erichsen'/>
+      <property name='maven-groupId' value='net.myerichsen.hremvp'/>
+      <property name='maven-artifactId' value='net.myerichsen.hremvp'/>
+      <property name='maven-version' value='0.2.0-SNAPSHOT'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='net.myerichsen.hremvp' version='0.2.0.201902141114'/>
+      <provided namespace='osgi.bundle' name='net.myerichsen.hremvp' version='0.2.0.201902141114'/>
+      <provided namespace='osgi.identity' name='net.myerichsen.hremvp' version='0.2.0.201902141114'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='35'>
+      <required namespace='osgi.bundle' name='javax.inject' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.swt' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.ui.model.workbench' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jface' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.ui.services' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.ui.workbench' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.core.di' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.ui.di' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.core.contexts' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.core.commands' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.core.services' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.workbench' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.console' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jetty.server' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='javax.servlet' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.apache.httpcomponents.httpclient' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.apache.httpcomponents.httpcore' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.core.di.extensions' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.ui.workbench.swt' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='com.opcoach.e4.preferences' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.help.base' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.preferences' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.help.ui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.h2' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.p2.operations' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.p2.core' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.wb.core.lib' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.xBaseJ' range='0.0.0'/>
+      <required namespace='java.package' name='javax.annotation' range='1.0.0' optional='true' greedy='false'/>
+      <required namespace='java.package' name='javax.inject' range='1.0.0'/>
+      <required namespace='java.package' name='org.eclipse.jetty.util.component' range='0.0.0'/>
+      <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=1.8))'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='net.myerichsen.hremvp' version='0.2.0.201902141114'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: net.myerichsen.hremvp;singleton:=true&#xA;Bundle-Version: 0.2.0.201902141114&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

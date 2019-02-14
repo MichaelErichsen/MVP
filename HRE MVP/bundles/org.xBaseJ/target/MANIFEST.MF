@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.xBaseJ
+Bundle-SymbolicName: org.xBaseJ
+Export-Package: org.xBaseJ,org.xBaseJ.fields
+Bundle-Name: XBaseJ
+Bundle-Version: 1.0.0.201902141114
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.apache.commons.logging
+

@@ -5,5 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.opcoach.e4.preferences"/>
 	<classpathentry kind="lib" path="C:/Program Files/HRE/Other jars/org.eclipse.jetty.util_9.4.8.v20171121.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.xBaseJ"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

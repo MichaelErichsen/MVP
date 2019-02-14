@@ -1,7 +1,8 @@
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>net.myerichsen.hremvp.bundles</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -10,10 +11,9 @@
 		<version>0.2.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.myerichsen.hremvp</groupId>
-
 	<modules>
 		<module>net.myerichsen.hremvp</module>
 		<module>com.opcoach.e4.preferences</module>
+		<module>org.xBaseJ</module>
 	</modules>
 </project>

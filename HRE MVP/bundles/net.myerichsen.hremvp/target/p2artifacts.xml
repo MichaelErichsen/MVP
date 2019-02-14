@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='1'>
+  <artifact classifier='osgi.bundle' id='net.myerichsen.hremvp' version='0.2.0.201902141114'>
+    <properties size='5'>
+      <property name='artifact.size' value='1347733'/>
+      <property name='download.size' value='1347733'/>
+      <property name='maven-groupId' value='net.myerichsen.hremvp'/>
+      <property name='maven-artifactId' value='net.myerichsen.hremvp'/>
+      <property name='maven-version' value='0.2.0-SNAPSHOT'/>
+    </properties>
+  </artifact>
+</artifacts>
