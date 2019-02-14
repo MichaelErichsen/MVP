@@ -16,5 +16,6 @@
 		<module>com.opcoach.e4.preferences.feature</module>
 		<module>org.xBaseJ.feature</module>
 		<module>org.json.feature</module>
+		<module>com.hypotemoose.cal.feature</module>
 	</modules>
 </project>
