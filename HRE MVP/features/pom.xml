@@ -15,5 +15,6 @@
 		<module>net.myerichsen.hremvp.feature</module>
 		<module>com.opcoach.e4.preferences.feature</module>
 		<module>org.xBaseJ.feature</module>
+		<module>org.json.feature</module>
 	</modules>
 </project>
