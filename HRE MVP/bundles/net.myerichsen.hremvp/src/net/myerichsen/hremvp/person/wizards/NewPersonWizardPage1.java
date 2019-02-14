@@ -30,6 +30,11 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 3. feb. 2019
  *
  */
+/**
+ * @author  Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 14. feb. 2019
+ *
+ */
 public class NewPersonWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -425,7 +430,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 	}
 
 	/**
-	 * @param sexTypePid the sexTypePid to set
+	 * @param sexPid The persistent id of the sex type
 	 */
 	public void setSexTypePid(int sexPid) {
 		sexTypePid = sexPid;

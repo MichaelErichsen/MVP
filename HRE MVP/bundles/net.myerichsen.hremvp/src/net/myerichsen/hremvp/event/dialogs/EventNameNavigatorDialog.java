@@ -33,7 +33,8 @@ import net.myerichsen.hremvp.event.providers.EventNameProvider;
  *
  */
 public class EventNameNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEventBroker eventBroker;
 
 	private EventNameProvider provider;
@@ -47,7 +48,8 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 	 * @param parentShell
 	 * @param context
 	 */
-	public EventNameNavigatorDialog(Shell parentShell, IEclipseContext context) {
+	public EventNameNavigatorDialog(Shell parentShell,
+			IEclipseContext context) {
 		super(parentShell);
 		eventBroker = context.get(IEventBroker.class);
 		try {
@@ -66,8 +68,10 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -86,7 +90,8 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
-		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -101,13 +106,16 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		final TableColumn tblclmnHistoricalEvent = tableViewerColumn_1.getColumn();
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnHistoricalEvent = tableViewerColumn_1
+				.getColumn();
 		tblclmnHistoricalEvent.setWidth(100);
 		tblclmnHistoricalEvent.setText("Event");
 
@@ -160,7 +168,7 @@ public class EventNameNavigatorDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @param eventNamePid the eventNamePid to set
+	 * @param eventPid
 	 */
 	public void setEventNamePid(int eventPid) {
 		eventNamePid = eventPid;

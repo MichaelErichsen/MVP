@@ -34,20 +34,20 @@ public class EventNameServer implements IHREServer {
 
 	}
 
-	/**
-	 * @return
-	 * @throws SQLException
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
 	@Override
 	public List<EventNames> get() throws SQLException {
 		return name.get();
 	}
 
-	/**
-	 * @param key
-	 * @return
-	 * @throws MvpException
-	 * @throws SQLException
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {

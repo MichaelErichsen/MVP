@@ -19,7 +19,7 @@ public class NewEventTypeWizard implements IWizard {
 	/**
 	 * Constructor
 	 *
-	 * @param context
+	 * @param context  The Eclipse context
 	 */
 	public NewEventTypeWizard(IEclipseContext context) {
 		// TODO Auto-generated constructor stub

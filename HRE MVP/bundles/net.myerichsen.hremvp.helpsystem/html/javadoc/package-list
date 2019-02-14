@@ -18,6 +18,7 @@ net.myerichsen.hremvp.location.parts
 net.myerichsen.hremvp.location.providers
 net.myerichsen.hremvp.location.servers
 net.myerichsen.hremvp.location.wizards
+net.myerichsen.hremvp.mockup
 net.myerichsen.hremvp.parts
 net.myerichsen.hremvp.person.dialogs
 net.myerichsen.hremvp.person.handlers
@@ -35,3 +36,4 @@ net.myerichsen.hremvp.project.servers
 net.myerichsen.hremvp.providers
 net.myerichsen.hremvp.requesthandlers
 net.myerichsen.hremvp.servers
+org.eclipse.wb.swt

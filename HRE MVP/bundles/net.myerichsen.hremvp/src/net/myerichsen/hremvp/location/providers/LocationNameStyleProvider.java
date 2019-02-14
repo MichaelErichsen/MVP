@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameStyleServer;
  * Provide a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @version 14. feb. 2019
  *
  */
 public class LocationNameStyleProvider implements IHREProvider {
@@ -215,7 +215,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param toDate the toDate to set
+	 * @param toDatePid The persistent id of the to date
 	 */
 	public void setToDatePid(int toDatePid) {
 		this.toDatePid = toDatePid;

@@ -72,8 +72,8 @@ public class EventNavigator {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent
-	 * @param menuService
+	 * @param parent The parent composite
+	 * @param menuService The Eclipse menu service
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, EMenuService menuService) {

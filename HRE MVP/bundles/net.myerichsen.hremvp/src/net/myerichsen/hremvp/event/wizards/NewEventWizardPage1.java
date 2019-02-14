@@ -62,7 +62,7 @@ public class NewEventWizardPage1 extends WizardPage {
 	/**
 	 * Constructor
 	 *
-	 * @param context
+	 * @param context The Eclipse context
 	 *
 	 */
 	public NewEventWizardPage1(IEclipseContext context) {

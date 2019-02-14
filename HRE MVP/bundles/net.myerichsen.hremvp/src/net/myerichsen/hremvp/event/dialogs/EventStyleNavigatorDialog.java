@@ -167,7 +167,7 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @param eventTypePid the eventTypePid to set
+	 * @param eventPid
 	 */
 	public void setEventTypePid(int eventPid) {
 		eventTypePid = eventPid;
