@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.xBaseJ.feature"
-      label="org.xBaseJ.Feature"
+      id="org.json.feature"
+      label="Feature"
       version="1.0.0.201902141816">
 
    <description url="http://www.example.com/description">
@@ -16,14 +16,10 @@
       [Enter License Description here.]
    </license>
 
-   <requires>
-      <import plugin="org.apache.commons.logging"/>
-   </requires>
-
    <plugin
-         id="org.xBaseJ"
-         download-size="99"
-         install-size="181"
+         id="org.json"
+         download-size="46"
+         install-size="85"
          version="1.0.0.201902141816"
          unpack="false"/>
 

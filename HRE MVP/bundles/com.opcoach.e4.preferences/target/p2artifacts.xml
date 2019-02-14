@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?artifactRepository version='1.1.0'?>
 <artifacts size='1'>
-  <artifact classifier='osgi.bundle' id='com.opcoach.e4.preferences' version='1.0.0.201902141114'>
+  <artifact classifier='osgi.bundle' id='com.opcoach.e4.preferences' version='1.0.0.201902141816'>
     <properties size='5'>
       <property name='artifact.size' value='20451'/>
       <property name='download.size' value='20451'/>

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.json
+Bundle-SymbolicName: org.json
+Export-Package: org.json
+Bundle-Name: Json
+Bundle-Version: 1.0.0.201902141816
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+

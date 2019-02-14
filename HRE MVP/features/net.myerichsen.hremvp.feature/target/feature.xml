@@ -2,7 +2,7 @@
 <feature
       id="net.myerichsen.hremvp.feature"
       label="HRE MVP Base Feature"
-      version="0.2.0.201902141114"
+      version="0.2.0.201902141816"
       provider-name="History Research Environment Ltd.">
 
    <description url="http://www.example.com/description">
@@ -19,7 +19,7 @@
 
    <includes
          id="com.opcoach.e4.preferences.feature"
-         version="1.0.0.201902141114"/>
+         version="1.0.0.201902141816"/>
 
    <requires>
       <import plugin="javax.inject"/>
@@ -54,9 +54,9 @@
 
    <plugin
          id="net.myerichsen.hremvp"
-         download-size="1316"
-         install-size="2404"
-         version="0.2.0.201902141114"
+         download-size="1271"
+         install-size="2320"
+         version="0.2.0.201902141816"
          unpack="false"/>
 
 </feature>

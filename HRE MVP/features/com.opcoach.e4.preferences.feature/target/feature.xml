@@ -2,7 +2,7 @@
 <feature
       id="com.opcoach.e4.preferences.feature"
       label="Feature"
-      version="1.0.0.201902141114"
+      version="1.0.0.201902141816"
       provider-name="OPCOACH">
 
    <description url="http://www.example.com/description">
@@ -35,6 +35,6 @@
          id="com.opcoach.e4.preferences"
          download-size="19"
          install-size="42"
-         version="1.0.0.201902141114"/>
+         version="1.0.0.201902141816"/>
 
 </feature>

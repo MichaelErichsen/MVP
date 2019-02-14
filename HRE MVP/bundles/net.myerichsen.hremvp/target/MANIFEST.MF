@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: net.myerichsen.hremvp
 Bundle-SymbolicName: net.myerichsen.hremvp;singleton:=true
 Bundle-Name: HRE MVP
-Bundle-Version: 0.2.0.201902141114
+Bundle-Version: 0.2.0.201902141816
 Require-Bundle: javax.inject;bundle-version="0.0.0",org.eclipse.swt;bu
  ndle-version="0.0.0",org.eclipse.e4.ui.model.workbench;bundle-version
  ="0.0.0",org.eclipse.jface;bundle-version="0.0.0",org.eclipse.e4.ui.s
@@ -17,7 +17,8 @@ Require-Bundle: javax.inject;bundle-version="0.0.0",org.eclipse.swt;bu
  .ui.workbench.swt,com.opcoach.e4.preferences,org.eclipse.help.base,or
  g.eclipse.equinox.preferences,org.eclipse.help.ui,org.eclipse.core.re
  sources,org.h2,org.eclipse.equinox.p2.operations,org.eclipse.equinox.
- p2.core,org.eclipse.wb.core.lib,org.xBaseJ
+ p2.core,org.eclipse.wb.core.lib,org.xBaseJ,org.apache.commons.logging
+ ,org.json
 Bundle-ManifestVersion: 2
 Bundle-Activator: net.myerichsen.hremvp.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
