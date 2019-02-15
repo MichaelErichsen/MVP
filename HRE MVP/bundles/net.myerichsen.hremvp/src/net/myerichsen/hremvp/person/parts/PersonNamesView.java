@@ -10,21 +10,29 @@ import javax.inject.Inject;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -32,14 +40,16 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.person.wizards.NewPersonNameWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * View all names of a person
+ * View and maintain all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 10. feb. 2019
+ * @version 15. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -76,9 +86,12 @@ public class PersonNamesView {
 
 	/**
 	 * Create contents of the view part
+	 * 
+	 * @param parent
+	 * @param context
 	 */
 	@PostConstruct
-	public void createControls(Composite parent, EMenuService menuService) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label lblId = new Label(parent, SWT.NONE);
@@ -110,8 +123,6 @@ public class PersonNamesView {
 				openNamePartNavigator();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(),
-				"net.myerichsen.hremvp.popupmenu.personnameviewmenu");
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
@@ -150,12 +161,76 @@ public class PersonNamesView {
 		tableViewerColumnPrimary
 				.setLabelProvider(new HREColumnLabelProvider(4));
 
+		Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		MenuItem mntmNewNameFor = new MenuItem(menu, SWT.NONE);
+		mntmNewNameFor.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewPersonNameWizard(personPid, context));
+				dialog.open();
+			}
+		});
+		mntmNewNameFor.setText("New name for person...");
+
+		MenuItem mntmDeleteSelectedName = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedName.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteName(parent.getShell());
+			}
+		});
+		mntmDeleteSelectedName.setText("Delete selected name...");
+
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPersonNameList(personPid));
 		} catch (SQLException | MvpException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param shell
+	 */
+	protected void deleteName(Shell shell) {
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int namePid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			namePid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete Name " + primaryName, null,
+				"Are you sure that you will delete name " + namePid + ", "
+						+ primaryName + "?",
+				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Deletion of name " + primaryName + " has been canceled");
+			return;
+		}
+
+		try {
+			PersonNameProvider provider = new PersonNameProvider();
+			provider.delete(namePid);
+
+			LOGGER.info("Name " + primaryName + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Name " + primaryName + " has been deleted");
+			eventBroker.post(Constants.NAME_PID_UPDATE_TOPIC, 0);
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

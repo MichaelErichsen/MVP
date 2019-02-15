@@ -62,7 +62,7 @@ public class PersonChildrenView {
 
 	private TableViewer tableViewer;
 	private PersonProvider provider;
-	private int personPid;
+	private int personPid = 0;
 
 	/**
 	 * Constructor
