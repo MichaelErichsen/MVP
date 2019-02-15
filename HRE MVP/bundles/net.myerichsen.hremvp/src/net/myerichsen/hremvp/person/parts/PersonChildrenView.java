@@ -137,7 +137,7 @@ public class PersonChildrenView {
 		mntmRemoveSelectedChild.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				deleteChild(parent.getShell());
+				removeChild(parent.getShell());
 			}
 		});
 		mntmRemoveSelectedChild.setText("Remove selected child...");
@@ -154,7 +154,7 @@ public class PersonChildrenView {
 	/**
 	 *
 	 */
-	protected void deleteChild(Shell shell) {
+	protected void removeChild(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
 		int childPid = 0;
@@ -167,7 +167,7 @@ public class PersonChildrenView {
 
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
-				"Delete Person " + primaryName, null,
+				"Remove Person " + primaryName, null,
 				"Are you sure that you will remove " + childPid + ", "
 						+ primaryName + " as child?",
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });

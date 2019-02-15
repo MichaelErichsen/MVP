@@ -113,6 +113,13 @@ public class PartnerServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
+		// FIXME SEVERE: Referential integrity constraint violation:
+		// "PERSONS_PARTNERS_FK: PUBLIC.PARTNERS FOREIGN KEY(PARTNER1)
+		// REFERENCES PUBLIC.PERSONS(PERSON_PID) (0)"; SQL statement:
+		// INSERT INTO PUBLIC.PARTNERS( PARTNER_PID, PARTNER1, PARTNER2,
+		// PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES
+		// (?, ?, ?, ?, ?, ?, ?, ?) [23506-197]
+
 		partnerRelation.setPartner1(Partner1);
 		partnerRelation.setPartner2(Partner2);
 		partnerRelation.setPrimaryPartner(PrimaryPartner);

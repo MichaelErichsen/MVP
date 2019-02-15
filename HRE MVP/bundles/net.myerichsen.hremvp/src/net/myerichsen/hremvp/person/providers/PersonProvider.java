@@ -270,6 +270,17 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param personPid2
+	 * @param partnerPid
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void removePartner(int personPid, int partnerPid)
+			throws SQLException, MvpException {
+		server.removePartner(personPid, partnerPid);
+	}
+
+	/**
 	 * @param birthDatePid the birthDatePid to set
 	 */
 	public void setBirthDatePid(int i) {

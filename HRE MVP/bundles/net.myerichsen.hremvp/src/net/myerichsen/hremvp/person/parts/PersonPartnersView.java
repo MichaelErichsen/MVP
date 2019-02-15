@@ -10,32 +10,43 @@ import javax.inject.Inject;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.person.wizards.NewPersonPartnerWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all partners for a single person
+ * Display and maintain all partners for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 15. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonPartnersView {
@@ -51,6 +62,7 @@ public class PersonPartnersView {
 
 	private TableViewer tableViewer;
 	private final PersonProvider provider;
+	private int personPid;
 
 	/**
 	 * Constructor
@@ -64,12 +76,23 @@ public class PersonPartnersView {
 	}
 
 	/**
+	 * @param parent
+	 * @param context
+	 */
+	private void addPartner(Composite parent, IEclipseContext context) {
+		final WizardDialog dialog = new WizardDialog(parent.getShell(),
+				new NewPersonPartnerWizard(personPid, context));
+		dialog.open();
+	}
+
+	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
+	 * @param parent  The parent composite
+	 * @param context
 	 */
 	@PostConstruct
-	public void createControls(Composite parent) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -115,6 +138,27 @@ public class PersonPartnersView {
 		tableViewerColumnPrimary
 				.setLabelProvider(new HREColumnLabelProvider(3));
 
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		final MenuItem mntmNewItem = new MenuItem(menu, SWT.NONE);
+		mntmNewItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addPartner(parent, context);
+			}
+		});
+		mntmNewItem.setText("Add person as partner...");
+
+		final MenuItem mntmRemoveSelectedPartner = new MenuItem(menu, SWT.NONE);
+		mntmRemoveSelectedPartner.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				removePartner(parent.getShell());
+			}
+		});
+		mntmRemoveSelectedPartner.setText("Remove selected partner...");
+
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPartnerList(0));
@@ -125,6 +169,45 @@ public class PersonPartnersView {
 
 	}
 
+	/**
+	 *
+	 */
+	protected void removePartner(Shell shell) {
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int PartnerPid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			PartnerPid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Remove partner " + primaryName, null,
+				"Are you sure that you will remove " + PartnerPid + ", "
+						+ primaryName + " as partner?",
+				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Removal of partner " + primaryName + " has been canceled");
+			return;
+		}
+
+		try {
+			PersonProvider provider = new PersonProvider();
+			provider.removePartner(personPid, PartnerPid);
+			eventBroker.post("MESSAGE",
+					"Partner " + primaryName + " has been removed");
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
 	/**
 	 * The object is not needed anymore, but not yet destroyed
 	 */

@@ -822,6 +822,29 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param personPid
+	 * @param partnerPid
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public void removePartner(int personPid, int partnerPid)
+			throws SQLException, MvpException {
+		Partners partner = new Partners();
+
+		for (Partners p : partner.getFKPartner1(personPid)) {
+			if (p.getPartner2() == partnerPid) {
+				partner.delete(p.getPartnerPid());
+			}
+		}
+
+		for (Partners p : partner.getFKPartner2(personPid)) {
+			if (p.getPartner1() == partnerPid) {
+				partner.delete(p.getPartnerPid());
+			}
+		}
+	}
+
+	/**
 	 * @param i the birthDatePid to set
 	 */
 	public void setBirthDatePid(int i) {

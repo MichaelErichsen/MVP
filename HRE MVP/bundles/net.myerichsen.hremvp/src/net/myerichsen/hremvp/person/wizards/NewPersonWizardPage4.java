@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 31. jan. 2019
+ * @version 15. feb. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
@@ -89,7 +89,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		super("New Person Wizard Page 4");
 		setTitle("Person Primary Parents and Partner");
 		setDescription(
-				"Add primary parents and partner for the new person. More parents and partners can be added later.");
+				"Add primary parents, partner and child for the new person. More parents and partners can be added later.");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
