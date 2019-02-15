@@ -61,7 +61,7 @@ public class PersonChildrenView {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private final PersonProvider provider;
+	private PersonProvider provider;
 	private int personPid;
 
 	/**
@@ -71,18 +71,13 @@ public class PersonChildrenView {
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonChildrenView() throws SQLException {
-		provider = new PersonProvider();
-	}
-
-	/**
-	 * @param parent
-	 * @param context
-	 */
-	private void addChild(Composite parent, IEclipseContext context) {
-		final WizardDialog dialog = new WizardDialog(parent.getShell(),
-				new NewPersonChildWizard(personPid, context));
-		dialog.open();
+	public PersonChildrenView() {
+		try {
+			provider = new PersonProvider();
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -128,7 +123,9 @@ public class PersonChildrenView {
 		mntmNewItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addChild(parent, context);
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewPersonChildWizard(personPid, context));
+				dialog.open();
 			}
 		});
 		mntmNewItem.setText("Add person as child...");

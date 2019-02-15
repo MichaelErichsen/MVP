@@ -11,17 +11,17 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. nov. 2018
+ * @version 15. feb. 2019
  *
  */
 public class NewEventTypeWizard implements IWizard {
 
 	/**
 	 * Constructor
-	 *
-	 * @param context  The Eclipse context
+	 * 
+	 * @param context The Eclipse context
 	 */
-	public NewEventTypeWizard(IEclipseContext context) {
+	public NewEventTypeWizard(int eventTypePid, IEclipseContext context) {
 		// TODO Auto-generated constructor stub
 	}
 

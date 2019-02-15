@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -14,29 +15,37 @@ import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
-import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
+import net.myerichsen.hremvp.event.wizards.NewEventTypeWizard;
 
 /**
  * Display all personEvent types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. nov. 2018
+ * @version 15. feb. 2019
  *
  */
 public class EventTypeNavigator {
@@ -51,8 +60,9 @@ public class EventTypeNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private Table table;
 	private EventTypeProvider provider;
+	private TableViewer tableViewer;
+	private int eventTypePid;
 
 	/**
 	 * Constructor
@@ -75,20 +85,17 @@ public class EventTypeNavigator {
 	 * @param menuService The Eclipse menu service
 	 */
 	@PostConstruct
-	public void createControls(Composite parent, EMenuService menuService) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openEventTypeView();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(),
-				"net.myerichsen.hremvp.popupmenu.eventtypemenu");
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -105,6 +112,30 @@ public class EventTypeNavigator {
 		tblclmnEventType.setWidth(230);
 		tblclmnEventType.setText("Event Type");
 
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		MenuItem mntmAddEventType = new MenuItem(menu, SWT.NONE);
+		mntmAddEventType.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewEventTypeWizard(eventTypePid, context));
+				dialog.open();
+			}
+		});
+		mntmAddEventType.setText("Add event type...");
+
+		MenuItem mntmDeleteSelectedEvent = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedEvent.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteEventType(parent.getShell());
+			}
+		});
+		mntmDeleteSelectedEvent.setText("Delete selected event type...");
+
+		// TODO Change to Jface
 		List<String> stringList;
 
 		try {
@@ -129,6 +160,45 @@ public class EventTypeNavigator {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
 		}
+	}
+
+	/**
+	 * @param shell
+	 */
+	protected void deleteEventType(Shell shell) {
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int eventTypePid = 0;
+		String eventTypeName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			eventTypePid = Integer.parseInt(item.getText(0));
+			eventTypeName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete event type " + eventTypeName, null,
+				"Are you sure that you will delete " + eventTypePid + ", "
+						+ eventTypeName + "?",
+				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE", "Delete of event type " + eventTypeName
+					+ " has been canceled");
+			return;
+		}
+
+		try {
+			EventTypeProvider provider = new EventTypeProvider();
+			provider.delete(eventTypePid);
+			eventBroker.post("MESSAGE",
+					"Event type " + eventTypeName + " has been deleted");
+		} catch (Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -174,7 +244,7 @@ public class EventTypeNavigator {
 
 		int eventTypePid = 0;
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
