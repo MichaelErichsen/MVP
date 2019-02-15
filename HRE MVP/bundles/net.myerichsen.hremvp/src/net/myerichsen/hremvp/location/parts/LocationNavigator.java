@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.location.parts;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -7,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -14,29 +16,38 @@ import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
-import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 
 /**
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. jan. 2019
+ * @version 15. feb. 2019
  *
  */
 public class LocationNavigator {
@@ -51,8 +62,8 @@ public class LocationNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private Table table;
 	private LocationProvider provider;
+	private TableViewer tableViewer;
 
 	/**
 	 * Constructor
@@ -69,26 +80,24 @@ public class LocationNavigator {
 	}
 
 	/**
-	 * Create contents of the view part.
+	 * Create contents of the view part
 	 *
 	 * @param parent
-	 * @param menuService
+	 * @param context
 	 */
 	@PostConstruct
-	public void createControls(Composite parent, EMenuService menuService) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openLocationView();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(),
-				"net.myerichsen.hremvp.popupmenu.locationmenu");
+
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -106,6 +115,30 @@ public class LocationNavigator {
 		tblclmnPrimaryLocationName.setWidth(400);
 		tblclmnPrimaryLocationName.setText("Primary Location Name");
 
+		Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		MenuItem mntmAddLocation = new MenuItem(menu, SWT.NONE);
+		mntmAddLocation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewLocationWizard(context));
+				dialog.open();
+			}
+		});
+		mntmAddLocation.setText("Add location...");
+
+		MenuItem mntmDeleteSelectedLocation = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedLocation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteLocation(parent.getShell());
+			}
+		});
+		mntmDeleteSelectedLocation.setText("Delete selected location...");
+
+		// FIXME Change to Jface
 		List<String> stringList;
 
 		try {
@@ -129,6 +162,49 @@ public class LocationNavigator {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
+		}
+	}
+
+	/**
+	 * @param shell
+	 */
+	protected void deleteLocation(Shell shell) {
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int locationPid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			locationPid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete location " + primaryName, null,
+				"Are you sure that you will delete location " + locationPid
+						+ ", " + primaryName + "?",
+				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Delete of location " + primaryName + " has been canceled");
+			return;
+		}
+
+		try {
+			LocationProvider provider = new LocationProvider();
+			// FIXME SEVERE: Referential integrity constraint violation:
+			// "LOCATIONS_LOCATION_NAMES_FK: PUBLIC.LOCATION_NAMES FOREIGN
+			// KEY(LOCATION_PID) REFERENCES PUBLIC.LOCATIONS(LOCATION_PID)
+			// (14)"; SQL statement:
+			// DELETE FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ? [23503-197]
+			provider.delete(locationPid);
+			eventBroker.post("MESSAGE",
+					"Location " + primaryName + " has been deleted");
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -173,7 +249,7 @@ public class LocationNavigator {
 		int locationPid = 0;
 
 		// Post name pid
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
