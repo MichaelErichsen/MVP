@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.handlers;
+package net.myerichsen.hremvp.databaseadmin;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.MApplication;

@@ -5,29 +5,14 @@
       <children xsi:type="advanced:Perspective" xmi:id="_MY4l0OTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspective.baseperspective" label="Project" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/FamilyTreeIcon.png" tooltip="Project">
         <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.partsashcontainer.sample" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_Fu-b0KRUEeivq68TpLbBuw" elementId="net.myerichsen.hremvp.partstack.0" containerData="380" selectedElement="_UduHwBKrEemNAMxJdnZnGA">
-            <children xsi:type="basic:Part" xmi:id="_UduHwBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.projectnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator" label="Project Navigator">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_-EMOACIhEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.popupmenu.projectnavigatormenu" label="">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="__uZtECIhEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectnew" label="New Project..." command="_nkUAgA39Eemn86hhplJLfQ"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_GtqlQCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectopenselected" label="Open selected Project" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_S0LrICIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectopenexisting" label="Open existing Project..." command="_bWEzsCIiEemTBOqLjKcE9w"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_iwQGQCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectbackup" label="Backup Selected..." command="_i3iLQCIoEemTBOqLjKcE9w"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_lkP34CIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectrestore" label="Restore..." command="_ndfpwCIoEemTBOqLjKcE9w"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_vYBfECIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectcopyas" label="Copy as..." enabled="false" command="_qoY4cCIoEemTBOqLjKcE9w"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_zNdfkCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.projectrename" label="Rename..." enabled="false" command="_CApYUCIpEemTBOqLjKcE9w"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_2b2uMCIiEemTBOqLjKcE9w" elementId="net.myerichsen.hremvp.handledmenuitem.dprojectelete" label="Delete Selected..." command="_uqPkUCIoEemTBOqLjKcE9w"/>
-              </menus>
-            </children>
+            <children xsi:type="basic:Part" xmi:id="_UduHwBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.projectnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator" label="Project Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_m_sw4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partsashcontainer.0" containerData="900">
             <children xsi:type="basic:PartStack" xmi:id="_owicYLAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.2" containerData="8000" accessibilityPhrase="">
               <children xsi:type="basic:Part" xmi:id="_vN_ToKR-EeiDVvVNqbPujw" elementId="net.myerichsen.hremvp.part.projectproperties" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectProperties" label="Project Properties" tooltip="Project Properties"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_pZ9z4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.3" containerData="2000">
-              <children xsi:type="basic:Part" xmi:id="_M88-4LBcEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.part.log" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LogViewer" label="Log" tooltip="Log">
-                <toolbar xmi:id="_AWCk4LBgEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.toolbar.0">
-                  <children xsi:type="menu:HandledToolItem" xmi:id="_CLSPQLBgEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.handledtoolitem.refresh" label="Refresh" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/refresh.png" tooltip="Refresh" command="_GEqUkLBgEeizXZZKfAgc9g"/>
-                </toolbar>
-              </children>
+              <children xsi:type="basic:Part" xmi:id="_M88-4LBcEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.part.log" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LogViewer" label="Log" tooltip="Log"/>
             </children>
           </children>
         </children>
@@ -35,12 +20,7 @@
       <children xsi:type="advanced:Perspective" xmi:id="_GjFOUBKqEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.perspective.personperspective" label="Person" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PersonIcon.png" tooltip="Person">
         <children xsi:type="basic:PartSashContainer" xmi:id="_fY_igBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.11" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_m-D2cBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.16" containerData="380" accessibilityPhrase="">
-            <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNavigator" label="Person Navigator">
-              <menus xsi:type="menu:PopupMenu" xmi:id="__TeNMCF0EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.popupmenu.personnavigatormenu" label="Person Navigator Menu">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_FDUr8CF1EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.handledmenuitem.personnew" label="New Person..." tooltip="Create a new person" command="_MLUs4BZSEemhsNWp6W2Hdw"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_R1IjkCliEemnBvsVE1QsUw" elementId="net.myerichsen.hremvp.handledmenuitem.deleteselectedperson" label="Delete selected person..." command="_YlGbgCliEemnBvsVE1QsUw"/>
-              </menus>
-            </children>
+            <children xsi:type="basic:Part" xmi:id="_qU_WABKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.personnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNavigator" label="Person Navigator"/>
             <children xsi:type="basic:Part" xmi:id="_uBK-YC06Eemcp-DUi5EAZw" elementId="net.myerichsen.hremvp.part.ancestornavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.AncestorNavigator" label="Ancestor Navigator"/>
             <children xsi:type="basic:Part" xmi:id="_G-ujwBSzEem6sKFAMOynLw" elementId="net.myerichsen.hremvp.part.descendantnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.DescendantNavigator" label="Descendant Navigator"/>
           </children>
@@ -48,12 +28,7 @@
             <children xsi:type="basic:PartSashContainer" xmi:id="_y8_toBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.13" horizontal="true">
               <children xsi:type="basic:PartStack" xmi:id="_3zEEsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.17" selectedElement="_Ce7rkCDQEem6D-QYMdFPXg">
                 <children xsi:type="basic:Part" xmi:id="_Ce7rkCDQEem6D-QYMdFPXg" elementId="net.myerichsen.hremvp.part.person" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonView" label="Person" tooltip="Person"/>
-                <children xsi:type="basic:Part" xmi:id="_-PNBsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.namesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNamesView" label="Names for Person">
-                  <menus xsi:type="menu:PopupMenu" xmi:id="_oEqUICr_EemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.popupmenu.personnameviewmenu">
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_AqQJ0CsAEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handledmenuitem.newname" label="New name..." command="_G5H2ICscEemhGrYhc0ZWmQ"/>
-                    <children xsi:type="menu:HandledMenuItem" xmi:id="_Evoq0CsAEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handledmenuitem.deleteselectedname" label="Delete selected name..." command="_KmrF8CscEemhGrYhc0ZWmQ"/>
-                  </menus>
-                </children>
+                <children xsi:type="basic:Part" xmi:id="_-PNBsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.namesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonNamesView" label="Names for Person"/>
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_4TvI0BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.18" selectedElement="_Z2uXUBKsEemNAMxJdnZnGA">
                 <children xsi:type="basic:Part" xmi:id="_Z2uXUBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.eventsforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonEventsView" label="Events for Person"/>
@@ -76,17 +51,8 @@
       <children xsi:type="advanced:Perspective" xmi:id="_Q2zioOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspective.locationperspective" label="Location " iconURI="platform:/plugin/net.myerichsen.hremvp/icons/LocationIcon.png">
         <children xsi:type="basic:PartSashContainer" xmi:id="_hBXFsOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.1" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_ocrnwOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partstack.1" containerData="300">
-            <children xsi:type="basic:Part" xmi:id="_pSAGMOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNavigator" label="Location Navigator">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_OUdhgOccEeiDoadWWWD8Cg" elementId="net.myerichsen.hremvp.popupmenu.locationmenu">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_PYejQOccEeiDoadWWWD8Cg" elementId="net.myerichsen.hremvp.handledmenuitem.openlocationeditor" label="Open Location Editor" command="_ROErELUYEeicRLy95oG4aw"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_GL2pEO1mEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handledmenuitem.newlocationwizard" label="New Location" command="_kEHNQNLCEeieCZIGd595OA"/>
-              </menus>
-            </children>
-            <children xsi:type="basic:Part" xmi:id="_1UUBgOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnamestylenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameStyleNavigator" label="Location Name Style Navigator">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_6NLoUOWpEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.popupmenu.locationnamestylemenu" label="Location Name Style Menu">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="__DBV4OWpEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.handledmenuitem.openlocationnamestyleeditor" label="Open Location Name Style Editor" command="_hBeNELRBEeiB6astfjEjxQ"/>
-              </menus>
-            </children>
+            <children xsi:type="basic:Part" xmi:id="_pSAGMOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNavigator" label="Location Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="_1UUBgOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnamestylenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameStyleNavigator" label="Location Name Style Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_82jjkOTTEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.2" containerData="980">
             <children xsi:type="basic:PartSashContainer" xmi:id="_D9w20OTUEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.3" horizontal="true">
@@ -112,16 +78,8 @@
       <children xsi:type="advanced:Perspective" xmi:id="_bqH88O1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.perspective.eventperspective" label="Events" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/EventIcon.png">
         <children xsi:type="basic:PartSashContainer" xmi:id="_llPiQO1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partsashcontainer.7" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_382WQO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partstack.12" containerData="380">
-            <children xsi:type="basic:Part" xmi:id="_4kOfUO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventNavigator" label="Event Navigator" tooltip="Event Navigator">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_qg3c0O1yEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.popupmenu.eventmenu" label="Events">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_wLe2QO1yEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handledmenuitem.newevent" label="New Event" tooltip="Create a new event" command="_3i_2YO1yEeixq6yORkaFTA"/>
-              </menus>
-            </children>
-            <children xsi:type="basic:Part" xmi:id="_hl_-IPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.part.eventtypenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeNavigator" label="Event Type Navigator" tooltip="Event Type Navigator">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_J46zEPJ8Eei_k8_9-7nabQ" elementId="net.myerichsen.hremvp.popupmenu.eventtypemenu" label="Event Types">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_P8yaAPJ8Eei_k8_9-7nabQ" elementId="net.myerichsen.hremvp.handledmenuitem.neweventtype" label="New Event Type" tooltip="New Event Type" command="_ydLr8PJ8Eei_k8_9-7nabQ"/>
-              </menus>
-            </children>
+            <children xsi:type="basic:Part" xmi:id="_4kOfUO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventNavigator" label="Event Navigator" tooltip="Event Navigator"/>
+            <children xsi:type="basic:Part" xmi:id="_hl_-IPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.part.eventtypenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeNavigator" label="Event Type Navigator" tooltip="Event Type Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_ZF310P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.8" containerData="900">
             <children xsi:type="basic:PartSashContainer" xmi:id="_a1w0MP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.9" horizontal="true">
@@ -205,7 +163,6 @@
   <handlers xmi:id="_i4PacKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.handler.2" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.TableEditorHandler" command="_Ui9-AKhZEeibyfLs7dGugQ"/>
   <handlers xmi:id="_c_YEoKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.handler.3" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNameViewHandler" command="_Z-VVgKiQEeijn8bOcRpvRw"/>
   <handlers xmi:id="_LA4U0K-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.handler.4" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNameViewHandler" command="_HYFpMK-NEeiFg6Dg1VDbHw"/>
-  <handlers xmi:id="_Twd9QLBgEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.handler.5" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.LogRefreshHandler" command="_GEqUkLBgEeizXZZKfAgc9g"/>
   <handlers xmi:id="_xmtBwLFTEei7F_uEER0ShA" elementId="net.myerichsen.hremvp.handler.6" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNameMapViewHandler" command="_tbsZ4LFTEei7F_uEER0ShA"/>
   <handlers xmi:id="_i1iNsLQrEeiJPpXgDiVWkw" elementId="net.myerichsen.hremvp.handler.7" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNamePartViewHandler" command="_c4b9ILQrEeiJPpXgDiVWkw"/>
   <handlers xmi:id="_jXHOwLRBEeiB6astfjEjxQ" elementId="net.myerichsen.hremvp.handler.8" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNameStyleViewHandler" command="_hBeNELRBEeiB6astfjEjxQ"/>
@@ -221,7 +178,7 @@
   <handlers xmi:id="_mfH3INLCEeieCZIGd595OA" elementId="net.myerichsen.hremvp.handler.newLocation" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.NewLocationHandler" command="_kEHNQNLCEeieCZIGd595OA"/>
   <handlers xmi:id="_h06-sOTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.handler.19" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.BasePerspectiveHandler" command="_agVWwOTSEeiOQPtyES1FZg"/>
   <handlers xmi:id="_kVe28OTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.handler.20" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.LocationPerspectiveHandler" command="_fXKi0OTSEeiOQPtyES1FZg"/>
-  <handlers xmi:id="_v7_MsOWmEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.handler.21" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.AdministrationPerspectiveHandler" command="_uCdUsOWlEeirzfgMfQV5uA"/>
+  <handlers xmi:id="_v7_MsOWmEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.handler.21" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.AdministrationPerspectiveHandler" command="_uCdUsOWlEeirzfgMfQV5uA"/>
   <handlers xmi:id="_UR4HkO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handler.22" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.handlers.EventPerspectiveHandler" command="_Q0bJQO1xEeixq6yORkaFTA"/>
   <handlers xmi:id="_HSUO8O1zEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handler.23" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.handlers.NewEventHandler" command="_3i_2YO1yEeixq6yORkaFTA"/>
   <handlers xmi:id="_aKsDIPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.handler.24" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.handlers.OpenEventTypeViewHandler" command="_RlnDsPJVEeifL-SH13Qjuw"/>
@@ -265,7 +222,6 @@
   <commands xmi:id="_Ui9-AKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.command.tableeditoropen" commandName="tableeditoropen" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_Z-VVgKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.command.opennameview" commandName="openNameView" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_HYFpMK-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.command.openlocationnameview" commandName="openLocationNameView" category="_lxRDoBylEem5Zd9TTtLZ6w"/>
-  <commands xmi:id="_GEqUkLBgEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.command.logrefresh" commandName="logRefresh" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_tbsZ4LFTEei7F_uEER0ShA" elementId="net.myerichsen.hremvp.command.openlocationnamemapview" commandName="openLocationNameMapView" category="_UIbmMOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_c4b9ILQrEeiJPpXgDiVWkw" elementId="net.myerichsen.hremvp.command.openlocationnamepartview" commandName="openLocationNamePartView" category="_UIbmMOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_hBeNELRBEeiB6astfjEjxQ" elementId="net.myerichsen.hremvp.command.openlocationnamestyleview" commandName="openLocationNameStyleView" category="_UIbmMOWmEeirzfgMfQV5uA"/>

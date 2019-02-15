@@ -11,9 +11,13 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 
 import net.myerichsen.hremvp.Constants;
@@ -22,15 +26,26 @@ import net.myerichsen.hremvp.providers.MvpLogProvider;
 /**
  * Display the application log
  *
- * @version 2018-09-12
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- *
+ * @version 15. feb. 2019
  */
 public class LogViewer {
+	/**
+	 * 
+	 */
+	private static final String LOG_ADDRESS = "C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt";
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Table tableLog;
+	private Table table;
 	private MvpLogProvider provider;
-	private TableViewer tableViewerLog;
+	private TableViewer tableViewer;
+
+	/**
+	 * Constructor
+	 *
+	 */
+	public LogViewer() {
+		provider = new MvpLogProvider();
+	}
 
 	/**
 	 * Create contents of the view part.
@@ -41,16 +56,26 @@ public class LogViewer {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		tableViewerLog = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		tableLog = tableViewerLog.getTable();
-		tableLog.setLayoutData(
-				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		provider = new MvpLogProvider();
-		tableViewerLog.setContentProvider(provider);
-		LOGGER.fine("Created contentprovider");
-		tableViewerLog
-				.setInput("C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt");
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		table = tableViewer.getTable();
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		MenuItem mntmRefresh = new MenuItem(menu, SWT.NONE);
+		mntmRefresh.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				tableViewer.setInput(LOG_ADDRESS);
+				tableViewer.refresh();
+				table.setTopIndex(table.getItemCount() - 1);
+			}
+		});
+		mntmRefresh.setText("Refresh");
+
+		tableViewer.setContentProvider(provider);
+		tableViewer.setInput(LOG_ADDRESS);
 	}
 
 	/**
@@ -72,14 +97,11 @@ public class LogViewer {
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(
+	private void subscribeLogRefreshUpdateTopic(
 			@UIEventTopic(Constants.LOG_REFRESH_UPDATE_TOPIC) int i) {
 		LOGGER.fine("Update topic received");
-		tableLog.removeAll();
-		tableViewerLog.setContentProvider(provider);
-		tableViewerLog
-				.setInput("C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt");
-		tableLog.setTopIndex(tableLog.getItemCount() - 1);
+		tableViewer.setInput(LOG_ADDRESS);
+		tableViewer.refresh();
+		table.setTopIndex(table.getItemCount() - 1);
 	}
-
 }
