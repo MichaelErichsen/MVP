@@ -14,11 +14,12 @@ import net.myerichsen.hremvp.person.providers.PersonNameProvider;
  * Wizard to add a new person name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. feb. 2019
+ * @version 15. feb. 2019
  *
  */
 public class NewPersonNameWizard extends Wizard {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
@@ -28,7 +29,6 @@ public class NewPersonNameWizard extends Wizard {
 	private int personPid;
 	private String personName;
 	private int personNameStylePid;
-//	private int personNamePid;
 	private int languagePid;
 
 	/**
@@ -126,7 +126,8 @@ public class NewPersonNameWizard extends Wizard {
 			personNameProvider.setToDatePid(page1.getToDatePid());
 			personNameProvider.setPrimaryName(true);
 			final int namePid = personNameProvider.insert();
-			LOGGER.info("Inserted name " + namePid + " for person " + personPid);
+			LOGGER.info(
+					"Inserted name " + namePid + " for person " + personPid);
 
 			// Page 2
 			// Name parts
@@ -145,14 +146,19 @@ public class NewPersonNameWizard extends Wizard {
 					personNamePartProvider.setLabel(string);
 					personNamePartProvider.setPartNo(i);
 					namePartPid = personNamePartProvider.insert();
-					LOGGER.info("Inserted name part " + namePartPid + " for person " + personPid);
+					LOGGER.info("Inserted name part " + namePartPid
+							+ " for person " + personPid);
 				}
 			}
 
-//			eventBroker.post("MESSAGE",
-//					personProvider.getPrimaryName() + " inserted in the database as no. " + personPid);
-			eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC, personPid);
-			eventBroker.post(net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC, namePid);
+			eventBroker.post("MESSAGE",
+					"Person inserted in the database as no. " + personPid);
+			eventBroker.post(
+					net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
+					personPid);
+			eventBroker.post(
+					net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC,
+					namePid);
 			return true;
 		} catch (
 

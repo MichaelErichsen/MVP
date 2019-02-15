@@ -31,11 +31,12 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. feb. 2019
+ * @version 15. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int personPid;
 	private int birthDatePid;
@@ -117,6 +118,7 @@ public class PersonServer implements IHREServer {
 			parent.delete(p.getParentPid());
 		}
 
+		// Delete all child links
 		parent = new Parents();
 
 		for (final Parents p : parent.getFKParent(key)) {
@@ -231,7 +233,7 @@ public class PersonServer implements IHREServer {
 
 	/**
 	 * Recursive call for ancestors
-	 * 
+	 *
 	 * @param key
 	 * @param childPid
 	 * @param generations
@@ -239,8 +241,8 @@ public class PersonServer implements IHREServer {
 	 * @throws SQLException
 	 * @throws MvpException
 	 */
-	public List<List<String>> getAncestorList(int key, int childPid, int generations)
-			throws SQLException, MvpException {
+	public List<List<String>> getAncestorList(int key, int childPid,
+			int generations) throws SQLException, MvpException {
 		final List<List<String>> ancestorList = new ArrayList<>();
 		final PersonNameServer pnp = new PersonNameServer();
 
@@ -255,7 +257,8 @@ public class PersonServer implements IHREServer {
 
 		if (generations-- > 0) {
 			for (final Parents parent : fkChild) {
-				ancestorList.addAll(getAncestorList(parent.getParent(), key, generations));
+				ancestorList.addAll(
+						getAncestorList(parent.getParent(), key, generations));
 			}
 		}
 
@@ -310,8 +313,8 @@ public class PersonServer implements IHREServer {
 	 * @throws SQLException
 	 * @throws MvpException
 	 */
-	public List<List<String>> getDescendantList(int key, int parentPid, int generations)
-			throws SQLException, MvpException {
+	public List<List<String>> getDescendantList(int key, int parentPid,
+			int generations) throws SQLException, MvpException {
 		final List<List<String>> descendantList = new ArrayList<>();
 		final PersonNameServer pnp = new PersonNameServer();
 
@@ -326,7 +329,8 @@ public class PersonServer implements IHREServer {
 
 		if (generations-- > 0) {
 			for (final Parents parent : fkParent) {
-				descendantList.addAll(getDescendantList(parent.getChild(), key, generations));
+				descendantList.addAll(
+						getDescendantList(parent.getChild(), key, generations));
 			}
 		}
 
@@ -407,7 +411,8 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
-	public List<List<String>> getPersonEventList(int key) throws SQLException, MvpException {
+	public List<List<String>> getPersonEventList(int key)
+			throws SQLException, MvpException {
 		Events event;
 		EventNames eventName;
 		List<String> ls;
@@ -419,7 +424,8 @@ public class PersonServer implements IHREServer {
 			return eventList;
 		}
 
-		for (final PersonEvents personEvent : new PersonEvents().getFKPersonPid(key)) {
+		for (final PersonEvents personEvent : new PersonEvents()
+				.getFKPersonPid(key)) {
 			event = new Events();
 			event.get(personEvent.getEventPid());
 			eventName = new EventNames();
@@ -456,7 +462,8 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
-	public List<List<String>> getPersonList() throws SQLException, MvpException {
+	public List<List<String>> getPersonList()
+			throws SQLException, MvpException {
 		List<String> ls;
 		final PersonNameServer pns = new PersonNameServer();
 
@@ -494,7 +501,8 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
-	public List<List<String>> getPersonNameList(int key) throws SQLException, MvpException {
+	public List<List<String>> getPersonNameList(int key)
+			throws SQLException, MvpException {
 		final List<List<String>> personNameList = new ArrayList<>();
 		List<String> stringList;
 
@@ -579,19 +587,20 @@ public class PersonServer implements IHREServer {
 	 * @return List of strings
 	 * @throws NumberFormatException Thrown to indicate that the application has
 	 *                               attempted to converta string to one of the
-	 *                               numeric types, but that the string does nothave
-	 *                               the appropriate format.
+	 *                               numeric types, but that the string does
+	 *                               nothave the appropriate format.
 	 * @throws SQLException          An exception that provides information on a
 	 *                               database access error or other errors
 	 * @throws MvpException          Application specific exception
-	 * @throws IOException           Signals that an I/O exception of some sort has
-	 *                               occurred. Thisclass is the general class of
-	 *                               exceptions produced by failed orinterrupted I/O
-	 *                               operations
+	 * @throws IOException           Signals that an I/O exception of some sort
+	 *                               has occurred. Thisclass is the general
+	 *                               class of exceptions produced by failed
+	 *                               orinterrupted I/O operations
 	 * @throws JSONException         The JSONException is thrown by the JSON.org
 	 *                               classes when things are amiss
 	 */
-	public String getRemote(HttpServletResponse response, String target) throws Exception {
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
 //		final String[] targetParts = target.split("/");
 //		final int targetSize = targetParts.length;
 //
@@ -706,7 +715,8 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
-	public List<List<String>> getSexesList(int key) throws SQLException, MvpException {
+	public List<List<String>> getSexesList(int key)
+			throws SQLException, MvpException {
 		final SexTypes st = new SexTypes();
 		List<String> ls;
 
@@ -733,7 +743,8 @@ public class PersonServer implements IHREServer {
 	 * @return the siblingList
 	 * @throws SQLException
 	 */
-	public List<List<String>> getSiblingList(int personPid) throws SQLException {
+	public List<List<String>> getSiblingList(int personPid)
+			throws SQLException {
 		final List<List<String>> siblingList = new ArrayList<>();
 		List<String> ls;
 
@@ -746,7 +757,8 @@ public class PersonServer implements IHREServer {
 
 		for (final Parents parents : fkParent) {
 			LOGGER.info("Parent id: " + parents.getParentPid());
-			final List<Parents> fkChild = new Parents().getFKParent(parents.getParentPid());
+			final List<Parents> fkChild = new Parents()
+					.getFKParent(parents.getParentPid());
 			final TreeSet<Integer> childList = new TreeSet<>();
 
 			for (final Parents parents4 : fkChild) {
@@ -790,6 +802,23 @@ public class PersonServer implements IHREServer {
 	public void insertRemote(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @param parentPid
+	 * @param childPid
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void removeChild(int parentPid, int childPid)
+			throws SQLException, MvpException {
+		final Parents parent = new Parents();
+
+		for (final Parents p : parent.getFKParent(parentPid)) {
+			if (p.getChild() == childPid) {
+				parent.delete(p.getParentPid());
+			}
+		}
 	}
 
 	/**

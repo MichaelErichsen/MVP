@@ -10,32 +10,43 @@ import javax.inject.Inject;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.person.wizards.NewPersonChildWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all children for a single person
+ * Display and maintain all children for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 15. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonChildrenView {
@@ -51,6 +62,7 @@ public class PersonChildrenView {
 
 	private TableViewer tableViewer;
 	private final PersonProvider provider;
+	private int personPid;
 
 	/**
 	 * Constructor
@@ -64,12 +76,23 @@ public class PersonChildrenView {
 	}
 
 	/**
+	 * @param parent
+	 * @param context
+	 */
+	private void addChild(Composite parent, IEclipseContext context) {
+		final WizardDialog dialog = new WizardDialog(parent.getShell(),
+				new NewPersonChildWizard(personPid, context));
+		dialog.open();
+	}
+
+	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
+	 * @param parent  The parent composite
+	 * @param context The application context
 	 */
 	@PostConstruct
-	public void createControls(Composite parent) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -98,6 +121,27 @@ public class PersonChildrenView {
 		tblclmnChildren.setText("Children");
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		final MenuItem mntmNewItem = new MenuItem(menu, SWT.NONE);
+		mntmNewItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addChild(parent, context);
+			}
+		});
+		mntmNewItem.setText("Add person as child...");
+
+		final MenuItem mntmRemoveSelectedChild = new MenuItem(menu, SWT.NONE);
+		mntmRemoveSelectedChild.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteChild(parent.getShell());
+			}
+		});
+		mntmRemoveSelectedChild.setText("Remove selected child...");
+
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getChildrenList(0));
@@ -105,6 +149,45 @@ public class PersonChildrenView {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
+	}
+
+	/**
+	 *
+	 */
+	protected void deleteChild(Shell shell) {
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int childPid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			childPid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete Person " + primaryName, null,
+				"Are you sure that you will remove " + childPid + ", "
+						+ primaryName + " as child?",
+				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Removal of child " + primaryName + " has been canceled");
+			return;
+		}
+
+		try {
+			PersonProvider provider = new PersonProvider();
+			provider.removeChild(personPid, childPid);
+			eventBroker.post("MESSAGE",
+					"Child " + primaryName + " has been removed");
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -147,15 +230,17 @@ public class PersonChildrenView {
 	 */
 	@Inject
 	@Optional
-	private void subscribePersonListUpdateTopic(
+	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
+		this.personPid = personPid;
+
 		try {
 			tableViewer.setInput(provider.getChildrenList(personPid));
+			tableViewer.refresh();
 		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
-		tableViewer.refresh();
 	}
 }
