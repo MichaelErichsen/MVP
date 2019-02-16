@@ -185,6 +185,7 @@ public class PersonNavigator {
 			personPid = Integer.parseInt(item.getText(0));
 			primaryName = item.getText(1);
 		}
+		
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
 				"Delete Person " + primaryName, null,

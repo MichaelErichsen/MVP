@@ -1,5 +1,7 @@
 package net.myerichsen.hremvp.project.parts;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -24,14 +26,15 @@ import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
-import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -49,7 +52,10 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.h2.tools.RunScript;
+import org.h2.tools.Script;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
@@ -90,6 +96,7 @@ public class ProjectNavigator {
 	private TableViewer tableViewer;
 	private NavigatorFilter navigatorFilter;
 	private Text textNameFilter;
+	private int selectionIndex;
 
 	/**
 	 * Constructor
@@ -107,13 +114,84 @@ public class ProjectNavigator {
 	}
 
 	/**
+	 * @param shell
+	 */
+	protected void backUpSelectedProject(Shell shell) {
+		getSelectedProject();
+
+		final ProjectModel model = ProjectList.getModel(selectionIndex);
+		final String dbName = model.getName();
+
+		try {
+			closeDbIfActive(dbName);
+
+			String path = model.getPath();
+			File file = new File(path + ".h2.db");
+			if (file.exists() == false) {
+				file = new File(path + ".mv.db");
+			}
+			path = file.getParent();
+			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
+					"-user", store.getString("USERID"), "-password",
+					store.getString("PASSWORD"), "-script",
+					path + "\\" + dbName + ".zip", "-options", "compression",
+					"zip" };
+			Script.main(bkp);
+
+			LOGGER.info("Project database " + dbName + " has been backed up to "
+					+ path + "\\" + dbName + ".zip");
+			eventBroker.post("MESSAGE",
+					"Project database " + dbName + " has been backed up to "
+							+ path + "\\" + dbName + ".zip");
+		} catch (final SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param dbName
+	 * @throws SQLException
+	 */
+	private void closeDbIfActive(final String dbName) throws SQLException {
+		final String activeName = store.getString("DBNAME");
+
+		if (activeName.equals(dbName)) {
+			Connection conn = null;
+
+			conn = HreH2ConnectionPool.getConnection();
+
+			if (conn != null) {
+				conn.createStatement().execute("SHUTDOWN");
+				conn.close();
+				LOGGER.info("Existing database " + dbName + " has been closed");
+
+				try {
+					HreH2ConnectionPool.dispose();
+				} catch (final Exception e) {
+					LOGGER.info("No connection pool to dispose");
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param shell
+	 */
+	protected void copyProject(Shell shell) {
+		final MessageDialog dialog = new MessageDialog(shell, "Copy As", null,
+				"Not yet implemented", MessageDialog.INFORMATION, 0,
+				new String[] { "OK" });
+		dialog.open();
+	}
+
+	/**
 	 * Create contents of the view part
 	 *
 	 * @param parent
-	 * @param menuService
 	 */
 	@PostConstruct
-	public void createControls(Composite parent, EMenuService menuService) {
+	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(2, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -133,8 +211,6 @@ public class ProjectNavigator {
 				postProjectPid();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(),
-				"net.myerichsen.hremvp.popupmenu.projectnavigatormenu");
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true,
@@ -169,11 +245,17 @@ public class ProjectNavigator {
 		tableViewerColumnLocation
 				.setLabelProvider(new HREColumnLabelProvider(2));
 
-		Menu menu = new Menu(table);
+		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		MenuItem mntmNewProject = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmNewProject = new MenuItem(menu, SWT.NONE);
 		mntmNewProject.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				newProject(parent.getShell());
@@ -181,25 +263,109 @@ public class ProjectNavigator {
 		});
 		mntmNewProject.setText("New project...");
 
-		MenuItem mntmOpenSelectedProject = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmOpenSelectedProject = new MenuItem(menu, SWT.NONE);
+		mntmOpenSelectedProject.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				openSelectedProject(parent.getShell());
+			}
+		});
 		mntmOpenSelectedProject.setText("Open selected project");
 
-		MenuItem mntmOpenExistingProject = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmOpenExistingProject = new MenuItem(menu, SWT.NONE);
+		mntmOpenExistingProject.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				openExistingProject(parent.getShell());
+			}
+		});
 		mntmOpenExistingProject.setText("Open existing project...");
 
-		MenuItem mntmBackUpSelected = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmBackUpSelected = new MenuItem(menu, SWT.NONE);
+		mntmBackUpSelected.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				backUpSelectedProject(parent.getShell());
+			}
+		});
 		mntmBackUpSelected.setText("Back up selected project...");
 
-		MenuItem mntmRestoreAProject = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmRestoreAProject = new MenuItem(menu, SWT.NONE);
+		mntmRestoreAProject.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				restoreProject(parent.getShell());
+			}
+		});
 		mntmRestoreAProject.setText("Restore a project...");
 
-		MenuItem mntmCopyProjectAs = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmCopyProjectAs = new MenuItem(menu, SWT.NONE);
+		mntmCopyProjectAs.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				copyProject(parent.getShell());
+			}
+		});
 		mntmCopyProjectAs.setText("Copy project as...");
 
-		MenuItem mntmRenameSelectedProject = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmRenameSelectedProject = new MenuItem(menu, SWT.NONE);
+		mntmRenameSelectedProject.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				renameSelectedProject(parent.getShell());
+			}
+		});
 		mntmRenameSelectedProject.setText("Rename selected project...");
 
-		MenuItem mntmDeleteSelectedProject = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmDeleteSelectedProject = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedProject.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteSelectedProject(parent.getShell());
+			}
+		});
 		mntmDeleteSelectedProject.setText("Delete selected project...");
 
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
@@ -208,6 +374,13 @@ public class ProjectNavigator {
 		textNameFilter = new Text(parent, SWT.BORDER);
 		textNameFilter.addKeyListener(new KeyAdapter() {
 
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
+			 * events.KeyEvent)
+			 */
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
@@ -224,6 +397,107 @@ public class ProjectNavigator {
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 *
+	 */
+	protected void deleteSelectedProject(Shell shell) {
+		// FIXME Gets the wrong project
+		getSelectedProject();
+
+		final ProjectModel model = ProjectList.getModel(selectionIndex);
+		final String dbName = model.getName();
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete Project " + dbName, null,
+				"Are you sure that you will delete project " + dbName + "?",
+				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Deletion of project " + dbName + " has been canceled");
+			return;
+		}
+
+		try {
+			closeDbIfActive(dbName);
+
+			final String path = model.getPath().trim();
+			String fullPath = path + ".h2.db";
+			File file = new File(fullPath);
+			boolean result = false;
+
+			try {
+				result = Files.deleteIfExists(file.toPath());
+			} catch (final Exception e) {
+				fullPath = path + ".mv.db";
+				file = new File(fullPath);
+				try {
+					result = Files.deleteIfExists(file.toPath());
+				} catch (final Exception e1) {
+					LOGGER.severe(e1.getMessage());
+				}
+			}
+
+			if (result) {
+				LOGGER.info(
+						"Existing database " + fullPath + " has been deleted");
+			}
+
+			final int projectCount = store.getInt("projectcount");
+
+			String key;
+			int index;
+
+			for (int i = 1; i <= projectCount; i++) {
+				key = "project." + i + ".path";
+				if (store.contains(key)) {
+					LOGGER.info("Path: " + path + ", key : " + key + ", value: "
+							+ store.getString(key));
+
+					if (path.equals(store.getString(key).trim())) {
+						// Delete from preferences
+						index = i;
+						ProjectList.remove(index, dbName);
+						LOGGER.info("Project " + dbName + " has been deleted");
+						eventBroker.post("MESSAGE",
+								"Project " + dbName + " has been deleted");
+						eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC,
+								index);
+						break;
+					}
+				}
+			}
+
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 *
+	 */
+	@PreDestroy
+	public void dispose() {
+	}
+
+	/**
+	 * @throws NumberFormatException
+	 */
+	private void getSelectedProject() throws NumberFormatException {
+		selectionIndex = tableViewer.getTable().getSelectionIndex();
+
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			Integer.parseInt(item.getText(0));
+			item.getText(1);
 		}
 	}
 
@@ -251,27 +525,14 @@ public class ProjectNavigator {
 			store.setValue("DBPATH", path);
 			store.setValue("DBNAME", dbName);
 
-			ProjectNewDatabaseProvider pndprovider = new ProjectNewDatabaseProvider();
+			final ProjectNewDatabaseProvider pndprovider = new ProjectNewDatabaseProvider();
 
 			pndprovider.provide(dbName);
 
-			// Disconnect from any currently connected database
-			Connection conn = null;
-
-			conn = HreH2ConnectionPool.getConnection();
-
-			if (conn != null) {
-				conn.createStatement().execute("SHUTDOWN");
-				conn.close();
-				try {
-					HreH2ConnectionPool.dispose();
-				} catch (final Exception e) {
-					LOGGER.fine("No connection pool to dispose");
-				}
-			}
+			closeDbIfActive(dbName);
 
 			// Connect to the new database
-			conn = HreH2ConnectionPool.getConnection(dbName);
+			Connection conn = HreH2ConnectionPool.getConnection(dbName);
 
 			final String h2Version = store.getString("H2VERSION");
 			LOGGER.fine("Retrieved H2 version from preferences: "
@@ -316,18 +577,7 @@ public class ProjectNavigator {
 					.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
 
-			// Open H2 Database Navigator
-			final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
-			h2dnPart.setLabel("Database Tables");
-			h2dnPart.setContainerData("650");
-			h2dnPart.setCloseable(true);
-			h2dnPart.setVisible(true);
-			h2dnPart.setContributionURI(
-					"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
-			final List<MPartStack> stacks = modelService
-					.findElements(application, null, MPartStack.class, null);
-			stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
-			partService.showPart(h2dnPart, PartState.ACTIVATE);
+			openDatabaseNavigator();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 			eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
@@ -342,17 +592,202 @@ public class ProjectNavigator {
 	}
 
 	/**
-	 *
+	 * @param shell
 	 */
-	@PreDestroy
-	public void dispose() {
+	protected void openExistingProject(Shell shell) {
+		int index = 0;
+		Connection conn = null;
+
+		// Open file dialog
+		final FileDialog dialog = new FileDialog(shell);
+		final String[] extensions = { "*.h2.db", "*.mv.db", "*.*" };
+		dialog.setFilterExtensions(extensions);
+		dialog.open();
+
+		final String shortName = dialog.getFileName();
+		final String[] parts = shortName.split("\\.");
+		final String path = dialog.getFilterPath();
+		final String dbName = parts[0];
+
+		try {
+			closeDbIfActive(dbName);
+
+			store.setValue("DBPATH", path);
+			store.setValue("DBNAME", dbName);
+
+			conn = HreH2ConnectionPool.getConnection(dbName);
+
+			if (conn != null) {
+				final String h2Version = store.getString("H2VERSION");
+				LOGGER.info("Retrieved H2 version from preferences: "
+						+ h2Version.substring(0, 3));
+				PreparedStatement ps;
+
+				if (h2Version.substring(0, 3).equals("1.3")) {
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				} else {
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				}
+
+				ps.executeQuery();
+				conn.close();
+			}
+
+			final int projectCount = store.getInt("projectcount");
+			String key;
+			boolean alreadyRegistered = false;
+
+			for (int i = 0; i < projectCount; i++) {
+				key = "project." + i + ".path";
+				if (store.contains(key)) {
+					if (dbName.equals(store.getString(key))) {
+						alreadyRegistered = true;
+						LOGGER.info(
+								"Project " + dbName + " already registered");
+						break;
+					}
+				}
+			}
+
+			if (!alreadyRegistered) {
+				// Open a dialog for summary
+				final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(
+						shell);
+				pnsDialog.open();
+
+				// Update the HRE properties
+				File file = new File(dbName + ".h2.db");
+				if (file.exists() == false) {
+					file = new File(dbName + ".mv.db");
+				}
+				final Date timestamp = new Date(file.lastModified());
+				final ProjectModel model = new ProjectModel(
+						pnsDialog.getProjectName(), timestamp,
+						pnsDialog.getProjectSummary(), "LOCAL",
+						path + "\\" + dbName);
+				index = ProjectList.add(model);
+
+				// Set database name in title bar
+				final MWindow window = (MWindow) modelService
+						.find("net.myerichsen.hremvp.window.main", application);
+				window.setLabel("HRE v0.2 - " + dbName);
+			}
+
+			openDatabaseNavigator();
+
+			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
+
+			if (index > 0) {
+				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC,
+						index);
+			}
+
+			eventBroker.post("MESSAGE",
+					"Project database " + dbName + " has been opened");
+		} catch (final Exception e1) {
+			eventBroker.post("MESSAGE", e1.getMessage());
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
+
 	}
 
 	/**
-	 * @return the tableViewer
+	 * Open H2 Database Navigator
 	 */
-	public TableViewer getTableViewer() {
-		return tableViewer;
+	private void openDatabaseNavigator() {
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
+		h2dnPart.setLabel("Database Tables");
+		h2dnPart.setContainerData("650");
+		h2dnPart.setCloseable(true);
+		h2dnPart.setVisible(true);
+		h2dnPart.setContributionURI(
+				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
+		stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
+		partService.showPart(h2dnPart, PartState.ACTIVATE);
+	}
+
+	/**
+	 * @param shell
+	 */
+	protected void openSelectedProject(Shell shell) {
+		Connection conn = null;
+
+		try {
+			closeDbIfActive(store.getString("DBNAME"));
+
+			getSelectedProject();
+
+			final ProjectModel model = ProjectList.getModel(selectionIndex);
+			final String dbName = model.getName();
+
+			String path = model.getPath();
+			File file = new File(path + ".h2.db");
+			if (file.exists()) {
+				path = file.getParent();
+			} else {
+				file = new File(path + ".mv.db");
+				if (file.exists()) {
+					path = file.getParent();
+				}
+			}
+
+			store.setValue("DBNAME", dbName);
+			store.setValue("DBPATH", path);
+
+			conn = HreH2ConnectionPool.getConnection(dbName);
+
+			if (conn != null) {
+				final String h2Version = store.getString("H2VERSION");
+				LOGGER.info("Retrieved H2 version from preferences: "
+						+ h2Version.substring(0, 3));
+				PreparedStatement ps;
+
+				if (h2Version.substring(0, 3).equals("1.3")) {
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				} else {
+					ps = conn.prepareStatement(
+							"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+									+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+				}
+
+				ps.executeQuery();
+				conn.close();
+			}
+
+			// Set database name in title bar
+			final MWindow window = (MWindow) modelService
+					.find("net.myerichsen.hremvp.window.main", application);
+			window.setLabel("HRE MVP v0.2 - " + dbName);
+
+			openDatabaseNavigator();
+
+			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
+
+			if (selectionIndex > 0) {
+				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC,
+						selectionIndex + 1);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC,
+						selectionIndex + 1);
+			}
+
+			eventBroker.post("MESSAGE",
+					"Project database " + dbName + " has been opened");
+		} catch (final Exception e1) {
+			eventBroker.post("MESSAGE", e1.getMessage());
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -364,6 +799,121 @@ public class ProjectNavigator {
 		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC,
 				store.getString("DBNAME"));
 		LOGGER.fine("Project Navigator posted selection index " + projectPid);
+	}
+
+	/**
+	 *
+	 */
+	protected void renameSelectedProject(Shell shell) {
+		final MessageDialog dialog = new MessageDialog(shell, "Rename", null,
+				"Not yet implemented", MessageDialog.INFORMATION, 0,
+				new String[] { "OK" });
+		dialog.open();
+	}
+
+	/**
+	 *
+	 */
+	protected void restoreProject(Shell shell) {
+		int index = 0;
+
+		// Open file dialog
+		final FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+		dialog.setText("Restore an HRE Project");
+		dialog.setFilterPath("./");
+		final String[] extensions = { "*.zip", "*.*" };
+		dialog.setFilterExtensions(extensions);
+		dialog.open();
+
+		final String shortName = dialog.getFileName();
+		final String[] parts = shortName.split("\\.");
+		final String path = dialog.getFilterPath();
+		final String dbName = parts[0];
+
+		try {
+			closeDbIfActive(dbName);
+
+			String fullPath = path + "\\" + dbName + ".h2.db";
+			File file = new File(fullPath);
+
+			boolean result = false;
+
+			result = Files.deleteIfExists(file.toPath());
+
+			if (!result) {
+				fullPath = path + "\\" + dbName + ".mv.db";
+				file = new File(fullPath);
+				result = Files.deleteIfExists(file.toPath());
+			}
+
+			if (result) {
+				LOGGER.info(
+						"Existing database " + dbName + " has been deleted");
+			}
+
+			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
+					"-user", store.getString("USERID"), "-script",
+					path + "\\" + dbName + ".zip", "-options", "compression",
+					"zip" };
+			RunScript.main(bkp);
+
+			final int projectCount = store.getInt("projectcount");
+			String key;
+			boolean alreadyRegistered = false;
+
+			for (int i = 0; i < projectCount; i++) {
+				key = "project." + i + ".path";
+				if (store.contains(key)) {
+					if (dbName.equals(store.getString(key))) {
+						alreadyRegistered = true;
+						LOGGER.info(
+								"Project " + dbName + " already registered");
+						break;
+					}
+				}
+			}
+
+			if (!alreadyRegistered) {
+				// Open a dialog for summary
+				final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(
+						shell);
+				pnsDialog.open();
+
+				// Update the HRE properties
+				if (file.exists() == false) {
+					file = new File(dbName + ".mv.db");
+				}
+				final Date timestamp = new Date(file.lastModified());
+				final ProjectModel model = new ProjectModel(
+						pnsDialog.getProjectName(), timestamp,
+						pnsDialog.getProjectSummary(), "LOCAL",
+						path + "\\" + dbName);
+				index = ProjectList.add(model);
+
+				// Set database name in title bar
+				final MWindow window = (MWindow) modelService
+						.find("net.myerichsen.hremvp.window.main", application);
+				window.setLabel("HRE v0.2 - " + dbName);
+			}
+
+			openDatabaseNavigator();
+
+			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
+
+			if (index > 0) {
+				eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
+				eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC,
+						index);
+			}
+
+			LOGGER.info("Project database has been restored from " + shortName);
+			eventBroker.post("MESSAGE",
+					"Project database has been restored from " + shortName);
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
