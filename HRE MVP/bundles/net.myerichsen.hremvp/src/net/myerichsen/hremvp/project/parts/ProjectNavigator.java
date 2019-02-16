@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.parts;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -22,27 +23,33 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.filters.NavigatorFilter;
 import net.myerichsen.hremvp.project.providers.ProjectProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Navigator part to display all tables in an HRE project
+ * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 15. feb. 2019
  *
  */
 public class ProjectNavigator {
@@ -137,6 +144,39 @@ public class ProjectNavigator {
 		tableViewerColumnLocation
 				.setLabelProvider(new HREColumnLabelProvider(2));
 
+		Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		MenuItem mntmNewProject = new MenuItem(menu, SWT.NONE);
+		mntmNewProject.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				newProject();
+			}
+		});
+		mntmNewProject.setText("New project...");
+
+		MenuItem mntmOpenSelectedProject = new MenuItem(menu, SWT.NONE);
+		mntmOpenSelectedProject.setText("Open selected project");
+
+		MenuItem mntmOpenExistingProject = new MenuItem(menu, SWT.NONE);
+		mntmOpenExistingProject.setText("Open existing project...");
+
+		MenuItem mntmBackUpSelected = new MenuItem(menu, SWT.NONE);
+		mntmBackUpSelected.setText("Back up selected project...");
+
+		MenuItem mntmRestoreAProject = new MenuItem(menu, SWT.NONE);
+		mntmRestoreAProject.setText("Restore a project...");
+
+		MenuItem mntmCopyProjectAs = new MenuItem(menu, SWT.NONE);
+		mntmCopyProjectAs.setText("Copy project as...");
+
+		MenuItem mntmRenameSelectedProject = new MenuItem(menu, SWT.NONE);
+		mntmRenameSelectedProject.setText("Rename selected project...");
+
+		MenuItem mntmDeleteSelectedProject = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedProject.setText("Delete selected project...");
+
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
 		lblNameFilter.setText("Name Filter");
 
@@ -163,6 +203,146 @@ public class ProjectNavigator {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 
+	 */
+	protected void newProject() {
+		Connection conn = null;
+
+		// Disconnect from any currently connected database
+		try {
+			conn = HreH2ConnectionPool.getConnection();
+
+			if (conn != null) {
+				conn.createStatement().execute("SHUTDOWN");
+				conn.close();
+				conn = null;
+				try {
+					HreH2ConnectionPool.dispose();
+				} catch (final Exception e) {
+					LOGGER.info("Already disposed");
+				}
+			}
+		} catch (final Exception e1) {
+			eventBroker.post("MESSAGE", e1.getMessage());
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
+
+		// Find selected database
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int childPid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			childPid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+//		int index = 0;
+//
+//		final List<MPartStack> stacks = modelService.findElements(application,
+//				null, MPartStack.class, null);
+//		MPart part = MBasicFactory.INSTANCE.createPart();
+//		boolean found = false;
+//
+//		for (final MPartStack mPartStack : stacks) {
+//			final List<MStackElement> a = mPartStack.getChildren();
+//
+//			for (int i = 0; i < a.size(); i++) {
+//				part = (MPart) a.get(i);
+//				if (part.getContributionURI().equals(contributionURI)) {
+//					final ProjectNavigator pn = (ProjectNavigator) part
+//							.getObject();
+//					index = pn.getTableViewer().getTable().getSelectionIndex();
+//					found = true;
+//					LOGGER.info("Selected index: " + index);
+//					break;
+//				}
+//			}
+//
+//			if (found) {
+//				break;
+//			}
+	}
+
+//	final ProjectModel model = ProjectList.getModel(index);
+//	final String dbName = model.getName();
+//
+//	String path = model.getPath();
+//	File file = new File(path + ".h2.db");if(file.exists())
+//	{
+//		path = file.getParent();
+//	}else
+//	{
+//		file = new File(path + ".mv.db");
+//		if (file.exists()) {
+//			path = file.getParent();
+//		}
+//	}
+//
+//	store.setValue("DBNAME",dbName);store.setValue("DBPATH",path);
+//
+//	try
+//	{
+//		conn = HreH2ConnectionPool.getConnection(dbName);
+//
+//		if (conn != null) {
+//			final String h2Version = store.getString("H2VERSION");
+//			LOGGER.info("Retrieved H2 version from preferences: "
+//					+ h2Version.substring(0, 3));
+//			PreparedStatement ps;
+//
+//			if (h2Version.substring(0, 3).equals("1.3")) {
+//				ps = conn.prepareStatement(
+//						"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+//								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+//			} else {
+//				ps = conn.prepareStatement(
+//						"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+//								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+//			}
+//
+//			ps.executeQuery();
+//			conn.close();
+//		}
+//
+//		// Set database name in title bar
+//		final MWindow window = (MWindow) modelService
+//				.find("net.myerichsen.hremvp.window.main", application);
+//		window.setLabel("HRE MVP v0.2 - " + dbName);
+//
+//		// Open H2 Database Navigator
+//		final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
+//		h2dnPart.setLabel("Database Tables");
+//		h2dnPart.setContainerData("650");
+//		h2dnPart.setCloseable(true);
+//		h2dnPart.setVisible(true);
+//		h2dnPart.setContributionURI(
+//				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
+//		stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
+//		partService.showPart(h2dnPart, PartState.ACTIVATE);
+//
+//		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
+//
+//		if (index > 0) {
+//			eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index + 1);
+//			eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC,
+//					index + 1);
+//		}
+//
+//		eventBroker.post("MESSAGE",
+//				"Project database " + dbName + " has been opened");
+//	}catch(
+//	final Exception e1)
+//	{
+//		eventBroker.post("MESSAGE", e1.getMessage());
+//		LOGGER.severe(e1.getMessage());
+//		e1.printStackTrace();
+//	}
+//
+//	}
 
 	/**
 	 *
