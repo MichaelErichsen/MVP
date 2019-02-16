@@ -38,7 +38,9 @@ Require-Bundle: javax.inject;bundle-version="0.0.0",
  org.xBaseJ,
  org.apache.commons.logging,
  org.json,
- com.hypotemoose.cal
+ com.hypotemoose.cal,
+ org.eclipse.equinox.p2.engine,
+ org.eclipse.equinox.p2.metadata.repository
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: net.myerichsen.hremvp
 Import-Package: javax.annotation;version="1.0.0";resolution:=optional,

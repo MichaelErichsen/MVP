@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. feb. 2019
+ * @version 16. feb. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -43,7 +43,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 				"1|Segoe UI|12.0|0|WINDOWS|1|-16|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI");
 		store.setDefault("TLS", "true");
 		store.setDefault("UPDATESITE",
-				"http://www.myerichsen.net/HRERepository");
+				"http://www.myerichsen.net/HRE/repository");
 		store.setDefault("WEBSITELIST", "https://www.google.dk/search?oq=");
 		store.setDefault("DEFAULTPERSONNAMESTYLE", "1");
 		store.setDefault("TREEGENERATIONS", 5);
