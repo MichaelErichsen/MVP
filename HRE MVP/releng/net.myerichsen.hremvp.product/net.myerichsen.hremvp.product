@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="net.myerichsen.hremvp" uid="HRE MVP" id="net.myerichsen.hremvp.HRE_MVP" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.2.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="net.myerichsen.hremvp" uid="HRE MVP" id="net.myerichsen.hremvp.HRE_MVP" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.2.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -134,7 +134,7 @@
    </plugins>
 
    <features>
-      <feature id="net.myerichsen.hremvp.feature" version="0.2.0.qualifier"/>
+      <feature id="net.myerichsen.hremvp.feature" version="0.2.1.qualifier"/>
       <feature id="com.opcoach.e4.preferences.feature" version="1.0.0.qualifier"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.emf.ecore"/>

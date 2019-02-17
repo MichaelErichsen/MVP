@@ -5,10 +5,10 @@
   <parent>
     <groupId>net.myerichsen.hremvp</groupId>
     <artifactId>net.myerichsen.hremvp.bundles</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
   </parent>
   <artifactId>net.myerichsen.hremvp.helpsystem</artifactId>
-  <version>0.2.0.SNAPSHOT</version>
+  <version>0.2.1.SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <groupId>net.myerichsen.hremvp</groupId>
 </project>

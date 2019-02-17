@@ -2,7 +2,7 @@
 <feature
       id="net.myerichsen.hremvp.feature"
       label="HRE MVP Base Feature"
-      version="0.2.0.qualifier"
+      version="0.2.1.qualifier"
       provider-name="History Research Environment Ltd.">
 
    <description url="http://www.example.com/description">
@@ -32,7 +32,6 @@
       <import plugin="org.eclipse.e4.ui.di"/>
       <import plugin="org.eclipse.e4.core.contexts"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.h2"/>
       <import plugin="org.eclipse.e4.core.commands"/>
       <import plugin="org.eclipse.e4.core.services"/>
       <import plugin="org.eclipse.ui.workbench"/>
@@ -45,11 +44,22 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.e4.ui.workbench.swt"/>
       <import plugin="com.opcoach.e4.preferences"/>
-      <import plugin="javax.annotation"/>
       <import plugin="org.eclipse.help.base"/>
       <import plugin="org.eclipse.equinox.preferences"/>
       <import plugin="org.eclipse.help.ui"/>
       <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.h2"/>
+      <import plugin="javax.annotation"/>
+      <import plugin="org.eclipse.equinox.p2.operations"/>
+      <import plugin="org.eclipse.equinox.p2.core"/>
+      <import plugin="org.eclipse.wb.core.lib"/>
+      <import plugin="org.xBaseJ"/>
+      <import plugin="org.apache.commons.logging"/>
+      <import plugin="org.json"/>
+      <import plugin="com.hypotemoose.cal"/>
+      <import plugin="org.eclipse.equinox.p2.engine"/>
+      <import plugin="org.eclipse.equinox.p2.metadata.repository"/>
+      <import plugin="org.eclipse.jetty.util"/>
    </requires>
 
    <plugin
