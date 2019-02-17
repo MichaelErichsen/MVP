@@ -55,7 +55,6 @@ public class PersonNamePartProvider implements IHREProvider {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

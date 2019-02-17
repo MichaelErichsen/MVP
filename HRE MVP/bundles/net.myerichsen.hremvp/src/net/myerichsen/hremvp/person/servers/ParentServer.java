@@ -37,7 +37,6 @@ public class ParentServer implements IHREServer {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -48,7 +47,6 @@ public class ParentServer implements IHREServer {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -59,7 +57,6 @@ public class ParentServer implements IHREServer {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -169,7 +166,6 @@ public class ParentServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 }

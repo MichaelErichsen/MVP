@@ -53,7 +53,7 @@ public class HreUpdateHandler {
 		provisioningJob.addJobChangeListener(new JobChangeAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.core.runtime.jobs.JobChangeAdapter#done(org.eclipse.
 			 * core.runtime.jobs.IJobChangeEvent)
@@ -64,7 +64,7 @@ public class HreUpdateHandler {
 					sync.syncExec(new Runnable() {
 						/*
 						 * (non-Javadoc)
-						 * 
+						 *
 						 * @see java.lang.Runnable#run()
 						 */
 						@Override
@@ -83,7 +83,7 @@ public class HreUpdateHandler {
 					sync.syncExec(new Runnable() {
 						/*
 						 * (non-Javadoc)
-						 * 
+						 *
 						 * @see java.lang.Runnable#run()
 						 */
 						@Override
@@ -146,7 +146,7 @@ public class HreUpdateHandler {
 
 				/*
 				 * (non-Javadoc)
-				 * 
+				 *
 				 * @see
 				 * org.eclipse.jface.operation.IRunnableWithProgress#run(org.
 				 * eclipse.core.runtime.IProgressMonitor)
@@ -207,7 +207,6 @@ public class HreUpdateHandler {
 		LOGGER.info("Get Provisioning Job");
 		final ProvisioningJob provisioningJob = operation
 				.getProvisioningJob(monitor);
-		// FIXME job.getProvisioningPlan() != null
 		subMonitor.worked(25);
 		return provisioningJob;
 	}
@@ -238,7 +237,7 @@ public class HreUpdateHandler {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see java.lang.Runnable#run()
 			 */
 			@Override

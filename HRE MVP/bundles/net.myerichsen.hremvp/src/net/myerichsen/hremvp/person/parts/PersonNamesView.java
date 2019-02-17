@@ -86,7 +86,7 @@ public class PersonNamesView {
 
 	/**
 	 * Create contents of the view part
-	 * 
+	 *
 	 * @param parent
 	 * @param context
 	 */
@@ -161,10 +161,10 @@ public class PersonNamesView {
 		tableViewerColumnPrimary
 				.setLabelProvider(new HREColumnLabelProvider(4));
 
-		Menu menu = new Menu(table);
+		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		MenuItem mntmNewNameFor = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmNewNameFor = new MenuItem(menu, SWT.NONE);
 		mntmNewNameFor.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -175,7 +175,7 @@ public class PersonNamesView {
 		});
 		mntmNewNameFor.setText("New name for person...");
 
-		MenuItem mntmDeleteSelectedName = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmDeleteSelectedName = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedName.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -221,7 +221,7 @@ public class PersonNamesView {
 		}
 
 		try {
-			PersonNameProvider provider = new PersonNameProvider();
+			final PersonNameProvider provider = new PersonNameProvider();
 			provider.delete(namePid);
 
 			LOGGER.info("Name " + primaryName + " has been deleted");

@@ -37,7 +37,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
 	 */
 	@Override
@@ -48,7 +48,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
@@ -102,7 +102,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
@@ -113,7 +113,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override

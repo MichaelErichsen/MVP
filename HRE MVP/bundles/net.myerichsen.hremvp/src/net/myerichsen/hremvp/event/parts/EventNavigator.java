@@ -72,7 +72,7 @@ public class EventNavigator {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
+	 * @param parent      The parent composite
 	 * @param menuService The Eclipse menu service
 	 */
 	@PostConstruct

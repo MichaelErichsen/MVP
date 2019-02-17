@@ -31,12 +31,12 @@ import net.myerichsen.hremvp.providers.MvpLogProvider;
  */
 public class LogViewer {
 	/**
-	 * 
+	 *
 	 */
 	private static final String LOG_ADDRESS = "C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt";
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Table table;
-	private MvpLogProvider provider;
+	private final MvpLogProvider provider;
 	private TableViewer tableViewer;
 
 	/**
@@ -63,7 +63,7 @@ public class LogViewer {
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		MenuItem mntmRefresh = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmRefresh = new MenuItem(menu, SWT.NONE);
 		mntmRefresh.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

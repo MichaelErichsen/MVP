@@ -67,14 +67,11 @@ public class PersonChildrenView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 *
 	 */
 	public PersonChildrenView() {
 		try {
 			provider = new PersonProvider();
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -149,7 +146,40 @@ public class PersonChildrenView {
 	}
 
 	/**
+	 * The object is not needed anymore, but not yet destroyed
+	 */
+	@PreDestroy
+	public void dispose() {
+	}
+
+	/**
 	 *
+	 */
+	protected void openChildrenView() {
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openpersonview", null);
+		handlerService.executeHandler(command);
+
+		getSelectedPerson();
+
+		LOGGER.info("Setting person pid: " + personPid);
+		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
+	}
+
+	/**
+	 * @throws NumberFormatException
+	 */
+	private void getSelectedPerson() throws NumberFormatException {
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
+
+		if (selectedRows.length > 0) {
+			final TableItem selectedRow = selectedRows[0];
+			personPid = Integer.parseInt(selectedRow.getText(0));
+		}
+	}
+
+	/**
+	 * @param shell
 	 */
 	protected void removeChild(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
@@ -176,7 +206,7 @@ public class PersonChildrenView {
 		}
 
 		try {
-			PersonProvider provider = new PersonProvider();
+			final PersonProvider provider = new PersonProvider();
 			provider.removeChild(personPid, childPid);
 			eventBroker.post("MESSAGE",
 					"Child " + primaryName + " has been removed");
@@ -185,34 +215,6 @@ public class PersonChildrenView {
 			e.printStackTrace();
 		}
 
-	}
-
-	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	protected void openChildrenView() {
-		int personPid = 0;
-
-		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.openpersonview", null);
-		handlerService.executeHandler(command);
-
-		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			personPid = Integer.parseInt(selectedRow.getText(0));
-		}
-
-		LOGGER.info("Setting person pid: " + personPid);
-		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}
 
 	/**

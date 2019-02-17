@@ -123,10 +123,10 @@ public class PersonNavigator {
 		tblclmnPrimaryName.setText("Primary Name");
 		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
-		Menu menu = new Menu(table);
+		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		MenuItem mntmAddPerson = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmAddPerson = new MenuItem(menu, SWT.NONE);
 		mntmAddPerson.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -137,7 +137,7 @@ public class PersonNavigator {
 		});
 		mntmAddPerson.setText("Add person...");
 
-		MenuItem mntmDeleteSelectedPerson = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmDeleteSelectedPerson = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedPerson.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -173,7 +173,7 @@ public class PersonNavigator {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void deletePerson(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
@@ -185,7 +185,7 @@ public class PersonNavigator {
 			personPid = Integer.parseInt(item.getText(0));
 			primaryName = item.getText(1);
 		}
-		
+
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
 				"Delete Person " + primaryName, null,

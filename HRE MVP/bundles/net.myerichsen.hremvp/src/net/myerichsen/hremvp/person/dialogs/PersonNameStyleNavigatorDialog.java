@@ -41,11 +41,13 @@ import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
  *
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	@Inject
 	private IEventBroker eventBroker;
-
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	private PersonNameStyleProvider provider;
 
@@ -58,7 +60,8 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 	 * @param parentShell
 	 * @param context
 	 */
-	public PersonNameStyleNavigatorDialog(Shell parentShell, IEclipseContext context) {
+	public PersonNameStyleNavigatorDialog(Shell parentShell,
+			IEclipseContext context) {
 		super(parentShell);
 		try {
 			provider = new PersonNameStyleProvider();
@@ -76,8 +79,10 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+		createButton(parent, IDialogConstants.CANCEL_ID,
+				IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	/**
@@ -94,36 +99,42 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		container.setLayout(new GridLayout(1, false));
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final TableViewer tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final TableItem[] items = table.getSelection();
 				final TableItem selectedItem = items[0];
-				setPersonNameStylePid(Integer.parseInt(selectedItem.getText(0)));
+				setPersonNameStylePid(
+						Integer.parseInt(selectedItem.getText(0)));
 			}
 		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumn.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnNameStyle = tableViewerColumn_1.getColumn();
 		tblclmnNameStyle.setWidth(100);
 		tblclmnNameStyle.setText("Name Style");
 
-		final TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnLanguage = tableViewerColumn_2.getColumn();
 		tblclmnLanguage.setWidth(100);
 		tblclmnLanguage.setText("Language");
 
-		final TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnIsoCode = tableViewerColumn_3.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");

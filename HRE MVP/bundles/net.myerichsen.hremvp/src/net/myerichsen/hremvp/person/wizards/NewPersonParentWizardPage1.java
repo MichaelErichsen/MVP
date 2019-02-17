@@ -28,13 +28,13 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Person child wizard page
+ * Person Parent wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
  * @version 17. feb. 2019
  *
  */
-public class NewPersonChildWizardPage1 extends WizardPage {
+public class NewPersonParentWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
@@ -42,25 +42,25 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 
 	private Shell parentShell;
 
-	private Text textChildPersonPid;
-	private Text textChildName;
-	private Text textChildBirthDate;
-	private Text textChildDeathDate;
-	private Text textChildRole;
+	private Text textParentPersonPid;
+	private Text textParentName;
+	private Text textParentBirthDate;
+	private Text textParentDeathDate;
+	private Text textParentRole;
 
-	private int childPid = 0;
+	private int parentPid = 0;
 
-	private String childRole = "";
+	private String parentRole = "";
 
 	/**
 	 * Constructor
 	 *
 	 * @param context
 	 */
-	public NewPersonChildWizardPage1(IEclipseContext context) {
-		super("New Person Child Wizard Page 1");
-		setTitle("Child");
-		setDescription("Add a child to the person.");
+	public NewPersonParentWizardPage1(IEclipseContext context) {
+		super("New Person Parent Wizard Page 1");
+		setTitle("Parent");
+		setDescription("Add a parent to the person.");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
@@ -68,16 +68,16 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 	/**
 	 *
 	 */
-	protected void browseChild() {
+	protected void browseParent() {
 		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
 				parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
-				childPid = dialog.getPersonPid();
-				textChildPersonPid.setText(Integer.toString(childPid));
-				textChildName.setText(dialog.getPersonName());
-				textChildBirthDate.setText(dialog.getBirthDate());
-				textChildDeathDate.setText(dialog.getDeathDate());
+				parentPid = dialog.getPersonPid();
+				textParentPersonPid.setText(Integer.toString(parentPid));
+				textParentName.setText(dialog.getPersonName());
+				textParentBirthDate.setText(dialog.getBirthDate());
+				textParentDeathDate.setText(dialog.getDeathDate());
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
@@ -88,12 +88,12 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 	/**
 	 *
 	 */
-	protected void clearChild() {
-		childPid = 0;
-		textChildPersonPid.setText("");
-		textChildName.setText("");
-		textChildBirthDate.setText("");
-		textChildDeathDate.setText("");
+	protected void clearParent() {
+		parentPid = 0;
+		textParentPersonPid.setText("");
+		textParentName.setText("");
+		textParentBirthDate.setText("");
+		textParentDeathDate.setText("");
 	}
 
 	@Override
@@ -104,116 +104,116 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(3, false));
 
-		final Label lblChild = new Label(container, SWT.NONE);
-		lblChild.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
-		lblChild.setText("Child");
+		final Label lblParent = new Label(container, SWT.NONE);
+		lblParent.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
+		lblParent.setText("Parent");
 
-		textChildPersonPid = new Text(container, SWT.BORDER);
-		textChildPersonPid.setLayoutData(
+		textParentPersonPid = new Text(container, SWT.BORDER);
+		textParentPersonPid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		final Composite compositeChild = new Composite(container, SWT.NONE);
-		compositeChild.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeParent = new Composite(container, SWT.NONE);
+		compositeParent.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateChild = new Button(compositeChild, SWT.NONE);
-		btnUpdateChild.addMouseListener(new MouseAdapter() {
+		final Button btnUpdateParent = new Button(compositeParent, SWT.NONE);
+		btnUpdateParent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				updateChild();
+				updateParent();
 			}
 		});
-		btnUpdateChild.setText("Update");
+		btnUpdateParent.setText("Update");
 
-		final Button btnBrowseChild = new Button(compositeChild, SWT.NONE);
-		btnBrowseChild.addMouseListener(new MouseAdapter() {
+		final Button btnBrowseParent = new Button(compositeParent, SWT.NONE);
+		btnBrowseParent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				browseChild();
+				browseParent();
 			}
 		});
-		btnBrowseChild.setText("Browse");
+		btnBrowseParent.setText("Browse");
 
-		final Button btnClearChild = new Button(compositeChild, SWT.NONE);
-		btnClearChild.addMouseListener(new MouseAdapter() {
+		final Button btnClearParent = new Button(compositeParent, SWT.NONE);
+		btnClearParent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				clearChild();
+				clearParent();
 			}
 		});
-		btnClearChild.setText("Clear");
+		btnClearParent.setText("Clear");
 
-		textChildName = new Text(container, SWT.BORDER);
-		textChildName.setEditable(false);
-		textChildName.setLayoutData(
+		textParentName = new Text(container, SWT.BORDER);
+		textParentName.setEditable(false);
+		textParentName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textChildBirthDate = new Text(container, SWT.BORDER);
-		textChildBirthDate.setEditable(false);
-		textChildBirthDate.setLayoutData(
+		textParentBirthDate = new Text(container, SWT.BORDER);
+		textParentBirthDate.setEditable(false);
+		textParentBirthDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textChildDeathDate = new Text(container, SWT.BORDER);
-		textChildDeathDate.setEditable(false);
-		textChildDeathDate.setLayoutData(
+		textParentDeathDate = new Text(container, SWT.BORDER);
+		textParentDeathDate.setEditable(false);
+		textParentDeathDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		new Label(container, SWT.NONE);
 		new Label(container, SWT.NONE);
 		new Label(container, SWT.NONE);
 
-		final Label lblChildRole = new Label(container, SWT.NONE);
-		lblChildRole.setText("Child role");
+		final Label lblParentRole = new Label(container, SWT.NONE);
+		lblParentRole.setText("Parent role");
 
-		textChildRole = new Text(container, SWT.BORDER);
-		textChildRole.addModifyListener(new ModifyListener() {
+		textParentRole = new Text(container, SWT.BORDER);
+		textParentRole.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				childRole = textChildRole.getText();
+				parentRole = textParentRole.getText();
 			}
 		});
-		textChildRole.setLayoutData(
+		textParentRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 	}
 
 	/**
-	 * @return the childPid
+	 * @return the parentPid
 	 */
-	public int getChildPid() {
-		return childPid;
+	public int getParentPid() {
+		return parentPid;
 	}
 
 	/**
-	 * @return the childRole
+	 * @return the parentRole
 	 */
-	public String getChildRole() {
-		return childRole;
+	public String getParentRole() {
+		return parentRole;
 	}
 
 	/**
 	 *
 	 */
-	protected void updateChild() {
-		childPid = Integer.parseInt(textChildPersonPid.getText());
+	protected void updateParent() {
+		parentPid = Integer.parseInt(textParentPersonPid.getText());
 		PersonProvider provider;
 
 		try {
 			final HDateProvider dateProvider = new HDateProvider();
 			provider = new PersonProvider();
-			provider.get(childPid);
-			textChildName.setText(provider.getPrimaryName());
+			provider.get(parentPid);
+			textParentName.setText(provider.getPrimaryName());
 			final int birthDatePid = provider.getBirthDatePid();
 			if (birthDatePid > 0) {
 				dateProvider.get(birthDatePid);
-				textChildBirthDate.setText(dateProvider.getDate().toString());
+				textParentBirthDate.setText(dateProvider.getDate().toString());
 			} else {
-				textChildBirthDate.setText("");
+				textParentBirthDate.setText("");
 			}
 			final int deathDatePid = provider.getDeathDatePid();
 			if (deathDatePid > 0) {
 				dateProvider.get(deathDatePid);
-				textChildDeathDate.setText(dateProvider.getDate().toString());
+				textParentDeathDate.setText(dateProvider.getDate().toString());
 			} else {
-				textChildDeathDate.setText("");
+				textParentDeathDate.setText("");
 			}
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());

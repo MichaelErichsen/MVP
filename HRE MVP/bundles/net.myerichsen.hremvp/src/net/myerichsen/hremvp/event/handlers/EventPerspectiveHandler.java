@@ -14,8 +14,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
  */
 public class EventPerspectiveHandler {
 	/**
-	 * @param app The Eclipse application
-	 * @param partService The Eclipse parts service
+	 * @param app          The Eclipse application
+	 * @param partService  The Eclipse parts service
 	 * @param modelService The Eclipse model service
 	 */
 	@Execute

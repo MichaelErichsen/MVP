@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.providers.ParentProvider;
 
 /**
  * Wizard to add an existing person as a child
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 15. feb. 2019
  *
@@ -20,67 +20,30 @@ import net.myerichsen.hremvp.person.providers.ParentProvider;
 public class NewPersonChildWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEclipseContext context;
-	private IEventBroker eventBroker;
+	private final IEclipseContext context;
+	private final IEventBroker eventBroker;
 
 	private NewPersonChildWizardPage1 page1;
 	private ParentProvider parentProvider;
-	private int parentPid;
+	private int personPid;
 
 	/**
 	 * Constructor
-	 * 
-	 * @param parentPid
-	 * @param context   The Eclipse Context
 	 *
+	 * @param personPid
+	 * @param context
 	 */
-	public NewPersonChildWizard(int parentPid, IEclipseContext context) {
+	public NewPersonChildWizard(int personPid, IEclipseContext context) {
 		setWindowTitle("Add child");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
-		this.parentPid = parentPid;
+		this.personPid = personPid;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	public boolean performFinish() {
-		if (page1.getChildPid() != 0) {
-			parentProvider = new ParentProvider();
-			parentProvider.setParent(parentPid);
-			int childPid = page1.getChildPid();
-			parentProvider.setChild(childPid);
-			parentProvider.setParentRole(page1.getChildRole());
-			parentProvider.setPrimaryParent(true);
-			// FIXME Language pid
-			parentProvider.setLanguagePid(1);
-			try {
-				parentPid = parentProvider.insert();
-				LOGGER.info("Inserted child pid " + childPid + " for parent "
-						+ parentPid);
-
-				eventBroker.post("MESSAGE", "Inserted child pid " + childPid
-						+ " for parent " + parentPid);
-				eventBroker.post(
-						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
-						parentPid);
-				return true;
-			} catch (SQLException | MvpException e) {
-				LOGGER.severe(e.getMessage());
-				e.printStackTrace();
-			}
-
-		}
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.wizard.Wizard#addPage(org.eclipse.jface.wizard.
 	 * IWizardPage)
 	 */
@@ -88,6 +51,41 @@ public class NewPersonChildWizard extends Wizard {
 	public void addPages() {
 		page1 = new NewPersonChildWizardPage1(context);
 		addPage(page1);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
+	 */
+	@Override
+	public boolean performFinish() {
+		if (page1.getChildPid() != 0) {
+			parentProvider = new ParentProvider();
+			parentProvider.setParent(personPid);
+			final int childPid = page1.getChildPid();
+			parentProvider.setChild(childPid);
+			parentProvider.setParentRole(page1.getChildRole());
+			parentProvider.setPrimaryParent(true);
+			// FIXME Language pid
+			parentProvider.setLanguagePid(1);
+
+			try {
+				parentProvider.insert();
+				LOGGER.info("Inserted child pid " + childPid + " for parent "
+						+ personPid);
+				eventBroker.post("MESSAGE", "Inserted child pid " + childPid
+						+ " for parent " + personPid);
+				eventBroker.post(
+						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
+						personPid);
+				return true;
+			} catch (SQLException | MvpException e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 }

@@ -53,7 +53,8 @@ import net.myerichsen.hremvp.Constants;
 @SuppressWarnings("restriction")
 public class H2TableNavigator {
 	private static TableViewer tableViewer;
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -87,7 +88,8 @@ public class H2TableNavigator {
 			provider.deleteAll();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
-			eventBroker.post("MESSAGE", "All rows have been deleted from " + tableName);
+			eventBroker.post("MESSAGE",
+					"All rows have been deleted from " + tableName);
 			updateGui();
 		} catch (final SQLException e1) {
 			e1.printStackTrace();
@@ -125,9 +127,8 @@ public class H2TableNavigator {
 			/*
 			 * (non-Javadoc)
 			 *
-			 * @see
-			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
-			 * .SelectionEvent)
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events .SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -142,9 +143,8 @@ public class H2TableNavigator {
 			/*
 			 * (non-Javadoc)
 			 *
-			 * @see
-			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
-			 * .SelectionEvent)
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events .SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -158,9 +158,8 @@ public class H2TableNavigator {
 			/*
 			 * (non-Javadoc)
 			 *
-			 * @see
-			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
-			 * .SelectionEvent)
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events .SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -175,14 +174,15 @@ public class H2TableNavigator {
 			/*
 			 * (non-Javadoc)
 			 *
-			 * @see
-			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
-			 * .SelectionEvent)
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events .SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-				final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+				final List<MPartStack> stacks = modelService.findElements(
+						application, null, MPartStack.class, null);
+				final MPart part = (MPart) stacks.get(stacks.size() - 2)
+						.getSelectedElement();
 				partService.hidePart(part, true);
 			}
 
@@ -218,15 +218,19 @@ public class H2TableNavigator {
 				case Constants.SMALLINT:
 				case Constants.INTEGER:
 				case Constants.BIGINT:
-					rs.addColumn(modelList.get(i).getName(), modelList.get(i).getNumericType(),
-							modelList.get(i).getPrecision(), modelList.get(i).getScale());
+					rs.addColumn(modelList.get(i).getName(),
+							modelList.get(i).getNumericType(),
+							modelList.get(i).getPrecision(),
+							modelList.get(i).getScale());
 					break;
 				case Constants.VARCHAR:
-					rs.addColumn(modelList.get(i).getName(), modelList.get(i).getNumericType(), 0,
+					rs.addColumn(modelList.get(i).getName(),
+							modelList.get(i).getNumericType(), 0,
 							modelList.get(i).getScale());
 					break;
 				default:
-					rs.addColumn(modelList.get(i).getName(), modelList.get(i).getNumericType(), 0, 0);
+					rs.addColumn(modelList.get(i).getName(),
+							modelList.get(i).getNumericType(), 0, 0);
 					break;
 				}
 			}
@@ -236,7 +240,8 @@ public class H2TableNavigator {
 			for (int i = 0; i < rows.size(); i++) {
 				oa = new Object[provider.getCount()];
 				for (int j = 0; j < oa.length; j++) {
-					LOGGER.info("Column " + i + ", column " + j + ", type " + modelList.get(j).getType() + ", value "
+					LOGGER.info("Column " + i + ", column " + j + ", type "
+							+ modelList.get(j).getType() + ", value "
 							+ rows.get(i).get(j));
 					if (modelList.get(j).getType().equals("CLOB")) {
 						oa[j] = rows.get(i).get(j);
@@ -252,7 +257,8 @@ public class H2TableNavigator {
 			csvFile.setFieldSeparatorWrite(",");
 
 			csvFile.write(fileName, rs, "UTF-8");
-			eventBroker.post("MESSAGE", "Table " + tableName + " has been exported to " + fileName);
+			eventBroker.post("MESSAGE",
+					"Table " + tableName + " has been exported to " + fileName);
 		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -265,7 +271,8 @@ public class H2TableNavigator {
 	 * @param btnImport
 	 */
 	private void exportTable(final Button btnImport) {
-		final FileDialog dialog = new FileDialog(btnImport.getShell(), SWT.SAVE);
+		final FileDialog dialog = new FileDialog(btnImport.getShell(),
+				SWT.SAVE);
 		final String[] extensions = { "*.csv", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
@@ -282,7 +289,8 @@ public class H2TableNavigator {
 	 * @param btnImport
 	 */
 	private void importTable(final Button btnImport) {
-		final FileDialog dialog = new FileDialog(btnImport.getShell(), SWT.OPEN);
+		final FileDialog dialog = new FileDialog(btnImport.getShell(),
+				SWT.OPEN);
 		final String[] extensions = { "*.csv", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
@@ -295,7 +303,8 @@ public class H2TableNavigator {
 			try {
 				final H2TableProvider provider = new H2TableProvider(tableName);
 				rowCount = provider.importCsv(fileName);
-				eventBroker.post("MESSAGE", rowCount + " rows has been imported from " + fileName);
+				eventBroker.post("MESSAGE",
+						rowCount + " rows has been imported from " + fileName);
 				eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
 				updateGui();
 			} catch (final SQLException e1) {
@@ -312,8 +321,8 @@ public class H2TableNavigator {
 		String recordNum = "0";
 
 		// Open an editor
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.tableeditoropen", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.tableeditoropen", null);
 		handlerService.executeHandler(command);
 		LOGGER.info("Navigator opened editor");
 
@@ -344,10 +353,13 @@ public class H2TableNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNameUpdateTopic(@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName2) {
+	private void subscribeNameUpdateTopic(
+			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName2) {
 		tableName = tableName2;
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		part.setLabel(tableName2);
 
 		updateGui();

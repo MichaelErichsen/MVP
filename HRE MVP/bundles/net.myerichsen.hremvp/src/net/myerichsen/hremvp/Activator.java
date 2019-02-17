@@ -22,8 +22,10 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  */
 public class Activator implements BundleActivator {
 	private static BundleContext context;
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static String HELPCLASSPATH = "plugins\\\\org.eclipse.help.base_4.2.400.v20181206-0815.jar";
 // "plugins\\\\org.eclipse.help.base_4.2.153.v20180330-0640.jar";
 	// "plugins\\\\org.eclipse.help.base_4.2.200.v20180611-0500.jar";
@@ -38,8 +40,8 @@ public class Activator implements BundleActivator {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.
+	 * BundleContext)
 	 */
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
@@ -50,7 +52,8 @@ public class Activator implements BundleActivator {
 		LOGGER.fine("HRE MVP v0.2 has been started");
 		LOGGER.fine("Command line arguments:");
 
-		final ServiceReference<EnvironmentInfo> envRef = context.getServiceReference(EnvironmentInfo.class);
+		final ServiceReference<EnvironmentInfo> envRef = context
+				.getServiceReference(EnvironmentInfo.class);
 		final EnvironmentInfo envInfo = context.getService(envRef);
 		final String[] args = envInfo.getCommandLineArgs();
 		for (int i = 0; i < args.length; i++) {
@@ -79,8 +82,8 @@ public class Activator implements BundleActivator {
 
 		final int port = store.getInt("HELPSYSTEMPORT");
 		final String command = "java -classpath " + HELPCLASSPATH
-				+ " org.eclipse.help.standalone.Infocenter -command start -port " + port
-				+ " -product net.myerichsen.hremvp.helpsystem -clean";
+				+ " org.eclipse.help.standalone.Infocenter -command start -port "
+				+ port + " -product net.myerichsen.hremvp.helpsystem -clean";
 
 		try {
 			LOGGER.fine("Help System is being started at port " + port);

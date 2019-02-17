@@ -37,7 +37,8 @@ import net.myerichsen.hremvp.person.providers.PersonNameProvider;
  */
 @SuppressWarnings("restriction")
 public class PersonNameNavigator {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
@@ -66,7 +67,8 @@ public class PersonNameNavigator {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final TableViewer tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -78,12 +80,14 @@ public class PersonNameNavigator {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(tableViewer, SWT.NONE);
+		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(
+				tableViewer, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(250);
 		tblclmnName.setText("Name");
@@ -102,8 +106,8 @@ public class PersonNameNavigator {
 		int NamePid = 0;
 
 		// Open an editor
-		final ParameterizedCommand command = commandService.createCommand("net.myerichsen.hremvp.command.opennameview",
-				null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.opennameview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = table.getSelection();
@@ -113,7 +117,8 @@ public class PersonNameNavigator {
 			NamePid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC, NamePid);
+		eventBroker.post(net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC,
+				NamePid);
 
 	}
 

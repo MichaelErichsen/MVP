@@ -21,7 +21,8 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  *
  */
 public class LocationNameServer implements IHREServer {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNamePid;
 	private int locationPid;
 	private int fromDatePid;
@@ -56,8 +57,20 @@ public class LocationNameServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		name.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get()
+	 */
+	@Override
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -69,6 +82,7 @@ public class LocationNameServer implements IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
+	@Override
 	public void get(int key) throws SQLException, MvpException {
 		name.get(key);
 		setFromDatePid1(name.getFromDatePid());
@@ -84,12 +98,15 @@ public class LocationNameServer implements IHREServer {
 
 		LOGGER.fine("Location PID: " + name.getLocationPid());
 		LOGGER.fine("Location name PID: " + key);
-		LOGGER.fine("Location name style PID: " + name.getLocationNameStylePid());
-		mapList = new LocationNameMaps().getFKLocationNameStylePid(name.getLocationNameStylePid());
+		LOGGER.fine(
+				"Location name style PID: " + name.getLocationNameStylePid());
+		mapList = new LocationNameMaps()
+				.getFKLocationNameStylePid(name.getLocationNameStylePid());
 		partList = new LocationNameParts().getFKLocationNamePid(key);
 
 		if (mapList.size() != partList.size()) {
-			throw new MvpException("Map list size: " + mapList.size() + ", part list size: " + partList.size());
+			throw new MvpException("Map list size: " + mapList.size()
+					+ ", part list size: " + partList.size());
 		}
 	}
 
@@ -160,7 +177,8 @@ public class LocationNameServer implements IHREServer {
 
 			// Concatenate non-null name parts
 			for (final LocationNameParts nameParts : npl) {
-				if (nameParts.getLocationNamePid() == aName.getLocationNamePid()) {
+				if (nameParts.getLocationNamePid() == aName
+						.getLocationNamePid()) {
 					if (nameParts.getLabel() != null) {
 						sb.append(nameParts.getLabel() + " ");
 					}
@@ -210,8 +228,10 @@ public class LocationNameServer implements IHREServer {
 
 				// Concatenate non-null name parts
 				for (final LocationNameParts nameParts : lnp) {
-					if (nameParts.getLocationNamePid() == aName.getLocationNamePid()) {
-						if ((nameParts.getLabel() != null) && !(nameParts.getLabel().equals(""))) {
+					if (nameParts.getLocationNamePid() == aName
+							.getLocationNamePid()) {
+						if ((nameParts.getLabel() != null)
+								&& !(nameParts.getLabel().equals(""))) {
 							sb.append(nameParts.getLabel() + " ");
 						}
 					}
@@ -240,6 +260,7 @@ public class LocationNameServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public int insert() throws SQLException, MvpException {
 		name.setFromDatePid(fromDatePid);
 		name.setLocationNamePid(locationNamePid);
@@ -342,6 +363,7 @@ public class LocationNameServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public void update() throws SQLException, MvpException {
 		name.setFromDatePid(fromDatePid);
 		name.setLocationNamePid(locationNamePid);
@@ -351,15 +373,6 @@ public class LocationNameServer implements IHREServer {
 		name.setToDatePid(toDatePid);
 		name.setPreposition(preposition);
 		name.update();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -38,7 +38,8 @@ import net.myerichsen.hremvp.location.providers.LocationNameStyleProvider;
  *
  */
 public class NewLocationWizardPage3 extends WizardPage {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final List<Text> textList = new ArrayList<>();
 	private final List<Label> labelList = new ArrayList<>();
 	private Text textGoogleMapsKey;
@@ -60,9 +61,8 @@ public class NewLocationWizardPage3 extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
-	 * Composite)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets. Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -89,13 +89,15 @@ public class NewLocationWizardPage3 extends WizardPage {
 						labelList.add(label);
 
 						final Text text = new Text(container, SWT.BORDER);
-						text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+						text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+								true, false, 1, 1));
 						text.setText("");
 						textList.add(text);
 
 						container.getParent().layout();
 
-						LOGGER.fine("Added " + label.getText() + " and " + text.getText());
+						LOGGER.fine("Added " + label.getText() + " and "
+								+ text.getText());
 					}
 				}
 			}
@@ -117,7 +119,8 @@ public class NewLocationWizardPage3 extends WizardPage {
 		lblGoogleMapsKey.setText("Google Maps Key");
 
 		textGoogleMapsKey = new Text(container, SWT.BORDER | SWT.PASSWORD);
-		textGoogleMapsKey.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textGoogleMapsKey.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		setControl(container);
 
@@ -133,7 +136,8 @@ public class NewLocationWizardPage3 extends WizardPage {
 		StringBuilder sb = new StringBuilder();
 		String locationPart;
 
-		if ((textGoogleMapsKey == null) || (textGoogleMapsKey.getText().length() == 0)) {
+		if ((textGoogleMapsKey == null)
+				|| (textGoogleMapsKey.getText().length() == 0)) {
 			textGoogleMapsKey.setFocus();
 			eventBroker.post("MESSAGE", "Please insert Google Map Key");
 			return;
@@ -157,8 +161,10 @@ public class NewLocationWizardPage3 extends WizardPage {
 
 		try {
 			final CloseableHttpClient client = HttpClients.createDefault();
-			final HttpGet request = new HttpGet("https://maps.googleapis.com/maps/api/geocode/json?address="
-					+ locationPart + "&key=" + textGoogleMapsKey.getText().trim());
+			final HttpGet request = new HttpGet(
+					"https://maps.googleapis.com/maps/api/geocode/json?address="
+							+ locationPart + "&key="
+							+ textGoogleMapsKey.getText().trim());
 			final CloseableHttpResponse response = client.execute(request);
 
 			final StatusLine statusLine = response.getStatusLine();
@@ -167,7 +173,8 @@ public class NewLocationWizardPage3 extends WizardPage {
 				throw new MvpException(statusLine.getReasonPhrase());
 			}
 
-			final BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			final BufferedReader br = new BufferedReader(
+					new InputStreamReader(response.getEntity().getContent()));
 
 			String s;
 			sb = new StringBuilder();
@@ -187,7 +194,8 @@ public class NewLocationWizardPage3 extends WizardPage {
 			final String status = jsonObject.getString("status");
 
 			if (!status.equals("OK")) {
-				throw new MvpException(status + ", " + jsonObject.getString("error_message"));
+				throw new MvpException(
+						status + ", " + jsonObject.getString("error_message"));
 			}
 
 			final JSONArray results = jsonObject.getJSONArray("results");
@@ -199,14 +207,17 @@ public class NewLocationWizardPage3 extends WizardPage {
 			LOGGER.info("Lat " + lat + ", lng " + lng);
 
 			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-			wizard.getPage1().getTextXCoordinate().setText(Double.toString(lat));
-			wizard.getPage1().getTextYCoordinate().setText(Double.toString(lng));
+			wizard.getPage1().getTextXCoordinate()
+					.setText(Double.toString(lat));
+			wizard.getPage1().getTextYCoordinate()
+					.setText(Double.toString(lng));
 			wizard.addPage4();
 			wizard.getContainer().updateButtons();
 			wizard.setLocationName(result0.getString("formatted_address"));
 			setPageComplete(true);
 			eventBroker.post("MESSAGE",
-					"Geocoded address " + result0.getString("formatted_address") + " as lat " + lat + ", lng " + lng);
+					"Geocoded address " + result0.getString("formatted_address")
+							+ " as lat " + lat + ", lng " + lng);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());

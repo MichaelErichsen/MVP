@@ -33,7 +33,7 @@ public class NewPersonNameWizard extends Wizard {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param personPid
 	 * @param context   The Eclipse Context
 	 *

@@ -44,7 +44,8 @@ public class LanguageServer {
 		final List<Languages> languageList = language.get();
 
 		for (final Languages aLanguage : languageList) {
-			stringList.add(aLanguage.getLanguagePid() + "," + aLanguage.getIsocode() + "," + aLanguage.getLabel());
+			stringList.add(aLanguage.getLanguagePid() + ","
+					+ aLanguage.getIsocode() + "," + aLanguage.getLabel());
 		}
 
 		return stringList;

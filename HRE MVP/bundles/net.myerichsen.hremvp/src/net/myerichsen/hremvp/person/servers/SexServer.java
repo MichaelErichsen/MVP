@@ -65,7 +65,6 @@ public class SexServer implements IHREServer {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

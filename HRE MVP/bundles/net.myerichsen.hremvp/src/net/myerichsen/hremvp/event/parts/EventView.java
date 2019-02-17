@@ -46,7 +46,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 11. dec. 2018
  */
 public class EventView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -128,8 +129,10 @@ public class EventView {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -142,13 +145,16 @@ public class EventView {
 	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
-		scrolledComposite = new ScrolledComposite(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		scrolledComposite = new ScrolledComposite(parent,
+				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 
 		composite_1 = new Composite(scrolledComposite, SWT.NONE);
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
+		composite_1.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		composite_1.setLayout(new GridLayout(3, false));
@@ -157,52 +163,62 @@ public class EventView {
 		lblId.setText("Event ID");
 
 		textId = new Text(composite_1, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 
 		final Label lblLabel = new Label(composite_1, SWT.NONE);
 		lblLabel.setText("Event Name");
 
 		textEventNamePid = new Text(composite_1, SWT.BORDER);
-		textEventNamePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textEventNamePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		textEventName = new Text(composite_1, SWT.BORDER);
 		textEventName.setEditable(false);
-		textEventName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textEventName.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblLanguage = new Label(composite_1, SWT.NONE);
 		lblLanguage.setText("Language");
 
 		textLanguagePid = new Text(composite_1, SWT.BORDER);
 		textLanguagePid.setEditable(false);
-		textLanguagePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textLanguagePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		textIsoCode = new Text(composite_1, SWT.BORDER);
 		textIsoCode.setEditable(false);
-		textIsoCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textIsoCode.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 
 		textLanguage = new Text(composite_1, SWT.BORDER);
 		textLanguage.setEditable(false);
-		textLanguage.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		textLanguage.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblEventType = new Label(composite_1, SWT.NONE);
-		lblEventType.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblEventType.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEventType.setText("Event Type");
 
 		textEventTypePid = new Text(composite_1, SWT.BORDER);
 		textEventTypePid.setEditable(false);
-		textEventTypePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textEventTypePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		textEventType = new Text(composite_1, SWT.BORDER);
 		textEventType.setEditable(false);
-		textEventType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textEventType.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblFromDate = new Label(composite_1, SWT.NONE);
 		lblFromDate.setText("From Date ID");
 
 		textFromDatePid = new Text(composite_1, SWT.BORDER);
-		textFromDatePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textFromDatePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		final Composite compositeFrom = new Composite(composite_1, SWT.NONE);
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -211,7 +227,8 @@ public class EventView {
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -235,7 +252,8 @@ public class EventView {
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -262,18 +280,21 @@ public class EventView {
 		btnClearFrom.setText("Clear");
 
 		textFromDate = new Text(composite_1, SWT.BORDER);
-		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		textFromDate.setEditable(false);
 
 		textFromOriginal = new Text(composite_1, SWT.BORDER);
-		textFromOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		textFromOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		textFromOriginal.setEditable(false);
 
 		final Label lblToDate = new Label(composite_1, SWT.NONE);
 		lblToDate.setText("To Date ID");
 
 		textToDatePid = new Text(composite_1, SWT.BORDER);
-		textToDatePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textToDatePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		final Composite compositeTo = new Composite(composite_1, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -292,7 +313,8 @@ public class EventView {
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textToDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(textToDate.getShell(),
+						context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -316,7 +338,8 @@ public class EventView {
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textToDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -343,18 +366,22 @@ public class EventView {
 		btnClearTo.setText("Clear");
 
 		textToDate = new Text(composite_1, SWT.BORDER);
-		textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		textToDate.setEditable(false);
 
 		textToOriginal = new Text(composite_1, SWT.BORDER);
-		textToOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		textToOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		textToOriginal.setEditable(false);
 
 		scrolledComposite.setContent(composite_1);
-		scrolledComposite.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		scrolledComposite
+				.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -420,7 +447,8 @@ public class EventView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Event " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Event " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -451,21 +479,26 @@ public class EventView {
 
 			provider.get(key);
 			textId.setText(Integer.toString(provider.getEventPid()));
-			textEventNamePid.setText(Integer.toString(provider.getEventNamePid()));
+			textEventNamePid
+					.setText(Integer.toString(provider.getEventNamePid()));
 			textEventName.setText(provider.getEventName());
-			textFromDatePid.setText(Integer.toString(provider.getFromDatePid()));
+			textFromDatePid
+					.setText(Integer.toString(provider.getFromDatePid()));
 			textFromDate.setText(provider.getFromDateLabel());
 			textFromOriginal.setText(provider.getFromDateOriginal());
 			textToDatePid.setText(Integer.toString(provider.getToDatePid()));
 			textToDate.setText(provider.getToDateLabel());
 			textToOriginal.setText(provider.getToDateOriginal());
-			textLanguagePid.setText(Integer.toString(provider.getLanguagePid()));
+			textLanguagePid
+					.setText(Integer.toString(provider.getLanguagePid()));
 			textIsoCode.setText(provider.getIsoCode());
 			textLanguage.setText(provider.getLanguage());
-			textEventTypePid.setText(Integer.toString(provider.getEventTypePid()));
+			textEventTypePid
+					.setText(Integer.toString(provider.getEventTypePid()));
 			textEventType.setText(provider.getEventType());
 
-			eventBroker.post("MESSAGE", "Event " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE",
+					"Event " + textId.getText() + " has been fetched");
 
 		} catch (final Exception e) {
 			clear();
@@ -484,7 +517,8 @@ public class EventView {
 			provider.setEventPid(Integer.parseInt(textId.getText()));
 			provider.setToDatePid(Integer.parseInt(textToDate.getText()));
 			provider.insert();
-			eventBroker.post("MESSAGE", "Event " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Event " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -504,7 +538,8 @@ public class EventView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeLocationPidUpdateTopic(@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int key) {
+	private void subscribeLocationPidUpdateTopic(
+			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int key) {
 		get(key);
 	}
 
@@ -517,7 +552,8 @@ public class EventView {
 			provider.setEventPid(Integer.parseInt(textId.getText()));
 			provider.setToDatePid(Integer.parseInt(textToDate.getText()));
 			provider.update();
-			eventBroker.post("MESSAGE", "Event Name " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Event Name " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

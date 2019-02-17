@@ -60,7 +60,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  */
 @SuppressWarnings("restriction")
 public class LocationNameViewOld {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -142,8 +143,10 @@ public class LocationNameViewOld {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -156,13 +159,16 @@ public class LocationNameViewOld {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		scrolledComposite = new ScrolledComposite(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		scrolledComposite = new ScrolledComposite(parent,
+				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 
 		composite_1 = new Composite(scrolledComposite, SWT.NONE);
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
+		composite_1.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		composite_1.setLayout(new GridLayout(3, false));
@@ -171,7 +177,8 @@ public class LocationNameViewOld {
 		lblId.setText("Location Name ID");
 
 		textId = new Text(composite_1, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		btnPrimary = new Button(composite_1, SWT.CHECK);
 		btnPrimary.setText("Primary Name");
@@ -180,31 +187,37 @@ public class LocationNameViewOld {
 		lblStyle.setText("Location Name Style");
 
 		textLocationNameStylePid = new Text(composite_1, SWT.BORDER);
-		textLocationNameStylePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textLocationNameStylePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		textLocationNameStylePid.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openLocationNameStyleView();
 			}
 		});
-		textLocationNameStylePid.setToolTipText("Double click to edit location name style");
+		textLocationNameStylePid
+				.setToolTipText("Double click to edit location name style");
 
 		textLocationNameStyle = new Text(composite_1, SWT.BORDER);
-		textLocationNameStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textLocationNameStyle.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		textLocationNameStyle.setEditable(false);
 
 		final Label lblPreposition = new Label(composite_1, SWT.NONE);
 		lblPreposition.setText("Preposition");
 
 		textPreposition = new Text(composite_1, SWT.BORDER);
-		textPreposition.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		textPreposition.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
 		final Label lblLocationNameParts = new Label(composite_1, SWT.NONE);
 		lblLocationNameParts.setText("Location Name Parts");
 
-		tableViewerNameParts = new TableViewer(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewerNameParts = new TableViewer(composite_1,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		tableNameParts = tableViewerNameParts.getTable();
-		tableNameParts.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
+		tableNameParts.setLayoutData(
+				new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
 		tableNameParts.setToolTipText("Double click to edit name map");
 		tableNameParts.addMouseListener(new MouseAdapter() {
 			@Override
@@ -215,18 +228,23 @@ public class LocationNameViewOld {
 		tableNameParts.setLinesVisible(true);
 		tableNameParts.setHeaderVisible(true);
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(tableViewerNameParts, SWT.NONE);
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewerNameParts, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumnLabelFromMaps = new TableViewerColumn(tableViewerNameParts, SWT.NONE);
-		final TableColumn tblclmnLabelFromMaps = tableViewerColumnLabelFromMaps.getColumn();
+		final TableViewerColumn tableViewerColumnLabelFromMaps = new TableViewerColumn(
+				tableViewerNameParts, SWT.NONE);
+		final TableColumn tblclmnLabelFromMaps = tableViewerColumnLabelFromMaps
+				.getColumn();
 		tblclmnLabelFromMaps.setWidth(200);
 		tblclmnLabelFromMaps.setText("Label from Maps");
 
-		final TableViewerColumn tableViewerColumnValueFromParts = new TableViewerColumn(tableViewerNameParts, SWT.NONE);
-		final TableColumn tblclmnValueFromParts = tableViewerColumnValueFromParts.getColumn();
+		final TableViewerColumn tableViewerColumnValueFromParts = new TableViewerColumn(
+				tableViewerNameParts, SWT.NONE);
+		final TableColumn tblclmnValueFromParts = tableViewerColumnValueFromParts
+				.getColumn();
 		tblclmnValueFromParts.setWidth(200);
 		tblclmnValueFromParts.setText("Value from Parts");
 
@@ -234,7 +252,8 @@ public class LocationNameViewOld {
 		lblFromDate.setText("From Date ID");
 
 		textFromDatePid = new Text(composite_1, SWT.BORDER);
-		textFromDatePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textFromDatePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		final Composite compositeFrom = new Composite(composite_1, SWT.NONE);
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -243,7 +262,8 @@ public class LocationNameViewOld {
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -267,7 +287,8 @@ public class LocationNameViewOld {
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -294,18 +315,21 @@ public class LocationNameViewOld {
 		btnClearFrom.setText("Clear");
 
 		textFromDate = new Text(composite_1, SWT.BORDER);
-		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		textFromDate.setEditable(false);
 
 		textFromOriginal = new Text(composite_1, SWT.BORDER);
-		textFromOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		textFromOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		textFromOriginal.setEditable(false);
 
 		final Label lblToDate = new Label(composite_1, SWT.NONE);
 		lblToDate.setText("To Date ID");
 
 		textToDatePid = new Text(composite_1, SWT.BORDER);
-		textToDatePid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textToDatePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
 		final Composite compositeTo = new Composite(composite_1, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -324,7 +348,8 @@ public class LocationNameViewOld {
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textToDate.getShell(), context);
+				final DateDialog dialog = new DateDialog(textToDate.getShell(),
+						context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
@@ -348,7 +373,8 @@ public class LocationNameViewOld {
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
+				final DateNavigatorDialog dialog = new DateNavigatorDialog(
+						textToDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
 					try {
 						final int hdatePid = dialog.getHdatePid();
@@ -375,15 +401,18 @@ public class LocationNameViewOld {
 		btnClearTo.setText("Clear");
 
 		textToDate = new Text(composite_1, SWT.BORDER);
-		textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		textToDate.setEditable(false);
 
 		textToOriginal = new Text(composite_1, SWT.BORDER);
-		textToOriginal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		textToOriginal.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		textToOriginal.setEditable(false);
 
 		scrolledComposite.setContent(composite_1);
-		scrolledComposite.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		scrolledComposite
+				.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -451,7 +480,8 @@ public class LocationNameViewOld {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Location Name " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"Location Name " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -481,7 +511,8 @@ public class LocationNameViewOld {
 		try {
 			provider.get(locationNamePid);
 			textId.setText(Integer.toString(locationNamePid));
-			textLocationNameStylePid.setText(Integer.toString(provider.getLocationNameStylePid()));
+			textLocationNameStylePid.setText(
+					Integer.toString(provider.getLocationNameStylePid()));
 			textLocationNameStyle.setText(provider.getLocationNameStyleLabel());
 
 			final HDateProvider hdp = new HDateProvider();
@@ -511,12 +542,14 @@ public class LocationNameViewOld {
 
 			for (int i = 0; i < partList.size(); i++) {
 				final TableItem item = new TableItem(tableNameParts, SWT.NONE);
-				item.setText(0, Integer.toString(partList.get(i).getLocationNamePartPid()));
+				item.setText(0, Integer
+						.toString(partList.get(i).getLocationNamePartPid()));
 				item.setText(1, mapList.get(i).getLabel());
 				item.setText(2, partList.get(i).getLabel());
 			}
 
-			eventBroker.post("MESSAGE", "Location Name " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE",
+					"Location Name " + textId.getText() + " has been fetched");
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -531,13 +564,16 @@ public class LocationNameViewOld {
 	protected void insert() {
 		try {
 			provider.setLocationNamePid(Integer.parseInt(textId.getText()));
-			provider.setLocationNameStylePid(Integer.parseInt(textLocationNameStylePid.getText()));
+			provider.setLocationNameStylePid(
+					Integer.parseInt(textLocationNameStylePid.getText()));
 			provider.setPrimaryLocationName(btnPrimary.getSelection());
-			provider.setFromDatePid(Integer.parseInt(textFromDatePid.getText()));
+			provider.setFromDatePid(
+					Integer.parseInt(textFromDatePid.getText()));
 			provider.setToDatePid(Integer.parseInt(textToDatePid.getText()));
 			provider.setPreposition(textPreposition.getText());
 			provider.insert();
-			eventBroker.post("MESSAGE", "Location Name " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE",
+					"Location Name " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -551,8 +587,8 @@ public class LocationNameViewOld {
 		int namePartPid = 0;
 
 		// Open Location Name Map View
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openlocationnamepartview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openlocationnamepartview", null);
 		handlerService.executeHandler(command);
 
 		// Post name map pid
@@ -563,7 +599,9 @@ public class LocationNameViewOld {
 			namePartPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.LOCATION_NAME_PART_PID_UPDATE_TOPIC, namePartPid);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.LOCATION_NAME_PART_PID_UPDATE_TOPIC,
+				namePartPid);
 	}
 
 	/**
@@ -574,8 +612,9 @@ public class LocationNameViewOld {
 		int locationNameStylePid = 0;
 
 		// Open Location Name Map View
-		final ParameterizedCommand command = commandService
-				.createCommand("net.myerichsen.hremvp.command.openlocationnamestyleview", null);
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openlocationnamestyleview",
+				null);
 		handlerService.executeHandler(command);
 
 		final String nameStyle = textLocationNameStyle.getText();
@@ -587,7 +626,8 @@ public class LocationNameViewOld {
 
 			for (final LocationNameStyles locationNameStyles : styleList) {
 				if (locationNameStyles.getLabel().equals(nameStyle)) {
-					locationNameStylePid = locationNameStyles.getLocationNameStylePid();
+					locationNameStylePid = locationNameStyles
+							.getLocationNameStylePid();
 					break;
 				}
 			}
@@ -597,7 +637,9 @@ public class LocationNameViewOld {
 			e.printStackTrace();
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC, locationNameStylePid);
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC,
+				locationNameStylePid);
 	}
 
 	/**
@@ -614,7 +656,8 @@ public class LocationNameViewOld {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNameUpdateTopic(@UIEventTopic(Constants.LOCATION_NAME_PID_UPDATE_TOPIC) int locationNamePid)
+	private void subscribeNameUpdateTopic(
+			@UIEventTopic(Constants.LOCATION_NAME_PID_UPDATE_TOPIC) int locationNamePid)
 			throws SQLException, MvpException {
 		LOGGER.info("Location name pid: " + locationNamePid);
 		get(locationNamePid);
@@ -626,13 +669,16 @@ public class LocationNameViewOld {
 	protected void update() {
 		try {
 			provider.setLocationNamePid(Integer.parseInt(textId.getText()));
-			provider.setLocationNameStylePid(Integer.parseInt(textLocationNameStylePid.getText()));
+			provider.setLocationNameStylePid(
+					Integer.parseInt(textLocationNameStylePid.getText()));
 			provider.setPrimaryLocationName(btnPrimary.getSelection());
-			provider.setFromDatePid(Integer.parseInt(textFromDatePid.getText()));
+			provider.setFromDatePid(
+					Integer.parseInt(textFromDatePid.getText()));
 			provider.setToDatePid(Integer.parseInt(textToDatePid.getText()));
 			provider.setPreposition(textPreposition.getText());
 			provider.update();
-			eventBroker.post("MESSAGE", "Location Name " + textId.getText() + " has been updated");
+			eventBroker.post("MESSAGE",
+					"Location Name " + textId.getText() + " has been updated");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

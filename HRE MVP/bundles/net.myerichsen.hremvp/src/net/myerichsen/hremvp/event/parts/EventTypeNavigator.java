@@ -89,7 +89,7 @@ public class EventTypeNavigator {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -115,7 +115,7 @@ public class EventTypeNavigator {
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		MenuItem mntmAddEventType = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmAddEventType = new MenuItem(menu, SWT.NONE);
 		mntmAddEventType.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -126,7 +126,7 @@ public class EventTypeNavigator {
 		});
 		mntmAddEventType.setText("Add event type...");
 
-		MenuItem mntmDeleteSelectedEvent = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmDeleteSelectedEvent = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedEvent.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -190,11 +190,11 @@ public class EventTypeNavigator {
 		}
 
 		try {
-			EventTypeProvider provider = new EventTypeProvider();
+			final EventTypeProvider provider = new EventTypeProvider();
 			provider.delete(eventTypePid);
 			eventBroker.post("MESSAGE",
 					"Event type " + eventTypeName + " has been deleted");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

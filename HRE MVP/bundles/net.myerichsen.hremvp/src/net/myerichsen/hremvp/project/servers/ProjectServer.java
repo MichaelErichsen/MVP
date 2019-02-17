@@ -36,7 +36,6 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -148,7 +147,6 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -159,7 +157,6 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 }

@@ -36,7 +36,7 @@ public class EventNameServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
 	@Override
@@ -46,7 +46,7 @@ public class EventNameServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override

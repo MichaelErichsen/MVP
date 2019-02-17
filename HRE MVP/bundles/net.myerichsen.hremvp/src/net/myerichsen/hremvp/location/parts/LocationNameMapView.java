@@ -42,7 +42,8 @@ import net.myerichsen.hremvp.location.providers.LocationNameMapProvider;
  *
  */
 public class LocationNameMapView {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -98,8 +99,10 @@ public class LocationNameMapView {
 	 *
 	 */
 	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application, null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2).getSelectedElement();
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				.getSelectedElement();
 		partService.hidePart(part, true);
 	}
 
@@ -116,28 +119,33 @@ public class LocationNameMapView {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textId.addVerifyListener(new NumericVerifyListener());
 
 		new Label(parent, SWT.NONE);
 
 		final Label lblLocationStyle = new Label(parent, SWT.NONE);
-		lblLocationStyle.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		lblLocationStyle.setLayoutData(
+				new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		lblLocationStyle.setText("Style");
 
 		textLocationStyleId = new Text(parent, SWT.BORDER);
-		textLocationStyleId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLocationStyleId.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textLocationStyleId.addVerifyListener(new NumericVerifyListener());
 
 		textLocationStyle = new Text(parent, SWT.BORDER);
 		textLocationStyle.setEditable(false);
-		textLocationStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLocationStyle.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblPartNo = new Label(parent, SWT.NONE);
 		lblPartNo.setText("Part no.");
 
 		textPartNo = new Text(parent, SWT.BORDER);
-		textPartNo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPartNo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textPartNo.addVerifyListener(new NumericVerifyListener());
 
 		new Label(parent, SWT.NONE);
@@ -146,14 +154,16 @@ public class LocationNameMapView {
 		lblLabel.setText("Label");
 
 		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		textLabel.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblLabelReportPosition = new Label(parent, SWT.NONE);
 		lblLabelReportPosition.setText("Label Report Position");
 
 		group = new Group(parent, SWT.NONE);
 		group.setLayout(new RowLayout(SWT.HORIZONTAL));
-		group.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		group.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
 		btnRadioButtonPre = new Button(group, SWT.RADIO);
 		btnRadioButtonPre.setSelection(true);
@@ -166,7 +176,8 @@ public class LocationNameMapView {
 		btnRadioButtonNone.setText("None");
 
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		composite.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		buttonSelect = new Button(composite, SWT.NONE);
@@ -232,7 +243,8 @@ public class LocationNameMapView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText() + " has been deleted");
+			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText()
+					+ " has been deleted");
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -262,7 +274,8 @@ public class LocationNameMapView {
 			provider.get(key);
 
 			textId.setText(Integer.toString(provider.getLocationNameMapPid()));
-			textLocationStyleId.setText(Integer.toString(provider.getLocationNameStylePid()));
+			textLocationStyleId.setText(
+					Integer.toString(provider.getLocationNameStylePid()));
 			textLocationStyle.setText(provider.getStyleLabel());
 			textPartNo.setText(Integer.toString(provider.getPartNo()));
 			textLabel.setText(provider.getLabel());
@@ -283,7 +296,8 @@ public class LocationNameMapView {
 				btnRadioButtonPost.setSelection(false);
 			}
 
-			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText() + " has been fetched");
+			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText()
+					+ " has been fetched");
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -298,7 +312,8 @@ public class LocationNameMapView {
 		try {
 			provider.setLabel(textLabel.getText());
 			provider.setLocationNameMapPid(Integer.parseInt(textId.getText()));
-			provider.setLocationNameStylePid(Integer.parseInt(textLocationStyleId.getText()));
+			provider.setLocationNameStylePid(
+					Integer.parseInt(textLocationStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 
 			if (btnRadioButtonNone.getSelection()) {
@@ -310,7 +325,8 @@ public class LocationNameMapView {
 			}
 
 			provider.insert();
-			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText() + " has been inserted");
+			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText()
+					+ " has been inserted");
 		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
@@ -331,7 +347,8 @@ public class LocationNameMapView {
 	@Inject
 	@Optional
 	private void subscribeLocationNameMapUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_NAME_MAP_PID_UPDATE_TOPIC) int locationNameMapPid) throws SQLException {
+			@UIEventTopic(Constants.LOCATION_NAME_MAP_PID_UPDATE_TOPIC) int locationNameMapPid)
+			throws SQLException {
 		get(locationNameMapPid);
 	}
 
@@ -342,7 +359,8 @@ public class LocationNameMapView {
 		try {
 			provider.setLabel(textLabel.getText());
 			provider.setLocationNameMapPid(Integer.parseInt(textId.getText()));
-			provider.setLocationNameStylePid(Integer.parseInt(textLocationStyleId.getText()));
+			provider.setLocationNameStylePid(
+					Integer.parseInt(textLocationStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 
 			if (btnRadioButtonNone.getSelection()) {
@@ -354,7 +372,8 @@ public class LocationNameMapView {
 			}
 
 			provider.update();
-			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText() + " has been updated");
+			eventBroker.post("MESSAGE", "Location Name Map " + textId.getText()
+					+ " has been updated");
 		} catch (final SQLException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());

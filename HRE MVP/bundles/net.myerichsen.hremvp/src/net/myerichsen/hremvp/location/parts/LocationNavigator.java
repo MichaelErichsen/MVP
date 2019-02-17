@@ -90,7 +90,7 @@ public class LocationNavigator {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -115,10 +115,10 @@ public class LocationNavigator {
 		tblclmnPrimaryLocationName.setWidth(400);
 		tblclmnPrimaryLocationName.setText("Primary Location Name");
 
-		Menu menu = new Menu(table);
+		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		MenuItem mntmAddLocation = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmAddLocation = new MenuItem(menu, SWT.NONE);
 		mntmAddLocation.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -129,7 +129,8 @@ public class LocationNavigator {
 		});
 		mntmAddLocation.setText("Add location...");
 
-		MenuItem mntmDeleteSelectedLocation = new MenuItem(menu, SWT.NONE);
+		final MenuItem mntmDeleteSelectedLocation = new MenuItem(menu,
+				SWT.NONE);
 		mntmDeleteSelectedLocation.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -193,7 +194,7 @@ public class LocationNavigator {
 		}
 
 		try {
-			LocationProvider provider = new LocationProvider();
+			final LocationProvider provider = new LocationProvider();
 			// FIXME SEVERE: Referential integrity constraint violation:
 			// "LOCATIONS_LOCATION_NAMES_FK: PUBLIC.LOCATION_NAMES FOREIGN
 			// KEY(LOCATION_PID) REFERENCES PUBLIC.LOCATIONS(LOCATION_PID)

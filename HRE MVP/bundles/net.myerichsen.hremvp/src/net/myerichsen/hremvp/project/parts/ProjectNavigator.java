@@ -532,7 +532,7 @@ public class ProjectNavigator {
 			closeDbIfActive(dbName);
 
 			// Connect to the new database
-			Connection conn = HreH2ConnectionPool.getConnection(dbName);
+			final Connection conn = HreH2ConnectionPool.getConnection(dbName);
 
 			final String h2Version = store.getString("H2VERSION");
 			LOGGER.fine("Retrieved H2 version from preferences: "
@@ -589,6 +589,23 @@ public class ProjectNavigator {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
+	}
+
+	/**
+	 * Open H2 Database Navigator
+	 */
+	private void openDatabaseNavigator() {
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
+		h2dnPart.setLabel("Database Tables");
+		h2dnPart.setContainerData("650");
+		h2dnPart.setCloseable(true);
+		h2dnPart.setVisible(true);
+		h2dnPart.setContributionURI(
+				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
+		stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
+		partService.showPart(h2dnPart, PartState.ACTIVATE);
 	}
 
 	/**
@@ -695,23 +712,6 @@ public class ProjectNavigator {
 			e1.printStackTrace();
 		}
 
-	}
-
-	/**
-	 * Open H2 Database Navigator
-	 */
-	private void openDatabaseNavigator() {
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
-		h2dnPart.setLabel("Database Tables");
-		h2dnPart.setContainerData("650");
-		h2dnPart.setCloseable(true);
-		h2dnPart.setVisible(true);
-		h2dnPart.setContributionURI(
-				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
-		stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
-		partService.showPart(h2dnPart, PartState.ACTIVATE);
 	}
 
 	/**

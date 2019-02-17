@@ -8,36 +8,38 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.person.providers.PartnerProvider;
+import net.myerichsen.hremvp.person.providers.ParentProvider;
 
 /**
- * Wizard to add an existing person as a Partner
+ * Wizard to add an existing person as a parent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 17. feb. 2019
  *
  */
-public class NewPersonPartnerWizard extends Wizard {
+public class NewPersonParentWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
-	private NewPersonPartnerWizardPage1 page1;
-	private final int personPid;
+	private NewPersonParentWizardPage1 page1;
+	private ParentProvider parentProvider;
+	private int childPid;
 
 	/**
 	 * Constructor
 	 *
-	 * @param personPid
-	 * @param context
+	 * @param childPid
+	 * @param context  The Eclipse Context
+	 *
 	 */
-	public NewPersonPartnerWizard(int personPid, IEclipseContext context) {
-		setWindowTitle("Add Partner");
+	public NewPersonParentWizard(int childPid, IEclipseContext context) {
+		setWindowTitle("Add Parent");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
-		this.personPid = personPid;
+		this.childPid = childPid;
 	}
 
 	/*
@@ -48,7 +50,7 @@ public class NewPersonPartnerWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewPersonPartnerWizardPage1(context);
+		page1 = new NewPersonParentWizardPage1(context);
 		addPage(page1);
 	}
 
@@ -59,30 +61,31 @@ public class NewPersonPartnerWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		if (page1.getPartnerPid() != 0) {
-			PartnerProvider partnerProvider = new PartnerProvider();
-			partnerProvider.setPartner1(personPid);
-			final int partnerPid = page1.getPartnerPid();
-			partnerProvider.setPartner2(partnerPid);
-			partnerProvider.setPrimaryPartner(true);
-			partnerProvider.setRole(page1.getPartnerRole());
-			partnerProvider.setFromDatePid(page1.getPartnerFromDatePid());
-			partnerProvider.setToDatePid(page1.getPartnerToDatePid());
-
+		if (page1.getParentPid() != 0) {
+			parentProvider = new ParentProvider();
+			parentProvider.setChild(childPid);
+			int parentPid = page1.getParentPid();
+			parentProvider.setParent(parentPid);
+			parentProvider.setParentRole(page1.getParentRole());
+			parentProvider.setPrimaryParent(true);
+			// FIXME Language pid
+			parentProvider.setLanguagePid(1);
 			try {
-				partnerProvider.insert();
-				LOGGER.info("Inserted partner pid " + partnerPid
-						+ " for person " + personPid);
-				eventBroker.post("MESSAGE", "Inserted partner pid " + partnerPid
-						+ " for person " + personPid);
+				parentPid = parentProvider.insert();
+				LOGGER.info("Inserted Parent pid " + parentPid + " for child "
+						+ childPid);
+
+				eventBroker.post("MESSAGE", "Inserted Parent pid " + parentPid
+						+ " for parent " + childPid);
 				eventBroker.post(
 						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
-						personPid);
+						childPid);
 				return true;
 			} catch (SQLException | MvpException e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}
+
 		}
 		return false;
 	}

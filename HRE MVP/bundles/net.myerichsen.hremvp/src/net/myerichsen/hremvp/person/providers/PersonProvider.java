@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. feb. 2019
+ * @version 17. feb. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -267,6 +267,17 @@ public class PersonProvider implements IHREProvider {
 	public void removeChild(int parentPid, int childPid)
 			throws SQLException, MvpException {
 		server.removeChild(parentPid, childPid);
+	}
+
+	/**
+	 * @param personPid
+	 * @param parentPid
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void removeParent(int personPid, int parentPid)
+			throws SQLException, MvpException {
+		server.removeParent(personPid, parentPid);
 	}
 
 	/**

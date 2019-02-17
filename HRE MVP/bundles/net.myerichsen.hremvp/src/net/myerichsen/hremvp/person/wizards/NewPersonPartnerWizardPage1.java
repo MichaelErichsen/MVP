@@ -30,10 +30,10 @@ import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Person Partner wizard page
+ * Person partner wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 15. feb. 2019
+ * @version 17. feb. 2019
  *
  */
 public class NewPersonPartnerWizardPage1 extends WizardPage {
@@ -99,9 +99,14 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				partnerToDatePid = dialog.getHdatePid();
-				final HDateProvider hdp = new HDateProvider();
-				hdp.get(partnerToDatePid);
-				textPartnershipEndDate.setText(hdp.getDate().toString());
+
+				if (partnerToDatePid > 0) {
+					final HDateProvider hdp = new HDateProvider();
+					hdp.get(partnerToDatePid);
+					textPartnershipEndDate.setText(hdp.getDate().toString());
+				} else
+					textPartnershipEndDate.setText("");
+
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -118,9 +123,14 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				partnerFromDatePid = dialog.getHdatePid();
-				final HDateProvider hdp = new HDateProvider();
-				hdp.get(partnerFromDatePid);
-				textPartnershipStartDate.setText(hdp.getDate().toString());
+
+				if (partnerFromDatePid > 0) {
+					final HDateProvider hdp = new HDateProvider();
+					hdp.get(partnerFromDatePid);
+					textPartnershipStartDate.setText(hdp.getDate().toString());
+				} else
+					textPartnershipStartDate.setText("");
+
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -398,10 +408,20 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 			provider = new PersonProvider();
 			provider.get(partnerPid);
 			textPartnerName.setText(provider.getPrimaryName());
-			dateProvider.get(provider.getBirthDatePid());
-			textPartnerBirthDate.setText(dateProvider.getDate().toString());
-			dateProvider.get(provider.getDeathDatePid());
-			textPartnerDeathDate.setText(dateProvider.getDate().toString());
+			final int birthDatePid = provider.getBirthDatePid();
+			if (birthDatePid > 0) {
+				dateProvider.get(birthDatePid);
+				textPartnerBirthDate.setText(dateProvider.getDate().toString());
+			} else {
+				textPartnerBirthDate.setText("");
+			}
+			final int deathDatePid = provider.getDeathDatePid();
+			if (deathDatePid > 0) {
+				dateProvider.get(deathDatePid);
+				textPartnerDeathDate.setText(dateProvider.getDate().toString());
+			} else {
+				textPartnerDeathDate.setText("");
+			}
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());

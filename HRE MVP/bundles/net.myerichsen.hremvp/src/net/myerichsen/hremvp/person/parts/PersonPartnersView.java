@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display and maintain all partners for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. feb. 2019
+ * @version 17. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonPartnersView {
@@ -61,28 +61,20 @@ public class PersonPartnersView {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private final PersonProvider provider;
+	private PersonProvider provider;
 	private int personPid;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 *
 	 */
-	public PersonPartnersView() throws SQLException {
-		provider = new PersonProvider();
-	}
-
-	/**
-	 * @param parent
-	 * @param context
-	 */
-	private void addPartner(Composite parent, IEclipseContext context) {
-		final WizardDialog dialog = new WizardDialog(parent.getShell(),
-				new NewPersonPartnerWizard(personPid, context));
-		dialog.open();
+	public PersonPartnersView() {
+		try {
+			provider = new PersonProvider();
+		} catch (final SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -145,7 +137,9 @@ public class PersonPartnersView {
 		mntmNewItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addPartner(parent, context);
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewPersonPartnerWizard(personPid, context));
+				dialog.open();
 			}
 		});
 		mntmNewItem.setText("Add person as partner...");
@@ -167,6 +161,34 @@ public class PersonPartnersView {
 			e1.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * The object is not needed anymore, but not yet destroyed
+	 */
+	@PreDestroy
+	public void dispose() {
+	}
+
+	/**
+	 *
+	 */
+	protected void openPartnerView() {
+		int personPid = 0;
+
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openpersonview", null);
+		handlerService.executeHandler(command);
+
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
+
+		if (selectedRows.length > 0) {
+			final TableItem selectedRow = selectedRows[0];
+			personPid = Integer.parseInt(selectedRow.getText(0));
+		}
+
+		LOGGER.info("Setting person pid: " + personPid);
+		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}
 
 	/**
@@ -197,7 +219,7 @@ public class PersonPartnersView {
 		}
 
 		try {
-			PersonProvider provider = new PersonProvider();
+			final PersonProvider provider = new PersonProvider();
 			provider.removePartner(personPid, PartnerPid);
 			eventBroker.post("MESSAGE",
 					"Partner " + primaryName + " has been removed");
@@ -206,34 +228,6 @@ public class PersonPartnersView {
 			e.printStackTrace();
 		}
 
-	}
-	
-	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	protected void openPartnerView() {
-		int personPid = 0;
-
-		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.openpersonview", null);
-		handlerService.executeHandler(command);
-
-		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			personPid = Integer.parseInt(selectedRow.getText(0));
-		}
-
-		LOGGER.info("Setting person pid: " + personPid);
-		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}
 
 	/**
@@ -251,6 +245,8 @@ public class PersonPartnersView {
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
+		this.personPid = personPid;
+
 		try {
 			tableViewer.setInput(provider.getPartnerList(personPid));
 			tableViewer.refresh();

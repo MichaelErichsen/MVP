@@ -31,7 +31,8 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  */
 // TODO Add primary check button and name type
 public class NewPersonNameWizardPage1 extends WizardPage {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
 	private Text textPersonNameStyle;
@@ -59,7 +60,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void browseFromDates() {
-		final DateNavigatorDialog dialog = new DateNavigatorDialog(textFromDate.getShell(), context);
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textFromDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
 				fromDatePid = dialog.getHdatePid();
@@ -76,8 +78,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 *
 	 */
 	protected void browseNameStyles() {
-		final PersonNameStyleNavigatorDialog dialog = new PersonNameStyleNavigatorDialog(textPersonNameStyle.getShell(),
-				context);
+		final PersonNameStyleNavigatorDialog dialog = new PersonNameStyleNavigatorDialog(
+				textPersonNameStyle.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
 				personNameStylePid = dialog.getPersonNameStylePid();
@@ -100,7 +102,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void browseToDates() {
-		final DateNavigatorDialog dialog = new DateNavigatorDialog(textToDate.getShell(), context);
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textToDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
 				toDatePid = dialog.getHdatePid();
@@ -141,9 +144,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
-	 * Composite)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets. Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -153,18 +155,22 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		container.setLayout(new GridLayout(3, false));
 
 		final Label lblPersonNameStyle = new Label(container, SWT.NONE);
-		lblPersonNameStyle.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblPersonNameStyle.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPersonNameStyle.setText("Person Name Style");
 
 		textPersonNameStyle = new Text(container, SWT.BORDER);
 		textPersonNameStyle.setEditable(false);
-		textPersonNameStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textPersonNameStyle.setToolTipText("Person Name Style is mandatory to continue");
+		textPersonNameStyle.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPersonNameStyle
+				.setToolTipText("Person Name Style is mandatory to continue");
 
 		final Composite compositeNameStyle = new Composite(container, SWT.NONE);
 		compositeNameStyle.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnBrowseNameStyle = new Button(compositeNameStyle, SWT.NONE);
+		final Button btnBrowseNameStyle = new Button(compositeNameStyle,
+				SWT.NONE);
 		btnBrowseNameStyle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -173,7 +179,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnBrowseNameStyle.setText("Browse");
 
-		final Button btnClearNameStyle = new Button(compositeNameStyle, SWT.NONE);
+		final Button btnClearNameStyle = new Button(compositeNameStyle,
+				SWT.NONE);
 		btnClearNameStyle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -187,7 +194,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 
 		textFromDate = new Text(container, SWT.BORDER);
 		textFromDate.setEditable(false);
-		textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite compositeFrom = new Composite(container, SWT.NONE);
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -224,7 +232,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 
 		textToDate = new Text(container, SWT.BORDER);
 		textToDate.setEditable(false);
-		textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite compositeTo = new Composite(container, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -270,7 +279,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void getNewFromDate() {
-		final DateDialog dialog = new DateDialog(textFromDate.getShell(), context);
+		final DateDialog dialog = new DateDialog(textFromDate.getShell(),
+				context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
@@ -290,7 +300,8 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void getNewToDate() {
-		final DateDialog dialog = new DateDialog(textToDate.getShell(), context);
+		final DateDialog dialog = new DateDialog(textToDate.getShell(),
+				context);
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();

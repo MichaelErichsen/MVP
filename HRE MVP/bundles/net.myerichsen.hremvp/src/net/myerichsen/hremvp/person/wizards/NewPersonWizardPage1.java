@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  *
  */
 /**
- * @author  Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 14. feb. 2019
  *
  */

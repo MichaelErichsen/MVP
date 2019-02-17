@@ -18,7 +18,7 @@ public class NewEventTypeWizard implements IWizard {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param context The Eclipse context
 	 */
 	public NewEventTypeWizard(int eventTypePid, IEclipseContext context) {

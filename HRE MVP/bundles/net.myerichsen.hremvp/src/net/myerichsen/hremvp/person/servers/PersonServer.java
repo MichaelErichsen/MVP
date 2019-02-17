@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. feb. 2019
+ * @version 17. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -135,7 +135,6 @@ public class PersonServer implements IHREServer {
 	 * @param target Target
 	 */
 	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -800,7 +799,6 @@ public class PersonServer implements IHREServer {
 	 * @param request Request
 	 */
 	public void insertRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -823,21 +821,38 @@ public class PersonServer implements IHREServer {
 
 	/**
 	 * @param personPid
+	 * @param parentPid
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public void removeParent(int personPid, int parentPid)
+			throws SQLException, MvpException {
+		final Parents parent = new Parents();
+
+		for (final Parents p : parent.getFKChild(parentPid)) {
+			if (p.getParent() == parentPid) {
+				parent.delete(p.getParentPid());
+			}
+		}
+	}
+
+	/**
+	 * @param personPid
 	 * @param partnerPid
 	 * @throws SQLException
 	 * @throws MvpException
 	 */
 	public void removePartner(int personPid, int partnerPid)
 			throws SQLException, MvpException {
-		Partners partner = new Partners();
+		final Partners partner = new Partners();
 
-		for (Partners p : partner.getFKPartner1(personPid)) {
+		for (final Partners p : partner.getFKPartner1(personPid)) {
 			if (p.getPartner2() == partnerPid) {
 				partner.delete(p.getPartnerPid());
 			}
 		}
 
-		for (Partners p : partner.getFKPartner2(personPid)) {
+		for (final Partners p : partner.getFKPartner2(personPid)) {
 			if (p.getPartner1() == partnerPid) {
 				partner.delete(p.getPartnerPid());
 			}
@@ -906,6 +921,5 @@ public class PersonServer implements IHREServer {
 	 * @param request Request
 	 */
 	public void updateRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
 	}
 }

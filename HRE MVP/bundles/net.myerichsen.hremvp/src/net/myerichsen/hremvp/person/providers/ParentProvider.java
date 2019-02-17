@@ -57,7 +57,6 @@ public class ParentProvider implements IHREProvider {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -167,7 +166,6 @@ public class ParentProvider implements IHREProvider {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 }

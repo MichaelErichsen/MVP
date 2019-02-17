@@ -54,7 +54,6 @@ public class PersonNameListProvider implements IHREProvider {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -65,7 +64,6 @@ public class PersonNameListProvider implements IHREProvider {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -76,7 +74,6 @@ public class PersonNameListProvider implements IHREProvider {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -94,7 +91,6 @@ public class PersonNameListProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -112,7 +108,6 @@ public class PersonNameListProvider implements IHREProvider {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
 
 	}
 

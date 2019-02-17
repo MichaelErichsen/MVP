@@ -13,7 +13,8 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
  *
  */
 public class HreContextHandlerCollection {
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static ContextHandlerCollection contexts;
 
 	/**

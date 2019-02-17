@@ -26,7 +26,8 @@ public class TreePerson {
 	 * @param sChildPid
 	 * @param name
 	 */
-	public TreePerson(String sPersonPid, int parentpid, String sChildPid, String name) {
+	public TreePerson(String sPersonPid, int parentpid, String sChildPid,
+			String name) {
 		super();
 		personPid = Integer.parseInt(sPersonPid);
 		parentPid = 0;
@@ -44,7 +45,8 @@ public class TreePerson {
 	 * @param childPid
 	 * @param name
 	 */
-	public TreePerson(String sPersonPid, String sParentpid, int childPid, String name) {
+	public TreePerson(String sPersonPid, String sParentpid, int childPid,
+			String name) {
 		super();
 		personPid = Integer.parseInt(sPersonPid);
 		parentPid = Integer.parseInt(sParentpid);
