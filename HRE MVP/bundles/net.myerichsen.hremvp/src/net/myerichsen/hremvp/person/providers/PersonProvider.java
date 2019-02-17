@@ -292,6 +292,16 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param personPid
+	 * @param sexPid
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void removeSex(int sexPid) throws SQLException, MvpException {
+		server.removeSex(sexPid);
+	}
+
+	/**
 	 * @param birthDatePid the birthDatePid to set
 	 */
 	public void setBirthDatePid(int i) {

@@ -8,22 +8,22 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.person.providers.PartnerProvider;
+import net.myerichsen.hremvp.person.providers.SexProvider;
 
 /**
- * Wizard to add an existing person as a Partner
+ * Wizard to add an existing person as a child
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 17. feb. 2019
  *
  */
-public class NewPersonPartnerWizard extends Wizard {
+public class NewPersonSexWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
-	private NewPersonPartnerWizardPage1 page1;
+	private NewPersonSexWizardPage1 page1;
 	private final int personPid;
 
 	/**
@@ -32,8 +32,8 @@ public class NewPersonPartnerWizard extends Wizard {
 	 * @param personPid
 	 * @param context
 	 */
-	public NewPersonPartnerWizard(int personPid, IEclipseContext context) {
-		setWindowTitle("Add Partner");
+	public NewPersonSexWizard(int personPid, IEclipseContext context) {
+		setWindowTitle("Add child");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
@@ -48,7 +48,7 @@ public class NewPersonPartnerWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewPersonPartnerWizardPage1(context);
+		page1 = new NewPersonSexWizardPage1(context);
 		addPage(page1);
 	}
 
@@ -59,22 +59,21 @@ public class NewPersonPartnerWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		if (page1.getPartnerPid() != 0) {
-			final PartnerProvider partnerProvider = new PartnerProvider();
-			partnerProvider.setPartner1(personPid);
-			final int partnerPid = page1.getPartnerPid();
-			partnerProvider.setPartner2(partnerPid);
-			partnerProvider.setPrimaryPartner(true);
-			partnerProvider.setRole(page1.getPartnerRole());
-			partnerProvider.setFromDatePid(page1.getPartnerFromDatePid());
-			partnerProvider.setToDatePid(page1.getPartnerToDatePid());
+		final int sexTypePid = page1.getSexTypePid();
 
+		if (sexTypePid > 0) {
+			final SexProvider sexProvider = new SexProvider();
+			sexProvider.setPersonPid(personPid);
+			sexProvider.setSexTypePid(sexTypePid);
+			sexProvider.setPrimarySex(page1.isPrimary());
 			try {
-				partnerProvider.insert();
-				LOGGER.info("Inserted partner pid " + partnerPid
-						+ " for person " + personPid);
-				eventBroker.post("MESSAGE", "Inserted partner pid " + partnerPid
-						+ " for person " + personPid);
+				final int sexPid = sexProvider.insert();
+
+				LOGGER.info(
+						"Inserted sex " + sexPid + " for person " + personPid);
+
+				eventBroker.post("MESSAGE",
+						"Inserted sex " + sexPid + " for person " + personPid);
 				eventBroker.post(
 						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 						personPid);
@@ -83,6 +82,7 @@ public class NewPersonPartnerWizard extends Wizard {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}
+
 		}
 		return false;
 	}

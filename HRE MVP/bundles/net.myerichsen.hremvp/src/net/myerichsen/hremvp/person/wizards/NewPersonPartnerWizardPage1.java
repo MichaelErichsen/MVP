@@ -104,8 +104,9 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 					final HDateProvider hdp = new HDateProvider();
 					hdp.get(partnerToDatePid);
 					textPartnershipEndDate.setText(hdp.getDate().toString());
-				} else
+				} else {
 					textPartnershipEndDate.setText("");
+				}
 
 			} catch (final Exception e1) {
 				e1.printStackTrace();
@@ -128,8 +129,9 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 					final HDateProvider hdp = new HDateProvider();
 					hdp.get(partnerFromDatePid);
 					textPartnershipStartDate.setText(hdp.getDate().toString());
-				} else
+				} else {
 					textPartnershipStartDate.setText("");
+				}
 
 			} catch (final Exception e1) {
 				e1.printStackTrace();

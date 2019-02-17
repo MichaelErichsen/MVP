@@ -727,8 +727,8 @@ public class PersonServer implements IHREServer {
 
 		for (final Sexes sex : new Sexes().getFKPersonPid(key)) {
 			ls = new ArrayList<>();
+			ls.add(Integer.toString(sex.getSexesPid()));
 			st.get(sex.getSexTypePid());
-			ls.add(Integer.toString(sex.getSexTypePid()));
 			ls.add(st.getLabel());
 			ls.add(Boolean.toString(sex.isPrimarySex()));
 
@@ -857,6 +857,16 @@ public class PersonServer implements IHREServer {
 				partner.delete(p.getPartnerPid());
 			}
 		}
+	}
+
+	/**
+	 * @param sexPid
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public void removeSex(int sexPid) throws SQLException, MvpException {
+		Sexes sex = new Sexes();
+		sex.delete(sexPid);
 	}
 
 	/**

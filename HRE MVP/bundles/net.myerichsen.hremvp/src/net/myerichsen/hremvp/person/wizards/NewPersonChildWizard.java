@@ -25,7 +25,7 @@ public class NewPersonChildWizard extends Wizard {
 
 	private NewPersonChildWizardPage1 page1;
 	private ParentProvider parentProvider;
-	private int personPid;
+	private final int personPid;
 
 	/**
 	 * Constructor
