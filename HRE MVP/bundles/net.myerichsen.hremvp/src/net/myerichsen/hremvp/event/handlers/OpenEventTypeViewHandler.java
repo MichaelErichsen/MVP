@@ -15,11 +15,11 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Name view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. sep. 2018
+ * @version 18. feb. 2019
  *
  */
 public class OpenEventTypeViewHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.SexTypeView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeView";
 
 	/**
 	 * @param partService  The Eclipse part service

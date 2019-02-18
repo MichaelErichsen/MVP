@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. feb. 2019
+ * @version 18. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -91,10 +91,11 @@ public class PersonServer implements IHREServer {
 			name.delete(namePid);
 		}
 
-		// Delete all person events
+		// Delete all person events and links
 		final PersonEvents event = new PersonEvents();
 
 		for (final PersonEvents events : event.getFKPersonPid(key)) {
+			events.delete(events.getEventPid());
 			event.delete(events.getPersonEventPid());
 		}
 
@@ -820,6 +821,20 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
+	 * @param eventPid
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void removeEvent(int eventPid) throws SQLException, MvpException {
+		PersonEvents personEvent = new PersonEvents();
+		personEvent.getFKEventPid(eventPid);
+		personEvent.delete(personEvent.getPersonEventPid());
+
+		Events event = new Events();
+		event.delete(eventPid);
+	}
+
+	/**
 	 * @param personPid
 	 * @param parentPid
 	 * @throws SQLException
@@ -865,7 +880,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 */
 	public void removeSex(int sexPid) throws SQLException, MvpException {
-		Sexes sex = new Sexes();
+		final Sexes sex = new Sexes();
 		sex.delete(sexPid);
 	}
 
