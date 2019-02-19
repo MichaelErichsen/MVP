@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 6. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class PersonView {
