@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -38,7 +37,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 
 	private Table table;
 
-	private final IEventBroker eventBroker;
+//	private final IEventBroker eventBroker;
 	private List<List<String>> listOfLists;
 	private Text textEventNamePid;
 	private Text textEventName;
@@ -65,7 +64,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 		setTitle("Person Events");
 		setDescription("Add an event.");
 		this.context = context;
-		eventBroker = context.get(IEventBroker.class);
+//		eventBroker = context.get(IEventBroker.class);
 		listOfLists = new ArrayList<>();
 	}
 

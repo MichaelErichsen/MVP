@@ -13,23 +13,28 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the USERIDS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Userids {
-	private static final String SELECT = "SELECT USERID_PID, TABLE_PID, PERSON_PID, "
+	private static final String SELECT = "SELECT " + "USERID_PID, "
+			+ "TABLE_PID, " + "PERSON_PID, "
 			+ "TABLE_ID FROM PUBLIC.USERIDS WHERE USERID_PID = ?";
-	private static final String SELECT_PERSON_PID = "SELECT USERID_PID, TABLE_PID, PERSON_PID, "
+	private static final String SELECT_PERSON_PID = "SELECT " + "USERID_PID, "
+			+ "TABLE_PID, " + "PERSON_PID, "
 			+ "TABLE_ID FROM PUBLIC.USERIDS WHERE PERSON_PID = ? ORDER BY USERID_PID";
-	private static final String SELECTALL = "SELECT USERID_PID, TABLE_PID, PERSON_PID, "
+	private static final String SELECTALL = "SELECT " + "USERID_PID, "
+			+ "TABLE_PID, " + "PERSON_PID, "
 			+ "TABLE_ID FROM PUBLIC.USERIDS ORDER BY USERID_PID";
 	private static final String SELECTMAX = "SELECT MAX(USERID_PID) FROM PUBLIC.USERIDS";
-	private static final String INSERT = "INSERT INTO PUBLIC.USERIDS( USERID_PID, TABLE_PID, "
-			+ "PERSON_PID, TABLE_ID) VALUES (?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.USERIDS( "
+			+ "USERID_PID, " + "TABLE_PID, " + "PERSON_PID, "
+			+ "TABLE_ID) VALUES (" + "?, " + "?, " + "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.USERIDS SET TABLE_PID = ?, PERSON_PID = ?, "
+	private static final String UPDATE = "UPDATE PUBLIC.USERIDS SET "
+			+ "TABLE_PID = ?, " + "PERSON_PID = ?, "
 			+ "TABLE_ID = ? WHERE USERID_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.USERIDS WHERE USERID_PID = ?";

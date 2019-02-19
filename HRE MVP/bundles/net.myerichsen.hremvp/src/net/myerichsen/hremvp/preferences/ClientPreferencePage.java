@@ -97,12 +97,12 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				"Port Number for local HRE Server", getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
-		LanguageProvider languageProvider = new LanguageProvider();
+		final LanguageProvider languageProvider = new LanguageProvider();
 		try {
-			List<List<String>> languageList = languageProvider.get();
+			final List<List<String>> languageList = languageProvider.get();
 
-			int llsSize = languageList.size();
-			String[][] doubleArray = new String[llsSize][2];
+			final int llsSize = languageList.size();
+			final String[][] doubleArray = new String[llsSize][2];
 
 			for (int i = 0; i < llsSize; i++) {
 				doubleArray[i][0] = languageList.get(i).get(2);

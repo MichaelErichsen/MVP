@@ -73,14 +73,14 @@ public class LocationNameMapServer implements IHREServer {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		map.get(key);
-		setLabel(map.getLabel());
+		setLabel("map.getLabelPid()");
 		setLocationNameMapPid(map.getLocationNameMapPid());
 		setLocationNameStylePid(map.getLocationNameStylePid());
 		setPartNo(map.getPartNo());
 		setLabelPosition(map.getLabelPosition());
 
 		style.get(getLocationNameStylePid());
-		setStyleLabel(style.getLabel());
+		setStyleLabel("style.getLabelPid()");
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class LocationNameMapServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		map.setLabel(label);
+		map.setLabelPid(0);
 		map.setLocationNameMapPid(locationNameMapPid);
 		map.setLocationNameStylePid(locationNameStylePid);
 		map.setPartNo(partNo);
@@ -193,7 +193,7 @@ public class LocationNameMapServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException {
-		map.setLabel(label);
+		map.setLabelPid(0);
 		map.setLocationNameMapPid(locationNameMapPid);
 		map.setLocationNameStylePid(locationNameStylePid);
 		map.setPartNo(partNo);

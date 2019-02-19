@@ -15,8 +15,8 @@ public class CsvFileImporter {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String[] csvFileNames = { "hdates.csv",
 			"languages.csv", "sextypes.csv", "eventtypes.csv", "eventnames.csv",
-			"locationnamestyles.csv", "locationnamemaps.csv", "namestyles.csv",
-			"namemaps.csv" };
+			"locationnamestyles.csv", "LocationNameMaps.csv", "namestyles.csv",
+			"PersonNameMaps.csv" };
 
 	private static final String[] tableNames = { "HDATES", "LANGUAGES",
 			"SEX_TYPES", "EVENT_TYPES", "EVENT_NAMES", "LOCATION_NAME_STYLES",

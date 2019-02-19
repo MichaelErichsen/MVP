@@ -24,15 +24,15 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.dbmodels.Names;
+import net.myerichsen.hremvp.dbmodels.PersonNames;
 import net.myerichsen.hremvp.person.providers.PersonNameListProvider;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 
 /**
  * Display a list of all names
  *
- * @version 2018-08-25
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 19. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -134,13 +134,13 @@ public class PersonNameNavigator {
 			provider = new PersonNameListProvider();
 			final PersonNameProvider personNameProvider = new PersonNameProvider();
 
-			final List<Names> rowList = provider.getModelList();
+			final List<PersonNames> rowList = provider.getModelList();
 
 			table.removeAll();
 
 			for (int i = 0; i < rowList.size(); i++) {
 				final TableItem item = new TableItem(table, SWT.NONE);
-				final Names row = rowList.get(i);
+				final PersonNames row = rowList.get(i);
 				item.setText(0, Integer.toString(row.getNamePid()));
 				personNameProvider.get(row.getNamePid());
 				item.setText(1, personNameProvider.toString());

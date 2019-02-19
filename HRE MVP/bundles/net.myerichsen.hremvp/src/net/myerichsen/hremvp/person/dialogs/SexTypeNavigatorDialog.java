@@ -38,7 +38,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	IEclipseContext context;
 //	private final IEventBroker eventBroker;
 
-	private SexTypeProvider provider;
+	private final SexTypeProvider provider;
 	private int sexTypePid;
 	private TableViewer tableViewer;
 
@@ -88,11 +88,11 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -131,7 +131,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getSexTypeList());
-		} catch (SQLException e1) {
+		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

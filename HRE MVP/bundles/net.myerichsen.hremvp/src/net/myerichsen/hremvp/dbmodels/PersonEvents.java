@@ -13,29 +13,40 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the PERSON_EVENTS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class PersonEvents {
-	private static final String SELECT = "SELECT PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
-			+ "PRIMARY_PERSON, PRIMARY_EVENT, TABLE_ID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";
-	private static final String SELECT_EVENT_PID = "SELECT PERSON_EVENT_PID, EVENT_PID, PERSON_PID, "
-			+ "ROLE, PRIMARY_PERSON, PRIMARY_EVENT, "
-			+ "TABLE_ID FROM PUBLIC.PERSON_EVENTS WHERE EVENT_PID = ? ORDER BY PERSON_EVENT_PID";
-	private static final String SELECT_PERSON_PID = "SELECT PERSON_EVENT_PID, EVENT_PID, PERSON_PID, "
-			+ "ROLE, PRIMARY_PERSON, PRIMARY_EVENT, "
-			+ "TABLE_ID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_PID = ? ORDER BY PERSON_EVENT_PID";
-	private static final String SELECTALL = "SELECT PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
-			+ "PRIMARY_PERSON, PRIMARY_EVENT, TABLE_ID FROM PUBLIC.PERSON_EVENTS ORDER BY PERSON_EVENT_PID";
+	private static final String SELECT = "SELECT " + "PERSON_EVENT_PID, "
+			+ "EVENT_PID, " + "PERSON_PID, " + "ROLE, " + "PRIMARY_PERSON, "
+			+ "PRIMARY_EVENT, " + "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";
+	private static final String SELECT_EVENT_PID = "SELECT "
+			+ "PERSON_EVENT_PID, " + "EVENT_PID, " + "PERSON_PID, " + "ROLE, "
+			+ "PRIMARY_PERSON, " + "PRIMARY_EVENT, " + "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE EVENT_PID = ? ORDER BY PERSON_EVENT_PID";
+	private static final String SELECT_PERSON_PID = "SELECT "
+			+ "PERSON_EVENT_PID, " + "EVENT_PID, " + "PERSON_PID, " + "ROLE, "
+			+ "PRIMARY_PERSON, " + "PRIMARY_EVENT, " + "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_PID = ? ORDER BY PERSON_EVENT_PID";
+	private static final String SELECTALL = "SELECT " + "PERSON_EVENT_PID, "
+			+ "EVENT_PID, " + "PERSON_PID, " + "ROLE, " + "PRIMARY_PERSON, "
+			+ "PRIMARY_EVENT, " + "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS ORDER BY PERSON_EVENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(PERSON_EVENT_PID) FROM PUBLIC.PERSON_EVENTS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_EVENTS( PERSON_EVENT_PID, EVENT_PID, "
-			+ "PERSON_PID, ROLE, PRIMARY_PERSON, PRIMARY_EVENT, TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_EVENTS( "
+			+ "PERSON_EVENT_PID, " + "EVENT_PID, " + "PERSON_PID, " + "ROLE, "
+			+ "PRIMARY_PERSON, " + "PRIMARY_EVENT, " + "TABLE_ID, "
+			+ "LANGUAGE_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
+			+ "?, " + "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.PERSON_EVENTS SET EVENT_PID = ?, PERSON_PID = ?, "
-			+ "ROLE = ?, PRIMARY_PERSON = ?, PRIMARY_EVENT = ?, TABLE_ID = ? WHERE PERSON_EVENT_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.PERSON_EVENTS SET "
+			+ "EVENT_PID = ?, " + "PERSON_PID = ?, " + "ROLE = ?, "
+			+ "PRIMARY_PERSON = ?, " + "PRIMARY_EVENT = ?, " + "TABLE_ID = ?, "
+			+ "LANGUAGE_PID = ? WHERE PERSON_EVENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";
 
@@ -56,6 +67,7 @@ public class PersonEvents {
 	private boolean PrimaryPerson;
 	private boolean PrimaryEvent;
 	private int TableId;
+	private int LanguagePid;
 	private PersonEvents model;
 
 	public void delete() throws SQLException {
@@ -90,6 +102,7 @@ public class PersonEvents {
 			model.setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -109,6 +122,7 @@ public class PersonEvents {
 			setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			setTableId(rs.getInt("TABLE_ID"));
+			setLanguagePid(rs.getInt("LANGUAGE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
@@ -139,6 +153,7 @@ public class PersonEvents {
 			model.setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -160,10 +175,20 @@ public class PersonEvents {
 			model.setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the LanguagePid field.
+	 *
+	 * @return Contents of the LANGUAGE_PID column
+	 */
+	public int getLanguagePid() {
+		return LanguagePid;
 	}
 
 	/**
@@ -220,6 +245,7 @@ public class PersonEvents {
 		ps.setBoolean(5, isPrimaryPerson());
 		ps.setBoolean(6, isPrimaryEvent());
 		ps.setInt(7, getTableId());
+		ps.setInt(8, getLanguagePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -250,6 +276,15 @@ public class PersonEvents {
 	 */
 	public void setEventPid(int EventPid) {
 		this.EventPid = EventPid;
+	}
+
+	/**
+	 * Set the LanguagePid field
+	 *
+	 * @param LanguagePid Contents of the LANGUAGE_PID column
+	 */
+	public void setLanguagePid(int LanguagePid) {
+		this.LanguagePid = LanguagePid;
 	}
 
 	/**
@@ -315,7 +350,8 @@ public class PersonEvents {
 		ps.setBoolean(4, isPrimaryPerson());
 		ps.setBoolean(5, isPrimaryEvent());
 		ps.setInt(6, getTableId());
-		ps.setInt(7, getPersonEventPid());
+		ps.setInt(7, getLanguagePid());
+		ps.setInt(8, getPersonEventPid());
 		ps.executeUpdate();
 		conn.close();
 	}

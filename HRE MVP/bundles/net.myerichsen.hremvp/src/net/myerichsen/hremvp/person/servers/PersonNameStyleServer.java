@@ -7,15 +7,15 @@ import java.util.List;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
-import net.myerichsen.hremvp.dbmodels.NameStyles;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 
 /**
  * Business logic interface for
  * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class PersonNameStyleServer implements IHREServer {
@@ -25,9 +25,9 @@ public class PersonNameStyleServer implements IHREServer {
 	private String languageLabel;
 	private String isoCode;
 
-	private NameStyles style;
+	private PersonNameStyles style;
 	private Languages language;
-	private List<NameMaps> mapList;
+	private List<PersonNameMaps> mapList;
 
 	/**
 	 * Constructor
@@ -37,7 +37,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 *
 	 */
 	public PersonNameStyleServer() throws SQLException {
-		style = new NameStyles();
+		style = new PersonNameStyles();
 		language = new Languages();
 		mapList = new ArrayList<>();
 	}
@@ -60,7 +60,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * @throws SQLException
 	 */
 	@Override
-	public List<NameStyles> get() throws SQLException {
+	public List<PersonNameStyles> get() throws SQLException {
 		return style.get();
 	}
 
@@ -75,15 +75,13 @@ public class PersonNameStyleServer implements IHREServer {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		style.get(key);
-		setLabel(style.getLabel());
-		setLanguagePid(style.getLanguagePid());
+		setLabel("style.getLabelPid()");
 		setNameStylePid(style.getNameStylePid());
 
-		language.get(style.getLanguagePid());
 		setLanguageLabel(language.getLabel());
 		setIsoCode(language.getIsocode());
 
-		mapList = new NameMaps().getFKNameStylePid(nameStylePid);
+		mapList = new PersonNameMaps().getFKNameStylePid(nameStylePid);
 	}
 
 	/**
@@ -124,7 +122,7 @@ public class PersonNameStyleServer implements IHREServer {
 	/**
 	 * @return the mapList
 	 */
-	public List<NameMaps> getMapList() {
+	public List<PersonNameMaps> getMapList() {
 		return mapList;
 	}
 
@@ -138,7 +136,7 @@ public class PersonNameStyleServer implements IHREServer {
 	/**
 	 * @return the style
 	 */
-	public NameStyles getStyle() {
+	public PersonNameStyles getStyle() {
 		return style;
 	}
 
@@ -150,8 +148,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		style.setLabel(label);
-		style.setLanguagePid(languagePid);
+		style.setLabelPid(0);
 		style.setNameStylePid(nameStylePid);
 		return style.insert();
 	}
@@ -194,7 +191,7 @@ public class PersonNameStyleServer implements IHREServer {
 	/**
 	 * @param mapList the mapList to set
 	 */
-	public void setMapList(List<NameMaps> mapList) {
+	public void setMapList(List<PersonNameMaps> mapList) {
 		this.mapList = mapList;
 	}
 
@@ -208,7 +205,7 @@ public class PersonNameStyleServer implements IHREServer {
 	/**
 	 * @param style the style to set
 	 */
-	public void setStyle(NameStyles style) {
+	public void setStyle(PersonNameStyles style) {
 		this.style = style;
 	}
 
@@ -220,8 +217,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException {
-		style.setLabel(label);
-		style.setLanguagePid(languagePid);
+		style.setLabelPid(0);
 		style.setNameStylePid(nameStylePid);
 		style.update();
 	}

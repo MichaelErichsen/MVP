@@ -6,18 +6,18 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Names;
+import net.myerichsen.hremvp.dbmodels.PersonNames;
 
 /**
  * Provide a list of all names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. sep. 2018
+ * @version 19. feb. 2019
  *
  */
 public class PersonNameListProvider implements IHREProvider {
-	private List<Names> modelList;
-	private Names model;
+	private List<PersonNames> modelList;
+	private PersonNames model;
 
 	/**
 	 * Constructor
@@ -26,7 +26,7 @@ public class PersonNameListProvider implements IHREProvider {
 	public PersonNameListProvider() {
 		modelList = new ArrayList<>();
 		try {
-			modelList = new Names().get();
+			modelList = new PersonNames().get();
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
@@ -38,7 +38,7 @@ public class PersonNameListProvider implements IHREProvider {
 	 *                      access error or other errors.
 	 */
 	public void add(int namePid) throws SQLException {
-		model = new Names();
+		model = new PersonNames();
 		model.setNamePid(namePid);
 
 		if (modelList == null) {
@@ -80,7 +80,7 @@ public class PersonNameListProvider implements IHREProvider {
 	/**
 	 * @return modelList A list of all models
 	 */
-	public List<Names> getModelList() {
+	public List<PersonNames> getModelList() {
 		return modelList;
 	}
 
@@ -97,7 +97,7 @@ public class PersonNameListProvider implements IHREProvider {
 	/**
 	 * @param modelList the modelList to set
 	 */
-	public void setModelList(List<Names> modelList) {
+	public void setModelList(List<PersonNames> modelList) {
 		this.modelList = modelList;
 	}
 

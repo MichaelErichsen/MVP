@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. nov. 2018
+ * @version 19. feb. 2019
  *
  */
 public class EventTypeServer implements IHREServer {
@@ -66,7 +66,8 @@ public class EventTypeServer implements IHREServer {
 		for (final EventTypes type : eventTypeList) {
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(type.getEventTypePid()));
-			stringList.add(type.getLabel());
+			// FIXME
+			stringList.add("type.getLabel()");
 			lls.add(stringList);
 		}
 
@@ -86,7 +87,8 @@ public class EventTypeServer implements IHREServer {
 	public void get(int key) throws SQLException, MvpException {
 		eventType.get(key);
 		setEventTypePid(eventType.getEventTypePid());
-		setLabel(eventType.getLabel());
+		// FIXME
+		setLabel("eventType.getLabel()");
 		setTableId(eventType.getTableId());
 	}
 
@@ -117,16 +119,16 @@ public class EventTypeServer implements IHREServer {
 		final List<List<String>> lls = new ArrayList<>();
 		final EventNames names = new EventNames();
 		final List<EventNames> eventNameList = names.getFKEventTypePid(key);
-		final Languages language = new Languages();
+		new Languages();
 
 		for (final EventNames eventNames : eventNameList) {
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(eventNames.getEventTypePid()));
 			stringList.add(eventNames.getLabel());
 
-			language.get(eventNames.getLanguagePid());
-			stringList.add(language.getLabel());
-			stringList.add(language.getIsocode());
+//			language.get(eventNames.getLanguagePid());
+//			stringList.add(language.getLabel());
+//			stringList.add(language.getIsocode());
 			lls.add(stringList);
 		}
 
@@ -152,7 +154,8 @@ public class EventTypeServer implements IHREServer {
 	@Override
 	public int insert() throws SQLException, MvpException {
 		eventType.setEventTypePid(EventTypePid);
-		eventType.setLabel(Label);
+		// FIXME
+		eventType.setLabelPid(0);
 		eventType.setTableId(TableId);
 		return eventType.insert();
 	}
@@ -188,7 +191,8 @@ public class EventTypeServer implements IHREServer {
 	@Override
 	public void update() throws SQLException, MvpException {
 		eventType.setEventTypePid(EventTypePid);
-		eventType.setLabel(Label);
+		// FIXME
+		eventType.setLabelPid(0);
 		eventType.setTableId(TableId);
 		eventType.update();
 	}

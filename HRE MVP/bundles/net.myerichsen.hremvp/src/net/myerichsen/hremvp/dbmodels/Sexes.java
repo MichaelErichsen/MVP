@@ -13,37 +13,40 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the SEXES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Sexes {
-	private static final String SELECT = "SELECT SEXES_PID, PERSON_PID, SEX_TYPE_PID, PRIMARY_SEX, "
-			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID FROM PUBLIC.SEXES WHERE SEXES_PID = ?";
-	private static final String SELECT_PERSON_PID = "SELECT SEXES_PID, PERSON_PID, SEX_TYPE_PID, "
-			+ "PRIMARY_SEX, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT = "SELECT " + "SEXES_PID, "
+			+ "PERSON_PID, " + "SEX_TYPE_PID, " + "PRIMARY_SEX, " + "TABLE_ID, "
+			+ "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.SEXES WHERE SEXES_PID = ?";
+	private static final String SELECT_PERSON_PID = "SELECT " + "SEXES_PID, "
+			+ "PERSON_PID, " + "SEX_TYPE_PID, " + "PRIMARY_SEX, " + "TABLE_ID, "
+			+ "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.SEXES WHERE PERSON_PID = ? ORDER BY SEXES_PID";
-	private static final String SELECT_SEX_TYPE_PID = "SELECT SEXES_PID, PERSON_PID, SEX_TYPE_PID, "
-			+ "PRIMARY_SEX, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_SEX_TYPE_PID = "SELECT " + "SEXES_PID, "
+			+ "PERSON_PID, " + "SEX_TYPE_PID, " + "PRIMARY_SEX, " + "TABLE_ID, "
+			+ "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.SEXES WHERE SEX_TYPE_PID = ? ORDER BY SEXES_PID";
-	private static final String SELECT_FROM_DATE_PID = "SELECT SEXES_PID, PERSON_PID, SEX_TYPE_PID, "
-			+ "PRIMARY_SEX, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.SEXES WHERE FROM_DATE_PID = ? ORDER BY SEXES_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT SEXES_PID, PERSON_PID, SEX_TYPE_PID, "
-			+ "PRIMARY_SEX, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.SEXES WHERE TO_DATE_PID = ? ORDER BY SEXES_PID";
-
-	private static final String SELECTALL = "SELECT SEXES_PID, PERSON_PID, SEX_TYPE_PID, "
-			+ "PRIMARY_SEX, TABLE_ID, FROM_DATE_PID, TO_DATE_PID FROM PUBLIC.SEXES ORDER BY SEXES_PID";
-
+	private static final String SELECTALL = "SELECT " + "SEXES_PID, "
+			+ "PERSON_PID, " + "SEX_TYPE_PID, " + "PRIMARY_SEX, " + "TABLE_ID, "
+			+ "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.SEXES ORDER BY SEXES_PID";
 	private static final String SELECTMAX = "SELECT MAX(SEXES_PID) FROM PUBLIC.SEXES";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.SEXES( SEXES_PID, PERSON_PID, "
-			+ "SEX_TYPE_PID, PRIMARY_SEX, TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.SEXES( "
+			+ "SEXES_PID, " + "PERSON_PID, " + "SEX_TYPE_PID, "
+			+ "PRIMARY_SEX, " + "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
+			+ "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.SEXES SET PERSON_PID = ?, SEX_TYPE_PID = ?, "
-			+ "PRIMARY_SEX = ?, TABLE_ID = ?, FROM_DATE_PID = ?, TO_DATE_PID = ? WHERE SEXES_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.SEXES SET "
+			+ "PERSON_PID = ?, " + "SEX_TYPE_PID = ?, " + "PRIMARY_SEX = ?, "
+			+ "TABLE_ID = ?, " + "FROM_DATE_PID = ?, "
+			+ "TO_DATE_PID = ? WHERE SEXES_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.SEXES WHERE SEXES_PID = ?";
 
@@ -123,27 +126,6 @@ public class Sexes {
 		conn.close();
 	}
 
-	public List<Sexes> getFKFromDatePid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new Sexes();
-			model.setSexesPid(rs.getInt("SEXES_PID"));
-			model.setPersonPid(rs.getInt("PERSON_PID"));
-			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
-			model.setPrimarySex(rs.getBoolean("PRIMARY_SEX"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
-			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
 	public List<Sexes> getFKPersonPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PERSON_PID);
@@ -168,27 +150,6 @@ public class Sexes {
 	public List<Sexes> getFKSexTypePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_SEX_TYPE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new Sexes();
-			model.setSexesPid(rs.getInt("SEXES_PID"));
-			model.setPersonPid(rs.getInt("PERSON_PID"));
-			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
-			model.setPrimarySex(rs.getBoolean("PRIMARY_SEX"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
-			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	public List<Sexes> getFKToDatePid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();

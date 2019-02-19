@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
 import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
 import net.myerichsen.hremvp.dialogs.DateDialog;
@@ -98,8 +97,8 @@ public class LocationNameViewOld {
 	private Text textLocationNameStyle;
 	private Button btnPrimary;
 	private Text textPreposition;
-	private Table tableNameParts;
-	private TableViewer tableViewerNameParts;
+	private Table tablePersonNameParts;
+	private TableViewer tableViewerPersonNameParts;
 
 	private Composite composite;
 	private Button buttonSelect;
@@ -136,7 +135,7 @@ public class LocationNameViewOld {
 		textToDate.setText("");
 		textToOriginal.setText("");
 		btnPrimary.setSelection(false);
-		tableNameParts.removeAll();
+		tablePersonNameParts.removeAll();
 	}
 
 	/**
@@ -213,36 +212,36 @@ public class LocationNameViewOld {
 		final Label lblLocationNameParts = new Label(composite_1, SWT.NONE);
 		lblLocationNameParts.setText("Location Name Parts");
 
-		tableViewerNameParts = new TableViewer(composite_1,
+		tableViewerPersonNameParts = new TableViewer(composite_1,
 				SWT.BORDER | SWT.FULL_SELECTION);
-		tableNameParts = tableViewerNameParts.getTable();
-		tableNameParts.setLayoutData(
+		tablePersonNameParts = tableViewerPersonNameParts.getTable();
+		tablePersonNameParts.setLayoutData(
 				new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
-		tableNameParts.setToolTipText("Double click to edit name map");
-		tableNameParts.addMouseListener(new MouseAdapter() {
+		tablePersonNameParts.setToolTipText("Double click to edit name map");
+		tablePersonNameParts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openLocationNamePartView();
 			}
 		});
-		tableNameParts.setLinesVisible(true);
-		tableNameParts.setHeaderVisible(true);
+		tablePersonNameParts.setLinesVisible(true);
+		tablePersonNameParts.setHeaderVisible(true);
 
 		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
-				tableViewerNameParts, SWT.NONE);
+				tableViewerPersonNameParts, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 
 		final TableViewerColumn tableViewerColumnLabelFromMaps = new TableViewerColumn(
-				tableViewerNameParts, SWT.NONE);
+				tableViewerPersonNameParts, SWT.NONE);
 		final TableColumn tblclmnLabelFromMaps = tableViewerColumnLabelFromMaps
 				.getColumn();
 		tblclmnLabelFromMaps.setWidth(200);
 		tblclmnLabelFromMaps.setText("Label from Maps");
 
 		final TableViewerColumn tableViewerColumnValueFromParts = new TableViewerColumn(
-				tableViewerNameParts, SWT.NONE);
+				tableViewerPersonNameParts, SWT.NONE);
 		final TableColumn tblclmnValueFromParts = tableViewerColumnValueFromParts
 				.getColumn();
 		tblclmnValueFromParts.setWidth(200);
@@ -535,16 +534,17 @@ public class LocationNameViewOld {
 			textPreposition.setText(provider.getPreposition());
 			btnPrimary.setEnabled(provider.isPrimaryLocationName());
 
-			tableNameParts.removeAll();
+			tablePersonNameParts.removeAll();
 
 			final List<LocationNameParts> partList = provider.getPartList();
-			final List<LocationNameMaps> mapList = provider.getMapList();
+//			final List<LocationNameMaps> mapList = provider.getMapList();
 
 			for (int i = 0; i < partList.size(); i++) {
-				final TableItem item = new TableItem(tableNameParts, SWT.NONE);
+				final TableItem item = new TableItem(tablePersonNameParts,
+						SWT.NONE);
 				item.setText(0, Integer
 						.toString(partList.get(i).getLocationNamePartPid()));
-				item.setText(1, mapList.get(i).getLabel());
+				item.setText(1, "mapList.get(i).getLabelPid()");
 				item.setText(2, partList.get(i).getLabel());
 			}
 
@@ -592,7 +592,7 @@ public class LocationNameViewOld {
 		handlerService.executeHandler(command);
 
 		// Post name map pid
-		final TableItem[] selectedRows = tableNameParts.getSelection();
+		final TableItem[] selectedRows = tablePersonNameParts.getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -625,7 +625,7 @@ public class LocationNameViewOld {
 			styleList = new LocationNameStyles().get();
 
 			for (final LocationNameStyles locationNameStyles : styleList) {
-				if (locationNameStyles.getLabel().equals(nameStyle)) {
+				if ("locationNameStyles.getLabelPid()".equals(nameStyle)) {
 					locationNameStylePid = locationNameStyles
 							.getLocationNameStylePid();
 					break;

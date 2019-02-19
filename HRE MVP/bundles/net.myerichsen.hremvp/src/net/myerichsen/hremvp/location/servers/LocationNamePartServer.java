@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. okt. 2018
+ * @version 19. feb. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -102,7 +102,7 @@ public class LocationNamePartServer implements IHREServer {
 
 		for (int i = 0; i < mapList.size(); i++) {
 			if (mapList.get(i).getPartNo() == partNo) {
-				setMapLabel(mapList.get(i).getLabel());
+				setMapLabel("mapList.get(i).getLabelPid()");
 				break;
 			}
 		}

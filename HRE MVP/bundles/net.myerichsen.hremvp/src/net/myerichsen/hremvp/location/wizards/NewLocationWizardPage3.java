@@ -83,9 +83,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 					labelList.clear();
 					textList.clear();
 
-					for (final LocationNameMaps map : a) {
+					for (@SuppressWarnings("unused") final LocationNameMaps map : a) {
 						final Label label = new Label(container, SWT.NONE);
-						label.setText(map.getLabel());
+						label.setText("map.getLabelPid()");
 						labelList.add(label);
 
 						final Text text = new Text(container, SWT.BORDER);

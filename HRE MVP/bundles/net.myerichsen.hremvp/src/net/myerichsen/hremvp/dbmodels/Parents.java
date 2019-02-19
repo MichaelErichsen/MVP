@@ -13,31 +13,38 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the PARENTS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Parents {
-	private static final String SELECT = "SELECT PARENT_PID, CHILD, PARENT, PARENT_ROLE, "
-			+ "PRIMARY_PARENT, TABLE_ID, LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
-	private static final String SELECT_CHILD = "SELECT PARENT_PID, CHILD, PARENT, PARENT_ROLE, "
-			+ "PRIMARY_PARENT, TABLE_ID, LANGUAGE_PID FROM PUBLIC.PARENTS WHERE CHILD = ? ORDER BY PARENT_PID";
-	private static final String SELECT_PARENT = "SELECT PARENT_PID, CHILD, PARENT, PARENT_ROLE, "
-			+ "PRIMARY_PARENT, TABLE_ID, LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT = ? ORDER BY PARENT_PID";
-	private static final String SELECT_LANGUAGE_PID = "SELECT PARENT_PID, CHILD, PARENT, "
-			+ "PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
-			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE LANGUAGE_PID = ? ORDER BY PARENT_PID";
-	private static final String SELECTALL = "SELECT PARENT_PID, CHILD, PARENT, PARENT_ROLE, "
-			+ "PRIMARY_PARENT, TABLE_ID, LANGUAGE_PID FROM PUBLIC.PARENTS ORDER BY PARENT_PID";
-
+	private static final String SELECT = "SELECT " + "PARENT_PID, " + "CHILD, "
+			+ "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, " + "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
+	private static final String SELECT_CHILD = "SELECT " + "PARENT_PID, "
+			+ "CHILD, " + "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, "
+			+ "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE CHILD = ? ORDER BY PARENT_PID";
+	private static final String SELECT_PARENT = "SELECT " + "PARENT_PID, "
+			+ "CHILD, " + "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, "
+			+ "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT = ? ORDER BY PARENT_PID";
+	private static final String SELECTALL = "SELECT " + "PARENT_PID, "
+			+ "CHILD, " + "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, "
+			+ "TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARENTS ORDER BY PARENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(PARENT_PID) FROM PUBLIC.PARENTS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.PARENTS( PARENT_PID, CHILD, PARENT, "
-			+ "PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, LANGUAGE_PID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.PARENTS( "
+			+ "PARENT_PID, " + "CHILD, " + "PARENT, " + "PARENT_ROLE, "
+			+ "PRIMARY_PARENT, " + "TABLE_ID, " + "LANGUAGE_PID) VALUES ("
+			+ "?, " + "?, " + "?, " + "?, " + "?, " + "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.PARENTS SET CHILD = ?, PARENT = ?, "
-			+ "PARENT_ROLE = ?, PRIMARY_PARENT = ?, TABLE_ID = ?, LANGUAGE_PID = ? WHERE PARENT_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.PARENTS SET "
+			+ "CHILD = ?, " + "PARENT = ?, " + "PARENT_ROLE = ?, "
+			+ "PRIMARY_PARENT = ?, " + "TABLE_ID = ?, "
+			+ "LANGUAGE_PID = ? WHERE PARENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
 
@@ -129,27 +136,6 @@ public class Parents {
 	public List<Parents> getFKChild(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_CHILD);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new Parents();
-			model.setParentPid(rs.getInt("PARENT_PID"));
-			model.setChild(rs.getInt("CHILD"));
-			model.setParent(rs.getInt("PARENT"));
-			model.setParentRole(rs.getString("PARENT_ROLE"));
-			model.setPrimaryParent(rs.getBoolean("PRIMARY_PARENT"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	public List<Parents> getFKLanguagePid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();

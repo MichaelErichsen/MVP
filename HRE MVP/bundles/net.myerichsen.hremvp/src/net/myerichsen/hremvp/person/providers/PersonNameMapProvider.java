@@ -5,14 +5,14 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.person.servers.PersonNameMapServer;
 
 /**
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class PersonNameMapProvider implements IHREProvider {
@@ -81,7 +81,7 @@ public class PersonNameMapProvider implements IHREProvider {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NameMaps> getFKNameStylePid(int key) throws SQLException {
+	public List<PersonNameMaps> getFKNameStylePid(int key) throws SQLException {
 		return server.getFKNameStylePid(key);
 	}
 

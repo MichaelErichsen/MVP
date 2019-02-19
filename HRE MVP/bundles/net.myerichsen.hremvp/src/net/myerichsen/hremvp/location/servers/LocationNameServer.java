@@ -94,7 +94,7 @@ public class LocationNameServer implements IHREServer {
 		setPreposition(name.getPreposition());
 
 		style.get(locationNameStylePid);
-		setLocationNameStyleLabel(style.getLabel());
+		setLocationNameStyleLabel("style.getLabelPid()");
 
 		LOGGER.fine("Location PID: " + name.getLocationPid());
 		LOGGER.fine("Location name PID: " + key);
@@ -176,11 +176,11 @@ public class LocationNameServer implements IHREServer {
 					.getFKLocationNamePid(aName.getLocationNamePid());
 
 			// Concatenate non-null name parts
-			for (final LocationNameParts nameParts : npl) {
-				if (nameParts.getLocationNamePid() == aName
+			for (final LocationNameParts PersonNameParts : npl) {
+				if (PersonNameParts.getLocationNamePid() == aName
 						.getLocationNamePid()) {
-					if (nameParts.getLabel() != null) {
-						sb.append(nameParts.getLabel() + " ");
+					if (PersonNameParts.getLabel() != null) {
+						sb.append(PersonNameParts.getLabel() + " ");
 					}
 				}
 			}
@@ -227,12 +227,12 @@ public class LocationNameServer implements IHREServer {
 						.getFKLocationNamePid(aName.getLocationNamePid());
 
 				// Concatenate non-null name parts
-				for (final LocationNameParts nameParts : lnp) {
-					if (nameParts.getLocationNamePid() == aName
+				for (final LocationNameParts PersonNameParts : lnp) {
+					if (PersonNameParts.getLocationNamePid() == aName
 							.getLocationNamePid()) {
-						if ((nameParts.getLabel() != null)
-								&& !(nameParts.getLabel().equals(""))) {
-							sb.append(nameParts.getLabel() + " ");
+						if ((PersonNameParts.getLabel() != null)
+								&& !(PersonNameParts.getLabel().equals(""))) {
+							sb.append(PersonNameParts.getLabel() + " ");
 						}
 					}
 				}

@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
 
 /**
@@ -162,8 +162,8 @@ public class PersonNameStyleView {
 		textLabel.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-		final Label lblNameMaps = new Label(parent, SWT.NONE);
-		lblNameMaps.setText(" Name Maps\r\nDblclk to open");
+		final Label lblPersonNameMaps = new Label(parent, SWT.NONE);
+		lblPersonNameMaps.setText(" Name Maps\r\nDblclk to open");
 
 		tableViewerMaps = new TableViewer(parent,
 				SWT.BORDER | SWT.FULL_SELECTION);
@@ -306,8 +306,8 @@ public class PersonNameStyleView {
 
 			tableMaps.removeAll();
 
-			final List<NameMaps> mapList = provider.getMapList();
-			NameMaps map;
+			final List<PersonNameMaps> mapList = provider.getMapList();
+			PersonNameMaps map;
 
 			for (int i = 0; i < mapList.size(); i++) {
 				map = mapList.get(i);
@@ -315,7 +315,7 @@ public class PersonNameStyleView {
 				final TableItem item = new TableItem(tableMaps, SWT.NONE);
 				item.setText(0, Integer.toString(map.getNameMapPid()));
 				item.setText(1, Integer.toString(map.getPartNo()));
-				item.setText(2, map.getLabel());
+				item.setText(2, "map.getLabelPid()");
 			}
 		} catch (final Exception e) {
 			clear();

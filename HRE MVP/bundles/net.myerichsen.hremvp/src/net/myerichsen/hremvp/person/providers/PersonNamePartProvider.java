@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameParts;
+import net.myerichsen.hremvp.dbmodels.PersonNameParts;
 import net.myerichsen.hremvp.person.servers.PersonNamePartServer;
 
 /**
@@ -82,7 +82,7 @@ public class PersonNamePartProvider implements IHREProvider {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NameParts> getFKNamePid(int key) throws SQLException {
+	public List<PersonNameParts> getFKNamePid(int key) throws SQLException {
 		return server.getFKNamePid(key);
 	}
 

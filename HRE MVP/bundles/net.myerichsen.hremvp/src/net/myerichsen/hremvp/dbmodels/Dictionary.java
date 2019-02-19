@@ -19,24 +19,16 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class Dictionary {
-	private List<Dictionary> modelList;
-	private PreparedStatement ps;
-	private ResultSet rs;
-	private Connection conn;
 	private static final String SELECT = "SELECT " + "DICTIONARY_PID, "
 			+ "LABEL_PID, " + "ISO_CODE, " + "LABEL, "
 			+ "TABLE_ID FROM PUBLIC.DICTIONARY WHERE DICTIONARY_PID = ?";
-
 	private static final String SELECT_ISO_CODE = "SELECT " + "DICTIONARY_PID, "
 			+ "LABEL_PID, " + "ISO_CODE, " + "LABEL, "
 			+ "TABLE_ID FROM PUBLIC.DICTIONARY WHERE ISO_CODE = ? ORDER BY DICTIONARY_PID";
-
 	private static final String SELECTALL = "SELECT " + "DICTIONARY_PID, "
 			+ "LABEL_PID, " + "ISO_CODE, " + "LABEL, "
 			+ "TABLE_ID FROM PUBLIC.DICTIONARY ORDER BY DICTIONARY_PID";
-
 	private static final String SELECTMAX = "SELECT MAX(DICTIONARY_PID) FROM PUBLIC.DICTIONARY";
-
 	private static final String INSERT = "INSERT INTO PUBLIC.DICTIONARY( "
 			+ "DICTIONARY_PID, " + "LABEL_PID, " + "ISO_CODE, " + "LABEL, "
 			+ "TABLE_ID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?)";
@@ -48,6 +40,14 @@ public class Dictionary {
 	private static final String DELETE = "DELETE FROM PUBLIC.DICTIONARY WHERE DICTIONARY_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.DICTIONARY";
+
+	private List<Dictionary> modelList;
+
+	private PreparedStatement ps;
+
+	private ResultSet rs;
+
+	private Connection conn;
 
 	private int DictionaryPid;
 	private int LabelPid;
@@ -78,7 +78,7 @@ public class Dictionary {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Dictionary>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Dictionary();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
@@ -109,12 +109,21 @@ public class Dictionary {
 		conn.close();
 	}
 
+	/**
+	 * Get the DictionaryPid field.
+	 *
+	 * @return Contents of the DICTIONARY_PID column
+	 */
+	public int getDictionaryPid() {
+		return DictionaryPid;
+	}
+
 	public List<Dictionary> getFKIsoCode(String key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_ISO_CODE);
 		ps.setString(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Dictionary>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Dictionary();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
@@ -126,6 +135,42 @@ public class Dictionary {
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the IsoCode field.
+	 *
+	 * @return Contents of the ISO_CODE column
+	 */
+	public String getIsoCode() {
+		return IsoCode;
+	}
+
+	/**
+	 * Get the Label field.
+	 *
+	 * @return Contents of the LABEL column
+	 */
+	public String getLabel() {
+		return Label;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return LabelPid;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return TableId;
 	}
 
 	public int insert() throws SQLException {
@@ -149,63 +194,6 @@ public class Dictionary {
 		return maxPid;
 	}
 
-	public void update() throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getLabelPid());
-		ps.setString(2, getIsoCode());
-		ps.setString(3, getLabel());
-		ps.setInt(4, getTableId());
-		ps.setInt(5, getDictionaryPid());
-		ps.executeUpdate();
-		conn.close();
-	}
-
-	/**
-	 * Get the DictionaryPid field.
-	 *
-	 * @return Contents of the DICTIONARY_PID column
-	 */
-	public int getDictionaryPid() {
-		return this.DictionaryPid;
-	}
-
-	/**
-	 * Get the LabelPid field.
-	 *
-	 * @return Contents of the LABEL_PID column
-	 */
-	public int getLabelPid() {
-		return this.LabelPid;
-	}
-
-	/**
-	 * Get the IsoCode field.
-	 *
-	 * @return Contents of the ISO_CODE column
-	 */
-	public String getIsoCode() {
-		return this.IsoCode;
-	}
-
-	/**
-	 * Get the Label field.
-	 *
-	 * @return Contents of the LABEL column
-	 */
-	public String getLabel() {
-		return this.Label;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return this.TableId;
-	}
-
 	/**
 	 * Set the DictionaryPid field
 	 *
@@ -213,15 +201,6 @@ public class Dictionary {
 	 */
 	public void setDictionaryPid(int DictionaryPid) {
 		this.DictionaryPid = DictionaryPid;
-	}
-
-	/**
-	 * Set the LabelPid field
-	 *
-	 * @param LabelPid Contents of the LABEL_PID column
-	 */
-	public void setLabelPid(int LabelPid) {
-		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -243,12 +222,33 @@ public class Dictionary {
 	}
 
 	/**
+	 * Set the LabelPid field
+	 *
+	 * @param LabelPid Contents of the LABEL_PID column
+	 */
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
+	}
+
+	/**
 	 * Set the TableId field
 	 *
 	 * @param TableId Contents of the TABLE_ID column
 	 */
 	public void setTableId(int TableId) {
 		this.TableId = TableId;
+	}
+
+	public void update() throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setInt(1, getLabelPid());
+		ps.setString(2, getIsoCode());
+		ps.setString(3, getLabel());
+		ps.setInt(4, getTableId());
+		ps.setInt(5, getDictionaryPid());
+		ps.executeUpdate();
+		conn.close();
 	}
 
 }

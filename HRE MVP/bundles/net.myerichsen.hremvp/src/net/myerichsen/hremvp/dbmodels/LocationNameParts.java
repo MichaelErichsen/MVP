@@ -13,25 +13,32 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the LOCATION_NAME_PARTS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class LocationNameParts {
-	private static final String SELECT = "SELECT LOCATION_NAME_PART_PID, LOCATION_NAME_PID, LABEL, "
-			+ "PART_NO, TABLE_ID FROM PUBLIC.LOCATION_NAME_PARTS WHERE LOCATION_NAME_PART_PID = ?";
-	private static final String SELECT_LOCATION_NAME_PID = "SELECT LOCATION_NAME_PART_PID, "
-			+ "LOCATION_NAME_PID, LABEL, PART_NO, "
+	private static final String SELECT = "SELECT " + "LOCATION_NAME_PART_PID, "
+			+ "LOCATION_NAME_PID, " + "LABEL, " + "PART_NO, "
+			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_PARTS WHERE LOCATION_NAME_PART_PID = ?";
+	private static final String SELECT_LOCATION_NAME_PID = "SELECT "
+			+ "LOCATION_NAME_PART_PID, " + "LOCATION_NAME_PID, " + "LABEL, "
+			+ "PART_NO, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_PARTS WHERE LOCATION_NAME_PID = ? ORDER BY LOCATION_NAME_PART_PID";
-	private static final String SELECTALL = "SELECT LOCATION_NAME_PART_PID, LOCATION_NAME_PID, LABEL, "
-			+ "PART_NO, TABLE_ID FROM PUBLIC.LOCATION_NAME_PARTS ORDER BY LOCATION_NAME_PART_PID";
+	private static final String SELECTALL = "SELECT "
+			+ "LOCATION_NAME_PART_PID, " + "LOCATION_NAME_PID, " + "LABEL, "
+			+ "PART_NO, "
+			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_PARTS ORDER BY LOCATION_NAME_PART_PID";
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_NAME_PART_PID) FROM PUBLIC.LOCATION_NAME_PARTS";
-	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_PARTS( LOCATION_NAME_PART_PID, "
-			+ "LOCATION_NAME_PID, LABEL, PART_NO, TABLE_ID) VALUES (?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_PARTS( "
+			+ "LOCATION_NAME_PART_PID, " + "LOCATION_NAME_PID, " + "LABEL, "
+			+ "PART_NO, " + "TABLE_ID) VALUES (" + "?, " + "?, " + "?, " + "?, "
+			+ "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_PARTS SET LOCATION_NAME_PID = ?, "
-			+ "LABEL = ?, PART_NO = ?, TABLE_ID = ? WHERE LOCATION_NAME_PART_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_PARTS SET "
+			+ "LOCATION_NAME_PID = ?, " + "LABEL = ?, " + "PART_NO = ?, "
+			+ "TABLE_ID = ? WHERE LOCATION_NAME_PART_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAME_PARTS WHERE LOCATION_NAME_PART_PID = ?";
 

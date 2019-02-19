@@ -175,20 +175,20 @@ public class PersonNamePartNavigator {
 		btnPrimaryName.setText("Primary Name");
 		new Label(parent, SWT.NONE);
 
-		final Label lblNameParts = new Label(parent, SWT.NONE);
-		lblNameParts.setText("Name Parts\r\nDblclk to open");
+		final Label lblPersonNameParts = new Label(parent, SWT.NONE);
+		lblPersonNameParts.setText("Name Parts\r\nDblclk to open");
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		final Table tableNameParts = tableViewer.getTable();
-		tableNameParts.addMouseListener(new MouseAdapter() {
+		final Table tablePersonNameParts = tableViewer.getTable();
+		tablePersonNameParts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openNamePartView();
 			}
 		});
-		tableNameParts.setLinesVisible(true);
-		tableNameParts.setHeaderVisible(true);
-		tableNameParts.setLayoutData(
+		tablePersonNameParts.setLinesVisible(true);
+		tablePersonNameParts.setHeaderVisible(true);
+		tablePersonNameParts.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(

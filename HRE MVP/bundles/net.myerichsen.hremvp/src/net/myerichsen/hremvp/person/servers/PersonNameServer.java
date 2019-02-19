@@ -7,16 +7,15 @@ import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
-import net.myerichsen.hremvp.dbmodels.NameParts;
-import net.myerichsen.hremvp.dbmodels.NameStyles;
-import net.myerichsen.hremvp.dbmodels.Names;
+import net.myerichsen.hremvp.dbmodels.PersonNameParts;
+import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
+import net.myerichsen.hremvp.dbmodels.PersonNames;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 //Use LocalDate
@@ -32,14 +31,14 @@ public class PersonNameServer implements IHREServer {
 	private int nameStylePid;
 	List<List<String>> nameList;
 
-	private Names name;
+	private PersonNames name;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public PersonNameServer() {
-		name = new Names();
+		name = new PersonNames();
 		nameList = new ArrayList<>();
 	}
 
@@ -54,10 +53,10 @@ public class PersonNameServer implements IHREServer {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		final NameParts part = new NameParts();
+		final PersonNameParts part = new PersonNameParts();
 		part.getFKNamePid(key);
 
-		for (final NameParts np : part.getFKNamePid(key)) {
+		for (final PersonNameParts np : part.getFKNamePid(key)) {
 			np.delete(np.getNamePartPid());
 		}
 
@@ -93,28 +92,28 @@ public class PersonNameServer implements IHREServer {
 		setPrimaryName(name.isPrimaryName());
 		setNameStylePid(name.getNameStylePid());
 
-		final NameStyles ns = new NameStyles();
+		final PersonNameStyles ns = new PersonNameStyles();
 		ns.get(name.getNameStylePid());
-		setNameTypeLabel(ns.getLabel());
+		setNameTypeLabel("ns.getLabelPid()");
 
-		NameMaps map;
-		NameParts part;
-		List<NameMaps> mapList;
-		List<NameParts> partList;
+//		PersonNameMaps map;
+		PersonNameParts part;
+//		List<PersonNameMaps> mapList;
+		List<PersonNameParts> partList;
 		List<String> ls;
 
 		nameList.clear();
 
-		map = new NameMaps();
-		mapList = map.getFKNameStylePid(name.getNameStylePid());
+//		map = new PersonNameMaps();
+//		mapList = map.getFKNameStylePid(name.getNameStylePid());
 
-		part = new NameParts();
+		part = new PersonNameParts();
 		partList = part.getFKNamePid(key);
 
 		for (int i = 0; i < partList.size(); i++) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(partList.get(i).getNamePartPid()));
-			ls.add(mapList.get(i).getLabel());
+			ls.add("mapList.get(i).getLabelPid()");
 			if (partList.get(i).getLabel() != null) {
 				ls.add(partList.get(i).getLabel());
 			} else {
@@ -157,8 +156,8 @@ public class PersonNameServer implements IHREServer {
 		StringBuilder sb;
 
 		final int personPid = name.getPersonPid();
-		List<Names> nameList = new ArrayList<>();
-		nameList = new Names().getFKPersonPid(personPid);
+		List<PersonNames> nameList = new ArrayList<>();
+		nameList = new PersonNames().getFKPersonPid(personPid);
 
 		final String[] sa = new String[nameList.size()];
 
@@ -167,18 +166,18 @@ public class PersonNameServer implements IHREServer {
 			name = nameList.get(i);
 			LOGGER.fine("Name " + name.getNamePid() + ", person "
 					+ name.getPersonPid());
-			final List<NameParts> npl = new NameParts()
+			final List<PersonNameParts> npl = new PersonNameParts()
 					.getFKNamePid(name.getNamePid());
 
 			LOGGER.fine("List size " + npl.size());
 			// Concatenate non-null name parts
-			for (final NameParts nameParts : npl) {
-				LOGGER.fine("Name part " + nameParts.getNamePartPid()
-						+ ", name " + nameParts.getNamePid());
-				if (nameParts.getNamePid() == name.getNamePid()) {
-					if (nameParts.getLabel() != null) {
-						sb.append(nameParts.getLabel().trim() + " ");
-						LOGGER.fine("Part " + nameParts.getLabel());
+			for (final PersonNameParts PersonNameParts : npl) {
+				LOGGER.fine("Name part " + PersonNameParts.getNamePartPid()
+						+ ", name " + PersonNameParts.getNamePid());
+				if (PersonNameParts.getNamePid() == name.getNamePid()) {
+					if (PersonNameParts.getLabel() != null) {
+						sb.append(PersonNameParts.getLabel().trim() + " ");
+						LOGGER.fine("Part " + PersonNameParts.getLabel());
 					}
 				}
 			}
@@ -227,23 +226,23 @@ public class PersonNameServer implements IHREServer {
 	 */
 	public String getPrimaryNameString(int personPid) throws SQLException {
 		final StringBuilder sb = new StringBuilder();
-		Names name;
+		PersonNames name;
 
-		List<Names> nameList = new ArrayList<>();
-		nameList = new Names().getFKPersonPid(personPid);
+		List<PersonNames> nameList = new ArrayList<>();
+		nameList = new PersonNames().getFKPersonPid(personPid);
 
 		for (int i = 0; i < nameList.size(); i++) {
 			name = nameList.get(i);
 
 			if (name.isPrimaryName()) {
-				final List<NameParts> npl = new NameParts()
+				final List<PersonNameParts> npl = new PersonNameParts()
 						.getFKNamePid(name.getNamePid());
 
 				// Concatenate non-null name parts
-				for (final NameParts nameParts : npl) {
-					if (nameParts.getNamePid() == name.getNamePid()) {
-						if (nameParts.getLabel() != null) {
-							sb.append(nameParts.getLabel() + " ");
+				for (final PersonNameParts PersonNameParts : npl) {
+					if (PersonNameParts.getNamePid() == name.getNamePid()) {
+						if (PersonNameParts.getLabel() != null) {
+							sb.append(PersonNameParts.getLabel() + " ");
 						}
 					}
 				}

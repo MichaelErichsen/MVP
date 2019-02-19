@@ -13,35 +13,33 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the EVENT_NAMES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class EventNames {
-	private static final String SELECT = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
+	private static final String SELECT = "SELECT " + "EVENT_NAME_PID, "
+			+ "TABLE_ID, " + "LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
-	private static final String SELECT_LANGUAGE_PID = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
-			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE LANGUAGE_PID = ? ORDER BY EVENT_NAME_PID";
-	private static final String SELECT_EVENT_TYPE_PID = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
+	private static final String SELECT_EVENT_TYPE_PID = "SELECT "
+			+ "EVENT_NAME_PID, " + "TABLE_ID, " + "LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_TYPE_PID = ? ORDER BY EVENT_NAME_PID";
-	private static final String SELECTALL = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
+	private static final String SELECTALL = "SELECT " + "EVENT_NAME_PID, "
+			+ "TABLE_ID, " + "LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES ORDER BY EVENT_NAME_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_NAME_PID) FROM PUBLIC.EVENT_NAMES";
+	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_NAMES( "
+			+ "EVENT_NAME_PID, " + "TABLE_ID, " + "LABEL, "
+			+ "EVENT_TYPE_PID) VALUES (" + "?, " + "?, " + "?, " + "?)";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_NAMES( EVENT_NAME_PID, TABLE_ID, "
-			+ "LABEL, LANGUAGE_PID, EVENT_TYPE_PID) VALUES (?, ?, ?, ?, ?)";
-
-	private static final String UPDATE = "UPDATE PUBLIC.EVENT_NAMES SET TABLE_ID = ?, LABEL = ?, "
-			+ "LANGUAGE_PID = ?, EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.EVENT_NAMES SET "
+			+ "TABLE_ID = ?, " + "LABEL = ?, "
+			+ "EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.EVENT_NAMES";
-
-	private static final String SELECT_LANGUAGE_PID_EVENT_TYPE_PID = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
-			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE LANGUAGE_PID = ? "
-			+ "AND EVENT_TYPE_PID = ? ORDER BY EVENT_NAME_PID";
 
 	private List<EventNames> modelList;
 
@@ -54,7 +52,6 @@ public class EventNames {
 	private int EventNamePid;
 	private int TableId;
 	private String Label;
-	private int LanguagePid;
 	private int EventTypePid;
 	private EventNames model;
 
@@ -86,7 +83,6 @@ public class EventNames {
 			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			modelList.add(model);
 		}
@@ -103,7 +99,6 @@ public class EventNames {
 			setEventNamePid(rs.getInt("EVENT_NAME_PID"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setLabel(rs.getString("LABEL"));
-			setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -129,27 +124,6 @@ public class EventNames {
 		return EventTypePid;
 	}
 
-	public List<EventNames> getFKCombined(int languagePid, int eventTypePid)
-			throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID_EVENT_TYPE_PID);
-		ps.setInt(1, languagePid);
-		ps.setInt(2, eventTypePid);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new EventNames();
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
 	public List<EventNames> getFKEventTypePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_EVENT_TYPE_PID);
@@ -161,26 +135,6 @@ public class EventNames {
 			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	public List<EventNames> getFKLanguagePid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new EventNames();
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			modelList.add(model);
 		}
@@ -195,15 +149,6 @@ public class EventNames {
 	 */
 	public String getLabel() {
 		return Label;
-	}
-
-	/**
-	 * Get the LanguagePid field.
-	 *
-	 * @return Contents of the LANGUAGE_PID column
-	 */
-	public int getLanguagePid() {
-		return LanguagePid;
 	}
 
 	/**
@@ -229,8 +174,7 @@ public class EventNames {
 		ps.setInt(1, maxPid);
 		ps.setInt(2, getTableId());
 		ps.setString(3, getLabel());
-		ps.setInt(4, getLanguagePid());
-		ps.setInt(5, getEventTypePid());
+		ps.setInt(4, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -264,15 +208,6 @@ public class EventNames {
 	}
 
 	/**
-	 * Set the LanguagePid field
-	 *
-	 * @param LanguagePid Contents of the LANGUAGE_PID column
-	 */
-	public void setLanguagePid(int LanguagePid) {
-		this.LanguagePid = LanguagePid;
-	}
-
-	/**
 	 * Set the TableId field
 	 *
 	 * @param TableId Contents of the TABLE_ID column
@@ -286,9 +221,8 @@ public class EventNames {
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getTableId());
 		ps.setString(2, getLabel());
-		ps.setInt(3, getLanguagePid());
-		ps.setInt(4, getEventTypePid());
-		ps.setInt(5, getEventNamePid());
+		ps.setInt(3, getEventTypePid());
+		ps.setInt(4, getEventNamePid());
 		ps.executeUpdate();
 		conn.close();
 	}

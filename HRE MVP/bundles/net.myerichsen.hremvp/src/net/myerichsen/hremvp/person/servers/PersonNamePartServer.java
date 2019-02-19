@@ -5,12 +5,13 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
-import net.myerichsen.hremvp.dbmodels.NameParts;
-import net.myerichsen.hremvp.dbmodels.Names;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameParts;
+import net.myerichsen.hremvp.dbmodels.PersonNames;
 
 /**
- * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.NameParts}
+ * Business logic interface for
+ * {@link net.myerichsen.hremvp.dbmodels.PersonNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 5. feb. 2019
@@ -25,14 +26,14 @@ public class PersonNamePartServer implements IHREServer {
 	private String label;
 	private int partNo;
 
-	private final NameParts part;
+	private final PersonNameParts part;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public PersonNamePartServer() {
-		part = new NameParts();
+		part = new PersonNameParts();
 	}
 
 	/**
@@ -78,12 +79,13 @@ public class PersonNamePartServer implements IHREServer {
 
 		// Get name
 		final StringBuilder sb = new StringBuilder();
-		final List<NameParts> partList = new NameParts().getFKNamePid(namePid);
+		final List<PersonNameParts> partList = new PersonNameParts()
+				.getFKNamePid(namePid);
 
-		for (final NameParts nameParts : partList) {
-			if (nameParts.getNamePid() == namePid) {
-				if (nameParts.getLabel() != null) {
-					sb.append(nameParts.getLabel() + " ");
+		for (final PersonNameParts PersonNameParts : partList) {
+			if (PersonNameParts.getNamePid() == namePid) {
+				if (PersonNameParts.getLabel() != null) {
+					sb.append(PersonNameParts.getLabel() + " ");
 				}
 			}
 		}
@@ -92,11 +94,11 @@ public class PersonNamePartServer implements IHREServer {
 
 		// Get map label
 		setMapLabel("Label");
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		name.get(namePid);
 
-		final NameMaps map = new NameMaps();
-		final List<NameMaps> mapList = map
+		final PersonNameMaps map = new PersonNameMaps();
+		final List<PersonNameMaps> mapList = map
 				.getFKNameStylePid(name.getNameStylePid());
 
 		if (mapList.size() != partList.size()) {
@@ -106,7 +108,7 @@ public class PersonNamePartServer implements IHREServer {
 
 		for (int i = 0; i < mapList.size(); i++) {
 			if (mapList.get(i).getPartNo() == partNo) {
-				setMapLabel(mapList.get(i).getLabel());
+				setMapLabel("mapList.get(i).getLabelPid()");
 				break;
 			}
 		}
@@ -117,7 +119,7 @@ public class PersonNamePartServer implements IHREServer {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NameParts> getFKNamePid(int key) throws SQLException {
+	public List<PersonNameParts> getFKNamePid(int key) throws SQLException {
 		return part.getFKNamePid(key);
 	}
 
@@ -165,7 +167,7 @@ public class PersonNamePartServer implements IHREServer {
 
 	/**
 	 * Insert a row. Checks if a matching part number exists in
-	 * {@link net.myerichsen.hremvp.dbmodels.NameMaps}
+	 * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
 	 *
 	 * @return
 	 *
@@ -181,11 +183,11 @@ public class PersonNamePartServer implements IHREServer {
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		name.get(namePid);
 
-//		final NameMaps map = new NameMaps();
-//		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+//		final PersonNameMaps map = new PersonNameMaps();
+//		final List<PersonNameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
 //		Boolean found = false;
 //
 //		for (int i = 0; i < mapList.size(); i++) {
@@ -246,7 +248,7 @@ public class PersonNamePartServer implements IHREServer {
 
 	/**
 	 * Update a row. Checks if a matching part number exists in
-	 * {@link net.myerichsen.hremvp.dbmodels.NameMaps}
+	 * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
@@ -260,11 +262,11 @@ public class PersonNamePartServer implements IHREServer {
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		name.get(namePid);
 
-		final NameMaps map = new NameMaps();
-		final List<NameMaps> mapList = map
+		final PersonNameMaps map = new PersonNameMaps();
+		final List<PersonNameMaps> mapList = map
 				.getFKNameStylePid(name.getNameStylePid());
 		Boolean found = false;
 

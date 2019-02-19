@@ -13,39 +13,51 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the PARTNERS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Partners {
-	private static final String SELECT = "SELECT PARTNER_PID, PARTNER1, PARTNER2, PRIMARY_PARTNER, "
-			+ "ROLE, TABLE_ID, FROM_DATE_PID, TO_DATE_PID FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
-	private static final String SELECT_PARTNER1 = "SELECT PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.PARTNERS WHERE PARTNER1 = ? ORDER BY PARTNER_PID";
-	private static final String SELECT_PARTNER2 = "SELECT PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.PARTNERS WHERE PARTNER2 = ? ORDER BY PARTNER_PID";
-	private static final String SELECT_FROM_DATE_PID = "SELECT PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.PARTNERS WHERE FROM_DATE_PID = ? ORDER BY PARTNER_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.PARTNERS WHERE TO_DATE_PID = ? ORDER BY PARTNER_PID";
+	private static final String SELECT = "SELECT " + "PARTNER_PID, "
+			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
+	private static final String SELECT_PARTNER1 = "SELECT " + "PARTNER_PID, "
+			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER1 = ? ORDER BY PARTNER_PID";
+	private static final String SELECT_PARTNER2 = "SELECT " + "PARTNER_PID, "
+			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER2 = ? ORDER BY PARTNER_PID";
+	private static final String SELECT_FROM_DATE_PID = "SELECT "
+			+ "PARTNER_PID, " + "PARTNER1, " + "PARTNER2, "
+			+ "PRIMARY_PARTNER, " + "ROLE, " + "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE FROM_DATE_PID = ? ORDER BY PARTNER_PID";
+	private static final String SELECT_TO_DATE_PID = "SELECT " + "PARTNER_PID, "
+			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE TO_DATE_PID = ? ORDER BY PARTNER_PID";
 
-	private static final String SELECTALL = "SELECT PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.PARTNERS ORDER BY PARTNER_PID";
+	private static final String SELECTALL = "SELECT " + "PARTNER_PID, "
+			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS ORDER BY PARTNER_PID";
 
 	private static final String SELECTMAX = "SELECT MAX(PARTNER_PID) FROM PUBLIC.PARTNERS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.PARTNERS( PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.PARTNERS( "
+			+ "PARTNER_PID, " + "PARTNER1, " + "PARTNER2, "
+			+ "PRIMARY_PARTNER, " + "ROLE, " + "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID, " + "LANGUAGE_PID) VALUES (" + "?, " + "?, " + "?, "
+			+ "?, " + "?, " + "?, " + "?, " + "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.PARTNERS SET PARTNER1 = ?, PARTNER2 = ?, "
-			+ "PRIMARY_PARTNER = ?, ROLE = ?, TABLE_ID = ?, FROM_DATE_PID = ?, "
-			+ "TO_DATE_PID = ? WHERE PARTNER_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.PARTNERS SET "
+			+ "PARTNER1 = ?, " + "PARTNER2 = ?, " + "PRIMARY_PARTNER = ?, "
+			+ "ROLE = ?, " + "TABLE_ID = ?, " + "FROM_DATE_PID = ?, "
+			+ "TO_DATE_PID = ?, " + "LANGUAGE_PID = ? WHERE PARTNER_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
 
@@ -67,6 +79,7 @@ public class Partners {
 	private int TableId;
 	private int FromDatePid;
 	private int ToDatePid;
+	private int LanguagePid;
 	private Partners model;
 
 	public void delete() throws SQLException {
@@ -102,6 +115,7 @@ public class Partners {
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -122,6 +136,7 @@ public class Partners {
 			setTableId(rs.getInt("TABLE_ID"));
 			setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			setToDatePid(rs.getInt("TO_DATE_PID"));
+			setLanguagePid(rs.getInt("LANGUAGE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
@@ -144,6 +159,7 @@ public class Partners {
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -166,6 +182,7 @@ public class Partners {
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -188,6 +205,7 @@ public class Partners {
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -210,6 +228,7 @@ public class Partners {
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -223,6 +242,15 @@ public class Partners {
 	 */
 	public int getFromDatePid() {
 		return FromDatePid;
+	}
+
+	/**
+	 * Get the LanguagePid field.
+	 *
+	 * @return Contents of the LANGUAGE_PID column
+	 */
+	public int getLanguagePid() {
+		return LanguagePid;
 	}
 
 	/**
@@ -306,6 +334,7 @@ public class Partners {
 		} else {
 			ps.setInt(8, getToDatePid());
 		}
+		ps.setInt(9, getLanguagePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -327,6 +356,15 @@ public class Partners {
 	 */
 	public void setFromDatePid(int FromDatePid) {
 		this.FromDatePid = FromDatePid;
+	}
+
+	/**
+	 * Set the LanguagePid field
+	 *
+	 * @param LanguagePid Contents of the LANGUAGE_PID column
+	 */
+	public void setLanguagePid(int LanguagePid) {
+		this.LanguagePid = LanguagePid;
 	}
 
 	/**
@@ -410,7 +448,8 @@ public class Partners {
 		} else {
 			ps.setInt(7, getToDatePid());
 		}
-		ps.setInt(8, getPartnerPid());
+		ps.setInt(8, getLanguagePid());
+		ps.setInt(9, getPartnerPid());
 		ps.executeUpdate();
 		conn.close();
 	}

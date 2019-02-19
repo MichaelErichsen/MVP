@@ -38,7 +38,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all historical dates
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
@@ -132,13 +132,13 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnHistoricalDate = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnStoredDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnHistoricalDate = tableViewerColumnHistoricalDate
+		final TableColumn tblclmnStoredDate = tableViewerColumnStoredDate
 				.getColumn();
-		tblclmnHistoricalDate.setWidth(100);
-		tblclmnHistoricalDate.setText("Historical Date");
-		tableViewerColumnHistoricalDate
+		tblclmnStoredDate.setWidth(100);
+		tblclmnStoredDate.setText("Stored Date");
+		tableViewerColumnStoredDate
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnOriginalInputFormat = new TableViewerColumn(

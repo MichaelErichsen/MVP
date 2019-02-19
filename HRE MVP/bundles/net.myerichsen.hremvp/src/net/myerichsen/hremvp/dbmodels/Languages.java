@@ -13,20 +13,24 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the LANGUAGES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Languages {
-	private static final String SELECT = "SELECT LANGUAGE_PID, ISOCODE, LABEL, "
+	private static final String SELECT = "SELECT " + "LANGUAGE_PID, "
+			+ "ISOCODE, " + "LABEL, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";
-	private static final String SELECTALL = "SELECT LANGUAGE_PID, ISOCODE, LABEL, "
+	private static final String SELECTALL = "SELECT " + "LANGUAGE_PID, "
+			+ "ISOCODE, " + "LABEL, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES ORDER BY LANGUAGE_PID";
 	private static final String SELECTMAX = "SELECT MAX(LANGUAGE_PID) FROM PUBLIC.LANGUAGES";
-	private static final String INSERT = "INSERT INTO PUBLIC.LANGUAGES( LANGUAGE_PID, ISOCODE, LABEL, "
-			+ "TABLE_ID) VALUES (?, ?, ?, ?)";
-	private static final String UPDATE = "UPDATE PUBLIC.LANGUAGES SET ISOCODE = ?, LABEL = ?, "
+	private static final String INSERT = "INSERT INTO PUBLIC.LANGUAGES( "
+			+ "LANGUAGE_PID, " + "ISOCODE, " + "LABEL, " + "TABLE_ID) VALUES ("
+			+ "?, " + "?, " + "?, " + "?)";
+	private static final String UPDATE = "UPDATE PUBLIC.LANGUAGES SET "
+			+ "ISOCODE = ?, " + "LABEL = ?, "
 			+ "TABLE_ID = ? WHERE LANGUAGE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";

@@ -149,20 +149,20 @@ public class PersonNamesViewOld {
 		btnPrimaryName.setText("Primary Name");
 		new Label(parent, SWT.NONE);
 
-		final Label lblNameParts = new Label(parent, SWT.NONE);
-		lblNameParts.setText("Name Parts\r\nDblclk to open");
+		final Label lblPersonNameParts = new Label(parent, SWT.NONE);
+		lblPersonNameParts.setText("Name Parts\r\nDblclk to open");
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		final Table tableNameParts = tableViewer.getTable();
-		tableNameParts.addMouseListener(new MouseAdapter() {
+		final Table tablePersonNameParts = tableViewer.getTable();
+		tablePersonNameParts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openNamePartView();
 			}
 		});
-		tableNameParts.setLinesVisible(true);
-		tableNameParts.setHeaderVisible(true);
-		tableNameParts.setLayoutData(
+		tablePersonNameParts.setLinesVisible(true);
+		tablePersonNameParts.setHeaderVisible(true);
+		tablePersonNameParts.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
@@ -307,13 +307,13 @@ public class PersonNamesViewOld {
 
 			btnPrimaryName.setSelection(provider.isPrimaryName());
 
-//			tableNameParts.removeAll();
+//			tablePersonNameParts.removeAll();
 
 			provider.getNameList();
 
 //			for (int i = 0; i < nameList.size(); i++) {
 //				ls = nameList.get(i);
-//				final TableItem item = new TableItem(tableNameParts, SWT.NONE);
+//				final TableItem item = new TableItem(tablePersonNameParts, SWT.NONE);
 //				item.setText(0, ls.get(0));
 //				item.setText(1, ls.get(1));
 //				item.setText(2, ls.get(2));
@@ -371,7 +371,7 @@ public class PersonNamesViewOld {
 				"net.myerichsen.hremvp.command.opennamepartview", null);
 		handlerService.executeHandler(command);
 
-//		final TableItem[] selectedRows = tableNameParts.getSelection();
+//		final TableItem[] selectedRows = tablePersonNameParts.getSelection();
 
 //		if (selectedRows.length > 0) {
 //			final TableItem selectedRow = selectedRows[0];

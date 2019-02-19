@@ -6,15 +6,15 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
-import net.myerichsen.hremvp.dbmodels.NameStyles;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 import net.myerichsen.hremvp.person.servers.PersonNameStyleServer;
 
 /**
  * Provide a name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class PersonNameStyleProvider implements IHREProvider {
@@ -24,7 +24,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	private String languageLabel;
 	private String isoCode;
 
-	private List<NameMaps> mapList;
+	private List<PersonNameMaps> mapList;
 	private final PersonNameStyleServer server;
 
 	/**
@@ -57,7 +57,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * @throws SQLException
 	 */
 	@Override
-	public List<NameStyles> get() throws SQLException {
+	public List<PersonNameStyles> get() throws SQLException {
 		return server.get();
 	}
 
@@ -112,7 +112,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	/**
 	 * @return the mapList
 	 */
-	public List<NameMaps> getMapList() {
+	public List<PersonNameMaps> getMapList() {
 		return mapList;
 	}
 
@@ -173,7 +173,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	/**
 	 * @param mapList the mapList to set
 	 */
-	public void setMapList(List<NameMaps> mapList) {
+	public void setMapList(List<PersonNameMaps> mapList) {
 		this.mapList = mapList;
 	}
 

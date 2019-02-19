@@ -15,14 +15,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.dbmodels.NameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
 
 /**
  * Wizard page to ad a person name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 8. feb. 2019
+ * @version 19. feb. 2019
  */
 
 public class NewPersonNameWizardPage2 extends WizardPage {
@@ -65,13 +65,13 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 			personNameStylePid = wizard.getPersonNameStylePid();
 
 			provider = new PersonNameMapProvider();
-			final List<NameMaps> mapList = provider
+			final List<PersonNameMaps> mapList = provider
 					.getFKNameStylePid(personNameStylePid);
 			textFieldList = new ArrayList<>();
 
 			for (int i = 0; i < mapList.size(); i++) {
 				final Label lblNewLabel = new Label(container, SWT.NONE);
-				lblNewLabel.setText(mapList.get(i).getLabel());
+				lblNewLabel.setText("apList.get(i).getLabelPid()");
 
 				final Text text = new Text(container, SWT.BORDER);
 				text.setLayoutData(
@@ -87,16 +87,16 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 	}
 
 	/**
-	 * @return the nameParts
+	 * @return the PersonNameParts
 	 */
-	public List<String> getNameParts() {
-		final List<String> nameParts = new ArrayList<>();
+	public List<String> getPersonNameParts() {
+		final List<String> PersonNameParts = new ArrayList<>();
 
 		for (final Text text : textFieldList) {
-			nameParts.add(text.getText());
+			PersonNameParts.add(text.getText());
 		}
 
-		return nameParts;
+		return PersonNameParts;
 	}
 
 	/**

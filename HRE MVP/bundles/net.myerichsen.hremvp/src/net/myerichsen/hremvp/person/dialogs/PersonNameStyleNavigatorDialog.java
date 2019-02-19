@@ -6,12 +6,10 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -27,17 +25,15 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import com.opcoach.e4.preferences.ScopedPreferenceStore;
-
 import net.myerichsen.hremvp.dbmodels.Languages;
-import net.myerichsen.hremvp.dbmodels.NameStyles;
+import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
 
 /**
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 4. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
@@ -46,8 +42,8 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 
 	@Inject
 	private IEventBroker eventBroker;
-	private final IPreferenceStore store = new ScopedPreferenceStore(
-			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+//	private final IPreferenceStore store = new ScopedPreferenceStore(
+//			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	private PersonNameStyleProvider provider;
 
@@ -139,30 +135,29 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
 
-		final int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
-		int currentStyle;
+//		final int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
+//		int currentStyle;
 
 		try {
-			final List<NameStyles> nameStyleList = provider.get();
+			final List<PersonNameStyles> nameStyleList = provider.get();
 			table.removeAll();
 			Languages language;
 
 			for (int i = 0; i < nameStyleList.size(); i++) {
-				final NameStyles style = nameStyleList.get(i);
+				final PersonNameStyles style = nameStyleList.get(i);
 				final TableItem item = new TableItem(table, SWT.NONE);
 				personNameStylePid = style.getNameStylePid();
 				item.setText(0, Integer.toString(personNameStylePid));
-				item.setText(1, style.getLabel());
+				item.setText(1, "style.getLabelPid()");
 
 				language = new Languages();
-				currentStyle = style.getLanguagePid();
-				language.get(currentStyle);
+//				language.get(currentStyle);
 				item.setText(2, language.getLabel());
 				item.setText(3, language.getIsocode());
 
-				if (currentStyle == defaultStyle) {
-					table.setSelection(i);
-				}
+//				if (currentStyle == defaultStyle) {
+//					table.setSelection(i);
+//				}
 			}
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());

@@ -18,11 +18,11 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
-import net.myerichsen.hremvp.dbmodels.NameParts;
-import net.myerichsen.hremvp.dbmodels.Names;
 import net.myerichsen.hremvp.dbmodels.Parents;
 import net.myerichsen.hremvp.dbmodels.Partners;
 import net.myerichsen.hremvp.dbmodels.PersonEvents;
+import net.myerichsen.hremvp.dbmodels.PersonNameParts;
+import net.myerichsen.hremvp.dbmodels.PersonNames;
 import net.myerichsen.hremvp.dbmodels.Persons;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
 import net.myerichsen.hremvp.dbmodels.Sexes;
@@ -75,16 +75,16 @@ public class PersonServer implements IHREServer {
 		}
 
 		// Delete all person names
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		int namePid = 0;
 
-		for (final Names names : name.getFKPersonPid(key)) {
+		for (final PersonNames names : name.getFKPersonPid(key)) {
 			namePid = names.getNamePid();
 
 			// Delete all name parts
-			final NameParts part = new NameParts();
+			final PersonNameParts part = new PersonNameParts();
 
-			for (final NameParts namePart : part.getFKNamePid(namePid)) {
+			for (final PersonNameParts namePart : part.getFKNamePid(namePid)) {
 				part.delete(namePart.getNamePartPid());
 			}
 
@@ -169,8 +169,8 @@ public class PersonServer implements IHREServer {
 		setDeathDatePid(person.getDeathDatePid());
 
 		// Get all names of the person
-		final List<Names> ln = new Names().getFKPersonPid(key);
-		Names name;
+		final List<PersonNames> ln = new PersonNames().getFKPersonPid(key);
+		PersonNames name;
 
 		final PersonNameServer pns = new PersonNameServer();
 		nameList = new ArrayList<>();
@@ -205,12 +205,12 @@ public class PersonServer implements IHREServer {
 
 		final List<Persons> lnsl = person.get();
 
-		List<Names> ln;
-		Names name;
+		List<PersonNames> ln;
+		PersonNames name;
 		final PersonNameServer ns = new PersonNameServer();
 		for (final Persons person : lnsl) {
 			// Get all names of each person
-			ln = new Names().getFKPersonPid(person.getPersonPid());
+			ln = new PersonNames().getFKPersonPid(person.getPersonPid());
 
 			nameList = new ArrayList<>();
 
@@ -517,20 +517,20 @@ public class PersonServer implements IHREServer {
 			return personNameList;
 		}
 
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		int namePid = 0;
 		StringBuilder sb;
 
-		for (final Names names : name.getFKPersonPid(key)) {
+		for (final PersonNames names : name.getFKPersonPid(key)) {
 			stringList = new ArrayList<>();
 
 			namePid = names.getNamePid();
 			stringList.add(Integer.toString(namePid));
 
 			sb = new StringBuilder();
-			final NameParts part = new NameParts();
+			final PersonNameParts part = new PersonNameParts();
 
-			for (final NameParts namePart : part.getFKNamePid(namePid)) {
+			for (final PersonNameParts namePart : part.getFKNamePid(namePid)) {
 				sb.append(namePart.getLabel() + " ");
 			}
 			stringList.add(sb.toString().trim());

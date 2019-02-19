@@ -554,7 +554,7 @@ public class LocationNameStyleView {
 				final TableItem item = new TableItem(table, SWT.NONE);
 				item.setText(0, Integer.toString(map.getLocationNameMapPid()));
 				item.setText(1, Integer.toString(map.getPartNo()));
-				item.setText(2, map.getLabel());
+				item.setText(2, "map.getLabelPid()");
 				item.setText(3, map.getLabelPosition());
 			}
 		} catch (final Exception e) {

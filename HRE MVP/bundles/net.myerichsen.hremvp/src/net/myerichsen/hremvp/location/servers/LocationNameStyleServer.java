@@ -73,8 +73,8 @@ public class LocationNameStyleServer implements IHREServer {
 		final List<LocationNameStyles> lnsl = style.get();
 
 		for (final LocationNameStyles style : lnsl) {
-			stringList.add(
-					style.getLocationNameStylePid() + "," + style.getLabel());
+			stringList.add(style.getLocationNameStylePid() + ","
+					+ style.getLabelPid());
 		}
 
 		return stringList;
@@ -91,8 +91,8 @@ public class LocationNameStyleServer implements IHREServer {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		style.get(key);
-		setLabel(style.getLabel());
-		setLanguagePid(style.getLanguagePid());
+		setLabel("style.getLabelPid()");
+//		setLanguagePid(style.getLanguagePid());
 		setLocationNameStylePid(style.getLocationNameStylePid());
 		setFromDatePid(style.getFromDatePid());
 		setToDatePid(style.getToDatePid());
@@ -183,8 +183,8 @@ public class LocationNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		style.setLabel(label);
-		style.setLanguagePid(languagePid);
+		style.setLabelPid(0);
+//		style.setLanguagePid(languagePid);
 		style.setLocationNameStylePid(locationNameStylePid);
 		style.setFromDatePid(fromDatePid);
 		style.setToDatePid(toDatePid);
@@ -269,8 +269,8 @@ public class LocationNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException {
-		style.setLabel(label);
-		style.setLanguagePid(languagePid);
+		style.setLabelPid(0);
+//		style.setLanguagePid(languagePid);
 		style.setLocationNameStylePid(locationNameStylePid);
 		style.setFromDatePid(fromDatePid);
 		style.setToDatePid(toDatePid);

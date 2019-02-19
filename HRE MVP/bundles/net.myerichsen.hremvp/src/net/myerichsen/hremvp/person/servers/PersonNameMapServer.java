@@ -5,14 +5,14 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
-import net.myerichsen.hremvp.dbmodels.NameStyles;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 
 /**
- * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.NameMaps}
+ * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class PersonNameMapServer implements IHREServer {
@@ -24,16 +24,16 @@ public class PersonNameMapServer implements IHREServer {
 	private int nameStylePid;
 	private String styleLabel;
 
-	private final NameMaps map;
-	private final NameStyles style;
+	private final PersonNameMaps map;
+	private final PersonNameStyles style;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public PersonNameMapServer() {
-		map = new NameMaps();
-		style = new NameStyles();
+		map = new PersonNameMaps();
+		style = new PersonNameStyles();
 	}
 
 	/**
@@ -70,13 +70,13 @@ public class PersonNameMapServer implements IHREServer {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		map.get(key);
-		setLabel(map.getLabel());
+		setLabel("map.getLabelPid()");
 		setNameMapPid(map.getNameMapPid());
 		setNameStylePid(map.getNameStylePid());
 		setPartNo(map.getPartNo());
 
 		style.get(getNameStylePid());
-		setStyleLabel(style.getLabel());
+		setStyleLabel("style.getLabelPid()");
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class PersonNameMapServer implements IHREServer {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NameMaps> getFKNameStylePid(int key) throws SQLException {
+	public List<PersonNameMaps> getFKNameStylePid(int key) throws SQLException {
 		return map.getFKNameStylePid(key);
 	}
 
@@ -132,7 +132,7 @@ public class PersonNameMapServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		map.setLabel(label);
+		map.setLabelPid(0);
 		map.setNameMapPid(nameMapPid);
 		map.setNameStylePid(nameStylePid);
 		map.setPartNo(partNo);
@@ -183,7 +183,7 @@ public class PersonNameMapServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException {
-		map.setLabel(label);
+		map.setLabelPid(0);
 		map.setNameMapPid(nameMapPid);
 		map.setNameStylePid(nameStylePid);
 		map.setPartNo(partNo);

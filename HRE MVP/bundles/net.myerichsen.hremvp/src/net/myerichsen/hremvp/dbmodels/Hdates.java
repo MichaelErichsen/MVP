@@ -14,21 +14,26 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the HDATES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Hdates {
-	private static final String SELECT = "SELECT HDATE_PID, TABLE_ID, ORIGINAL_TEXT, DATE, "
-			+ "SORT_DATE, SURETY FROM PUBLIC.HDATES WHERE HDATE_PID = ?";
-	private static final String SELECTALL = "SELECT HDATE_PID, TABLE_ID, ORIGINAL_TEXT, DATE, "
-			+ "SORT_DATE, SURETY FROM PUBLIC.HDATES ORDER BY DATE";
+	private static final String SELECT = "SELECT " + "HDATE_PID, "
+			+ "TABLE_ID, " + "ORIGINAL_TEXT, " + "DATE, " + "SORT_DATE, "
+			+ "SURETY FROM PUBLIC.HDATES WHERE HDATE_PID = ?";
+	private static final String SELECTALL = "SELECT " + "HDATE_PID, "
+			+ "TABLE_ID, " + "ORIGINAL_TEXT, " + "DATE, " + "SORT_DATE, "
+			+ "SURETY FROM PUBLIC.HDATES ORDER BY HDATE_PID";
 	private static final String SELECTMAX = "SELECT MAX(HDATE_PID) FROM PUBLIC.HDATES";
-	private static final String INSERT = "INSERT INTO PUBLIC.HDATES( HDATE_PID, TABLE_ID, "
-			+ "ORIGINAL_TEXT, DATE, SORT_DATE, SURETY) VALUES (?, ?, ?, ?, ?, ?)";
-	private static final String UPDATE = "UPDATE PUBLIC.HDATES SET TABLE_ID = ?, ORIGINAL_TEXT = ?, "
-			+ "DATE = ?, SORT_DATE = ?, SURETY = ? WHERE HDATE_PID = ?";
+	private static final String INSERT = "INSERT INTO PUBLIC.HDATES( "
+			+ "HDATE_PID, " + "TABLE_ID, " + "ORIGINAL_TEXT, " + "DATE, "
+			+ "SORT_DATE, " + "SURETY) VALUES (" + "?, " + "?, " + "?, " + "?, "
+			+ "?, " + "?)";
+	private static final String UPDATE = "UPDATE PUBLIC.HDATES SET "
+			+ "TABLE_ID = ?, " + "ORIGINAL_TEXT = ?, " + "DATE = ?, "
+			+ "SORT_DATE = ?, " + "SURETY = ? WHERE HDATE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.HDATES WHERE HDATE_PID = ?";
 

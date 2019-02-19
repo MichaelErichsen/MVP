@@ -184,13 +184,13 @@ public class NewPersonWizard extends Wizard {
 			// Page 3
 			// Name parts
 			PersonNamePartProvider personNamePartProvider;
-			final List<String> nameParts = page3.getNameParts();
+			final List<String> PersonNameParts = page3.getPersonNameParts();
 			String string;
 			int namePartPid;
 
 			// Create each name part
-			for (int i = 0; i < nameParts.size(); i++) {
-				string = nameParts.get(i);
+			for (int i = 0; i < PersonNameParts.size(); i++) {
+				string = PersonNameParts.get(i);
 
 				if (string != null) {
 					personNamePartProvider = new PersonNamePartProvider();

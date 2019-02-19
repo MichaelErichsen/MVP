@@ -13,26 +13,32 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the PERSONS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Persons {
-	private static final String SELECT = "SELECT PERSON_PID, TABLE_ID, BIRTH_DATE_PID, "
+	private static final String SELECT = "SELECT " + "PERSON_PID, "
+			+ "TABLE_ID, " + "BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS WHERE PERSON_PID = ?";
-	private static final String SELECT_BIRTH_DATE_PID = "SELECT PERSON_PID, TABLE_ID, BIRTH_DATE_PID, "
+	private static final String SELECT_BIRTH_DATE_PID = "SELECT "
+			+ "PERSON_PID, " + "TABLE_ID, " + "BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS WHERE BIRTH_DATE_PID = ? ORDER BY PERSON_PID";
-	private static final String SELECT_DEATH_DATE_PID = "SELECT PERSON_PID, TABLE_ID, BIRTH_DATE_PID, "
+	private static final String SELECT_DEATH_DATE_PID = "SELECT "
+			+ "PERSON_PID, " + "TABLE_ID, " + "BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS WHERE DEATH_DATE_PID = ? ORDER BY PERSON_PID";
-	private static final String SELECTALL = "SELECT PERSON_PID, TABLE_ID, BIRTH_DATE_PID, "
+	private static final String SELECTALL = "SELECT " + "PERSON_PID, "
+			+ "TABLE_ID, " + "BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS ORDER BY PERSON_PID";
 	private static final String SELECTMAX = "SELECT MAX(PERSON_PID) FROM PUBLIC.PERSONS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.PERSONS( PERSON_PID, TABLE_ID, "
-			+ "BIRTH_DATE_PID, DEATH_DATE_PID) VALUES (?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.PERSONS( "
+			+ "PERSON_PID, " + "TABLE_ID, " + "BIRTH_DATE_PID, "
+			+ "DEATH_DATE_PID) VALUES (" + "?, " + "?, " + "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.PERSONS SET TABLE_ID = ?, BIRTH_DATE_PID = ?, "
+	private static final String UPDATE = "UPDATE PUBLIC.PERSONS SET "
+			+ "TABLE_ID = ?, " + "BIRTH_DATE_PID = ?, "
 			+ "DEATH_DATE_PID = ? WHERE PERSON_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSONS WHERE PERSON_PID = ?";

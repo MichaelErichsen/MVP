@@ -11,32 +11,33 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.MvpException;
 
 /**
- * The persistent class for the NAME_MAPS database table
+ * The persistent class for the PERSON_NAME_PARTS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
-public class NameMaps {
-	private static final String SELECT = "SELECT NAME_MAP_PID, NAME_STYLE_PID, PART_NO, LABEL, "
-			+ "TABLE_ID FROM PUBLIC.NAME_MAPS WHERE NAME_MAP_PID = ?";
-	private static final String SELECT_NAME_STYLE_PID = "SELECT NAME_MAP_PID, NAME_STYLE_PID, PART_NO, "
-			+ "LABEL, TABLE_ID FROM PUBLIC.NAME_MAPS WHERE NAME_STYLE_PID = ? ORDER BY NAME_MAP_PID";
-	private static final String SELECTALL = "SELECT NAME_MAP_PID, NAME_STYLE_PID, PART_NO, LABEL, "
-			+ "TABLE_ID FROM PUBLIC.NAME_MAPS ORDER BY NAME_MAP_PID";
-	private static final String SELECTMAX = "SELECT MAX(NAME_MAP_PID) FROM PUBLIC.NAME_MAPS";
-	private static final String INSERT = "INSERT INTO PUBLIC.NAME_MAPS( NAME_MAP_PID, NAME_STYLE_PID, "
-			+ "PART_NO, LABEL, TABLE_ID) VALUES (?, ?, ?, ?, ?)";
+public class PersonNameParts {
+	private static final String SELECT = "SELECT " + "NAME_PART_PID, "
+			+ "NAME_PID, " + "LABEL, " + "PART_NO, "
+			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PART_PID = ?";
+	private static final String SELECTALL = "SELECT " + "NAME_PART_PID, "
+			+ "NAME_PID, " + "LABEL, " + "PART_NO, "
+			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_PARTS ORDER BY NAME_PART_PID";
+	private static final String SELECTMAX = "SELECT MAX(NAME_PART_PID) FROM PUBLIC.PERSON_NAME_PARTS";
+	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAME_PARTS( "
+			+ "NAME_PART_PID, " + "NAME_PID, " + "LABEL, " + "PART_NO, "
+			+ "TABLE_ID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?)";
+	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_PARTS SET "
+			+ "NAME_PID = ?, " + "LABEL = ?, " + "PART_NO = ?, "
+			+ "TABLE_ID = ? WHERE NAME_PART_PID = ?";
 
-	private static final String UPDATE = "UPDATE PUBLIC.NAME_MAPS SET NAME_STYLE_PID = ?, PART_NO = ?, "
-			+ "LABEL = ?, TABLE_ID = ? WHERE NAME_MAP_PID = ?";
+	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PART_PID = ?";
 
-	private static final String DELETE = "DELETE FROM PUBLIC.NAME_MAPS WHERE NAME_MAP_PID = ?";
+	private static final String DELETEALL = "DELETE FROM PUBLIC.PERSON_NAME_PARTS";
 
-	private static final String DELETEALL = "DELETE FROM PUBLIC.NAME_MAPS";
-
-	private List<NameMaps> modelList;
+	private List<PersonNameParts> modelList;
 
 	private PreparedStatement ps;
 
@@ -44,12 +45,12 @@ public class NameMaps {
 
 	private Connection conn;
 
-	private int NameMapPid;
-	private int NameStylePid;
-	private int PartNo;
+	private int NamePartPid;
+	private int NamePid;
 	private String Label;
+	private int PartNo;
 	private int TableId;
-	private NameMaps model;
+	private PersonNameParts model;
 
 	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
@@ -69,17 +70,17 @@ public class NameMaps {
 		conn.close();
 	}
 
-	public List<NameMaps> get() throws SQLException {
+	public List<PersonNameParts> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new NameMaps();
-			model.setNameMapPid(rs.getInt("NAME_MAP_PID"));
-			model.setNameStylePid(rs.getInt("NAME_STYLE_PID"));
-			model.setPartNo(rs.getInt("PART_NO"));
+			model = new PersonNameParts();
+			model.setNamePartPid(rs.getInt("NAME_PART_PID"));
+			model.setNamePid(rs.getInt("NAME_PID"));
 			model.setLabel(rs.getString("LABEL"));
+			model.setPartNo(rs.getInt("PART_NO"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -93,34 +94,15 @@ public class NameMaps {
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		if (rs.next()) {
-			setNameMapPid(rs.getInt("NAME_MAP_PID"));
-			setNameStylePid(rs.getInt("NAME_STYLE_PID"));
-			setPartNo(rs.getInt("PART_NO"));
+			setNamePartPid(rs.getInt("NAME_PART_PID"));
+			setNamePid(rs.getInt("NAME_PID"));
 			setLabel(rs.getString("LABEL"));
+			setPartNo(rs.getInt("PART_NO"));
 			setTableId(rs.getInt("TABLE_ID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
-	}
-
-	public List<NameMaps> getFKNameStylePid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_NAME_STYLE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new NameMaps();
-			model.setNameMapPid(rs.getInt("NAME_MAP_PID"));
-			model.setNameStylePid(rs.getInt("NAME_STYLE_PID"));
-			model.setPartNo(rs.getInt("PART_NO"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
 	}
 
 	/**
@@ -133,21 +115,21 @@ public class NameMaps {
 	}
 
 	/**
-	 * Get the NameMapPid field.
+	 * Get the NamePartPid field.
 	 *
-	 * @return Contents of the NAME_MAP_PID column
+	 * @return Contents of the NAME_PART_PID column
 	 */
-	public int getNameMapPid() {
-		return NameMapPid;
+	public int getNamePartPid() {
+		return NamePartPid;
 	}
 
 	/**
-	 * Get the NameStylePid field.
+	 * Get the NamePid field.
 	 *
-	 * @return Contents of the NAME_STYLE_PID column
+	 * @return Contents of the NAME_PID column
 	 */
-	public int getNameStylePid() {
-		return NameStylePid;
+	public int getNamePid() {
+		return NamePid;
 	}
 
 	/**
@@ -180,9 +162,9 @@ public class NameMaps {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getNameStylePid());
-		ps.setInt(3, getPartNo());
-		ps.setString(4, getLabel());
+		ps.setInt(2, getNamePid());
+		ps.setString(3, getLabel());
+		ps.setInt(4, getPartNo());
 		ps.setInt(5, getTableId());
 		ps.executeUpdate();
 		conn.close();
@@ -199,21 +181,21 @@ public class NameMaps {
 	}
 
 	/**
-	 * Set the NameMapPid field
+	 * Set the NamePartPid field
 	 *
-	 * @param NameMapPid Contents of the NAME_MAP_PID column
+	 * @param NamePartPid Contents of the NAME_PART_PID column
 	 */
-	public void setNameMapPid(int NameMapPid) {
-		this.NameMapPid = NameMapPid;
+	public void setNamePartPid(int NamePartPid) {
+		this.NamePartPid = NamePartPid;
 	}
 
 	/**
-	 * Set the NameStylePid field
+	 * Set the NamePid field
 	 *
-	 * @param NameStylePid Contents of the NAME_STYLE_PID column
+	 * @param NamePid Contents of the NAME_PID column
 	 */
-	public void setNameStylePid(int NameStylePid) {
-		this.NameStylePid = NameStylePid;
+	public void setNamePid(int NamePid) {
+		this.NamePid = NamePid;
 	}
 
 	/**
@@ -237,13 +219,22 @@ public class NameMaps {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getNameStylePid());
-		ps.setInt(2, getPartNo());
-		ps.setString(3, getLabel());
+		ps.setInt(1, getNamePid());
+		ps.setString(2, getLabel());
+		ps.setInt(3, getPartNo());
 		ps.setInt(4, getTableId());
-		ps.setInt(5, getNameMapPid());
+		ps.setInt(5, getNamePartPid());
 		ps.executeUpdate();
 		conn.close();
+	}
+
+	/**
+	 * @param namePid2
+	 * @return
+	 */
+	public List<PersonNameParts> getFKNamePid(int namePid2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

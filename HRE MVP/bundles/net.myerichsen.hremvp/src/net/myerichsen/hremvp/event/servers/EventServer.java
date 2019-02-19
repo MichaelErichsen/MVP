@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class EventServer {
@@ -80,7 +80,6 @@ public class EventServer {
 		List<String> stringList;
 		int namePid;
 		int eventTypePid;
-		int languagePid;
 		int eventPid;
 
 		final Events event = new Events();
@@ -101,10 +100,9 @@ public class EventServer {
 
 			eventTypePid = name.getEventTypePid();
 			type.get(eventTypePid);
-			stringList.add(type.getLabel());
+			// FIXME
+			stringList.add("type.getLabel()");
 
-			languagePid = name.getLanguagePid();
-			language.get(languagePid);
 			stringList.add(language.getLabel());
 
 			lls.add(stringList);
@@ -154,7 +152,6 @@ public class EventServer {
 		setEventName(anEventName.getLabel());
 
 		final Languages aLanguage = new Languages();
-		setLanguagePid(anEventName.getLanguagePid());
 		aLanguage.get(LanguagePid);
 		setIsoCode(aLanguage.getIsocode());
 		setLanguage(aLanguage.getLabel());
@@ -162,7 +159,8 @@ public class EventServer {
 		final EventTypes anEventType = new EventTypes();
 		setEventTypePid(anEventName.getEventTypePid());
 		anEventType.get(EventTypePid);
-		setEventType(anEventType.getLabel());
+		// FIXME
+//		setEventType(anEventType.getLabel());
 	}
 
 	/**

@@ -13,27 +13,33 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the EVENTS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Events {
-	private static final String SELECT = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
+	private static final String SELECT = "SELECT " + "EVENT_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
 			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
-	private static final String SELECT_FROM_DATE_PID = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE FROM_DATE_PID = ? ORDER BY EVENT_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE TO_DATE_PID = ? ORDER BY EVENT_PID";
-	private static final String SELECTALL = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS ORDER BY EVENT_PID";
+	private static final String SELECT_FROM_DATE_PID = "SELECT " + "EVENT_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE FROM_DATE_PID = ? ORDER BY EVENT_PID";
+	private static final String SELECT_TO_DATE_PID = "SELECT " + "EVENT_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE TO_DATE_PID = ? ORDER BY EVENT_PID";
+	private static final String SELECTALL = "SELECT " + "EVENT_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS ORDER BY EVENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_PID) FROM PUBLIC.EVENTS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( EVENT_PID, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_NAME_PID) VALUES (?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( "
+			+ "EVENT_PID, " + "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+			+ "EVENT_NAME_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET TABLE_ID = ?, FROM_DATE_PID = ?, "
-			+ "TO_DATE_PID = ?, EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET "
+			+ "TABLE_ID = ?, " + "FROM_DATE_PID = ?, " + "TO_DATE_PID = ?, "
+			+ "EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
 

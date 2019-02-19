@@ -11,32 +11,36 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.MvpException;
 
 /**
- * The persistent class for the NAME_STYLES database table
+ * The persistent class for the PERSON_NAME_STYLES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
-public class NameStyles {
-	private static final String SELECT = "SELECT NAME_STYLE_PID, LABEL, LANGUAGE_PID, "
-			+ "TABLE_ID FROM PUBLIC.NAME_STYLES WHERE NAME_STYLE_PID = ?";
-	private static final String SELECT_LANGUAGE_PID = "SELECT NAME_STYLE_PID, LABEL, LANGUAGE_PID, "
-			+ "TABLE_ID FROM PUBLIC.NAME_STYLES WHERE LANGUAGE_PID = ? ORDER BY NAME_STYLE_PID";
-	private static final String SELECTALL = "SELECT NAME_STYLE_PID, LABEL, LANGUAGE_PID, "
-			+ "TABLE_ID FROM PUBLIC.NAME_STYLES ORDER BY NAME_STYLE_PID";
-	private static final String SELECTMAX = "SELECT MAX(NAME_STYLE_PID) FROM PUBLIC.NAME_STYLES";
-	private static final String INSERT = "INSERT INTO PUBLIC.NAME_STYLES( NAME_STYLE_PID, LABEL, "
-			+ "LANGUAGE_PID, TABLE_ID) VALUES (?, ?, ?, ?)";
+public class PersonNameStyles {
+	private static final String SELECT = "SELECT " + "NAME_STYLE_PID, "
+			+ "LABEL_PID, "
+			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_STYLES WHERE NAME_STYLE_PID = ?";
+	private static final String SELECT_LABEL_PID = "SELECT "
+			+ "NAME_STYLE_PID, " + "LABEL_PID, "
+			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_STYLES WHERE LABEL_PID = ? ORDER BY NAME_STYLE_PID";
+	private static final String SELECTALL = "SELECT " + "NAME_STYLE_PID, "
+			+ "LABEL_PID, "
+			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_STYLES ORDER BY NAME_STYLE_PID";
+	private static final String SELECTMAX = "SELECT MAX(NAME_STYLE_PID) FROM PUBLIC.PERSON_NAME_STYLES";
+	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAME_STYLES( "
+			+ "NAME_STYLE_PID, " + "LABEL_PID, " + "TABLE_ID) VALUES (" + "?, "
+			+ "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.NAME_STYLES SET LABEL = ?, LANGUAGE_PID = ?, "
-			+ "TABLE_ID = ? WHERE NAME_STYLE_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_STYLES SET "
+			+ "LABEL_PID = ?, " + "TABLE_ID = ? WHERE NAME_STYLE_PID = ?";
 
-	private static final String DELETE = "DELETE FROM PUBLIC.NAME_STYLES WHERE NAME_STYLE_PID = ?";
+	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_STYLES WHERE NAME_STYLE_PID = ?";
 
-	private static final String DELETEALL = "DELETE FROM PUBLIC.NAME_STYLES";
+	private static final String DELETEALL = "DELETE FROM PUBLIC.PERSON_NAME_STYLES";
 
-	private List<NameStyles> modelList;
+	private List<PersonNameStyles> modelList;
 
 	private PreparedStatement ps;
 
@@ -45,10 +49,9 @@ public class NameStyles {
 	private Connection conn;
 
 	private int NameStylePid;
-	private String Label;
-	private int LanguagePid;
+	private int LabelPid;
 	private int TableId;
-	private NameStyles model;
+	private PersonNameStyles model;
 
 	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
@@ -68,16 +71,15 @@ public class NameStyles {
 		conn.close();
 	}
 
-	public List<NameStyles> get() throws SQLException {
+	public List<PersonNameStyles> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new NameStyles();
+			model = new PersonNameStyles();
 			model.setNameStylePid(rs.getInt("NAME_STYLE_PID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -92,8 +94,7 @@ public class NameStyles {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setNameStylePid(rs.getInt("NAME_STYLE_PID"));
-			setLabel(rs.getString("LABEL"));
-			setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			setLabelPid(rs.getInt("LABEL_PID"));
 			setTableId(rs.getInt("TABLE_ID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -101,17 +102,16 @@ public class NameStyles {
 		conn.close();
 	}
 
-	public List<NameStyles> getFKLanguagePid(int key) throws SQLException {
+	public List<PersonNameStyles> getFKLabelPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID);
+		ps = conn.prepareStatement(SELECT_LABEL_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new NameStyles();
+			model = new PersonNameStyles();
 			model.setNameStylePid(rs.getInt("NAME_STYLE_PID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -120,21 +120,12 @@ public class NameStyles {
 	}
 
 	/**
-	 * Get the Label field.
+	 * Get the LabelPid field.
 	 *
-	 * @return Contents of the LABEL column
+	 * @return Contents of the LABEL_PID column
 	 */
-	public String getLabel() {
-		return Label;
-	}
-
-	/**
-	 * Get the LanguagePid field.
-	 *
-	 * @return Contents of the LANGUAGE_PID column
-	 */
-	public int getLanguagePid() {
-		return LanguagePid;
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
@@ -167,30 +158,20 @@ public class NameStyles {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setString(2, getLabel());
-		ps.setInt(3, getLanguagePid());
-		ps.setInt(4, getTableId());
+		ps.setInt(2, getLabelPid());
+		ps.setInt(3, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
 	}
 
 	/**
-	 * Set the Label field
+	 * Set the LabelPid field
 	 *
-	 * @param Label Contents of the LABEL column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public void setLabel(String Label) {
-		this.Label = Label;
-	}
-
-	/**
-	 * Set the LanguagePid field
-	 *
-	 * @param LanguagePid Contents of the LANGUAGE_PID column
-	 */
-	public void setLanguagePid(int LanguagePid) {
-		this.LanguagePid = LanguagePid;
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -214,10 +195,9 @@ public class NameStyles {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getLabel());
-		ps.setInt(2, getLanguagePid());
-		ps.setInt(3, getTableId());
-		ps.setInt(4, getNameStylePid());
+		ps.setInt(1, getLabelPid());
+		ps.setInt(2, getTableId());
+		ps.setInt(3, getNameStylePid());
 		ps.executeUpdate();
 		conn.close();
 	}

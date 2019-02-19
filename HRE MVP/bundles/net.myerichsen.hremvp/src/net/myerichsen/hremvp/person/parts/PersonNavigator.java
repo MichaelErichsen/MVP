@@ -255,8 +255,8 @@ public class PersonNavigator {
 			tableViewer.setInput(provider.getPersonList());
 			tableViewer.refresh();
 
-			TableItem[] items = tableViewer.getTable().getItems();
-			String item0 = Integer.toString(personPid);
+			final TableItem[] items = tableViewer.getTable().getItems();
+			final String item0 = Integer.toString(personPid);
 
 			for (int i = 0; i < items.length; i++) {
 				if (item0.equals(items[i].getText(0))) {

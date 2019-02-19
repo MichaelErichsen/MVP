@@ -14,33 +14,42 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the LOCATIONS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class Locations {
-	private static final String SELECT = "SELECT LOCATION_PID, PRIMARY_LOCATION, X_COORDINATE, "
-			+ "Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT = "SELECT " + "LOCATION_PID, "
+			+ "PRIMARY_LOCATION, " + "X_COORDINATE, " + "Y_COORDINATE, "
+			+ "Z_COORDINATE, " + "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ?";
-	private static final String SELECT_FROM_DATE_PID = "SELECT LOCATION_PID, PRIMARY_LOCATION, "
-			+ "X_COORDINATE, Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_FROM_DATE_PID = "SELECT "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "TABLE_ID, "
+			+ "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE FROM_DATE_PID = ? ORDER BY LOCATION_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT LOCATION_PID, PRIMARY_LOCATION, "
-			+ "X_COORDINATE, Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_TO_DATE_PID = "SELECT "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "TABLE_ID, "
+			+ "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE TO_DATE_PID = ? ORDER BY LOCATION_PID";
-	private static final String SELECTALL = "SELECT LOCATION_PID, PRIMARY_LOCATION, X_COORDINATE, "
-			+ "Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECTALL = "SELECT " + "LOCATION_PID, "
+			+ "PRIMARY_LOCATION, " + "X_COORDINATE, " + "Y_COORDINATE, "
+			+ "Z_COORDINATE, " + "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS ORDER BY LOCATION_PID";
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_PID) FROM PUBLIC.LOCATIONS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.LOCATIONS( LOCATION_PID, PRIMARY_LOCATION, "
-			+ "X_COORDINATE, Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.LOCATIONS( "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "TABLE_ID, "
+			+ "FROM_DATE_PID, " + "TO_DATE_PID) VALUES (" + "?, " + "?, "
+			+ "?, " + "?, " + "?, " + "?, " + "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.LOCATIONS SET PRIMARY_LOCATION = ?, "
-			+ "X_COORDINATE = ?, Y_COORDINATE = ?, Z_COORDINATE = ?, TABLE_ID = ?, "
-			+ "FROM_DATE_PID = ?, TO_DATE_PID = ? WHERE LOCATION_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.LOCATIONS SET "
+			+ "PRIMARY_LOCATION = ?, " + "X_COORDINATE = ?, "
+			+ "Y_COORDINATE = ?, " + "Z_COORDINATE = ?, " + "TABLE_ID = ?, "
+			+ "FROM_DATE_PID = ?, " + "TO_DATE_PID = ? WHERE LOCATION_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ?";
 

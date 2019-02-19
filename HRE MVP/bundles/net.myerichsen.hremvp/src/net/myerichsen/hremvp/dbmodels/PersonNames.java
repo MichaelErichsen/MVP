@@ -11,45 +11,58 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.MvpException;
 
 /**
- * The persistent class for the NAMES database table
+ * The persistent class for the PERSON_NAMES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
-public class Names {
-	private static final String SELECT = "SELECT NAME_PID, PERSON_PID, PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, TO_DATE_PID FROM PUBLIC.NAMES WHERE NAME_PID = ?";
-	private static final String SELECT_PERSON_PID = "SELECT NAME_PID, PERSON_PID, PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.NAMES WHERE PERSON_PID = ? ORDER BY NAME_PID";
-	private static final String SELECT_NAME_STYLE_PID = "SELECT NAME_PID, PERSON_PID, PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.NAMES WHERE NAME_STYLE_PID = ? ORDER BY NAME_PID";
-	private static final String SELECT_FROM_DATE_PID = "SELECT NAME_PID, PERSON_PID, PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.NAMES WHERE FROM_DATE_PID = ? ORDER BY NAME_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT NAME_PID, PERSON_PID, PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.NAMES WHERE TO_DATE_PID = ? ORDER BY NAME_PID";
+public class PersonNames {
+	private static final String SELECT = "SELECT " + "NAME_PID, "
+			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE NAME_PID = ?";
+	private static final String SELECT_PERSON_PID = "SELECT " + "NAME_PID, "
+			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE PERSON_PID = ? ORDER BY NAME_PID";
+	private static final String SELECT_NAME_STYLE_PID = "SELECT " + "NAME_PID, "
+			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE NAME_STYLE_PID = ? ORDER BY NAME_PID";
+	private static final String SELECT_FROM_DATE_PID = "SELECT " + "NAME_PID, "
+			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE FROM_DATE_PID = ? ORDER BY NAME_PID";
+	private static final String SELECT_TO_DATE_PID = "SELECT " + "NAME_PID, "
+			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE TO_DATE_PID = ? ORDER BY NAME_PID";
 
-	private static final String SELECTALL = "SELECT NAME_PID, PERSON_PID, PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, TO_DATE_PID FROM PUBLIC.NAMES ORDER BY NAME_PID";
+	private static final String SELECTALL = "SELECT " + "NAME_PID, "
+			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES ORDER BY NAME_PID";
 
-	private static final String SELECTMAX = "SELECT MAX(NAME_PID) FROM PUBLIC.NAMES";
+	private static final String SELECTMAX = "SELECT MAX(NAME_PID) FROM PUBLIC.PERSON_NAMES";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.NAMES( NAME_PID, PERSON_PID, PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAMES( "
+			+ "NAME_PID, " + "PERSON_PID, " + "PRIMARY_NAME, "
+			+ "NAME_STYLE_PID, " + "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
+			+ "?, " + "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.NAMES SET PERSON_PID = ?, PRIMARY_NAME = ?, "
-			+ "NAME_STYLE_PID = ?, TABLE_ID = ?, FROM_DATE_PID = ?, TO_DATE_PID = ? WHERE NAME_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAMES SET "
+			+ "PERSON_PID = ?, " + "PRIMARY_NAME = ?, " + "NAME_STYLE_PID = ?, "
+			+ "TABLE_ID = ?, " + "FROM_DATE_PID = ?, "
+			+ "TO_DATE_PID = ? WHERE NAME_PID = ?";
 
-	private static final String DELETE = "DELETE FROM PUBLIC.NAMES WHERE NAME_PID = ?";
+	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAMES WHERE NAME_PID = ?";
 
-	private static final String DELETEALL = "DELETE FROM PUBLIC.NAMES";
+	private static final String DELETEALL = "DELETE FROM PUBLIC.PERSON_NAMES";
 
-	private List<Names> modelList;
+	private List<PersonNames> modelList;
 
 	private PreparedStatement ps;
 
@@ -64,7 +77,7 @@ public class Names {
 	private int TableId;
 	private int FromDatePid;
 	private int ToDatePid;
-	private Names model;
+	private PersonNames model;
 
 	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
@@ -84,13 +97,13 @@ public class Names {
 		conn.close();
 	}
 
-	public List<Names> get() throws SQLException {
+	public List<PersonNames> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Names();
+			model = new PersonNames();
 			model.setNamePid(rs.getInt("NAME_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
 			model.setPrimaryName(rs.getBoolean("PRIMARY_NAME"));
@@ -123,14 +136,14 @@ public class Names {
 		conn.close();
 	}
 
-	public List<Names> getFKFromDatePid(int key) throws SQLException {
+	public List<PersonNames> getFKFromDatePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Names();
+			model = new PersonNames();
 			model.setNamePid(rs.getInt("NAME_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
 			model.setPrimaryName(rs.getBoolean("PRIMARY_NAME"));
@@ -144,14 +157,14 @@ public class Names {
 		return modelList;
 	}
 
-	public List<Names> getFKNameStylePid(int key) throws SQLException {
+	public List<PersonNames> getFKNameStylePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_NAME_STYLE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Names();
+			model = new PersonNames();
 			model.setNamePid(rs.getInt("NAME_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
 			model.setPrimaryName(rs.getBoolean("PRIMARY_NAME"));
@@ -165,14 +178,14 @@ public class Names {
 		return modelList;
 	}
 
-	public List<Names> getFKPersonPid(int key) throws SQLException {
+	public List<PersonNames> getFKPersonPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PERSON_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Names();
+			model = new PersonNames();
 			model.setNamePid(rs.getInt("NAME_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
 			model.setPrimaryName(rs.getBoolean("PRIMARY_NAME"));
@@ -186,14 +199,14 @@ public class Names {
 		return modelList;
 	}
 
-	public List<Names> getFKToDatePid(int key) throws SQLException {
+	public List<PersonNames> getFKToDatePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Names();
+			model = new PersonNames();
 			model.setNamePid(rs.getInt("NAME_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
 			model.setPrimaryName(rs.getBoolean("PRIMARY_NAME"));

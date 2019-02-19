@@ -14,30 +14,41 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the COMMIT_LOGS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class CommitLogs {
-	private static final String SELECT = "SELECT COMMIT_LOG_PID, TABLE_PID, CHANGED_TABLE_PID, "
-			+ "CHANGED_RECORD_PID, CHANGED_TIMESTAMP, USERID_PID, COLUMN_NAME_LIST, "
-			+ "COLUMN_DATA_LIST, TABLE_ID FROM PUBLIC.COMMIT_LOGS WHERE COMMIT_LOG_PID = ?";
-	private static final String SELECT_USERID_PID = "SELECT COMMIT_LOG_PID, TABLE_PID, "
-			+ "CHANGED_TABLE_PID, CHANGED_RECORD_PID, CHANGED_TIMESTAMP, USERID_PID, "
-			+ "COLUMN_NAME_LIST, COLUMN_DATA_LIST, "
+	private static final String SELECT = "SELECT " + "COMMIT_LOG_PID, "
+			+ "TABLE_PID, " + "CHANGED_TABLE_PID, " + "CHANGED_RECORD_PID, "
+			+ "CHANGED_TIMESTAMP, " + "USERID_PID, " + "COLUMN_NAME_LIST, "
+			+ "COLUMN_DATA_LIST, "
+			+ "TABLE_ID FROM PUBLIC.COMMIT_LOGS WHERE COMMIT_LOG_PID = ?";
+	private static final String SELECT_USERID_PID = "SELECT "
+			+ "COMMIT_LOG_PID, " + "TABLE_PID, " + "CHANGED_TABLE_PID, "
+			+ "CHANGED_RECORD_PID, " + "CHANGED_TIMESTAMP, " + "USERID_PID, "
+			+ "COLUMN_NAME_LIST, " + "COLUMN_DATA_LIST, "
 			+ "TABLE_ID FROM PUBLIC.COMMIT_LOGS WHERE USERID_PID = ? ORDER BY COMMIT_LOG_PID";
-	private static final String SELECTALL = "SELECT COMMIT_LOG_PID, TABLE_PID, CHANGED_TABLE_PID, "
-			+ "CHANGED_RECORD_PID, CHANGED_TIMESTAMP, USERID_PID, COLUMN_NAME_LIST, "
-			+ "COLUMN_DATA_LIST, TABLE_ID FROM PUBLIC.COMMIT_LOGS ORDER BY COMMIT_LOG_PID";
+	private static final String SELECTALL = "SELECT " + "COMMIT_LOG_PID, "
+			+ "TABLE_PID, " + "CHANGED_TABLE_PID, " + "CHANGED_RECORD_PID, "
+			+ "CHANGED_TIMESTAMP, " + "USERID_PID, " + "COLUMN_NAME_LIST, "
+			+ "COLUMN_DATA_LIST, "
+			+ "TABLE_ID FROM PUBLIC.COMMIT_LOGS ORDER BY COMMIT_LOG_PID";
 	private static final String SELECTMAX = "SELECT MAX(COMMIT_LOG_PID) FROM PUBLIC.COMMIT_LOGS";
-	private static final String INSERT = "INSERT INTO PUBLIC.COMMIT_LOGS( COMMIT_LOG_PID, TABLE_PID, "
-			+ "CHANGED_TABLE_PID, CHANGED_RECORD_PID, CHANGED_TIMESTAMP, USERID_PID, "
-			+ "COLUMN_NAME_LIST, COLUMN_DATA_LIST, TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.COMMIT_LOGS( "
+			+ "COMMIT_LOG_PID, " + "TABLE_PID, " + "CHANGED_TABLE_PID, "
+			+ "CHANGED_RECORD_PID, " + "CHANGED_TIMESTAMP, " + "USERID_PID, "
+			+ "COLUMN_NAME_LIST, " + "COLUMN_DATA_LIST, " + "TABLE_ID) VALUES ("
+			+ "?, " + "?, " + "?, " + "?, " + "?, " + "?, " + "?, " + "?, "
+			+ "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.COMMIT_LOGS SET TABLE_PID = ?, "
-			+ "CHANGED_TABLE_PID = ?, CHANGED_RECORD_PID = ?, CHANGED_TIMESTAMP = ?, USERID_PID = ?, "
-			+ "COLUMN_NAME_LIST = ?, COLUMN_DATA_LIST = ?, TABLE_ID = ? WHERE COMMIT_LOG_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.COMMIT_LOGS SET "
+			+ "TABLE_PID = ?, " + "CHANGED_TABLE_PID = ?, "
+			+ "CHANGED_RECORD_PID = ?, " + "CHANGED_TIMESTAMP = ?, "
+			+ "USERID_PID = ?, " + "COLUMN_NAME_LIST = ?, "
+			+ "COLUMN_DATA_LIST = ?, "
+			+ "TABLE_ID = ? WHERE COMMIT_LOG_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.COMMIT_LOGS WHERE COMMIT_LOG_PID = ?";
 

@@ -13,27 +13,40 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the LOCATION_NAME_MAPS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class LocationNameMaps {
-	private static final String SELECT = "SELECT LOCATION_NAME_MAP_PID, LABEL, PART_NO, "
-			+ "LOCATION_NAME_STYLE_PID, LABEL_POSITION, "
-			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
-	private static final String SELECT_LOCATION_NAME_STYLE_PID = "SELECT LOCATION_NAME_MAP_PID, LABEL, "
-			+ "PART_NO, LOCATION_NAME_STYLE_PID, LABEL_POSITION, "
-			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_STYLE_PID = ? ORDER BY LOCATION_NAME_MAP_PID";
-	private static final String SELECTALL = "SELECT LOCATION_NAME_MAP_PID, LABEL, PART_NO, "
-			+ "LOCATION_NAME_STYLE_PID, LABEL_POSITION, "
-			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS ORDER BY LOCATION_NAME_MAP_PID";
+	private static final String SELECT = "SELECT " + "LOCATION_NAME_MAP_PID, "
+			+ "PART_NO, " + "LOCATION_NAME_STYLE_PID, " + "LABEL_POSITION, "
+			+ "TABLE_ID, "
+			+ "LABEL_PID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
+	private static final String SELECT_LOCATION_NAME_STYLE_PID = "SELECT "
+			+ "LOCATION_NAME_MAP_PID, " + "PART_NO, "
+			+ "LOCATION_NAME_STYLE_PID, " + "LABEL_POSITION, " + "TABLE_ID, "
+			+ "LABEL_PID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_STYLE_PID = ? ORDER BY LOCATION_NAME_MAP_PID";
+	private static final String SELECT_LABEL_PID = "SELECT "
+			+ "LOCATION_NAME_MAP_PID, " + "PART_NO, "
+			+ "LOCATION_NAME_STYLE_PID, " + "LABEL_POSITION, " + "TABLE_ID, "
+			+ "LABEL_PID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LABEL_PID = ? ORDER BY LOCATION_NAME_MAP_PID";
+	private static final String SELECTALL = "SELECT "
+			+ "LOCATION_NAME_MAP_PID, " + "PART_NO, "
+			+ "LOCATION_NAME_STYLE_PID, " + "LABEL_POSITION, " + "TABLE_ID, "
+			+ "LABEL_PID FROM PUBLIC.LOCATION_NAME_MAPS ORDER BY LOCATION_NAME_MAP_PID";
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_NAME_MAP_PID) FROM PUBLIC.LOCATION_NAME_MAPS";
-	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_MAPS( LOCATION_NAME_MAP_PID, "
-			+ "LABEL, PART_NO, LOCATION_NAME_STYLE_PID, LABEL_POSITION, TABLE_ID) VALUES (?, ?, ?, ?, ?, ?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_MAPS SET LABEL = ?, PART_NO = ?, "
-			+ "LOCATION_NAME_STYLE_PID = ?, LABEL_POSITION = ?, TABLE_ID = ? WHERE LOCATION_NAME_MAP_PID = ?";
+	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_MAPS( "
+			+ "LOCATION_NAME_MAP_PID, " + "PART_NO, "
+			+ "LOCATION_NAME_STYLE_PID, " + "LABEL_POSITION, " + "TABLE_ID, "
+			+ "LABEL_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
+			+ "?)";
+
+	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_MAPS SET "
+			+ "PART_NO = ?, " + "LOCATION_NAME_STYLE_PID = ?, "
+			+ "LABEL_POSITION = ?, " + "TABLE_ID = ?, "
+			+ "LABEL_PID = ? WHERE LOCATION_NAME_MAP_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
 
@@ -48,11 +61,11 @@ public class LocationNameMaps {
 	private Connection conn;
 
 	private int LocationNameMapPid;
-	private String Label;
 	private int PartNo;
 	private int LocationNameStylePid;
 	private String LabelPosition;
 	private int TableId;
+	private int LabelPid;
 	private LocationNameMaps model;
 
 	public void delete() throws SQLException {
@@ -81,11 +94,11 @@ public class LocationNameMaps {
 		while (rs.next()) {
 			model = new LocationNameMaps();
 			model.setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
-			model.setLabel(rs.getString("LABEL"));
 			model.setPartNo(rs.getInt("PART_NO"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setLabelPosition(rs.getString("LABEL_POSITION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -99,15 +112,35 @@ public class LocationNameMaps {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
-			setLabel(rs.getString("LABEL"));
 			setPartNo(rs.getInt("PART_NO"));
 			setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			setLabelPosition(rs.getString("LABEL_POSITION"));
 			setTableId(rs.getInt("TABLE_ID"));
+			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
+	}
+
+	public List<LocationNameMaps> getFKLabelPid(int key) throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECT_LABEL_PID);
+		ps.setInt(1, key);
+		rs = ps.executeQuery();
+		modelList = new ArrayList<>();
+		while (rs.next()) {
+			model = new LocationNameMaps();
+			model.setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
+			model.setPartNo(rs.getInt("PART_NO"));
+			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
+			model.setLabelPosition(rs.getString("LABEL_POSITION"));
+			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
+			modelList.add(model);
+		}
+		conn.close();
+		return modelList;
 	}
 
 	public List<LocationNameMaps> getFKLocationNameStylePid(int key)
@@ -120,11 +153,11 @@ public class LocationNameMaps {
 		while (rs.next()) {
 			model = new LocationNameMaps();
 			model.setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
-			model.setLabel(rs.getString("LABEL"));
 			model.setPartNo(rs.getInt("PART_NO"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setLabelPosition(rs.getString("LABEL_POSITION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -132,12 +165,12 @@ public class LocationNameMaps {
 	}
 
 	/**
-	 * Get the Label field.
+	 * Get the LabelPid field.
 	 *
-	 * @return Contents of the LABEL column
+	 * @return Contents of the LABEL_PID column
 	 */
-	public String getLabel() {
-		return Label;
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
@@ -197,23 +230,23 @@ public class LocationNameMaps {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setString(2, getLabel());
-		ps.setInt(3, getPartNo());
-		ps.setInt(4, getLocationNameStylePid());
-		ps.setString(5, getLabelPosition());
-		ps.setInt(6, getTableId());
+		ps.setInt(2, getPartNo());
+		ps.setInt(3, getLocationNameStylePid());
+		ps.setString(4, getLabelPosition());
+		ps.setInt(5, getTableId());
+		ps.setInt(6, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
 	}
 
 	/**
-	 * Set the Label field
+	 * Set the LabelPid field
 	 *
-	 * @param Label Contents of the LABEL column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public void setLabel(String Label) {
-		this.Label = Label;
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -265,11 +298,11 @@ public class LocationNameMaps {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getLabel());
-		ps.setInt(2, getPartNo());
-		ps.setInt(3, getLocationNameStylePid());
-		ps.setString(4, getLabelPosition());
-		ps.setInt(5, getTableId());
+		ps.setInt(1, getPartNo());
+		ps.setInt(2, getLocationNameStylePid());
+		ps.setString(3, getLabelPosition());
+		ps.setInt(4, getTableId());
+		ps.setInt(5, getLabelPid());
 		ps.setInt(6, getLocationNameMapPid());
 		ps.executeUpdate();
 		conn.close();
