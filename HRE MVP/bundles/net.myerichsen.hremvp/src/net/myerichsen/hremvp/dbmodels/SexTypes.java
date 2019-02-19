@@ -13,41 +13,44 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the SEX_TYPES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 19. feb. 2019
  *
  */
 
 public class SexTypes {
-	private static final String SELECT = "SELECT SEX_TYPE_PID, ABBREVIATION, LABEL, "
-			+ "LANGUAGE_PID FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
-	private static final String SELECT_LANGUAGE_PID = "SELECT SEX_TYPE_PID, ABBREVIATION, LABEL, "
-			+ "LANGUAGE_PID FROM PUBLIC.SEX_TYPES WHERE LANGUAGE_PID = ? ORDER BY SEX_TYPE_PID";
-	private static final String SELECTALL = "SELECT SEX_TYPE_PID, ABBREVIATION, LABEL, "
-			+ "LANGUAGE_PID FROM PUBLIC.SEX_TYPES ORDER BY SEX_TYPE_PID";
-	private static final String SELECTMAX = "SELECT MAX(SEX_TYPE_PID) FROM PUBLIC.SEX_TYPES";
-	private static final String INSERT = "INSERT INTO PUBLIC.SEX_TYPES( SEX_TYPE_PID, ABBREVIATION, "
-			+ "LABEL, LANGUAGE_PID) VALUES (?, ?, ?, ?)";
+	private List<SexTypes> modelList;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	private Connection conn;
+	private static final String SELECT = "SELECT " + "SEX_TYPE_PID, "
+			+ "ABBREVIATION, "
+			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
 
-	private static final String UPDATE = "UPDATE PUBLIC.SEX_TYPES SET ABBREVIATION = ?, LABEL = ?, "
-			+ "LANGUAGE_PID = ? WHERE SEX_TYPE_PID = ?";
+	private static final String SELECT_LABEL_PID = "SELECT " + "SEX_TYPE_PID, "
+			+ "ABBREVIATION, "
+			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE LABEL_PID = ? ORDER BY SEX_TYPE_PID";
+
+	private static final String SELECTALL = "SELECT " + "SEX_TYPE_PID, "
+			+ "ABBREVIATION, "
+			+ "LABEL_PID FROM PUBLIC.SEX_TYPES ORDER BY SEX_TYPE_PID";
+
+	private static final String SELECTMAX = "SELECT MAX(SEX_TYPE_PID) FROM PUBLIC.SEX_TYPES";
+
+	private static final String INSERT = "INSERT INTO PUBLIC.SEX_TYPES( "
+			+ "SEX_TYPE_PID, " + "ABBREVIATION, " + "LABEL_PID) VALUES ("
+			+ "?, " + "?, " + "?)";
+
+	private static final String UPDATE = "UPDATE PUBLIC.SEX_TYPES SET "
+			+ "ABBREVIATION = ?, " + "LABEL_PID = ? WHERE SEX_TYPE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.SEX_TYPES";
 
-	private List<SexTypes> modelList;
-
-	private PreparedStatement ps;
-
-	private ResultSet rs;
-
-	private Connection conn;
-
 	private int SexTypePid;
 	private String Abbreviation;
-	private String Label;
-	private int LanguagePid;
+	private int LabelPid;
 	private SexTypes model;
 
 	public void delete() throws SQLException {
@@ -72,13 +75,12 @@ public class SexTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		modelList = new ArrayList<SexTypes>();
 		while (rs.next()) {
 			model = new SexTypes();
 			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -93,66 +95,28 @@ public class SexTypes {
 		if (rs.next()) {
 			setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			setAbbreviation(rs.getString("ABBREVIATION"));
-			setLabel(rs.getString("LABEL"));
-			setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
 	}
 
-	/**
-	 * Get the Abbreviation field.
-	 *
-	 * @return Contents of the ABBREVIATION column
-	 */
-	public String getAbbreviation() {
-		return Abbreviation;
-	}
-
-	public List<SexTypes> getFKLanguagePid(int key) throws SQLException {
+	public List<SexTypes> getFKLabelPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID);
+		ps = conn.prepareStatement(SELECT_LABEL_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		modelList = new ArrayList<SexTypes>();
 		while (rs.next()) {
 			model = new SexTypes();
 			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
-	}
-
-	/**
-	 * Get the Label field.
-	 *
-	 * @return Contents of the LABEL column
-	 */
-	public String getLabel() {
-		return Label;
-	}
-
-	/**
-	 * Get the LanguagePid field.
-	 *
-	 * @return Contents of the LANGUAGE_PID column
-	 */
-	public int getLanguagePid() {
-		return LanguagePid;
-	}
-
-	/**
-	 * Get the SexTypePid field.
-	 *
-	 * @return Contents of the SEX_TYPE_PID column
-	 */
-	public int getSexTypePid() {
-		return SexTypePid;
 	}
 
 	public int insert() throws SQLException {
@@ -168,11 +132,56 @@ public class SexTypes {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setString(2, getAbbreviation());
-		ps.setString(3, getLabel());
-		ps.setInt(4, getLanguagePid());
+		ps.setInt(3, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
+	}
+
+	public void update() throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setString(1, getAbbreviation());
+		ps.setInt(2, getLabelPid());
+		ps.setInt(3, getSexTypePid());
+		ps.executeUpdate();
+		conn.close();
+	}
+
+	/**
+	 * Get the SexTypePid field.
+	 *
+	 * @return Contents of the SEX_TYPE_PID column
+	 */
+	public int getSexTypePid() {
+		return this.SexTypePid;
+	}
+
+	/**
+	 * Get the Abbreviation field.
+	 *
+	 * @return Contents of the ABBREVIATION column
+	 */
+	public String getAbbreviation() {
+		return this.Abbreviation;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return this.LabelPid;
+	}
+
+	/**
+	 * Set the SexTypePid field
+	 *
+	 * @param SexTypePid Contents of the SEX_TYPE_PID column
+	 */
+	public void setSexTypePid(int SexTypePid) {
+		this.SexTypePid = SexTypePid;
 	}
 
 	/**
@@ -185,41 +194,12 @@ public class SexTypes {
 	}
 
 	/**
-	 * Set the Label field
+	 * Set the LabelPid field
 	 *
-	 * @param Label Contents of the LABEL column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public void setLabel(String Label) {
-		this.Label = Label;
-	}
-
-	/**
-	 * Set the LanguagePid field
-	 *
-	 * @param LanguagePid Contents of the LANGUAGE_PID column
-	 */
-	public void setLanguagePid(int LanguagePid) {
-		this.LanguagePid = LanguagePid;
-	}
-
-	/**
-	 * Set the SexTypePid field
-	 *
-	 * @param SexTypePid Contents of the SEX_TYPE_PID column
-	 */
-	public void setSexTypePid(int SexTypePid) {
-		this.SexTypePid = SexTypePid;
-	}
-
-	public void update() throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getAbbreviation());
-		ps.setString(2, getLabel());
-		ps.setInt(3, getLanguagePid());
-		ps.setInt(4, getSexTypePid());
-		ps.executeUpdate();
-		conn.close();
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 }

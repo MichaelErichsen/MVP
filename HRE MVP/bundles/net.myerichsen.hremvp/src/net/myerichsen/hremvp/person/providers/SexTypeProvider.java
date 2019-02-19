@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.person.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class SexTypeProvider implements IHREProvider {
@@ -68,19 +68,6 @@ public class SexTypeProvider implements IHREProvider {
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
 
-	}
-
-	/**
-	 * Delete a row
-	 *
-	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 *
-	 */
-	public void delete1(int key) throws SQLException, MvpException {
-		server.delete(key);
 	}
 
 	/**
@@ -220,6 +207,15 @@ public class SexTypeProvider implements IHREProvider {
 		setLanguagePid(jsonObject.getInt("languagePid"));
 		setLanguageLabel(jsonObject.getString("languageLabel"));
 		setIsoCode(jsonObject.getString("isoCode"));
+	}
+
+	/**
+	 * @return stringList A list of lists of pid, abbreviation and label in the
+	 *         active language
+	 * @throws SQLException
+	 */
+	public List<List<String>> getSexTypeList() throws SQLException {
+		return server.getSexTypeList();
 	}
 
 	/**

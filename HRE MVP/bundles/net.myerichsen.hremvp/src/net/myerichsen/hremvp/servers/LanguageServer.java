@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. nov. 2018
+ * @version 19. feb. 2019
  *
  */
 public class LanguageServer {
@@ -33,22 +33,26 @@ public class LanguageServer {
 	/**
 	 * Get all rows
 	 *
-	 * @return A list of Pids, ISO Codes and labels
+	 * @return A list of lists of Pids, ISO Codes and labels
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<String> get() throws SQLException, MvpException {
-		final List<String> stringList = new ArrayList<>();
+	public List<List<String>> get() throws SQLException, MvpException {
+		List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
 
 		final List<Languages> languageList = language.get();
 
 		for (final Languages aLanguage : languageList) {
-			stringList.add(aLanguage.getLanguagePid() + ","
-					+ aLanguage.getIsocode() + "," + aLanguage.getLabel());
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(aLanguage.getLanguagePid()));
+			stringList.add(aLanguage.getIsocode());
+			stringList.add(aLanguage.getLabel());
+			lls.add(stringList);
 		}
 
-		return stringList;
+		return lls;
 	}
 
 	/**

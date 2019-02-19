@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sexes for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. feb. 2019
+ * @version 19. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonSexesView {

@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -37,7 +37,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("CSMODE", "STANDALONE");
 		store.setDefault("LOGLEVEL", "INFO");
 		store.setDefault("LOGFILEPATH", ".");
-		store.setDefault("GUILANGUAGE", "ENGLISH");
+		store.setDefault("GUILANGUAGE", "ENUS");
 		store.setDefault("HELPSYSTEMPORT", "8081");
 		store.setDefault("HREFONT",
 				"1|Segoe UI|12.0|0|WINDOWS|1|-16|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI");

@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Languages;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
 import net.myerichsen.hremvp.dbmodels.Sexes;
 
@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Sexes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 //Use LocalDate
@@ -32,7 +32,7 @@ public class SexServer implements IHREServer {
 
 	private final Sexes sex;
 	private final SexTypes sexType;
-	private final Languages language;
+	Dictionary dictionary;
 
 	/**
 	 * Constructor
@@ -41,7 +41,7 @@ public class SexServer implements IHREServer {
 	public SexServer() {
 		sex = new Sexes();
 		sexType = new SexTypes();
-		language = new Languages();
+		dictionary = new Dictionary();
 	}
 
 	/**
@@ -89,12 +89,9 @@ public class SexServer implements IHREServer {
 
 		sexType.get(sex.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
-		setSexTypeLabel(sexType.getLabel());
-		setLanguagePid(sexType.getLanguagePid());
-
-		language.get(sexType.getLanguagePid());
-		setLanguageLabel(language.getLabel());
-		setIsocode(language.getIsocode());
+//		setSexTypeLabel(sexType.getLabel());
+//		setLanguageLabel(language.getLabel());
+//		setIsocode(language.getIsocode());
 	}
 
 	/**

@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add an existing person as a child
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 17. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class NewPersonSexWizard extends Wizard {
@@ -67,6 +67,14 @@ public class NewPersonSexWizard extends Wizard {
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(page1.isPrimary());
 			try {
+				// FIXME SEVERE: Referential integrity constraint violation:
+				// "SEX_TYPES_SEXES_FK: PUBLIC.SEXES FOREIGN KEY(SEX_TYPE_PID)
+				// REFERENCES PUBLIC.SEX_TYPES(SEX_TYPE_PID) (4)"; SQL
+				// statement:
+				// INSERT INTO PUBLIC.SEXES( SEXES_PID, PERSON_PID,
+				// SEX_TYPE_PID, PRIMARY_SEX, TABLE_ID, FROM_DATE_PID,
+				// TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?) [23506-197]
+
 				final int sexPid = sexProvider.insert();
 
 				LOGGER.info(

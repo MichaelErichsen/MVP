@@ -2,6 +2,8 @@ package net.myerichsen.hremvp.preferences;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,11 +21,14 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.providers.LanguageProvider;
+
 /**
  * Preference page for client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -92,15 +97,27 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				"Port Number for local HRE Server", getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
-		comboGuiLanguage = new ComboFieldEditor("GUILANGUAGE", "GUI Language",
-				new String[][] { { "Australian", "AUSTRALIAN" },
-						{ "Dansk", "DANISH" }, { "English", "ENGLISH" },
-						{ "Norsk", "NORWEGIAN" },
-						{ "US English", "USENGLISH" } },
-				getFieldEditorParent());
-		addField(comboGuiLanguage);
+		LanguageProvider languageProvider = new LanguageProvider();
+		try {
+			List<List<String>> languageList = languageProvider.get();
 
-		// FIXME Should be populated from database table
+			int llsSize = languageList.size();
+			String[][] doubleArray = new String[llsSize][2];
+
+			for (int i = 0; i < llsSize; i++) {
+				doubleArray[i][0] = languageList.get(i).get(2);
+				doubleArray[i][1] = languageList.get(i).get(1);
+			}
+
+			comboGuiLanguage = new ComboFieldEditor("GUILANGUAGE",
+					"GUI Language", doubleArray, getFieldEditorParent());
+			addField(comboGuiLanguage);
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
+		// FIXME Should also be populated from database table
 		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE",
 				"Default Person Name Style",
 				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } },

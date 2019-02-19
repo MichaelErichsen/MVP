@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.servers.LanguageServer;
  * Provide a language
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. nov. 2018
+ * @version 19. feb. 2019
  *
  */
 public class LanguageProvider implements IHREProvider {
@@ -41,13 +41,13 @@ public class LanguageProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return A list of Pids, ISO Codes and labels
+	 * @return A list of lists of Pids, ISO Codes and labels
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public List<String> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws SQLException, MvpException {
 		return server.get();
 	}
 

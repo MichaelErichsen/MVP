@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -730,7 +730,9 @@ public class PersonServer implements IHREServer {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(sex.getSexesPid()));
 			st.get(sex.getSexTypePid());
-			ls.add(st.getLabel());
+			// FIXME
+			ls.add("?");
+//			ls.add(st.getLabel());
 			ls.add(Boolean.toString(sex.isPrimarySex()));
 
 			sexesList.add(ls);

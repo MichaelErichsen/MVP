@@ -3,31 +3,38 @@ package net.myerichsen.hremvp.person.servers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Languages;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 19. feb. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	final IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	private int sexTypePid;
 	private String abbreviation;
@@ -37,7 +44,7 @@ public class SexTypeServer implements IHREServer {
 	private String isoCode;
 
 	private final SexTypes sexType;
-	private final Languages language;
+	private final Dictionary dictionary;
 
 	/**
 	 * Constructor
@@ -45,7 +52,7 @@ public class SexTypeServer implements IHREServer {
 	 */
 	public SexTypeServer() {
 		sexType = new SexTypes();
-		language = new Languages();
+		dictionary = new Dictionary();
 	}
 
 	/**
@@ -77,6 +84,7 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
+	 *
 	 * @return
 	 * @throws SQLException
 	 */
@@ -99,12 +107,17 @@ public class SexTypeServer implements IHREServer {
 		sexType.get(key);
 		setSexTypePid(sexType.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
-		setLabel(sexType.getLabel());
-		setLanguagePid(sexType.getLanguagePid());
 
-		language.get(languagePid);
-		setLanguageLabel(language.getLabel());
-		setIsoCode(language.getIsocode());
+		final List<Dictionary> fkIsoCode = dictionary
+				.getFKIsoCode(store.getString("GUILANGUAGE"));
+		String label = "";
+
+		for (final Dictionary dict : fkIsoCode) {
+			if (key == dict.getLabelPid()) {
+				label = dict.getLabel();
+			}
+		}
+		setLabel(label);
 	}
 
 	/**
@@ -180,6 +193,39 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
+	 * @return stringList A list of lists of pid, abbreviation and label in the
+	 *         active language
+	 * @throws SQLException
+	 */
+	public List<List<String>> getSexTypeList() throws SQLException {
+		final List<SexTypes> list = sexType.get();
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		for (final SexTypes type : list) {
+			stringList = new ArrayList<>();
+			final int labelPid = type.getLabelPid();
+			stringList.add(Integer.toString(labelPid));
+			stringList.add(type.getAbbreviation());
+
+			LOGGER.info(store.getString("GUILANGUAGE"));
+
+			final List<Dictionary> fkIsoCode = dictionary
+					.getFKIsoCode(store.getString("GUILANGUAGE"));
+			String label = "";
+
+			for (final Dictionary dict : fkIsoCode) {
+				if (labelPid == dict.getLabelPid()) {
+					label = dict.getLabel();
+				}
+			}
+			stringList.add(label);
+			lls.add(stringList);
+		}
+		return lls;
+	}
+
+	/**
 	 * @return the sexTypePid
 	 */
 	public int getSexTypePid() {
@@ -196,8 +242,6 @@ public class SexTypeServer implements IHREServer {
 	public int insert() throws SQLException {
 		sexType.setSexTypePid(sexTypePid);
 		sexType.setAbbreviation(abbreviation);
-		sexType.setLabel(label);
-		sexType.setLanguagePid(languagePid);
 		return sexType.insert();
 	}
 
@@ -285,8 +329,6 @@ public class SexTypeServer implements IHREServer {
 	public void update() throws SQLException, MvpException {
 		sexType.setSexTypePid(sexTypePid);
 		sexType.setAbbreviation(abbreviation);
-		sexType.setLabel(label);
-		sexType.setLanguagePid(languagePid);
 		sexType.update();
 	}
 
