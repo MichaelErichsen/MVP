@@ -133,7 +133,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 		final Composite compositeFrom = new Composite(container, SWT.NONE);
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -158,7 +158,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -179,7 +179,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -210,7 +210,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 		final Composite compositeTo = new Composite(container, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnCopyFromTo = new Button(compositeTo, SWT.NONE);
+		final Button btnCopyFromTo = new Button(compositeTo, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -220,7 +220,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 		});
 		btnCopyFromTo.setText("Copy From");
 
-		Button btnNewTo = new Button(compositeTo, SWT.NONE);
+		final Button btnNewTo = new Button(compositeTo, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -266,7 +266,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		Button btnClearTo = new Button(compositeTo, SWT.NONE);
+		final Button btnClearTo = new Button(compositeTo, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -298,6 +298,14 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 	}
 
 	/**
+	 * @return
+	 */
+	public int getEventPid() {
+// FIXME
+		return 0;
+	}
+
+	/**
 	 * @return the listOfLists
 	 */
 	public List<List<String>> getListOfLists() {
@@ -309,13 +317,5 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 	 */
 	public void setListOfLists(List<List<String>> listOfLists) {
 		this.listOfLists = listOfLists;
-	}
-
-	/**
-	 * @return
-	 */
-	public int getEventPid() {
-// FIXME
-		return 0;
 	}
 }

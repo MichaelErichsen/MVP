@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. feb. 2019
+ * @version 18. feb. 2019
  *
  */
 public class PersonNavigator {
@@ -206,7 +206,7 @@ public class PersonNavigator {
 			LOGGER.info("Person " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Person " + primaryName + " has been deleted");
-			eventBroker.post(Constants.PERSON_LIST_UPDATE_TOPIC, personPid);
+			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -248,12 +248,22 @@ public class PersonNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribePersonListUpdateTopic(
-			@UIEventTopic(Constants.PERSON_LIST_UPDATE_TOPIC) int personPid) {
+	private void subscribePersonPidUpdateTopic(
+			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
 		try {
 			tableViewer.setInput(provider.getPersonList());
 			tableViewer.refresh();
+
+			TableItem[] items = tableViewer.getTable().getItems();
+			String item0 = Integer.toString(personPid);
+
+			for (int i = 0; i < items.length; i++) {
+				if (item0.equals(items[i].getText(0))) {
+					tableViewer.getTable().setSelection(i);
+					break;
+				}
+			}
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

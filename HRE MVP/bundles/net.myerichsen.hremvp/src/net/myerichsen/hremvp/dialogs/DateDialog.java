@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a date in several formats
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. feb. 2019
+ * @version 18. feb. 2019
  *
  */
 public class DateDialog extends TitleAreaDialog {
@@ -352,6 +352,16 @@ public class DateDialog extends TitleAreaDialog {
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
+		final Label lblNewLabel = new Label(container, SWT.NONE);
+		lblNewLabel.setText("Stored format");
+
+		textStoredFormat = new Text(container, SWT.BORDER);
+		textStoredFormat.addVerifyListener(new DateVerifyListener());
+		textStoredFormat.addFocusListener(new StoredFocusListener());
+		textStoredFormat.setToolTipText("Format: [+-]999999999-01-01");
+		textStoredFormat.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+
 		final Label lblOriginalText = new Label(container, SWT.NONE);
 		lblOriginalText.setText("Original Text");
 
@@ -363,16 +373,6 @@ public class DateDialog extends TitleAreaDialog {
 			}
 		});
 		textOriginal.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-
-		final Label lblNewLabel = new Label(container, SWT.NONE);
-		lblNewLabel.setText("Stored format");
-
-		textStoredFormat = new Text(container, SWT.BORDER);
-		textStoredFormat.addVerifyListener(new DateVerifyListener());
-		textStoredFormat.addFocusListener(new StoredFocusListener());
-		textStoredFormat.setToolTipText("Format: [+-]999999999-01-01");
-		textStoredFormat.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblSortDate = new Label(container, SWT.NONE);
@@ -515,9 +515,6 @@ public class DateDialog extends TitleAreaDialog {
 		textIndianOutput.setEditable(false);
 		textIndianOutput.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		container.setTabList(new Control[] { textOriginal, textStoredFormat,
-				dateTimeGregorian, textJulian, textJewish, textArabic,
-				textIndian });
 
 		if (hDatePid != 0) {
 			try {

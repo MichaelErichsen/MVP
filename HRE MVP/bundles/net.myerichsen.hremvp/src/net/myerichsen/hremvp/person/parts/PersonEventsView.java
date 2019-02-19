@@ -102,7 +102,7 @@ public class PersonEventsView {
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
 			 * swt.events.MouseEvent)
@@ -161,7 +161,7 @@ public class PersonEventsView {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
 			 * events.KeyEvent)
@@ -184,7 +184,7 @@ public class PersonEventsView {
 		mntmNewItem.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */

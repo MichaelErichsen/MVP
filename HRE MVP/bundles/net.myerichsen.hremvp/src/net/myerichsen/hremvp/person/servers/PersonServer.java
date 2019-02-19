@@ -826,11 +826,11 @@ public class PersonServer implements IHREServer {
 	 * @throws SQLException
 	 */
 	public void removeEvent(int eventPid) throws SQLException, MvpException {
-		PersonEvents personEvent = new PersonEvents();
+		final PersonEvents personEvent = new PersonEvents();
 		personEvent.getFKEventPid(eventPid);
 		personEvent.delete(personEvent.getPersonEventPid());
 
-		Events event = new Events();
+		final Events event = new Events();
 		event.delete(eventPid);
 	}
 

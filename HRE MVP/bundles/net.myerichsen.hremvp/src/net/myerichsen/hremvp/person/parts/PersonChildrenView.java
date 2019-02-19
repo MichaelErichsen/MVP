@@ -92,7 +92,7 @@ public class PersonChildrenView {
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
 			 * swt.events.MouseEvent)
@@ -127,7 +127,7 @@ public class PersonChildrenView {
 		mntmNewItem.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -166,6 +166,18 @@ public class PersonChildrenView {
 	}
 
 	/**
+	 * @throws NumberFormatException
+	 */
+	private void getSelectedPerson() throws NumberFormatException {
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
+
+		if (selectedRows.length > 0) {
+			final TableItem selectedRow = selectedRows[0];
+			personPid = Integer.parseInt(selectedRow.getText(0));
+		}
+	}
+
+	/**
 	 *
 	 */
 	protected void openChildrenView() {
@@ -177,18 +189,6 @@ public class PersonChildrenView {
 
 		LOGGER.info("Setting person pid: " + personPid);
 		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
-	}
-
-	/**
-	 * @throws NumberFormatException
-	 */
-	private void getSelectedPerson() throws NumberFormatException {
-		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			personPid = Integer.parseInt(selectedRow.getText(0));
-		}
 	}
 
 	/**

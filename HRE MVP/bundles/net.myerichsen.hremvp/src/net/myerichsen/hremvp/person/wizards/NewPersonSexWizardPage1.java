@@ -139,17 +139,17 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	}
 
 	/**
-	 * @return the btnCheckButtonPrimary
-	 */
-	public boolean isPrimary() {
-		return btnCheckButtonPrimary.getSelection();
-	}
-
-	/**
 	 * @return the sexTypePid
 	 */
 	public int getSexTypePid() {
 		return sexTypePid;
+	}
+
+	/**
+	 * @return the btnCheckButtonPrimary
+	 */
+	public boolean isPrimary() {
+		return btnCheckButtonPrimary.getSelection();
 	}
 
 	/**

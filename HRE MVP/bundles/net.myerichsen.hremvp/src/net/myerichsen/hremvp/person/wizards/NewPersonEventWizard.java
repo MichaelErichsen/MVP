@@ -10,7 +10,6 @@ import org.eclipse.jface.wizard.Wizard;
 
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.providers.EventProvider;
-import net.myerichsen.hremvp.person.providers.ParentProvider;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 
 /**
@@ -27,7 +26,6 @@ public class NewPersonEventWizard extends Wizard {
 	private final IEventBroker eventBroker;
 
 	private NewPersonEventWizardPage1 page1;
-	private ParentProvider parentProvider;
 	private final int personPid;
 
 	/**
@@ -72,7 +70,7 @@ public class NewPersonEventWizard extends Wizard {
 				ep.setEventNamePid(Integer.parseInt(list.get(0)));
 				ep.setFromDatePid(Integer.parseInt(list.get(3)));
 				ep.setToDatePid(Integer.parseInt(list.get(5)));
-				int eventPid = ep.insert();
+				final int eventPid = ep.insert();
 
 				LOGGER.info("Inserted event pid " + eventPid);
 

@@ -71,7 +71,7 @@ public class PersonSexesView {
 	public PersonSexesView() {
 		try {
 			provider = new PersonProvider();
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

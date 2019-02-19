@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -291,7 +291,6 @@ public class NewPersonWizard extends Wizard {
 			eventBroker.post(
 					net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC,
 					namePid);
-// FIXME Does not refresh person navigator
 			return true;
 		} catch (
 

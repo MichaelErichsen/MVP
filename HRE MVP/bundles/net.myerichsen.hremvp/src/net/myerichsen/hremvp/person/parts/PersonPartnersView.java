@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display and maintain all partners for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. feb. 2019
+ * @version 19. feb. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonPartnersView {
@@ -189,6 +189,7 @@ public class PersonPartnersView {
 
 		LOGGER.info("Setting person pid: " + personPid);
 		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
+
 	}
 
 	/**
