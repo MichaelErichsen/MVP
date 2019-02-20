@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.providers.CsvFileImporter;
  * Create and open a new HRE project database
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. jan. 2019
+ * @version 20. feb. 2019
  *
  */
 public class ProjectNewDatabaseServer {

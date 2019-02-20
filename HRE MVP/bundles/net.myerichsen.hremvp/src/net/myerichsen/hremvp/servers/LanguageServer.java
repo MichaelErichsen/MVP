@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 20. feb. 2019
  *
  */
 public class LanguageServer {
@@ -109,6 +109,14 @@ public class LanguageServer {
 	 */
 	public void setTableId(int tableId) {
 		TableId = tableId;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<List<String>> getLanguageList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
