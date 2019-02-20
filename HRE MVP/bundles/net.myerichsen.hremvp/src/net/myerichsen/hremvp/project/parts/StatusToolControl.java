@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.parts;
+package net.myerichsen.hremvp.project.parts;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;

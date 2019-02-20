@@ -12,7 +12,7 @@
               <children xsi:type="basic:Part" xmi:id="_vN_ToKR-EeiDVvVNqbPujw" elementId="net.myerichsen.hremvp.part.projectproperties" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectProperties" label="Project Properties" tooltip="Project Properties"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_pZ9z4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.3" containerData="2000">
-              <children xsi:type="basic:Part" xmi:id="_M88-4LBcEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.part.log" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LogViewer" label="Log" tooltip="Log"/>
+              <children xsi:type="basic:Part" xmi:id="_M88-4LBcEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.part.log" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LogViewerogViewerogViewerogViewer" label="Log" tooltip="Log"/>
             </children>
           </children>
         </children>
@@ -109,7 +109,7 @@
           <children xsi:type="basic:PartSashContainer" xmi:id="_QtmooOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partsashcontainer.6" containerData="900">
             <children xsi:type="basic:PartStack" xmi:id="_MZzRIOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partstack.9" containerData="900"/>
             <children xsi:type="basic:PartStack" xmi:id="_YEQtIOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partstack.10" containerData="200">
-              <children xsi:type="basic:Part" xmi:id="_e8hlcOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.part.log" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LogViewer" label="Log"/>
+              <children xsi:type="basic:Part" xmi:id="_e8hlcOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.parbundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LogViewer.parts.LogViewer.parts.LogViewer.parts.LogViewer" label="Log"/>
             </children>
           </children>
         </children>
@@ -153,7 +153,7 @@
       </children>
     </trimBars>
     <trimBars xmi:id="_7AUOELdJEei5Qc8q5yXesQ" elementId="net.myerichsen.hremvp.trimbar.0" side="Bottom">
-      <children xsi:type="menu:ToolControl" xmi:id="_-PLWwLdJEei5Qc8q5yXesQ" elementId="net.myerichsen.hremvp.toolcontrol.0" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.StatusToolControl"/>
+      <children xsi:type="menu:ToolControl" xmi:id="_-PLWwLdJEei5Qc8q5yXesQ" elementId="net.myerichsen.hremvp.toolcontrol.0" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.StatusToolControllControllControllControl"/>
     </trimBars>
   </children>
   <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.handler.saveCommand" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.SaveHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
