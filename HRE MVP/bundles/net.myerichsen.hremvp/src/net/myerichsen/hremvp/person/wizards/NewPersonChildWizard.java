@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.person.providers.ParentProvider;
  * Wizard to add an existing person as a child
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 15. feb. 2019
+ * @version 20. feb. 2019
  *
  */
 public class NewPersonChildWizard extends Wizard {
@@ -34,7 +34,7 @@ public class NewPersonChildWizard extends Wizard {
 	 * @param context
 	 */
 	public NewPersonChildWizard(int personPid, IEclipseContext context) {
-		setWindowTitle("Add child");
+		setWindowTitle("Add a child");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);

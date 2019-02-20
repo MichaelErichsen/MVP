@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.providers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.io.BufferedReader;
 import java.io.File;

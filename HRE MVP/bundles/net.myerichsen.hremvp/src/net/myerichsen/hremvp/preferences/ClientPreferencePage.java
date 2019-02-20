@@ -22,7 +22,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.providers.LanguageProvider;
+import net.myerichsen.hremvp.project.providers.LanguageProvider;
 
 /**
  * Preference page for client

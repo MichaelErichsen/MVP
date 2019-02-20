@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 
 import net.myerichsen.hremvp.HreH2ConnectionPool;
-import net.myerichsen.hremvp.providers.CsvFileImporter;
+import net.myerichsen.hremvp.project.providers.CsvFileImporter;
 
 /**
  * Create and open a new HRE project database

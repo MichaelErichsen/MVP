@@ -8,8 +8,10 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -19,8 +21,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -38,14 +38,13 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.filters.NavigatorFilter;
-import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.project.providers.LanguageProvider;
 import net.myerichsen.hremvp.project.wizards.NewLanguageWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
-import net.myerichsen.hremvp.providers.LanguageProvider;
 
 /**
  * Display all data about languages used in HRE
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 20. feb. 2019
  *
@@ -84,42 +83,31 @@ public class LanguageNavigator {
 		parent.setLayout(new GridLayout(2, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
-		table.addMouseListener(new MouseAdapter() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
-			 * swt.events.MouseEvent)
-			 */
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				openLanguageView();
-			}
-		});
+		tableViewer.addFilter(navigatorFilter);
+
+		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumnId.getColumn();
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
+		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
 		tableViewerColumnIsoCode
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
-		TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnName = tableViewerColumnLabel.getColumn();
+		final TableColumn tblclmnName = tableViewerColumnLabel.getColumn();
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(2));
@@ -131,7 +119,7 @@ public class LanguageNavigator {
 		mntmAddLanguage.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -149,7 +137,7 @@ public class LanguageNavigator {
 		mntmDeleteSelectedLanguage.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -161,14 +149,14 @@ public class LanguageNavigator {
 		mntmDeleteSelectedLanguage.setText("Delete selected Language...");
 
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
-		lblNameFilter.setText("Language Filter");
+		lblNameFilter.setText("ISO Code Filter");
 
 		final Text textNameFilter = new Text(parent, SWT.BORDER);
 		textNameFilter.addKeyListener(new KeyAdapter() {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
 			 * events.KeyEvent)
@@ -184,7 +172,12 @@ public class LanguageNavigator {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getLanguageList());
+		try {
+			tableViewer.setInput(provider.getLanguageList());
+		} catch (SQLException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 
 	}
 
@@ -194,35 +187,35 @@ public class LanguageNavigator {
 	protected void deleteLanguage(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int personPid = 0;
+		int languagePid = 0;
 		String primaryName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
-			personPid = Integer.parseInt(item.getText(0));
+			languagePid = Integer.parseInt(item.getText(0));
 			primaryName = item.getText(1);
 		}
 
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
-				"Delete Person " + primaryName, null,
-				"Are you sure that you will delete person " + personPid + ", "
-						+ primaryName + "?",
+				"Delete Language " + primaryName, null,
+				"Are you sure that you will delete language " + languagePid
+						+ ", " + primaryName + "?",
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
 
 		if (dialog.open() == Window.CANCEL) {
-			eventBroker.post("MESSAGE",
-					"Deletion of person " + primaryName + " has been canceled");
+			eventBroker.post("MESSAGE", "Deletion of language " + primaryName
+					+ " has been canceled");
 			return;
 		}
 
 		try {
-			final PersonProvider provider = new PersonProvider();
-			provider.delete(personPid);
+			final LanguageProvider provider = new LanguageProvider();
+			provider.delete(languagePid);
 
-			LOGGER.info("Person " + primaryName + " has been deleted");
+			LOGGER.info("Language " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
-					"Person " + primaryName + " has been deleted");
-			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
+					"Language " + primaryName + " has been deleted");
+			eventBroker.post(Constants.LANGUAGE_PID_UPDATE_TOPIC, 0);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -233,18 +226,43 @@ public class LanguageNavigator {
 	/**
 	 * 
 	 */
-	protected void openLanguageView() {
-		// TODO Auto-generated method stub
-
-	}
-
 	@PreDestroy
 	public void dispose() {
 	}
 
+	/**
+	 * 
+	 */
 	@Focus
 	public void setFocus() {
-		// TODO Set the focus to control
 	}
 
+	/**
+	 * @param languagePid
+	 */
+	@Inject
+	@Optional
+	private void subscribeLanguagePidUpdateTopic(
+			@UIEventTopic(Constants.LANGUAGE_PID_UPDATE_TOPIC) int languagePid) {
+		LOGGER.fine("Received language id " + languagePid);
+		try {
+			tableViewer.setInput(provider.getLanguageList());
+			tableViewer.refresh();
+
+			if (languagePid > 0) {
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(languagePid);
+
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
+				}
+			}
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }

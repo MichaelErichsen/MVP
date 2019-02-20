@@ -1,65 +1,67 @@
-package net.myerichsen.hremvp.providers;
+package net.myerichsen.hremvp.project.servers;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.servers.LanguageServer;
+import net.myerichsen.hremvp.dbmodels.Languages;
 
 /**
- * Provide a language
+ * * Business logic interface for
+ * {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 20. feb. 2019
  *
  */
-public class LanguageProvider implements IHREProvider {
+public class LanguageServer {
 	private int LanguagePid;
 	private String Isocode;
 	private String Label;
 	private int TableId;
-	private final LanguageServer server;
+	private final Languages language;
 
 	/**
 	 * Constructor
 	 *
 	 */
-	public LanguageProvider() {
-		server = new LanguageServer();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
-	 */
-	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+	public LanguageServer() {
+		language = new Languages();
 	}
 
 	/**
+	 * @param key
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void delete(int key) throws SQLException, MvpException {
+		language.delete(key);
+	}
+
+	/**
+	 * Get all rows
+	 *
 	 * @return A list of lists of Pids, ISO Codes and labels
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
-		return server.get();
-	}
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
+		final List<Languages> languageList = language.get();
 
+		for (final Languages aLanguage : languageList) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(aLanguage.getLanguagePid()));
+			stringList.add(aLanguage.getIsocode());
+			stringList.add(aLanguage.getLabel());
+			lls.add(stringList);
+		}
+
+		return lls;
 	}
 
 	/**
@@ -77,6 +79,26 @@ public class LanguageProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getLanguageList() throws SQLException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+		final List<Languages> list = language.get();
+
+		for (final Languages l : list) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(l.getLanguagePid()));
+			stringList.add(l.getIsocode());
+			stringList.add(l.getLabel());
+			lls.add(stringList);
+		}
+
+		return lls;
+	}
+
+	/**
 	 * @return the languagePid
 	 */
 	public int getLanguagePid() {
@@ -90,15 +112,15 @@ public class LanguageProvider implements IHREProvider {
 		return TableId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#insert()
+	/**
+	 * @return
+	 * @throws SQLException
 	 */
-	@Override
-	public int insert() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insert() throws SQLException {
+		language.setIsocode(Isocode);
+		language.setLabel(Label);
+		language.setTableId(7);
+		return language.insert();
 	}
 
 	/**
@@ -127,24 +149,6 @@ public class LanguageProvider implements IHREProvider {
 	 */
 	public void setTableId(int tableId) {
 		TableId = tableId;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#update()
-	 */
-	@Override
-	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * @return
-	 */
-	public List<List<String>> getLanguageList() {
-		return server.getLanguageList();
 	}
 
 }

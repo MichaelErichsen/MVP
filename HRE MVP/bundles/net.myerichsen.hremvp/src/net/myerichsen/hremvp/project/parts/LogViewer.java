@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.providers.MvpLogProvider;
+import net.myerichsen.hremvp.project.providers.MvpLogProvider;
 
 /**
  * Display the application log

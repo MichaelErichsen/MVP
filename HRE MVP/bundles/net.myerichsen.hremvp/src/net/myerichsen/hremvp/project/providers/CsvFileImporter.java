@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.providers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
 import java.util.logging.Logger;

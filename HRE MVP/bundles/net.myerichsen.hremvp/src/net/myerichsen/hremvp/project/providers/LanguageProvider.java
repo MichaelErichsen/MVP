@@ -1,58 +1,65 @@
-package net.myerichsen.hremvp.servers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Languages;
+import net.myerichsen.hremvp.project.servers.LanguageServer;
 
 /**
- * * Business logic interface for
- * {@link net.myerichsen.hremvp.dbmodels.Languages}
+ * Provide a language
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 20. feb. 2019
  *
  */
-public class LanguageServer {
+public class LanguageProvider implements IHREProvider {
 	private int LanguagePid;
 	private String Isocode;
 	private String Label;
 	private int TableId;
-	private final Languages language;
+	private final LanguageServer server;
 
 	/**
 	 * Constructor
 	 *
 	 */
-	public LanguageServer() {
-		language = new Languages();
+	public LanguageProvider() {
+		server = new LanguageServer();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
+	 */
+	@Override
+	public void delete(int key) throws SQLException, MvpException {
+		server.delete(key);
+
 	}
 
 	/**
-	 * Get all rows
-	 *
 	 * @return A list of lists of Pids, ISO Codes and labels
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
-		final List<List<String>> lls = new ArrayList<>();
-		List<String> stringList;
+		return server.get();
+	}
 
-		final List<Languages> languageList = language.get();
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
 
-		for (final Languages aLanguage : languageList) {
-			stringList = new ArrayList<>();
-			stringList.add(Integer.toString(aLanguage.getLanguagePid()));
-			stringList.add(aLanguage.getIsocode());
-			stringList.add(aLanguage.getLabel());
-			lls.add(stringList);
-		}
-
-		return lls;
 	}
 
 	/**
@@ -70,6 +77,14 @@ public class LanguageServer {
 	}
 
 	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getLanguageList() throws SQLException {
+		return server.getLanguageList();
+	}
+
+	/**
 	 * @return the languagePid
 	 */
 	public int getLanguagePid() {
@@ -81,6 +96,18 @@ public class LanguageServer {
 	 */
 	public int getTableId() {
 		return TableId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#insert()
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		server.setIsocode(Isocode);
+		server.setLabel(Label);
+		return server.insert();
 	}
 
 	/**
@@ -111,12 +138,15 @@ public class LanguageServer {
 		TableId = tableId;
 	}
 
-	/**
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
-	public List<List<String>> getLanguageList() {
+	@Override
+	public void update() throws SQLException, MvpException {
 		// TODO Auto-generated method stub
-		return null;
+
 	}
 
 }
