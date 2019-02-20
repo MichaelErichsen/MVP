@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.person.parts;
+package net.myerichsen.hremvp.project.parts;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 19. feb. 2019
  *
  */
-public class SexTypeNLSView {
+public class SexTypeView {
 
-	public SexTypeNLSView() {
+	public SexTypeView() {
 	}
 
 	/**

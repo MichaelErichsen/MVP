@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.person.providers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.person.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 20. feb. 2019
  *
  */
 public class SexTypeProvider implements IHREProvider {
