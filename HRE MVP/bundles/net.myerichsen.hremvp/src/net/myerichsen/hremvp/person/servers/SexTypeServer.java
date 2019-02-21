@@ -142,6 +142,13 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
+	 * @return the labelPid
+	 */
+	public int getLabelPid() {
+		return sexType.getLabelPid();
+	}
+
+	/**
 	 * @return the languageLabel
 	 */
 	public String getLanguageLabel() {
@@ -193,33 +200,57 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
-	 * @return stringList A list of lists of pid, abbreviation and label in the
-	 *         active language
+	 * @return stringList A list of lists of pids, abbreviations and generic
+	 *         labels
 	 * @throws SQLException
 	 */
 	public List<List<String>> getSexTypeList() throws SQLException {
+		List<String> stringList;
+		List<Dictionary> fkLabelPid;
+		String label = "";
+
+		final IPreferenceStore store = new ScopedPreferenceStore(
+				InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		final String guiLanguage = store.getString("GUILANGUAGE");
+		final List<List<String>> lls = new ArrayList<>();
+		final Dictionary dictionary = new Dictionary();
+
 		final List<SexTypes> list = sexType.get();
+
+		for (final SexTypes st : list) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(st.getSexTypePid()));
+			stringList.add(st.getAbbreviation());
+
+			fkLabelPid = dictionary.getFKLabelPid(st.getLabelPid());
+
+			for (final Dictionary d : fkLabelPid) {
+				if (guiLanguage.equals(d.getIsoCode())) {
+					label = d.getLabel();
+				}
+			}
+
+			stringList.add(label);
+			lls.add(stringList);
+		}
+		return lls;
+	}
+
+	/**
+	 * @return stringList A list of lists of Isocodes and NLS labels
+	 * @throws SQLException
+	 */
+	public List<List<String>> getSexTypeList(int labelPid) throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
-		for (final SexTypes type : list) {
+		final Dictionary dictionary = new Dictionary();
+		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+
+		for (final Dictionary d : fkLabelPid) {
 			stringList = new ArrayList<>();
-			final int labelPid = type.getLabelPid();
+			stringList.add(d.getIsoCode());
 			stringList.add(Integer.toString(labelPid));
-			stringList.add(type.getAbbreviation());
-
-			LOGGER.info(store.getString("GUILANGUAGE"));
-
-			final List<Dictionary> fkIsoCode = dictionary
-					.getFKIsoCode(store.getString("GUILANGUAGE"));
-			String label = "";
-
-			for (final Dictionary dict : fkIsoCode) {
-				if (labelPid == dict.getLabelPid()) {
-					label = dict.getLabel();
-				}
-			}
-			stringList.add(label);
 			lls.add(stringList);
 		}
 		return lls;

@@ -16,12 +16,12 @@ import org.eclipse.swt.widgets.Text;
  * @version 20. feb. 2019
  *
  */
-public class NewLanguageWIzardPage1 extends WizardPage {
+public class NewLanguageWizardPage1 extends WizardPage {
 	private Text textIsoCode;
 	private Text textLabel;
 
-	public NewLanguageWIzardPage1(IEclipseContext context) {
-		super("New Language WIzard Page 1");
+	public NewLanguageWizardPage1(IEclipseContext context) {
+		super("New Language Wizard Page 1");
 		setTitle("Language");
 		setDescription("Add a language to this HRE project");
 	}

@@ -147,6 +147,13 @@ public class SexTypeProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return
+	 */
+	public int getLabelPid() {
+		return server.getLabelPid();
+	}
+
+	/**
 	 * @return the languageLabel
 	 */
 	public String getLanguageLabel() {
@@ -210,12 +217,21 @@ public class SexTypeProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return stringList A list of lists of pid, abbreviation and label in the
-	 *         active language
+	 * @return
+	 * @return
 	 * @throws SQLException
 	 */
 	public List<List<String>> getSexTypeList() throws SQLException {
 		return server.getSexTypeList();
+	}
+
+	/**
+	 * @return stringList A list of lists of pid, abbreviation and label in the
+	 *         active language
+	 * @throws SQLException
+	 */
+	public List<List<String>> getSexTypeList(int labelPid) throws SQLException {
+		return server.getSexTypeList(labelPid);
 	}
 
 	/**

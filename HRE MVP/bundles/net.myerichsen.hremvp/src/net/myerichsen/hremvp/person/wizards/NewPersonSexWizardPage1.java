@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.person.dialogs.SexTypeNavigatorDialog;
-import net.myerichsen.hremvp.person.providers.SexTypeProvider;
+import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 
 /**
  * Person sex wizard page

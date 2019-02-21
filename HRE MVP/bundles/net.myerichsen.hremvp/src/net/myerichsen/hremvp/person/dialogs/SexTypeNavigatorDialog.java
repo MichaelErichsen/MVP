@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.person.providers.SexTypeProvider;
+import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**

@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.person.handlers;
+package net.myerichsen.hremvp.project.handlers;
 
 import java.util.List;
 
@@ -12,14 +12,14 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 /**
- * Handler to open the Name view
+ * Handler to open the sex type view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. sep. 2018
+ * @version 20. feb. 2019
  *
  */
 public class OpenSexTypeViewHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.SexTypeView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.SexTypeView";
 
 	/**
 	 * @param partService  The Eclipse part service

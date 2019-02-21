@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 21. feb. 2019
  *
  */
 public class PersonNavigator {
@@ -128,6 +128,12 @@ public class PersonNavigator {
 
 		final MenuItem mntmAddPerson = new MenuItem(menu, SWT.NONE);
 		mntmAddPerson.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
@@ -139,6 +145,12 @@ public class PersonNavigator {
 
 		final MenuItem mntmDeleteSelectedPerson = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedPerson.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				deletePerson(parent.getShell());
@@ -221,13 +233,6 @@ public class PersonNavigator {
 	}
 
 	/**
-	 * @return
-	 */
-	public TableViewer getTableViewer() {
-		return tableViewer;
-	}
-
-	/**
 	 *
 	 */
 	private void postPersonPid() {
@@ -251,22 +256,25 @@ public class PersonNavigator {
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
-		try {
-			tableViewer.setInput(provider.getPersonList());
-			tableViewer.refresh();
 
-			final TableItem[] items = tableViewer.getTable().getItems();
-			final String item0 = Integer.toString(personPid);
+		if (personPid > 0) {
+			try {
+				tableViewer.setInput(provider.getPersonList());
+				tableViewer.refresh();
 
-			for (int i = 0; i < items.length; i++) {
-				if (item0.equals(items[i].getText(0))) {
-					tableViewer.getTable().setSelection(i);
-					break;
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(personPid);
+
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
 				}
+			} catch (SQLException | MvpException e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
 			}
-		} catch (SQLException | MvpException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
 		}
 	}
 }

@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.MvpException;
  *
  */
 
-public class Dictionary {
+public class DictionaryEdited {
 	private static final String SELECT = "SELECT DICTIONARY_PID, "
 			+ "LABEL_PID, ISO_CODE, LABEL, "
 			+ "TABLE_ID FROM PUBLIC.DICTIONARY WHERE DICTIONARY_PID = ?";
@@ -45,7 +45,7 @@ public class Dictionary {
 			+ "FROM PUBLIC.DICTIONARY "
 			+ "WHERE LABEL_PID = ? ORDER BY ISO_CODE";
 
-	private List<Dictionary> modelList;
+	private List<DictionaryEdited> modelList;
 
 	private PreparedStatement ps;
 
@@ -58,7 +58,7 @@ public class Dictionary {
 	private String IsoCode;
 	private String Label;
 	private int TableId;
-	private Dictionary model;
+	private DictionaryEdited model;
 
 	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
@@ -78,13 +78,13 @@ public class Dictionary {
 		conn.close();
 	}
 
-	public List<Dictionary> get() throws SQLException {
+	public List<DictionaryEdited> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Dictionary();
+			model = new DictionaryEdited();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
@@ -122,14 +122,14 @@ public class Dictionary {
 		return DictionaryPid;
 	}
 
-	public List<Dictionary> getFKIsoCode(String key) throws SQLException {
+	public List<DictionaryEdited> getFKIsoCode(String key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_ISO_CODE);
 		ps.setString(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Dictionary();
+			model = new DictionaryEdited();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
@@ -141,14 +141,14 @@ public class Dictionary {
 		return modelList;
 	}
 
-	public List<Dictionary> getFKLabelPid(int key) throws SQLException {
+	public List<DictionaryEdited> getFKLabelPid(String key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LABEL_PID);
-		ps.setLong(1, key);
+		ps.setString(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new Dictionary();
+			model = new DictionaryEdited();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
