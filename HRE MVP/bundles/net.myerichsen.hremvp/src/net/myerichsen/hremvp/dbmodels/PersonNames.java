@@ -19,43 +19,42 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class PersonNames {
-	private static final String SELECT = "SELECT " + "NAME_PID, "
-			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, "
+	private static final String SELECT = "SELECT NAME_PID, "
+			+ "PERSON_PID, PRIMARY_NAME, NAME_STYLE_PID, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE NAME_PID = ?";
-	private static final String SELECT_PERSON_PID = "SELECT " + "NAME_PID, "
-			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, "
+	private static final String SELECT_PERSON_PID = "SELECT NAME_PID, "
+			+ "PERSON_PID, PRIMARY_NAME, NAME_STYLE_PID, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE PERSON_PID = ? ORDER BY NAME_PID";
-	private static final String SELECT_NAME_STYLE_PID = "SELECT " + "NAME_PID, "
-			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, "
+	private static final String SELECT_NAME_STYLE_PID = "SELECT NAME_PID, "
+			+ "PERSON_PID, PRIMARY_NAME, NAME_STYLE_PID, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE NAME_STYLE_PID = ? ORDER BY NAME_PID";
-	private static final String SELECT_FROM_DATE_PID = "SELECT " + "NAME_PID, "
-			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, "
+	private static final String SELECT_FROM_DATE_PID = "SELECT NAME_PID, "
+			+ "PERSON_PID, PRIMARY_NAME, NAME_STYLE_PID, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE FROM_DATE_PID = ? ORDER BY NAME_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT " + "NAME_PID, "
-			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, "
+	private static final String SELECT_TO_DATE_PID = "SELECT NAME_PID, "
+			+ "PERSON_PID, PRIMARY_NAME, NAME_STYLE_PID, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES WHERE TO_DATE_PID = ? ORDER BY NAME_PID";
 
-	private static final String SELECTALL = "SELECT " + "NAME_PID, "
-			+ "PERSON_PID, " + "PRIMARY_NAME, " + "NAME_STYLE_PID, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, "
+	private static final String SELECTALL = "SELECT NAME_PID, "
+			+ "PERSON_PID, PRIMARY_NAME, NAME_STYLE_PID, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.PERSON_NAMES ORDER BY NAME_PID";
 
 	private static final String SELECTMAX = "SELECT MAX(NAME_PID) FROM PUBLIC.PERSON_NAMES";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAMES( "
-			+ "NAME_PID, " + "PERSON_PID, " + "PRIMARY_NAME, "
-			+ "NAME_STYLE_PID, " + "TABLE_ID, " + "FROM_DATE_PID, "
-			+ "TO_DATE_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
-			+ "?, " + "?)";
+			+ "NAME_PID, PERSON_PID, PRIMARY_NAME, "
+			+ "NAME_STYLE_PID, TABLE_ID, FROM_DATE_PID, "
+			+ "TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAMES SET "
-			+ "PERSON_PID = ?, " + "PRIMARY_NAME = ?, " + "NAME_STYLE_PID = ?, "
-			+ "TABLE_ID = ?, " + "FROM_DATE_PID = ?, "
+			+ "PERSON_PID = ?, PRIMARY_NAME = ?, NAME_STYLE_PID = ?, "
+			+ "TABLE_ID = ?, FROM_DATE_PID = ?, "
 			+ "TO_DATE_PID = ? WHERE NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAMES WHERE NAME_PID = ?";

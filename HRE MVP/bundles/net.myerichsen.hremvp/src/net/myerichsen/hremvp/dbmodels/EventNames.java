@@ -19,22 +19,22 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class EventNames {
-	private static final String SELECT = "SELECT " + "EVENT_NAME_PID, "
-			+ "TABLE_ID, " + "LABEL, "
+	private static final String SELECT = "SELECT EVENT_NAME_PID, "
+			+ "TABLE_ID, LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
 	private static final String SELECT_EVENT_TYPE_PID = "SELECT "
-			+ "EVENT_NAME_PID, " + "TABLE_ID, " + "LABEL, "
+			+ "EVENT_NAME_PID, TABLE_ID, LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_TYPE_PID = ? ORDER BY EVENT_NAME_PID";
-	private static final String SELECTALL = "SELECT " + "EVENT_NAME_PID, "
-			+ "TABLE_ID, " + "LABEL, "
+	private static final String SELECTALL = "SELECT EVENT_NAME_PID, "
+			+ "TABLE_ID, LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES ORDER BY EVENT_NAME_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_NAME_PID) FROM PUBLIC.EVENT_NAMES";
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_NAMES( "
-			+ "EVENT_NAME_PID, " + "TABLE_ID, " + "LABEL, "
-			+ "EVENT_TYPE_PID) VALUES (" + "?, " + "?, " + "?, " + "?)";
+			+ "EVENT_NAME_PID, TABLE_ID, LABEL, "
+			+ "EVENT_TYPE_PID) VALUES (?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.EVENT_NAMES SET "
-			+ "TABLE_ID = ?, " + "LABEL = ?, "
+			+ "TABLE_ID = ?, LABEL = ?, "
 			+ "EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";

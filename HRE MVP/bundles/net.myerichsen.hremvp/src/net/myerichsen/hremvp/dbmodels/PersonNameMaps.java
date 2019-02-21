@@ -19,28 +19,26 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class PersonNameMaps {
-	private static final String SELECT = "SELECT " + "NAME_MAP_PID, "
-			+ "NAME_STYLE_PID, " + "PART_NO, " + "LABEL_PID, "
+	private static final String SELECT = "SELECT NAME_MAP_PID, "
+			+ "NAME_STYLE_PID, PART_NO, LABEL_PID, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_MAPS WHERE NAME_MAP_PID = ?";
 	private static final String SELECT_NAME_STYLE_PID = "SELECT "
-			+ "NAME_MAP_PID, " + "NAME_STYLE_PID, " + "PART_NO, "
-			+ "LABEL_PID, "
+			+ "NAME_MAP_PID, NAME_STYLE_PID, PART_NO, LABEL_PID, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_MAPS WHERE NAME_STYLE_PID = ? ORDER BY NAME_MAP_PID";
-	private static final String SELECT_LABEL_PID = "SELECT " + "NAME_MAP_PID, "
-			+ "NAME_STYLE_PID, " + "PART_NO, " + "LABEL_PID, "
+	private static final String SELECT_LABEL_PID = "SELECT NAME_MAP_PID, "
+			+ "NAME_STYLE_PID, PART_NO, LABEL_PID, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_MAPS WHERE LABEL_PID = ? ORDER BY NAME_MAP_PID";
-	private static final String SELECTALL = "SELECT " + "NAME_MAP_PID, "
-			+ "NAME_STYLE_PID, " + "PART_NO, " + "LABEL_PID, "
+	private static final String SELECTALL = "SELECT NAME_MAP_PID, "
+			+ "NAME_STYLE_PID, PART_NO, LABEL_PID, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_MAPS ORDER BY NAME_MAP_PID";
 	private static final String SELECTMAX = "SELECT MAX(NAME_MAP_PID) FROM PUBLIC.PERSON_NAME_MAPS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAME_MAPS( "
-			+ "NAME_MAP_PID, " + "NAME_STYLE_PID, " + "PART_NO, "
-			+ "LABEL_PID, " + "TABLE_ID) VALUES (" + "?, " + "?, " + "?, "
-			+ "?, " + "?)";
+			+ "NAME_MAP_PID, NAME_STYLE_PID, PART_NO, "
+			+ "LABEL_PID, TABLE_ID) VALUES (?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_MAPS SET "
-			+ "NAME_STYLE_PID = ?, " + "PART_NO = ?, " + "LABEL_PID = ?, "
+			+ "NAME_STYLE_PID = ?, PART_NO = ?, LABEL_PID = ?, "
 			+ "TABLE_ID = ? WHERE NAME_MAP_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_MAPS WHERE NAME_MAP_PID = ?";

@@ -19,45 +19,45 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class Partners {
-	private static final String SELECT = "SELECT " + "PARTNER_PID, "
-			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+	private static final String SELECT = "SELECT PARTNER_PID, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
-	private static final String SELECT_PARTNER1 = "SELECT " + "PARTNER_PID, "
-			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+	private static final String SELECT_PARTNER1 = "SELECT PARTNER_PID, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER1 = ? ORDER BY PARTNER_PID";
-	private static final String SELECT_PARTNER2 = "SELECT " + "PARTNER_PID, "
-			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+	private static final String SELECT_PARTNER2 = "SELECT PARTNER_PID, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER2 = ? ORDER BY PARTNER_PID";
 	private static final String SELECT_FROM_DATE_PID = "SELECT "
-			+ "PARTNER_PID, " + "PARTNER1, " + "PARTNER2, "
-			+ "PRIMARY_PARTNER, " + "ROLE, " + "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "PARTNER_PID, PARTNER1, PARTNER2, "
+			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE FROM_DATE_PID = ? ORDER BY PARTNER_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT " + "PARTNER_PID, "
-			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+	private static final String SELECT_TO_DATE_PID = "SELECT PARTNER_PID, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE TO_DATE_PID = ? ORDER BY PARTNER_PID";
 
-	private static final String SELECTALL = "SELECT " + "PARTNER_PID, "
-			+ "PARTNER1, " + "PARTNER2, " + "PRIMARY_PARTNER, " + "ROLE, "
-			+ "TABLE_ID, " + "FROM_DATE_PID, " + "TO_DATE_PID, "
+	private static final String SELECTALL = "SELECT PARTNER_PID, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS ORDER BY PARTNER_PID";
 
 	private static final String SELECTMAX = "SELECT MAX(PARTNER_PID) FROM PUBLIC.PARTNERS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PARTNERS( "
-			+ "PARTNER_PID, " + "PARTNER1, " + "PARTNER2, "
-			+ "PRIMARY_PARTNER, " + "ROLE, " + "TABLE_ID, " + "FROM_DATE_PID, "
-			+ "TO_DATE_PID, " + "LANGUAGE_PID) VALUES (" + "?, " + "?, " + "?, "
-			+ "?, " + "?, " + "?, " + "?, " + "?, " + "?)";
+			+ "PARTNER_PID, PARTNER1, PARTNER2, "
+			+ "PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, "
+			+ "TO_DATE_PID, LANGUAGE_PID) VALUES (?, ?, ?, "
+			+ "?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PARTNERS SET "
-			+ "PARTNER1 = ?, " + "PARTNER2 = ?, " + "PRIMARY_PARTNER = ?, "
-			+ "ROLE = ?, " + "TABLE_ID = ?, " + "FROM_DATE_PID = ?, "
-			+ "TO_DATE_PID = ?, " + "LANGUAGE_PID = ? WHERE PARTNER_PID = ?";
+			+ "PARTNER1 = ?, PARTNER2 = ?, PRIMARY_PARTNER = ?, "
+			+ "ROLE = ?, TABLE_ID = ?, FROM_DATE_PID = ?, "
+			+ "TO_DATE_PID = ?, LANGUAGE_PID = ? WHERE PARTNER_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
 

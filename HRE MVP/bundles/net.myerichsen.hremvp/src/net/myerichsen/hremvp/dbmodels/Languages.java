@@ -19,18 +19,18 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class Languages {
-	private static final String SELECT = "SELECT " + "LANGUAGE_PID, "
-			+ "ISOCODE, " + "LABEL, "
+	private static final String SELECT = "SELECT LANGUAGE_PID, "
+			+ "ISOCODE, LABEL, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";
-	private static final String SELECTALL = "SELECT " + "LANGUAGE_PID, "
-			+ "ISOCODE, " + "LABEL, "
+	private static final String SELECTALL = "SELECT LANGUAGE_PID, "
+			+ "ISOCODE, LABEL, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES ORDER BY LANGUAGE_PID";
 	private static final String SELECTMAX = "SELECT MAX(LANGUAGE_PID) FROM PUBLIC.LANGUAGES";
 	private static final String INSERT = "INSERT INTO PUBLIC.LANGUAGES( "
-			+ "LANGUAGE_PID, " + "ISOCODE, " + "LABEL, " + "TABLE_ID) VALUES ("
-			+ "?, " + "?, " + "?, " + "?)";
+			+ "LANGUAGE_PID, ISOCODE, LABEL, TABLE_ID) VALUES ("
+			+ "?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.LANGUAGES SET "
-			+ "ISOCODE = ?, " + "LABEL = ?, "
+			+ "ISOCODE = ?, LABEL = ?, "
 			+ "TABLE_ID = ? WHERE LANGUAGE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";

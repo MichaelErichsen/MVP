@@ -19,33 +19,32 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class PersonEvents {
-	private static final String SELECT = "SELECT " + "PERSON_EVENT_PID, "
-			+ "EVENT_PID, " + "PERSON_PID, " + "ROLE, " + "PRIMARY_PERSON, "
-			+ "PRIMARY_EVENT, " + "TABLE_ID, "
+	private static final String SELECT = "SELECT PERSON_EVENT_PID, "
+			+ "EVENT_PID, PERSON_PID, ROLE, PRIMARY_PERSON, "
+			+ "PRIMARY_EVENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";
 	private static final String SELECT_EVENT_PID = "SELECT "
-			+ "PERSON_EVENT_PID, " + "EVENT_PID, " + "PERSON_PID, " + "ROLE, "
-			+ "PRIMARY_PERSON, " + "PRIMARY_EVENT, " + "TABLE_ID, "
+			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
+			+ "PRIMARY_PERSON, PRIMARY_EVENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE EVENT_PID = ? ORDER BY PERSON_EVENT_PID";
 	private static final String SELECT_PERSON_PID = "SELECT "
-			+ "PERSON_EVENT_PID, " + "EVENT_PID, " + "PERSON_PID, " + "ROLE, "
-			+ "PRIMARY_PERSON, " + "PRIMARY_EVENT, " + "TABLE_ID, "
+			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
+			+ "PRIMARY_PERSON, PRIMARY_EVENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_PID = ? ORDER BY PERSON_EVENT_PID";
-	private static final String SELECTALL = "SELECT " + "PERSON_EVENT_PID, "
-			+ "EVENT_PID, " + "PERSON_PID, " + "ROLE, " + "PRIMARY_PERSON, "
-			+ "PRIMARY_EVENT, " + "TABLE_ID, "
+	private static final String SELECTALL = "SELECT PERSON_EVENT_PID, "
+			+ "EVENT_PID, PERSON_PID, ROLE, PRIMARY_PERSON, "
+			+ "PRIMARY_EVENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS ORDER BY PERSON_EVENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(PERSON_EVENT_PID) FROM PUBLIC.PERSON_EVENTS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_EVENTS( "
-			+ "PERSON_EVENT_PID, " + "EVENT_PID, " + "PERSON_PID, " + "ROLE, "
-			+ "PRIMARY_PERSON, " + "PRIMARY_EVENT, " + "TABLE_ID, "
-			+ "LANGUAGE_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
-			+ "?, " + "?, " + "?)";
+			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
+			+ "PRIMARY_PERSON, PRIMARY_EVENT, TABLE_ID, "
+			+ "LANGUAGE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_EVENTS SET "
-			+ "EVENT_PID = ?, " + "PERSON_PID = ?, " + "ROLE = ?, "
-			+ "PRIMARY_PERSON = ?, " + "PRIMARY_EVENT = ?, " + "TABLE_ID = ?, "
+			+ "EVENT_PID = ?, PERSON_PID = ?, ROLE = ?, "
+			+ "PRIMARY_PERSON = ?, PRIMARY_EVENT = ?, TABLE_ID = ?, "
 			+ "LANGUAGE_PID = ? WHERE PERSON_EVENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";

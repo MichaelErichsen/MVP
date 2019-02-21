@@ -19,31 +19,28 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class Parents {
-	private static final String SELECT = "SELECT " + "PARENT_PID, " + "CHILD, "
-			+ "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, " + "TABLE_ID, "
+	private static final String SELECT = "SELECT PARENT_PID, CHILD, "
+			+ "PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
-	private static final String SELECT_CHILD = "SELECT " + "PARENT_PID, "
-			+ "CHILD, " + "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, "
-			+ "TABLE_ID, "
+	private static final String SELECT_CHILD = "SELECT PARENT_PID, "
+			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE CHILD = ? ORDER BY PARENT_PID";
-	private static final String SELECT_PARENT = "SELECT " + "PARENT_PID, "
-			+ "CHILD, " + "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, "
-			+ "TABLE_ID, "
+	private static final String SELECT_PARENT = "SELECT PARENT_PID, "
+			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT = ? ORDER BY PARENT_PID";
-	private static final String SELECTALL = "SELECT " + "PARENT_PID, "
-			+ "CHILD, " + "PARENT, " + "PARENT_ROLE, " + "PRIMARY_PARENT, "
-			+ "TABLE_ID, "
+	private static final String SELECTALL = "SELECT PARENT_PID, "
+			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS ORDER BY PARENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(PARENT_PID) FROM PUBLIC.PARENTS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PARENTS( "
-			+ "PARENT_PID, " + "CHILD, " + "PARENT, " + "PARENT_ROLE, "
-			+ "PRIMARY_PARENT, " + "TABLE_ID, " + "LANGUAGE_PID) VALUES ("
-			+ "?, " + "?, " + "?, " + "?, " + "?, " + "?, " + "?)";
+			+ "PARENT_PID, CHILD, PARENT, PARENT_ROLE, "
+			+ "PRIMARY_PARENT, TABLE_ID, LANGUAGE_PID) VALUES ("
+			+ "?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PARENTS SET "
-			+ "CHILD = ?, " + "PARENT = ?, " + "PARENT_ROLE = ?, "
-			+ "PRIMARY_PARENT = ?, " + "TABLE_ID = ?, "
+			+ "CHILD = ?, PARENT = ?, PARENT_ROLE = ?, "
+			+ "PRIMARY_PARENT = ?, TABLE_ID = ?, "
 			+ "LANGUAGE_PID = ? WHERE PARENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";

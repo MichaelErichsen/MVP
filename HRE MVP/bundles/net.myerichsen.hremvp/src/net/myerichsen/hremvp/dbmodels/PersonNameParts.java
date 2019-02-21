@@ -19,18 +19,18 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class PersonNameParts {
-	private static final String SELECT = "SELECT " + "NAME_PART_PID, "
-			+ "NAME_PID, " + "LABEL, " + "PART_NO, "
+	private static final String SELECT = "SELECT NAME_PART_PID, "
+			+ "NAME_PID, LABEL, PART_NO, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PART_PID = ?";
-	private static final String SELECTALL = "SELECT " + "NAME_PART_PID, "
-			+ "NAME_PID, " + "LABEL, " + "PART_NO, "
+	private static final String SELECTALL = "SELECT NAME_PART_PID, "
+			+ "NAME_PID, LABEL, PART_NO, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_PARTS ORDER BY NAME_PART_PID";
 	private static final String SELECTMAX = "SELECT MAX(NAME_PART_PID) FROM PUBLIC.PERSON_NAME_PARTS";
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAME_PARTS( "
-			+ "NAME_PART_PID, " + "NAME_PID, " + "LABEL, " + "PART_NO, "
-			+ "TABLE_ID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?)";
+			+ "NAME_PART_PID, NAME_PID, LABEL, PART_NO, "
+			+ "TABLE_ID) VALUES (?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_PARTS SET "
-			+ "NAME_PID = ?, " + "LABEL = ?, " + "PART_NO = ?, "
+			+ "NAME_PID = ?, LABEL = ?, PART_NO = ?, "
 			+ "TABLE_ID = ? WHERE NAME_PART_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PART_PID = ?";
@@ -103,6 +103,15 @@ public class PersonNameParts {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
+	}
+
+	/**
+	 * @param namePid2
+	 * @return
+	 */
+	public List<PersonNameParts> getFKNamePid(int namePid2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -226,15 +235,6 @@ public class PersonNameParts {
 		ps.setInt(5, getNamePartPid());
 		ps.executeUpdate();
 		conn.close();
-	}
-
-	/**
-	 * @param namePid2
-	 * @return
-	 */
-	public List<PersonNameParts> getFKNamePid(int namePid2) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

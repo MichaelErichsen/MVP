@@ -19,22 +19,21 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class EventTypes {
-	private static final String SELECT = "SELECT " + "EVENT_TYPE_PID, "
+	private static final String SELECT = "SELECT EVENT_TYPE_PID, "
 			+ "TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
 	private static final String SELECT_LABEL_PID = "SELECT "
-			+ "EVENT_TYPE_PID, " + "TABLE_ID, "
+			+ "EVENT_TYPE_PID, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES WHERE LABEL_PID = ? ORDER BY EVENT_TYPE_PID";
-	private static final String SELECTALL = "SELECT " + "EVENT_TYPE_PID, "
+	private static final String SELECTALL = "SELECT EVENT_TYPE_PID, "
 			+ "TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES ORDER BY EVENT_TYPE_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_TYPE_PID) FROM PUBLIC.EVENT_TYPES";
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_TYPES( "
-			+ "EVENT_TYPE_PID, " + "TABLE_ID, " + "LABEL_PID) VALUES (" + "?, "
-			+ "?, " + "?)";
+			+ "EVENT_TYPE_PID, TABLE_ID, LABEL_PID) VALUES (?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.EVENT_TYPES SET "
-			+ "TABLE_ID = ?, " + "LABEL_PID = ? WHERE EVENT_TYPE_PID = ?";
+			+ "TABLE_ID = ?, LABEL_PID = ? WHERE EVENT_TYPE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
 

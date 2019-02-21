@@ -19,24 +19,16 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class SexTypes {
-	private List<SexTypes> modelList;
-	private PreparedStatement ps;
-	private ResultSet rs;
-	private Connection conn;
 	private static final String SELECT = "SELECT SEX_TYPE_PID, "
 			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
-
 	private static final String SELECT_LABEL_PID = "SELECT SEX_TYPE_PID, "
 			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE LABEL_PID = ? ORDER BY SEX_TYPE_PID";
-
 	private static final String SELECTALL = "SELECT SEX_TYPE_PID, "
 			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES ORDER BY SEX_TYPE_PID";
-
 	private static final String SELECTMAX = "SELECT MAX(SEX_TYPE_PID) FROM PUBLIC.SEX_TYPES";
-
 	private static final String INSERT = "INSERT INTO PUBLIC.SEX_TYPES( "
 			+ "SEX_TYPE_PID, ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID) VALUES (?, ?, ?, ?)";
@@ -48,6 +40,14 @@ public class SexTypes {
 	private static final String DELETE = "DELETE FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.SEX_TYPES";
+
+	private List<SexTypes> modelList;
+
+	private PreparedStatement ps;
+
+	private ResultSet rs;
+
+	private Connection conn;
 
 	private int SexTypePid;
 	private String Abbreviation;
@@ -77,7 +77,7 @@ public class SexTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<SexTypes>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new SexTypes();
 			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
@@ -106,12 +106,21 @@ public class SexTypes {
 		conn.close();
 	}
 
+	/**
+	 * Get the Abbreviation field.
+	 *
+	 * @return Contents of the ABBREVIATION column
+	 */
+	public String getAbbreviation() {
+		return Abbreviation;
+	}
+
 	public List<SexTypes> getFKLabelPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LABEL_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<SexTypes>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new SexTypes();
 			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
@@ -122,6 +131,33 @@ public class SexTypes {
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return LabelPid;
+	}
+
+	/**
+	 * Get the SexTypePid field.
+	 *
+	 * @return Contents of the SEX_TYPE_PID column
+	 */
+	public int getSexTypePid() {
+		return SexTypePid;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return TableId;
 	}
 
 	public int insert() throws SQLException {
@@ -144,51 +180,22 @@ public class SexTypes {
 		return maxPid;
 	}
 
-	public void update() throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getAbbreviation());
-		ps.setInt(2, getTableId());
-		ps.setInt(3, getLabelPid());
-		ps.setInt(4, getSexTypePid());
-		ps.executeUpdate();
-		conn.close();
+	/**
+	 * Set the Abbreviation field
+	 *
+	 * @param Abbreviation Contents of the ABBREVIATION column
+	 */
+	public void setAbbreviation(String Abbreviation) {
+		this.Abbreviation = Abbreviation;
 	}
 
 	/**
-	 * Get the SexTypePid field.
+	 * Set the LabelPid field
 	 *
-	 * @return Contents of the SEX_TYPE_PID column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public int getSexTypePid() {
-		return this.SexTypePid;
-	}
-
-	/**
-	 * Get the Abbreviation field.
-	 *
-	 * @return Contents of the ABBREVIATION column
-	 */
-	public String getAbbreviation() {
-		return this.Abbreviation;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return this.TableId;
-	}
-
-	/**
-	 * Get the LabelPid field.
-	 *
-	 * @return Contents of the LABEL_PID column
-	 */
-	public int getLabelPid() {
-		return this.LabelPid;
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -201,15 +208,6 @@ public class SexTypes {
 	}
 
 	/**
-	 * Set the Abbreviation field
-	 *
-	 * @param Abbreviation Contents of the ABBREVIATION column
-	 */
-	public void setAbbreviation(String Abbreviation) {
-		this.Abbreviation = Abbreviation;
-	}
-
-	/**
 	 * Set the TableId field
 	 *
 	 * @param TableId Contents of the TABLE_ID column
@@ -218,13 +216,15 @@ public class SexTypes {
 		this.TableId = TableId;
 	}
 
-	/**
-	 * Set the LabelPid field
-	 *
-	 * @param LabelPid Contents of the LABEL_PID column
-	 */
-	public void setLabelPid(int LabelPid) {
-		this.LabelPid = LabelPid;
+	public void update() throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setString(1, getAbbreviation());
+		ps.setInt(2, getTableId());
+		ps.setInt(3, getLabelPid());
+		ps.setInt(4, getSexTypePid());
+		ps.executeUpdate();
+		conn.close();
 	}
 
 }
