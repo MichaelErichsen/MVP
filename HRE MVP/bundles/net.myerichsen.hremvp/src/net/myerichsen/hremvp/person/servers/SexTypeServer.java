@@ -21,6 +21,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
 
 /**
@@ -243,14 +244,27 @@ public class SexTypeServer implements IHREServer {
 	public List<List<String>> getSexTypeList(int labelPid) throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
+		String label;
 
 		final Dictionary dictionary = new Dictionary();
 		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
 
-		for (final Dictionary d : fkLabelPid) {
+		Languages language = new Languages();
+
+		for (Languages l : language.get()) {
 			stringList = new ArrayList<>();
-			stringList.add(d.getIsoCode());
-			stringList.add(Integer.toString(labelPid));
+			stringList.add(l.getIsocode());
+
+			label = "";
+
+			for (final Dictionary d : fkLabelPid) {
+				if (l.getIsocode().equals(d.getIsoCode())) {
+					label = d.getLabel();
+					break;
+				}
+			}
+
+			stringList.add(label);
 			lls.add(stringList);
 		}
 		return lls;

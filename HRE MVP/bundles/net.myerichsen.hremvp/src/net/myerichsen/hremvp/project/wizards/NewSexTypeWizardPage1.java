@@ -1,6 +1,10 @@
 package net.myerichsen.hremvp.project.wizards;
 
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
@@ -13,24 +17,46 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
+import net.myerichsen.hremvp.project.providers.SexTypeProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
+
 /**
  * Wizard page to define a new language for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 20. feb. 2019
+ * @version 21. feb. 2019
  *
  */
 public class NewSexTypeWizardPage1 extends WizardPage {
-	private Text textAbbreviation;
-	private Text textLabel;
-	private TableViewer tableViewer;
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	public NewSexTypeWizardPage1(IEclipseContext context) {
+	private Text textAbbreviation;
+	private TableViewer tableViewer;
+	private SexTypeProvider provider;
+	private int labelPid;
+
+	/**
+	 * Constructor
+	 *
+	 * @param context
+	 * @throws SQLException
+	 */
+	public NewSexTypeWizardPage1(IEclipseContext context) throws SQLException {
 		super("New sex type wizard Page 1");
 		setTitle("Sex type");
 		setDescription("Add a sex type to this HRE project");
+		provider = new SexTypeProvider();
+		int size = provider.get().size();
+		labelPid = size + 1;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets.Composite)
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);
@@ -45,15 +71,6 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		textAbbreviation.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblNewLabel = new Label(container, SWT.NONE);
-		lblNewLabel.setLayoutData(
-				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel.setText("Label in US English");
-
-		textLabel = new Text(container, SWT.BORDER);
-		textLabel.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
 		Table table = tableViewer.getTable();
@@ -66,11 +83,22 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
+		tableViewerColumnIsoCode
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
 		TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		TableColumn tblclmnLabelclickTo = tableViewerColumnLabel.getColumn();
 		tblclmnLabelclickTo.setWidth(394);
 		tblclmnLabelclickTo.setText("Label (Click to edit)");
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getSexTypeList(labelPid));
+		} catch (SQLException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 	}
 }

@@ -24,24 +24,26 @@ public class SexTypes {
 	private ResultSet rs;
 	private Connection conn;
 	private static final String SELECT = "SELECT SEX_TYPE_PID, "
-			+ "ABBREVIATION, "
+			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
 
 	private static final String SELECT_LABEL_PID = "SELECT SEX_TYPE_PID, "
-			+ "ABBREVIATION, "
+			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE LABEL_PID = ? ORDER BY SEX_TYPE_PID";
 
 	private static final String SELECTALL = "SELECT SEX_TYPE_PID, "
-			+ "ABBREVIATION, "
+			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES ORDER BY SEX_TYPE_PID";
 
 	private static final String SELECTMAX = "SELECT MAX(SEX_TYPE_PID) FROM PUBLIC.SEX_TYPES";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.SEX_TYPES( "
-			+ "SEX_TYPE_PID, ABBREVIATION, LABEL_PID) VALUES (" + "?, ?, ?)";
+			+ "SEX_TYPE_PID, ABBREVIATION, TABLE_ID, "
+			+ "LABEL_PID) VALUES (?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.SEX_TYPES SET "
-			+ "ABBREVIATION = ?, LABEL_PID = ? WHERE SEX_TYPE_PID = ?";
+			+ "ABBREVIATION = ?, TABLE_ID = ?, "
+			+ "LABEL_PID = ? WHERE SEX_TYPE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
 
@@ -49,6 +51,7 @@ public class SexTypes {
 
 	private int SexTypePid;
 	private String Abbreviation;
+	private int TableId;
 	private int LabelPid;
 	private SexTypes model;
 
@@ -79,6 +82,7 @@ public class SexTypes {
 			model = new SexTypes();
 			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
+			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
@@ -94,6 +98,7 @@ public class SexTypes {
 		if (rs.next()) {
 			setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			setAbbreviation(rs.getString("ABBREVIATION"));
+			setTableId(rs.getInt("TABLE_ID"));
 			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -111,6 +116,7 @@ public class SexTypes {
 			model = new SexTypes();
 			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
+			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
@@ -131,7 +137,8 @@ public class SexTypes {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setString(2, getAbbreviation());
-		ps.setInt(3, getLabelPid());
+		ps.setInt(3, getTableId());
+		ps.setInt(4, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -141,8 +148,9 @@ public class SexTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getAbbreviation());
-		ps.setInt(2, getLabelPid());
-		ps.setInt(3, getSexTypePid());
+		ps.setInt(2, getTableId());
+		ps.setInt(3, getLabelPid());
+		ps.setInt(4, getSexTypePid());
 		ps.executeUpdate();
 		conn.close();
 	}
@@ -163,6 +171,15 @@ public class SexTypes {
 	 */
 	public String getAbbreviation() {
 		return this.Abbreviation;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return this.TableId;
 	}
 
 	/**
@@ -190,6 +207,15 @@ public class SexTypes {
 	 */
 	public void setAbbreviation(String Abbreviation) {
 		this.Abbreviation = Abbreviation;
+	}
+
+	/**
+	 * Set the TableId field
+	 *
+	 * @param TableId Contents of the TABLE_ID column
+	 */
+	public void setTableId(int TableId) {
+		this.TableId = TableId;
 	}
 
 	/**
