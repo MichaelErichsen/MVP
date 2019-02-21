@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the sex type view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. feb. 2019
+ * @version 21. feb. 2019
  *
  */
 public class OpenSexTypeViewHandler {
@@ -39,7 +39,7 @@ public class OpenSexTypeViewHandler {
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(contributionURI);
-		stacks.get(stacks.size() - 2).getChildren().add(part);
+		stacks.get(stacks.size() - 3).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 	}
 

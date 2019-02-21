@@ -1,18 +1,24 @@
 package net.myerichsen.hremvp.project.wizards;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.wizard.Wizard;
 
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.project.providers.DictionaryProvider;
+import net.myerichsen.hremvp.project.providers.SexTypeProvider;
+
 /**
  * Wizard to add a sex type
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 20. feb. 2019
+ * @version 21. feb. 2019
  *
  */
+// FIXME DOes not refresh navigator
 public class NewSexTypeWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -20,7 +26,7 @@ public class NewSexTypeWizard extends Wizard {
 //	private final IEventBroker eventBroker;
 
 	private NewSexTypeWizardPage1 page1;
-//	private LanguageProvider provider;
+	private SexTypeProvider provider;
 //	private int labelPid;
 
 	/**
@@ -57,9 +63,44 @@ public class NewSexTypeWizard extends Wizard {
 	 * 
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
+		DictionaryProvider dp;
+		String abbreviation = page1.getTextAbbreviation().getText();
+
+		if (abbreviation.equals("") == false) {
+			try {
+				provider = new SexTypeProvider();
+				provider.setAbbreviation(abbreviation);
+
+				int sexTypePid = provider.insert();
+				LOGGER.info("Inserted sex type " + sexTypePid);
+
+				int labelPid = provider.getLabelPid();
+
+				List<List<String>> input = (List<List<String>>) page1
+						.getTableViewer().getInput();
+
+				for (int i = 0; i < input.size(); i++) {
+					dp = new DictionaryProvider();
+					dp.setIsoCode(input.get(i).get(0));
+					dp.setLabel(input.get(i).get(1));
+					dp.setLabelPid(labelPid);
+					int dictionaryPid = dp.insert();
+					LOGGER.info("Inserted dictionary element " + dictionaryPid
+							+ ", " + input.get(i).get(0) + ", "
+							+ input.get(i).get(1));
+				}
+
+			} catch (SQLException | MvpException e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
+			}
+			;
+			return true;
+		}
+
 		return false;
 	}
 

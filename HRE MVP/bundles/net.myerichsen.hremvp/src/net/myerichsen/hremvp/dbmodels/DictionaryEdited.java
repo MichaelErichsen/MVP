@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.MvpException;
  *
  */
 
-public class DictionaryEdited2 {
+public class DictionaryEdited {
 	private static final String SELECT = "SELECT DICTIONARY_PID, "
 			+ "LABEL_PID, ISO_CODE, LABEL, "
 			+ "TABLE_ID FROM PUBLIC.DICTIONARY WHERE DICTIONARY_PID = ?";
@@ -45,7 +45,9 @@ public class DictionaryEdited2 {
 			+ "FROM PUBLIC.DICTIONARY "
 			+ "WHERE LABEL_PID = ? ORDER BY ISO_CODE";
 
-	private List<DictionaryEdited2> modelList;
+	private static final String SELECTMAXLABELPID = "SELECT MAX(LABEL_PID) FROM PUBLIC.DICTIONARY";
+
+	private List<DictionaryEdited> modelList;
 
 	private PreparedStatement ps;
 
@@ -58,7 +60,7 @@ public class DictionaryEdited2 {
 	private String IsoCode;
 	private String Label;
 	private int TableId;
-	private DictionaryEdited2 model;
+	private DictionaryEdited model;
 
 	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
@@ -78,13 +80,13 @@ public class DictionaryEdited2 {
 		conn.close();
 	}
 
-	public List<DictionaryEdited2> get() throws SQLException {
+	public List<DictionaryEdited> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new DictionaryEdited2();
+			model = new DictionaryEdited();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
@@ -122,14 +124,14 @@ public class DictionaryEdited2 {
 		return DictionaryPid;
 	}
 
-	public List<DictionaryEdited2> getFKIsoCode(String key) throws SQLException {
+	public List<DictionaryEdited> getFKIsoCode(String key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_ISO_CODE);
 		ps.setString(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new DictionaryEdited2();
+			model = new DictionaryEdited();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
@@ -141,14 +143,14 @@ public class DictionaryEdited2 {
 		return modelList;
 	}
 
-	public List<DictionaryEdited2> getFKLabelPid(int key) throws SQLException {
+	public List<DictionaryEdited> getFKLabelPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LABEL_PID);
 		ps.setLong(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new DictionaryEdited2();
+			model = new DictionaryEdited();
 			model.setDictionaryPid(rs.getInt("DICTIONARY_PID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
@@ -185,6 +187,23 @@ public class DictionaryEdited2 {
 	 */
 	public int getLabelPid() {
 		return LabelPid;
+	}
+
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getNextLabelPid() throws SQLException {
+		int maxLabelPid = 0;
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECTMAXLABELPID);
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			maxLabelPid = rs.getInt(1);
+		}
+		maxLabelPid++;
+
+		return maxLabelPid;
 	}
 
 	/**
@@ -273,5 +292,4 @@ public class DictionaryEdited2 {
 		ps.executeUpdate();
 		conn.close();
 	}
-
 }

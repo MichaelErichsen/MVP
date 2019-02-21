@@ -45,6 +45,8 @@ public class Dictionary {
 			+ "FROM PUBLIC.DICTIONARY "
 			+ "WHERE LABEL_PID = ? ORDER BY ISO_CODE";
 
+	private static final String SELECTMAXLABELPID = "SELECT MAX(LABEL_PID) FROM PUBLIC.DICTIONARY";
+
 	private List<Dictionary> modelList;
 
 	private PreparedStatement ps;
@@ -188,6 +190,23 @@ public class Dictionary {
 	}
 
 	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getNextLabelPid() throws SQLException {
+		int maxLabelPid = 0;
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECTMAXLABELPID);
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			maxLabelPid = rs.getInt(1);
+		}
+		maxLabelPid++;
+
+		return maxLabelPid;
+	}
+
+	/**
 	 * Get the TableId field.
 	 *
 	 * @return Contents of the TABLE_ID column
@@ -273,5 +292,4 @@ public class Dictionary {
 		ps.executeUpdate();
 		conn.close();
 	}
-
 }

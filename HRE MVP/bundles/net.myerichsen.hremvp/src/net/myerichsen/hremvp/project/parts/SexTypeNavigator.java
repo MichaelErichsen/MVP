@@ -201,9 +201,9 @@ public class SexTypeNavigator {
 		try {
 			final SexTypeProvider provider = new SexTypeProvider();
 			provider.delete(sexTypePid);
-			LOGGER.info("sex type " + primaryName + " has been deleted");
+			LOGGER.info("Sex type " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
-					"sex type " + primaryName + " has been deleted");
+					"Sex type " + primaryName + " has been deleted");
 			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());

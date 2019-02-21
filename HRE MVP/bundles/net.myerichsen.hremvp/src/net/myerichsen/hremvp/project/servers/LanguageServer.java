@@ -4,18 +4,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
 
 /**
- * * Business logic interface for
- * {@link net.myerichsen.hremvp.dbmodels.Languages}
+ * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. feb. 2019
+ * @version 21. feb. 2019
  *
  */
-public class LanguageServer {
+public class LanguageServer implements IHREServer {
 	private int LanguagePid;
 	private String Isocode;
 	private String Label;
@@ -149,6 +149,28 @@ public class LanguageServer {
 	 */
 	public void setTableId(int tableId) {
 		TableId = tableId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#update()
+	 */
+	@Override
+	public void update() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

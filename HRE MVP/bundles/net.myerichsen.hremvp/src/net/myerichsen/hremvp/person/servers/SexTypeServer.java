@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 21. feb. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
@@ -285,8 +285,11 @@ public class SexTypeServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		sexType.setSexTypePid(sexTypePid);
+		Dictionary dictionary = new Dictionary();
+		int labelPid = dictionary.getNextLabelPid();
 		sexType.setAbbreviation(abbreviation);
+		sexType.setLabelPid(labelPid);
+		sexType.setTableId(23);
 		return sexType.insert();
 	}
 

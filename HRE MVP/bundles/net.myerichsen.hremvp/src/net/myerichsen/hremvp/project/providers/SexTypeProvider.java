@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.person.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. feb. 2019
+ * @version 21. feb. 2019
  *
  */
 public class SexTypeProvider implements IHREProvider {
@@ -42,13 +42,9 @@ public class SexTypeProvider implements IHREProvider {
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private int sexTypePid;
-	private String abbreviation;
-	private String label;
-	private int languagePid;
-	private String languageLabel;
-	private String isoCode;
-
+	private int SexTypePid;
+	private String Abbreviation;
+	private int TableId;
 	private final SexTypeServer server;
 
 	/**
@@ -119,31 +115,13 @@ public class SexTypeProvider implements IHREProvider {
 		server.get(key);
 		setSexTypePid(server.getSexTypePid());
 		setAbbreviation(server.getAbbreviation());
-		setLabel(server.getLabel());
-		setLanguagePid(server.getLanguagePid());
-		setLanguageLabel(server.getLanguageLabel());
-		setIsoCode(server.getIsoCode());
 	}
 
 	/**
 	 * @return the abbreviation
 	 */
 	public String getAbbreviation() {
-		return abbreviation;
-	}
-
-	/**
-	 * @return the isoCode
-	 */
-	public String getIsoCode() {
-		return isoCode;
-	}
-
-	/**
-	 * @return the label
-	 */
-	public String getLabel() {
-		return label;
+		return Abbreviation;
 	}
 
 	/**
@@ -151,20 +129,6 @@ public class SexTypeProvider implements IHREProvider {
 	 */
 	public int getLabelPid() {
 		return server.getLabelPid();
-	}
-
-	/**
-	 * @return the languageLabel
-	 */
-	public String getLanguageLabel() {
-		return languageLabel;
-	}
-
-	/**
-	 * @return the languagePid
-	 */
-	public int getLanguagePid() {
-		return languagePid;
 	}
 
 	/**
@@ -210,10 +174,6 @@ public class SexTypeProvider implements IHREProvider {
 
 		setSexTypePid(jsonObject.getInt("sexTypePid"));
 		setAbbreviation(jsonObject.getString("abbreviation"));
-		setLabel(jsonObject.getString("label"));
-		setLanguagePid(jsonObject.getInt("languagePid"));
-		setLanguageLabel(jsonObject.getString("languageLabel"));
-		setIsoCode(jsonObject.getString("isoCode"));
 	}
 
 	/**
@@ -238,7 +198,14 @@ public class SexTypeProvider implements IHREProvider {
 	 * @return the sexTypePid
 	 */
 	public int getSexTypePid() {
-		return sexTypePid;
+		return SexTypePid;
+	}
+
+	/**
+	 * @return the tableId
+	 */
+	public int getTableId() {
+		return TableId;
 	}
 
 	/**
@@ -250,10 +217,7 @@ public class SexTypeProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		server.setSexTypePid(sexTypePid);
-		server.setAbbreviation(abbreviation);
-		server.setLabel(label);
-		server.setLanguagePid(languagePid);
+		server.setAbbreviation(Abbreviation);
 		return server.insert();
 	}
 
@@ -269,13 +233,9 @@ public class SexTypeProvider implements IHREProvider {
 		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("sexTypePid");
-		js.value(sexTypePid);
+		js.value(SexTypePid);
 		js.key("abbreviation");
-		js.value(abbreviation);
-		js.key("label");
-		js.value(label);
-		js.key("languagePid");
-		js.value(languagePid);
+		js.value(Abbreviation);
 		js.endObject();
 
 		final CloseableHttpClient client = HttpClients.createDefault();
@@ -299,42 +259,27 @@ public class SexTypeProvider implements IHREProvider {
 	 * @param abbreviation the abbreviation to set
 	 */
 	public void setAbbreviation(String abbreviation) {
-		this.abbreviation = abbreviation;
+		Abbreviation = abbreviation;
 	}
 
 	/**
-	 * @param isoCode the isoCode to set
+	 * @param labelPid the labelPid to set
 	 */
-	public void setIsoCode(String isoCode) {
-		this.isoCode = isoCode;
-	}
-
-	/**
-	 * @param label the label to set
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
-	 * @param languageLabel the languageLabel to set
-	 */
-	public void setLanguageLabel(String languageLabel) {
-		this.languageLabel = languageLabel;
-	}
-
-	/**
-	 * @param languagePid the languagePid to set
-	 */
-	public void setLanguagePid(int languagePid) {
-		this.languagePid = languagePid;
+	public void setLabelPid(int labelPid) {
 	}
 
 	/**
 	 * @param sexTypePid the sexTypePid to set
 	 */
 	public void setSexTypePid(int sexTypePid) {
-		this.sexTypePid = sexTypePid;
+		SexTypePid = sexTypePid;
+	}
+
+	/**
+	 * @param tableId the tableId to set
+	 */
+	public void setTableId(int tableId) {
+		TableId = tableId;
 	}
 
 	/**
@@ -346,10 +291,8 @@ public class SexTypeProvider implements IHREProvider {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		server.setSexTypePid(sexTypePid);
-		server.setAbbreviation(abbreviation);
-		server.setLabel(label);
-		server.setLanguagePid(languagePid);
+		server.setSexTypePid(SexTypePid);
+		server.setAbbreviation(Abbreviation);
 		server.update();
 	}
 }

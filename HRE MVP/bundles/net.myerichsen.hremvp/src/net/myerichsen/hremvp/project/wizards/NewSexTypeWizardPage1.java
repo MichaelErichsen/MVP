@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
+import net.myerichsen.hremvp.project.parts.SexTypeLabelEditingSupport;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -33,7 +34,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
-	private SexTypeProvider provider;
+	private final SexTypeProvider provider;
 	private int labelPid;
 
 	/**
@@ -47,13 +48,13 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		setTitle("Sex type");
 		setDescription("Add a sex type to this HRE project");
 		provider = new SexTypeProvider();
-		int size = provider.get().size();
+		final int size = provider.get().size();
 		labelPid = size + 1;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
 	 * widgets.Composite)
 	 */
@@ -64,7 +65,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
 
-		Label lblAbbreviation = new Label(container, SWT.NONE);
+		final Label lblAbbreviation = new Label(container, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");
 
 		textAbbreviation = new Text(container, SWT.BORDER);
@@ -73,32 +74,48 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
+		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
 		tableViewerColumnIsoCode
 				.setLabelProvider(new HREColumnLabelProvider(0));
 
-		TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnLabelclickTo = tableViewerColumnLabel.getColumn();
-		tblclmnLabelclickTo.setWidth(394);
-		tblclmnLabelclickTo.setText("Label (Click to edit)");
+		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
+		tblclmnLabel.setWidth(394);
+		tblclmnLabel.setText("Label (Click to edit)");
+		tableViewerColumnLabel
+				.setEditingSupport(new SexTypeLabelEditingSupport(tableViewer));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getSexTypeList(labelPid));
-		} catch (SQLException e1) {
+		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
+	}
+
+	/**
+	 * @return the textAbbreviation
+	 */
+	public Text getTextAbbreviation() {
+		return textAbbreviation;
+	}
+
+	/**
+	 * @return the tableViewer
+	 */
+	public TableViewer getTableViewer() {
+		return tableViewer;
 	}
 }

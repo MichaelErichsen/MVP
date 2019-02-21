@@ -130,7 +130,6 @@ public class NewPersonWizardPage1 extends WizardPage {
 
 				final SexTypeProvider provider = new SexTypeProvider();
 				provider.get(sexTypePid);
-				textSex.setText(provider.getLabel());
 			}
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
