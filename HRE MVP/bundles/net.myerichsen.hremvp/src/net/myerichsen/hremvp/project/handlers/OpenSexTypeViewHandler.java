@@ -7,7 +7,6 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
@@ -20,6 +19,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  *
  */
 public class OpenSexTypeViewHandler {
+//	private final static Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.SexTypeView";
 
 	/**
@@ -35,17 +36,18 @@ public class OpenSexTypeViewHandler {
 				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-				if (part.getContributionURI().equals(contributionURI)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					return;
-				}
-			}
-		}
+//		for (final MPartStack mPartStack : stacks) {
+//			final List<MStackElement> a = mPartStack.getChildren();
+//
+//			for (int i = 0; i < a.size(); i++) {
+//				part = (MPart) a.get(i);
+// FIXME Throws a null pointer exception
+//					if (part.getContributionURI().equals(contributionURI)) {
+//						partService.showPart(part, PartState.ACTIVATE);
+//						return;
+//					}
+//			}
+//		}
 
 		part.setLabel("Sex Type");
 		part.setContainerData("650");

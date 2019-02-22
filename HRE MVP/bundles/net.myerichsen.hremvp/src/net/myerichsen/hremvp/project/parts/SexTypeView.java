@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
@@ -107,7 +108,7 @@ public class SexTypeView {
 		tblclmnLabel.setWidth(394);
 		tblclmnLabel.setText("Label");
 		tableViewerColumnLabel
-				.setEditingSupport(new SexTypeLabelEditingSupport(tableViewer));
+				.setEditingSupport(new HreTypeLabelEditingSupport(tableViewer));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final Composite composite = new Composite(parent, SWT.NONE);

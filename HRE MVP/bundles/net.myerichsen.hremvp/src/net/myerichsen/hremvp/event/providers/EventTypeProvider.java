@@ -11,13 +11,13 @@ import net.myerichsen.hremvp.event.servers.EventTypeServer;
  * Provides all data for an personEvent type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. dec. 2018
+ * @version 22. feb. 2019
  *
  */
 public class EventTypeProvider implements IHREProvider {
 	private int EventTypePid;
 	private int TableId;
-	private String Label;
+	private int LabelPid;
 	private final EventTypeServer server;
 
 	/**
@@ -68,8 +68,18 @@ public class EventTypeProvider implements IHREProvider {
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setEventTypePid(server.getEventTypePid());
-		setLabel(server.getLabel());
+		setLabelPid(server.getLabelPid());
 		setTableId(server.getTableId());
+	}
+
+	/**
+	 * @param labelPid
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getEventTypeList(int labelPid)
+			throws SQLException {
+		return server.getEventTypeList(labelPid);
 	}
 
 	/**
@@ -80,10 +90,10 @@ public class EventTypeProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the label
+	 * @return
 	 */
-	public String getLabel() {
-		return Label;
+	public int getLabelPid() {
+		return server.getLabelPid();
 	}
 
 	/**
@@ -116,7 +126,7 @@ public class EventTypeProvider implements IHREProvider {
 	@Override
 	public int insert() throws SQLException, MvpException {
 		server.setEventTypePid(EventTypePid);
-		server.setLabel(Label);
+		server.setLabelPid(LabelPid);
 		return server.insert();
 	}
 
@@ -128,10 +138,9 @@ public class EventTypeProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param label the label to set
+	 * @param labelPid the labelPid to set
 	 */
-	public void setLabel(String label) {
-		Label = label;
+	public void setLabelPid(int labelPid) {
 	}
 
 	/**
@@ -151,7 +160,7 @@ public class EventTypeProvider implements IHREProvider {
 	@Override
 	public void update() throws SQLException, MvpException {
 		server.setEventTypePid(EventTypePid);
-		server.setLabel(Label);
+		server.setLabelPid(LabelPid);
 		server.update();
 	}
 

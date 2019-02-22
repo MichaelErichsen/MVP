@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.project.parts;
+package net.myerichsen.hremvp;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
  * @version 21. feb. 2019
  *
  */
-public class SexTypeLabelEditingSupport extends EditingSupport {
+public class HreTypeLabelEditingSupport extends EditingSupport {
 	private final TableViewer viewer;
 	private final CellEditor editor;
 
@@ -23,7 +23,7 @@ public class SexTypeLabelEditingSupport extends EditingSupport {
 	 *
 	 * @param viewer
 	 */
-	public SexTypeLabelEditingSupport(TableViewer viewer) {
+	public HreTypeLabelEditingSupport(TableViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;
 		editor = new TextCellEditor(viewer.getTable());

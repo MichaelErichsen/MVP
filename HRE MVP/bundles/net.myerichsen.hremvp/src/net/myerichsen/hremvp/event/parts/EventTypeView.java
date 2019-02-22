@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.event.parts;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -7,23 +8,15 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -32,224 +25,124 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
+import net.myerichsen.hremvp.project.providers.DictionaryProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all data about an personEvent type
+ * Display a Event type with all national labels
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. dec. 2018
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 22. feb. 2019
+ *
  */
 
 public class EventTypeView {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
-	@Inject
-	private IEventBroker eventBroker;
 
-	private Text textId;
-	private Text textLabel;
-	private Table table;
+	@Inject
+//	private IEventBroker eventBroker;
+
+	private Text textEventTypePid;
+//	private Text textAbbreviation;
 	private TableViewer tableViewer;
-	private Label lblEventTypeNames;
-	private TableColumn tblclmnId;
-	private TableViewerColumn tableViewerColumnID;
-	private TableColumn tblclmnLabel;
-	private TableViewerColumn tableViewerColumnLabel;
-	private TableColumn tblclmnLanguage;
-	private TableViewerColumn tableViewerColumnLanguage;
-
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
-
-	private final EventTypeProvider provider;
-	private TableColumn tblclmnIsoCode;
-	private TableViewerColumn tableViewerColumn;
+	private EventTypeProvider provider;
+	private DictionaryProvider dp;
+	private int EventTypePid = 0;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws Exception
-	 *
 	 */
-	public EventTypeView() throws Exception {
-		provider = new EventTypeProvider();
+	public EventTypeView() {
+		try {
+			provider = new EventTypeProvider();
+			dp = new DictionaryProvider();
+		} catch (Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
-	 *
-	 */
-	protected void clear() {
-		textId.setText("0");
-		textLabel.setText("");
-		table.removeAll();
-	}
-
-	/**
-	 *
-	 */
-	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2)
-				.getSelectedElement();
-		partService.hidePart(part, true);
-	}
-
-	/**
-	 * Create contents of the view part
-	 *
-	 * @param parent The parent composite
+	 * Create contents of the view part.
 	 */
 	@PostConstruct
-	public void createControls(Composite parent, IEclipseContext context) {
+	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(2, false));
 
-		final Label lblId = new Label(parent, SWT.NONE);
-		lblId.setText("Event Type ID");
+		final Label lblEventTypeId = new Label(parent, SWT.NONE);
+		lblEventTypeId.setText("Event type id");
 
-		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(
+		textEventTypePid = new Text(parent, SWT.BORDER);
+		textEventTypePid.setEditable(false);
+		textEventTypePid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		final Label lblLabel = new Label(parent, SWT.NONE);
-		lblLabel.setText("Label");
-
-		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		lblEventTypeNames = new Label(parent, SWT.NONE);
-		lblEventTypeNames.setText("Event Type Names");
+//		final Label lblAbbreviation = new Label(parent, SWT.NONE);
+//		lblAbbreviation.setText("Abbreviation");
+//
+//		textAbbreviation = new Text(parent, SWT.BORDER);
+//		textAbbreviation.setLayoutData(
+//				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				openEventTypeNameView();
-			}
-		});
+		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		final GridData gd_table = new GridData(SWT.FILL, SWT.FILL, true, true,
-				1, 1);
-		gd_table.widthHint = 473;
-		table.setLayoutData(gd_table);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		tableViewerColumnID = new TableViewerColumn(tableViewer, SWT.NONE);
-		tblclmnId = tableViewerColumnID.getColumn();
-		tblclmnId.setWidth(100);
-		tblclmnId.setText("ID");
-
-		tableViewerColumnLabel = new TableViewerColumn(tableViewer, SWT.NONE);
-		tblclmnLabel = tableViewerColumnLabel.getColumn();
-		tblclmnLabel.setWidth(100);
-		tblclmnLabel.setText("Label");
-
-		tableViewerColumnLanguage = new TableViewerColumn(tableViewer,
-				SWT.NONE);
-		tblclmnLanguage = tableViewerColumnLanguage.getColumn();
-		tblclmnLanguage.setWidth(100);
-		tblclmnLanguage.setText("Language");
-
-		tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		tblclmnIsoCode = tableViewerColumn.getColumn();
+		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
+		tableViewerColumnIsoCode
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
-		composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
+		tblclmnLabel.setWidth(394);
+		tblclmnLabel.setText("Label");
+		tableViewerColumnLabel
+				.setEditingSupport(new HreTypeLabelEditingSupport(tableViewer));
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
+
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		composite.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
 
-		buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
+		final Button btnUpdate = new Button(composite, SWT.NONE);
+		btnUpdate.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
+			public void mouseDown(MouseEvent e) {
+				updateEventType();
 			}
 		});
-		buttonSelect.setText("Select");
+		btnUpdate.setText("Update");
 
-		buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
-			}
-		});
-		buttonInsert.setText("Insert");
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			provider.get();
+			tableViewer.setInput(dp.getStringList(EventTypePid));
+		} catch (final SQLException | MvpException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 
-		buttonUpdate = new Button(composite, SWT.NONE);
-		buttonUpdate.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				update();
-			}
-		});
-		buttonUpdate.setText("Update");
-
-		buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
 	}
 
 	/**
 	 *
-	 */
-	protected void delete() {
-		try {
-			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE",
-					"Event Type " + textId.getText() + " has been deleted");
-			clear();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-		}
-	}
-
-	/**
-	 * The object is not needed anymore, but not yet destroyed
 	 */
 	@PreDestroy
 	public void dispose() {
@@ -258,35 +151,29 @@ public class EventTypeView {
 	/**
 	 *
 	 */
-	private void get() {
-		final int key = Integer.parseInt(textId.getText());
-		get(key);
+	@Focus
+	public void setFocus() {
 	}
 
 	/**
-	 * @param key
+	 * @param EventTypePid
 	 */
-	private void get(int key) {
+	@Inject
+	@Optional
+	private void subscribeEventTypePidUpdateTopic(
+			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int EventTypePid) {
+		LOGGER.fine("Received person id " + EventTypePid);
+		this.EventTypePid = EventTypePid;
+
 		try {
-			provider.get(key);
-			textId.setText(Integer.toString(key));
-			textLabel.setText(provider.getLabel());
+			provider.get(EventTypePid);
+//			textAbbreviation.setText(provider.getAbbreviation());
+			textEventTypePid
+					.setText(Integer.toString(provider.getEventTypePid()));
 
-			table.removeAll();
-			TableItem item;
-
-			final List<List<String>> lls = provider.getNameList(key);
-
-			for (final List<String> list : lls) {
-				item = new TableItem(table, SWT.NONE);
-
-				for (int i = 0; i < list.size(); i++) {
-					item.setText(i, list.get(i));
-				}
-			}
-
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
+			tableViewer.setInput(dp.getStringList(EventTypePid));
+			tableViewer.refresh();
+		} catch (final SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -295,58 +182,55 @@ public class EventTypeView {
 	/**
 	 *
 	 */
-	protected void insert() {
+	@SuppressWarnings("unchecked")
+	protected void updateEventType() {
+//		if (textAbbreviation.getText().isEmpty()) {
+//			eventBroker.post("MESSAGE", "Abbreviation must not be empty");
+//			textAbbreviation.setFocus();
+//			return;
+//		}
+
 		try {
-			provider.setLabel(textLabel.getText());
-			provider.insert();
-			eventBroker.post("MESSAGE",
-					"Event Type " + textId.getText() + " has been inserted");
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-		}
-
-	}
-
-	/**
-	 *
-	 */
-	protected void openEventTypeNameView() {
-		// FIXME Create dialog
-
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
-	 * @param key
-	 */
-	@Inject
-	@Optional
-	private void subscribeEventTypePidUpdateTopic(
-			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int key) {
-		get(key);
-	}
-
-	/**
-	 *
-	 */
-	protected void update() {
-		try {
-			provider.setLabel(textLabel.getText());
+			provider.get(EventTypePid);
+//			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
-			eventBroker.post("MESSAGE",
-					"Event Type " + textId.getText() + " has been inserted");
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
+
+			dp = new DictionaryProvider();
+			List<List<String>> stringList = dp.getStringList(EventTypePid);
+
+			List<List<String>> input = (List<List<String>>) tableViewer
+					.getInput();
+
+			for (int i = 0; i < input.size(); i++) {
+				for (List<String> existingElement : stringList) {
+					LOGGER.fine(input.get(i).get(0) + " "
+							+ existingElement.get(0) + " " + input.get(i).get(1)
+							+ " " + existingElement.get(1));
+
+					if (input.get(i).get(0).equals(existingElement.get(0))) {
+						if ((input.get(i).get(1)
+								.equals(existingElement.get(1)) == false)) {
+							dp = new DictionaryProvider();
+							dp.setDictionaryPid(
+									Integer.parseInt(existingElement.get(2)));
+							dp.setIsoCode(input.get(i).get(0));
+							dp.setLabel(input.get(i).get(1));
+							dp.setLabelPid(provider.getLabelPid());
+							dp.update();
+							LOGGER.info("Updated dictionary element "
+									+ input.get(i).get(2) + ", "
+									+ input.get(i).get(0) + ", "
+									+ input.get(i).get(1));
+						}
+						break;
+					}
+				}
+			}
+
+		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
 		}
 
 	}
-
 }

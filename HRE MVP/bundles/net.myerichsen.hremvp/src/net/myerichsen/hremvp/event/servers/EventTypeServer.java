@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Languages;
@@ -14,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 22. feb. 2019
  *
  */
 public class EventTypeServer implements IHREServer {
@@ -22,8 +23,6 @@ public class EventTypeServer implements IHREServer {
 	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int EventTypePid;
 	private int TableId;
-	private String Label;
-
 	private final EventTypes eventType;
 
 	/**
@@ -87,9 +86,43 @@ public class EventTypeServer implements IHREServer {
 	public void get(int key) throws SQLException, MvpException {
 		eventType.get(key);
 		setEventTypePid(eventType.getEventTypePid());
-		// FIXME
-		setLabel("eventType.getLabel()");
+		setLabelPid(eventType.getLabelPid());
 		setTableId(eventType.getTableId());
+	}
+
+	/**
+	 * @param labelPid
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getEventTypeList(int labelPid)
+			throws SQLException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+		String label;
+
+		final Dictionary dictionary = new Dictionary();
+		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+
+		final Languages language = new Languages();
+
+		for (final Languages l : language.get()) {
+			stringList = new ArrayList<>();
+			stringList.add(l.getIsocode());
+
+			label = "";
+
+			for (final Dictionary d : fkLabelPid) {
+				if (l.getIsocode().equals(d.getIsoCode())) {
+					label = d.getLabel();
+					break;
+				}
+			}
+
+			stringList.add(label);
+			lls.add(stringList);
+		}
+		return lls;
 	}
 
 	/**
@@ -100,10 +133,10 @@ public class EventTypeServer implements IHREServer {
 	}
 
 	/**
-	 * @return the label
+	 * @return
 	 */
-	public String getLabel() {
-		return Label;
+	public int getLabelPid() {
+		return eventType.getLabelPid();
 	}
 
 	/**
@@ -168,10 +201,9 @@ public class EventTypeServer implements IHREServer {
 	}
 
 	/**
-	 * @param label the label to set
+	 * @param labelPid the labelPid to set
 	 */
-	public void setLabel(String label) {
-		Label = label;
+	public void setLabelPid(int labelPid) {
 	}
 
 	/**

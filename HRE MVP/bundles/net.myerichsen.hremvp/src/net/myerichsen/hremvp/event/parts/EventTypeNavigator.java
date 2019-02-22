@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.event.wizards.NewEventTypeWizard;
  * Display all personEvent types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. feb. 2019
+ * @version 22. feb. 2019
  *
  */
 public class EventTypeNavigator {

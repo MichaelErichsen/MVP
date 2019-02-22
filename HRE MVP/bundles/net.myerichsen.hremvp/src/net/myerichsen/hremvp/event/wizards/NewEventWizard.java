@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
  * @version 19. jan. 2019
  *
  */
-// FIXME Create
+// FIXME Label Pid must be unique across types using the dictionary
 public class NewEventWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);

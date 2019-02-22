@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a new personEvent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 22. feb. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -637,8 +637,8 @@ public class NewEventDialog extends TitleAreaDialog {
 		try {
 			final EventTypeProvider provider = new EventTypeProvider();
 			provider.get(Integer.parseInt(textEventStylePid.getText()));
-			final String styleLabel = provider.getLabel();
-			textEventStyleLabel.setText(styleLabel);
+//			final String styleLabel = provider.getLabel();
+//			textEventStyleLabel.setText(styleLabel);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());

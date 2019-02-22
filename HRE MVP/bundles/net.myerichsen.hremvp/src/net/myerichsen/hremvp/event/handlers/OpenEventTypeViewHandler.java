@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Name view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 22. feb. 2019
  *
  */
 public class OpenEventTypeViewHandler {

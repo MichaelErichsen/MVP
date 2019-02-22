@@ -8,6 +8,7 @@
             <children xsi:type="basic:Part" xmi:id="_UduHwBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.projectnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectNavigator" label="Projects"/>
             <children xsi:type="basic:Part" xmi:id="_xxk-MDTrEemOOs3bT9vLww" elementId="net.myerichsen.hremvp.part.languages" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LanguageNavigator" label="Languages"/>
             <children xsi:type="basic:Part" xmi:id="_05nHUDUFEem8BOgG02KwDA" elementId="net.myerichsen.hremvp.part.sextypes" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.SexTypeNavigator" label="Sex Types"/>
+            <children xsi:type="basic:Part" xmi:id="_hl_-IPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.part.eventtypenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeNavigator" label="Event Types" tooltip="Event Types"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_m_sw4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partsashcontainer.0" containerData="900">
             <children xsi:type="basic:PartStack" xmi:id="_owicYLAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.2" containerData="8000" accessibilityPhrase="">
@@ -81,7 +82,6 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_llPiQO1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partsashcontainer.7" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_382WQO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partstack.12" containerData="380">
             <children xsi:type="basic:Part" xmi:id="_4kOfUO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventNavigator" label="Event Navigator" tooltip="Event Navigator"/>
-            <children xsi:type="basic:Part" xmi:id="_hl_-IPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.part.eventtypenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeNavigator" label="Event Type Navigator" tooltip="Event Type Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_ZF310P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.8" containerData="900">
             <children xsi:type="basic:PartSashContainer" xmi:id="_a1w0MP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.9" horizontal="true">
@@ -93,9 +93,6 @@
               </children>
             </children>
             <children xsi:type="basic:PartSashContainer" xmi:id="_cCshYP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.10" horizontal="true">
-              <children xsi:type="basic:PartStack" xmi:id="_gBrxYP06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partstack.13">
-                <children xsi:type="basic:Part" xmi:id="_u3OXYP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.eventtypes" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeView" label="Event Types"/>
-              </children>
               <children xsi:type="basic:PartStack" xmi:id="_1YIfoP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partstack.15">
                 <children xsi:type="basic:Part" xmi:id="_l1eU8P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.locationsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventLocationView" label="Locations in Event"/>
               </children>

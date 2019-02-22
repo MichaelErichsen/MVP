@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.project.wizards;
+package net.myerichsen.hremvp.event.wizards;
 
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -18,23 +18,23 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
-import net.myerichsen.hremvp.project.providers.SexTypeProvider;
+import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Wizard page to define a new language for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 22. feb. 2019
  *
  */
-public class NewSexTypeWizardPage1 extends WizardPage {
+public class NewEventTypeWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
-	private final SexTypeProvider provider;
+	private EventTypeProvider provider;
 	private int labelPid;
 
 	/**
@@ -43,13 +43,19 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 	 * @param context
 	 * @throws SQLException
 	 */
-	public NewSexTypeWizardPage1(IEclipseContext context) throws SQLException {
-		super("New sex type wizard Page 1");
-		setTitle("Sex type");
-		setDescription("Add a sex type to this HRE project");
-		provider = new SexTypeProvider();
-		final int size = provider.get().size();
-		labelPid = size + 1;
+	public NewEventTypeWizardPage1(IEclipseContext context) {
+		super("New Event type wizard Page 1");
+		setTitle("Event type");
+		setDescription("Add a Event type to this HRE project");
+		try {
+			provider = new EventTypeProvider();
+			final int size = provider.get().size();
+			labelPid = size + 1;
+		} catch (Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	/*
@@ -98,7 +104,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getSexTypeList(labelPid));
+			tableViewer.setInput(provider.getEventTypeList(labelPid));
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
