@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. feb. 2019
+ * @version 22. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -250,7 +250,7 @@ public class SexTypeNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeSexTypeKeyUpdateTopic(
+	private void subscribeSexTypePidUpdateTopic(
 			@UIEventTopic(Constants.SEX_TYPE_PID_UPDATE_TOPIC) int sexTypePid) {
 		LOGGER.fine("Received sex type id " + sexTypePid);
 		this.sexTypePid = sexTypePid;

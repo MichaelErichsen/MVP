@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Dictionary;
  * {@link net.myerichsen.hremvp.dbmodels.Dictionary}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 22. feb. 2019
  *
  */
 public class DictionaryServer implements IHREServer {
@@ -69,6 +69,7 @@ public class DictionaryServer implements IHREServer {
 				stringList = new ArrayList<>();
 				stringList.add(d.getIsoCode());
 				stringList.add(d.getLabel());
+				stringList.add(Integer.toString(d.getDictionaryPid()));
 				lls.add(stringList);
 			}
 		}
@@ -152,8 +153,11 @@ public class DictionaryServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		dictionary.setDictionaryPid(DictionaryPid);
+		dictionary.setIsoCode(IsoCode);
+		dictionary.setLabel(Label);
+		dictionary.setLabelPid(LabelPid);
+		dictionary.update();
 	}
 
 	/*

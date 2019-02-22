@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
 import net.myerichsen.hremvp.MvpException;
@@ -15,19 +16,17 @@ import net.myerichsen.hremvp.project.providers.SexTypeProvider;
  * Wizard to add a sex type
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 22. feb. 2019
  *
  */
-// FIXME DOes not refresh navigator
 public class NewSexTypeWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
-//	private final IEventBroker eventBroker;
+	private final IEventBroker eventBroker;
 
 	private NewSexTypeWizardPage1 page1;
 	private SexTypeProvider provider;
-//	private int labelPid;
 
 	/**
 	 * Constructor
@@ -38,7 +37,7 @@ public class NewSexTypeWizard extends Wizard {
 		setWindowTitle("Add a sex type");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
-//		eventBroker = context.get(IEventBroker.class);
+		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/*
@@ -76,6 +75,7 @@ public class NewSexTypeWizard extends Wizard {
 
 				int sexTypePid = provider.insert();
 				LOGGER.info("Inserted sex type " + sexTypePid);
+				eventBroker.post("MESSAGE", "Inserted sex type " + sexTypePid);
 
 				int labelPid = provider.getLabelPid();
 
@@ -93,12 +93,15 @@ public class NewSexTypeWizard extends Wizard {
 							+ input.get(i).get(1));
 				}
 
+				eventBroker.post(
+						net.myerichsen.hremvp.Constants.SEX_TYPE_PID_UPDATE_TOPIC,
+						sexTypePid);
+				return true;
 			} catch (SQLException | MvpException e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}
-			;
-			return true;
+
 		}
 
 		return false;

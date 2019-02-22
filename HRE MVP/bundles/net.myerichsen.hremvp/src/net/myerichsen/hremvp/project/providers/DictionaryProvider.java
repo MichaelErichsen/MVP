@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.DictionaryServer;
  * Provide a dictionary entry
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 22. feb. 2019
  *
  */
 public class DictionaryProvider implements IHREProvider {
@@ -82,8 +82,11 @@ public class DictionaryProvider implements IHREProvider {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		server.setDictionaryPid(DictionaryPid);
+		server.setIsoCode(IsoCode);
+		server.setLabel(Label);
+		server.setLabelPid(LabelPid);
+		server.update();
 	}
 
 	/**
@@ -142,13 +145,15 @@ public class DictionaryProvider implements IHREProvider {
 		Label = label;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
