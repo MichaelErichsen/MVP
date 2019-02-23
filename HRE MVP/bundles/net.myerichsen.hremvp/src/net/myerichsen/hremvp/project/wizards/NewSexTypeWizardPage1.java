@@ -109,8 +109,8 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
 		tblclmnLabel.setWidth(394);
 		tblclmnLabel.setText("Label (Click to edit)");
-		tableViewerColumnLabel
-				.setEditingSupport(new HreTypeLabelEditingSupport(tableViewer));
+		tableViewerColumnLabel.setEditingSupport(
+				new HreTypeLabelEditingSupport(tableViewer, 1));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());

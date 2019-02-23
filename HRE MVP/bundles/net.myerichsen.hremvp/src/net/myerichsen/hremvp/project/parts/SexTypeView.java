@@ -108,8 +108,8 @@ public class SexTypeView {
 		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
 		tblclmnLabel.setWidth(394);
 		tblclmnLabel.setText("Label");
-		tableViewerColumnLabel
-				.setEditingSupport(new HreTypeLabelEditingSupport(tableViewer));
+		tableViewerColumnLabel.setEditingSupport(
+				new HreTypeLabelEditingSupport(tableViewer, 1));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final Composite composite = new Composite(parent, SWT.NONE);

@@ -11,21 +11,23 @@ import org.eclipse.jface.viewers.TextCellEditor;
  * Cell editor for the new sex type wizard
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class HreTypeLabelEditingSupport extends EditingSupport {
 	private final TableViewer viewer;
 	private final CellEditor editor;
+	private int column;
 
 	/**
 	 * Constructor
 	 *
 	 * @param viewer
 	 */
-	public HreTypeLabelEditingSupport(TableViewer viewer) {
+	public HreTypeLabelEditingSupport(TableViewer viewer, int column) {
 		super(viewer);
 		this.viewer = viewer;
+		this.column = column;
 		editor = new TextCellEditor(viewer.getTable());
 	}
 
@@ -58,7 +60,7 @@ public class HreTypeLabelEditingSupport extends EditingSupport {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Object getValue(Object element) {
-		return ((List<String>) element).get(1);
+		return ((List<String>) element).get(column);
 	}
 
 	/*
@@ -70,7 +72,7 @@ public class HreTypeLabelEditingSupport extends EditingSupport {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
-		((List<String>) element).set(1, String.valueOf(userInputValue));
+		((List<String>) element).set(column, String.valueOf(userInputValue));
 		viewer.update(element, null);
 	}
 }
