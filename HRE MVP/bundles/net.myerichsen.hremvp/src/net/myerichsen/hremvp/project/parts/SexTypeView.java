@@ -51,6 +51,7 @@ public class SexTypeView {
 	private IEventBroker eventBroker;
 
 	private Text textSexTypePid;
+	private Text textLabelPid;
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final SexTypeProvider provider;
@@ -64,7 +65,6 @@ public class SexTypeView {
 	 */
 	public SexTypeView() {
 		provider = new SexTypeProvider();
-		dp = new DictionaryProvider();
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class SexTypeView {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
+		parent.setLayout(new GridLayout(4, false));
 
 		final Label lblSexTypeId = new Label(parent, SWT.NONE);
 		lblSexTypeId.setText("Sex type id");
@@ -82,18 +82,42 @@ public class SexTypeView {
 		textSexTypePid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
+		final Label lblLabelPid = new Label(parent, SWT.NONE);
+		lblLabelPid.setText("Label id");
+
+		textLabelPid = new Text(parent, SWT.BORDER);
+		textLabelPid.setEditable(false);
+		textLabelPid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		final Label lblAbbreviation = new Label(parent, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");
 
 		textAbbreviation = new Text(parent, SWT.BORDER);
 		textAbbreviation.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
+
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
+		tblclmnId.setWidth(80);
+		tblclmnId.setText("Event Type Id");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+
+		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnILabelId = tableViewerColumnLabelId
+				.getColumn();
+		tblclmnILabelId.setWidth(80);
+		tblclmnILabelId.setText("Dictionary label Id");
+		tableViewerColumnLabelId
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -101,7 +125,7 @@ public class SexTypeView {
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
 		tableViewerColumnIsoCode
-				.setLabelProvider(new HREColumnLabelProvider(0));
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -109,13 +133,13 @@ public class SexTypeView {
 		tblclmnLabel.setWidth(394);
 		tblclmnLabel.setText("Label");
 		tableViewerColumnLabel.setEditingSupport(
-				new HreTypeLabelEditingSupport(tableViewer, 1));
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
+				new HreTypeLabelEditingSupport(tableViewer, 3));
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 		composite.setLayoutData(
-				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 4, 1));
 
 		final Button btnUpdate = new Button(composite, SWT.NONE);
 		btnUpdate.addMouseListener(new MouseAdapter() {
@@ -132,13 +156,11 @@ public class SexTypeView {
 			}
 		});
 		btnUpdate.setText("Update");
-
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			provider.get();
-			// FIXME Should be label pid
-			tableViewer.setInput(dp.getStringList(sexTypePid));
-		} catch (final SQLException | MvpException e1) {
+			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewer.setInput(provider.getSexTypeList(labelPid));
+		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -160,22 +182,21 @@ public class SexTypeView {
 	}
 
 	/**
-	 * @param labelPidString
+	 * @param labelPid
 	 */
 	@Inject
 	@Optional
 	private void subscribeLabelPidUpdateTopic(
-			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) String labelPidString) {
-		LOGGER.fine("Received label pid " + labelPidString);
-		labelPid = Integer.parseInt(labelPidString);
+			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
+		sexTypePid = Integer.parseInt(ls.get(0));
+		textSexTypePid.setText(ls.get(0));
+		labelPid = Integer.parseInt(ls.get(1));
+		textLabelPid.setText(ls.get(1));
+		textAbbreviation.setText(ls.get(2));
+		LOGGER.info("Received label id " + labelPid);
 
 		try {
-			List<List<String>> sexTypeList = provider.getSexTypeList(labelPid);
-			textAbbreviation.setText(sexTypeList.get(0).get(2));
-			textSexTypePid.setText(sexTypeList.get(0).get(0));
-
-			tableViewer.setInput(sexTypeList);
-			tableViewer.refresh();
+			tableViewer.setInput(provider.getSexTypeList(labelPid));
 		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -194,46 +215,55 @@ public class SexTypeView {
 		}
 
 		try {
+			List<List<String>> eventTypeList = provider
+					.getSexTypeList(labelPid);
+
+			sexTypePid = Integer.parseInt(eventTypeList.get(0).get(0));
+			labelPid = Integer.parseInt(eventTypeList.get(0).get(1));
+
 			provider.get(sexTypePid);
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
+			LOGGER.info("Sex pid " + sexTypePid + " has been updated");
 
 			dp = new DictionaryProvider();
-			List<List<String>> stringList = dp.getStringList(sexTypePid);
+			List<List<String>> stringList = dp.getStringList(labelPid);
 
 			List<List<String>> input = (List<List<String>>) tableViewer
 					.getInput();
 
 			for (int i = 0; i < input.size(); i++) {
 				for (List<String> existingElement : stringList) {
-					LOGGER.fine(input.get(i).get(0) + " "
-							+ existingElement.get(0) + " " + input.get(i).get(1)
-							+ " " + existingElement.get(1));
+					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
+							+ " - " + existingElement.get(0) + ", "
+							+ existingElement.get(1) + ", "
+							+ existingElement.get(2));
 
-					if (input.get(i).get(0).equals(existingElement.get(0))) {
-						if ((input.get(i).get(1)
+					if (input.get(i).get(2).equals(existingElement.get(0))) {
+						if ((input.get(i).get(3)
 								.equals(existingElement.get(1)) == false)) {
 							dp = new DictionaryProvider();
 							dp.setDictionaryPid(
 									Integer.parseInt(existingElement.get(2)));
-							dp.setIsoCode(input.get(i).get(0));
-							dp.setLabel(input.get(i).get(1));
+							dp.setIsoCode(input.get(i).get(2));
+							dp.setLabel(input.get(i).get(3));
 							dp.setLabelPid(provider.getLabelPid());
 							dp.update();
 							LOGGER.info("Updated dictionary element "
-									+ input.get(i).get(2) + ", "
 									+ input.get(i).get(0) + ", "
-									+ input.get(i).get(1));
+									+ input.get(i).get(1) + ", "
+									+ input.get(i).get(2) + ", "
+									+ input.get(i).get(3));
 						}
 						break;
 					}
 				}
 			}
-
+			eventBroker.post("MESSAGE",
+					"Sex type " + sexTypePid + " has been updated");
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 }

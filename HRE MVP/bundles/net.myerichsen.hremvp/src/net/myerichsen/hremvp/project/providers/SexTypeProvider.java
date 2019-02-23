@@ -186,6 +186,7 @@ public class SexTypeProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param labelPid
 	 * @return stringList A list of lists of pid, abbreviation and label in the
 	 *         active language
 	 * @throws SQLException

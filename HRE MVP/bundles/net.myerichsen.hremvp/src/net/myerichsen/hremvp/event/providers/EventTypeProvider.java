@@ -23,8 +23,6 @@ public class EventTypeProvider implements IHREProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
 	 */
 	public EventTypeProvider() {
 		server = new EventTypeServer();
@@ -100,7 +98,8 @@ public class EventTypeProvider implements IHREProvider {
 
 	/**
 	 * @param labelPid
-	 * @return
+	 * @return stringList A list of lists of pid, abbreviation and label in the
+	 *         active language
 	 * @throws SQLException
 	 */
 	public List<List<String>> getEventTypeList(int labelPid)

@@ -64,14 +64,7 @@ public class EventTypeView {
 	 *
 	 */
 	public EventTypeView() {
-		try {
-			provider = new EventTypeProvider();
-//			dp = new DictionaryProvider();
-		} catch (Exception e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
-
+		provider = new EventTypeProvider();
 	}
 
 	/**
@@ -273,6 +266,5 @@ public class EventTypeView {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 }

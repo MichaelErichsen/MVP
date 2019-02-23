@@ -232,11 +232,27 @@ public class SexTypeServer implements IHREServer {
 
 	/**
 	 * @param labelPid
-	 * @return stringList A list of lists of Isocodes and NLS labels
+	 * @param abbreviation
+	 * @return stringList A list of lists of sex type pids, label pids, iso
+	 *         codes and generic labels
 	 * @throws SQLException
 	 */
 	public List<List<String>> getSexTypeList(int labelPid) throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (labelPid == 0) {
+			return lls;
+		}
+
+		String sexTypePidString = "";
+		List<SexTypes> list = sexType.get();
+
+		for (SexTypes sexTypes : list) {
+			if (sexTypes.getLabelPid() == labelPid) {
+				sexTypePidString = Integer.toString(sexTypes.getSexTypePid());
+			}
+		}
+
 		List<String> stringList;
 		String label = "";
 
@@ -247,6 +263,8 @@ public class SexTypeServer implements IHREServer {
 
 		for (final Languages l : language.get()) {
 			stringList = new ArrayList<>();
+			stringList.add(sexTypePidString);
+			stringList.add(Integer.toString(labelPid));
 			stringList.add(l.getIsocode());
 
 			for (final Dictionary d : fkLabelPid) {

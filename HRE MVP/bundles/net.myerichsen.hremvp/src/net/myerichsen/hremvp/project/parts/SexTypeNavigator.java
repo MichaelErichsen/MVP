@@ -1,6 +1,8 @@
 package net.myerichsen.hremvp.project.parts;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -64,6 +66,7 @@ public class SexTypeNavigator {
 	private SexTypeProvider provider;
 	private TableViewer tableViewer;
 	private int sexTypePid = 0;
+	private int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -108,7 +111,15 @@ public class SexTypeNavigator {
 		final TableColumn tblclmnSexTypeId = tableViewerColumnId.getColumn();
 		tblclmnSexTypeId.setWidth(40);
 		tblclmnSexTypeId.setText("Sex Type ID");
-		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+
+		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLabelId = tableViewerColumnLabelId.getColumn();
+		tblclmnLabelId.setWidth(80);
+		tblclmnLabelId.setText("Dictionary Label ID");
+		tableViewerColumnLabelId
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnAbbrev = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -204,7 +215,6 @@ public class SexTypeNavigator {
 			LOGGER.info("Sex type " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Sex type " + primaryName + " has been deleted");
-			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -231,10 +241,15 @@ public class SexTypeNavigator {
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
 			sexTypePid = Integer.parseInt(selectedRow.getText(0));
-		}
+			List<String> ls = new ArrayList<>();
+			ls.add(selectedRow.getText(0));
+			ls.add(selectedRow.getText(1));
+			ls.add(selectedRow.getText(2));
 
-		LOGGER.info("Setting sex type pid: " + sexTypePid);
-		eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
+			// FIXME Labelpid
+			LOGGER.info("Setting label pid: " + labelPid);
+			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
+		}
 	}
 
 	/**
@@ -257,8 +272,6 @@ public class SexTypeNavigator {
 
 		if (sexTypePid > 0) {
 			try {
-//				provider.get(sexTypePid);
-//				int labelPid = provider.getLabelPid();
 				tableViewer.setInput(provider.getSexTypeList());
 				tableViewer.refresh();
 

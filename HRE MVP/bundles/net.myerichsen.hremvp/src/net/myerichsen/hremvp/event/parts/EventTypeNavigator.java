@@ -243,6 +243,7 @@ public class EventTypeNavigator {
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
 
+			// FIXME Labelpid
 			LOGGER.info("Setting label pid: " + labelPid);
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
