@@ -22,10 +22,9 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. jan. 2019
+ * @version 23. feb. 2019
  *
  */
-// FIXME Label Pid must be unique across types using the dictionary
 public class NewEventWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);

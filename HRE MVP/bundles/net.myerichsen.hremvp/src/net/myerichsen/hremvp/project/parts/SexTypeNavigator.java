@@ -43,10 +43,10 @@ import net.myerichsen.hremvp.project.wizards.NewSexTypeWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all data for a sex type
+ * Display all sex types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -106,9 +106,9 @@ public class SexTypeNavigator {
 		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnSexTypeId = tableViewerColumnId.getColumn();
-		tblclmnSexTypeId.setWidth(100);
+		tblclmnSexTypeId.setWidth(40);
 		tblclmnSexTypeId.setText("Sex Type ID");
-		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnAbbrev = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -116,15 +116,15 @@ public class SexTypeNavigator {
 				.getColumn();
 		tblclmnAbbreviation.setWidth(100);
 		tblclmnAbbreviation.setText("Abbreviation");
-		tableViewerColumnAbbrev.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnAbbrev.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnLabelInEnglish = tableViewerColumnLabel
 				.getColumn();
 		tblclmnLabelInEnglish.setWidth(100);
-		tblclmnLabelInEnglish.setText("Label in English");
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(2));
+		tblclmnLabelInEnglish.setText("Sex Type");
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);

@@ -9,6 +9,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -31,14 +32,13 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
-import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display a Event type with all national labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 
@@ -47,14 +47,15 @@ public class EventTypeView {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
-//	private IEventBroker eventBroker;
+	private IEventBroker eventBroker;
 
 	private Text textEventTypePid;
-//	private Text textAbbreviation;
+	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private EventTypeProvider provider;
-	private DictionaryProvider dp;
-	private int EventTypePid = 0;
+//	private DictionaryProvider dp;
+//	private int eventTypePid = 0;
+	private int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -63,7 +64,7 @@ public class EventTypeView {
 	public EventTypeView() {
 		try {
 			provider = new EventTypeProvider();
-			dp = new DictionaryProvider();
+//			dp = new DictionaryProvider();
 		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -86,12 +87,12 @@ public class EventTypeView {
 		textEventTypePid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-//		final Label lblAbbreviation = new Label(parent, SWT.NONE);
-//		lblAbbreviation.setText("Abbreviation");
-//
-//		textAbbreviation = new Text(parent, SWT.BORDER);
-//		textAbbreviation.setLayoutData(
-//				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		final Label lblAbbreviation = new Label(parent, SWT.NONE);
+		lblAbbreviation.setText("Abbreviation");
+
+		textAbbreviation = new Text(parent, SWT.BORDER);
+		textAbbreviation.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
@@ -99,22 +100,38 @@ public class EventTypeView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("Event Type Id");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+
+		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnILabelId = tableViewerColumnLabelId
+				.getColumn();
+		tblclmnILabelId.setWidth(100);
+		tblclmnILabelId.setText("Dictionary label Id");
+		tableViewerColumnLabelId
+				.setLabelProvider(new HREColumnLabelProvider(1));
+
 		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
-		tblclmnIsoCode.setWidth(100);
+		tblclmnIsoCode.setWidth(394);
 		tblclmnIsoCode.setText("ISO Code");
 		tableViewerColumnIsoCode
-				.setLabelProvider(new HREColumnLabelProvider(0));
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
 		tblclmnLabel.setWidth(394);
-		tblclmnLabel.setText("Label");
+		tblclmnLabel.setText("Event label");
 		tableViewerColumnLabel
 				.setEditingSupport(new HreTypeLabelEditingSupport(tableViewer));
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -123,6 +140,13 @@ public class EventTypeView {
 
 		final Button btnUpdate = new Button(composite, SWT.NONE);
 		btnUpdate.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateEventType();
@@ -133,7 +157,7 @@ public class EventTypeView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			provider.get();
-			tableViewer.setInput(dp.getStringList(EventTypePid));
+			tableViewer.setInput(provider.getEventTypeList(labelPid));
 		} catch (final SQLException | MvpException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -156,24 +180,21 @@ public class EventTypeView {
 	}
 
 	/**
-	 * @param EventTypePid
+	 * @param labelPid
 	 */
 	@Inject
 	@Optional
-	private void subscribeEventTypePidUpdateTopic(
-			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int EventTypePid) {
-		LOGGER.fine("Received person id " + EventTypePid);
-		this.EventTypePid = EventTypePid;
+	private void subscribeLabelPidUpdateTopic(
+			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
+//		eventTypePid = Integer.parseInt(ls.get(0));
+		textEventTypePid.setText(ls.get(0));
+		labelPid = Integer.parseInt(ls.get(1));
+		textAbbreviation.setText(ls.get(2));
+		LOGGER.info("Received label id " + labelPid);
 
 		try {
-			provider.get(EventTypePid);
-//			textAbbreviation.setText(provider.getAbbreviation());
-			textEventTypePid
-					.setText(Integer.toString(provider.getEventTypePid()));
-
-			tableViewer.setInput(dp.getStringList(EventTypePid));
-			tableViewer.refresh();
-		} catch (final SQLException | MvpException e) {
+			tableViewer.setInput(provider.getEventTypeList(labelPid));
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -182,55 +203,58 @@ public class EventTypeView {
 	/**
 	 *
 	 */
-	@SuppressWarnings("unchecked")
 	protected void updateEventType() {
-//		if (textAbbreviation.getText().isEmpty()) {
-//			eventBroker.post("MESSAGE", "Abbreviation must not be empty");
-//			textAbbreviation.setFocus();
-//			return;
-//		}
-
-		try {
-			provider.get(EventTypePid);
-//			provider.setAbbreviation(textAbbreviation.getText());
-			provider.update();
-
-			dp = new DictionaryProvider();
-			List<List<String>> stringList = dp.getStringList(EventTypePid);
-
-			List<List<String>> input = (List<List<String>>) tableViewer
-					.getInput();
-
-			for (int i = 0; i < input.size(); i++) {
-				for (List<String> existingElement : stringList) {
-					LOGGER.fine(input.get(i).get(0) + " "
-							+ existingElement.get(0) + " " + input.get(i).get(1)
-							+ " " + existingElement.get(1));
-
-					if (input.get(i).get(0).equals(existingElement.get(0))) {
-						if ((input.get(i).get(1)
-								.equals(existingElement.get(1)) == false)) {
-							dp = new DictionaryProvider();
-							dp.setDictionaryPid(
-									Integer.parseInt(existingElement.get(2)));
-							dp.setIsoCode(input.get(i).get(0));
-							dp.setLabel(input.get(i).get(1));
-							dp.setLabelPid(provider.getLabelPid());
-							dp.update();
-							LOGGER.info("Updated dictionary element "
-									+ input.get(i).get(2) + ", "
-									+ input.get(i).get(0) + ", "
-									+ input.get(i).get(1));
-						}
-						break;
-					}
-				}
-			}
-
-		} catch (SQLException | MvpException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+		LOGGER.info("Not implemented yet...");
+		if (textAbbreviation.getText().isEmpty()) {
+			eventBroker.post("MESSAGE", "Abbreviation must not be empty");
+			textAbbreviation.setFocus();
+			return;
 		}
+//
+//		try {
+//			List<List<String>> eventTypeList = provider
+//					.getEventTypeList(labelPid);
+//			
+//			provider.get(Integer.parseInt(eventTypeList.get(0));
+//			provider.setAbbreviation(textAbbreviation.getText());
+//			provider.update();
+//
+//			dp = new DictionaryProvider();
+//			List<List<String>> stringList = dp.getStringList(EventTypePid);
+//
+//			List<List<String>> input = (List<List<String>>) tableViewer
+//					.getInput();
+//
+//			for (int i = 0; i < input.size(); i++) {
+//				for (List<String> existingElement : stringList) {
+//					LOGGER.fine(input.get(i).get(0) + " "
+//							+ existingElement.get(0) + " " + input.get(i).get(1)
+//							+ " " + existingElement.get(1));
+//
+//					if (input.get(i).get(0).equals(existingElement.get(0))) {
+//						if ((input.get(i).get(1)
+//								.equals(existingElement.get(1)) == false)) {
+//							dp = new DictionaryProvider();
+//							dp.setDictionaryPid(
+//									Integer.parseInt(existingElement.get(2)));
+//							dp.setIsoCode(input.get(i).get(0));
+//							dp.setLabel(input.get(i).get(1));
+//							dp.setLabelPid(provider.getLabelPid());
+//							dp.update();
+//							LOGGER.info("Updated dictionary element "
+//									+ input.get(i).get(2) + ", "
+//									+ input.get(i).get(0) + ", "
+//									+ input.get(i).get(1));
+//						}
+//						break;
+//					}
+//				}
+//			}
+//
+//		} catch (SQLException | MvpException e) {
+//			LOGGER.severe(e.getMessage());
+//			e.printStackTrace();
+//		}
 
 	}
 }

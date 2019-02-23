@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a sex type with all national labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 
@@ -56,6 +56,7 @@ public class SexTypeView {
 	private final SexTypeProvider provider;
 	private DictionaryProvider dp;
 	private int sexTypePid = 0;
+	private int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -118,6 +119,13 @@ public class SexTypeView {
 
 		final Button btnUpdate = new Button(composite, SWT.NONE);
 		btnUpdate.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateSexType();
@@ -128,6 +136,7 @@ public class SexTypeView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			provider.get();
+			// FIXME Should be label pid
 			tableViewer.setInput(dp.getStringList(sexTypePid));
 		} catch (final SQLException | MvpException e1) {
 			LOGGER.severe(e1.getMessage());
@@ -151,23 +160,23 @@ public class SexTypeView {
 	}
 
 	/**
-	 * @param sexTypePid
+	 * @param labelPidString
 	 */
 	@Inject
 	@Optional
-	private void subscribeSexTypePidUpdateTopic(
-			@UIEventTopic(Constants.SEX_TYPE_PID_UPDATE_TOPIC) int sexTypePid) {
-		LOGGER.fine("Received person id " + sexTypePid);
-		this.sexTypePid = sexTypePid;
+	private void subscribeLabelPidUpdateTopic(
+			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) String labelPidString) {
+		LOGGER.fine("Received label pid " + labelPidString);
+		labelPid = Integer.parseInt(labelPidString);
 
 		try {
-			provider.get(sexTypePid);
-			textAbbreviation.setText(provider.getAbbreviation());
-			textSexTypePid.setText(Integer.toString(provider.getSexTypePid()));
+			List<List<String>> sexTypeList = provider.getSexTypeList(labelPid);
+			textAbbreviation.setText(sexTypeList.get(0).get(2));
+			textSexTypePid.setText(sexTypeList.get(0).get(0));
 
-			tableViewer.setInput(dp.getStringList(sexTypePid));
+			tableViewer.setInput(sexTypeList);
 			tableViewer.refresh();
-		} catch (final SQLException | MvpException e) {
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

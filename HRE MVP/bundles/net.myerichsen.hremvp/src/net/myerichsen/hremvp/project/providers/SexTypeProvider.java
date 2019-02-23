@@ -28,7 +28,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
-import net.myerichsen.hremvp.person.servers.SexTypeServer;
+import net.myerichsen.hremvp.project.servers.SexTypeServer;
 
 /**
  * Provide all data for a sex type

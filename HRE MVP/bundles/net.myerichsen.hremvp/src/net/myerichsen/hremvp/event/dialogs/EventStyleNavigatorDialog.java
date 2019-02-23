@@ -25,10 +25,10 @@ import org.eclipse.swt.widgets.TableItem;
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 
 /**
- * Display all Event types
+ * Display all event types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. jan. 2019
+ * @version 23. feb. 2019
  *
  */
 public class EventStyleNavigatorDialog extends TitleAreaDialog {
@@ -119,7 +119,8 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 		tblclmnHistoricalEvent.setText("Event");
 
 		try {
-			final List<List<String>> EventTypeList = provider.get();
+			final List<List<String>> EventTypeList = provider
+					.getEventTypeList();
 			table.removeAll();
 
 			for (int i = 0; i < EventTypeList.size(); i++) {

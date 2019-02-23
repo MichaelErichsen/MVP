@@ -11,13 +11,13 @@ import net.myerichsen.hremvp.event.servers.EventTypeServer;
  * Provides all data for an personEvent type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class EventTypeProvider implements IHREProvider {
 	private int EventTypePid;
+	private String Abbreviation;
 	private int TableId;
-	private int LabelPid;
 	private final EventTypeServer server;
 
 	/**
@@ -26,7 +26,7 @@ public class EventTypeProvider implements IHREProvider {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public EventTypeProvider() throws Exception {
+	public EventTypeProvider() {
 		server = new EventTypeServer();
 	}
 
@@ -43,17 +43,28 @@ public class EventTypeProvider implements IHREProvider {
 		server.delete(key);
 	}
 
-	/**
-	 * Get all rows
+//	/**
+//	 * Get all rows
+//	 *
+//	 * @return A list of lists of strings with pids and labels
+//	 * @throws SQLException An exception that provides information on a database
+//	 *                      access error or other errors
+//	 * @throws MvpException Application specific exception
+//	 */
+//	@Override
+//	public List<List<String>> get() throws SQLException, MvpException {
+//		return server.get();
+//	}
+
+	/*
+	 * (non-Javadoc)
 	 *
-	 * @return A list of lists of strings with pids and labels
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
+	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
 	@Override
-	public List<List<String>> get() throws SQLException, MvpException {
-		return server.get();
+	public List<?> get() throws SQLException, MvpException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -68,8 +79,23 @@ public class EventTypeProvider implements IHREProvider {
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
 		setEventTypePid(server.getEventTypePid());
-		setLabelPid(server.getLabelPid());
-		setTableId(server.getTableId());
+		setAbbreviation(server.getAbbreviation());
+	}
+
+	/**
+	 * @return the abbreviation
+	 */
+	public String getAbbreviation() {
+		return Abbreviation;
+	}
+
+	/**
+	 * @return stringList A list of lists of event type pids, label pids,
+	 *         abbreviations and generic labels
+	 * @throws SQLException
+	 */
+	public List<List<String>> getEventTypeList() throws SQLException {
+		return server.getEventTypeList();
 	}
 
 	/**
@@ -81,6 +107,17 @@ public class EventTypeProvider implements IHREProvider {
 			throws SQLException {
 		return server.getEventTypeList(labelPid);
 	}
+
+//	/**
+//	 * @param key
+//	 * @return
+//	 * @throws MvpException
+//	 * @throws SQLException
+//	 */
+//	public List<List<String>> getNameList(int key)
+//			throws SQLException, MvpException {
+//		return server.getNameList(key);
+//	}
 
 	/**
 	 * @return the eventTypePid
@@ -94,17 +131,6 @@ public class EventTypeProvider implements IHREProvider {
 	 */
 	public int getLabelPid() {
 		return server.getLabelPid();
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws MvpException
-	 * @throws SQLException
-	 */
-	public List<List<String>> getNameList(int key)
-			throws SQLException, MvpException {
-		return server.getNameList(key);
 	}
 
 	/**
@@ -125,9 +151,15 @@ public class EventTypeProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		server.setEventTypePid(EventTypePid);
-		server.setLabelPid(LabelPid);
+		server.setAbbreviation(Abbreviation);
 		return server.insert();
+	}
+
+	/**
+	 * @param abbreviation
+	 */
+	public void setAbbreviation(String abbreviation) {
+		Abbreviation = abbreviation;
 	}
 
 	/**
@@ -160,7 +192,7 @@ public class EventTypeProvider implements IHREProvider {
 	@Override
 	public void update() throws SQLException, MvpException {
 		server.setEventTypePid(EventTypePid);
-		server.setLabelPid(LabelPid);
+		server.setAbbreviation(Abbreviation);
 		server.update();
 	}
 

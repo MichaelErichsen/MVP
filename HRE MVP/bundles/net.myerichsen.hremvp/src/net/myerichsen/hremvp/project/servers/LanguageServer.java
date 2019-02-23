@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class LanguageServer implements IHREServer {
@@ -158,8 +158,7 @@ public class LanguageServer implements IHREServer {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		language.get();
 	}
 
 	/*
@@ -169,7 +168,10 @@ public class LanguageServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
+		language.setLanguagePid(LanguagePid);
+		language.setIsocode(Isocode);
+		language.setLabel(Label);
+		language.update();
 
 	}
 

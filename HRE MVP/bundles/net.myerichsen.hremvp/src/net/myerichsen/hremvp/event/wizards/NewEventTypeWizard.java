@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.project.providers.DictionaryProvider;
  * Wizard to add a event type
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class NewEventTypeWizard extends Wizard {
@@ -34,7 +34,7 @@ public class NewEventTypeWizard extends Wizard {
 	 * @param context
 	 */
 	public NewEventTypeWizard(int eventTypePid, IEclipseContext context) {
-		setWindowTitle("Add a event type");
+		setWindowTitle("Add an event type");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
@@ -66,6 +66,7 @@ public class NewEventTypeWizard extends Wizard {
 		if (abbreviation.equals("") == false) {
 			try {
 				provider = new EventTypeProvider();
+				provider.setAbbreviation(abbreviation);
 
 				int eventTypePid = provider.insert();
 				LOGGER.info("Inserted event type " + eventTypePid);

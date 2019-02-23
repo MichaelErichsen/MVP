@@ -190,6 +190,8 @@ public class Dictionary {
 	}
 
 	/**
+	 * Returns the next label pid, but dows not create it
+	 * 
 	 * @return
 	 * @throws SQLException
 	 */

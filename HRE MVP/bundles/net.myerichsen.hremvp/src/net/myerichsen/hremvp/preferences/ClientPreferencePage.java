@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.project.providers.LanguageProvider;
  * Preference page for client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -117,10 +117,16 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 			e.printStackTrace();
 		}
 
-		// FIXME Should also be populated from database table
+		// TODO Populate from database table
 		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE",
 				"Default Person Name Style",
 				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } },
+				getFieldEditorParent()));
+
+		// TODO Populate from database table
+		addField(new ComboFieldEditor(
+				"id", "Default Location Name Style", new String[][] {
+						{ "name_1", "value_1" }, { "name_2", "value_2" } },
 				getFieldEditorParent()));
 	}
 

@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.project.providers.SexTypeProvider;
  * Wizard to add a sex type
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class NewSexTypeWizard extends Wizard {
@@ -48,12 +48,7 @@ public class NewSexTypeWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		try {
-			page1 = new NewSexTypeWizardPage1(context);
-		} catch (SQLException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
+		page1 = new NewSexTypeWizardPage1(context);
 		addPage(page1);
 	}
 

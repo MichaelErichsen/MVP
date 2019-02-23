@@ -14,26 +14,24 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENT_TYPES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 
 public class EventTypes {
 	private static final String SELECT = "SELECT EVENT_TYPE_PID, "
-			+ "TABLE_ID, "
+			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
-	private static final String SELECT_LABEL_PID = "SELECT "
-			+ "EVENT_TYPE_PID, TABLE_ID, "
-			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES WHERE LABEL_PID = ? ORDER BY EVENT_TYPE_PID";
 	private static final String SELECTALL = "SELECT EVENT_TYPE_PID, "
-			+ "TABLE_ID, "
+			+ "ABBREVIATION, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES ORDER BY EVENT_TYPE_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_TYPE_PID) FROM PUBLIC.EVENT_TYPES";
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_TYPES( "
-			+ "EVENT_TYPE_PID, TABLE_ID, LABEL_PID) VALUES (?, ?, ?)";
-
+			+ "EVENT_TYPE_PID, ABBREVIATION, TABLE_ID, "
+			+ "LABEL_PID) VALUES (?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.EVENT_TYPES SET "
-			+ "TABLE_ID = ?, LABEL_PID = ? WHERE EVENT_TYPE_PID = ?";
+			+ "ABBREVIATION = ?, TABLE_ID = ?, "
+			+ "LABEL_PID = ? WHERE EVENT_TYPE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
 
@@ -48,6 +46,7 @@ public class EventTypes {
 	private Connection conn;
 
 	private int EventTypePid;
+	private String Abbreviation;
 	private int TableId;
 	private int LabelPid;
 	private EventTypes model;
@@ -78,6 +77,7 @@ public class EventTypes {
 		while (rs.next()) {
 			model = new EventTypes();
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
+			model.setAbbreviation(rs.getString("ABBREVIATION"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
@@ -93,6 +93,7 @@ public class EventTypes {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
+			setAbbreviation(rs.getString("ABBREVIATION"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
@@ -102,29 +103,21 @@ public class EventTypes {
 	}
 
 	/**
+	 * Get the Abbreviation field.
+	 *
+	 * @return Contents of the ABBREVIATION column
+	 */
+	public String getAbbreviation() {
+		return Abbreviation;
+	}
+
+	/**
 	 * Get the EventTypePid field.
 	 *
 	 * @return Contents of the EVENT_TYPE_PID column
 	 */
 	public int getEventTypePid() {
 		return EventTypePid;
-	}
-
-	public List<EventTypes> getFKLabelPid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LABEL_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new EventTypes();
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabelPid(rs.getInt("LABEL_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
 	}
 
 	/**
@@ -157,11 +150,21 @@ public class EventTypes {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getTableId());
-		ps.setInt(3, getLabelPid());
+		ps.setString(2, getAbbreviation());
+		ps.setInt(3, getTableId());
+		ps.setInt(4, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
+	}
+
+	/**
+	 * Set the Abbreviation field
+	 *
+	 * @param Abbreviation Contents of the ABBREVIATION column
+	 */
+	public void setAbbreviation(String Abbreviation) {
+		this.Abbreviation = Abbreviation;
 	}
 
 	/**
@@ -194,9 +197,10 @@ public class EventTypes {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTableId());
-		ps.setInt(2, getLabelPid());
-		ps.setInt(3, getEventTypePid());
+		ps.setString(1, getAbbreviation());
+		ps.setInt(2, getTableId());
+		ps.setInt(3, getLabelPid());
+		ps.setInt(4, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();
 	}

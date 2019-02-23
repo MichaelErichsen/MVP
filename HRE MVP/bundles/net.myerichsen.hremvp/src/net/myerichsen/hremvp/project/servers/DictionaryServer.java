@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Dictionary;
  * {@link net.myerichsen.hremvp.dbmodels.Dictionary}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class DictionaryServer implements IHREServer {
@@ -39,8 +39,7 @@ public class DictionaryServer implements IHREServer {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		dictionary.delete(key);
 	}
 
 	/*
@@ -58,23 +57,9 @@ public class DictionaryServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
-	public List<List<String>> getStringList(int key)
-			throws SQLException, MvpException {
-		List<List<String>> lls = new ArrayList<List<String>>();
-		List<String> stringList;
-
-		if (key > 0) {
-			List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(key);
-			for (Dictionary d : fkLabelPid) {
-				stringList = new ArrayList<>();
-				stringList.add(d.getIsoCode());
-				stringList.add(d.getLabel());
-				stringList.add(Integer.toString(d.getDictionaryPid()));
-				lls.add(stringList);
-			}
-		}
-		return lls;
-
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		dictionary.get();
 	}
 
 	/**
@@ -103,6 +88,38 @@ public class DictionaryServer implements IHREServer {
 	 */
 	public int getLabelPid() {
 		return LabelPid;
+	}
+
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getNextLabelPid() throws SQLException {
+		return dictionary.getNextLabelPid();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#get(int)
+	 */
+	public List<List<String>> getStringList(int key)
+			throws SQLException, MvpException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		if (key > 0) {
+			final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(key);
+			for (final Dictionary d : fkLabelPid) {
+				stringList = new ArrayList<>();
+				stringList.add(d.getIsoCode());
+				stringList.add(d.getLabel());
+				stringList.add(Integer.toString(d.getDictionaryPid()));
+				lls.add(stringList);
+			}
+		}
+		return lls;
+
 	}
 
 	/*
@@ -158,17 +175,6 @@ public class DictionaryServer implements IHREServer {
 		dictionary.setLabel(Label);
 		dictionary.setLabelPid(LabelPid);
 		dictionary.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
 	}
 
 }

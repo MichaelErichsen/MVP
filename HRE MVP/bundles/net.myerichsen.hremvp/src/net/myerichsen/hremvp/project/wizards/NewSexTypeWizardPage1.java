@@ -18,23 +18,26 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
+import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Wizard page to define a new language for HRE
+ * Wizard page to define a new sex type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class NewSexTypeWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	private Text textLabelPid;
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
-	private final SexTypeProvider provider;
+	private SexTypeProvider provider;
+	private DictionaryProvider dp;
 	private int labelPid;
 
 	/**
@@ -43,13 +46,18 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 	 * @param context
 	 * @throws SQLException
 	 */
-	public NewSexTypeWizardPage1(IEclipseContext context) throws SQLException {
+	public NewSexTypeWizardPage1(IEclipseContext context) {
 		super("New sex type wizard Page 1");
 		setTitle("Sex type");
 		setDescription("Add a sex type to this HRE project");
-		provider = new SexTypeProvider();
-		final int size = provider.get().size();
-		labelPid = size + 1;
+		try {
+			provider = new SexTypeProvider();
+			dp = new DictionaryProvider();
+			labelPid = dp.getNextLabelPid();
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -64,6 +72,15 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
+
+		final Label lblLabelPid = new Label(container, SWT.NONE);
+		lblLabelPid.setText("New event type label pid");
+
+		textLabelPid = new Text(container, SWT.BORDER);
+		textLabelPid.setEditable(false);
+		textLabelPid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textLabelPid.setText(Integer.toString(labelPid));
 
 		final Label lblAbbreviation = new Label(container, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");

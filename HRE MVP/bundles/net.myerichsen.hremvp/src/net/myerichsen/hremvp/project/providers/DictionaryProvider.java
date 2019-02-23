@@ -9,9 +9,9 @@ import net.myerichsen.hremvp.project.servers.DictionaryServer;
 
 /**
  * Provide a dictionary entry
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class DictionaryProvider implements IHREProvider {
@@ -20,7 +20,7 @@ public class DictionaryProvider implements IHREProvider {
 	private String IsoCode;
 	private String Label;
 
-	private DictionaryServer server;
+	private final DictionaryServer server;
 
 	/**
 	 * Constructor
@@ -32,18 +32,17 @@ public class DictionaryProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		server.delete(key);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
 	@Override
@@ -53,40 +52,12 @@ public class DictionaryProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
-	public List<List<String>> getStringList(int key)
-			throws SQLException, MvpException {
-		return server.getStringList(key);
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#insert()
-	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
-		server.setIsoCode(IsoCode);
-		server.setLabel(Label);
-		server.setLabelPid(LabelPid);
-		return server.insert();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#update()
-	 */
-	@Override
-	public void update() throws SQLException, MvpException {
-		server.setDictionaryPid(DictionaryPid);
-		server.setIsoCode(IsoCode);
-		server.setLabel(Label);
-		server.setLabelPid(LabelPid);
-		server.update();
+	public void get(int key) throws SQLException, MvpException {
+		server.get();
 	}
 
 	/**
@@ -97,38 +68,10 @@ public class DictionaryProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param dictionaryPid the dictionaryPid to set
-	 */
-	public void setDictionaryPid(int dictionaryPid) {
-		DictionaryPid = dictionaryPid;
-	}
-
-	/**
-	 * @return the labelPid
-	 */
-	public int getLabelPid() {
-		return LabelPid;
-	}
-
-	/**
-	 * @param labelPid the labelPid to set
-	 */
-	public void setLabelPid(int labelPid) {
-		LabelPid = labelPid;
-	}
-
-	/**
 	 * @return the isoCode
 	 */
 	public String getIsoCode() {
 		return IsoCode;
-	}
-
-	/**
-	 * @param isoCode the isoCode to set
-	 */
-	public void setIsoCode(String isoCode) {
-		IsoCode = isoCode;
 	}
 
 	/**
@@ -139,21 +82,84 @@ public class DictionaryProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return the labelPid
+	 */
+	public int getLabelPid() {
+		return LabelPid;
+	}
+
+	/**
+	 * @throws SQLException
+	 *
+	 */
+	public int getNextLabelPid() throws SQLException {
+		return server.getNextLabelPid();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	public List<List<String>> getStringList(int key)
+			throws SQLException, MvpException {
+		return server.getStringList(key);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#insert()
+	 */
+	@Override
+	public int insert() throws SQLException, MvpException {
+		server.setIsoCode(IsoCode);
+		server.setLabel(Label);
+		server.setLabelPid(LabelPid);
+		return server.insert();
+	}
+
+	/**
+	 * @param dictionaryPid the dictionaryPid to set
+	 */
+	public void setDictionaryPid(int dictionaryPid) {
+		DictionaryPid = dictionaryPid;
+	}
+
+	/**
+	 * @param isoCode the isoCode to set
+	 */
+	public void setIsoCode(String isoCode) {
+		IsoCode = isoCode;
+	}
+
+	/**
 	 * @param label the label to set
 	 */
 	public void setLabel(String label) {
 		Label = label;
 	}
 
+	/**
+	 * @param labelPid the labelPid to set
+	 */
+	public void setLabelPid(int labelPid) {
+		LabelPid = labelPid;
+	}
+
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+	public void update() throws SQLException, MvpException {
+		server.setDictionaryPid(DictionaryPid);
+		server.setIsoCode(IsoCode);
+		server.setLabel(Label);
+		server.setLabelPid(LabelPid);
+		server.update();
 	}
 
 }

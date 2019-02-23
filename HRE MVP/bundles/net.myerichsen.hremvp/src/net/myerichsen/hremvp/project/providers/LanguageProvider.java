@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.LanguageServer;
  * Provide a language
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class LanguageProvider implements IHREProvider {
@@ -58,8 +58,7 @@ public class LanguageProvider implements IHREProvider {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		server.get();
 	}
 
 	/**
@@ -145,8 +144,10 @@ public class LanguageProvider implements IHREProvider {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		server.setLanguagePid(LanguagePid);
+		server.setIsocode(Isocode);
+		server.setLabel(Label);
+		server.update();
 	}
 
 }

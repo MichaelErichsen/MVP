@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.person.servers;
+package net.myerichsen.hremvp.project.servers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
@@ -42,10 +42,9 @@ public class SexTypeServer implements IHREServer {
 	private String label;
 	private int languagePid;
 	private String languageLabel;
-	private String isoCode;
+	private final int TableId = 23;
 
 	private final SexTypes sexType;
-	private final Dictionary dictionary;
 
 	/**
 	 * Constructor
@@ -53,7 +52,6 @@ public class SexTypeServer implements IHREServer {
 	 */
 	public SexTypeServer() {
 		sexType = new SexTypes();
-		dictionary = new Dictionary();
 	}
 
 	/**
@@ -85,6 +83,7 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
+	 * Get all rows
 	 *
 	 * @return
 	 * @throws SQLException
@@ -109,16 +108,16 @@ public class SexTypeServer implements IHREServer {
 		setSexTypePid(sexType.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
 
-		final List<Dictionary> fkIsoCode = dictionary
-				.getFKIsoCode(store.getString("GUILANGUAGE"));
-		String label = "";
-
-		for (final Dictionary dict : fkIsoCode) {
-			if (key == dict.getLabelPid()) {
-				label = dict.getLabel();
-			}
-		}
-		setLabel(label);
+//		final List<Dictionary> fkIsoCode = dictionary
+//				.getFKIsoCode(store.getString("GUILANGUAGE"));
+//		String label = "";
+//
+//		for (final Dictionary dict : fkIsoCode) {
+//			if (key == dict.getLabelPid()) {
+//				label = dict.getLabel();
+//			}
+//		}
+//		setLabel(label);
 	}
 
 	/**
@@ -126,13 +125,6 @@ public class SexTypeServer implements IHREServer {
 	 */
 	public String getAbbreviation() {
 		return abbreviation;
-	}
-
-	/**
-	 * @return the isoCode
-	 */
-	public String getIsoCode() {
-		return isoCode;
 	}
 
 	/**
@@ -195,7 +187,7 @@ public class SexTypeServer implements IHREServer {
 		js.key("languageLabel");
 		js.value(languageLabel);
 		js.key("isoCode");
-		js.value(isoCode);
+//		js.value(isoCode);
 		js.endObject();
 		return js.toString();
 	}
@@ -221,6 +213,7 @@ public class SexTypeServer implements IHREServer {
 		for (final SexTypes st : list) {
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(st.getSexTypePid()));
+			stringList.add(Integer.toString(st.getLabelPid()));
 			stringList.add(st.getAbbreviation());
 
 			fkLabelPid = dictionary.getFKLabelPid(st.getLabelPid());
@@ -238,24 +231,23 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
+	 * @param labelPid
 	 * @return stringList A list of lists of Isocodes and NLS labels
 	 * @throws SQLException
 	 */
 	public List<List<String>> getSexTypeList(int labelPid) throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
-		String label;
+		String label = "";
 
 		final Dictionary dictionary = new Dictionary();
 		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
 
-		Languages language = new Languages();
+		final Languages language = new Languages();
 
-		for (Languages l : language.get()) {
+		for (final Languages l : language.get()) {
 			stringList = new ArrayList<>();
 			stringList.add(l.getIsocode());
-
-			label = "";
 
 			for (final Dictionary d : fkLabelPid) {
 				if (l.getIsocode().equals(d.getIsoCode())) {
@@ -285,16 +277,15 @@ public class SexTypeServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		Dictionary dictionary = new Dictionary();
-		int labelPid = dictionary.getNextLabelPid();
 		sexType.setAbbreviation(abbreviation);
-		sexType.setLabelPid(labelPid);
-		sexType.setTableId(23);
+		final Dictionary dictionary = new Dictionary();
+		sexType.setLabelPid(dictionary.getNextLabelPid());
+		sexType.setTableId(TableId);
 		return sexType.insert();
 	}
 
 	/**
-	 * Insert a row
+	 * Insert a row remotely
 	 *
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
@@ -329,13 +320,6 @@ public class SexTypeServer implements IHREServer {
 	 */
 	public void setAbbreviation(String abbreviation) {
 		this.abbreviation = abbreviation;
-	}
-
-	/**
-	 * @param isoCode the isoCode to set
-	 */
-	public void setIsoCode(String isoCode) {
-		this.isoCode = isoCode;
 	}
 
 	/**
@@ -377,6 +361,7 @@ public class SexTypeServer implements IHREServer {
 	public void update() throws SQLException, MvpException {
 		sexType.setSexTypePid(sexTypePid);
 		sexType.setAbbreviation(abbreviation);
+		sexType.setTableId(TableId);
 		sexType.update();
 	}
 

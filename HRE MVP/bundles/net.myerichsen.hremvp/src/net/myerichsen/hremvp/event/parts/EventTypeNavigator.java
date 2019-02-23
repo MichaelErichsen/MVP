@@ -1,5 +1,7 @@
 package net.myerichsen.hremvp.event.parts;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -7,18 +9,16 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
@@ -38,51 +38,49 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 import net.myerichsen.hremvp.event.wizards.NewEventTypeWizard;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all personEvent types
+ * Display all event types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
+@SuppressWarnings("restriction")
 public class EventTypeNavigator {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	@Inject
-	private EPartService partService;
+	private ECommandService commandService;
 	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
+	private EHandlerService handlerService;
 	@Inject
 	private IEventBroker eventBroker;
 
 	private EventTypeProvider provider;
 	private TableViewer tableViewer;
-	private int eventTypePid;
+	private int eventTypePid = 0;
+	private int labelPid = 0;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public EventTypeNavigator() {
-		try {
-			provider = new EventTypeProvider();
-		} catch (final Exception e) {
-			e.printStackTrace();
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-		}
+		provider = new EventTypeProvider();
 	}
 
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent      The parent composite
-	 * @param menuService The Eclipse menu service
+	 * @param parent  The parent composite
+	 * @param context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -91,6 +89,13 @@ public class EventTypeNavigator {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events.MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openEventTypeView();
@@ -100,23 +105,47 @@ public class EventTypeNavigator {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumn.getColumn();
-		tblclmnId.setWidth(40);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
+		tblclmnId.setWidth(80);
 		tblclmnId.setText("Event Type ID");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnEventType = tableViewerColumn_1.getColumn();
-		tblclmnEventType.setWidth(230);
-		tblclmnEventType.setText("Event Type");
+		final TableColumn tblclmnLabelId = tableViewerColumnLabelId.getColumn();
+		tblclmnLabelId.setWidth(80);
+		tblclmnLabelId.setText("Dictionary Label ID");
+		tableViewerColumnLabelId
+				.setLabelProvider(new HREColumnLabelProvider(1));
+
+		final TableViewerColumn tableViewerColumnAbbrev = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnAbbreviation = tableViewerColumnAbbrev
+				.getColumn();
+		tblclmnAbbreviation.setWidth(100);
+		tblclmnAbbreviation.setText("Abbreviation");
+		tableViewerColumnAbbrev.setLabelProvider(new HREColumnLabelProvider(2));
+
+		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
+		tblclmnLabel.setWidth(100);
+		tblclmnLabel.setText("Event Type");
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
 		final MenuItem mntmAddEventType = new MenuItem(menu, SWT.NONE);
 		mntmAddEventType.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
@@ -128,6 +157,12 @@ public class EventTypeNavigator {
 
 		final MenuItem mntmDeleteSelectedEvent = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedEvent.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				deleteEventType(parent.getShell());
@@ -135,30 +170,12 @@ public class EventTypeNavigator {
 		});
 		mntmDeleteSelectedEvent.setText("Delete selected event type...");
 
-		// TODO Change to Jface
-		List<String> stringList;
-
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			final List<List<String>> lls = provider.get();
-			table.removeAll();
-			TableItem item;
-
-			for (int i = 0; i < lls.size(); i++) {
-				stringList = lls.get(i);
-
-				if (stringList.get(1).trim().length() > 0) {
-
-					item = new TableItem(table, SWT.NONE);
-
-					for (int j = 0; j < stringList.size(); j++) {
-						item.setText(j, stringList.get(j).trim());
-					}
-				}
-			}
-		} catch (final Exception e1) {
-			e1.printStackTrace();
-			eventBroker.post("MESSAGE", e1.getMessage());
+			tableViewer.setInput(provider.getEventTypeList());
+		} catch (SQLException e1) {
 			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 	}
 
@@ -212,49 +229,24 @@ public class EventTypeNavigator {
 	 *
 	 */
 	protected void openEventTypeView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventTypeView";
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		boolean found = false;
-
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-				if (part.getContributionURI().equals(contributionURI)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					found = true;
-					break;
-				}
-			}
-		}
-
-		if (!found) {
-			part.setLabel("Event Type View");
-			part.setCloseable(true);
-			part.setVisible(true);
-			part.setContributionURI(contributionURI);
-			stacks.get(stacks.size() - 2).getChildren().add(part);
-			partService.showPart(part, PartState.ACTIVATE);
-		}
-
-		int eventTypePid = 0;
+		final ParameterizedCommand command = commandService.createCommand(
+				"net.myerichsen.hremvp.command.openeventtypeview", null);
+		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
 			eventTypePid = Integer.parseInt(selectedRow.getText(0));
+			List<String> ls = new ArrayList<>();
+			ls.add(selectedRow.getText(0));
+			ls.add(selectedRow.getText(1));
+			ls.add(selectedRow.getText(2));
+
+			LOGGER.info("Setting label pid: " + labelPid);
+			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 
-		eventBroker.post(
-				net.myerichsen.hremvp.Constants.EVENT_TYPE_PID_UPDATE_TOPIC,
-				eventTypePid);
-		LOGGER.info("Event Type Pid: " + eventTypePid);
 	}
 
 	/**
@@ -262,5 +254,37 @@ public class EventTypeNavigator {
 	 */
 	@Focus
 	public void setFocus() {
+	}
+
+	/**
+	 * @param key
+	 * @throws MvpException
+	 */
+	@Inject
+	@Optional
+	private void subscribeEventTypePidUpdateTopic(
+			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int eventTypePid) {
+		LOGGER.fine("Received event type id " + eventTypePid);
+		this.eventTypePid = eventTypePid;
+
+		if (eventTypePid > 0) {
+			try {
+				tableViewer.setInput(provider.getEventTypeList());
+				tableViewer.refresh();
+
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(eventTypePid);
+
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
+				}
+			} catch (SQLException e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
+			}
+		}
 	}
 }

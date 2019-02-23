@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Name view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. feb. 2019
+ * @version 23. feb. 2019
  *
  */
 public class OpenEventTypeViewHandler {
@@ -34,12 +34,12 @@ public class OpenEventTypeViewHandler {
 				null, MPartStack.class, null);
 		final MPart part = MBasicFactory.INSTANCE.createPart();
 
-		part.setLabel("Sex Type");
+		part.setLabel("Event Type");
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(contributionURI);
-		stacks.get(stacks.size() - 2).getChildren().add(part);
+		stacks.get(1).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 	}
 

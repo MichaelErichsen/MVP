@@ -300,7 +300,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 	 * @return
 	 */
 	public int getEventPid() {
-// FIXME
+// TODO
 		return 0;
 	}
 
