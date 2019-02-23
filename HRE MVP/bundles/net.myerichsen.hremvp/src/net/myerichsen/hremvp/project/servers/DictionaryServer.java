@@ -21,6 +21,7 @@ public class DictionaryServer implements IHREServer {
 	private int LabelPid;
 	private String IsoCode;
 	private String Label;
+	private int TableId = 6;
 
 	private final Dictionary dictionary;
 
@@ -132,6 +133,7 @@ public class DictionaryServer implements IHREServer {
 		dictionary.setIsoCode(IsoCode);
 		dictionary.setLabel(Label);
 		dictionary.setLabelPid(LabelPid);
+		dictionary.setTableId(TableId);
 		return dictionary.insert();
 	}
 
