@@ -168,9 +168,9 @@ public class EventTypeServer implements IHREServer {
 		}
 
 		String eventTypePidString = "";
-		List<EventTypes> list = eventType.get();
+		final List<EventTypes> list = eventType.get();
 
-		for (EventTypes eventTypes : list) {
+		for (final EventTypes eventTypes : list) {
 			if (eventTypes.getLabelPid() == labelPid) {
 				eventTypePidString = Integer
 						.toString(eventTypes.getEventTypePid());

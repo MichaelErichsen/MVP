@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.project.providers.LanguageProvider;
 
 /**
  * Wizard to add a language for HRE
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 20. feb. 2019
  *
@@ -52,20 +52,20 @@ public class NewLanguageWizard extends Wizard {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@Override
 	public boolean performFinish() {
-		String isoCode = page1.getTextIsoCode().getText();
-		String label = page1.getTextLabel().getText();
+		final String isoCode = page1.getTextIsoCode().getText();
+		final String label = page1.getTextLabel().getText();
 
 		if ((isoCode.equals("") == false) && (label.equals("") == false)) {
 			provider = new LanguageProvider();
 			provider.setIsocode(isoCode);
 			provider.setLabel(label);
 			try {
-				int languagePid = provider.insert();
+				final int languagePid = provider.insert();
 				LOGGER.info(
 						"Inserted language pid " + languagePid + ", " + label);
 				eventBroker.post("MESSAGE",

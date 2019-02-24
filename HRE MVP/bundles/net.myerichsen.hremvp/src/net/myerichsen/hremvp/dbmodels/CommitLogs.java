@@ -15,38 +15,38 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the COMMIT_LOGS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class CommitLogs {
 	private static final String SELECT = "SELECT COMMIT_LOG_PID, "
-			+ "TABLE_PID, CHANGED_TABLE_PID, CHANGED_RECORD_PID, "
+			+ "CHANGED_TABLE_ID, CHANGED_RECORD_PID, "
 			+ "CHANGED_TIMESTAMP, USERID_PID, COLUMN_NAME_LIST, "
-			+ "COLUMN_DATA_LIST, "
+			+ "COLUMN_DATA_LIST, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.COMMIT_LOGS WHERE COMMIT_LOG_PID = ?";
 	private static final String SELECT_USERID_PID = "SELECT "
-			+ "COMMIT_LOG_PID, TABLE_PID, CHANGED_TABLE_PID, "
-			+ "CHANGED_RECORD_PID, CHANGED_TIMESTAMP, USERID_PID, "
-			+ "COLUMN_NAME_LIST, COLUMN_DATA_LIST, "
+			+ "COMMIT_LOG_PID, CHANGED_TABLE_ID, CHANGED_RECORD_PID, "
+			+ "CHANGED_TIMESTAMP, USERID_PID, COLUMN_NAME_LIST, "
+			+ "COLUMN_DATA_LIST, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.COMMIT_LOGS WHERE USERID_PID = ? ORDER BY COMMIT_LOG_PID";
 	private static final String SELECTALL = "SELECT COMMIT_LOG_PID, "
-			+ "TABLE_PID, CHANGED_TABLE_PID, CHANGED_RECORD_PID, "
+			+ "CHANGED_TABLE_ID, CHANGED_RECORD_PID, "
 			+ "CHANGED_TIMESTAMP, USERID_PID, COLUMN_NAME_LIST, "
-			+ "COLUMN_DATA_LIST, "
+			+ "COLUMN_DATA_LIST, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.COMMIT_LOGS ORDER BY COMMIT_LOG_PID";
 	private static final String SELECTMAX = "SELECT MAX(COMMIT_LOG_PID) FROM PUBLIC.COMMIT_LOGS";
 	private static final String INSERT = "INSERT INTO PUBLIC.COMMIT_LOGS( "
-			+ "COMMIT_LOG_PID, TABLE_PID, CHANGED_TABLE_PID, "
-			+ "CHANGED_RECORD_PID, CHANGED_TIMESTAMP, USERID_PID, "
-			+ "COLUMN_NAME_LIST, COLUMN_DATA_LIST, TABLE_ID) VALUES ("
-			+ "?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "COMMIT_LOG_PID, CHANGED_TABLE_ID, CHANGED_RECORD_PID, "
+			+ "CHANGED_TIMESTAMP, USERID_PID, COLUMN_NAME_LIST, "
+			+ "COLUMN_DATA_LIST, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.COMMIT_LOGS SET "
-			+ "TABLE_PID = ?, CHANGED_TABLE_PID = ?, "
-			+ "CHANGED_RECORD_PID = ?, CHANGED_TIMESTAMP = ?, "
-			+ "USERID_PID = ?, COLUMN_NAME_LIST = ?, "
-			+ "COLUMN_DATA_LIST = ?, "
+			+ "CHANGED_TABLE_ID = ?, CHANGED_RECORD_PID = ?, "
+			+ "CHANGED_TIMESTAMP = ?, USERID_PID = ?, "
+			+ "COLUMN_NAME_LIST = ?, COLUMN_DATA_LIST = ?, "
+			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
 			+ "TABLE_ID = ? WHERE COMMIT_LOG_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.COMMIT_LOGS WHERE COMMIT_LOG_PID = ?";
@@ -62,13 +62,14 @@ public class CommitLogs {
 	private Connection conn;
 
 	private int CommitLogPid;
-	private int TablePid;
-	private int ChangedTablePid;
+	private int ChangedTableId;
 	private int ChangedRecordPid;
 	private Timestamp ChangedTimestamp;
 	private int UseridPid;
 	private String ColumnNameList;
 	private String ColumnDataList;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private CommitLogs model;
 
@@ -98,13 +99,14 @@ public class CommitLogs {
 		while (rs.next()) {
 			model = new CommitLogs();
 			model.setCommitLogPid(rs.getInt("COMMIT_LOG_PID"));
-			model.setTablePid(rs.getInt("TABLE_PID"));
-			model.setChangedTablePid(rs.getInt("CHANGED_TABLE_PID"));
+			model.setChangedTableId(rs.getInt("CHANGED_TABLE_ID"));
 			model.setChangedRecordPid(rs.getInt("CHANGED_RECORD_PID"));
 			model.setChangedTimestamp(rs.getTimestamp("CHANGED_TIMESTAMP"));
 			model.setUseridPid(rs.getInt("USERID_PID"));
 			model.setColumnNameList(rs.getString("COLUMN_NAME_LIST"));
 			model.setColumnDataList(rs.getString("COLUMN_DATA_LIST"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -119,13 +121,14 @@ public class CommitLogs {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setCommitLogPid(rs.getInt("COMMIT_LOG_PID"));
-			setTablePid(rs.getInt("TABLE_PID"));
-			setChangedTablePid(rs.getInt("CHANGED_TABLE_PID"));
+			setChangedTableId(rs.getInt("CHANGED_TABLE_ID"));
 			setChangedRecordPid(rs.getInt("CHANGED_RECORD_PID"));
 			setChangedTimestamp(rs.getTimestamp("CHANGED_TIMESTAMP"));
 			setUseridPid(rs.getInt("USERID_PID"));
 			setColumnNameList(rs.getString("COLUMN_NAME_LIST"));
 			setColumnDataList(rs.getString("COLUMN_DATA_LIST"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -143,12 +146,12 @@ public class CommitLogs {
 	}
 
 	/**
-	 * Get the ChangedTablePid field.
+	 * Get the ChangedTableId field.
 	 *
-	 * @return Contents of the CHANGED_TABLE_PID column
+	 * @return Contents of the CHANGED_TABLE_ID column
 	 */
-	public int getChangedTablePid() {
-		return ChangedTablePid;
+	public int getChangedTableId() {
+		return ChangedTableId;
 	}
 
 	/**
@@ -196,18 +199,28 @@ public class CommitLogs {
 		while (rs.next()) {
 			model = new CommitLogs();
 			model.setCommitLogPid(rs.getInt("COMMIT_LOG_PID"));
-			model.setTablePid(rs.getInt("TABLE_PID"));
-			model.setChangedTablePid(rs.getInt("CHANGED_TABLE_PID"));
+			model.setChangedTableId(rs.getInt("CHANGED_TABLE_ID"));
 			model.setChangedRecordPid(rs.getInt("CHANGED_RECORD_PID"));
 			model.setChangedTimestamp(rs.getTimestamp("CHANGED_TIMESTAMP"));
 			model.setUseridPid(rs.getInt("USERID_PID"));
 			model.setColumnNameList(rs.getString("COLUMN_NAME_LIST"));
 			model.setColumnDataList(rs.getString("COLUMN_DATA_LIST"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -220,12 +233,12 @@ public class CommitLogs {
 	}
 
 	/**
-	 * Get the TablePid field.
+	 * Get the UpdateTstmp field.
 	 *
-	 * @return Contents of the TABLE_PID column
+	 * @return Contents of the UPDATE_TSTMP column
 	 */
-	public int getTablePid() {
-		return TablePid;
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
 	}
 
 	/**
@@ -249,14 +262,15 @@ public class CommitLogs {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getTablePid());
-		ps.setInt(3, getChangedTablePid());
-		ps.setInt(4, getChangedRecordPid());
-		ps.setTimestamp(5, getChangedTimestamp());
-		ps.setInt(6, getUseridPid());
-		ps.setString(7, getColumnNameList());
-		ps.setString(8, getColumnDataList());
-		ps.setInt(9, getTableId());
+		ps.setInt(2, getChangedTableId());
+		ps.setInt(3, getChangedRecordPid());
+		ps.setTimestamp(4, getChangedTimestamp());
+		ps.setInt(5, getUseridPid());
+		ps.setString(6, getColumnNameList());
+		ps.setString(7, getColumnDataList());
+		ps.setTimestamp(8, getInsertTstmp());
+		ps.setTimestamp(9, getUpdateTstmp());
+		ps.setInt(10, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -272,12 +286,12 @@ public class CommitLogs {
 	}
 
 	/**
-	 * Set the ChangedTablePid field
+	 * Set the ChangedTableId field
 	 *
-	 * @param ChangedTablePid Contents of the CHANGED_TABLE_PID column
+	 * @param ChangedTableId Contents of the CHANGED_TABLE_ID column
 	 */
-	public void setChangedTablePid(int ChangedTablePid) {
-		this.ChangedTablePid = ChangedTablePid;
+	public void setChangedTableId(int ChangedTableId) {
+		this.ChangedTableId = ChangedTableId;
 	}
 
 	/**
@@ -317,6 +331,15 @@ public class CommitLogs {
 	}
 
 	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
+	}
+
+	/**
 	 * Set the TableId field
 	 *
 	 * @param TableId Contents of the TABLE_ID column
@@ -326,12 +349,12 @@ public class CommitLogs {
 	}
 
 	/**
-	 * Set the TablePid field
+	 * Set the UpdateTstmp field
 	 *
-	 * @param TablePid Contents of the TABLE_PID column
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
 	 */
-	public void setTablePid(int TablePid) {
-		this.TablePid = TablePid;
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
 	}
 
 	/**
@@ -346,15 +369,16 @@ public class CommitLogs {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTablePid());
-		ps.setInt(2, getChangedTablePid());
-		ps.setInt(3, getChangedRecordPid());
-		ps.setTimestamp(4, getChangedTimestamp());
-		ps.setInt(5, getUseridPid());
-		ps.setString(6, getColumnNameList());
-		ps.setString(7, getColumnDataList());
-		ps.setInt(8, getTableId());
-		ps.setInt(9, getCommitLogPid());
+		ps.setInt(1, getChangedTableId());
+		ps.setInt(2, getChangedRecordPid());
+		ps.setTimestamp(3, getChangedTimestamp());
+		ps.setInt(4, getUseridPid());
+		ps.setString(5, getColumnNameList());
+		ps.setString(6, getColumnDataList());
+		ps.setTimestamp(7, getInsertTstmp());
+		ps.setTimestamp(8, getUpdateTstmp());
+		ps.setInt(9, getTableId());
+		ps.setInt(10, getCommitLogPid());
 		ps.executeUpdate();
 		conn.close();
 	}

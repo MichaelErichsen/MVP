@@ -174,7 +174,7 @@ public class LanguageNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getLanguageList());
-		} catch (SQLException e1) {
+		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -224,14 +224,14 @@ public class LanguageNavigator {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@PreDestroy
 	public void dispose() {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Focus
 	public void setFocus() {
@@ -260,7 +260,7 @@ public class LanguageNavigator {
 					}
 				}
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

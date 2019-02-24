@@ -9,7 +9,8 @@ import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 
 /**
- * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
+ * Business logic interface for
+ * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 19. feb. 2019

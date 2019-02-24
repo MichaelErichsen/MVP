@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,31 +15,35 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSONS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class Persons {
 	private static final String SELECT = "SELECT PERSON_PID, "
-			+ "TABLE_ID, BIRTH_DATE_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS WHERE PERSON_PID = ?";
 	private static final String SELECT_BIRTH_DATE_PID = "SELECT "
-			+ "PERSON_PID, TABLE_ID, BIRTH_DATE_PID, "
+			+ "PERSON_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS WHERE BIRTH_DATE_PID = ? ORDER BY PERSON_PID";
 	private static final String SELECT_DEATH_DATE_PID = "SELECT "
-			+ "PERSON_PID, TABLE_ID, BIRTH_DATE_PID, "
+			+ "PERSON_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS WHERE DEATH_DATE_PID = ? ORDER BY PERSON_PID";
 	private static final String SELECTALL = "SELECT PERSON_PID, "
-			+ "TABLE_ID, BIRTH_DATE_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, BIRTH_DATE_PID, "
 			+ "DEATH_DATE_PID FROM PUBLIC.PERSONS ORDER BY PERSON_PID";
 	private static final String SELECTMAX = "SELECT MAX(PERSON_PID) FROM PUBLIC.PERSONS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSONS( "
-			+ "PERSON_PID, TABLE_ID, BIRTH_DATE_PID, "
-			+ "DEATH_DATE_PID) VALUES (?, ?, ?, ?)";
+			+ "PERSON_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, BIRTH_DATE_PID, DEATH_DATE_PID) VALUES ("
+			+ "?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSONS SET "
-			+ "TABLE_ID = ?, BIRTH_DATE_PID = ?, "
+			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "BIRTH_DATE_PID = ?, "
 			+ "DEATH_DATE_PID = ? WHERE PERSON_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSONS WHERE PERSON_PID = ?";
@@ -54,6 +59,8 @@ public class Persons {
 	private Connection conn;
 
 	private int PersonPid;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int BirthDatePid;
 	private int DeathDatePid;
@@ -85,6 +92,8 @@ public class Persons {
 		while (rs.next()) {
 			model = new Persons();
 			model.setPersonPid(rs.getInt("PERSON_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setBirthDatePid(rs.getInt("BIRTH_DATE_PID"));
 			model.setDeathDatePid(rs.getInt("DEATH_DATE_PID"));
@@ -101,6 +110,8 @@ public class Persons {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setPersonPid(rs.getInt("PERSON_PID"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setBirthDatePid(rs.getInt("BIRTH_DATE_PID"));
 			setDeathDatePid(rs.getInt("DEATH_DATE_PID"));
@@ -137,6 +148,8 @@ public class Persons {
 		while (rs.next()) {
 			model = new Persons();
 			model.setPersonPid(rs.getInt("PERSON_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setBirthDatePid(rs.getInt("BIRTH_DATE_PID"));
 			model.setDeathDatePid(rs.getInt("DEATH_DATE_PID"));
@@ -155,6 +168,8 @@ public class Persons {
 		while (rs.next()) {
 			model = new Persons();
 			model.setPersonPid(rs.getInt("PERSON_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setBirthDatePid(rs.getInt("BIRTH_DATE_PID"));
 			model.setDeathDatePid(rs.getInt("DEATH_DATE_PID"));
@@ -162,6 +177,15 @@ public class Persons {
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -182,6 +206,15 @@ public class Persons {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -194,16 +227,18 @@ public class Persons {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getTableId());
+		ps.setTimestamp(2, getInsertTstmp());
+		ps.setTimestamp(3, getUpdateTstmp());
+		ps.setInt(4, getTableId());
 		if (getBirthDatePid() == 0) {
-			ps.setNull(3, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(3, getBirthDatePid());
+			ps.setInt(5, getBirthDatePid());
 		}
 		if (getDeathDatePid() == 0) {
-			ps.setNull(4, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(4, getDeathDatePid());
+			ps.setInt(6, getDeathDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -229,6 +264,15 @@ public class Persons {
 	}
 
 	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
+	}
+
+	/**
 	 * Set the PersonPid field
 	 *
 	 * @param PersonPid Contents of the PERSON_PID column
@@ -246,21 +290,32 @@ public class Persons {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTableId());
+		ps.setTimestamp(1, getInsertTstmp());
+		ps.setTimestamp(2, getUpdateTstmp());
+		ps.setInt(3, getTableId());
 		if (getBirthDatePid() == 0) {
-			ps.setNull(2, java.sql.Types.INTEGER);
+			ps.setNull(4, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(2, getBirthDatePid());
+			ps.setInt(4, getBirthDatePid());
 		}
 		if (getDeathDatePid() == 0) {
-			ps.setNull(3, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(3, getDeathDatePid());
+			ps.setInt(5, getDeathDatePid());
 		}
-		ps.setInt(4, getPersonPid());
+		ps.setInt(6, getPersonPid());
 		ps.executeUpdate();
 		conn.close();
 	}

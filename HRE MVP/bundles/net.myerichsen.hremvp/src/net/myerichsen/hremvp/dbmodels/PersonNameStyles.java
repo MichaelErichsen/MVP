@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,26 +15,24 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_NAME_STYLES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class PersonNameStyles {
 	private static final String SELECT = "SELECT NAME_STYLE_PID, "
-			+ "LABEL_PID, "
+			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_STYLES WHERE NAME_STYLE_PID = ?";
-	private static final String SELECT_LABEL_PID = "SELECT "
-			+ "NAME_STYLE_PID, LABEL_PID, "
-			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_STYLES WHERE LABEL_PID = ? ORDER BY NAME_STYLE_PID";
 	private static final String SELECTALL = "SELECT NAME_STYLE_PID, "
-			+ "LABEL_PID, "
+			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_STYLES ORDER BY NAME_STYLE_PID";
 	private static final String SELECTMAX = "SELECT MAX(NAME_STYLE_PID) FROM PUBLIC.PERSON_NAME_STYLES";
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAME_STYLES( "
-			+ "NAME_STYLE_PID, LABEL_PID, TABLE_ID) VALUES (?, ?, ?)";
-
+			+ "NAME_STYLE_PID, LABEL_PID, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_STYLES SET "
-			+ "LABEL_PID = ?, TABLE_ID = ? WHERE NAME_STYLE_PID = ?";
+			+ "LABEL_PID = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
+			+ "TABLE_ID = ? WHERE NAME_STYLE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_STYLES WHERE NAME_STYLE_PID = ?";
 
@@ -49,6 +48,8 @@ public class PersonNameStyles {
 
 	private int NameStylePid;
 	private int LabelPid;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private PersonNameStyles model;
 
@@ -79,6 +80,8 @@ public class PersonNameStyles {
 			model = new PersonNameStyles();
 			model.setNameStylePid(rs.getInt("NAME_STYLE_PID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -94,6 +97,8 @@ public class PersonNameStyles {
 		if (rs.next()) {
 			setNameStylePid(rs.getInt("NAME_STYLE_PID"));
 			setLabelPid(rs.getInt("LABEL_PID"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -101,21 +106,13 @@ public class PersonNameStyles {
 		conn.close();
 	}
 
-	public List<PersonNameStyles> getFKLabelPid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LABEL_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new PersonNameStyles();
-			model.setNameStylePid(rs.getInt("NAME_STYLE_PID"));
-			model.setLabelPid(rs.getInt("LABEL_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -145,6 +142,15 @@ public class PersonNameStyles {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -158,10 +164,21 @@ public class PersonNameStyles {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setInt(2, getLabelPid());
-		ps.setInt(3, getTableId());
+		ps.setTimestamp(3, getInsertTstmp());
+		ps.setTimestamp(4, getUpdateTstmp());
+		ps.setInt(5, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -191,12 +208,23 @@ public class PersonNameStyles {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getLabelPid());
-		ps.setInt(2, getTableId());
-		ps.setInt(3, getNameStylePid());
+		ps.setTimestamp(2, getInsertTstmp());
+		ps.setTimestamp(3, getUpdateTstmp());
+		ps.setInt(4, getTableId());
+		ps.setInt(5, getNameStylePid());
 		ps.executeUpdate();
 		conn.close();
 	}

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,27 +15,24 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the SEX_TYPES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class SexTypes {
 	private static final String SELECT = "SELECT SEX_TYPE_PID, "
-			+ "ABBREVIATION, TABLE_ID, "
+			+ "ABBREVIATION, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
-	private static final String SELECT_LABEL_PID = "SELECT SEX_TYPE_PID, "
-			+ "ABBREVIATION, TABLE_ID, "
-			+ "LABEL_PID FROM PUBLIC.SEX_TYPES WHERE LABEL_PID = ? ORDER BY SEX_TYPE_PID";
 	private static final String SELECTALL = "SELECT SEX_TYPE_PID, "
-			+ "ABBREVIATION, TABLE_ID, "
+			+ "ABBREVIATION, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LABEL_PID FROM PUBLIC.SEX_TYPES ORDER BY SEX_TYPE_PID";
 	private static final String SELECTMAX = "SELECT MAX(SEX_TYPE_PID) FROM PUBLIC.SEX_TYPES";
 	private static final String INSERT = "INSERT INTO PUBLIC.SEX_TYPES( "
-			+ "SEX_TYPE_PID, ABBREVIATION, TABLE_ID, "
-			+ "LABEL_PID) VALUES (?, ?, ?, ?)";
-
+			+ "SEX_TYPE_PID, ABBREVIATION, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, LABEL_PID) VALUES (?, "
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.SEX_TYPES SET "
-			+ "ABBREVIATION = ?, TABLE_ID = ?, "
+			+ "ABBREVIATION = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "LABEL_PID = ? WHERE SEX_TYPE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.SEX_TYPES WHERE SEX_TYPE_PID = ?";
@@ -51,6 +49,8 @@ public class SexTypes {
 
 	private int SexTypePid;
 	private String Abbreviation;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int LabelPid;
 	private SexTypes model;
@@ -82,6 +82,8 @@ public class SexTypes {
 			model = new SexTypes();
 			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
@@ -98,6 +100,8 @@ public class SexTypes {
 		if (rs.next()) {
 			setSexTypePid(rs.getInt("SEX_TYPE_PID"));
 			setAbbreviation(rs.getString("ABBREVIATION"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
@@ -115,22 +119,13 @@ public class SexTypes {
 		return Abbreviation;
 	}
 
-	public List<SexTypes> getFKLabelPid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LABEL_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new SexTypes();
-			model.setSexTypePid(rs.getInt("SEX_TYPE_PID"));
-			model.setAbbreviation(rs.getString("ABBREVIATION"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabelPid(rs.getInt("LABEL_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -160,6 +155,15 @@ public class SexTypes {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -173,8 +177,10 @@ public class SexTypes {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setString(2, getAbbreviation());
-		ps.setInt(3, getTableId());
-		ps.setInt(4, getLabelPid());
+//		ps.setTimestamp(3, getInsertTstmp());
+//		ps.setTimestamp(4, getUpdateTstmp());
+//		ps.setInt(5, getTableId());
+		ps.setInt(6, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -187,6 +193,15 @@ public class SexTypes {
 	 */
 	public void setAbbreviation(String Abbreviation) {
 		this.Abbreviation = Abbreviation;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -216,13 +231,24 @@ public class SexTypes {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getAbbreviation());
-		ps.setInt(2, getTableId());
-		ps.setInt(3, getLabelPid());
-		ps.setInt(4, getSexTypePid());
+//		ps.setTimestamp(2, getInsertTstmp());
+//		ps.setTimestamp(3, getUpdateTstmp());
+//		ps.setInt(4, getTableId());
+		ps.setInt(5, getLabelPid());
+		ps.setInt(6, getSexTypePid());
 		ps.executeUpdate();
 		conn.close();
 	}

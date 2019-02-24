@@ -1,8 +1,8 @@
 /**
- * Generated model classes for H2 database tables
+ * H2 Database object models
  *
- * @version 2018-08-18
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 24. feb. 2019
  *
  */
 package net.myerichsen.hremvp.dbmodels;

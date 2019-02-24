@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +16,28 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the HDATES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class Hdates {
 	private static final String SELECT = "SELECT HDATE_PID, "
-			+ "TABLE_ID, ORIGINAL_TEXT, DATE, SORT_DATE, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "ORIGINAL_TEXT, DATE, SORT_DATE, "
 			+ "SURETY FROM PUBLIC.HDATES WHERE HDATE_PID = ?";
 	private static final String SELECTALL = "SELECT HDATE_PID, "
-			+ "TABLE_ID, ORIGINAL_TEXT, DATE, SORT_DATE, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "ORIGINAL_TEXT, DATE, SORT_DATE, "
 			+ "SURETY FROM PUBLIC.HDATES ORDER BY HDATE_PID";
 	private static final String SELECTMAX = "SELECT MAX(HDATE_PID) FROM PUBLIC.HDATES";
 	private static final String INSERT = "INSERT INTO PUBLIC.HDATES( "
-			+ "HDATE_PID, TABLE_ID, ORIGINAL_TEXT, DATE, "
-			+ "SORT_DATE, SURETY) VALUES (?, ?, ?, ?, ?, ?)";
+			+ "HDATE_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "ORIGINAL_TEXT, DATE, SORT_DATE, SURETY) VALUES ("
+			+ "?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.HDATES SET "
-			+ "TABLE_ID = ?, ORIGINAL_TEXT = ?, DATE = ?, "
-			+ "SORT_DATE = ?, SURETY = ? WHERE HDATE_PID = ?";
+			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "ORIGINAL_TEXT = ?, DATE = ?, SORT_DATE = ?, "
+			+ "SURETY = ? WHERE HDATE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.HDATES WHERE HDATE_PID = ?";
 
@@ -47,6 +52,8 @@ public class Hdates {
 	private Connection conn;
 
 	private int HdatePid;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private String OriginalText;
 	private LocalDate Date;
@@ -80,6 +87,8 @@ public class Hdates {
 		while (rs.next()) {
 			model = new Hdates();
 			model.setHdatePid(rs.getInt("HDATE_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setOriginalText(rs.getString("ORIGINAL_TEXT"));
 			model.setDate(rs.getObject("DATE", LocalDate.class));
@@ -98,6 +107,8 @@ public class Hdates {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setHdatePid(rs.getInt("HDATE_PID"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setOriginalText(rs.getString("ORIGINAL_TEXT"));
 			setDate(rs.getObject("DATE", LocalDate.class));
@@ -125,6 +136,15 @@ public class Hdates {
 	 */
 	public int getHdatePid() {
 		return HdatePid;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -163,6 +183,15 @@ public class Hdates {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -175,11 +204,13 @@ public class Hdates {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getTableId());
-		ps.setString(3, getOriginalText());
-		ps.setObject(4, getDate());
-		ps.setObject(5, getSortDate());
-		ps.setString(6, getSurety());
+		ps.setTimestamp(2, getInsertTstmp());
+		ps.setTimestamp(3, getUpdateTstmp());
+		ps.setInt(4, getTableId());
+		ps.setString(5, getOriginalText());
+		ps.setObject(6, getDate());
+		ps.setObject(7, getSortDate());
+		ps.setString(8, getSurety());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -201,6 +232,15 @@ public class Hdates {
 	 */
 	public void setHdatePid(int HdatePid) {
 		this.HdatePid = HdatePid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -239,15 +279,26 @@ public class Hdates {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTableId());
-		ps.setString(2, getOriginalText());
-		ps.setObject(4, getDate());
-		ps.setObject(5, getSortDate());
-		ps.setString(3, getSurety());
-		ps.setInt(6, getHdatePid());
+		ps.setTimestamp(1, getInsertTstmp());
+		ps.setTimestamp(2, getUpdateTstmp());
+		ps.setInt(3, getTableId());
+		ps.setString(4, getOriginalText());
+		ps.setObject(6, getDate());
+		ps.setObject(7, getSortDate());
+		ps.setString(5, getSurety());
+		ps.setInt(8, getHdatePid());
 		ps.executeUpdate();
 		conn.close();
 	}

@@ -145,7 +145,7 @@ public class SexTypeView {
 		btnUpdate.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -215,7 +215,7 @@ public class SexTypeView {
 		}
 
 		try {
-			List<List<String>> eventTypeList = provider
+			final List<List<String>> eventTypeList = provider
 					.getSexTypeList(labelPid);
 
 			sexTypePid = Integer.parseInt(eventTypeList.get(0).get(0));
@@ -227,13 +227,13 @@ public class SexTypeView {
 			LOGGER.info("Sex pid " + sexTypePid + " has been updated");
 
 			dp = new DictionaryProvider();
-			List<List<String>> stringList = dp.getStringList(labelPid);
+			final List<List<String>> stringList = dp.getStringList(labelPid);
 
-			List<List<String>> input = (List<List<String>>) tableViewer
+			final List<List<String>> input = (List<List<String>>) tableViewer
 					.getInput();
 
 			for (int i = 0; i < input.size(); i++) {
-				for (List<String> existingElement : stringList) {
+				for (final List<String> existingElement : stringList) {
 					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
 							+ " - " + existingElement.get(0) + ", "
 							+ existingElement.get(1) + ", "

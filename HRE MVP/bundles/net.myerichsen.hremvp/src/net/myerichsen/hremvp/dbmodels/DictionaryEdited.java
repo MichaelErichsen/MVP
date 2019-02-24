@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,28 +15,35 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the DICTIONARY database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 21. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class DictionaryEdited {
 	private static final String SELECT = "SELECT DICTIONARY_PID, "
-			+ "LABEL_PID, ISO_CODE, LABEL, "
-			+ "TABLE_ID FROM PUBLIC.DICTIONARY WHERE DICTIONARY_PID = ?";
+			+ "LABEL_PID, ISO_CODE, LABEL, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, "
+			+ "LABEL_TYPE FROM PUBLIC.DICTIONARY WHERE DICTIONARY_PID = ?";
 	private static final String SELECT_ISO_CODE = "SELECT DICTIONARY_PID, "
-			+ "LABEL_PID, ISO_CODE, LABEL, "
-			+ "TABLE_ID FROM PUBLIC.DICTIONARY WHERE ISO_CODE = ? ORDER BY DICTIONARY_PID";
+			+ "LABEL_PID, ISO_CODE, LABEL, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, "
+			+ "LABEL_TYPE FROM PUBLIC.DICTIONARY WHERE ISO_CODE = ? ORDER BY DICTIONARY_PID";
 	private static final String SELECTALL = "SELECT DICTIONARY_PID, "
-			+ "LABEL_PID, ISO_CODE, LABEL, "
-			+ "TABLE_ID FROM PUBLIC.DICTIONARY ORDER BY DICTIONARY_PID";
+			+ "LABEL_PID, ISO_CODE, LABEL, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, "
+			+ "LABEL_TYPE FROM PUBLIC.DICTIONARY ORDER BY DICTIONARY_PID";
 	private static final String SELECTMAX = "SELECT MAX(DICTIONARY_PID) FROM PUBLIC.DICTIONARY";
 	private static final String INSERT = "INSERT INTO PUBLIC.DICTIONARY( "
 			+ "DICTIONARY_PID, LABEL_PID, ISO_CODE, LABEL, "
-			+ "TABLE_ID) VALUES (?, ?, ?, ?, ?)";
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "LABEL_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.DICTIONARY SET "
 			+ "LABEL_PID = ?, ISO_CODE = ?, LABEL = ?, "
-			+ "TABLE_ID = ? WHERE DICTIONARY_PID = ?";
+			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "LABEL_TYPE = ? WHERE DICTIONARY_PID = ?";
+
+	private static final String SELECTMAXLABELPID = "SELECT MAX(LABEL_PID) FROM PUBLIC.DICTIONARY";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.DICTIONARY WHERE DICTIONARY_PID = ?";
 
@@ -44,8 +52,6 @@ public class DictionaryEdited {
 	private static final String SELECT_LABEL_PID = "SELECT DICTIONARY_PID, LABEL_PID, ISO_CODE, LABEL, TABLE_ID "
 			+ "FROM PUBLIC.DICTIONARY "
 			+ "WHERE LABEL_PID = ? ORDER BY ISO_CODE";
-
-	private static final String SELECTMAXLABELPID = "SELECT MAX(LABEL_PID) FROM PUBLIC.DICTIONARY";
 
 	private List<DictionaryEdited> modelList;
 
@@ -59,7 +65,10 @@ public class DictionaryEdited {
 	private int LabelPid;
 	private String IsoCode;
 	private String Label;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
+	private String LabelType;
 	private DictionaryEdited model;
 
 	public void delete() throws SQLException {
@@ -91,7 +100,10 @@ public class DictionaryEdited {
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
 			model.setLabel(rs.getString("LABEL"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLabelType(rs.getString("LABEL_TYPE"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -108,7 +120,10 @@ public class DictionaryEdited {
 			setLabelPid(rs.getInt("LABEL_PID"));
 			setIsoCode(rs.getString("ISO_CODE"));
 			setLabel(rs.getString("LABEL"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
+			setLabelType(rs.getString("LABEL_TYPE"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
@@ -136,7 +151,10 @@ public class DictionaryEdited {
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setIsoCode(rs.getString("ISO_CODE"));
 			model.setLabel(rs.getString("LABEL"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLabelType(rs.getString("LABEL_TYPE"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -160,6 +178,15 @@ public class DictionaryEdited {
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -190,8 +217,17 @@ public class DictionaryEdited {
 	}
 
 	/**
+	 * Get the LabelType field.
+	 *
+	 * @return Contents of the LABEL_TYPE column
+	 */
+	public String getLabelType() {
+		return LabelType;
+	}
+
+	/**
 	 * Returns the next label pid, but dows not create it
-	 * 
+	 *
 	 * @return
 	 * @throws SQLException
 	 */
@@ -217,6 +253,15 @@ public class DictionaryEdited {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -232,7 +277,10 @@ public class DictionaryEdited {
 		ps.setInt(2, getLabelPid());
 		ps.setString(3, getIsoCode());
 		ps.setString(4, getLabel());
-		ps.setInt(5, getTableId());
+		ps.setTimestamp(5, getInsertTstmp());
+		ps.setTimestamp(6, getUpdateTstmp());
+		ps.setInt(7, getTableId());
+		ps.setString(8, getLabelType());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -245,6 +293,15 @@ public class DictionaryEdited {
 	 */
 	public void setDictionaryPid(int DictionaryPid) {
 		this.DictionaryPid = DictionaryPid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -275,6 +332,15 @@ public class DictionaryEdited {
 	}
 
 	/**
+	 * Set the LabelType field
+	 *
+	 * @param LabelType Contents of the LABEL_TYPE column
+	 */
+	public void setLabelType(String LabelType) {
+		this.LabelType = LabelType;
+	}
+
+	/**
 	 * Set the TableId field
 	 *
 	 * @param TableId Contents of the TABLE_ID column
@@ -283,15 +349,28 @@ public class DictionaryEdited {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getLabelPid());
 		ps.setString(2, getIsoCode());
 		ps.setString(3, getLabel());
-		ps.setInt(4, getTableId());
-		ps.setInt(5, getDictionaryPid());
+		ps.setTimestamp(4, getInsertTstmp());
+		ps.setTimestamp(5, getUpdateTstmp());
+		ps.setInt(6, getTableId());
+		ps.setString(7, getLabelType());
+		ps.setInt(8, getDictionaryPid());
 		ps.executeUpdate();
 		conn.close();
 	}
+
 }

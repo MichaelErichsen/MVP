@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 public class HreTypeLabelEditingSupport extends EditingSupport {
 	private final TableViewer viewer;
 	private final CellEditor editor;
-	private int column;
+	private final int column;
 
 	/**
 	 * Constructor
@@ -33,7 +33,7 @@ public class HreTypeLabelEditingSupport extends EditingSupport {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.EditingSupport#canEdit(java.lang.Object)
 	 */
 	@Override
@@ -43,7 +43,7 @@ public class HreTypeLabelEditingSupport extends EditingSupport {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.jface.viewers.EditingSupport#getCellEditor(java.lang.Object)
 	 */
@@ -54,7 +54,7 @@ public class HreTypeLabelEditingSupport extends EditingSupport {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.EditingSupport#getValue(java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
@@ -65,7 +65,7 @@ public class HreTypeLabelEditingSupport extends EditingSupport {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object,
 	 * java.lang.Object)
 	 */

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,35 +15,39 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the LOCATION_EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class LocationEvents {
 	private static final String SELECT = "SELECT LOCATION_EVENTS_PID, "
-			+ "EVENT_PID, LOCATION_PID, PRIMARY_EVENT, PRIMARY_LOCATION, "
+			+ "EVENT_PID, LOCATION_PID, PRIMARY_EVENT, "
+			+ "PRIMARY_LOCATION, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_EVENTS WHERE LOCATION_EVENTS_PID = ?";
 	private static final String SELECT_EVENT_PID = "SELECT "
 			+ "LOCATION_EVENTS_PID, EVENT_PID, LOCATION_PID, "
-			+ "PRIMARY_EVENT, PRIMARY_LOCATION, "
+			+ "PRIMARY_EVENT, PRIMARY_LOCATION, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_EVENTS WHERE EVENT_PID = ? ORDER BY LOCATION_EVENTS_PID";
 	private static final String SELECT_LOCATION_PID = "SELECT "
 			+ "LOCATION_EVENTS_PID, EVENT_PID, LOCATION_PID, "
-			+ "PRIMARY_EVENT, PRIMARY_LOCATION, "
+			+ "PRIMARY_EVENT, PRIMARY_LOCATION, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_EVENTS WHERE LOCATION_PID = ? ORDER BY LOCATION_EVENTS_PID";
 	private static final String SELECTALL = "SELECT LOCATION_EVENTS_PID, "
-			+ "EVENT_PID, LOCATION_PID, PRIMARY_EVENT, PRIMARY_LOCATION, "
+			+ "EVENT_PID, LOCATION_PID, PRIMARY_EVENT, "
+			+ "PRIMARY_LOCATION, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_EVENTS ORDER BY LOCATION_EVENTS_PID";
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_EVENTS_PID) FROM PUBLIC.LOCATION_EVENTS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_EVENTS( "
 			+ "LOCATION_EVENTS_PID, EVENT_PID, LOCATION_PID, "
-			+ "PRIMARY_EVENT, PRIMARY_LOCATION, TABLE_ID) VALUES ("
-			+ "?, ?, ?, ?, ?, ?)";
+			+ "PRIMARY_EVENT, PRIMARY_LOCATION, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_EVENTS SET "
 			+ "EVENT_PID = ?, LOCATION_PID = ?, PRIMARY_EVENT = ?, "
-			+ "PRIMARY_LOCATION = ?, "
+			+ "PRIMARY_LOCATION = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
 			+ "TABLE_ID = ? WHERE LOCATION_EVENTS_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_EVENTS WHERE LOCATION_EVENTS_PID = ?";
@@ -62,6 +67,8 @@ public class LocationEvents {
 	private int LocationPid;
 	private boolean PrimaryEvent;
 	private boolean PrimaryLocation;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private LocationEvents model;
 
@@ -95,6 +102,8 @@ public class LocationEvents {
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setPrimaryLocation(rs.getBoolean("PRIMARY_LOCATION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -113,6 +122,8 @@ public class LocationEvents {
 			setLocationPid(rs.getInt("LOCATION_PID"));
 			setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			setPrimaryLocation(rs.getBoolean("PRIMARY_LOCATION"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -142,6 +153,8 @@ public class LocationEvents {
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setPrimaryLocation(rs.getBoolean("PRIMARY_LOCATION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -162,11 +175,22 @@ public class LocationEvents {
 			model.setLocationPid(rs.getInt("LOCATION_PID"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setPrimaryLocation(rs.getBoolean("PRIMARY_LOCATION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -196,6 +220,15 @@ public class LocationEvents {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -212,7 +245,9 @@ public class LocationEvents {
 		ps.setInt(3, getLocationPid());
 		ps.setBoolean(4, isPrimaryEvent());
 		ps.setBoolean(5, isPrimaryLocation());
-		ps.setInt(6, getTableId());
+		ps.setTimestamp(6, getInsertTstmp());
+		ps.setTimestamp(7, getUpdateTstmp());
+		ps.setInt(8, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -243,6 +278,15 @@ public class LocationEvents {
 	 */
 	public void setEventPid(int EventPid) {
 		this.EventPid = EventPid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -290,6 +334,15 @@ public class LocationEvents {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
@@ -297,8 +350,10 @@ public class LocationEvents {
 		ps.setInt(2, getLocationPid());
 		ps.setBoolean(3, isPrimaryEvent());
 		ps.setBoolean(4, isPrimaryLocation());
-		ps.setInt(5, getTableId());
-		ps.setInt(6, getLocationEventsPid());
+		ps.setTimestamp(5, getInsertTstmp());
+		ps.setTimestamp(6, getUpdateTstmp());
+		ps.setInt(7, getTableId());
+		ps.setInt(8, getLocationEventsPid());
 		ps.executeUpdate();
 		conn.close();
 	}

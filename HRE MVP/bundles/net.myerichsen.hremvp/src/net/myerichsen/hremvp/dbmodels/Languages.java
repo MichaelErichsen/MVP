@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,24 +15,24 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the LANGUAGES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class Languages {
 	private static final String SELECT = "SELECT LANGUAGE_PID, "
-			+ "ISOCODE, LABEL, "
+			+ "ISOCODE, LABEL, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";
 	private static final String SELECTALL = "SELECT LANGUAGE_PID, "
-			+ "ISOCODE, LABEL, "
+			+ "ISOCODE, LABEL, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES ORDER BY LANGUAGE_PID";
 	private static final String SELECTMAX = "SELECT MAX(LANGUAGE_PID) FROM PUBLIC.LANGUAGES";
 	private static final String INSERT = "INSERT INTO PUBLIC.LANGUAGES( "
-			+ "LANGUAGE_PID, ISOCODE, LABEL, TABLE_ID) VALUES ("
-			+ "?, ?, ?, ?)";
+			+ "LANGUAGE_PID, ISOCODE, LABEL, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 7)";
 	private static final String UPDATE = "UPDATE PUBLIC.LANGUAGES SET "
 			+ "ISOCODE = ?, LABEL = ?, "
-			+ "TABLE_ID = ? WHERE LANGUAGE_PID = ?";
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP WHERE LANGUAGE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";
 
@@ -48,6 +49,8 @@ public class Languages {
 	private int LanguagePid;
 	private String Isocode;
 	private String Label;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private Languages model;
 
@@ -79,6 +82,8 @@ public class Languages {
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setIsocode(rs.getString("ISOCODE"));
 			model.setLabel(rs.getString("LABEL"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
@@ -95,11 +100,22 @@ public class Languages {
 			setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			setIsocode(rs.getString("ISOCODE"));
 			setLabel(rs.getString("LABEL"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -138,6 +154,15 @@ public class Languages {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -152,10 +177,21 @@ public class Languages {
 		ps.setInt(1, maxPid);
 		ps.setString(2, getIsocode());
 		ps.setString(3, getLabel());
-		ps.setInt(4, getTableId());
+//		ps.setTimestamp(4, getInsertTstmp());
+//		ps.setTimestamp(5, getUpdateTstmp());
+//		ps.setInt(6, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -194,13 +230,24 @@ public class Languages {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getIsocode());
 		ps.setString(2, getLabel());
-		ps.setInt(3, getTableId());
-		ps.setInt(4, getLanguagePid());
+//		ps.setTimestamp(3, getInsertTstmp());
+//		ps.setTimestamp(4, getUpdateTstmp());
+//		ps.setInt(5, getTableId());
+		ps.setInt(6, getLanguagePid());
 		ps.executeUpdate();
 		conn.close();
 	}

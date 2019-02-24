@@ -63,10 +63,10 @@ public class SexTypeNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private SexTypeProvider provider;
+	private final SexTypeProvider provider;
 	private TableViewer tableViewer;
 	private int sexTypePid = 0;
-	private int labelPid = 0;
+	private final int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -144,7 +144,7 @@ public class SexTypeNavigator {
 		mntmAddSexType.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -161,7 +161,7 @@ public class SexTypeNavigator {
 		mntmDeleteSelectedSex.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -176,7 +176,7 @@ public class SexTypeNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getSexTypeList());
-		} catch (SQLException e1) {
+		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -241,7 +241,7 @@ public class SexTypeNavigator {
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
 			sexTypePid = Integer.parseInt(selectedRow.getText(0));
-			List<String> ls = new ArrayList<>();
+			final List<String> ls = new ArrayList<>();
 			ls.add(selectedRow.getText(0));
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
@@ -284,7 +284,7 @@ public class SexTypeNavigator {
 						break;
 					}
 				}
-			} catch (SQLException e) {
+			} catch (final SQLException e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

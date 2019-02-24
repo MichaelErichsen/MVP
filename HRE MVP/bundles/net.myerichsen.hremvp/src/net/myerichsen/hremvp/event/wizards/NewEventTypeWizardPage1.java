@@ -54,7 +54,7 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 			provider = new EventTypeProvider();
 			dp = new DictionaryProvider();
 			labelPid = dp.getNextLabelPid();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -125,16 +125,16 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 	}
 
 	/**
-	 * @return the textAbbreviation
-	 */
-	public Text getTextAbbreviation() {
-		return textAbbreviation;
-	}
-
-	/**
 	 * @return the tableViewer
 	 */
 	public TableViewer getTableViewer() {
 		return tableViewer;
+	}
+
+	/**
+	 * @return the textAbbreviation
+	 */
+	public Text getTextAbbreviation() {
+		return textAbbreviation;
 	}
 }

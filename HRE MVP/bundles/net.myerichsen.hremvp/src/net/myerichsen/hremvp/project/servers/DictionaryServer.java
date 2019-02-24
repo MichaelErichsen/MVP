@@ -21,7 +21,7 @@ public class DictionaryServer implements IHREServer {
 	private int LabelPid;
 	private String IsoCode;
 	private String Label;
-	private int TableId = 6;
+	private final int TableId = 6;
 
 	private final Dictionary dictionary;
 

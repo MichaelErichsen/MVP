@@ -35,6 +35,7 @@ public class LanguageServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
+	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		language.delete(key);
 	}
@@ -47,6 +48,7 @@ public class LanguageServer implements IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
+	@Override
 	public List<List<String>> get() throws SQLException, MvpException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
@@ -62,6 +64,16 @@ public class LanguageServer implements IHREServer {
 		}
 
 		return lls;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#get(int)
+	 */
+	@Override
+	public void get(int key) throws SQLException, MvpException {
+		language.get();
 	}
 
 	/**
@@ -116,6 +128,7 @@ public class LanguageServer implements IHREServer {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public int insert() throws SQLException {
 		language.setIsocode(Isocode);
 		language.setLabel(Label);
@@ -153,17 +166,7 @@ public class LanguageServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#get(int)
-	 */
-	@Override
-	public void get(int key) throws SQLException, MvpException {
-		language.get();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override

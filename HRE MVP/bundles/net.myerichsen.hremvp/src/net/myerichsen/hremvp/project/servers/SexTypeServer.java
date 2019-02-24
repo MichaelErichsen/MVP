@@ -245,9 +245,9 @@ public class SexTypeServer implements IHREServer {
 		}
 
 		String sexTypePidString = "";
-		List<SexTypes> list = sexType.get();
+		final List<SexTypes> list = sexType.get();
 
-		for (SexTypes sexTypes : list) {
+		for (final SexTypes sexTypes : list) {
 			if (sexTypes.getLabelPid() == labelPid) {
 				sexTypePidString = Integer.toString(sexTypes.getSexTypePid());
 			}

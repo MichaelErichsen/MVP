@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,33 +15,38 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PARENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class Parents {
 	private static final String SELECT = "SELECT PARENT_PID, CHILD, "
-			+ "PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
+			+ "PARENT, PARENT_ROLE, PRIMARY_PARENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
 	private static final String SELECT_CHILD = "SELECT PARENT_PID, "
-			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
+			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE CHILD = ? ORDER BY PARENT_PID";
 	private static final String SELECT_PARENT = "SELECT PARENT_PID, "
-			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
+			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS WHERE PARENT = ? ORDER BY PARENT_PID";
 	private static final String SELECTALL = "SELECT PARENT_PID, "
-			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, TABLE_ID, "
+			+ "CHILD, PARENT, PARENT_ROLE, PRIMARY_PARENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PARENTS ORDER BY PARENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(PARENT_PID) FROM PUBLIC.PARENTS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PARENTS( "
 			+ "PARENT_PID, CHILD, PARENT, PARENT_ROLE, "
-			+ "PRIMARY_PARENT, TABLE_ID, LANGUAGE_PID) VALUES ("
-			+ "?, ?, ?, ?, ?, ?, ?)";
+			+ "PRIMARY_PARENT, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, LANGUAGE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PARENTS SET "
 			+ "CHILD = ?, PARENT = ?, PARENT_ROLE = ?, "
-			+ "PRIMARY_PARENT = ?, TABLE_ID = ?, "
+			+ "PRIMARY_PARENT = ?, INSERT_TSTMP = ?, "
+			+ "UPDATE_TSTMP = ?, TABLE_ID = ?, "
 			+ "LANGUAGE_PID = ? WHERE PARENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
@@ -60,6 +66,8 @@ public class Parents {
 	private int Parent;
 	private String ParentRole;
 	private boolean PrimaryParent;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int LanguagePid;
 	private Parents model;
@@ -94,6 +102,8 @@ public class Parents {
 			model.setParent(rs.getInt("PARENT"));
 			model.setParentRole(rs.getString("PARENT_ROLE"));
 			model.setPrimaryParent(rs.getBoolean("PRIMARY_PARENT"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
@@ -113,6 +123,8 @@ public class Parents {
 			setParent(rs.getInt("PARENT"));
 			setParentRole(rs.getString("PARENT_ROLE"));
 			setPrimaryParent(rs.getBoolean("PRIMARY_PARENT"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setLanguagePid(rs.getInt("LANGUAGE_PID"));
 		} else {
@@ -143,6 +155,8 @@ public class Parents {
 			model.setParent(rs.getInt("PARENT"));
 			model.setParentRole(rs.getString("PARENT_ROLE"));
 			model.setPrimaryParent(rs.getBoolean("PRIMARY_PARENT"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
@@ -164,12 +178,23 @@ public class Parents {
 			model.setParent(rs.getInt("PARENT"));
 			model.setParentRole(rs.getString("PARENT_ROLE"));
 			model.setPrimaryParent(rs.getBoolean("PRIMARY_PARENT"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -217,6 +242,15 @@ public class Parents {
 		return TableId;
 	}
 
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -233,8 +267,10 @@ public class Parents {
 		ps.setInt(3, getParent());
 		ps.setString(4, getParentRole());
 		ps.setBoolean(5, isPrimaryParent());
-		ps.setInt(6, getTableId());
-		ps.setInt(7, getLanguagePid());
+		ps.setTimestamp(6, getInsertTstmp());
+		ps.setTimestamp(7, getUpdateTstmp());
+		ps.setInt(8, getTableId());
+		ps.setInt(9, getLanguagePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -256,6 +292,15 @@ public class Parents {
 	 */
 	public void setChild(int Child) {
 		this.Child = Child;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -312,6 +357,15 @@ public class Parents {
 		this.TableId = TableId;
 	}
 
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
@@ -319,9 +373,11 @@ public class Parents {
 		ps.setInt(2, getParent());
 		ps.setString(3, getParentRole());
 		ps.setBoolean(4, isPrimaryParent());
-		ps.setInt(5, getTableId());
-		ps.setInt(6, getLanguagePid());
-		ps.setInt(7, getParentPid());
+		ps.setTimestamp(5, getInsertTstmp());
+		ps.setTimestamp(6, getUpdateTstmp());
+		ps.setInt(7, getTableId());
+		ps.setInt(8, getLanguagePid());
+		ps.setInt(9, getParentPid());
 		ps.executeUpdate();
 		conn.close();
 	}

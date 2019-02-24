@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 
 /**
  * Wizard to add a event type
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 23. feb. 2019
  *
@@ -28,7 +28,7 @@ public class NewEventTypeWizard extends Wizard {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param eventTypePid
 	 *
 	 * @param context
@@ -54,28 +54,28 @@ public class NewEventTypeWizard extends Wizard {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean performFinish() {
 		DictionaryProvider dp;
-		String abbreviation = page1.getTextAbbreviation().getText();
+		final String abbreviation = page1.getTextAbbreviation().getText();
 
 		if (abbreviation.equals("") == false) {
 			try {
 				provider = new EventTypeProvider();
 				provider.setAbbreviation(abbreviation);
 
-				int eventTypePid = provider.insert();
+				final int eventTypePid = provider.insert();
 				LOGGER.info("Inserted event type " + eventTypePid);
 				eventBroker.post("MESSAGE",
 						"Inserted event type " + eventTypePid);
 
-				int labelPid = provider.getLabelPid();
+				final int labelPid = provider.getLabelPid();
 
-				List<List<String>> input = (List<List<String>>) page1
+				final List<List<String>> input = (List<List<String>>) page1
 						.getTableViewer().getInput();
 
 				for (int i = 0; i < input.size(); i++) {
@@ -83,7 +83,7 @@ public class NewEventTypeWizard extends Wizard {
 					dp.setIsoCode(input.get(i).get(0));
 					dp.setLabel(input.get(i).get(1));
 					dp.setLabelPid(labelPid);
-					int dictionaryPid = dp.insert();
+					final int dictionaryPid = dp.insert();
 					LOGGER.info("Inserted dictionary element " + dictionaryPid
 							+ ", " + input.get(i).get(0) + ", "
 							+ input.get(i).get(1));
@@ -93,7 +93,7 @@ public class NewEventTypeWizard extends Wizard {
 						net.myerichsen.hremvp.Constants.EVENT_TYPE_PID_UPDATE_TOPIC,
 						eventTypePid);
 				return true;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

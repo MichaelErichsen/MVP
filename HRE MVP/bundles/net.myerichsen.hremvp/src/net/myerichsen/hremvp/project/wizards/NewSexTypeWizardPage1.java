@@ -54,7 +54,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 			provider = new SexTypeProvider();
 			dp = new DictionaryProvider();
 			labelPid = dp.getNextLabelPid();
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -123,16 +123,16 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 	}
 
 	/**
-	 * @return the textAbbreviation
-	 */
-	public Text getTextAbbreviation() {
-		return textAbbreviation;
-	}
-
-	/**
 	 * @return the tableViewer
 	 */
 	public TableViewer getTableViewer() {
 		return tableViewer;
+	}
+
+	/**
+	 * @return the textAbbreviation
+	 */
+	public Text getTextAbbreviation() {
+		return textAbbreviation;
 	}
 }

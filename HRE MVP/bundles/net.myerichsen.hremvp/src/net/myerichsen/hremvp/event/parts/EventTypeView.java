@@ -54,7 +54,7 @@ public class EventTypeView {
 	private Text textLabelPid;
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
-	private EventTypeProvider provider;
+	private final EventTypeProvider provider;
 	private DictionaryProvider dp;
 	private int eventTypePid = 0;
 	private int labelPid = 0;
@@ -145,7 +145,7 @@ public class EventTypeView {
 		btnUpdate.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -216,7 +216,7 @@ public class EventTypeView {
 		}
 
 		try {
-			List<List<String>> eventTypeList = provider
+			final List<List<String>> eventTypeList = provider
 					.getEventTypeList(labelPid);
 
 			eventTypePid = Integer.parseInt(eventTypeList.get(0).get(0));
@@ -228,13 +228,13 @@ public class EventTypeView {
 			LOGGER.info("Event pid " + eventTypePid + " has been updated");
 
 			dp = new DictionaryProvider();
-			List<List<String>> stringList = dp.getStringList(labelPid);
+			final List<List<String>> stringList = dp.getStringList(labelPid);
 
-			List<List<String>> input = (List<List<String>>) tableViewer
+			final List<List<String>> input = (List<List<String>>) tableViewer
 					.getInput();
 
 			for (int i = 0; i < input.size(); i++) {
-				for (List<String> existingElement : stringList) {
+				for (final List<String> existingElement : stringList) {
 					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
 							+ " - " + existingElement.get(0) + ", "
 							+ existingElement.get(1) + ", "

@@ -63,10 +63,10 @@ public class EventTypeNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private EventTypeProvider provider;
+	private final EventTypeProvider provider;
 	private TableViewer tableViewer;
 	private int eventTypePid = 0;
-	private int labelPid = 0;
+	private final int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -91,7 +91,7 @@ public class EventTypeNavigator {
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
 			 * swt.events.MouseEvent)
@@ -142,7 +142,7 @@ public class EventTypeNavigator {
 		mntmAddEventType.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -159,7 +159,7 @@ public class EventTypeNavigator {
 		mntmDeleteSelectedEvent.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -173,7 +173,7 @@ public class EventTypeNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getEventTypeList());
-		} catch (SQLException e1) {
+		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -238,7 +238,7 @@ public class EventTypeNavigator {
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
 			eventTypePid = Integer.parseInt(selectedRow.getText(0));
-			List<String> ls = new ArrayList<>();
+			final List<String> ls = new ArrayList<>();
 			ls.add(selectedRow.getText(0));
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
@@ -282,7 +282,7 @@ public class EventTypeNavigator {
 						break;
 					}
 				}
-			} catch (SQLException e) {
+			} catch (final SQLException e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}
