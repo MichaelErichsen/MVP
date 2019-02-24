@@ -40,6 +40,14 @@ public class OpenSexTypeViewHandler {
 
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
+
+				// FIXME org.eclipse.core.commands.ExecutionException:
+				// Error executing 'net.myerichsen.hremvp.command.opensextypevie
+				// w': java.lang.NullPointerException
+				// Caused by: java.lang.NullPointerException
+				// at
+				// net.myerichsen.hremvp.project.handlers.OpenSexTypeViewHandler.
+				// execute(OpenSexTypeViewHandler.java:43)
 				if (part.getContributionURI().equals(contributionURI)) {
 					partService.showPart(part, PartState.ACTIVATE);
 					return;

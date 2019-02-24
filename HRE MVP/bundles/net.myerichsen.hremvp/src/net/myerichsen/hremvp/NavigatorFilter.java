@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.filters;
+package net.myerichsen.hremvp;
 
 import java.util.List;
 import java.util.logging.Logger;

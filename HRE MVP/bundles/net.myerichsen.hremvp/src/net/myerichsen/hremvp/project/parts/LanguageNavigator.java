@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.filters.NavigatorFilter;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
 import net.myerichsen.hremvp.project.wizards.NewLanguageWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;

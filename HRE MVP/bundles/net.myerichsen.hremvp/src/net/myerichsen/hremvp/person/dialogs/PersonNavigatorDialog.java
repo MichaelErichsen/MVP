@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.filters.NavigatorFilter;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;

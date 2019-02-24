@@ -62,7 +62,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.filters.NavigatorFilter;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.project.dialogs.ProjectNameSummaryDialog;
 import net.myerichsen.hremvp.project.models.ProjectList;
 import net.myerichsen.hremvp.project.models.ProjectModel;
