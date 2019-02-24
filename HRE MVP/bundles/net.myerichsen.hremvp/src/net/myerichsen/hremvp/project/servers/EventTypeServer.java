@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.event.servers;
+package net.myerichsen.hremvp.project.servers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

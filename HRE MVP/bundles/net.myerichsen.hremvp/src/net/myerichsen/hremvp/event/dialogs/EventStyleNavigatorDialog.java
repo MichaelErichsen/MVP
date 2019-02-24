@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.event.providers.EventTypeProvider;
+import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 
 /**
  * Display all event types

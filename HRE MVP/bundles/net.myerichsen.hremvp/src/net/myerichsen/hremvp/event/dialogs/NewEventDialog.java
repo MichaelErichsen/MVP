@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.event.providers.EventNameProvider;
-import net.myerichsen.hremvp.event.providers.EventTypeProvider;
+import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**

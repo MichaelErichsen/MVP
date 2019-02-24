@@ -1,11 +1,11 @@
-package net.myerichsen.hremvp.event.providers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.event.servers.EventTypeServer;
+import net.myerichsen.hremvp.project.servers.EventTypeServer;
 
 /**
  * Provides all data for an personEvent type

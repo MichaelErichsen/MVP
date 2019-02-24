@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.event.wizards;
+package net.myerichsen.hremvp.project.wizards;
 
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
-import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 import net.myerichsen.hremvp.project.providers.DictionaryProvider;
+import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**

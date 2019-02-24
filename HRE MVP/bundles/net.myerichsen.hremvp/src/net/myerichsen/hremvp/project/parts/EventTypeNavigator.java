@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.event.parts;
+package net.myerichsen.hremvp.project.parts;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.event.providers.EventTypeProvider;
-import net.myerichsen.hremvp.event.wizards.NewEventTypeWizard;
+import net.myerichsen.hremvp.project.providers.EventTypeProvider;
+import net.myerichsen.hremvp.project.wizards.NewEventTypeWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**

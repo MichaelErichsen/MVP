@@ -32,7 +32,7 @@ public class OpenSexTypeViewHandler {
 			EModelService modelService) {
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
+		final MPart part = MBasicFactory.INSTANCE.createPart();
 
 //		for (final MPartStack mPartStack : stacks) {
 //			final List<MStackElement> a = mPartStack.getChildren();

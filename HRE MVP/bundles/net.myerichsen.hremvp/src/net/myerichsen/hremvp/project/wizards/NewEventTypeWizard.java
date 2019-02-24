@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.event.wizards;
+package net.myerichsen.hremvp.project.wizards;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -7,8 +7,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
-import net.myerichsen.hremvp.event.providers.EventTypeProvider;
 import net.myerichsen.hremvp.project.providers.DictionaryProvider;
+import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 
 /**
  * Wizard to add a event type

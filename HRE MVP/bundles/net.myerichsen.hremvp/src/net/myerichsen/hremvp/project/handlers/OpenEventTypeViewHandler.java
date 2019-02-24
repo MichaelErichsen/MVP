@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.event.handlers;
+package net.myerichsen.hremvp.project.handlers;
 
 import java.util.List;
 

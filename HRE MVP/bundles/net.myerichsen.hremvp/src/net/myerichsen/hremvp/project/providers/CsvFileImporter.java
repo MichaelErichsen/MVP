@@ -18,11 +18,11 @@ public class CsvFileImporter {
 			"languages.csv",
 //			"sextypes.csv", "eventtypes.csv", "eventnames.csv",
 //			"locationnamestyles.csv", "LocationNameMaps.csv", "namestyles.csv",
-//			"PersonNameMaps.csv" 
+//			"PersonNameMaps.csv"
 	};
 
 	private static final String[] tableNames = {
-//			"HDATES", 
+//			"HDATES",
 			"LANGUAGES",
 //			"SEX_TYPES", "EVENT_TYPES", "EVENT_NAMES", "LOCATION_NAME_STYLES",
 //			"LOCATION_NAME_MAPS", "NAME_STYLES", "NAME_MAPS"
