@@ -280,7 +280,7 @@ public class Dictionary {
 //		ps.setTimestamp(5, getInsertTstmp());
 //		ps.setTimestamp(6, getUpdateTstmp());
 //		ps.setInt(7, getTableId());
-		ps.setString(8, getLabelType());
+		ps.setString(5, getLabelType());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -367,8 +367,8 @@ public class Dictionary {
 //		ps.setTimestamp(4, getInsertTstmp());
 //		ps.setTimestamp(5, getUpdateTstmp());
 //		ps.setInt(6, getTableId());
-		ps.setString(7, getLabelType());
-		ps.setInt(8, getDictionaryPid());
+		ps.setString(4, getLabelType());
+		ps.setInt(5, getDictionaryPid());
 		ps.executeUpdate();
 		conn.close();
 	}

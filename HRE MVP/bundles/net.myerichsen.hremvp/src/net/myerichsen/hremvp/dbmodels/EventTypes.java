@@ -180,7 +180,7 @@ public class EventTypes {
 //		ps.setTimestamp(3, getInsertTstmp());
 //		ps.setTimestamp(4, getUpdateTstmp());
 //		ps.setInt(5, getTableId());
-		ps.setInt(6, getLabelPid());
+		ps.setInt(3, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -244,11 +244,11 @@ public class EventTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getAbbreviation());
-		ps.setTimestamp(2, getInsertTstmp());
-		ps.setTimestamp(3, getUpdateTstmp());
-		ps.setInt(4, getTableId());
-		ps.setInt(5, getLabelPid());
-		ps.setInt(6, getEventTypePid());
+//		ps.setTimestamp(2, getInsertTstmp());
+//		ps.setTimestamp(3, getUpdateTstmp());
+//		ps.setInt(4, getTableId());
+		ps.setInt(2, getLabelPid());
+		ps.setInt(3, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();
 	}

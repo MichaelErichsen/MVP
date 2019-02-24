@@ -180,7 +180,7 @@ public class SexTypes {
 //		ps.setTimestamp(3, getInsertTstmp());
 //		ps.setTimestamp(4, getUpdateTstmp());
 //		ps.setInt(5, getTableId());
-		ps.setInt(6, getLabelPid());
+		ps.setInt(3, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -247,8 +247,8 @@ public class SexTypes {
 //		ps.setTimestamp(2, getInsertTstmp());
 //		ps.setTimestamp(3, getUpdateTstmp());
 //		ps.setInt(4, getTableId());
-		ps.setInt(5, getLabelPid());
-		ps.setInt(6, getSexTypePid());
+		ps.setInt(2, getLabelPid());
+		ps.setInt(3, getSexTypePid());
 		ps.executeUpdate();
 		conn.close();
 	}

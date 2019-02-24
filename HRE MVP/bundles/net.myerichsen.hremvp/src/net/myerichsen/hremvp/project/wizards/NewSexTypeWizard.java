@@ -79,13 +79,13 @@ public class NewSexTypeWizard extends Wizard {
 
 				for (int i = 0; i < input.size(); i++) {
 					dp = new DictionaryProvider();
-					dp.setIsoCode(input.get(i).get(0));
-					dp.setLabel(input.get(i).get(1));
+					dp.setIsoCode(input.get(i).get(2));
+					dp.setLabel(input.get(i).get(3));
 					dp.setLabelPid(labelPid);
 					final int dictionaryPid = dp.insert();
 					LOGGER.info("Inserted dictionary element " + dictionaryPid
-							+ ", " + input.get(i).get(0) + ", "
-							+ input.get(i).get(1));
+							+ ", " + input.get(i).get(2) + ", "
+							+ input.get(i).get(3));
 				}
 
 				eventBroker.post(

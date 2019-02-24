@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
@@ -244,7 +244,7 @@ public class SexTypeServer implements IHREServer {
 			return lls;
 		}
 
-		String sexTypePidString = "";
+		String sexTypePidString = "1";
 		final List<SexTypes> list = sexType.get();
 
 		for (final SexTypes sexTypes : list) {

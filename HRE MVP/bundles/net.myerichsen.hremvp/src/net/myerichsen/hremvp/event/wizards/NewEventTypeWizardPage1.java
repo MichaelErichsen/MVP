@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new event type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 public class NewEventTypeWizardPage1 extends WizardPage {
@@ -98,22 +98,38 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
+		tblclmnId.setWidth(80);
+		tblclmnId.setText("Event Type Id");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+
+		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnILabelId = tableViewerColumnLabelId
+				.getColumn();
+		tblclmnILabelId.setWidth(80);
+		tblclmnILabelId.setText("Dictionary label Id");
+		tableViewerColumnLabelId
+				.setLabelProvider(new HREColumnLabelProvider(1));
+
 		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
-		tblclmnIsoCode.setWidth(100);
+		tblclmnIsoCode.setWidth(80);
 		tblclmnIsoCode.setText("ISO Code");
 		tableViewerColumnIsoCode
-				.setLabelProvider(new HREColumnLabelProvider(0));
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
 		tblclmnLabel.setWidth(394);
-		tblclmnLabel.setText("Label (Click to edit)");
+		tblclmnLabel.setText("Event label");
 		tableViewerColumnLabel.setEditingSupport(
-				new HreTypeLabelEditingSupport(tableViewer, 1));
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
+				new HreTypeLabelEditingSupport(tableViewer, 3));
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

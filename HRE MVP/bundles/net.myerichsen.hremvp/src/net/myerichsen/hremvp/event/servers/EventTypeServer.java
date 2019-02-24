@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 public class EventTypeServer implements IHREServer {
@@ -167,7 +167,7 @@ public class EventTypeServer implements IHREServer {
 			return lls;
 		}
 
-		String eventTypePidString = "";
+		String eventTypePidString = "1";
 		final List<EventTypes> list = eventType.get();
 
 		for (final EventTypes eventTypes : list) {

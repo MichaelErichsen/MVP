@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all event types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -211,6 +211,8 @@ public class EventTypeNavigator {
 			provider.delete(eventTypePid);
 			eventBroker.post("MESSAGE",
 					"Event type " + eventTypeName + " has been deleted");
+			eventBroker.post(Constants.EVENT_TYPE_PID_UPDATE_TOPIC,
+					eventTypePid);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

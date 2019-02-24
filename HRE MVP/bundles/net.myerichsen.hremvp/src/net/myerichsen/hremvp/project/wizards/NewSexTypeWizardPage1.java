@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new sex type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 public class NewSexTypeWizardPage1 extends WizardPage {
@@ -74,7 +74,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		container.setLayout(new GridLayout(2, false));
 
 		final Label lblLabelPid = new Label(container, SWT.NONE);
-		lblLabelPid.setText("New event type label pid");
+		lblLabelPid.setText("New sex type label pid");
 
 		textLabelPid = new Text(container, SWT.BORDER);
 		textLabelPid.setEditable(false);
@@ -88,6 +88,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		textAbbreviation = new Text(container, SWT.BORDER);
 		textAbbreviation.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textAbbreviation.setFocus();
 
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
@@ -96,22 +97,38 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
+		tblclmnId.setWidth(80);
+		tblclmnId.setText("Sex Type Id");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+
+		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnILabelId = tableViewerColumnLabelId
+				.getColumn();
+		tblclmnILabelId.setWidth(80);
+		tblclmnILabelId.setText("Dictionary label Id");
+		tableViewerColumnLabelId
+				.setLabelProvider(new HREColumnLabelProvider(1));
+
 		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
-		tblclmnIsoCode.setWidth(100);
+		tblclmnIsoCode.setWidth(80);
 		tblclmnIsoCode.setText("ISO Code");
 		tableViewerColumnIsoCode
-				.setLabelProvider(new HREColumnLabelProvider(0));
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
 		tblclmnLabel.setWidth(394);
-		tblclmnLabel.setText("Label (Click to edit)");
+		tblclmnLabel.setText("Sex type label");
 		tableViewerColumnLabel.setEditingSupport(
-				new HreTypeLabelEditingSupport(tableViewer, 1));
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
+				new HreTypeLabelEditingSupport(tableViewer, 3));
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

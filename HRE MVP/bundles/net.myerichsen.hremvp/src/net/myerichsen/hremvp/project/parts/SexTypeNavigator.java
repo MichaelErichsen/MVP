@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sex types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -193,7 +193,7 @@ public class SexTypeNavigator {
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
 			sexTypePid = Integer.parseInt(item.getText(0));
-			primaryName = item.getText(1);
+			primaryName = item.getText(3);
 		}
 
 		// Last chance to regret
@@ -215,6 +215,7 @@ public class SexTypeNavigator {
 			LOGGER.info("Sex type " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Sex type " + primaryName + " has been deleted");
+			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
