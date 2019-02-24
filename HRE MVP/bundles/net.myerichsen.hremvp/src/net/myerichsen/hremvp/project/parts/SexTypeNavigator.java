@@ -235,6 +235,7 @@ public class SexTypeNavigator {
 	protected void openSexTypeView() {
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.opensextypeview", null);
+		// FIXME Null pointer exception
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();

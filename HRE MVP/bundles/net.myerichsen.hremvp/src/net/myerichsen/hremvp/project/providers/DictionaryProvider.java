@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.DictionaryServer;
  * Provide a dictionary entry
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 public class DictionaryProvider implements IHREProvider {
@@ -19,6 +19,7 @@ public class DictionaryProvider implements IHREProvider {
 	private int LabelPid;
 	private String IsoCode;
 	private String Label;
+	private String LabelType;
 
 	private final DictionaryServer server;
 
@@ -89,6 +90,13 @@ public class DictionaryProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return the labelType
+	 */
+	public String getLabelType() {
+		return LabelType;
+	}
+
+	/**
 	 * @throws SQLException
 	 *
 	 */
@@ -117,6 +125,7 @@ public class DictionaryProvider implements IHREProvider {
 		server.setIsoCode(IsoCode);
 		server.setLabel(Label);
 		server.setLabelPid(LabelPid);
+		server.setLabelType(LabelType);
 		return server.insert();
 	}
 
@@ -148,6 +157,13 @@ public class DictionaryProvider implements IHREProvider {
 		LabelPid = labelPid;
 	}
 
+	/**
+	 * @param labelType the labelType to set
+	 */
+	public void setLabelType(String labelType) {
+		LabelType = labelType;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -159,6 +175,7 @@ public class DictionaryProvider implements IHREProvider {
 		server.setIsoCode(IsoCode);
 		server.setLabel(Label);
 		server.setLabelPid(LabelPid);
+		server.setLabelType(LabelType);
 		server.update();
 	}
 

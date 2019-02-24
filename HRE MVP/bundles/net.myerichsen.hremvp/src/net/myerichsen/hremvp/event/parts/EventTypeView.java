@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event type with all national labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 
@@ -249,6 +249,7 @@ public class EventTypeView {
 							dp.setIsoCode(input.get(i).get(2));
 							dp.setLabel(input.get(i).get(3));
 							dp.setLabelPid(provider.getLabelPid());
+							dp.setLabelType("EVENT");
 							dp.update();
 							LOGGER.info("Updated dictionary element "
 									+ input.get(i).get(0) + ", "

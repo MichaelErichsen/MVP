@@ -248,6 +248,7 @@ public class SexTypeView {
 							dp.setIsoCode(input.get(i).get(2));
 							dp.setLabel(input.get(i).get(3));
 							dp.setLabelPid(provider.getLabelPid());
+							dp.setLabelType("SEX");
 							dp.update();
 							LOGGER.info("Updated dictionary element "
 									+ input.get(i).get(0) + ", "

@@ -17,13 +17,13 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Location Name Map view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. sep. 2018
+ * @version 24. feb. 2019
  *
  */
 public class OpenLocationGoogleMapHandler {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationGoogleMapBrowser";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationGoogleMapBrowser";
 
 	/**
 	 * @param partService  The Eclipse part service

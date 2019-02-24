@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Dictionary;
  * {@link net.myerichsen.hremvp.dbmodels.Dictionary}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 public class DictionaryServer implements IHREServer {
@@ -22,6 +22,7 @@ public class DictionaryServer implements IHREServer {
 	private String IsoCode;
 	private String Label;
 	private final int TableId = 6;
+	private String LabelType;;
 
 	private final Dictionary dictionary;
 
@@ -92,6 +93,13 @@ public class DictionaryServer implements IHREServer {
 	}
 
 	/**
+	 * @return the labelType
+	 */
+	public String getLabelType() {
+		return LabelType;
+	}
+
+	/**
 	 * @return
 	 * @throws SQLException
 	 */
@@ -134,6 +142,7 @@ public class DictionaryServer implements IHREServer {
 		dictionary.setLabel(Label);
 		dictionary.setLabelPid(LabelPid);
 		dictionary.setTableId(TableId);
+		dictionary.setLabelType(LabelType);
 		return dictionary.insert();
 	}
 
@@ -165,6 +174,13 @@ public class DictionaryServer implements IHREServer {
 		LabelPid = labelPid;
 	}
 
+	/**
+	 * @param labelType the labelType to set
+	 */
+	public void setLabelType(String labelType) {
+		LabelType = labelType;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -176,6 +192,7 @@ public class DictionaryServer implements IHREServer {
 		dictionary.setIsoCode(IsoCode);
 		dictionary.setLabel(Label);
 		dictionary.setLabelPid(LabelPid);
+		dictionary.setLabelType(LabelType);
 		dictionary.update();
 	}
 

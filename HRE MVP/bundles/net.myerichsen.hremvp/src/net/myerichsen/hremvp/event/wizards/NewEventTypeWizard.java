@@ -83,6 +83,7 @@ public class NewEventTypeWizard extends Wizard {
 					dp.setIsoCode(input.get(i).get(2));
 					dp.setLabel(input.get(i).get(3));
 					dp.setLabelPid(labelPid);
+					dp.setLabelType("EVENT");
 					final int dictionaryPid = dp.insert();
 					LOGGER.info("Inserted dictionary element " + dictionaryPid
 							+ ", " + input.get(i).get(2) + ", "

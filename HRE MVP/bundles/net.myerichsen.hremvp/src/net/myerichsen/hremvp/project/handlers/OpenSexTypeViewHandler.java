@@ -7,7 +7,6 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
@@ -16,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the sex type view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 24. feb. 2019
  *
  */
 public class OpenSexTypeViewHandler {
@@ -35,25 +34,25 @@ public class OpenSexTypeViewHandler {
 				null, MPartStack.class, null);
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-
-				// FIXME org.eclipse.core.commands.ExecutionException:
-				// Error executing 'net.myerichsen.hremvp.command.opensextypevie
-				// w': java.lang.NullPointerException
-				// Caused by: java.lang.NullPointerException
-				// at
-				// net.myerichsen.hremvp.project.handlers.OpenSexTypeViewHandler.
-				// execute(OpenSexTypeViewHandler.java:43)
-				if (part.getContributionURI().equals(contributionURI)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					return;
-				}
-			}
-		}
+//		for (final MPartStack mPartStack : stacks) {
+//			final List<MStackElement> a = mPartStack.getChildren();
+//
+//			for (int i = 0; i < a.size(); i++) {
+//				part = (MPart) a.get(i);
+//
+//				// FIXME org.eclipse.core.commands.ExecutionException:
+//				// Error executing 'net.myerichsen.hremvp.command.opensextypevie
+//				// w': java.lang.NullPointerException
+//				// Caused by: java.lang.NullPointerException
+//				// at
+//				// net.myerichsen.hremvp.project.handlers.OpenSexTypeViewHandler.
+//				// execute(OpenSexTypeViewHandler.java:43)
+//				if (part.getContributionURI().equals(contributionURI)) {
+//					partService.showPart(part, PartState.ACTIVATE);
+//					return;
+//				}
+//			}
+//		}
 
 		part.setLabel("Sex Type");
 		part.setContainerData("650");
