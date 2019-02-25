@@ -363,7 +363,7 @@ public class PersonNameStyleView {
 		}
 
 		eventBroker.post(
-				net.myerichsen.hremvp.Constants.NAME_MAP_PID_UPDATE_TOPIC,
+				net.myerichsen.hremvp.Constants.PERSON_NAME_MAP_PID_UPDATE_TOPIC,
 				nameMapPid);
 	}
 
@@ -379,7 +379,7 @@ public class PersonNameStyleView {
 	@Inject
 	@Optional
 	private void subscribeNameStyleUpdateTopic(
-			@UIEventTopic(Constants.NAME_STYLE_PID_UPDATE_TOPIC) int nameStylePid)
+			@UIEventTopic(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC) int nameStylePid)
 			throws SQLException, MvpException {
 		LOGGER.info("Got pid " + nameStylePid);
 		get(nameStylePid);

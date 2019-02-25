@@ -11,10 +11,10 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 import net.myerichsen.hremvp.project.servers.PersonNameStyleServer;
 
 /**
- * Provide a name style
+ * Provide a person name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 25. feb. 2019
  *
  */
 public class PersonNameStyleProvider implements IHREProvider {
@@ -124,9 +124,10 @@ public class PersonNameStyleProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param i 
 	 * @return
 	 */
-	public Object getPersonNameStyleList() {
+	public Object getPersonNameStyleList(int i) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -209,6 +210,22 @@ public class PersonNameStyleProvider implements IHREProvider {
 		server.setNameStylePid(nameStylePid);
 		server.setMapList(mapList);
 		server.update();
+	}
+
+	/**
+	 * @return
+	 */
+	public int getLabelPid() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * @return
+	 */
+	public Object getPersonNameStyleList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

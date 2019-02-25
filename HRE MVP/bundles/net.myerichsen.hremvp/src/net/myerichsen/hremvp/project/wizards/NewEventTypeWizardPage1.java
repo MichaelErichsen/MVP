@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new event type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 25. feb. 2019
  *
  */
 public class NewEventTypeWizardPage1 extends WizardPage {
@@ -44,7 +44,6 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 	 * Constructor
 	 *
 	 * @param context
-	 * @throws SQLException
 	 */
 	public NewEventTypeWizardPage1(IEclipseContext context) {
 		super("New Event type wizard Page 1");

@@ -340,7 +340,7 @@ public class PersonNamePartNavigator {
 		}
 
 		LOGGER.info("Setting name part pid: " + namePartPid);
-		eventBroker.post(Constants.NAME_PART_PID_UPDATE_TOPIC,
+		eventBroker.post(Constants.PERSON_NAME_PART_PID_UPDATE_TOPIC,
 				Integer.parseInt(namePartPid));
 	}
 
@@ -356,7 +356,8 @@ public class PersonNamePartNavigator {
 
 		final int nameStylePid = Integer.parseInt(textNameStylePid.getText());
 		LOGGER.info("Setting name style pid: " + nameStylePid);
-		eventBroker.post(Constants.NAME_STYLE_PID_UPDATE_TOPIC, nameStylePid);
+		eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
+				nameStylePid);
 	}
 
 	/**
@@ -372,7 +373,7 @@ public class PersonNamePartNavigator {
 	@Inject
 	@Optional
 	private void subscribeNamePidUpdateTopic(
-			@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int key) {
+			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int key) {
 		LOGGER.fine("Received name id " + key);
 
 		if (key == 0) {

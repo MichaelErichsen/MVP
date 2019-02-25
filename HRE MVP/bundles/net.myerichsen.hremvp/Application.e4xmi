@@ -169,7 +169,7 @@
   <handlers xmi:id="_0ZCjcLmLEei2l9IfejCopw" elementId="net.myerichsen.hremvp.handler.10" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationGoogleMapHandler" command="_sRX4wLmLEei2l9IfejCopw"/>
   <handlers xmi:id="_nRlyoL2JEeiJftxS8UK0pA" elementId="net.myerichsen.hremvp.handler.11" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.handlers.OpenEventViewHandler" command="_fftKsL2JEeiJftxS8UK0pA"/>
   <handlers xmi:id="_6vwNsMMqEeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.handler.12" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenSexViewHandler" command="_-JoJAMMpEeiYFOBp3zYx8Q"/>
-  <handlers xmi:id="_G0gGEMM4EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.handler.13" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNameStyleViewHandler" command="_4mJJ8MM3EeiYFOBp3zYx8Q"/>
+  <handlers xmi:id="_G0gGEMM4EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.handler.13" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenPersonNameStyleViewHandler" command="_4mJJ8MM3EeiYFOBp3zYx8Q"/>
   <handlers xmi:id="_Q5dHYMM5EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.handler.14" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNamePartViewHandler" command="_NbDt4MM5EeiYFOBp3zYx8Q"/>
   <handlers xmi:id="_AXSqoMP_EeiKp_Oike47LA" elementId="net.myerichsen.hremvp.handler.15" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNameMapViewHandler" command="_5jsP4MP-EeiKp_Oike47LA"/>
   <handlers xmi:id="_GI09cMSZEei7d_hxBvJGpw" elementId="net.myerichsen.hremvp.handler.16" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenSexTypeViewHandler" command="_DxX94MSZEei7d_hxBvJGpw"/>
@@ -204,7 +204,7 @@
   <commands xmi:id="_mP3hEKSJEeikydEfX4x7tA" elementId="net.myerichsen.hremvp.command.openpersonview" commandName="openPersonView" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_LGKFUKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.command.tablenavigatoropen" commandName="tablenavigatoropen" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_Ui9-AKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.command.tableeditoropen" commandName="tableeditoropen" category="_fymHQOWmEeirzfgMfQV5uA"/>
-  <commands xmi:id="_Z-VVgKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.command.opennameview" commandName="openNameView" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_Z-VVgKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.command.openpersonnameview" commandName="openPersonNameView" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_HYFpMK-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.command.openlocationnameview" commandName="openLocationNameView" category="_lxRDoBylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_tbsZ4LFTEei7F_uEER0ShA" elementId="net.myerichsen.hremvp.command.openlocationnamemapview" commandName="openLocationNameMapView" category="_UIbmMOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_c4b9ILQrEeiJPpXgDiVWkw" elementId="net.myerichsen.hremvp.command.openlocationnamepartview" commandName="openLocationNamePartView" category="_UIbmMOWmEeirzfgMfQV5uA"/>
@@ -213,16 +213,16 @@
   <commands xmi:id="_sRX4wLmLEei2l9IfejCopw" elementId="net.myerichsen.hremvp.command.openlocationgooglemap" commandName="openLocationGoogleMap" category="_UIbmMOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_fftKsL2JEeiJftxS8UK0pA" elementId="net.myerichsen.hremvp.command.openeventview" commandName="openEventView" category="_KdvUAO1xEeixq6yORkaFTA"/>
   <commands xmi:id="_-JoJAMMpEeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.command.opensexview" commandName="openSexView" category="_oxYVUBNHEemEvqVth7AYPg"/>
-  <commands xmi:id="_4mJJ8MM3EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.command.opennamestyleview" commandName="openNameStyleView" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_4mJJ8MM3EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.command.openpersonnamestyleview" commandName="openPersonNameStyleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_NbDt4MM5EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.command.opennamepartview" commandName="openNamePartView" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_5jsP4MP-EeiKp_Oike47LA" elementId="net.myerichsen.hremvp.command.opennamemapview" commandName="openNameMapView" category="_oxYVUBNHEemEvqVth7AYPg"/>
-  <commands xmi:id="_DxX94MSZEei7d_hxBvJGpw" elementId="net.myerichsen.hremvp.command.opensextypeview" commandName="openSexTypeView" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_DxX94MSZEei7d_hxBvJGpw" elementId="net.myerichsen.hremvp.command.opensextypeview" commandName="openSexTypeView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_Z6qoYM-eEeiCtsQHb45mZQ" elementId="org.eclipse.ui.window.preferences" commandName="org.eclipse.ui.window.preferences" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_agVWwOTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.command.switchtobaseperspective" commandName="switchToBasePerspective"/>
   <commands xmi:id="_fXKi0OTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.command.switchtolocationperspective" commandName="switchToLocationPerspective" category="_UIbmMOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_uCdUsOWlEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.command.switchtoadministrationperspective" commandName="switchToAdministrationPerspective" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_Q0bJQO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.command.switchtoeventperspective" commandName="switchToEventPerspective" category="_KdvUAO1xEeixq6yORkaFTA"/>
-  <commands xmi:id="_RlnDsPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.command.openeventtypeview" commandName="openEventTypeView" category="_KdvUAO1xEeixq6yORkaFTA"/>
+  <commands xmi:id="_RlnDsPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.command.openeventtypeview" commandName="openEventTypeView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_Ojg1gA39Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.command.projectnavigator" commandName="ProjectNavigator" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_6wlLfMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.exit" commandName="ProjectQuit" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_UJmm8MVREeiiLPskAlZrrQ" elementId="net.myerichsen.hremvp.command.startembeddedserver" commandName="ProjectStartEmbeddedServer" category="_fymHQOWmEeirzfgMfQV5uA"/>

@@ -111,22 +111,13 @@ public class PersonNameStyleNavigator {
 		tableViewerColumnStyleId
 				.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnDictionaryId = new TableViewerColumn(
-				tableViewer, SWT.NONE);
-		final TableColumn tblclmnDictionaryId = tableViewerColumnDictionaryId
-				.getColumn();
-		tblclmnDictionaryId.setWidth(80);
-		tblclmnDictionaryId.setText("Dictionary Label Id");
-		tableViewerColumnDictionaryId
-				.setLabelProvider(new HREColumnLabelProvider(1));
-
 		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
 		tblclmnIsoCode.setWidth(80);
 		tblclmnIsoCode.setText("ISO Code");
 		tableViewerColumnIsoCode
-				.setLabelProvider(new HREColumnLabelProvider(2));
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnStyleName = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -135,7 +126,7 @@ public class PersonNameStyleNavigator {
 		tblclmnStyleName.setWidth(300);
 		tblclmnStyleName.setText("Style Name");
 		tableViewerColumnStyleName
-				.setLabelProvider(new HREColumnLabelProvider(3));
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);

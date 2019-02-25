@@ -227,7 +227,7 @@ public class PersonNamesView {
 			LOGGER.info("Name " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Name " + primaryName + " has been deleted");
-			eventBroker.post(Constants.NAME_PID_UPDATE_TOPIC, 0);
+			eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, 0);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -257,7 +257,7 @@ public class PersonNamesView {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int namePid = Integer.parseInt(selection[0].getText(0));
 		LOGGER.info("Setting name pid: " + namePid);
-		eventBroker.post(Constants.NAME_PID_UPDATE_TOPIC, namePid);
+		eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, namePid);
 	}
 
 	@Focus
@@ -270,7 +270,7 @@ public class PersonNamesView {
 	@Inject
 	@Optional
 	private void subscribeNamePidUpdateTopic(
-			@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int namePid) {
+			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int namePid) {
 		LOGGER.fine("Received name id " + namePid);
 		try {
 			tableViewer.setInput(provider.getPersonNameList(personPid));

@@ -1,20 +1,30 @@
 package net.myerichsen.hremvp.project.wizards;
 
+import java.util.logging.Logger;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jface.wizard.IWizardContainer;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.wizard.Wizard;
+
+import net.myerichsen.hremvp.project.providers.DictionaryProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
+ * Wizard to add a person name style
+ * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 25. feb. 2019
  *
  */
-public class NewPersonNameStyleWizard implements IWizard {
+public class NewPersonNameStyleWizard extends Wizard {
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final IEclipseContext context;
+	private final IEventBroker eventBroker;
+
+	private NewPersonNameStyleWizardPage1 page1;
+	private NewPersonNameStyleWizardPage2 page2;
+	private PersonNameStyleProvider provider;
 
 	/**
 	 * Constructor
@@ -24,7 +34,10 @@ public class NewPersonNameStyleWizard implements IWizard {
 	 */
 	public NewPersonNameStyleWizard(int personNameStylePid,
 			IEclipseContext context) {
-		// TODO Auto-generated constructor stub
+		setWindowTitle("Add a person name style");
+		setForcePreviousAndNextButtons(true);
+		this.context = context;
+		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/*
@@ -34,8 +47,10 @@ public class NewPersonNameStyleWizard implements IWizard {
 	 */
 	@Override
 	public void addPages() {
-		// TODO Auto-generated method stub
-
+		page1 = new NewPersonNameStyleWizardPage1(context);
+		addPage(page1);
+		page2 = new NewPersonNameStyleWizardPage2(context);
+		addPage(page2);
 	}
 
 	/*
@@ -44,225 +59,49 @@ public class NewPersonNameStyleWizard implements IWizard {
 	 * @see org.eclipse.jface.wizard.IWizard#canFinish()
 	 */
 	@Override
-	public boolean canFinish() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#createPageControls(org.eclipse.swt.
-	 * widgets.Composite)
-	 */
-	@Override
-	public void createPageControls(Composite pageContainer) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#dispose()
-	 */
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getContainer()
-	 */
-	@Override
-	public IWizardContainer getContainer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getDefaultPageImage()
-	 */
-	@Override
-	public Image getDefaultPageImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getDialogSettings()
-	 */
-	@Override
-	public IDialogSettings getDialogSettings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.jface.wizard.IWizard#getNextPage(org.eclipse.jface.wizard.
-	 * IWizardPage)
-	 */
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getPage(java.lang.String)
-	 */
-	@Override
-	public IWizardPage getPage(String pageName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getPageCount()
-	 */
-	@Override
-	public int getPageCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getPages()
-	 */
-	@Override
-	public IWizardPage[] getPages() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.jface.wizard.IWizard#getPreviousPage(org.eclipse.jface.wizard
-	 * .IWizardPage)
-	 */
-	@Override
-	public IWizardPage getPreviousPage(IWizardPage page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getStartingPage()
-	 */
-	@Override
-	public IWizardPage getStartingPage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getTitleBarColor()
-	 */
-	@Override
-	public RGB getTitleBarColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getWindowTitle()
-	 */
-	@Override
-	public String getWindowTitle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#isHelpAvailable()
-	 */
-	@Override
-	public boolean isHelpAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#needsPreviousAndNextButtons()
-	 */
-	@Override
-	public boolean needsPreviousAndNextButtons() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#needsProgressMonitor()
-	 */
-	@Override
-	public boolean needsProgressMonitor() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#performCancel()
-	 */
-	@Override
-	public boolean performCancel() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
-	 */
-	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
+		DictionaryProvider dp;
+//		final String abbreviation = page1.getTextAbbreviation().getText();
+
+//		if (abbreviation.equals("") == false) {
+		try {
+			provider = new PersonNameStyleProvider();
+//				provider.setAbbreviation(abbreviation);
+
+			final int personNameStylePid = provider.insert();
+			LOGGER.info("Inserted person name style " + personNameStylePid);
+			eventBroker.post("MESSAGE",
+					"Inserted person name style " + personNameStylePid);
+
+			final int labelPid = provider.getLabelPid();
+
+//			final List<List<String>> input = (List<List<String>>) page1
+//					.getTableViewer().getInput();
+//
+//			for (int i = 0; i < input.size(); i++) {
+//				dp = new DictionaryProvider();
+//				dp.setIsoCode(input.get(i).get(2));
+//				dp.setLabel(input.get(i).get(3));
+//				dp.setLabelPid(labelPid);
+//				dp.setLabelType("NAMESTYLE");
+//				final int dictionaryPid = dp.insert();
+//				LOGGER.info("Inserted dictionary element " + dictionaryPid
+//						+ ", " + input.get(i).get(2) + ", "
+//						+ input.get(i).get(3));
+//			}
+
+			eventBroker.post(
+					net.myerichsen.hremvp.Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
+					personNameStylePid);
+			return true;
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
+//		}
+
 		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.jface.wizard.IWizard#setContainer(org.eclipse.jface.wizard.
-	 * IWizardContainer)
-	 */
-	@Override
-	public void setContainer(IWizardContainer wizardContainer) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

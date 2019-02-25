@@ -291,7 +291,7 @@ public class PersonNamePartView {
 	@Inject
 	@Optional
 	private void subscribeNamePartUpdateTopic(
-			@UIEventTopic(Constants.NAME_PART_PID_UPDATE_TOPIC) int namePartPid)
+			@UIEventTopic(Constants.PERSON_NAME_PART_PID_UPDATE_TOPIC) int namePartPid)
 			throws SQLException, MvpException {
 		if (namePartPid > 0) {
 			get(namePartPid);

@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+@SuppressWarnings("restriction")
 @Creatable
 public class E4PreferenceRegistry {
 
@@ -76,12 +77,14 @@ public class E4PreferenceRegistry {
 		pm = new PreferenceManager();
 		IContributionFactory factory = context.get(IContributionFactory.class);
 
-		for (IConfigurationElement elmt : registry.getConfigurationElementsFor(PREFS_PAGE_XP)) {
+		for (IConfigurationElement elmt : registry
+				.getConfigurationElementsFor(PREFS_PAGE_XP)) {
 			String bundleId = elmt.getNamespaceIdentifier();
 			if (!elmt.getName().equals(ELMT_PAGE)) {
 				logger.warn("unexpected element: {0}", elmt.getName());
 				continue;
-			} else if (isEmpty(elmt.getAttribute(ATTR_ID)) || isEmpty(elmt.getAttribute(ATTR_NAME))) {
+			} else if (isEmpty(elmt.getAttribute(ATTR_ID))
+					|| isEmpty(elmt.getAttribute(ATTR_NAME))) {
 				logger.warn("missing id and/or name: {}", bundleId);
 				continue;
 			}
@@ -89,10 +92,12 @@ public class E4PreferenceRegistry {
 			if (elmt.getAttribute(ATTR_CLASS) != null) {
 				PreferencePage page = null;
 				try {
-					String prefPageURI = getClassURI(bundleId, elmt.getAttribute(ATTR_CLASS));
+					String prefPageURI = getClassURI(bundleId,
+							elmt.getAttribute(ATTR_CLASS));
 					Object object = factory.create(prefPageURI, context);
 					if (!(object instanceof PreferencePage)) {
-						logger.error("Expected instance of PreferencePage: {0}", elmt.getAttribute(ATTR_CLASS));
+						logger.error("Expected instance of PreferencePage: {0}",
+								elmt.getAttribute(ATTR_CLASS));
 						continue;
 					}
 					page = (PreferencePage) object;
@@ -103,7 +108,8 @@ public class E4PreferenceRegistry {
 					continue;
 				}
 				ContextInjectionFactory.inject(page, context);
-				if ((page.getTitle() == null || page.getTitle().isEmpty()) && elmt.getAttribute(ATTR_NAME) != null) {
+				if ((page.getTitle() == null || page.getTitle().isEmpty())
+						&& elmt.getAttribute(ATTR_NAME) != null) {
 					page.setTitle(elmt.getAttribute(ATTR_NAME));
 				}
 
@@ -122,12 +128,14 @@ public class E4PreferenceRegistry {
 				pm.addToRoot(pn);
 			} else {
 				/*
-				 * IPreferenceNode parent = findNode(pm, category); if (parent == null) { // No
-				 * parent found, but may be the extension has not been read yet. So remember of
-				 * it unboundedNodes.put(pn, category); } else { parent.add(pn); }
+				 * IPreferenceNode parent = findNode(pm, category); if (parent
+				 * == null) { // No parent found, but may be the extension has
+				 * not been read yet. So remember of it unboundedNodes.put(pn,
+				 * category); } else { parent.add(pn); }
 				 */
 				// Check if this category is already registered.
-				Collection<IPreferenceNode> children = childrenNodes.get(category);
+				Collection<IPreferenceNode> children = childrenNodes
+						.get(category);
 				if (children == null) {
 					children = new ArrayList<IPreferenceNode>();
 					childrenNodes.put(category, children);
@@ -142,7 +150,8 @@ public class E4PreferenceRegistry {
 		Collection<String> categoriesDone = new ArrayList<String>();
 
 		while (!childrenNodes.isEmpty()) {
-			for (String cat : Collections.unmodifiableSet(childrenNodes.keySet())) {
+			for (String cat : Collections
+					.unmodifiableSet(childrenNodes.keySet())) {
 				// Is this category already in preference manager ? If not add
 				// it later...
 				IPreferenceNode parent = findNode(pm, cat);
@@ -187,7 +196,8 @@ public class E4PreferenceRegistry {
 				store = (IPreferenceStore) context.get((String) data);
 
 		} else {
-			// Default behavior : create a preference store for this bundle and remember of
+			// Default behavior : create a preference store for this bundle and
+			// remember of
 			// it
 			store = new ScopedPreferenceStore(InstanceScope.INSTANCE, bundleId);
 			psProviders.put(bundleId, store);
@@ -196,8 +206,8 @@ public class E4PreferenceRegistry {
 		if (store != null)
 			page.setPreferenceStore(store);
 		else {
-			logger.warn(
-					"Unable to set the preferenceStore for page " + page.getTitle() + " defined in bundle " + bundleId);
+			logger.warn("Unable to set the preferenceStore for page "
+					+ page.getTitle() + " defined in bundle " + bundleId);
 		}
 
 	}
@@ -205,16 +215,19 @@ public class E4PreferenceRegistry {
 	/** Read the e4PreferenceStoreProvider extension point */
 	private void initialisePreferenceStoreProviders() {
 		if (psProviders == null) {
-			IContributionFactory factory = context.get(IContributionFactory.class);
+			IContributionFactory factory = context
+					.get(IContributionFactory.class);
 
 			psProviders = new HashMap<String, Object>();
 
 			// Read extensions and fill the map...
-			for (IConfigurationElement elmt : registry.getConfigurationElementsFor(PREF_STORE_PROVIDER)) {
+			for (IConfigurationElement elmt : registry
+					.getConfigurationElementsFor(PREF_STORE_PROVIDER)) {
 				String declaringBundle = elmt.getNamespaceIdentifier();
 				String pluginId = elmt.getAttribute(ATTR_PLUGIN_ID);
 				if (isEmpty(pluginId)) {
-					logger.warn("missing plugin Id in extension " + PREF_STORE_PROVIDER + " check the plugin "
+					logger.warn("missing plugin Id in extension "
+							+ PREF_STORE_PROVIDER + " check the plugin "
 							+ declaringBundle);
 					continue;
 				}
@@ -222,8 +235,10 @@ public class E4PreferenceRegistry {
 				String classname = elmt.getAttribute(ATTR_CLASS);
 				String objectId = elmt.getAttribute(ATTR_ID_IN_WBCONTEXT);
 
-				if ((isEmpty(classname) && isEmpty(objectId)) || (((classname != null) && classname.length() > 0)
-						&& ((objectId != null) && objectId.length() > 0))) {
+				if ((isEmpty(classname) && isEmpty(objectId))
+						|| (((classname != null) && classname.length() > 0)
+								&& ((objectId != null)
+										&& objectId.length() > 0))) {
 					logger.warn("In extension " + PREF_STORE_PROVIDER
 							+ " only one of the two attributes (pluginId or idInWorkbenchContext) must be set. Check the plugin "
 							+ declaringBundle);
@@ -250,14 +265,16 @@ public class E4PreferenceRegistry {
 
 	private IPreferenceNode findNode(PreferenceManager pm, String categoryId) {
 		for (Object o : pm.getElements(PreferenceManager.POST_ORDER)) {
-			if (o instanceof IPreferenceNode && ((IPreferenceNode) o).getId().equals(categoryId)) {
+			if (o instanceof IPreferenceNode
+					&& ((IPreferenceNode) o).getId().equals(categoryId)) {
 				return (IPreferenceNode) o;
 			}
 		}
 		return null;
 	}
 
-	private String getClassURI(String definingBundleId, String spec) throws ClassNotFoundException {
+	private String getClassURI(String definingBundleId, String spec)
+			throws ClassNotFoundException {
 		if (spec.startsWith("platform:")) {
 			return spec;
 		} // $NON-NLS-1$

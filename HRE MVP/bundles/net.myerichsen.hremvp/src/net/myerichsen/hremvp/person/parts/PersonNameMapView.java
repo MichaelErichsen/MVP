@@ -297,7 +297,7 @@ public class PersonNameMapView {
 	@Inject
 	@Optional
 	private void subscribeNameMapUpdateTopic(
-			@UIEventTopic(Constants.NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid)
+			@UIEventTopic(Constants.PERSON_NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid)
 			throws SQLException {
 		get(nameMapPid);
 	}

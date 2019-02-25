@@ -157,7 +157,7 @@ public class NewPersonNameWizard extends Wizard {
 					net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 					personPid);
 			eventBroker.post(
-					net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC,
+					net.myerichsen.hremvp.Constants.PERSON_NAME_PID_UPDATE_TOPIC,
 					namePid);
 			return true;
 		} catch (
