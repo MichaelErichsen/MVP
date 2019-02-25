@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.person.dialogs;
+package net.myerichsen.hremvp.project.dialogs;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
-import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
  * Display all person name styles

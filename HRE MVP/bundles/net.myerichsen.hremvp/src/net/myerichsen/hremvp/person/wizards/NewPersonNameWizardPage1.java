@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.person.dialogs.PersonNameStyleNavigatorDialog;
-import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.project.dialogs.PersonNameStyleNavigatorDialog;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**

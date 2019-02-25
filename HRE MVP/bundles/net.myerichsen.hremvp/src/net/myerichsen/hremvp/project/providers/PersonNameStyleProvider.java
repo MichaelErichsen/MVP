@@ -1,33 +1,31 @@
-package net.myerichsen.hremvp.person.servers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.myerichsen.hremvp.IHREServer;
+import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
+import net.myerichsen.hremvp.project.servers.PersonNameStyleServer;
 
 /**
- * Business logic interface for
- * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
+ * Provide a name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 19. feb. 2019
  *
  */
-public class PersonNameStyleServer implements IHREServer {
+public class PersonNameStyleProvider implements IHREProvider {
 	private int nameStylePid;
 	private String label;
 	private int languagePid;
 	private String languageLabel;
 	private String isoCode;
 
-	private PersonNameStyles style;
-	private Languages language;
 	private List<PersonNameMaps> mapList;
+	private final PersonNameStyleServer server;
 
 	/**
 	 * Constructor
@@ -36,9 +34,8 @@ public class PersonNameStyleServer implements IHREServer {
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonNameStyleServer() throws SQLException {
-		style = new PersonNameStyles();
-		language = new Languages();
+	public PersonNameStyleProvider() throws SQLException {
+		server = new PersonNameStyleServer();
 		mapList = new ArrayList<>();
 	}
 
@@ -52,7 +49,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		style.delete(key);
+		server.delete(key);
 	}
 
 	/**
@@ -61,7 +58,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public List<PersonNameStyles> get() throws SQLException {
-		return style.get();
+		return server.get();
 	}
 
 	/**
@@ -74,14 +71,14 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		style.get(key);
-		setLabel("style.getLabelPid()");
-		setNameStylePid(style.getNameStylePid());
+		server.get(key);
 
-		setLanguageLabel(language.getLabel());
-		setIsoCode(language.getIsocode());
-
-		mapList = new PersonNameMaps().getFKNameStylePid(nameStylePid);
+		setLabel(server.getLabel());
+		setLanguagePid(server.getLanguagePid());
+		setNameStylePid(server.getNameStylePid());
+		setIsoCode(server.getIsoCode());
+		setLanguageLabel(server.getLanguageLabel());
+		setMapList(server.getMapList());
 	}
 
 	/**
@@ -96,13 +93,6 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	public String getLabel() {
 		return label;
-	}
-
-	/**
-	 * @return the language
-	 */
-	public Languages getLanguage() {
-		return language;
 	}
 
 	/**
@@ -134,10 +124,11 @@ public class PersonNameStyleServer implements IHREServer {
 	}
 
 	/**
-	 * @return the style
+	 * @return
 	 */
-	public PersonNameStyles getStyle() {
-		return style;
+	public Object getPersonNameStyleList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -145,12 +136,18 @@ public class PersonNameStyleServer implements IHREServer {
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 *
 	 */
 	@Override
-	public int insert() throws SQLException {
-		style.setLabelPid(0);
-		style.setNameStylePid(nameStylePid);
-		return style.insert();
+	public int insert() throws SQLException, MvpException {
+		server.setIsoCode(isoCode);
+		server.setLabel(label);
+		server.setLanguageLabel(languageLabel);
+		server.setLanguagePid(languagePid);
+		server.setNameStylePid(nameStylePid);
+		server.setMapList(mapList);
+		return server.insert();
 	}
 
 	/**
@@ -165,13 +162,6 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	/**
-	 * @param language the language to set
-	 */
-	public void setLanguage(Languages language) {
-		this.language = language;
 	}
 
 	/**
@@ -203,22 +193,22 @@ public class PersonNameStyleServer implements IHREServer {
 	}
 
 	/**
-	 * @param style the style to set
-	 */
-	public void setStyle(PersonNameStyles style) {
-		this.style = style;
-	}
-
-	/**
 	 * Update a row
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 *
 	 */
 	@Override
-	public void update() throws SQLException {
-		style.setLabelPid(0);
-		style.setNameStylePid(nameStylePid);
-		style.update();
+	public void update() throws SQLException, MvpException {
+		server.setIsoCode(isoCode);
+		server.setLabel(label);
+		server.setLanguageLabel(languageLabel);
+		server.setLanguagePid(languagePid);
+		server.setNameStylePid(nameStylePid);
+		server.setMapList(mapList);
+		server.update();
 	}
+
 }

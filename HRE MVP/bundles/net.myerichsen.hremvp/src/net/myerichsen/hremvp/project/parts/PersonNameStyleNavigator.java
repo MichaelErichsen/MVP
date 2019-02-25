@@ -18,7 +18,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
@@ -40,19 +39,19 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.project.providers.EventTypeProvider;
-import net.myerichsen.hremvp.project.wizards.NewEventTypeWizard;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.project.wizards.NewPersonNameStyleWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all event types
+ * Display all person name styles
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 25. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
-public class EventTypeNavigator {
+public class PersonNameStyleNavigator {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -63,24 +62,23 @@ public class EventTypeNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private final EventTypeProvider provider;
-	private TableViewer tableViewer;
-	private int eventTypePid = 0;
-	private final int labelPid = 0;
+	private PersonNameStyleProvider provider;
+	private int personNameStylePid;
+	private int labelPid;
 
-	/**
-	 * Constructor
-	 *
-	 */
-	public EventTypeNavigator() {
-		provider = new EventTypeProvider();
+	private TableViewer tableViewer;
+
+	public PersonNameStyleNavigator() {
+		try {
+			provider = new PersonNameStyleProvider();
+		} catch (final SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Create contents of the view part
-	 *
-	 * @param parent  The parent composite
-	 * @param context
+	 * Create contents of the view part.
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -98,48 +96,52 @@ public class EventTypeNavigator {
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				openEventTypeView();
+				openPersonNameStyleView();
 			}
 		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnStyleId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
-		tblclmnId.setWidth(80);
-		tblclmnId.setText("Event Type ID");
-		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+		final TableColumn tblclmnStyleId = tableViewerColumnStyleId.getColumn();
+		tblclmnStyleId.setWidth(80);
+		tblclmnStyleId.setText("Style Id");
+		tableViewerColumnStyleId
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnDictionaryId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnLabelId = tableViewerColumnLabelId.getColumn();
-		tblclmnLabelId.setWidth(80);
-		tblclmnLabelId.setText("Dictionary Label ID");
-		tableViewerColumnLabelId
+		final TableColumn tblclmnDictionaryId = tableViewerColumnDictionaryId
+				.getColumn();
+		tblclmnDictionaryId.setWidth(80);
+		tblclmnDictionaryId.setText("Dictionary Label Id");
+		tableViewerColumnDictionaryId
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnAbbrev = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnAbbreviation = tableViewerColumnAbbrev
-				.getColumn();
-		tblclmnAbbreviation.setWidth(100);
-		tblclmnAbbreviation.setText("Abbreviation");
-		tableViewerColumnAbbrev.setLabelProvider(new HREColumnLabelProvider(2));
+		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
+		tblclmnIsoCode.setWidth(80);
+		tblclmnIsoCode.setText("ISO Code");
+		tableViewerColumnIsoCode
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
-		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnStyleName = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnLabel = tableViewerColumnLabel.getColumn();
-		tblclmnLabel.setWidth(100);
-		tblclmnLabel.setText("Event Type");
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
+		final TableColumn tblclmnStyleName = tableViewerColumnStyleName
+				.getColumn();
+		tblclmnStyleName.setWidth(300);
+		tblclmnStyleName.setText("Style Name");
+		tableViewerColumnStyleName
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		final MenuItem mntmAddEventType = new MenuItem(menu, SWT.NONE);
-		mntmAddEventType.addSelectionListener(new SelectionAdapter() {
+		final MenuItem mntmAddNameStyle = new MenuItem(menu, SWT.NONE);
+		mntmAddNameStyle.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
 			 *
@@ -149,70 +151,57 @@ public class EventTypeNavigator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewEventTypeWizard(eventTypePid, context));
+						new NewPersonNameStyleWizard(personNameStylePid,
+								context));
 				dialog.open();
 			}
 		});
-		mntmAddEventType.setText("Add event type...");
+		mntmAddNameStyle.setText("Add name style...");
 
-		final MenuItem mntmDeleteSelectedEvent = new MenuItem(menu, SWT.NONE);
-		mntmDeleteSelectedEvent.addSelectionListener(new SelectionAdapter() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
-			 * eclipse.swt.events.SelectionEvent)
-			 */
+		final MenuItem mntmDeleteSelectedName = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedName.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				deleteEventType(parent.getShell());
+				deletePersonNameStyle(parent.getShell());
 			}
 		});
-		mntmDeleteSelectedEvent.setText("Delete selected event type...");
-
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getEventTypeList());
-		} catch (final SQLException e1) {
-			LOGGER.severe(e1.getMessage());
-			e1.printStackTrace();
-		}
+		mntmDeleteSelectedName.setText("Delete selected name style...");
 	}
 
 	/**
 	 * @param shell
 	 */
-	protected void deleteEventType(Shell shell) {
+	protected void deletePersonNameStyle(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int eventTypePid = 0;
-		String eventTypeName = null;
+		int personNameStylePid = 0;
+		String personNameStyleName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
-			eventTypePid = Integer.parseInt(item.getText(0));
-			eventTypeName = item.getText(3);
+			personNameStylePid = Integer.parseInt(item.getText(0));
+			personNameStyleName = item.getText(3);
 		}
 
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
-				"Delete event type " + eventTypeName, null,
-				"Are you sure that you will delete " + eventTypePid + ", "
-						+ eventTypeName + "?",
+				"Delete event type " + personNameStyleName, null,
+				"Are you sure that you will delete " + personNameStylePid + ", "
+						+ personNameStyleName + "?",
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
 
 		if (dialog.open() == Window.CANCEL) {
-			eventBroker.post("MESSAGE", "Delete of event type " + eventTypeName
-					+ " has been canceled");
+			eventBroker.post("MESSAGE", "Delete of event type "
+					+ personNameStyleName + " has been canceled");
 			return;
 		}
 
 		try {
-			final EventTypeProvider provider = new EventTypeProvider();
-			provider.delete(eventTypePid);
+			final PersonNameStyleProvider provider = new PersonNameStyleProvider();
+			provider.delete(personNameStylePid);
 			eventBroker.post("MESSAGE",
-					"Event type " + eventTypeName + " has been deleted");
+					"Event type " + personNameStyleName + " has been deleted");
 			eventBroker.post(Constants.EVENT_TYPE_PID_UPDATE_TOPIC,
-					eventTypePid);
+					personNameStylePid);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -220,9 +209,6 @@ public class EventTypeNavigator {
 
 	}
 
-	/**
-	 *
-	 */
 	@PreDestroy
 	public void dispose() {
 	}
@@ -230,16 +216,16 @@ public class EventTypeNavigator {
 	/**
 	 *
 	 */
-	protected void openEventTypeView() {
+	protected void openPersonNameStyleView() {
 		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.openeventtypeview", null);
+				"net.myerichsen.hremvp.command.openPersonNameStyleview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
-			eventTypePid = Integer.parseInt(selectedRow.getText(0));
+			personNameStylePid = Integer.parseInt(selectedRow.getText(0));
 			final List<String> ls = new ArrayList<>();
 			ls.add(selectedRow.getText(0));
 			ls.add(selectedRow.getText(1));
@@ -252,11 +238,9 @@ public class EventTypeNavigator {
 
 	}
 
-	/**
-	 *
-	 */
 	@Focus
 	public void setFocus() {
+		// TODO Set the focus to control
 	}
 
 	/**
@@ -265,29 +249,25 @@ public class EventTypeNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribeEventTypePidUpdateTopic(
-			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int eventTypePid) {
-		LOGGER.fine("Received event type id " + eventTypePid);
-		this.eventTypePid = eventTypePid;
+	private void subscribepersonNameStylePidUpdateTopic(
+			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int personNameStylePid) {
+		LOGGER.fine("Received event type id " + personNameStylePid);
+		this.personNameStylePid = personNameStylePid;
 
-		if (eventTypePid > 0) {
-			try {
-				tableViewer.setInput(provider.getEventTypeList());
-				tableViewer.refresh();
+		if (personNameStylePid > 0) {
+			tableViewer.setInput(provider.getPersonNameStyleList());
+			tableViewer.refresh();
 
-				final TableItem[] items = tableViewer.getTable().getItems();
-				final String item0 = Integer.toString(eventTypePid);
+			final TableItem[] items = tableViewer.getTable().getItems();
+			final String item0 = Integer.toString(personNameStylePid);
 
-				for (int i = 0; i < items.length; i++) {
-					if (item0.equals(items[i].getText(0))) {
-						tableViewer.getTable().setSelection(i);
-						break;
-					}
+			for (int i = 0; i < items.length; i++) {
+				if (item0.equals(items[i].getText(0))) {
+					tableViewer.getTable().setSelection(i);
+					break;
 				}
-			} catch (final SQLException e) {
-				LOGGER.severe(e.getMessage());
-				e.printStackTrace();
 			}
 		}
 	}
+
 }

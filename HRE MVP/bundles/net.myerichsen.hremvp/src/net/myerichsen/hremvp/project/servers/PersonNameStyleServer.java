@@ -1,31 +1,33 @@
-package net.myerichsen.hremvp.person.providers;
+package net.myerichsen.hremvp.project.servers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.myerichsen.hremvp.IHREProvider;
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
-import net.myerichsen.hremvp.person.servers.PersonNameStyleServer;
 
 /**
- * Provide a name style
+ * Business logic interface for
+ * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 19. feb. 2019
  *
  */
-public class PersonNameStyleProvider implements IHREProvider {
+public class PersonNameStyleServer implements IHREServer {
 	private int nameStylePid;
 	private String label;
 	private int languagePid;
 	private String languageLabel;
 	private String isoCode;
 
+	private PersonNameStyles style;
+	private Languages language;
 	private List<PersonNameMaps> mapList;
-	private final PersonNameStyleServer server;
 
 	/**
 	 * Constructor
@@ -34,8 +36,9 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonNameStyleProvider() throws SQLException {
-		server = new PersonNameStyleServer();
+	public PersonNameStyleServer() throws SQLException {
+		style = new PersonNameStyles();
+		language = new Languages();
 		mapList = new ArrayList<>();
 	}
 
@@ -49,7 +52,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		server.delete(key);
+		style.delete(key);
 	}
 
 	/**
@@ -58,7 +61,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public List<PersonNameStyles> get() throws SQLException {
-		return server.get();
+		return style.get();
 	}
 
 	/**
@@ -71,14 +74,14 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		server.get(key);
+		style.get(key);
+		setLabel("style.getLabelPid()");
+		setNameStylePid(style.getNameStylePid());
 
-		setLabel(server.getLabel());
-		setLanguagePid(server.getLanguagePid());
-		setNameStylePid(server.getNameStylePid());
-		setIsoCode(server.getIsoCode());
-		setLanguageLabel(server.getLanguageLabel());
-		setMapList(server.getMapList());
+		setLanguageLabel(language.getLabel());
+		setIsoCode(language.getIsocode());
+
+		mapList = new PersonNameMaps().getFKNameStylePid(nameStylePid);
 	}
 
 	/**
@@ -93,6 +96,13 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 */
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * @return the language
+	 */
+	public Languages getLanguage() {
+		return language;
 	}
 
 	/**
@@ -124,22 +134,23 @@ public class PersonNameStyleProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return the style
+	 */
+	public PersonNameStyles getStyle() {
+		return style;
+	}
+
+	/**
 	 * Insert a row
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 *
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
-		server.setIsoCode(isoCode);
-		server.setLabel(label);
-		server.setLanguageLabel(languageLabel);
-		server.setLanguagePid(languagePid);
-		server.setNameStylePid(nameStylePid);
-		server.setMapList(mapList);
-		return server.insert();
+	public int insert() throws SQLException {
+		style.setLabelPid(0);
+		style.setNameStylePid(nameStylePid);
+		return style.insert();
 	}
 
 	/**
@@ -154,6 +165,13 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 */
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	/**
+	 * @param language the language to set
+	 */
+	public void setLanguage(Languages language) {
+		this.language = language;
 	}
 
 	/**
@@ -185,21 +203,22 @@ public class PersonNameStyleProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param style the style to set
+	 */
+	public void setStyle(PersonNameStyles style) {
+		this.style = style;
+	}
+
+	/**
 	 * Update a row
 	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 *
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
-		server.setIsoCode(isoCode);
-		server.setLabel(label);
-		server.setLanguageLabel(languageLabel);
-		server.setLanguagePid(languagePid);
-		server.setNameStylePid(nameStylePid);
-		server.setMapList(mapList);
-		server.update();
+	public void update() throws SQLException {
+		style.setLabelPid(0);
+		style.setNameStylePid(nameStylePid);
+		style.update();
 	}
 }

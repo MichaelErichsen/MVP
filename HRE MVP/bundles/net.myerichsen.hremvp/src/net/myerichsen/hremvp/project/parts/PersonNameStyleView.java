@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.person.parts;
+package net.myerichsen.hremvp.project.parts;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
-import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
  * Display all data about a Name Style
