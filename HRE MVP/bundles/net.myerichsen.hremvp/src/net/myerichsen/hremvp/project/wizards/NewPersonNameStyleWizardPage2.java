@@ -1,7 +1,7 @@
 package net.myerichsen.hremvp.project.wizards;
 
-import java.sql.SQLException;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -17,26 +17,24 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Add a person name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 25. feb. 2019
+ * @version 26. feb. 2019
  *
  */
 public class NewPersonNameStyleWizardPage2 extends WizardPage {
-	private final static Logger LOGGER = Logger
-			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-	private Text textLabelPid;
+//	private final static Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Text textIsoCode;
 	private Text textStyleName;
 	private TableViewer tableViewer;
-	private PersonNameStyleProvider provider;
 	private Text textNamePartCount;
+	private List<List<String>> lls;
 
 	/**
 	 * Constructor
@@ -44,16 +42,9 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 	 * @param context
 	 */
 	public NewPersonNameStyleWizardPage2(IEclipseContext context) {
-		super("Person name style wizard Page 1");
+		super("Person name style wizard Page 2");
 		setTitle("Person name style");
 		setDescription("Add parts of a new person name style");
-		try {
-			provider = new PersonNameStyleProvider();
-		} catch (final SQLException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
-
 	}
 
 	@Override
@@ -63,19 +54,23 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
 
-		final Label lblNewPersonName = new Label(container, SWT.NONE);
-		lblNewPersonName.setText("New person name style pid");
+		final NewPersonNameStyleWizard wizard = (NewPersonNameStyleWizard) getWizard();
+		final String namePartCount = wizard.getNamePartCount();
+		lls = new ArrayList<>();
 
-		textLabelPid = new Text(container, SWT.BORDER);
-		textLabelPid.setEditable(false);
-		textLabelPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		for (int i = 0; i < Integer.parseInt(namePartCount); i++) {
+			final List<String> stringList = new ArrayList<>();
+			stringList.add(Integer.toString(i + 1));
+			stringList.add("");
+			lls.add(stringList);
+		}
 
 		final Label lblIsoCode = new Label(container, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
 
 		textIsoCode = new Text(container, SWT.BORDER);
 		textIsoCode.setEditable(false);
+		textIsoCode.setText(wizard.getIsoCode());
 		textIsoCode.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -84,15 +79,18 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 
 		textStyleName = new Text(container, SWT.BORDER);
 		textStyleName.setEditable(false);
+		textStyleName.setText(wizard.getStyleName());
 		textStyleName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Label lblNumberOfName = new Label(container, SWT.NONE);
+
+		final Label lblNumberOfName = new Label(container, SWT.NONE);
 		lblNumberOfName.setText("Number of name parts");
-		
+
 		textNamePartCount = new Text(container, SWT.BORDER);
 		textNamePartCount.setEditable(false);
-		textNamePartCount.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textNamePartCount.setText(namePartCount);
+		textNamePartCount.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
@@ -101,21 +99,12 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
-				tableViewer, SWT.NONE);
-		final TableColumn tblclmnDictionaryLabelId = tableViewerColumnLabelId
-				.getColumn();
-		tblclmnDictionaryLabelId.setWidth(111);
-		tblclmnDictionaryLabelId.setText("Dictionary label id");
-		tableViewerColumnLabelId
-				.setLabelProvider(new HREColumnLabelProvider(0));
-
 		final TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
 		tblclmnPartNo.setWidth(100);
 		tblclmnPartNo.setText("Part no.");
-		tableViewerColumnPartNo.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnPartNo.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnPartName = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -123,12 +112,20 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 				.getColumn();
 		tblclmnPartName.setWidth(334);
 		tblclmnPartName.setText("Part name");
+		tableViewerColumnPartName.setEditingSupport(
+				new HreTypeLabelEditingSupport(tableViewer, 1));
 		tableViewerColumnPartName
-				.setLabelProvider(new HREColumnLabelProvider(2));
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getPersonNameStyleList(0));
+		tableViewer.setInput(lls);
+	}
 
+	/**
+	 * @return the lls
+	 */
+	public List<List<String>> getLls() {
+		return lls;
 	}
 
 	/**
@@ -138,24 +135,4 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 		return tableViewer;
 	}
 
-//	/**
-//	 * @return the textIsoCode
-//	 */
-//	public Combo getTextIsoCode() {
-//		return textIsoCode;
-//	}
-
-	/**
-	 * @return the textLabelPid
-	 */
-	public Text getTextLabelPid() {
-		return textLabelPid;
-	}
-
-	/**
-	 * @return the textStyleName
-	 */
-	public Text getTextStyleName() {
-		return textStyleName;
-	}
 }

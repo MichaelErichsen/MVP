@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_NAME_MAPS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 26. feb. 2019
  *
  */
 
@@ -36,12 +36,11 @@ public class PersonNameMaps {
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAME_MAPS( "
 			+ "NAME_MAP_PID, NAME_STYLE_PID, PART_NO, "
 			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			+ "TABLE_ID) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 13)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_MAPS SET "
 			+ "NAME_STYLE_PID = ?, PART_NO = ?, LABEL_PID = ?, "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
-			+ "TABLE_ID = ? WHERE NAME_MAP_PID = ?";
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP WHERE NAME_MAP_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_MAPS WHERE NAME_MAP_PID = ?";
 
@@ -220,9 +219,6 @@ public class PersonNameMaps {
 		ps.setInt(2, getNameStylePid());
 		ps.setInt(3, getPartNo());
 		ps.setInt(4, getLabelPid());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -297,10 +293,7 @@ public class PersonNameMaps {
 		ps.setInt(1, getNameStylePid());
 		ps.setInt(2, getPartNo());
 		ps.setInt(3, getLabelPid());
-		ps.setTimestamp(4, getInsertTstmp());
-		ps.setTimestamp(5, getUpdateTstmp());
-		ps.setInt(6, getTableId());
-		ps.setInt(7, getNameMapPid());
+		ps.setInt(4, getNameMapPid());
 		ps.executeUpdate();
 		conn.close();
 	}

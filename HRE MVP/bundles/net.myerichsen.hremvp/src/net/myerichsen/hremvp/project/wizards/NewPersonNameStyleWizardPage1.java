@@ -9,6 +9,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -19,8 +21,8 @@ import org.eclipse.swt.widgets.Text;
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.listeners.NumericVerifyListener;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
-import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
  * Add a person name style wizard page
@@ -36,8 +38,8 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private Combo comboIsoCode;
 	private Text textStyleName;
-	private PersonNameStyleProvider provider;
 	private Text textNamePartCount;
+	private List<List<String>> languageList;
 
 	/**
 	 * Constructor
@@ -48,13 +50,27 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		super("Person name style wizard Page 1");
 		setTitle("Person name style");
 		setDescription("Add static data of a new person name style");
-		try {
-			provider = new PersonNameStyleProvider();
-		} catch (final SQLException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
+	}
 
+	/**
+	 *
+	 */
+	protected void checkCompletedPage() {
+		String styleName = textStyleName.getText();
+		String namePartCount = textNamePartCount.getText();
+		
+		if ((styleName.length() > 0) && (namePartCount.length() > 0)) {
+			NewPersonNameStyleWizard wizard = (NewPersonNameStyleWizard) getWizard();
+			wizard.setStyleName(styleName);
+			wizard.setNamePartCount(namePartCount);
+			int selectionIndex = comboIsoCode.getSelectionIndex();
+			wizard.setIsoCode(languageList.get(selectionIndex).get(1));
+			setPageComplete(true);
+			wizard.addBackPages();
+			wizard.getContainer().updateButtons();
+		} else {
+			setPageComplete(false);
+		}
 	}
 
 	@Override
@@ -73,11 +89,11 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 
 		final LanguageProvider languageProvider = new LanguageProvider();
 		try {
-			final List<List<String>> languageList = languageProvider.get();
+			languageList = languageProvider.get();
 
 			final int llsSize = languageList.size();
 			final String[] singleArray = new String[llsSize];
-			String g = store.getString("GUILANGUAGE");
+			final String g = store.getString("GUILANGUAGE");
 			int index = 0;
 
 			for (int i = 0; i < llsSize; i++) {
@@ -98,31 +114,43 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		lblStyleName.setText("Style name");
 
 		textStyleName = new Text(container, SWT.BORDER);
+		textStyleName.addModifyListener(new ModifyListener() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
+			 * events.ModifyEvent)
+			 */
+			@Override
+			public void modifyText(ModifyEvent e) {
+				checkCompletedPage();
+			}
+		});
 		textStyleName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblNumberOfName = new Label(container, SWT.NONE);
+		final Label lblNumberOfName = new Label(container, SWT.NONE);
 		lblNumberOfName.setText("Number of name parts");
 
-		// TODO Numeric
-		// TODO Check for both fields to activate next page
 		textNamePartCount = new Text(container, SWT.BORDER);
+		textNamePartCount.addModifyListener(new ModifyListener() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
+			 * events.ModifyEvent)
+			 */
+			@Override
+			public void modifyText(ModifyEvent e) {
+				checkCompletedPage();
+			}
+		});
+		textNamePartCount.addVerifyListener(new NumericVerifyListener());
 		textNamePartCount.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-	}
-
-	/**
-	 * @return the comboIsoCode
-	 */
-	public Combo getTextIsoCode() {
-		return comboIsoCode;
-	}
-
-	/**
-	 * @return the textStyleName
-	 */
-	public Text getTextStyleName() {
-		return textStyleName;
+		setPageComplete(false);
 	}
 }
