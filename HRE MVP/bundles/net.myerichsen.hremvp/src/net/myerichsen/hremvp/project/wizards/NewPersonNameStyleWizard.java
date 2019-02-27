@@ -1,18 +1,23 @@
 package net.myerichsen.hremvp.project.wizards;
 
+import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
+import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
  * Wizard to add a person name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 26. feb. 2019
+ * @version 27. feb. 2019
  *
  */
 public class NewPersonNameStyleWizard extends Wizard {
@@ -89,49 +94,77 @@ public class NewPersonNameStyleWizard extends Wizard {
 	 *
 	 * @see org.eclipse.jface.wizard.IWizard#canFinish()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean performFinish() {
+		if ((styleName.length() == 0) || (namePartCount.length() == 0)
+				|| (Integer.parseInt(namePartCount) == 0)) {
+			return false;
+		}
 
-		// FIXME if both fields are > 0 length
 		// Get next label pid
-		// Insert a person name style
-		// Create a dictionary row for the name
-		// Then create a dictionary row for each table rows
-//		DictionaryProvider dp = new DictionaryProvider();
-//			int nextLabelPid = dp.getNextLabelPid();
-//		
-//		
-//			provider = new PersonNameStyleProvider();
-//			provider.setIsoCode(isoCode);
-//
-//			final int personNameStylePid = provider.insert();
-//			LOGGER.info("Inserted person name style " + personNameStylePid);
-//			eventBroker.post("MESSAGE",
-//					"Inserted person name style " + personNameStylePid);
+		try {
+			DictionaryProvider dp = new DictionaryProvider();
+			int labelPid = dp.getNextLabelPid();
 
-// For each row in the table
-		// Create a dictionary record
+			// Insert a person name style
+			provider = new PersonNameStyleProvider();
+			provider.setIsoCode(isoCode);
+			provider.setLabelPid(labelPid);
+			int personNameStylePid = provider.insert();
+			LOGGER.info("Inserted person name style " + personNameStylePid);
+			eventBroker.post("MESSAGE",
+					"Inserted person name style " + personNameStylePid);
 
-//			final List<List<String>> input = (List<List<String>>) page1
-//					.getTableViewer().getInput();
-//
-//			for (int i = 0; i < input.size(); i++) {
-//				dp = new DictionaryProvider();
-//				dp.setIsoCode(input.get(i).get(2));
-//				dp.setLabel(input.get(i).get(3));
-//				dp.setLabelPid(labelPid);
-//				dp.setLabelType("NAMESTYLE");
-//				final int dictionaryPid = dp.insert();
-//				LOGGER.info("Inserted dictionary element " + dictionaryPid
-//						+ ", " + input.get(i).get(2) + ", "
-//						+ input.get(i).get(3));
-//			}
-//
-//			eventBroker.post(
-//					net.myerichsen.hremvp.Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
-//					personNameStylePid);
+			// Create a dictionary row for the name
+			dp = new DictionaryProvider();
+			dp.setIsoCode(isoCode);
+			dp.setLabel(styleName);
+			dp.setLabelPid(labelPid);
+			dp.setLabelType("PERSONNAME");
+			dp.insert();
+			LOGGER.info("Inserted person name style \"" + styleName
+					+ "\" in dictionary");
 
-//		}
+			// Handle each table row in wizard page 2
+			List<List<String>> input = (List<List<String>>) page2
+					.getTableViewer().getInput();
+			PersonNameMaps map;
+
+			for (int i = 0; i < input.size(); i++) {
+				// Create a dictionary row
+				dp = new DictionaryProvider();
+				labelPid = dp.getNextLabelPid();
+
+				dp.setIsoCode(isoCode);
+				dp.setLabel(input.get(i).get(1));
+				dp.setLabelPid(labelPid);
+				dp.setLabelType("PERSONNAMEMAP");
+				int dictionaryPid = dp.insert();
+				LOGGER.info("Inserted dictionary element " + dictionaryPid
+						+ ", " + isoCode + ", \"" + input.get(i).get(1)
+						+ "\", label pid " + labelPid);
+
+				// Create a map row
+				map = new PersonNameMaps();
+				map.setLabelPid(labelPid);
+				map.setNameStylePid(personNameStylePid);
+				map.setPartNo(Integer.parseInt(input.get(i).get(0)));
+				int nameMapPid = map.insert();
+				LOGGER.info("Inserted map element " + nameMapPid + ", Part no. "
+						+ input.get(i).get(0) + ", label pid " + labelPid);
+			}
+
+			eventBroker.post(
+					net.myerichsen.hremvp.Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
+					personNameStylePid);
+
+			return true;
+
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 
 		return false;
 	}
