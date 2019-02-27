@@ -1,10 +1,12 @@
 package net.myerichsen.hremvp.person.servers;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 
@@ -13,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 27. feb. 2019
  *
  */
 public class PersonNameMapServer implements IHREServer {
@@ -115,6 +117,40 @@ public class PersonNameMapServer implements IHREServer {
 	 */
 	public int getPartNo() {
 		return partNo;
+	}
+
+	/**
+	 * @param personNameStylePid
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getStringList(int personNameStylePid)
+			throws SQLException, MvpException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		if (personNameStylePid > 0) {
+			final List<PersonNameMaps> fkNameStylePid = map
+					.getFKNameStylePid(personNameStylePid);
+
+			for (final PersonNameMaps personNameMaps : fkNameStylePid) {
+				stringList = new ArrayList<>();
+				stringList
+						.add(Integer.toString(personNameMaps.getNameMapPid()));
+				final int labelPid = personNameMaps.getLabelPid();
+				stringList.add(Integer.toString(labelPid));
+				stringList.add(Integer.toString(personNameMaps.getPartNo()));
+
+				final Dictionary dictionary = new Dictionary();
+				final List<Dictionary> fkLabelPid = dictionary
+						.getFKLabelPid(labelPid);
+				stringList.add(fkLabelPid.get(0).getLabel());
+				lls.add(stringList);
+			}
+		}
+
+		return lls;
 	}
 
 	/**

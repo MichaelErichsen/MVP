@@ -17,7 +17,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Person Name style view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. feb. 2019
+ * @version 27. feb. 2019
  *
  */
 public class OpenPersonNameStyleViewHandler {
@@ -55,12 +55,12 @@ public class OpenPersonNameStyleViewHandler {
 			}
 		}
 
-		part.setLabel("Name Style");
+		part.setLabel("Person Name Style");
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(contributionURI);
-		stacks.get(stacks.size() - 2).getChildren().add(part);
+		stacks.get(1).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 	}
 

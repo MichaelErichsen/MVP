@@ -49,7 +49,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 	public NewPersonNameStyleWizardPage1(IEclipseContext context) {
 		super("Person name style wizard Page 1");
 		setTitle("Person name style");
-		setDescription("Add static data of a new person name style");
+		setDescription("Add static data for a new person name style");
 	}
 
 	/**

@@ -190,8 +190,6 @@ public class EventTypeView {
 	private void subscribeLabelPidUpdateTopic(
 			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
 		eventTypePid = Integer.parseInt(ls.get(0));
-		textEventTypePid.setText(ls.get(0));
-		labelPid = Integer.parseInt(ls.get(1));
 		textLabelPid.setText(ls.get(1));
 		textAbbreviation.setText(ls.get(2));
 		LOGGER.info("Received label id " + labelPid);

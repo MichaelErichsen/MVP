@@ -77,7 +77,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * @return the labelPid
 	 */
 	public int getLabelPid() {
-		return LabelPid;
+		return server.getLabelPid();
 	}
 
 	/**

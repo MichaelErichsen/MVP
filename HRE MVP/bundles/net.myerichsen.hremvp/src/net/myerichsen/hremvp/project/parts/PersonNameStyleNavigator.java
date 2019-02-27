@@ -218,7 +218,7 @@ public class PersonNameStyleNavigator {
 	 */
 	protected void openPersonNameStyleView() {
 		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.openPersonNameStyleview", null);
+				"net.myerichsen.hremvp.command.openpersonnamestyleview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();

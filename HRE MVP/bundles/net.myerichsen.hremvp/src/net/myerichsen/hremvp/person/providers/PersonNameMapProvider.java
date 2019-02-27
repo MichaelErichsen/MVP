@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 27. feb. 2019
  *
  */
 public class PersonNameMapProvider implements IHREProvider {
@@ -111,6 +111,17 @@ public class PersonNameMapProvider implements IHREProvider {
 	 */
 	public int getPartNo() {
 		return partNo;
+	}
+
+	/**
+	 * @param personNameStylePid
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public List<List<String>> getStringList(int personNameStylePid)
+			throws SQLException, MvpException {
+		return server.getStringList(personNameStylePid);
 	}
 
 	/**

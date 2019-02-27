@@ -215,7 +215,7 @@
   <commands xmi:id="_-JoJAMMpEeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.command.opensexview" commandName="openSexView" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_4mJJ8MM3EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.command.openpersonnamestyleview" commandName="openPersonNameStyleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_NbDt4MM5EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.command.opennamepartview" commandName="openNamePartView" category="_oxYVUBNHEemEvqVth7AYPg"/>
-  <commands xmi:id="_5jsP4MP-EeiKp_Oike47LA" elementId="net.myerichsen.hremvp.command.opennamemapview" commandName="openNameMapView" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_5jsP4MP-EeiKp_Oike47LA" elementId="net.myerichsen.hremvp.command.opennamemapview" commandName="openNameMapView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_DxX94MSZEei7d_hxBvJGpw" elementId="net.myerichsen.hremvp.command.opensextypeview" commandName="openSexTypeView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_Z6qoYM-eEeiCtsQHb45mZQ" elementId="org.eclipse.ui.window.preferences" commandName="org.eclipse.ui.window.preferences" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_agVWwOTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.command.switchtobaseperspective" commandName="switchToBasePerspective"/>

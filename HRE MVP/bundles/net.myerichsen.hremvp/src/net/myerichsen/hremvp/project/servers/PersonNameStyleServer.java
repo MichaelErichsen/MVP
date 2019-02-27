@@ -104,8 +104,9 @@ public class PersonNameStyleServer implements IHREServer {
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(style.getNameStylePid()));
 			stringList.add(style.getIsoCode());
+			LabelPid = style.getLabelPid();
 			final List<Dictionary> fkLabelPid = dictionary
-					.getFKLabelPid(style.getLabelPid());
+					.getFKLabelPid(LabelPid);
 			stringList.add(fkLabelPid.get(0).getLabel());
 			lls.add(stringList);
 		}
