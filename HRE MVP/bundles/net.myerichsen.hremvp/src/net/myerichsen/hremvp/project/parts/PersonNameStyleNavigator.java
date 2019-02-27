@@ -18,6 +18,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
@@ -47,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 25. feb. 2019
+ * @version 27. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -157,6 +158,14 @@ public class PersonNameStyleNavigator {
 			}
 		});
 		mntmDeleteSelectedName.setText("Delete selected name style...");
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getPersonNameStyleList());
+		} catch (final SQLException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -175,13 +184,13 @@ public class PersonNameStyleNavigator {
 
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
-				"Delete event type " + personNameStyleName, null,
+				"Delete person name style " + personNameStyleName, null,
 				"Are you sure that you will delete " + personNameStylePid + ", "
 						+ personNameStyleName + "?",
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
 
 		if (dialog.open() == Window.CANCEL) {
-			eventBroker.post("MESSAGE", "Delete of event type "
+			eventBroker.post("MESSAGE", "Delete of person name style "
 					+ personNameStyleName + " has been canceled");
 			return;
 		}
@@ -191,7 +200,7 @@ public class PersonNameStyleNavigator {
 			provider.delete(personNameStylePid);
 			eventBroker.post("MESSAGE",
 					"Event type " + personNameStyleName + " has been deleted");
-			eventBroker.post(Constants.EVENT_TYPE_PID_UPDATE_TOPIC,
+			eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
 					personNameStylePid);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
@@ -229,9 +238,11 @@ public class PersonNameStyleNavigator {
 
 	}
 
+	/**
+	 * 
+	 */
 	@Focus
 	public void setFocus() {
-		// TODO Set the focus to control
 	}
 
 	/**
@@ -240,24 +251,30 @@ public class PersonNameStyleNavigator {
 	 */
 	@Inject
 	@Optional
-	private void subscribepersonNameStylePidUpdateTopic(
-			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int personNameStylePid) {
-		LOGGER.fine("Received event type id " + personNameStylePid);
+	private void subscribePersonNameStylePidUpdateTopic(
+			@UIEventTopic(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC) int personNameStylePid) {
+		LOGGER.fine("Received person name style id " + personNameStylePid);
 		this.personNameStylePid = personNameStylePid;
 
 		if (personNameStylePid > 0) {
-			tableViewer.setInput(provider.getPersonNameStyleList());
-			tableViewer.refresh();
+			try {
+				tableViewer.setInput(provider.getPersonNameStyleList());
+				tableViewer.refresh();
 
-			final TableItem[] items = tableViewer.getTable().getItems();
-			final String item0 = Integer.toString(personNameStylePid);
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(personNameStylePid);
 
-			for (int i = 0; i < items.length; i++) {
-				if (item0.equals(items[i].getText(0))) {
-					tableViewer.getTable().setSelection(i);
-					break;
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
 				}
+			} catch (SQLException e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
 			}
+
 		}
 	}
 
