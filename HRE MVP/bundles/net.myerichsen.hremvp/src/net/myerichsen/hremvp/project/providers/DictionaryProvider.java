@@ -8,10 +8,10 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.servers.DictionaryServer;
 
 /**
- * Provide a dictionary entry
+ * Provide a dictionary row
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 28. feb. 2019
  *
  */
 public class DictionaryProvider implements IHREProvider {
@@ -58,7 +58,11 @@ public class DictionaryProvider implements IHREProvider {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		server.get();
+		server.get(key);
+		setIsoCode(server.getIsoCode());
+		setLabel(server.getLabel());
+		setLabelPid(server.getLabelPid());
+		setLabelType(server.getLabelType());
 	}
 
 	/**

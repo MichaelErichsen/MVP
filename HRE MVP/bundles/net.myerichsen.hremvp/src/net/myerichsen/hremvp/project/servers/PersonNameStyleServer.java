@@ -64,8 +64,9 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		style.get(key);
+		setIsoCode(style.getIsoCode());
+		setLabelPid(style.getLabelPid());
 	}
 
 	/**

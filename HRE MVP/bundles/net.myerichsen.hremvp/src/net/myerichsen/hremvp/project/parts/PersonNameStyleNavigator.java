@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 27. feb. 2019
+ * @version 28. feb. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -65,7 +65,6 @@ public class PersonNameStyleNavigator {
 
 	private PersonNameStyleProvider provider;
 	private int personNameStylePid;
-	private int labelPid;
 
 	private TableViewer tableViewer;
 
@@ -231,8 +230,9 @@ public class PersonNameStyleNavigator {
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
 
-			// FIXME Labelpid
-			LOGGER.info("Setting label pid: " + labelPid);
+			LOGGER.info("Posting style id " + selectedRow.getText(0)
+					+ ", iso code " + selectedRow.getText(1) + ", label "
+					+ selectedRow.getText(2));
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 

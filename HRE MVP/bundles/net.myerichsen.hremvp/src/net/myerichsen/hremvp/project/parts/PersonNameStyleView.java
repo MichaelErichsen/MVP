@@ -40,7 +40,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a Name Style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. feb. 2019
+ * @version 28. feb. 2019
  *
  */
 public class PersonNameStyleView {
@@ -59,6 +59,8 @@ public class PersonNameStyleView {
 	private PersonNameStyleProvider provider;
 	private PersonNameMapProvider pnmp;
 	private int personNameStylePid;
+
+	private DictionaryProvider dp;
 
 	/**
 	 * Constructor
@@ -216,37 +218,42 @@ public class PersonNameStyleView {
 	}
 
 	/**
-	 * @param labelPid
+	 * @param ls A list of style id, iso code and label
 	 */
 	@Inject
 	@Optional
 	private void subscribeLabelPidUpdateTopic(
 			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
-		personNameStylePid = Integer.parseInt(ls.get(0));
-		// FIXME subscribeLabelPidUpdateTopic
-//		provider.get();
-//		List<List<String>> personNameStyleList = provider
-//				.getPersonNameStyleList();
-//		personNameStylePid = Integer
-//				.parseInt(personNameStyleList.get(0).get(0));
-//		textId.setText(personNameStyleList.get(0).get(0));
-//		textLabelId.setText(Integer.toString(provider.getLabelPid()));
-//		textIsoCode.setText(personNameStyleList.get(0).get(1));
-//		textStyleName.setText(personNameStyleList.get(0).get(2));
-//
-//		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-//		tableViewer.setInput(pnmp.getStringList(personNameStylePid));
+		try {
+			provider.get();
+			String personNameStylePidString = ls.get(0);
+			List<List<String>> personNameStyleList = provider
+					.getPersonNameStyleList();
 
-//		textLabelPid.setText(ls.get(1));
-//		textAbbreviation.setText(ls.get(2));
-//		LOGGER.info("Received label id " + labelPid);
+			for (List<String> list : personNameStyleList) {
+				if (list.get(0).equals(personNameStylePidString)) {
+					LOGGER.info("Received " + list.get(0) + ", " + list.get(1)
+							+ ", " + list.get(2));
 
-//		try {
-//			tableViewer.setInput(provider.getpersonNameStyleList(labelPid));
-//		} catch (final SQLException e) {
-//			LOGGER.severe(e.getMessage());
-//			e.printStackTrace();
-//		}
+					textId.setText(personNameStyleList.get(0).get(0));
+					textLabelId
+							.setText(Integer.toString(provider.getLabelPid()));
+					textIsoCode.setText(list.get(1));
+					textStyleName.setText(list.get(2));
+
+					tableViewer.setInput(pnmp.getStringList(
+							Integer.parseInt(personNameStylePidString)));
+					tableViewer.refresh();
+
+					break;
+				}
+			}
+
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -262,13 +269,21 @@ public class PersonNameStyleView {
 
 		try {
 			provider.get(personNameStylePid);
-			// FIXME Find Dictionary record for name style label and update if
-			// changed
-			provider.update();
+			int labelPid = provider.getLabelPid();
+			dp = new DictionaryProvider();
+			List<List<String>> stringListDp = dp.getStringList(labelPid);
+			String text = textStyleName.getText();
+			if (text.equals(stringListDp.get(0).get(1)) == false) {
+				int dictionaryPid = Integer
+						.parseInt(stringListDp.get(0).get(2));
+				dp.get(dictionaryPid);
+				dp.setDictionaryPid(dictionaryPid);
+				dp.setLabel(text);
+				dp.update();
+			}
 			LOGGER.info("Person name style pid " + personNameStylePid
-					+ " has been updated");
+					+ " has been updated to \"" + text + "\"");
 
-			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringList = pnmp
 					.getStringList(personNameStylePid);
 			final List<List<String>> input = (List<List<String>>) tableViewer
@@ -276,27 +291,23 @@ public class PersonNameStyleView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
-							+ " - " + existingElement.get(0) + ", "
-							+ existingElement.get(1) + ", "
-							+ existingElement.get(2));
+					LOGGER.fine(input.get(i).get(1) + ", " + input.get(i).get(3)
+							+ " - " + existingElement.get(1) + ", "
+							+ existingElement.get(3));
 
-					if (input.get(i).get(2).equals(existingElement.get(0))) {
+					if (input.get(i).get(1).equals(existingElement.get(1))) {
 						if ((input.get(i).get(3)
-								.equals(existingElement.get(1)) == false)) {
-							dp = new DictionaryProvider();
-							dp.setDictionaryPid(
-									Integer.parseInt(existingElement.get(2)));
-							dp.setIsoCode(input.get(i).get(2));
+								.equals(existingElement.get(3)) == false)) {
+							int dictionaryPid = Integer
+									.parseInt(input.get(i).get(4));
+							dp.get(dictionaryPid);
+							dp.setDictionaryPid(dictionaryPid);
 							dp.setLabel(input.get(i).get(3));
-							dp.setLabelPid(provider.getLabelPid());
-							dp.setLabelType("EVENT");
 							dp.update();
+
 							LOGGER.info("Updated dictionary element "
-									+ input.get(i).get(0) + ", "
-									+ input.get(i).get(1) + ", "
-									+ input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+									+ input.get(i).get(1) + " to \""
+									+ input.get(i).get(3) + "\"");
 						}
 						break;
 					}
@@ -304,6 +315,8 @@ public class PersonNameStyleView {
 			}
 			eventBroker.post("MESSAGE", "Person name style "
 					+ personNameStylePid + " has been updated");
+			eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
+					personNameStylePid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

@@ -15,8 +15,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. feb. 2019
- *
+ * @version 28. feb. 2019
  */
 public class PersonNameMapServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -121,7 +120,8 @@ public class PersonNameMapServer implements IHREServer {
 
 	/**
 	 * @param personNameStylePid
-	 * @return
+	 * @return List A list of lists of name map pid, label pid, label and
+	 *         dictionary pid
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
@@ -146,6 +146,8 @@ public class PersonNameMapServer implements IHREServer {
 				final List<Dictionary> fkLabelPid = dictionary
 						.getFKLabelPid(labelPid);
 				stringList.add(fkLabelPid.get(0).getLabel());
+				stringList.add(
+						Integer.toString(fkLabelPid.get(0).getDictionaryPid()));
 				lls.add(stringList);
 			}
 		}

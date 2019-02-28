@@ -56,14 +56,15 @@ public class PersonNameStyleProvider implements IHREProvider {
 	}
 
 	/*
-	 * (non-Javadoc)
+	 * Get a row (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+	server.get(key);
+	setIsoCode(server.getIsoCode());
+	setLabelPid(server.getLabelPid());
 	}
 
 	/**
