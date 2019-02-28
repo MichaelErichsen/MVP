@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Open the embedded help browser
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 28. feb. 2019
  *
  */
 public class HelpBrowserHandler {
@@ -34,7 +34,7 @@ public class HelpBrowserHandler {
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(
-				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HelpSystemBrowser");
+				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.help.parts.HelpSystemBrowser");
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
 		stacks.get(stacks.size() - 2).getChildren().add(part);

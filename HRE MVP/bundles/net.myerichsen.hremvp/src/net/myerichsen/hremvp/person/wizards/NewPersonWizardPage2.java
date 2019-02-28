@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 25. jan. 2019
+ * @version 28. feb. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
@@ -79,15 +79,16 @@ public class NewPersonWizardPage2 extends WizardPage {
 	protected void browseNameStyles() {
 		final PersonNameStyleNavigatorDialog dialog = new PersonNameStyleNavigatorDialog(
 				textPersonNameStyle.getShell(), context);
+		// FIXME java.lang.NullPointerException
 		if (dialog.open() == Window.OK) {
 			try {
 				personNameStylePid = dialog.getPersonNameStylePid();
 				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
 				pnsp.get(personNameStylePid);
-				textPersonNameStyle.setText(pnsp.getLabel());
+				// FIXME textPersonNameStyle.setText(pnsp.getLabel());
 				final NewPersonWizard wizard = (NewPersonWizard) getWizard();
 				wizard.setPersonNameStylePid(personNameStylePid);
-				wizard.setLanguagePid(pnsp.getLanguagePid());
+				// FIXME wizard.setLanguagePid(pnsp.getLanguagePid());
 				setPageComplete(true);
 				wizard.addBackPages();
 				wizard.getContainer().updateButtons();

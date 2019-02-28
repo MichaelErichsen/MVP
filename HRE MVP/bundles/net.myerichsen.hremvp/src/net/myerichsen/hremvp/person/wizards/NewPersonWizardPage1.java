@@ -363,6 +363,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 				hdp.setDate(dialog.getLocalDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
+				// FIXME org.h2.jdbc.JdbcSQLException: NULL not allowed for
+				// column "INSERT_TSTMP"; SQL statement:
 				hdp.setSurety(dialog.getSurety());
 				BirthDatePid = hdp.insert();
 				textBirthDate.setText(dialog.getLocalDate().toString());

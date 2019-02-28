@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 8. feb. 2019
+ * @version 28. feb. 2019
  *
  */
 // TODO Add primary check button and name type
@@ -85,10 +85,10 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 				personNameStylePid = dialog.getPersonNameStylePid();
 				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
 				pnsp.get(personNameStylePid);
-				textPersonNameStyle.setText(pnsp.getLabel());
+				// FIXME textPersonNameStyle.setText(pnsp.getLabel());
 				final NewPersonNameWizard wizard = (NewPersonNameWizard) getWizard();
 				wizard.setPersonNameStylePid(personNameStylePid);
-				wizard.setLanguagePid(pnsp.getLanguagePid());
+				// FIXME wizard.setLanguagePid(pnsp.getLanguagePid());
 				setPageComplete(true);
 				wizard.addPage2();
 				wizard.getContainer().updateButtons();
