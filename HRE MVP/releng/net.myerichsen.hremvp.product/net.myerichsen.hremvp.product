@@ -135,7 +135,7 @@
 
    <features>
       <feature id="net.myerichsen.hremvp.feature" version="0.2.1.qualifier"/>
-      <feature id="com.opcoach.e4.preferences.feature" version="1.0.0.qualifier"/>
+      <feature id="com.opcoach.e4.preferences.feature"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>

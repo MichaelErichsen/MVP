@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameStyleServer;
  * Provide a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. feb. 2019
+ * @version 28. feb. 2019
  *
  */
 public class LocationNameStyleProvider implements IHREProvider {
@@ -240,5 +240,13 @@ public class LocationNameStyleProvider implements IHREProvider {
 		server.setFromDatePid(fromDatePid);
 		server.setToDatePid(toDatePid);
 		server.update();
+	}
+
+	/**
+	 * @return
+	 */
+	public List<List<String>> getLocationNameStyleList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

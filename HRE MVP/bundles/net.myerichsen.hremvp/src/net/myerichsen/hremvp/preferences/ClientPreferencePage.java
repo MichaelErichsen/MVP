@@ -22,13 +22,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.location.providers.LocationNameStyleProvider;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
  * Preference page for client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 28. feb. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -41,6 +43,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 	private IntegerFieldEditor helpportIntegerFieldEditor;
 	private IntegerFieldEditor serverportIntegerFieldEditor;
 	private ComboFieldEditor comboGuiLanguage;
+	private ComboFieldEditor comboPersonNameStyle;
+	private ComboFieldEditor comboLocationNameStyle;
 
 	/**
 	 * Constructor
@@ -117,17 +121,50 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 			e.printStackTrace();
 		}
 
-		// TODO Populate from database table
-		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE",
-				"Default Person Name Style",
-				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } },
-				getFieldEditorParent()));
+		try {
+			final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
+			final List<List<String>> personNameStyleList = pnsp
+					.getPersonNameStyleList();
 
-		// TODO Populate from database table
-		addField(new ComboFieldEditor(
-				"id", "Default Location Name Style", new String[][] {
-						{ "name_1", "value_1" }, { "name_2", "value_2" } },
-				getFieldEditorParent()));
+			final int llsSize = personNameStyleList.size();
+			final String[][] doubleArray = new String[llsSize][2];
+
+			for (int i = 0; i < llsSize; i++) {
+				doubleArray[i][0] = personNameStyleList.get(i).get(2);
+				doubleArray[i][1] = personNameStyleList.get(i).get(1);
+			}
+
+			comboPersonNameStyle = new ComboFieldEditor(
+					"DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
+					doubleArray, getFieldEditorParent());
+			addField(comboPersonNameStyle);
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
+		try {
+			final LocationNameStyleProvider lnsp = new LocationNameStyleProvider();
+			final List<List<String>> LocationNameStyleList = lnsp
+					.getLocationNameStyleList();
+
+			final int llsSize = LocationNameStyleList.size();
+			final String[][] doubleArray = new String[llsSize][2];
+
+			for (int i = 0; i < llsSize; i++) {
+				doubleArray[i][0] = LocationNameStyleList.get(i).get(2);
+				doubleArray[i][1] = LocationNameStyleList.get(i).get(1);
+			}
+
+			comboLocationNameStyle = new ComboFieldEditor(
+					"DEFAULTLOCATIONNAMESTYLE", "Default Location Name Style",
+					doubleArray, getFieldEditorParent());
+			addField(comboLocationNameStyle);
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	/*

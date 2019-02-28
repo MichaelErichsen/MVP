@@ -49,7 +49,6 @@
       <import plugin="org.eclipse.help.ui"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.h2"/>
-      <import plugin="javax.annotation"/>
       <import plugin="org.eclipse.equinox.p2.operations"/>
       <import plugin="org.eclipse.equinox.p2.core"/>
       <import plugin="org.eclipse.wb.core.lib"/>
@@ -59,7 +58,9 @@
       <import plugin="com.hypotemoose.cal"/>
       <import plugin="org.eclipse.equinox.p2.engine"/>
       <import plugin="org.eclipse.equinox.p2.metadata.repository"/>
+      <import plugin="org.eclipse.help.webapp"/>
       <import plugin="org.eclipse.jetty.util"/>
+      <import plugin="javax.annotation"/>
    </requires>
 
    <plugin
