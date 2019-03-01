@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.preferences;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.location.providers.LocationNameStyleProvider;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
@@ -30,7 +28,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
  * Preference page for client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. feb. 2019
+ * @version 1. mar. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -101,8 +99,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				"Port Number for local HRE Server", getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
-		final LanguageProvider languageProvider = new LanguageProvider();
 		try {
+			final LanguageProvider languageProvider = new LanguageProvider();
 			final List<List<String>> languageList = languageProvider.get();
 
 			final int llsSize = languageList.size();
@@ -116,7 +114,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 			comboGuiLanguage = new ComboFieldEditor("GUILANGUAGE",
 					"GUI Language", doubleArray, getFieldEditorParent());
 			addField(comboGuiLanguage);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -138,7 +136,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					"DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
 					doubleArray, getFieldEditorParent());
 			addField(comboPersonNameStyle);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -160,7 +158,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					"DEFAULTLOCATIONNAMESTYLE", "Default Location Name Style",
 					doubleArray, getFieldEditorParent());
 			addField(comboLocationNameStyle);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
