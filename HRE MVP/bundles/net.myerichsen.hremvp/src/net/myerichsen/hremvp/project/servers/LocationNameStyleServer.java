@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
 
 /**
@@ -13,7 +14,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 1. mar. 2019
+ * @version 2. mar. 2019
  *
  */
 public class LocationNameStyleServer implements IHREServer {
@@ -49,26 +50,14 @@ public class LocationNameStyleServer implements IHREServer {
 		style.delete(key);
 	}
 
-	/**
-	 * Get all rows
-	 *
-	 * @return A list of strings of pids and labels
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
 	@Override
-	public List<String> get() throws SQLException, MvpException {
-		final List<String> stringList = new ArrayList<>();
-
-		final List<LocationNameStyles> lnsl = style.get();
-
-		for (final LocationNameStyles style : lnsl) {
-			stringList.add(style.getLocationNameStylePid() + ","
-					+ style.getLabelPid());
-		}
-
-		return stringList;
+	public List<LocationNameStyles> get() throws SQLException {
+		return style.get();
 	}
 
 	/**
@@ -108,6 +97,30 @@ public class LocationNameStyleServer implements IHREServer {
 	 */
 	public int getLabelPid() {
 		return LabelPid;
+	}
+
+	/**
+	 * @return
+	 * @throws SQLException 
+	 */
+	public List<List<String>> getLocationNameStyleList() throws SQLException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+		final Dictionary dictionary = new Dictionary();
+
+		final List<LocationNameStyles> list = get();
+
+		for (final LocationNameStyles style : list) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(style.getLocationNameStylePid()));
+			stringList.add(style.getIsoCode());
+			LabelPid = style.getLabelPid();
+			final List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(LabelPid);
+			stringList.add(fkLabelPid.get(0).getLabel());
+			lls.add(stringList);
+		}
+		return lls;
 	}
 
 	/**

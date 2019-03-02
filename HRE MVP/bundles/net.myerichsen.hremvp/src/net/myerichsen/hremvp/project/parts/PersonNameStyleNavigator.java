@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 import net.myerichsen.hremvp.project.wizards.NewPersonNameStyleWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -48,7 +49,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. feb. 2019
+ * @version 2. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -178,7 +179,7 @@ public class PersonNameStyleNavigator {
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
 			personNameStylePid = Integer.parseInt(item.getText(0));
-			personNameStyleName = item.getText(3);
+			personNameStyleName = item.getText(2);
 		}
 
 		// Last chance to regret
@@ -195,10 +196,14 @@ public class PersonNameStyleNavigator {
 		}
 
 		try {
+			final PersonNameMapProvider pnmp = new PersonNameMapProvider();
+			pnmp.deletePersonNameStylePid(personNameStylePid);
+			LOGGER.info("Person name map(s) has been deleted");
+
 			final PersonNameStyleProvider provider = new PersonNameStyleProvider();
 			provider.delete(personNameStylePid);
-			eventBroker.post("MESSAGE",
-					"Event type " + personNameStyleName + " has been deleted");
+			eventBroker.post("MESSAGE", "Person name style "
+					+ personNameStyleName + " has been deleted");
 			eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
 					personNameStylePid);
 		} catch (final Exception e) {
@@ -208,6 +213,9 @@ public class PersonNameStyleNavigator {
 
 	}
 
+	/**
+	 * 
+	 */
 	@PreDestroy
 	public void dispose() {
 	}

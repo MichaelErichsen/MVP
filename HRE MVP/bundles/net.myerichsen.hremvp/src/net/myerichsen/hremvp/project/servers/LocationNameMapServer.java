@@ -1,10 +1,12 @@
 package net.myerichsen.hremvp.project.servers;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 
 /**
@@ -44,6 +46,22 @@ public class LocationNameMapServer implements IHREServer {
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		map.delete(key);
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public void deleteLocationNameStylePid(int key)
+			throws SQLException, MvpException {
+		final List<LocationNameMaps> fkLocationNameStylePid = map
+				.getFKLocationNameStylePid(key);
+
+		for (final LocationNameMaps locationNameMaps : fkLocationNameStylePid) {
+			delete(locationNameMaps.getLocationNameMapPid());
+		}
 	}
 
 	/*
@@ -100,6 +118,41 @@ public class LocationNameMapServer implements IHREServer {
 	 */
 	public int getPartNo() {
 		return PartNo;
+	}
+
+	/**
+	 * @param locationNameStylePid
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getStringList(int locationNameStylePid)
+			throws SQLException {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		if (locationNameStylePid > 0) {
+			final List<LocationNameMaps> fkNameStylePid = map
+					.getFKLocationNameStylePid(locationNameStylePid);
+
+			for (final LocationNameMaps personNameMaps : fkNameStylePid) {
+				stringList = new ArrayList<>();
+				stringList.add(Integer
+						.toString(personNameMaps.getLocationNameMapPid()));
+				final int labelPid = personNameMaps.getLabelPid();
+				stringList.add(Integer.toString(labelPid));
+				stringList.add(Integer.toString(personNameMaps.getPartNo()));
+
+				final Dictionary dictionary = new Dictionary();
+				final List<Dictionary> fkLabelPid = dictionary
+						.getFKLabelPid(labelPid);
+				stringList.add(fkLabelPid.get(0).getLabel());
+				stringList.add(
+						Integer.toString(fkLabelPid.get(0).getDictionaryPid()));
+				lls.add(stringList);
+			}
+		}
+
+		return lls;
 	}
 
 	/**
@@ -175,5 +228,4 @@ public class LocationNameMapServer implements IHREServer {
 		map.setLabelPid(LabelPid);
 		map.update();
 	}
-
 }

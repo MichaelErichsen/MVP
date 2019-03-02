@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.project.servers.PersonNameStyleServer;
  * Provide a person name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. feb. 2019
+ * @version 2. mar. 2019
  *
  */
 public class PersonNameStyleProvider implements IHREProvider {

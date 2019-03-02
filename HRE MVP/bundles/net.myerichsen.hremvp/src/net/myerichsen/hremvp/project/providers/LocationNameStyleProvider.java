@@ -57,7 +57,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public List<String> get() throws SQLException, MvpException {
-		return server.get();
+		return null;
 	}
 
 	/**
@@ -71,7 +71,6 @@ public class LocationNameStyleProvider implements IHREProvider {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
-		setLocationNameStylePid(server.getLocationNameStylePid());
 		setIsoCode(server.getIsoCode());
 		setFromDatePid(server.getFromDatePid());
 		setToDatePid(server.getToDatePid());
@@ -100,6 +99,14 @@ public class LocationNameStyleProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return
+	 * @throws SQLException 
+	 */
+	public List<List<String>> getLocationNameStyleList() throws SQLException {
+		return server.getLocationNameStyleList();
+	}
+
+	/**
 	 * @return the locationNameStylePid
 	 */
 	public int getLocationNameStylePid() {
@@ -123,8 +130,8 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		server.setIsoCode(IsoCode);
 		server.setLocationNameStylePid(LocationNameStylePid);
+		server.setIsoCode(IsoCode);
 		server.setFromDatePid(FromDatePid);
 		server.setToDatePid(ToDatePid);
 		server.setLabelPid(LabelPid);
@@ -182,13 +189,5 @@ public class LocationNameStyleProvider implements IHREProvider {
 		server.setToDatePid(ToDatePid);
 		server.setLabelPid(LabelPid);
 		server.update();
-	}
-
-	/**
-	 * @return
-	 */
-	public List<List<String>> getLocationNameStyleList() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

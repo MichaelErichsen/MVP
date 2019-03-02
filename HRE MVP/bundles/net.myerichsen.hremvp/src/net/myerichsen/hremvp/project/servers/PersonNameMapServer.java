@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. feb. 2019
+ * @version 2. mar. 2019
  */
 public class PersonNameMapServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -49,6 +49,22 @@ public class PersonNameMapServer implements IHREServer {
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		map.delete(key);
+	}
+
+	/**
+	 * @param personNameStylePid
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void deletePersonNameStylePid(int personNameStylePid)
+			throws SQLException, MvpException {
+		final List<PersonNameMaps> fkNameStylePid = map
+				.getFKNameStylePid(personNameStylePid);
+
+		for (final PersonNameMaps personNameMaps : fkNameStylePid) {
+			delete(personNameMaps.getNameMapPid());
+		}
+
 	}
 
 	/*

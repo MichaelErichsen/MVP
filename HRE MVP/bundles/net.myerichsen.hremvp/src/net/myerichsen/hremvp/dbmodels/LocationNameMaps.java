@@ -20,35 +20,40 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class LocationNameMaps {
-	private List<LocationNameMaps> modelList;
-	private PreparedStatement ps;
-	private ResultSet rs;
-	private Connection conn;
 	private static final String SELECT = "SELECT LOCATION_NAME_MAP_PID, "
 			+ "LOCATION_NAME_STYLE_PID, PART_NO, LABEL_PID, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
-
+	private static final String SELECT_LOCATION_NAME_STYLE_PID = "SELECT "
+			+ "LOCATION_NAME_MAP_PID, LOCATION_NAME_STYLE_PID, "
+			+ "PART_NO, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_STYLE_PID = ? ORDER BY LOCATION_NAME_MAP_PID";
 	private static final String SELECTALL = "SELECT "
 			+ "LOCATION_NAME_MAP_PID, LOCATION_NAME_STYLE_PID, "
 			+ "PART_NO, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS ORDER BY LOCATION_NAME_MAP_PID";
-
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_NAME_MAP_PID) FROM PUBLIC.LOCATION_NAME_MAPS";
-
 	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_MAPS( "
 			+ "LOCATION_NAME_MAP_PID, LOCATION_NAME_STYLE_PID, "
 			+ "PART_NO, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			+ "TABLE_ID) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 21)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_MAPS SET "
 			+ "LOCATION_NAME_STYLE_PID = ?, PART_NO = ?, "
-			+ "LABEL_PID = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
-			+ "TABLE_ID = ? WHERE LOCATION_NAME_MAP_PID = ?";
+			+ "LABEL_PID = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP "
+			+ "WHERE LOCATION_NAME_MAP_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.LOCATION_NAME_MAPS";
+
+	private List<LocationNameMaps> modelList;
+
+	private PreparedStatement ps;
+
+	private ResultSet rs;
+
+	private Connection conn;
 
 	private int LocationNameMapPid;
 	private int LocationNameStylePid;
@@ -81,7 +86,7 @@ public class LocationNameMaps {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<LocationNameMaps>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new LocationNameMaps();
 			model.setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
@@ -116,6 +121,91 @@ public class LocationNameMaps {
 		conn.close();
 	}
 
+	public List<LocationNameMaps> getFKLocationNameStylePid(int key)
+			throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECT_LOCATION_NAME_STYLE_PID);
+		ps.setInt(1, key);
+		rs = ps.executeQuery();
+		modelList = new ArrayList<>();
+		while (rs.next()) {
+			model = new LocationNameMaps();
+			model.setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
+			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
+			model.setPartNo(rs.getInt("PART_NO"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			model.setTableId(rs.getInt("TABLE_ID"));
+			modelList.add(model);
+		}
+		conn.close();
+		return modelList;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return LabelPid;
+	}
+
+	/**
+	 * Get the LocationNameMapPid field.
+	 *
+	 * @return Contents of the LOCATION_NAME_MAP_PID column
+	 */
+	public int getLocationNameMapPid() {
+		return LocationNameMapPid;
+	}
+
+	/**
+	 * Get the LocationNameStylePid field.
+	 *
+	 * @return Contents of the LOCATION_NAME_STYLE_PID column
+	 */
+	public int getLocationNameStylePid() {
+		return LocationNameStylePid;
+	}
+
+	/**
+	 * Get the PartNo field.
+	 *
+	 * @return Contents of the PART_NO column
+	 */
+	public int getPartNo() {
+		return PartNo;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return TableId;
+	}
+
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -131,89 +221,27 @@ public class LocationNameMaps {
 		ps.setInt(2, getLocationNameStylePid());
 		ps.setInt(3, getPartNo());
 		ps.setInt(4, getLabelPid());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
 	}
 
-	public void update() throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getLocationNameStylePid());
-		ps.setInt(2, getPartNo());
-		ps.setInt(3, getLabelPid());
-		ps.setTimestamp(4, getInsertTstmp());
-		ps.setTimestamp(5, getUpdateTstmp());
-		ps.setInt(6, getTableId());
-		ps.setInt(7, getLocationNameMapPid());
-		ps.executeUpdate();
-		conn.close();
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
-	 * Get the LocationNameMapPid field.
+	 * Set the LabelPid field
 	 *
-	 * @return Contents of the LOCATION_NAME_MAP_PID column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public int getLocationNameMapPid() {
-		return this.LocationNameMapPid;
-	}
-
-	/**
-	 * Get the LocationNameStylePid field.
-	 *
-	 * @return Contents of the LOCATION_NAME_STYLE_PID column
-	 */
-	public int getLocationNameStylePid() {
-		return this.LocationNameStylePid;
-	}
-
-	/**
-	 * Get the PartNo field.
-	 *
-	 * @return Contents of the PART_NO column
-	 */
-	public int getPartNo() {
-		return this.PartNo;
-	}
-
-	/**
-	 * Get the LabelPid field.
-	 *
-	 * @return Contents of the LABEL_PID column
-	 */
-	public int getLabelPid() {
-		return this.LabelPid;
-	}
-
-	/**
-	 * Get the InsertTstmp field.
-	 *
-	 * @return Contents of the INSERT_TSTMP column
-	 */
-	public Timestamp getInsertTstmp() {
-		return this.InsertTstmp;
-	}
-
-	/**
-	 * Get the UpdateTstmp field.
-	 *
-	 * @return Contents of the UPDATE_TSTMP column
-	 */
-	public Timestamp getUpdateTstmp() {
-		return this.UpdateTstmp;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return this.TableId;
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -245,21 +273,12 @@ public class LocationNameMaps {
 	}
 
 	/**
-	 * Set the LabelPid field
+	 * Set the TableId field
 	 *
-	 * @param LabelPid Contents of the LABEL_PID column
+	 * @param TableId Contents of the TABLE_ID column
 	 */
-	public void setLabelPid(int LabelPid) {
-		this.LabelPid = LabelPid;
-	}
-
-	/**
-	 * Set the InsertTstmp field
-	 *
-	 * @param InsertTstmp Contents of the INSERT_TSTMP column
-	 */
-	public void setInsertTstmp(Timestamp InsertTstmp) {
-		this.InsertTstmp = InsertTstmp;
+	public void setTableId(int TableId) {
+		this.TableId = TableId;
 	}
 
 	/**
@@ -271,13 +290,15 @@ public class LocationNameMaps {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	/**
-	 * Set the TableId field
-	 *
-	 * @param TableId Contents of the TABLE_ID column
-	 */
-	public void setTableId(int TableId) {
-		this.TableId = TableId;
+	public void update() throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setInt(1, getLocationNameStylePid());
+		ps.setInt(2, getPartNo());
+		ps.setInt(3, getLabelPid());
+		ps.setInt(4, getLocationNameMapPid());
+		ps.executeUpdate();
+		conn.close();
 	}
 
 }

@@ -143,9 +143,9 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 			Languages language;
 
 			for (int i = 0; i < nameStyleList.size(); i++) {
-				final String style = nameStyleList.get(i);
+//				final String style = nameStyleList.get(i);
 				final TableItem item = new TableItem(table, SWT.NONE);
-				locationNameStylePid = style.getLocationNameStylePid();
+//				locationNameStylePid = style.getLocationNameStylePid();
 				item.setText(0, Integer.toString(locationNameStylePid));
 				item.setText(1, "style.getLabelPid()");
 

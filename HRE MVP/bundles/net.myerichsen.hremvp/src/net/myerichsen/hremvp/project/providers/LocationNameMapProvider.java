@@ -44,6 +44,17 @@ public class LocationNameMapProvider implements IHREProvider {
 		server.delete(key);
 	}
 
+	/**
+	 * @param key
+	 * @return
+	 * @throws SQLException
+	 * @throws MvpException
+	 */
+	public void deleteLocationNameStylePid(int key)
+			throws SQLException, MvpException {
+		server.deleteLocationNameStylePid(key);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -98,6 +109,16 @@ public class LocationNameMapProvider implements IHREProvider {
 	 */
 	public int getPartNo() {
 		return PartNo;
+	}
+
+	/**
+	 * @param locationNameStylePid
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getStringList(int locationNameStylePid)
+			throws SQLException {
+		return server.getStringList(locationNameStylePid);
 	}
 
 	/**
@@ -158,15 +179,6 @@ public class LocationNameMapProvider implements IHREProvider {
 		server.setPartNo(PartNo);
 		server.setLabelPid(LabelPid);
 		server.update();
-	}
-
-	/**
-	 * @param locationNameStylePid2
-	 * @return
-	 */
-	public List<List<String>> getStringList(int locationNameStylePid2) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the HDATES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 2. mar. 2019
  *
  */
 
@@ -33,9 +33,9 @@ public class Hdates {
 	private static final String INSERT = "INSERT INTO PUBLIC.HDATES( "
 			+ "HDATE_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "ORIGINAL_TEXT, DATE, SORT_DATE, SURETY) VALUES ("
-			+ "?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.HDATES SET "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "ORIGINAL_TEXT = ?, DATE = ?, SORT_DATE = ?, "
 			+ "SURETY = ? WHERE HDATE_PID = ?";
 
@@ -204,13 +204,10 @@ public class Hdates {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setTimestamp(2, getInsertTstmp());
-		ps.setTimestamp(3, getUpdateTstmp());
-		ps.setInt(4, getTableId());
-		ps.setString(5, getOriginalText());
-		ps.setObject(6, getDate());
-		ps.setObject(7, getSortDate());
-		ps.setString(8, getSurety());
+		ps.setString(2, getOriginalText());
+		ps.setObject(3, getDate());
+		ps.setObject(4, getSortDate());
+		ps.setString(5, getSurety());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -291,14 +288,11 @@ public class Hdates {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setTimestamp(1, getInsertTstmp());
-		ps.setTimestamp(2, getUpdateTstmp());
-		ps.setInt(3, getTableId());
-		ps.setString(4, getOriginalText());
-		ps.setObject(6, getDate());
-		ps.setObject(7, getSortDate());
-		ps.setString(5, getSurety());
-		ps.setInt(8, getHdatePid());
+		ps.setString(1, getOriginalText());
+		ps.setObject(2, getDate());
+		ps.setObject(3, getSortDate());
+		ps.setString(4, getSurety());
+		ps.setInt(5, getHdatePid());
 		ps.executeUpdate();
 		conn.close();
 	}

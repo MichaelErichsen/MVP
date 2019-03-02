@@ -20,35 +20,35 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class LocationNameStyles {
-	private List<LocationNameStyles> modelList;
-	private PreparedStatement ps;
-	private ResultSet rs;
-	private Connection conn;
 	private static final String SELECT = "SELECT LOCATION_NAME_STYLE_PID, "
 			+ "ISO_CODE, FROM_DATE_PID, TO_DATE_PID, LABEL_PID, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_STYLES WHERE LOCATION_NAME_STYLE_PID = ?";
-
 	private static final String SELECTALL = "SELECT "
 			+ "LOCATION_NAME_STYLE_PID, ISO_CODE, FROM_DATE_PID, "
 			+ "TO_DATE_PID, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_STYLES ORDER BY LOCATION_NAME_STYLE_PID";
-
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_NAME_STYLE_PID) FROM PUBLIC.LOCATION_NAME_STYLES";
-
 	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_STYLES( "
 			+ "LOCATION_NAME_STYLE_PID, ISO_CODE, FROM_DATE_PID, "
 			+ "TO_DATE_PID, LABEL_PID, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 16)";
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_STYLES SET "
 			+ "ISO_CODE = ?, FROM_DATE_PID = ?, TO_DATE_PID = ?, "
-			+ "LABEL_PID = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
-			+ "TABLE_ID = ? WHERE LOCATION_NAME_STYLE_PID = ?";
+			+ "LABEL_PID = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP "
+			+ "WHERE LOCATION_NAME_STYLE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAME_STYLES WHERE LOCATION_NAME_STYLE_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.LOCATION_NAME_STYLES";
+
+	private List<LocationNameStyles> modelList;
+
+	private PreparedStatement ps;
+
+	private ResultSet rs;
+
+	private Connection conn;
 
 	private int LocationNameStylePid;
 	private String IsoCode;
@@ -82,7 +82,7 @@ public class LocationNameStyles {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<LocationNameStyles>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new LocationNameStyles();
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
@@ -119,6 +119,78 @@ public class LocationNameStyles {
 		conn.close();
 	}
 
+	/**
+	 * Get the FromDatePid field.
+	 *
+	 * @return Contents of the FROM_DATE_PID column
+	 */
+	public int getFromDatePid() {
+		return FromDatePid;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
+	}
+
+	/**
+	 * Get the IsoCode field.
+	 *
+	 * @return Contents of the ISO_CODE column
+	 */
+	public String getIsoCode() {
+		return IsoCode;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return LabelPid;
+	}
+
+	/**
+	 * Get the LocationNameStylePid field.
+	 *
+	 * @return Contents of the LOCATION_NAME_STYLE_PID column
+	 */
+	public int getLocationNameStylePid() {
+		return LocationNameStylePid;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return TableId;
+	}
+
+	/**
+	 * Get the ToDatePid field.
+	 *
+	 * @return Contents of the TO_DATE_PID column
+	 */
+	public int getToDatePid() {
+		return ToDatePid;
+	}
+
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -132,114 +204,56 @@ public class LocationNameStyles {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setString(2, getIsoCode());
-		if (getFromDatePid() == 0)
+		if (getFromDatePid() == 0) {
 			ps.setNull(3, java.sql.Types.INTEGER);
-		else
+		} else {
 			ps.setInt(3, getFromDatePid());
-		if (getToDatePid() == 0)
+		}
+		if (getToDatePid() == 0) {
 			ps.setNull(4, java.sql.Types.INTEGER);
-		else
+		} else {
 			ps.setInt(4, getToDatePid());
+		}
 		ps.setInt(5, getLabelPid());
-		ps.setTimestamp(6, getInsertTstmp());
-		ps.setTimestamp(7, getUpdateTstmp());
-		ps.setInt(8, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
 	}
 
-	public void update() throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getIsoCode());
-		if (getFromDatePid() == 0)
-			ps.setNull(2, java.sql.Types.INTEGER);
-		else
-			ps.setInt(2, getFromDatePid());
-		if (getToDatePid() == 0)
-			ps.setNull(3, java.sql.Types.INTEGER);
-		else
-			ps.setInt(3, getToDatePid());
-		ps.setInt(4, getLabelPid());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
-		ps.setInt(8, getLocationNameStylePid());
-		ps.executeUpdate();
-		conn.close();
+	/**
+	 * Set the FromDatePid field
+	 *
+	 * @param FromDatePid Contents of the FROM_DATE_PID column
+	 */
+	public void setFromDatePid(int FromDatePid) {
+		this.FromDatePid = FromDatePid;
 	}
 
 	/**
-	 * Get the LocationNameStylePid field.
+	 * Set the InsertTstmp field
 	 *
-	 * @return Contents of the LOCATION_NAME_STYLE_PID column
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
 	 */
-	public int getLocationNameStylePid() {
-		return this.LocationNameStylePid;
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
-	 * Get the IsoCode field.
+	 * Set the IsoCode field
 	 *
-	 * @return Contents of the ISO_CODE column
+	 * @param IsoCode Contents of the ISO_CODE column
 	 */
-	public String getIsoCode() {
-		return this.IsoCode;
+	public void setIsoCode(String IsoCode) {
+		this.IsoCode = IsoCode;
 	}
 
 	/**
-	 * Get the FromDatePid field.
+	 * Set the LabelPid field
 	 *
-	 * @return Contents of the FROM_DATE_PID column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public int getFromDatePid() {
-		return this.FromDatePid;
-	}
-
-	/**
-	 * Get the ToDatePid field.
-	 *
-	 * @return Contents of the TO_DATE_PID column
-	 */
-	public int getToDatePid() {
-		return this.ToDatePid;
-	}
-
-	/**
-	 * Get the LabelPid field.
-	 *
-	 * @return Contents of the LABEL_PID column
-	 */
-	public int getLabelPid() {
-		return this.LabelPid;
-	}
-
-	/**
-	 * Get the InsertTstmp field.
-	 *
-	 * @return Contents of the INSERT_TSTMP column
-	 */
-	public Timestamp getInsertTstmp() {
-		return this.InsertTstmp;
-	}
-
-	/**
-	 * Get the UpdateTstmp field.
-	 *
-	 * @return Contents of the UPDATE_TSTMP column
-	 */
-	public Timestamp getUpdateTstmp() {
-		return this.UpdateTstmp;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return this.TableId;
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -253,21 +267,12 @@ public class LocationNameStyles {
 	}
 
 	/**
-	 * Set the IsoCode field
+	 * Set the TableId field
 	 *
-	 * @param IsoCode Contents of the ISO_CODE column
+	 * @param TableId Contents of the TABLE_ID column
 	 */
-	public void setIsoCode(String IsoCode) {
-		this.IsoCode = IsoCode;
-	}
-
-	/**
-	 * Set the FromDatePid field
-	 *
-	 * @param FromDatePid Contents of the FROM_DATE_PID column
-	 */
-	public void setFromDatePid(int FromDatePid) {
-		this.FromDatePid = FromDatePid;
+	public void setTableId(int TableId) {
+		this.TableId = TableId;
 	}
 
 	/**
@@ -280,24 +285,6 @@ public class LocationNameStyles {
 	}
 
 	/**
-	 * Set the LabelPid field
-	 *
-	 * @param LabelPid Contents of the LABEL_PID column
-	 */
-	public void setLabelPid(int LabelPid) {
-		this.LabelPid = LabelPid;
-	}
-
-	/**
-	 * Set the InsertTstmp field
-	 *
-	 * @param InsertTstmp Contents of the INSERT_TSTMP column
-	 */
-	public void setInsertTstmp(Timestamp InsertTstmp) {
-		this.InsertTstmp = InsertTstmp;
-	}
-
-	/**
 	 * Set the UpdateTstmp field
 	 *
 	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
@@ -306,13 +293,24 @@ public class LocationNameStyles {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	/**
-	 * Set the TableId field
-	 *
-	 * @param TableId Contents of the TABLE_ID column
-	 */
-	public void setTableId(int TableId) {
-		this.TableId = TableId;
+	public void update() throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setString(1, getIsoCode());
+		if (getFromDatePid() == 0) {
+			ps.setNull(2, java.sql.Types.INTEGER);
+		} else {
+			ps.setInt(2, getFromDatePid());
+		}
+		if (getToDatePid() == 0) {
+			ps.setNull(3, java.sql.Types.INTEGER);
+		} else {
+			ps.setInt(3, getToDatePid());
+		}
+		ps.setInt(4, getLabelPid());
+		ps.setInt(5, getLocationNameStylePid());
+		ps.executeUpdate();
+		conn.close();
 	}
 
 }

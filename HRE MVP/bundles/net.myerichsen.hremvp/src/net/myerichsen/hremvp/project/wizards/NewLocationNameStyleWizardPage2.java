@@ -24,7 +24,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Add a location name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 1. mar. 2019
+ * @version 2. mar. 2019
  *
  */
 public class NewLocationNameStyleWizardPage2 extends WizardPage {

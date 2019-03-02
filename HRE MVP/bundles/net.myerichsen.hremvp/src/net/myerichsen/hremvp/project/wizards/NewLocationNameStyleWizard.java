@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
  * Wizard to add a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 1. mar. 2019
+ * @version 2. mar. 2019
  *
  */
 public class NewLocationNameStyleWizard extends Wizard {
@@ -121,7 +121,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 			dp.setIsoCode(isoCode);
 			dp.setLabel(styleName);
 			dp.setLabelPid(labelPid);
-			dp.setLabelType("locationNAME");
+			dp.setLabelType("LOCATIONNAME");
 			dp.insert();
 			LOGGER.info("Inserted location name style \"" + styleName
 					+ "\" in dictionary");
@@ -139,7 +139,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 				dp.setIsoCode(isoCode);
 				dp.setLabel(input.get(i).get(1));
 				dp.setLabelPid(labelPid);
-				dp.setLabelType("locationNAMEMAP");
+				dp.setLabelType("LOCATIONNAMEMAP");
 				int dictionaryPid = dp.insert();
 				LOGGER.info("Inserted dictionary element " + dictionaryPid
 						+ ", " + isoCode + ", \"" + input.get(i).get(1)

@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_NAME_MAPS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 26. feb. 2019
+ * @version 02. mar. 2019
  *
  */
 
@@ -40,7 +40,8 @@ public class PersonNameMaps {
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_MAPS SET "
 			+ "NAME_STYLE_PID = ?, PART_NO = ?, LABEL_PID = ?, "
-			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP WHERE NAME_MAP_PID = ?";
+			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP "
+			+ "WHERE NAME_MAP_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_MAPS WHERE NAME_MAP_PID = ?";
 

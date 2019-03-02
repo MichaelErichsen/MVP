@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. feb. 2019
+ * @version 2. mar. 2019
  *
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
@@ -135,6 +135,7 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
 
+		// FIXME java.lang.NullPointerException
 //		final int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
 //		int currentStyle;
 

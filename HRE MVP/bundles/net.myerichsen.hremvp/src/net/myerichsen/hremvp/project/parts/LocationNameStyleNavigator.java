@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.project.providers.LocationNameMapProvider;
 import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
 import net.myerichsen.hremvp.project.wizards.NewLocationNameStyleWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -48,7 +49,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all location name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 1. mar. 2019
+ * @version 2. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -153,19 +154,24 @@ public class LocationNameStyleNavigator {
 		mntmDeleteSelectedName.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				deletelocationNameStyle(parent.getShell());
+				deleteLocationNameStyle(parent.getShell());
 			}
 		});
 		mntmDeleteSelectedName.setText("Delete selected name style...");
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getLocationNameStyleList());
+		try {
+			tableViewer.setInput(provider.getLocationNameStyleList());
+		} catch (final SQLException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 	}
 
 	/**
 	 * @param shell
 	 */
-	protected void deletelocationNameStyle(Shell shell) {
+	protected void deleteLocationNameStyle(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
 		int locationNameStylePid = 0;
@@ -173,7 +179,7 @@ public class LocationNameStyleNavigator {
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
 			locationNameStylePid = Integer.parseInt(item.getText(0));
-			locationNameStyleName = item.getText(3);
+			locationNameStyleName = item.getText(2);
 		}
 
 		// Last chance to regret
@@ -190,10 +196,14 @@ public class LocationNameStyleNavigator {
 		}
 
 		try {
+			final LocationNameMapProvider lnmp = new LocationNameMapProvider();
+			lnmp.deleteLocationNameStylePid(locationNameStylePid);
+			LOGGER.info("Location name map(s) has been deleted");
+
 			final LocationNameStyleProvider provider = new LocationNameStyleProvider();
 			provider.delete(locationNameStylePid);
-			eventBroker.post("MESSAGE", "Event type " + locationNameStyleName
-					+ " has been deleted");
+			eventBroker.post("MESSAGE", "Location name style "
+					+ locationNameStyleName + " has been deleted");
 			eventBroker.post(Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC,
 					locationNameStylePid);
 		} catch (final Exception e) {
@@ -203,6 +213,9 @@ public class LocationNameStyleNavigator {
 
 	}
 
+	/**
+	 *
+	 */
 	@PreDestroy
 	public void dispose() {
 	}
@@ -211,7 +224,6 @@ public class LocationNameStyleNavigator {
 	 *
 	 */
 	protected void openLocationNameStyleView() {
-		// FIXME Add command
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.openlocationnamestyleview",
 				null);
@@ -236,7 +248,7 @@ public class LocationNameStyleNavigator {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Focus
 	public void setFocus() {
@@ -254,17 +266,23 @@ public class LocationNameStyleNavigator {
 		this.locationNameStylePid = locationNameStylePid;
 
 		if (locationNameStylePid > 0) {
-			tableViewer.setInput(provider.getLocationNameStyleList());
-			tableViewer.refresh();
+			try {
+				tableViewer.setInput(provider.getLocationNameStyleList());
+				tableViewer.refresh();
 
-			final TableItem[] items = tableViewer.getTable().getItems();
-			final String item0 = Integer.toString(locationNameStylePid);
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(locationNameStylePid);
 
-			for (int i = 0; i < items.length; i++) {
-				if (item0.equals(items[i].getText(0))) {
-					tableViewer.getTable().setSelection(i);
-					break;
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
 				}
+
+			} catch (final SQLException e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
 			}
 
 		}

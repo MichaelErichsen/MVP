@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.project.servers.PersonNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. feb. 2019
+ * @version 2. mar. 2019
  *
  */
 public class PersonNameMapProvider implements IHREProvider {
@@ -45,6 +45,16 @@ public class PersonNameMapProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
 		server.delete(key);
+	}
+
+	/**
+	 * @param personNameStylePid
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	public void deletePersonNameStylePid(int personNameStylePid)
+			throws SQLException, MvpException {
+		server.deletePersonNameStylePid(personNameStylePid);
 	}
 
 	/*

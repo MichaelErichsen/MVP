@@ -40,7 +40,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a Name Style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 1. mar. 2019
+ * @version 2. mar. 2019
  *
  */
 public class LocationNameStyleView {
@@ -57,7 +57,7 @@ public class LocationNameStyleView {
 	private TableViewer tableViewer;
 
 	private LocationNameStyleProvider provider;
-	private LocationNameMapProvider pnmp;
+	private LocationNameMapProvider lnmp;
 	private int locationNameStylePid;
 
 	private DictionaryProvider dp;
@@ -69,7 +69,7 @@ public class LocationNameStyleView {
 	public LocationNameStyleView() {
 		try {
 			provider = new LocationNameStyleProvider();
-			pnmp = new LocationNameMapProvider();
+			lnmp = new LocationNameMapProvider();
 		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -89,7 +89,7 @@ public class LocationNameStyleView {
 		final Label lblId = new Label(parent, SWT.NONE);
 		lblId.setLayoutData(
 				new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		lblId.setText("location name style id");
+		lblId.setText("Location name style id");
 
 		textId = new Text(parent, SWT.BORDER);
 		textId.setEditable(false);
@@ -179,7 +179,7 @@ public class LocationNameStyleView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updatelocationNameStyle();
+				updateLocationNameStyle();
 			}
 		});
 		buttonUpdate.setText("Update");
@@ -196,7 +196,7 @@ public class LocationNameStyleView {
 			textStyleName.setText(locationNameStyleList.get(0).get(2));
 
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(pnmp.getStringList(locationNameStylePid));
+			tableViewer.setInput(lnmp.getStringList(locationNameStylePid));
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -241,7 +241,7 @@ public class LocationNameStyleView {
 					textIsoCode.setText(list.get(1));
 					textStyleName.setText(list.get(2));
 
-					tableViewer.setInput(pnmp.getStringList(
+					tableViewer.setInput(lnmp.getStringList(
 							Integer.parseInt(locationNameStylePidString)));
 					tableViewer.refresh();
 
@@ -260,7 +260,7 @@ public class LocationNameStyleView {
 	 *
 	 */
 	@SuppressWarnings("unchecked")
-	protected void updatelocationNameStyle() {
+	protected void updateLocationNameStyle() {
 		if (textStyleName.getText().length() == 0) {
 			eventBroker.post("MESSAGE", "Style name must not be empty");
 			textStyleName.setFocus();
@@ -284,7 +284,7 @@ public class LocationNameStyleView {
 			LOGGER.info("location name style pid " + locationNameStylePid
 					+ " has been updated to \"" + text + "\"");
 
-			final List<List<String>> stringList = pnmp
+			final List<List<String>> stringList = lnmp
 					.getStringList(locationNameStylePid);
 			final List<List<String>> input = (List<List<String>>) tableViewer
 					.getInput();
