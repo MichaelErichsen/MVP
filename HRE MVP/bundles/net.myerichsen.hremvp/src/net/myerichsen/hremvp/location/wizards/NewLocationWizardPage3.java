@@ -27,14 +27,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
-import net.myerichsen.hremvp.location.providers.LocationNameStyleProvider;
+import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
 
 /**
  * Location name parts wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. nov. 2018
+ * @version 2. mar. 2019
  *
  */
 public class NewLocationWizardPage3 extends WizardPage {
@@ -79,27 +78,27 @@ public class NewLocationWizardPage3 extends WizardPage {
 
 				if (key != 0) {
 					provider.get(key);
-					final List<LocationNameMaps> a = provider.getMapList();
+//					final List<LocationNameMaps> a = provider.getMapList();
 					labelList.clear();
 					textList.clear();
 
-					for (@SuppressWarnings("unused")
-					final LocationNameMaps map : a) {
-						final Label label = new Label(container, SWT.NONE);
-						label.setText("map.getLabelPid()");
-						labelList.add(label);
-
-						final Text text = new Text(container, SWT.BORDER);
-						text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-								true, false, 1, 1));
-						text.setText("");
-						textList.add(text);
-
-						container.getParent().layout();
-
-						LOGGER.fine("Added " + label.getText() + " and "
-								+ text.getText());
-					}
+//					for (@SuppressWarnings("unused")
+//					final LocationNameMaps map : a) {
+//						final Label label = new Label(container, SWT.NONE);
+//						label.setText("map.getLabelPid()");
+//						labelList.add(label);
+//
+//						final Text text = new Text(container, SWT.BORDER);
+//						text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+//								true, false, 1, 1));
+//						text.setText("");
+//						textList.add(text);
+//
+//						container.getParent().layout();
+//
+//						LOGGER.fine("Added " + label.getText() + " and "
+//								+ text.getText());
+//					}
 				}
 			}
 		} catch (final Exception e) {

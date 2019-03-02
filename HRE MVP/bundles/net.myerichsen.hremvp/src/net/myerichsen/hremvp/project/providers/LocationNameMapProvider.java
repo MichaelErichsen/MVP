@@ -1,28 +1,25 @@
-package net.myerichsen.hremvp.location.providers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.location.servers.LocationNameMapServer;
+import net.myerichsen.hremvp.project.servers.LocationNameMapServer;
 
 /**
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. sep. 2018
+ * @version 2. mar. 2019
  *
  */
 public class LocationNameMapProvider implements IHREProvider {
-	// private static Logger LOGGER =
-	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private int locationNameMapPid;
-	private String label;
-	private int partNo;
-	private int locationNameStylePid;
-	private String styleLabel;
-	private String labelPosition;
+//	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private int LocationNameMapPid;
+	private int LocationNameStylePid;
+	private int PartNo;
+	private int LabelPid;
 
 	private final LocationNameMapServer server;
 
@@ -69,55 +66,38 @@ public class LocationNameMapProvider implements IHREProvider {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
-
-		setLabel(server.getLabel());
 		setLocationNameMapPid(server.getLocationNameMapPid());
 		setLocationNameStylePid(server.getLocationNameStylePid());
 		setPartNo(server.getPartNo());
-		setStyleLabel(server.getStyleLabel());
-		setLabelPosition(server.getLabelPosition());
+		setLabelPid(server.getLabelPid());
 	}
 
 	/**
-	 * @return the label
+	 * @return the labelPid
 	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @return the labelPosition
-	 */
-	public String getLabelPosition() {
-		return labelPosition;
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
 	 * @return the locationNameMapPid
 	 */
 	public int getLocationNameMapPid() {
-		return locationNameMapPid;
+		return LocationNameMapPid;
 	}
 
 	/**
 	 * @return the locationNameStylePid
 	 */
 	public int getLocationNameStylePid() {
-		return locationNameStylePid;
+		return LocationNameStylePid;
 	}
 
 	/**
 	 * @return the partNo
 	 */
 	public int getPartNo() {
-		return partNo;
-	}
-
-	/**
-	 * @return the styleLabel
-	 */
-	public String getStyleLabel() {
-		return styleLabel;
+		return PartNo;
 	}
 
 	/**
@@ -129,54 +109,39 @@ public class LocationNameMapProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		server.setLabel(label);
-		server.setLocationNameMapPid(locationNameMapPid);
-		server.setLocationNameStylePid(locationNameStylePid);
-		server.setPartNo(partNo);
-		server.setLabelPosition(labelPosition);
+		server.setLocationNameMapPid(LocationNameMapPid);
+		server.setLocationNameStylePid(LocationNameStylePid);
+		server.setPartNo(PartNo);
+		server.setLabelPid(LabelPid);
 		return server.insert();
 	}
 
 	/**
-	 * @param label the label to set
+	 * @param labelPid the labelPid to set
 	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
-	 * @param labelPosition the labelPosition to set
-	 */
-	public void setLabelPosition(String labelPosition) {
-		this.labelPosition = labelPosition;
+	public void setLabelPid(int labelPid) {
+		LabelPid = labelPid;
 	}
 
 	/**
 	 * @param locationNameMapPid the locationNameMapPid to set
 	 */
 	public void setLocationNameMapPid(int locationNameMapPid) {
-		this.locationNameMapPid = locationNameMapPid;
+		LocationNameMapPid = locationNameMapPid;
 	}
 
 	/**
 	 * @param locationNameStylePid the locationNameStylePid to set
 	 */
 	public void setLocationNameStylePid(int locationNameStylePid) {
-		this.locationNameStylePid = locationNameStylePid;
+		LocationNameStylePid = locationNameStylePid;
 	}
 
 	/**
 	 * @param partNo the partNo to set
 	 */
 	public void setPartNo(int partNo) {
-		this.partNo = partNo;
-	}
-
-	/**
-	 * @param styleLabel the styleLabel to set
-	 */
-	public void setStyleLabel(String styleLabel) {
-		this.styleLabel = styleLabel;
+		PartNo = partNo;
 	}
 
 	/**
@@ -188,12 +153,20 @@ public class LocationNameMapProvider implements IHREProvider {
 	 */
 	@Override
 	public void update() throws SQLException {
-		server.setLabel(label);
-		server.setLocationNameMapPid(locationNameMapPid);
-		server.setLocationNameStylePid(locationNameStylePid);
-		server.setPartNo(partNo);
-		server.setLabelPosition(labelPosition);
+		server.setLocationNameMapPid(LocationNameMapPid);
+		server.setLocationNameStylePid(LocationNameStylePid);
+		server.setPartNo(PartNo);
+		server.setLabelPid(LabelPid);
 		server.update();
+	}
+
+	/**
+	 * @param locationNameStylePid2
+	 * @return
+	 */
+	public List<List<String>> getStringList(int locationNameStylePid2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

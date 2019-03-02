@@ -1,5 +1,4 @@
-
-package net.myerichsen.hremvp.location.handlers;
+package net.myerichsen.hremvp.project.handlers;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -9,41 +8,60 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 /**
- * Handler to open the Location Name Map view
+ * Handler to open the location Name style view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. feb. 2019
+ * @version 1. mar. 2019
+ *
  */
-public class OpenLocationNameMapViewHandler {
+public class OpenLocationNameStyleViewHandler {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameMapView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.locationNameStyleView";
 
 	/**
 	 * @param partService  The Eclipse part service
 	 * @param application  The Eclipse Application
 	 * @param modelService The Eclipse model service
+	 *
 	 */
 	@Execute
 	public void execute(EPartService partService, MApplication application,
 			EModelService modelService) {
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
-		final MPart part = MBasicFactory.INSTANCE.createPart();
+		MPart part = MBasicFactory.INSTANCE.createPart();
 
-		part.setLabel("Location Name Map");
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			for (int i = 0; i < a.size(); i++) {
+				part = (MPart) a.get(i);
+				try {
+					if (part.getContributionURI().equals(contributionURI)) {
+						partService.showPart(part, PartState.ACTIVATE);
+						return;
+					}
+				} catch (Exception e) {
+					LOGGER.severe(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+
+		part.setLabel("Location Name Style");
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(contributionURI);
-		stacks.get(stacks.size() - 2).getChildren().add(part);
+		stacks.get(1).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
-		LOGGER.fine("Opening new window");
 	}
 
 }

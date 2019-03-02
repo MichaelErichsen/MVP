@@ -1,31 +1,26 @@
-package net.myerichsen.hremvp.location.providers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
-import net.myerichsen.hremvp.location.servers.LocationNameStyleServer;
+import net.myerichsen.hremvp.project.servers.LocationNameStyleServer;
 
 /**
  * Provide a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. feb. 2019
+ * @version 2. mar. 2019
  *
  */
 public class LocationNameStyleProvider implements IHREProvider {
-	private int locationNameStylePid;
-	private String label;
-	private int languagePid;
-	private String languageLabel;
-	private String isoCode;
-	private int fromDatePid;
-	private int toDatePid;
+	private int LocationNameStylePid;
+	private String IsoCode;
+	private int FromDatePid;
+	private int ToDatePid;
+	private int LabelPid;
 
-	private List<LocationNameMaps> mapList;
 	private final LocationNameStyleServer server;
 
 	/**
@@ -37,7 +32,6 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 */
 	public LocationNameStyleProvider() throws SQLException {
 		server = new LocationNameStyleServer();
-		mapList = new ArrayList<>();
 	}
 
 	/**
@@ -77,71 +71,46 @@ public class LocationNameStyleProvider implements IHREProvider {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		server.get(key);
-
-		setLabel(server.getLabel());
-		setLanguagePid(server.getLanguagePid());
 		setLocationNameStylePid(server.getLocationNameStylePid());
 		setIsoCode(server.getIsoCode());
-		setLanguageLabel(server.getLanguageLabel());
-		setFromDatePid(server.getFromDate());
+		setFromDatePid(server.getFromDatePid());
 		setToDatePid(server.getToDatePid());
-		mapList = new LocationNameMaps().getFKLocationNameStylePid(key);
+		setLabelPid(server.getLabelPid());
 	}
 
 	/**
-	 * @return the fromDate
+	 * @return the fromDatePid
 	 */
 	public int getFromDatePid() {
-		return fromDatePid;
+		return FromDatePid;
 	}
 
 	/**
 	 * @return the isoCode
 	 */
 	public String getIsoCode() {
-		return isoCode;
+		return IsoCode;
 	}
 
 	/**
-	 * @return the label
+	 * @return the labelPid
 	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @return the languageLabel
-	 */
-	public String getLanguageLabel() {
-		return languageLabel;
-	}
-
-	/**
-	 * @return the languagePid
-	 */
-	public int getLanguagePid() {
-		return languagePid;
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
 	 * @return the locationNameStylePid
 	 */
 	public int getLocationNameStylePid() {
-		return locationNameStylePid;
+		return LocationNameStylePid;
 	}
 
 	/**
-	 * @return the mapList
-	 */
-	public List<LocationNameMaps> getMapList() {
-		return mapList;
-	}
-
-	/**
-	 * @return the toDate
+	 * @return the toDatePid
 	 */
 	public int getToDatePid() {
-		return toDatePid;
+		return ToDatePid;
 	}
 
 	/**
@@ -154,71 +123,47 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws SQLException, MvpException {
-		server.setIsoCode(isoCode);
-		server.setLabel(label);
-		server.setLanguageLabel(languageLabel);
-		server.setLanguagePid(languagePid);
-		server.setLocationNameStylePid(locationNameStylePid);
-		server.setMapList(mapList);
-		server.setFromDatePid(fromDatePid);
-		server.setToDatePid(toDatePid);
+		server.setIsoCode(IsoCode);
+		server.setLocationNameStylePid(LocationNameStylePid);
+		server.setFromDatePid(FromDatePid);
+		server.setToDatePid(ToDatePid);
+		server.setLabelPid(LabelPid);
 		return server.insert();
 	}
 
 	/**
-	 * @param fromDate the fromDate to set
+	 * @param fromDatePid the fromDatePid to set
 	 */
-	public void setFromDatePid(int fromDate) {
-		fromDatePid = fromDate;
+	public void setFromDatePid(int fromDatePid) {
+		FromDatePid = fromDatePid;
 	}
 
 	/**
 	 * @param isoCode the isoCode to set
 	 */
 	public void setIsoCode(String isoCode) {
-		this.isoCode = isoCode;
+		IsoCode = isoCode;
 	}
 
 	/**
-	 * @param label the label to set
+	 * @param labelPid the labelPid to set
 	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
-	 * @param languageLabel the languageLabel to set
-	 */
-	public void setLanguageLabel(String languageLabel) {
-		this.languageLabel = languageLabel;
-	}
-
-	/**
-	 * @param languagePid the languagePid to set
-	 */
-	public void setLanguagePid(int languagePid) {
-		this.languagePid = languagePid;
+	public void setLabelPid(int labelPid) {
+		LabelPid = labelPid;
 	}
 
 	/**
 	 * @param locationNameStylePid the locationNameStylePid to set
 	 */
 	public void setLocationNameStylePid(int locationNameStylePid) {
-		this.locationNameStylePid = locationNameStylePid;
+		LocationNameStylePid = locationNameStylePid;
 	}
 
 	/**
-	 * @param mapList the mapList to set
-	 */
-	public void setMapList(List<LocationNameMaps> mapList) {
-		this.mapList = mapList;
-	}
-
-	/**
-	 * @param toDatePid The persistent id of the to date
+	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDatePid) {
-		this.toDatePid = toDatePid;
+		ToDatePid = toDatePid;
 	}
 
 	/**
@@ -231,14 +176,11 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public void update() throws SQLException, MvpException {
-		server.setIsoCode(isoCode);
-		server.setLabel(label);
-		server.setLanguageLabel(languageLabel);
-		server.setLanguagePid(languagePid);
-		server.setLocationNameStylePid(locationNameStylePid);
-		server.setMapList(mapList);
-		server.setFromDatePid(fromDatePid);
-		server.setToDatePid(toDatePid);
+		server.setLocationNameStylePid(LocationNameStylePid);
+		server.setIsoCode(IsoCode);
+		server.setFromDatePid(FromDatePid);
+		server.setToDatePid(ToDatePid);
+		server.setLabelPid(LabelPid);
 		server.update();
 	}
 

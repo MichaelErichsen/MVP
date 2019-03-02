@@ -32,18 +32,18 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.DictionaryProvider;
-import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
-import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.project.providers.LocationNameMapProvider;
+import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all data about a Name Style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. feb. 2019
+ * @version 1. mar. 2019
  *
  */
-public class PersonNameStyleView {
+public class LocationNameStyleView {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -56,9 +56,9 @@ public class PersonNameStyleView {
 	private Text textStyleName;
 	private TableViewer tableViewer;
 
-	private PersonNameStyleProvider provider;
-	private PersonNameMapProvider pnmp;
-	private int personNameStylePid;
+	private LocationNameStyleProvider provider;
+	private LocationNameMapProvider pnmp;
+	private int locationNameStylePid;
 
 	private DictionaryProvider dp;
 
@@ -66,10 +66,10 @@ public class PersonNameStyleView {
 	 * Constructor
 	 *
 	 */
-	public PersonNameStyleView() {
+	public LocationNameStyleView() {
 		try {
-			provider = new PersonNameStyleProvider();
-			pnmp = new PersonNameMapProvider();
+			provider = new LocationNameStyleProvider();
+			pnmp = new LocationNameMapProvider();
 		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -89,7 +89,7 @@ public class PersonNameStyleView {
 		final Label lblId = new Label(parent, SWT.NONE);
 		lblId.setLayoutData(
 				new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		lblId.setText("Person name style id");
+		lblId.setText("location name style id");
 
 		textId = new Text(parent, SWT.BORDER);
 		textId.setEditable(false);
@@ -179,24 +179,24 @@ public class PersonNameStyleView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updatePersonNameStyle();
+				updatelocationNameStyle();
 			}
 		});
 		buttonUpdate.setText("Update");
 
 		try {
 			provider.get();
-			List<List<String>> personNameStyleList = provider
-					.getPersonNameStyleList();
-			personNameStylePid = Integer
-					.parseInt(personNameStyleList.get(0).get(0));
-			textId.setText(personNameStyleList.get(0).get(0));
+			List<List<String>> locationNameStyleList = provider
+					.getLocationNameStyleList();
+			locationNameStylePid = Integer
+					.parseInt(locationNameStyleList.get(0).get(0));
+			textId.setText(locationNameStyleList.get(0).get(0));
 			textLabelId.setText(Integer.toString(provider.getLabelPid()));
-			textIsoCode.setText(personNameStyleList.get(0).get(1));
-			textStyleName.setText(personNameStyleList.get(0).get(2));
+			textIsoCode.setText(locationNameStyleList.get(0).get(1));
+			textStyleName.setText(locationNameStyleList.get(0).get(2));
 
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(pnmp.getStringList(personNameStylePid));
+			tableViewer.setInput(pnmp.getStringList(locationNameStylePid));
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -226,23 +226,23 @@ public class PersonNameStyleView {
 			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
 		try {
 			provider.get();
-			String personNameStylePidString = ls.get(0);
-			List<List<String>> personNameStyleList = provider
-					.getPersonNameStyleList();
+			String locationNameStylePidString = ls.get(0);
+			List<List<String>> locationNameStyleList = provider
+					.getLocationNameStyleList();
 
-			for (List<String> list : personNameStyleList) {
-				if (list.get(0).equals(personNameStylePidString)) {
+			for (List<String> list : locationNameStyleList) {
+				if (list.get(0).equals(locationNameStylePidString)) {
 					LOGGER.info("Received " + list.get(0) + ", " + list.get(1)
 							+ ", " + list.get(2));
 
-					textId.setText(personNameStyleList.get(0).get(0));
+					textId.setText(locationNameStyleList.get(0).get(0));
 					textLabelId
 							.setText(Integer.toString(provider.getLabelPid()));
 					textIsoCode.setText(list.get(1));
 					textStyleName.setText(list.get(2));
 
 					tableViewer.setInput(pnmp.getStringList(
-							Integer.parseInt(personNameStylePidString)));
+							Integer.parseInt(locationNameStylePidString)));
 					tableViewer.refresh();
 
 					break;
@@ -260,7 +260,7 @@ public class PersonNameStyleView {
 	 *
 	 */
 	@SuppressWarnings("unchecked")
-	protected void updatePersonNameStyle() {
+	protected void updatelocationNameStyle() {
 		if (textStyleName.getText().length() == 0) {
 			eventBroker.post("MESSAGE", "Style name must not be empty");
 			textStyleName.setFocus();
@@ -268,7 +268,7 @@ public class PersonNameStyleView {
 		}
 
 		try {
-			provider.get(personNameStylePid);
+			provider.get(locationNameStylePid);
 			int labelPid = provider.getLabelPid();
 			dp = new DictionaryProvider();
 			List<List<String>> stringListDp = dp.getStringList(labelPid);
@@ -281,11 +281,11 @@ public class PersonNameStyleView {
 				dp.setLabel(text);
 				dp.update();
 			}
-			LOGGER.info("Person name style pid " + personNameStylePid
+			LOGGER.info("location name style pid " + locationNameStylePid
 					+ " has been updated to \"" + text + "\"");
 
 			final List<List<String>> stringList = pnmp
-					.getStringList(personNameStylePid);
+					.getStringList(locationNameStylePid);
 			final List<List<String>> input = (List<List<String>>) tableViewer
 					.getInput();
 
@@ -313,10 +313,10 @@ public class PersonNameStyleView {
 					}
 				}
 			}
-			eventBroker.post("MESSAGE", "Person name style "
-					+ personNameStylePid + " has been updated");
-			eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
-					personNameStylePid);
+			eventBroker.post("MESSAGE", "location name style "
+					+ locationNameStylePid + " has been updated");
+			eventBroker.post(Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC,
+					locationNameStylePid);
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

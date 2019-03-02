@@ -20,15 +20,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
-import net.myerichsen.hremvp.location.providers.LocationNameStyleProvider;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
+import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
  * Preference page for client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 1. mar. 2019
+ * @version 2. mar. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -99,6 +99,9 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				"Port Number for local HRE Server", getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
+		String[][] entryNamesAndValues = {
+				{ "Not defined yet", "Not defined yet" } };
+
 		try {
 			final LanguageProvider languageProvider = new LanguageProvider();
 			final List<List<String>> languageList = languageProvider.get();
@@ -115,8 +118,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					"GUI Language", doubleArray, getFieldEditorParent());
 			addField(comboGuiLanguage);
 		} catch (Exception e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+			addField(new ComboFieldEditor("", "GUI Language",
+					entryNamesAndValues, getFieldEditorParent()));
 		}
 
 		try {
@@ -137,8 +140,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					doubleArray, getFieldEditorParent());
 			addField(comboPersonNameStyle);
 		} catch (Exception e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+			addField(new ComboFieldEditor("", "Default Person Name Style",
+					entryNamesAndValues, getFieldEditorParent()));
 		}
 
 		try {
@@ -159,8 +162,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					doubleArray, getFieldEditorParent());
 			addField(comboLocationNameStyle);
 		} catch (Exception e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+			addField(new ComboFieldEditor("", "Default Location Name Style",
+					entryNamesAndValues, getFieldEditorParent()));
 		}
 
 	}

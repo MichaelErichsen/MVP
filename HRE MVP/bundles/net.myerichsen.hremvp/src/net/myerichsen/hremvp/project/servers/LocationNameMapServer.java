@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.location.servers;
+package net.myerichsen.hremvp.project.servers;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -6,28 +6,24 @@ import java.util.List;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
-import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
 
 /**
  * Business logic interface for
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. sep. 2018
+ * @version 2. mar. 2019
  *
  */
 public class LocationNameMapServer implements IHREServer {
-	// private static Logger LOGGER =
-	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private int locationNameMapPid;
-	private String label;
-	private int partNo;
-	private int locationNameStylePid;
+//	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private int LocationNameMapPid;
+	private int LocationNameStylePid;
+	private int PartNo;
+	private int LabelPid;
 	private String styleLabel;
-	private String labelPosition;
 
 	private final LocationNameMaps map;
-	private final LocationNameStyles style;
 
 	/**
 	 * Constructor
@@ -35,7 +31,6 @@ public class LocationNameMapServer implements IHREServer {
 	 */
 	public LocationNameMapServer() {
 		map = new LocationNameMaps();
-		style = new LocationNameStyles();
 	}
 
 	/**
@@ -73,49 +68,38 @@ public class LocationNameMapServer implements IHREServer {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		map.get(key);
-		setLabel("map.getLabelPid()");
 		setLocationNameMapPid(map.getLocationNameMapPid());
 		setLocationNameStylePid(map.getLocationNameStylePid());
 		setPartNo(map.getPartNo());
-		setLabelPosition(map.getLabelPosition());
-
-		style.get(getLocationNameStylePid());
-		setStyleLabel("style.getLabelPid()");
+		setLabelPid(map.getLabelPid());
 	}
 
 	/**
-	 * @return the label
+	 * @return the labelPid
 	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @return the labelPosition
-	 */
-	public String getLabelPosition() {
-		return labelPosition;
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
 	 * @return the locationNameMapPid
 	 */
 	public int getLocationNameMapPid() {
-		return locationNameMapPid;
+		return LocationNameMapPid;
 	}
 
 	/**
 	 * @return the locationNameStylePid
 	 */
 	public int getLocationNameStylePid() {
-		return locationNameStylePid;
+		return LocationNameStylePid;
 	}
 
 	/**
 	 * @return the partNo
 	 */
 	public int getPartNo() {
-		return partNo;
+		return PartNo;
 	}
 
 	/**
@@ -134,47 +118,39 @@ public class LocationNameMapServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		map.setLabelPid(0);
-		map.setLocationNameMapPid(locationNameMapPid);
-		map.setLocationNameStylePid(locationNameStylePid);
-		map.setPartNo(partNo);
-		map.setLabelPosition(labelPosition);
+		map.setLocationNameMapPid(LocationNameMapPid);
+		map.setLocationNameStylePid(LocationNameStylePid);
+		map.setPartNo(PartNo);
+		map.setLabelPid(LabelPid);
 		return map.insert();
 	}
 
 	/**
-	 * @param label the label to set
+	 * @param labelPid the labelPid to set
 	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
-	 * @param labelPosition the labelPosition to set
-	 */
-	public void setLabelPosition(String labelPosition) {
-		this.labelPosition = labelPosition;
+	public void setLabelPid(int labelPid) {
+		LabelPid = labelPid;
 	}
 
 	/**
 	 * @param locationNameMapPid the locationNameMapPid to set
 	 */
 	public void setLocationNameMapPid(int locationNameMapPid) {
-		this.locationNameMapPid = locationNameMapPid;
+		LocationNameMapPid = locationNameMapPid;
 	}
 
 	/**
 	 * @param locationNameStylePid the locationNameStylePid to set
 	 */
 	public void setLocationNameStylePid(int locationNameStylePid) {
-		this.locationNameStylePid = locationNameStylePid;
+		LocationNameStylePid = locationNameStylePid;
 	}
 
 	/**
 	 * @param partNo the partNo to set
 	 */
 	public void setPartNo(int partNo) {
-		this.partNo = partNo;
+		PartNo = partNo;
 	}
 
 	/**
@@ -193,11 +169,10 @@ public class LocationNameMapServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException {
-		map.setLabelPid(0);
-		map.setLocationNameMapPid(locationNameMapPid);
-		map.setLocationNameStylePid(locationNameStylePid);
-		map.setPartNo(partNo);
-		map.setLabelPosition(labelPosition);
+		map.setLocationNameMapPid(LocationNameMapPid);
+		map.setLocationNameStylePid(LocationNameStylePid);
+		map.setPartNo(PartNo);
+		map.setLabelPid(LabelPid);
 		map.update();
 	}
 

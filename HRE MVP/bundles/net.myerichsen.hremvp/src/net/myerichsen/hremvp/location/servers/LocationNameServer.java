@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNames}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. nov. 2018
+ * @version 2. mar. 2019
  *
  */
 public class LocationNameServer implements IHREServer {
@@ -100,14 +100,14 @@ public class LocationNameServer implements IHREServer {
 		LOGGER.fine("Location name PID: " + key);
 		LOGGER.fine(
 				"Location name style PID: " + name.getLocationNameStylePid());
-		mapList = new LocationNameMaps()
-				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-		partList = new LocationNameParts().getFKLocationNamePid(key);
-
-		if (mapList.size() != partList.size()) {
-			throw new MvpException("Map list size: " + mapList.size()
-					+ ", part list size: " + partList.size());
-		}
+//		mapList = new LocationNameMaps()
+//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
+//		partList = new LocationNameParts().getFKLocationNamePid(key);
+//
+//		if (mapList.size() != partList.size()) {
+//			throw new MvpException("Map list size: " + mapList.size()
+//					+ ", part list size: " + partList.size());
+//		}
 	}
 
 	/**

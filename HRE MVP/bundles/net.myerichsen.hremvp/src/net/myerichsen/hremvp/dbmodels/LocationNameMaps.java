@@ -15,58 +15,48 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the LOCATION_NAME_MAPS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 02. mar. 2019
  *
  */
 
 public class LocationNameMaps {
+	private List<LocationNameMaps> modelList;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	private Connection conn;
 	private static final String SELECT = "SELECT LOCATION_NAME_MAP_PID, "
-			+ "PART_NO, LOCATION_NAME_STYLE_PID, LABEL_POSITION, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "LABEL_PID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
-	private static final String SELECT_LOCATION_NAME_STYLE_PID = "SELECT "
-			+ "LOCATION_NAME_MAP_PID, PART_NO, "
-			+ "LOCATION_NAME_STYLE_PID, LABEL_POSITION, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "LABEL_PID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_STYLE_PID = ? ORDER BY LOCATION_NAME_MAP_PID";
+			+ "LOCATION_NAME_STYLE_PID, PART_NO, LABEL_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
+
 	private static final String SELECTALL = "SELECT "
-			+ "LOCATION_NAME_MAP_PID, PART_NO, "
-			+ "LOCATION_NAME_STYLE_PID, LABEL_POSITION, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "LABEL_PID FROM PUBLIC.LOCATION_NAME_MAPS ORDER BY LOCATION_NAME_MAP_PID";
+			+ "LOCATION_NAME_MAP_PID, LOCATION_NAME_STYLE_PID, "
+			+ "PART_NO, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_MAPS ORDER BY LOCATION_NAME_MAP_PID";
+
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_NAME_MAP_PID) FROM PUBLIC.LOCATION_NAME_MAPS";
+
 	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_MAPS( "
-			+ "LOCATION_NAME_MAP_PID, PART_NO, "
-			+ "LOCATION_NAME_STYLE_PID, LABEL_POSITION, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "LABEL_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "LOCATION_NAME_MAP_PID, LOCATION_NAME_STYLE_PID, "
+			+ "PART_NO, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_MAPS SET "
-			+ "PART_NO = ?, LOCATION_NAME_STYLE_PID = ?, "
-			+ "LABEL_POSITION = ?, INSERT_TSTMP = ?, "
-			+ "UPDATE_TSTMP = ?, TABLE_ID = ?, "
-			+ "LABEL_PID = ? WHERE LOCATION_NAME_MAP_PID = ?";
+			+ "LOCATION_NAME_STYLE_PID = ?, PART_NO = ?, "
+			+ "LABEL_PID = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
+			+ "TABLE_ID = ? WHERE LOCATION_NAME_MAP_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAME_MAPS WHERE LOCATION_NAME_MAP_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.LOCATION_NAME_MAPS";
 
-	private List<LocationNameMaps> modelList;
-
-	private PreparedStatement ps;
-
-	private ResultSet rs;
-
-	private Connection conn;
-
 	private int LocationNameMapPid;
-	private int PartNo;
 	private int LocationNameStylePid;
-	private String LabelPosition;
+	private int PartNo;
+	private int LabelPid;
 	private Timestamp InsertTstmp;
 	private Timestamp UpdateTstmp;
 	private int TableId;
-	private int LabelPid;
 	private LocationNameMaps model;
 
 	public void delete() throws SQLException {
@@ -91,17 +81,16 @@ public class LocationNameMaps {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		modelList = new ArrayList<LocationNameMaps>();
 		while (rs.next()) {
 			model = new LocationNameMaps();
 			model.setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
-			model.setPartNo(rs.getInt("PART_NO"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			model.setLabelPosition(rs.getString("LABEL_POSITION"));
+			model.setPartNo(rs.getInt("PART_NO"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -115,112 +104,16 @@ public class LocationNameMaps {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
-			setPartNo(rs.getInt("PART_NO"));
 			setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			setLabelPosition(rs.getString("LABEL_POSITION"));
+			setPartNo(rs.getInt("PART_NO"));
+			setLabelPid(rs.getInt("LABEL_PID"));
 			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
-			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
-	}
-
-	public List<LocationNameMaps> getFKLocationNameStylePid(int key)
-			throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LOCATION_NAME_STYLE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new LocationNameMaps();
-			model.setLocationNameMapPid(rs.getInt("LOCATION_NAME_MAP_PID"));
-			model.setPartNo(rs.getInt("PART_NO"));
-			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			model.setLabelPosition(rs.getString("LABEL_POSITION"));
-			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
-			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabelPid(rs.getInt("LABEL_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	/**
-	 * Get the InsertTstmp field.
-	 *
-	 * @return Contents of the INSERT_TSTMP column
-	 */
-	public Timestamp getInsertTstmp() {
-		return InsertTstmp;
-	}
-
-	/**
-	 * Get the LabelPid field.
-	 *
-	 * @return Contents of the LABEL_PID column
-	 */
-	public int getLabelPid() {
-		return LabelPid;
-	}
-
-	/**
-	 * Get the LabelPosition field.
-	 *
-	 * @return Contents of the LABEL_POSITION column
-	 */
-	public String getLabelPosition() {
-		return LabelPosition;
-	}
-
-	/**
-	 * Get the LocationNameMapPid field.
-	 *
-	 * @return Contents of the LOCATION_NAME_MAP_PID column
-	 */
-	public int getLocationNameMapPid() {
-		return LocationNameMapPid;
-	}
-
-	/**
-	 * Get the LocationNameStylePid field.
-	 *
-	 * @return Contents of the LOCATION_NAME_STYLE_PID column
-	 */
-	public int getLocationNameStylePid() {
-		return LocationNameStylePid;
-	}
-
-	/**
-	 * Get the PartNo field.
-	 *
-	 * @return Contents of the PART_NO column
-	 */
-	public int getPartNo() {
-		return PartNo;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return TableId;
-	}
-
-	/**
-	 * Get the UpdateTstmp field.
-	 *
-	 * @return Contents of the UPDATE_TSTMP column
-	 */
-	public Timestamp getUpdateTstmp() {
-		return UpdateTstmp;
 	}
 
 	public int insert() throws SQLException {
@@ -235,43 +128,92 @@ public class LocationNameMaps {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getPartNo());
-		ps.setInt(3, getLocationNameStylePid());
-		ps.setString(4, getLabelPosition());
+		ps.setInt(2, getLocationNameStylePid());
+		ps.setInt(3, getPartNo());
+		ps.setInt(4, getLabelPid());
 		ps.setTimestamp(5, getInsertTstmp());
 		ps.setTimestamp(6, getUpdateTstmp());
 		ps.setInt(7, getTableId());
-		ps.setInt(8, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
 	}
 
-	/**
-	 * Set the InsertTstmp field
-	 *
-	 * @param InsertTstmp Contents of the INSERT_TSTMP column
-	 */
-	public void setInsertTstmp(Timestamp InsertTstmp) {
-		this.InsertTstmp = InsertTstmp;
+	public void update() throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setInt(1, getLocationNameStylePid());
+		ps.setInt(2, getPartNo());
+		ps.setInt(3, getLabelPid());
+		ps.setTimestamp(4, getInsertTstmp());
+		ps.setTimestamp(5, getUpdateTstmp());
+		ps.setInt(6, getTableId());
+		ps.setInt(7, getLocationNameMapPid());
+		ps.executeUpdate();
+		conn.close();
 	}
 
 	/**
-	 * Set the LabelPid field
+	 * Get the LocationNameMapPid field.
 	 *
-	 * @param LabelPid Contents of the LABEL_PID column
+	 * @return Contents of the LOCATION_NAME_MAP_PID column
 	 */
-	public void setLabelPid(int LabelPid) {
-		this.LabelPid = LabelPid;
+	public int getLocationNameMapPid() {
+		return this.LocationNameMapPid;
 	}
 
 	/**
-	 * Set the LabelPosition field
+	 * Get the LocationNameStylePid field.
 	 *
-	 * @param LabelPosition Contents of the LABEL_POSITION column
+	 * @return Contents of the LOCATION_NAME_STYLE_PID column
 	 */
-	public void setLabelPosition(String LabelPosition) {
-		this.LabelPosition = LabelPosition;
+	public int getLocationNameStylePid() {
+		return this.LocationNameStylePid;
+	}
+
+	/**
+	 * Get the PartNo field.
+	 *
+	 * @return Contents of the PART_NO column
+	 */
+	public int getPartNo() {
+		return this.PartNo;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return this.LabelPid;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return this.InsertTstmp;
+	}
+
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return this.UpdateTstmp;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return this.TableId;
 	}
 
 	/**
@@ -303,12 +245,21 @@ public class LocationNameMaps {
 	}
 
 	/**
-	 * Set the TableId field
+	 * Set the LabelPid field
 	 *
-	 * @param TableId Contents of the TABLE_ID column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public void setTableId(int TableId) {
-		this.TableId = TableId;
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -320,19 +271,13 @@ public class LocationNameMaps {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getPartNo());
-		ps.setInt(2, getLocationNameStylePid());
-		ps.setString(3, getLabelPosition());
-		ps.setTimestamp(4, getInsertTstmp());
-		ps.setTimestamp(5, getUpdateTstmp());
-		ps.setInt(6, getTableId());
-		ps.setInt(7, getLabelPid());
-		ps.setInt(8, getLocationNameMapPid());
-		ps.executeUpdate();
-		conn.close();
+	/**
+	 * Set the TableId field
+	 *
+	 * @param TableId Contents of the TABLE_ID column
+	 */
+	public void setTableId(int TableId) {
+		this.TableId = TableId;
 	}
 
 }

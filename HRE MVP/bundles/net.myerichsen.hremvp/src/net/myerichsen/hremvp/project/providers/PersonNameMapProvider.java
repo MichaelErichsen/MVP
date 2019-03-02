@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.person.providers;
+package net.myerichsen.hremvp.project.providers;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
-import net.myerichsen.hremvp.person.servers.PersonNameMapServer;
+import net.myerichsen.hremvp.project.servers.PersonNameMapServer;
 
 /**
  * Provides all data for a single map view part

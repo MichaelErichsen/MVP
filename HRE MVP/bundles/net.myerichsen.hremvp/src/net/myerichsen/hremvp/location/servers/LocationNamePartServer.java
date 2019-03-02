@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
 import net.myerichsen.hremvp.dbmodels.LocationNames;
 
@@ -14,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 2. mar. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -96,16 +95,16 @@ public class LocationNamePartServer implements IHREServer {
 		final LocationNames name = new LocationNames();
 		name.get(locationNamePid);
 
-		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map
-				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-
-		for (int i = 0; i < mapList.size(); i++) {
-			if (mapList.get(i).getPartNo() == partNo) {
-				setMapLabel("mapList.get(i).getLabelPid()");
-				break;
-			}
-		}
+//		final LocationNameMaps map = new LocationNameMaps();
+//		final List<LocationNameMaps> mapList = map
+//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
+//
+//		for (int i = 0; i < mapList.size(); i++) {
+//			if (mapList.get(i).getPartNo() == partNo) {
+//				setMapLabel("mapList.get(i).getLabelPid()");
+//				break;
+//			}
+//		}
 	}
 
 	/**
@@ -171,22 +170,22 @@ public class LocationNamePartServer implements IHREServer {
 		final LocationNames name = new LocationNames();
 		name.get(locationNamePid);
 
-		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map
-				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-		Boolean found = false;
+//		final LocationNameMaps map = new LocationNameMaps();
+//		final List<LocationNameMaps> mapList = map
+//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
+//		Boolean found = false;
+//
+//		for (int i = 0; i < mapList.size(); i++) {
+//			if (mapList.get(i).getPartNo() == partNo) {
+//				found = true;
+//				break;
+//			}
+//		}
 
-		for (int i = 0; i < mapList.size(); i++) {
-			if (mapList.get(i).getPartNo() == partNo) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			throw new MvpException("Part number " + partNo
-					+ " does not exist in matching location name map");
-		}
+//		if (!found) {
+//			throw new MvpException("Part number " + partNo
+//					+ " does not exist in matching location name map");
+//		}
 
 		return part.insert();
 	}
@@ -252,22 +251,22 @@ public class LocationNamePartServer implements IHREServer {
 		final LocationNames name = new LocationNames();
 		name.get(locationNamePid);
 
-		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map
-				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-		Boolean found = false;
-
-		for (int i = 0; i < mapList.size(); i++) {
-			if (mapList.get(i).getPartNo() == partNo) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			throw new MvpException("Part number " + partNo
-					+ " does not exist in matching location name map");
-		}
-		part.update();
+//		final LocationNameMaps map = new LocationNameMaps();
+//		final List<LocationNameMaps> mapList = map
+//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
+//		Boolean found = false;
+//
+//		for (int i = 0; i < mapList.size(); i++) {
+//			if (mapList.get(i).getPartNo() == partNo) {
+//				found = true;
+//				break;
+//			}
+//		}
+//
+//		if (!found) {
+//			throw new MvpException("Part number " + partNo
+//					+ " does not exist in matching location name map");
+//		}
+//		part.update();
 	}
 }

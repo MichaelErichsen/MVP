@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.listeners.NumericVerifyListener;
-import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
 
 /**
  * Display all data about a name map

@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
-import net.myerichsen.hremvp.person.providers.PersonNameMapProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018

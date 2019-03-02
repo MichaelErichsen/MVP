@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.location.servers;
+package net.myerichsen.hremvp.project.servers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -6,8 +6,6 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Languages;
-import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
 
 /**
@@ -15,22 +13,17 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @version 1. mar. 2019
  *
  */
-//Use LocalDate
 public class LocationNameStyleServer implements IHREServer {
-	private int locationNameStylePid;
-	private String label;
-	private int languagePid;
-	private String languageLabel;
-	private String isoCode;
-	private int fromDatePid;
-	private int toDatePid;
+	private int LocationNameStylePid;
+	private String IsoCode;
+	private int FromDatePid;
+	private int ToDatePid;
+	private int LabelPid;
 
 	private LocationNameStyles style;
-	private Languages language;
-	private List<LocationNameMaps> mapList;
 
 	/**
 	 * Constructor
@@ -41,8 +34,6 @@ public class LocationNameStyleServer implements IHREServer {
 	 */
 	public LocationNameStyleServer() throws SQLException {
 		style = new LocationNameStyles();
-		language = new Languages();
-		mapList = new ArrayList<>();
 	}
 
 	/**
@@ -91,88 +82,46 @@ public class LocationNameStyleServer implements IHREServer {
 	@Override
 	public void get(int key) throws SQLException, MvpException {
 		style.get(key);
-		setLabel("style.getLabelPid()");
-//		setLanguagePid(style.getLanguagePid());
-		setLocationNameStylePid(style.getLocationNameStylePid());
+		setLocationNameStylePid(key);
+		setIsoCode(style.getIsoCode());
 		setFromDatePid(style.getFromDatePid());
 		setToDatePid(style.getToDatePid());
 
-		language.get(languagePid);
-		setLanguageLabel(language.getLabel());
-		setIsoCode(language.getIsocode());
-
-		mapList = new LocationNameMaps()
-				.getFKLocationNameStylePid(locationNameStylePid);
 	}
 
 	/**
-	 * @return the fromDate
+	 * @return the fromDatePid
 	 */
-	public int getFromDate() {
-		return fromDatePid;
+	public int getFromDatePid() {
+		return FromDatePid;
 	}
 
 	/**
 	 * @return the isoCode
 	 */
 	public String getIsoCode() {
-		return isoCode;
+		return IsoCode;
 	}
 
 	/**
-	 * @return the label
+	 * @return the labelPid
 	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @return the language
-	 */
-	public Languages getLanguage() {
-		return language;
-	}
-
-	/**
-	 * @return the languageLabel
-	 */
-	public String getLanguageLabel() {
-		return languageLabel;
-	}
-
-	/**
-	 * @return the languagePid
-	 */
-	public int getLanguagePid() {
-		return languagePid;
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
 	 * @return the locationNameStylePid
 	 */
 	public int getLocationNameStylePid() {
-		return locationNameStylePid;
+		return LocationNameStylePid;
 	}
 
 	/**
-	 * @return the mapList
-	 */
-	public List<LocationNameMaps> getMapList() {
-		return mapList;
-	}
-
-	/**
-	 * @return the style
-	 */
-	public LocationNameStyles getStyle() {
-		return style;
-	}
-
-	/**
-	 * @return the toDate
+	 * @return the toDatePid
 	 */
 	public int getToDatePid() {
-		return toDatePid;
+		return ToDatePid;
 	}
 
 	/**
@@ -183,82 +132,47 @@ public class LocationNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws SQLException {
-		style.setLabelPid(0);
-//		style.setLanguagePid(languagePid);
-		style.setLocationNameStylePid(locationNameStylePid);
-		style.setFromDatePid(fromDatePid);
-		style.setToDatePid(toDatePid);
+		style.setLocationNameStylePid(LocationNameStylePid);
+		style.setIsoCode(IsoCode);
+		style.setLabelPid(LabelPid);
+		style.setFromDatePid(FromDatePid);
+		style.setToDatePid(ToDatePid);
 		return style.insert();
 	}
 
 	/**
-	 * @param fromDate the fromDate to set
+	 * @param fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int fromDatePid) {
-		this.fromDatePid = fromDatePid;
+		FromDatePid = fromDatePid;
 	}
 
 	/**
 	 * @param isoCode the isoCode to set
 	 */
 	public void setIsoCode(String isoCode) {
-		this.isoCode = isoCode;
+		IsoCode = isoCode;
 	}
 
 	/**
-	 * @param label the label to set
+	 * @param labelPid the labelPid to set
 	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
-	 * @param language the language to set
-	 */
-	public void setLanguage(Languages language) {
-		this.language = language;
-	}
-
-	/**
-	 * @param languageLabel the languageLabel to set
-	 */
-	public void setLanguageLabel(String languageLabel) {
-		this.languageLabel = languageLabel;
-	}
-
-	/**
-	 * @param languagePid the languagePid to set
-	 */
-	public void setLanguagePid(int languagePid) {
-		this.languagePid = languagePid;
+	public void setLabelPid(int labelPid) {
+		LabelPid = labelPid;
 	}
 
 	/**
 	 * @param locationNameStylePid the locationNameStylePid to set
 	 */
 	public void setLocationNameStylePid(int locationNameStylePid) {
-		this.locationNameStylePid = locationNameStylePid;
+		LocationNameStylePid = locationNameStylePid;
 	}
 
 	/**
-	 * @param mapList the mapList to set
-	 */
-	public void setMapList(List<LocationNameMaps> mapList) {
-		this.mapList = mapList;
-	}
-
-	/**
-	 * @param style the style to set
-	 */
-	public void setStyle(LocationNameStyles style) {
-		this.style = style;
-	}
-
-	/**
-	 * @param toDate the toDate to set
+	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDatePid) {
-		this.toDatePid = toDatePid;
+		ToDatePid = toDatePid;
 	}
 
 	/**
@@ -269,11 +183,11 @@ public class LocationNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws SQLException {
-		style.setLabelPid(0);
-//		style.setLanguagePid(languagePid);
-		style.setLocationNameStylePid(locationNameStylePid);
-		style.setFromDatePid(fromDatePid);
-		style.setToDatePid(toDatePid);
+		style.setLocationNameStylePid(LocationNameStylePid);
+		style.setIsoCode(IsoCode);
+		style.setLabelPid(LabelPid);
+		style.setFromDatePid(FromDatePid);
+		style.setToDatePid(ToDatePid);
 		style.update();
 	}
 }
