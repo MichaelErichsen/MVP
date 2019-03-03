@@ -190,7 +190,8 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the personList
+	 * @return List of lists of pid, primary name string, birth date and death
+	 *         date
 	 * @throws MvpException
 	 * @throws SQLException
 	 */

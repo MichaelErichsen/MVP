@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_NAME_PARTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 3. mar. 2019
+ * @version 03. mar. 2019
  *
  */
 
@@ -23,6 +23,9 @@ public class PersonNameParts {
 	private static final String SELECT = "SELECT NAME_PART_PID, "
 			+ "NAME_PID, LABEL, PART_NO, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PART_PID = ?";
+	private static final String SELECT_NAME_PID = "SELECT NAME_PART_PID, "
+			+ "NAME_PID, LABEL, PART_NO, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PID = ? ORDER BY NAME_PART_PID";
 	private static final String SELECTALL = "SELECT NAME_PART_PID, "
 			+ "NAME_PID, LABEL, PART_NO, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.PERSON_NAME_PARTS ORDER BY NAME_PART_PID";
@@ -31,6 +34,7 @@ public class PersonNameParts {
 			+ "NAME_PART_PID, NAME_PID, LABEL, PART_NO, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID) VALUES (?, "
 			+ "?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 24)";
+
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_PARTS SET "
 			+ "NAME_PID = ?, LABEL = ?, PART_NO = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "WHERE NAME_PART_PID = ?";
@@ -40,7 +44,6 @@ public class PersonNameParts {
 	private static final String DELETEALL = "DELETE FROM PUBLIC.PERSON_NAME_PARTS";
 
 	private List<PersonNameParts> modelList;
-
 	private PreparedStatement ps;
 
 	private ResultSet rs;
@@ -113,13 +116,25 @@ public class PersonNameParts {
 		conn.close();
 	}
 
-	/**
-	 * @param namePid2
-	 * @return
-	 */
-	public List<PersonNameParts> getFKNamePid(int namePid2) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PersonNameParts> getFKNamePid(int key) throws SQLException {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECT_NAME_PID);
+		ps.setInt(1, key);
+		rs = ps.executeQuery();
+		modelList = new ArrayList<>();
+		while (rs.next()) {
+			model = new PersonNameParts();
+			model.setNamePartPid(rs.getInt("NAME_PART_PID"));
+			model.setNamePid(rs.getInt("NAME_PID"));
+			model.setLabel(rs.getString("LABEL"));
+			model.setPartNo(rs.getInt("PART_NO"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			model.setTableId(rs.getInt("TABLE_ID"));
+			modelList.add(model);
+		}
+		conn.close();
+		return modelList;
 	}
 
 	/**

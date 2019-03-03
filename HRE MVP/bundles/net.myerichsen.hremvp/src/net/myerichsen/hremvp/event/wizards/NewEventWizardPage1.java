@@ -28,7 +28,6 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 19. nov. 2018
  *
  */
-// FIXME Create
 public class NewEventWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);

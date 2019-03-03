@@ -174,7 +174,6 @@ public class PersonNameStyles {
 		}
 		maxPid++;
 
-		// FIXME org.h2.jdbc.JdbcSQLException: Column "ISO_CODE" not found;
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setString(2, getIsoCode());

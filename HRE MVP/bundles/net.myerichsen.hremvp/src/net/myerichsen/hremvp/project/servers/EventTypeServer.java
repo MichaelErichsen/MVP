@@ -83,7 +83,7 @@ public class EventTypeServer implements IHREServer {
 //		for (final EventTypes type : eventTypeList) {
 //			stringList = new ArrayList<>();
 //			stringList.add(Integer.toString(type.getEventTypePid()));
-//			// FIXME
+//			// FIXME Labels
 //			stringList.add("type.getLabel()");
 //			lls.add(stringList);
 //		}

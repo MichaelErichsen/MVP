@@ -100,7 +100,7 @@ public class EventServer {
 
 			eventTypePid = name.getEventTypePid();
 			type.get(eventTypePid);
-			// FIXME
+			// FIXME Labels
 			stringList.add("type.getLabel()");
 
 			stringList.add(language.getLabel());
@@ -159,7 +159,7 @@ public class EventServer {
 		final EventTypes anEventType = new EventTypes();
 		setEventTypePid(anEventName.getEventTypePid());
 		anEventType.get(EventTypePid);
-		// FIXME
+		// FIXME Labels
 //		setEventType(anEventType.getLabel());
 	}
 

@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -458,7 +458,8 @@ public class PersonServer implements IHREServer {
 	/**
 	 * List all persons.
 	 *
-	 * @return the personList
+	 * @return List of lists of pid, primary name string, birth date and death
+	 *         date
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
@@ -532,6 +533,7 @@ public class PersonServer implements IHREServer {
 			sb = new StringBuilder();
 			final PersonNameParts part = new PersonNameParts();
 
+			// FIXME java.lang.NullPointerException
 			for (final PersonNameParts namePart : part.getFKNamePid(namePid)) {
 				sb.append(namePart.getLabel() + " ");
 			}
@@ -732,7 +734,7 @@ public class PersonServer implements IHREServer {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(sex.getSexesPid()));
 			st.get(sex.getSexTypePid());
-			// FIXME
+			// FIXME Sex labels
 			ls.add("?");
 //			ls.add(st.getLabel());
 			ls.add(Boolean.toString(sex.isPrimarySex()));

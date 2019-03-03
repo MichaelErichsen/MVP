@@ -239,12 +239,10 @@ public class PersonNameServer implements IHREServer {
 						.getFKNamePid(name.getNamePid());
 
 				// Concatenate non-null name parts
-				if (npl != null) {
-					for (final PersonNameParts PersonNameParts : npl) {
-						if (PersonNameParts.getNamePid() == name.getNamePid()) {
-							if (PersonNameParts.getLabel() != null) {
-								sb.append(PersonNameParts.getLabel() + " ");
-							}
+				for (final PersonNameParts PersonNameParts : npl) {
+					if (PersonNameParts.getNamePid() == name.getNamePid()) {
+						if (PersonNameParts.getLabel() != null) {
+							sb.append(PersonNameParts.getLabel() + " ");
 						}
 					}
 				}
