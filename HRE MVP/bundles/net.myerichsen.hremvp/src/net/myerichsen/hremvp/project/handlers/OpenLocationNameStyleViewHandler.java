@@ -17,7 +17,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the location Name style view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 3. mar. 2019
  *
  */
 public class OpenLocationNameStyleViewHandler {
@@ -50,7 +50,6 @@ public class OpenLocationNameStyleViewHandler {
 					}
 				} catch (Exception e) {
 					LOGGER.severe(e.getMessage());
-					e.printStackTrace();
 				}
 			}
 		}

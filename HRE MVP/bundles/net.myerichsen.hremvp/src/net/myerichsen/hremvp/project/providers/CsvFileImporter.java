@@ -6,27 +6,23 @@ import java.util.logging.Logger;
 import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
 
 /**
+ * Lists csv files to be imported into HRE tables when cerating a new project
+ * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class CsvFileImporter {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String[] csvFileNames = {
-//			"hdates.csv",
-			"languages.csv",
-//			"sextypes.csv", "eventtypes.csv", "eventnames.csv",
-//			"locationnamestyles.csv", "LocationNameMaps.csv", "namestyles.csv",
-//			"PersonNameMaps.csv"
-	};
+	private static final String[] csvFileNames = { "languages.csv",
+			"sextypes.csv", "eventtypes.csv", "locationnamestyles.csv",
+			"locationnamemaps.csv", "personnamestyles.csv",
+			"personnamemaps.csv", "dictionary.csv" };
 
-	private static final String[] tableNames = {
-//			"HDATES",
-			"LANGUAGES",
-//			"SEX_TYPES", "EVENT_TYPES", "EVENT_NAMES", "LOCATION_NAME_STYLES",
-//			"LOCATION_NAME_MAPS", "NAME_STYLES", "NAME_MAPS"
-	};
+	private static final String[] tableNames = { "LANGUAGES", "SEX_TYPES",
+			"EVENT_TYPES", "LOCATION_NAME_STYLES", "LOCATION_NAME_MAPS",
+			"PERSON_NAME_STYLES", "PERSON_NAME_MAPS", "DICTIONARY" };
 
 	/**
 	 * Import all csv files.
