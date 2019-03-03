@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.DictionaryServer;
  * Provide a dictionary row
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. feb. 2019
+ * @version 3. mar. 20199
  *
  */
 public class DictionaryProvider implements IHREProvider {
@@ -108,14 +108,15 @@ public class DictionaryProvider implements IHREProvider {
 		return server.getNextLabelPid();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	/**
+	 * @param labelPid
+	 * @return
+	 * @throws SQLException
+	 * @throws MvpException
 	 */
-	public List<List<String>> getStringList(int key)
+	public List<List<String>> getStringList(int labelPid)
 			throws SQLException, MvpException {
-		return server.getStringList(key);
+		return server.getStringList(labelPid);
 
 	}
 

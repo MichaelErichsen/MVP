@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all event types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -66,7 +66,7 @@ public class EventTypeNavigator {
 	private final EventTypeProvider provider;
 	private TableViewer tableViewer;
 	private int eventTypePid = 0;
-	private final int labelPid = 0;
+//	private final int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -244,9 +244,12 @@ public class EventTypeNavigator {
 			ls.add(selectedRow.getText(0));
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
+			ls.add(selectedRow.getText(3));
 
-			// FIXME Labelpid
-			LOGGER.info("Setting label pid: " + labelPid);
+			LOGGER.info("Posting type id " + selectedRow.getText(0)
+					+ ", dictionary id " + selectedRow.getText(1)
+					+ ", abbreviation " + selectedRow.getText(2) + ", label "
+					+ selectedRow.getText(3));
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 

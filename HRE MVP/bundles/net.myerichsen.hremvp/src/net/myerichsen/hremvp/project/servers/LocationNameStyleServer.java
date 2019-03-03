@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 3. mar. 2019
  *
  */
 public class LocationNameStyleServer implements IHREServer {
@@ -100,7 +100,7 @@ public class LocationNameStyleServer implements IHREServer {
 	}
 
 	/**
-	 * @return
+	 * @return lls A list of lists of pid, iso code,label pid and label
 	 * @throws SQLException 
 	 */
 	public List<List<String>> getLocationNameStyleList() throws SQLException {

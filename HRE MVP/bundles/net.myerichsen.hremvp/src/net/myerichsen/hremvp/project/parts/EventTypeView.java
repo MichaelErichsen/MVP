@@ -183,20 +183,27 @@ public class EventTypeView {
 	}
 
 	/**
-	 * @param labelPid
+	 * @param ls A list of lists of event type pids, dictionary pids,
+	 *           abbreviations and generic labels
+	 * 
 	 */
 	@Inject
 	@Optional
 	private void subscribeLabelPidUpdateTopic(
 			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
-		eventTypePid = Integer.parseInt(ls.get(0));
-		textLabelPid.setText(ls.get(1));
-		textAbbreviation.setText(ls.get(2));
-		LOGGER.info("Received label id " + labelPid);
 
 		try {
+			provider.get();
+			String eventTypePidString = ls.get(0);
+			eventTypePid = Integer.parseInt(eventTypePidString);
+			textLabelPid.setText(ls.get(1));
+			textAbbreviation.setText(ls.get(2));
+
+			provider.get(eventTypePid);
+			labelPid = provider.getLabelPid();
 			tableViewer.setInput(provider.getEventTypeList(labelPid));
-		} catch (final SQLException e) {
+			tableViewer.refresh();
+		} catch (final SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

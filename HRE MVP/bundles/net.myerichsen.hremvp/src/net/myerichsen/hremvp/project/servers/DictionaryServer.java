@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Dictionary;
  * {@link net.myerichsen.hremvp.dbmodels.Dictionary}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class DictionaryServer implements IHREServer {
@@ -112,18 +112,18 @@ public class DictionaryServer implements IHREServer {
 	}
 
 	/**
-	 * @param key
+	 * @param labelPid
 	 * @return List A list of lists of iso code, label text and dictionary pid
 	 * @throws SQLException
 	 * @throws MvpException
 	 */
-	public List<List<String>> getStringList(int key)
+	public List<List<String>> getStringList(int labelPid)
 			throws SQLException, MvpException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
-		if (key > 0) {
-			final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(key);
+		if (labelPid > 0) {
+			final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
 			for (final Dictionary d : fkLabelPid) {
 				stringList = new ArrayList<>();
 				stringList.add(d.getIsoCode());
