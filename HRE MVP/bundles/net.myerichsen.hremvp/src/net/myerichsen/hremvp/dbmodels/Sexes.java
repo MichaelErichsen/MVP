@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the SEXES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 
@@ -37,11 +37,11 @@ public class Sexes {
 			+ "SEXES_PID, PERSON_PID, SEX_TYPE_PID, "
 			+ "PRIMARY_SEX, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, "
-			+ "?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 11, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.SEXES SET "
 			+ "PERSON_PID = ?, SEX_TYPE_PID = ?, PRIMARY_SEX = ?, "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "FROM_DATE_PID = ?, TO_DATE_PID = ? WHERE SEXES_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.SEXES WHERE SEXES_PID = ?";
@@ -238,18 +238,15 @@ public class Sexes {
 		ps.setInt(2, getPersonPid());
 		ps.setInt(3, getSexTypePid());
 		ps.setBoolean(4, isPrimarySex());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getFromDatePid());
+			ps.setInt(5, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(9, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(9, getToDatePid());
+			ps.setInt(6, getToDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -352,9 +349,6 @@ public class Sexes {
 		ps.setInt(1, getPersonPid());
 		ps.setInt(2, getSexTypePid());
 		ps.setBoolean(3, isPrimarySex());
-		ps.setTimestamp(4, getInsertTstmp());
-		ps.setTimestamp(5, getUpdateTstmp());
-		ps.setInt(6, getTableId());
 		if (getFromDatePid() == 0) {
 			ps.setNull(7, java.sql.Types.INTEGER);
 		} else {

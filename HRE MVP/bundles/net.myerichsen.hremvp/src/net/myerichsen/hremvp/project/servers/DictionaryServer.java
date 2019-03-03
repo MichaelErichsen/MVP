@@ -123,7 +123,8 @@ public class DictionaryServer implements IHREServer {
 		List<String> stringList;
 
 		if (labelPid > 0) {
-			final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+			final List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(labelPid);
 			for (final Dictionary d : fkLabelPid) {
 				stringList = new ArrayList<>();
 				stringList.add(d.getIsoCode());

@@ -99,7 +99,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				"Port Number for local HRE Server", getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
-		String[][] entryNamesAndValues = {
+		final String[][] entryNamesAndValues = {
 				{ "Not defined yet", "Not defined yet" } };
 
 		try {
@@ -117,15 +117,14 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 			comboGuiLanguage = new ComboFieldEditor("GUILANGUAGE",
 					"GUI Language", doubleArray, getFieldEditorParent());
 			addField(comboGuiLanguage);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			addField(new ComboFieldEditor("", "GUI Language",
 					entryNamesAndValues, getFieldEditorParent()));
 		}
 
 		try {
 			final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
-			final List<List<String>> personNameStyleList = pnsp
-					.getPersonNameStyleList();
+			final List<List<String>> personNameStyleList = pnsp.getStringList();
 
 			final int llsSize = personNameStyleList.size();
 			final String[][] doubleArray = new String[llsSize][2];
@@ -139,7 +138,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					"DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
 					doubleArray, getFieldEditorParent());
 			addField(comboPersonNameStyle);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			addField(new ComboFieldEditor("", "Default Person Name Style",
 					entryNamesAndValues, getFieldEditorParent()));
 		}
@@ -147,7 +146,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 		try {
 			final LocationNameStyleProvider lnsp = new LocationNameStyleProvider();
 			final List<List<String>> LocationNameStyleList = lnsp
-					.getLocationNameStyleList();
+					.getStringList();
 
 			final int llsSize = LocationNameStyleList.size();
 			final String[][] doubleArray = new String[llsSize][2];
@@ -161,7 +160,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					"DEFAULTLOCATIONNAMESTYLE", "Default Location Name Style",
 					doubleArray, getFieldEditorParent());
 			addField(comboLocationNameStyle);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			addField(new ComboFieldEditor("", "Default Location Name Style",
 					entryNamesAndValues, getFieldEditorParent()));
 		}

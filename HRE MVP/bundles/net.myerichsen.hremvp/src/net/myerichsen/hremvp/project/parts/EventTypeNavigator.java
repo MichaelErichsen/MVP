@@ -172,7 +172,7 @@ public class EventTypeNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getEventTypeList());
+			tableViewer.setInput(provider.getStringList());
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -275,7 +275,7 @@ public class EventTypeNavigator {
 
 		if (eventTypePid > 0) {
 			try {
-				tableViewer.setInput(provider.getEventTypeList());
+				tableViewer.setInput(provider.getStringList());
 				tableViewer.refresh();
 
 				final TableItem[] items = tableViewer.getTable().getItems();

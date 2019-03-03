@@ -175,7 +175,7 @@ public class SexTypeNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getSexTypeList());
+			tableViewer.setInput(provider.getStringList());
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -274,7 +274,7 @@ public class SexTypeNavigator {
 
 		if (sexTypePid > 0) {
 			try {
-				tableViewer.setInput(provider.getSexTypeList());
+				tableViewer.setInput(provider.getStringList());
 				tableViewer.refresh();
 
 				final TableItem[] items = tableViewer.getTable().getItems();

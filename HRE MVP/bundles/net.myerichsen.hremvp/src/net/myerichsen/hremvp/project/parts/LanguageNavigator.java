@@ -173,7 +173,7 @@ public class LanguageNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getLanguageList());
+			tableViewer.setInput(provider.getStringList());
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -246,7 +246,7 @@ public class LanguageNavigator {
 			@UIEventTopic(Constants.LANGUAGE_PID_UPDATE_TOPIC) int languagePid) {
 		LOGGER.fine("Received language id " + languagePid);
 		try {
-			tableViewer.setInput(provider.getLanguageList());
+			tableViewer.setInput(provider.getStringList());
 			tableViewer.refresh();
 
 			if (languagePid > 0) {

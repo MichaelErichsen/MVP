@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 
@@ -41,10 +41,10 @@ public class Events {
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( "
 			+ "EVENT_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_NAME_PID) VALUES ("
-			+ "?, ?, ?, ?, ?, ?, ?)";
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "FROM_DATE_PID = ?, TO_DATE_PID = ?, "
 			+ "EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
 
@@ -243,20 +243,17 @@ public class Events {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setTimestamp(2, getInsertTstmp());
-		ps.setTimestamp(3, getUpdateTstmp());
-		ps.setInt(4, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(5, java.sql.Types.INTEGER);
+			ps.setNull(2, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(5, getFromDatePid());
+			ps.setInt(2, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(6, java.sql.Types.INTEGER);
+			ps.setNull(3, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(6, getToDatePid());
+			ps.setInt(3, getToDatePid());
 		}
-		ps.setInt(7, getEventNamePid());
+		ps.setInt(4, getEventNamePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -328,21 +325,18 @@ public class Events {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setTimestamp(1, getInsertTstmp());
-		ps.setTimestamp(2, getUpdateTstmp());
-		ps.setInt(3, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(4, java.sql.Types.INTEGER);
+			ps.setNull(1, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(4, getFromDatePid());
+			ps.setInt(1, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(5, java.sql.Types.INTEGER);
+			ps.setNull(2, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(5, getToDatePid());
+			ps.setInt(2, getToDatePid());
 		}
-		ps.setInt(6, getEventNamePid());
-		ps.setInt(7, getEventPid());
+		ps.setInt(3, getEventNamePid());
+		ps.setInt(4, getEventPid());
 		ps.executeUpdate();
 		conn.close();
 	}

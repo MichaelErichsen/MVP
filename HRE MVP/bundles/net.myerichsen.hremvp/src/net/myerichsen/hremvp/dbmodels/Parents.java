@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PARENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 
@@ -41,12 +41,12 @@ public class Parents {
 	private static final String INSERT = "INSERT INTO PUBLIC.PARENTS( "
 			+ "PARENT_PID, CHILD, PARENT, PARENT_ROLE, "
 			+ "PRIMARY_PARENT, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID, LANGUAGE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "TABLE_ID, LANGUAGE_PID) "
+			+ "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 22, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PARENTS SET "
 			+ "CHILD = ?, PARENT = ?, PARENT_ROLE = ?, "
-			+ "PRIMARY_PARENT = ?, INSERT_TSTMP = ?, "
-			+ "UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "PRIMARY_PARENT = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "LANGUAGE_PID = ? WHERE PARENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
@@ -267,10 +267,7 @@ public class Parents {
 		ps.setInt(3, getParent());
 		ps.setString(4, getParentRole());
 		ps.setBoolean(5, isPrimaryParent());
-		ps.setTimestamp(6, getInsertTstmp());
-		ps.setTimestamp(7, getUpdateTstmp());
-		ps.setInt(8, getTableId());
-		ps.setInt(9, getLanguagePid());
+		ps.setInt(6, getLanguagePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -373,11 +370,8 @@ public class Parents {
 		ps.setInt(2, getParent());
 		ps.setString(3, getParentRole());
 		ps.setBoolean(4, isPrimaryParent());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
-		ps.setInt(8, getLanguagePid());
-		ps.setInt(9, getParentPid());
+		ps.setInt(5, getLanguagePid());
+		ps.setInt(6, getParentPid());
 		ps.executeUpdate();
 		conn.close();
 	}

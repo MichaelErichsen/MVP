@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.LocationNameStyleServer;
  * Provide a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 3. mar. 2019
  *
  */
 public class LocationNameStyleProvider implements IHREProvider {
@@ -99,18 +99,18 @@ public class LocationNameStyleProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return
-	 * @throws SQLException 
-	 */
-	public List<List<String>> getLocationNameStyleList() throws SQLException {
-		return server.getLocationNameStyleList();
-	}
-
-	/**
 	 * @return the locationNameStylePid
 	 */
 	public int getLocationNameStylePid() {
 		return LocationNameStylePid;
+	}
+
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getStringList() throws SQLException {
+		return server.getStringList();
 	}
 
 	/**

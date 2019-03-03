@@ -56,14 +56,14 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 	 *
 	 */
 	protected void checkCompletedPage() {
-		String styleName = textStyleName.getText();
-		String namePartCount = textNamePartCount.getText();
-		
+		final String styleName = textStyleName.getText();
+		final String namePartCount = textNamePartCount.getText();
+
 		if ((styleName.length() > 0) && (namePartCount.length() > 0)) {
-			NewPersonNameStyleWizard wizard = (NewPersonNameStyleWizard) getWizard();
+			final NewPersonNameStyleWizard wizard = (NewPersonNameStyleWizard) getWizard();
 			wizard.setStyleName(styleName);
 			wizard.setNamePartCount(namePartCount);
-			int selectionIndex = comboIsoCode.getSelectionIndex();
+			final int selectionIndex = comboIsoCode.getSelectionIndex();
 			wizard.setIsoCode(languageList.get(selectionIndex).get(1));
 			setPageComplete(true);
 			wizard.addBackPages();

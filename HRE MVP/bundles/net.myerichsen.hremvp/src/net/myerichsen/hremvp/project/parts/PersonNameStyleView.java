@@ -186,8 +186,8 @@ public class PersonNameStyleView {
 
 		try {
 			provider.get();
-			List<List<String>> personNameStyleList = provider
-					.getPersonNameStyleList();
+			final List<List<String>> personNameStyleList = provider
+					.getStringList();
 			personNameStylePid = Integer
 					.parseInt(personNameStyleList.get(0).get(0));
 			textId.setText(personNameStyleList.get(0).get(0));
@@ -226,11 +226,11 @@ public class PersonNameStyleView {
 			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
 		try {
 			provider.get();
-			String personNameStylePidString = ls.get(0);
-			List<List<String>> personNameStyleList = provider
-					.getPersonNameStyleList();
+			final String personNameStylePidString = ls.get(0);
+			final List<List<String>> personNameStyleList = provider
+					.getStringList();
 
-			for (List<String> list : personNameStyleList) {
+			for (final List<String> list : personNameStyleList) {
 				if (list.get(0).equals(personNameStylePidString)) {
 					LOGGER.info("Received " + list.get(0) + ", " + list.get(1)
 							+ ", " + list.get(2));
@@ -269,12 +269,12 @@ public class PersonNameStyleView {
 
 		try {
 			provider.get(personNameStylePid);
-			int labelPid = provider.getLabelPid();
+			final int labelPid = provider.getLabelPid();
 			dp = new DictionaryProvider();
-			List<List<String>> stringListDp = dp.getStringList(labelPid);
-			String text = textStyleName.getText();
+			final List<List<String>> stringListDp = dp.getStringList(labelPid);
+			final String text = textStyleName.getText();
 			if (text.equals(stringListDp.get(0).get(1)) == false) {
-				int dictionaryPid = Integer
+				final int dictionaryPid = Integer
 						.parseInt(stringListDp.get(0).get(2));
 				dp.get(dictionaryPid);
 				dp.setDictionaryPid(dictionaryPid);
@@ -298,7 +298,7 @@ public class PersonNameStyleView {
 					if (input.get(i).get(1).equals(existingElement.get(1))) {
 						if ((input.get(i).get(3)
 								.equals(existingElement.get(3)) == false)) {
-							int dictionaryPid = Integer
+							final int dictionaryPid = Integer
 									.parseInt(input.get(i).get(4));
 							dp.get(dictionaryPid);
 							dp.setDictionaryPid(dictionaryPid);

@@ -111,7 +111,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 			provider = new LocationNameStyleProvider();
 			provider.setIsoCode(isoCode);
 			provider.setLabelPid(labelPid);
-			int locationNameStylePid = provider.insert();
+			final int locationNameStylePid = provider.insert();
 			LOGGER.info("Inserted location name style " + locationNameStylePid);
 			eventBroker.post("MESSAGE",
 					"Inserted location name style " + locationNameStylePid);
@@ -127,7 +127,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 					+ "\" in dictionary");
 
 			// Handle each table row in wizard page 2
-			List<List<String>> input = (List<List<String>>) page2
+			final List<List<String>> input = (List<List<String>>) page2
 					.getTableViewer().getInput();
 			LocationNameMaps map;
 
@@ -140,7 +140,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 				dp.setLabel(input.get(i).get(1));
 				dp.setLabelPid(labelPid);
 				dp.setLabelType("LOCATIONNAMEMAP");
-				int dictionaryPid = dp.insert();
+				final int dictionaryPid = dp.insert();
 				LOGGER.info("Inserted dictionary element " + dictionaryPid
 						+ ", " + isoCode + ", \"" + input.get(i).get(1)
 						+ "\", label pid " + labelPid);
@@ -150,7 +150,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 				map.setLabelPid(labelPid);
 				map.setLocationNameStylePid(locationNameStylePid);
 				map.setPartNo(Integer.parseInt(input.get(i).get(0)));
-				int nameMapPid = map.insert();
+				final int nameMapPid = map.insert();
 				LOGGER.info("Inserted map element " + nameMapPid + ", Part no. "
 						+ input.get(i).get(0) + ", label pid " + labelPid);
 			}

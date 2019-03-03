@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class LanguageServer implements IHREServer {
@@ -91,10 +91,17 @@ public class LanguageServer implements IHREServer {
 	}
 
 	/**
+	 * @return the languagePid
+	 */
+	public int getLanguagePid() {
+		return LanguagePid;
+	}
+
+	/**
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<List<String>> getLanguageList() throws SQLException {
+	public List<List<String>> getStringList() throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		final List<Languages> list = language.get();
@@ -108,13 +115,6 @@ public class LanguageServer implements IHREServer {
 		}
 
 		return lls;
-	}
-
-	/**
-	 * @return the languagePid
-	 */
-	public int getLanguagePid() {
-		return LanguagePid;
 	}
 
 	/**

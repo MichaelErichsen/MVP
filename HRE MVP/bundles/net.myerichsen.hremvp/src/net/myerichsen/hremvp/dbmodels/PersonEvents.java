@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 
@@ -44,12 +44,12 @@ public class PersonEvents {
 			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
 			+ "PRIMARY_PERSON, PRIMARY_EVENT, INSERT_TSTMP, "
 			+ "UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID) VALUES (?, "
-			+ "?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_EVENTS SET "
 			+ "EVENT_PID = ?, PERSON_PID = ?, ROLE = ?, "
 			+ "PRIMARY_PERSON = ?, PRIMARY_EVENT = ?, "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "LANGUAGE_PID = ? WHERE PERSON_EVENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";
@@ -276,10 +276,7 @@ public class PersonEvents {
 		ps.setString(4, getRole());
 		ps.setBoolean(5, isPrimaryPerson());
 		ps.setBoolean(6, isPrimaryEvent());
-		ps.setTimestamp(7, getInsertTstmp());
-		ps.setTimestamp(8, getUpdateTstmp());
-		ps.setInt(9, getTableId());
-		ps.setInt(10, getLanguagePid());
+		ps.setInt(7, getLanguagePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -401,11 +398,8 @@ public class PersonEvents {
 		ps.setString(3, getRole());
 		ps.setBoolean(4, isPrimaryPerson());
 		ps.setBoolean(5, isPrimaryEvent());
-		ps.setTimestamp(6, getInsertTstmp());
-		ps.setTimestamp(7, getUpdateTstmp());
-		ps.setInt(8, getTableId());
-		ps.setInt(9, getLanguagePid());
-		ps.setInt(10, getPersonEventPid());
+		ps.setInt(6, getLanguagePid());
+		ps.setInt(7, getPersonEventPid());
 		ps.executeUpdate();
 		conn.close();
 	}

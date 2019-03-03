@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.project.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class SexTypeProvider implements IHREProvider {
@@ -177,12 +177,19 @@ public class SexTypeProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return the sexTypePid
+	 */
+	public int getSexTypePid() {
+		return SexTypePid;
+	}
+
+	/**
 	 * @return
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<List<String>> getSexTypeList() throws SQLException {
-		return server.getSexTypeList();
+	public List<List<String>> getStringList() throws SQLException {
+		return server.getStringList();
 	}
 
 	/**
@@ -191,15 +198,8 @@ public class SexTypeProvider implements IHREProvider {
 	 *         active language
 	 * @throws SQLException
 	 */
-	public List<List<String>> getSexTypeList(int labelPid) throws SQLException {
-		return server.getSexTypeList(labelPid);
-	}
-
-	/**
-	 * @return the sexTypePid
-	 */
-	public int getSexTypePid() {
-		return SexTypePid;
+	public List<List<String>> getStringList(int labelPid) throws SQLException {
+		return server.getStringList(labelPid);
 	}
 
 	/**

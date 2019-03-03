@@ -48,7 +48,7 @@ public class OpenLocationNameStyleViewHandler {
 						partService.showPart(part, PartState.ACTIVATE);
 						return;
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					LOGGER.severe(e.getMessage());
 				}
 			}

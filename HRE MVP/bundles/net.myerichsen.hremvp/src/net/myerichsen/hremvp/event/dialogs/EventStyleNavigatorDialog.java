@@ -119,8 +119,7 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 		tblclmnHistoricalEvent.setText("Event");
 
 		try {
-			final List<List<String>> EventTypeList = provider
-					.getEventTypeList();
+			final List<List<String>> EventTypeList = provider.getStringList();
 			table.removeAll();
 
 			for (int i = 0; i < EventTypeList.size(); i++) {

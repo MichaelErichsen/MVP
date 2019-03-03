@@ -117,7 +117,8 @@ public class PersonNameNavigator {
 			NamePid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		eventBroker.post(net.myerichsen.hremvp.Constants.PERSON_NAME_PID_UPDATE_TOPIC,
+		eventBroker.post(
+				net.myerichsen.hremvp.Constants.PERSON_NAME_PID_UPDATE_TOPIC,
 				NamePid);
 
 	}

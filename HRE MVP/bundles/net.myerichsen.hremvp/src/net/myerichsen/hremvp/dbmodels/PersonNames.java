@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_NAMES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 
@@ -52,11 +52,11 @@ public class PersonNames {
 			+ "NAME_PID, PERSON_PID, PRIMARY_NAME, "
 			+ "NAME_STYLE_PID, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, "
-			+ "?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 10, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAMES SET "
 			+ "PERSON_PID = ?, PRIMARY_NAME = ?, NAME_STYLE_PID = ?, "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, "
 			+ "FROM_DATE_PID = ?, TO_DATE_PID = ? WHERE NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAMES WHERE NAME_PID = ?";
@@ -322,18 +322,15 @@ public class PersonNames {
 		ps.setInt(2, getPersonPid());
 		ps.setBoolean(3, isPrimaryName());
 		ps.setInt(4, getNameStylePid());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getFromDatePid());
+			ps.setInt(5, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(9, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(9, getToDatePid());
+			ps.setInt(6, getToDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -436,20 +433,17 @@ public class PersonNames {
 		ps.setInt(1, getPersonPid());
 		ps.setBoolean(2, isPrimaryName());
 		ps.setInt(3, getNameStylePid());
-		ps.setTimestamp(4, getInsertTstmp());
-		ps.setTimestamp(5, getUpdateTstmp());
-		ps.setInt(6, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(7, java.sql.Types.INTEGER);
+			ps.setNull(4, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(7, getFromDatePid());
+			ps.setInt(4, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getToDatePid());
+			ps.setInt(5, getToDatePid());
 		}
-		ps.setInt(9, getNamePid());
+		ps.setInt(6, getNamePid());
 		ps.executeUpdate();
 		conn.close();
 	}

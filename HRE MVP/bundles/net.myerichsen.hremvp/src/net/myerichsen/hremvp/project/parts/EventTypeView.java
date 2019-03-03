@@ -160,7 +160,7 @@ public class EventTypeView {
 		try {
 			provider.get();
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(provider.getEventTypeList(labelPid));
+			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final SQLException | MvpException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -185,7 +185,7 @@ public class EventTypeView {
 	/**
 	 * @param ls A list of lists of event type pids, dictionary pids,
 	 *           abbreviations and generic labels
-	 * 
+	 *
 	 */
 	@Inject
 	@Optional
@@ -194,14 +194,15 @@ public class EventTypeView {
 
 		try {
 			provider.get();
-			String eventTypePidString = ls.get(0);
+			final String eventTypePidString = ls.get(0);
+			textEventTypePid.setText(eventTypePidString);
 			eventTypePid = Integer.parseInt(eventTypePidString);
 			textLabelPid.setText(ls.get(1));
 			textAbbreviation.setText(ls.get(2));
 
 			provider.get(eventTypePid);
 			labelPid = provider.getLabelPid();
-			tableViewer.setInput(provider.getEventTypeList(labelPid));
+			tableViewer.setInput(provider.getStringList(labelPid));
 			tableViewer.refresh();
 		} catch (final SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
@@ -222,7 +223,7 @@ public class EventTypeView {
 
 		try {
 			final List<List<String>> eventTypeList = provider
-					.getEventTypeList(labelPid);
+					.getStringList(labelPid);
 
 			eventTypePid = Integer.parseInt(eventTypeList.get(0).get(0));
 			labelPid = Integer.parseInt(eventTypeList.get(0).get(1));

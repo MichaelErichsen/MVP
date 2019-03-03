@@ -24,7 +24,7 @@ public class LocationNameStyleServer implements IHREServer {
 	private int ToDatePid;
 	private int LabelPid;
 
-	private LocationNameStyles style;
+	private final LocationNameStyles style;
 
 	/**
 	 * Constructor
@@ -52,7 +52,7 @@ public class LocationNameStyleServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
 	@Override
@@ -100,10 +100,17 @@ public class LocationNameStyleServer implements IHREServer {
 	}
 
 	/**
-	 * @return lls A list of lists of pid, iso code,label pid and label
-	 * @throws SQLException 
+	 * @return the locationNameStylePid
 	 */
-	public List<List<String>> getLocationNameStyleList() throws SQLException {
+	public int getLocationNameStylePid() {
+		return LocationNameStylePid;
+	}
+
+	/**
+	 * @return lls A list of lists of pid, iso code,label pid and label
+	 * @throws SQLException
+	 */
+	public List<List<String>> getStringList() throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		final Dictionary dictionary = new Dictionary();
@@ -121,13 +128,6 @@ public class LocationNameStyleServer implements IHREServer {
 			lls.add(stringList);
 		}
 		return lls;
-	}
-
-	/**
-	 * @return the locationNameStylePid
-	 */
-	public int getLocationNameStylePid() {
-		return LocationNameStylePid;
 	}
 
 	/**

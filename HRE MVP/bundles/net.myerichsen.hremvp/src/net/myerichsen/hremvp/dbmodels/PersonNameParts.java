@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_NAME_PARTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 
@@ -30,11 +30,10 @@ public class PersonNameParts {
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_NAME_PARTS( "
 			+ "NAME_PART_PID, NAME_PID, LABEL, PART_NO, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID) VALUES (?, "
-			+ "?, ?, ?, ?, ?, ?)";
+			+ "?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 24)";
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_PARTS SET "
-			+ "NAME_PID = ?, LABEL = ?, PART_NO = ?, "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
-			+ "TABLE_ID = ? WHERE NAME_PART_PID = ?";
+			+ "NAME_PID = ?, LABEL = ?, PART_NO = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
+			+ "WHERE NAME_PART_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PART_PID = ?";
 
@@ -201,9 +200,6 @@ public class PersonNameParts {
 		ps.setInt(2, getNamePid());
 		ps.setString(3, getLabel());
 		ps.setInt(4, getPartNo());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -278,10 +274,7 @@ public class PersonNameParts {
 		ps.setInt(1, getNamePid());
 		ps.setString(2, getLabel());
 		ps.setInt(3, getPartNo());
-		ps.setTimestamp(4, getInsertTstmp());
-		ps.setTimestamp(5, getUpdateTstmp());
-		ps.setInt(6, getTableId());
-		ps.setInt(7, getNamePartPid());
+		ps.setInt(4, getNamePartPid());
 		ps.executeUpdate();
 		conn.close();
 	}

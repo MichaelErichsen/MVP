@@ -470,11 +470,13 @@ public class PersonServer implements IHREServer {
 		personList.clear();
 		final Hdates hdates = new Hdates();
 		String s;
+		int personPid2;
 
 		for (final Persons person : get()) {
 			ls = new ArrayList<>();
-			ls.add(Integer.toString(person.getPersonPid()));
-			ls.add(pns.getPrimaryNameString(person.getPersonPid()));
+			personPid2 = person.getPersonPid();
+			ls.add(Integer.toString(personPid2));
+			ls.add(pns.getPrimaryNameString(personPid2));
 			s = "";
 			if (person.getBirthDatePid() > 0) {
 				hdates.get(person.getBirthDatePid());

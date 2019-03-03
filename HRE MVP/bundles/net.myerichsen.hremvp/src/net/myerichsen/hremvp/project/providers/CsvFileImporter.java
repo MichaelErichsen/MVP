@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
 
 /**
  * Lists csv files to be imported into HRE tables when cerating a new project
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 3. mar. 2019
  *

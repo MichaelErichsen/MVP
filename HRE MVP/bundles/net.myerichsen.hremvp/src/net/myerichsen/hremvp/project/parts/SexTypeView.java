@@ -159,7 +159,7 @@ public class SexTypeView {
 		try {
 			provider.get();
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(provider.getSexTypeList(labelPid));
+			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -196,7 +196,7 @@ public class SexTypeView {
 		LOGGER.info("Received label id " + labelPid);
 
 		try {
-			tableViewer.setInput(provider.getSexTypeList(labelPid));
+			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final SQLException e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -216,7 +216,7 @@ public class SexTypeView {
 
 		try {
 			final List<List<String>> eventTypeList = provider
-					.getSexTypeList(labelPid);
+					.getStringList(labelPid);
 
 			sexTypePid = Integer.parseInt(eventTypeList.get(0).get(0));
 			labelPid = Integer.parseInt(eventTypeList.get(0).get(1));

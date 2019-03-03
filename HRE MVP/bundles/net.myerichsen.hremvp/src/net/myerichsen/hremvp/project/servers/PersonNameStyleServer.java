@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 3. mar. 2019
  *
  */
 public class PersonNameStyleServer implements IHREServer {
@@ -94,7 +94,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * @return List A list of lists of style id, iso code and style name
 	 * @throws SQLException
 	 */
-	public List<List<String>> getPersonNameStyleList() throws SQLException {
+	public List<List<String>> getStringList() throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		final Dictionary dictionary = new Dictionary();

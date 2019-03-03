@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.LanguageServer;
  * Provide a language
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class LanguageProvider implements IHREProvider {
@@ -76,18 +76,18 @@ public class LanguageProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<List<String>> getLanguageList() throws SQLException {
-		return server.getLanguageList();
-	}
-
-	/**
 	 * @return the languagePid
 	 */
 	public int getLanguagePid() {
 		return LanguagePid;
+	}
+
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<List<String>> getStringList() throws SQLException {
+		return server.getStringList();
 	}
 
 	/**

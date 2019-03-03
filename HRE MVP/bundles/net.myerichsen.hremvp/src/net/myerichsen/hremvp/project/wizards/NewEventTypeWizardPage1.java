@@ -132,7 +132,7 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getEventTypeList(labelPid));
+			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();

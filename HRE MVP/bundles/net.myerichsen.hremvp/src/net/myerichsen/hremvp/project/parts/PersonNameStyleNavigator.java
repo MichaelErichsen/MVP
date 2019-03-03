@@ -161,7 +161,7 @@ public class PersonNameStyleNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getPersonNameStyleList());
+			tableViewer.setInput(provider.getStringList());
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -214,7 +214,7 @@ public class PersonNameStyleNavigator {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@PreDestroy
 	public void dispose() {
@@ -247,7 +247,7 @@ public class PersonNameStyleNavigator {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Focus
 	public void setFocus() {
@@ -266,7 +266,7 @@ public class PersonNameStyleNavigator {
 
 		if (personNameStylePid > 0) {
 			try {
-				tableViewer.setInput(provider.getPersonNameStyleList());
+				tableViewer.setInput(provider.getStringList());
 				tableViewer.refresh();
 
 				final TableItem[] items = tableViewer.getTable().getItems();
@@ -278,7 +278,7 @@ public class PersonNameStyleNavigator {
 						break;
 					}
 				}
-			} catch (SQLException e) {
+			} catch (final SQLException e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

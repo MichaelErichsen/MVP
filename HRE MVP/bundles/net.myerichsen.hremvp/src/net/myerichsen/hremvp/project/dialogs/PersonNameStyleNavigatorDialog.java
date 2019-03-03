@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.project.dialogs;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -10,6 +9,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -25,15 +25,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.dbmodels.Languages;
-import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 2. mar. 2019
+ * @version 3. mar. 2019
  *
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
@@ -49,6 +48,7 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 
 	private Table table;
 	private int personNameStylePid;
+	private String personNameStyle;
 
 	/**
 	 * Create the dialog
@@ -105,64 +105,44 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 				final TableItem selectedItem = items[0];
 				setPersonNameStylePid(
 						Integer.parseInt(selectedItem.getText(0)));
+				setPersonNameStyle(selectedItem.getText(2));
 			}
 		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnStyleId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableColumn tblclmnId = tableViewerColumnStyleId.getColumn();
 		tblclmnId.setWidth(100);
-		tblclmnId.setText("ID");
+		tblclmnId.setText("Style Id");
+		tableViewerColumnStyleId
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnNameStyle = tableViewerColumn_1.getColumn();
-		tblclmnNameStyle.setWidth(100);
-		tblclmnNameStyle.setText("Name Style");
-
-		final TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(
-				tableViewer, SWT.NONE);
-		final TableColumn tblclmnLanguage = tableViewerColumn_2.getColumn();
-		tblclmnLanguage.setWidth(100);
-		tblclmnLanguage.setText("Language");
-
-		final TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(
-				tableViewer, SWT.NONE);
-		final TableColumn tblclmnIsoCode = tableViewerColumn_3.getColumn();
-		tblclmnIsoCode.setWidth(100);
+		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
+		tblclmnIsoCode.setWidth(80);
 		tblclmnIsoCode.setText("ISO Code");
+		tableViewerColumnIsoCode
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
-		// FIXME java.lang.NullPointerException
-//		final int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
-//		int currentStyle;
+		final TableViewerColumn tableViewerColumnStyleName = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnStyleName = tableViewerColumnStyleName
+				.getColumn();
+		tblclmnStyleName.setWidth(300);
+		tblclmnStyleName.setText("Style Name");
+		tableViewerColumnStyleName
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			final List<PersonNameStyles> nameStyleList = provider.get();
-			table.removeAll();
-			Languages language;
-
-			for (int i = 0; i < nameStyleList.size(); i++) {
-				final PersonNameStyles style = nameStyleList.get(i);
-				final TableItem item = new TableItem(table, SWT.NONE);
-				personNameStylePid = style.getNameStylePid();
-				item.setText(0, Integer.toString(personNameStylePid));
-				item.setText(1, "style.getLabelPid()");
-
-				language = new Languages();
-//				language.get(currentStyle);
-				item.setText(2, language.getLabel());
-				item.setText(3, language.getIsocode());
-
-//				if (currentStyle == defaultStyle) {
-//					table.setSelection(i);
-//				}
-			}
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
+			tableViewer.setInput(provider.getStringList());
+		} catch (final SQLException e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 
 		return area;
@@ -177,10 +157,24 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @return the personNameStyle
+	 */
+	public String getPersonNameStyle() {
+		return personNameStyle;
+	}
+
+	/**
 	 * @return the personNameStylePid
 	 */
 	public int getPersonNameStylePid() {
 		return personNameStylePid;
+	}
+
+	/**
+	 * @param personNameStyle the personNameStyle to set
+	 */
+	public void setPersonNameStyle(String personNameStyle) {
+		this.personNameStyle = personNameStyle;
 	}
 
 	/**

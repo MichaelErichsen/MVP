@@ -130,7 +130,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getSexTypeList());
+			tableViewer.setInput(provider.getStringList());
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();

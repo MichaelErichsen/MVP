@@ -161,7 +161,7 @@ public class LocationNameStyleNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getLocationNameStyleList());
+			tableViewer.setInput(provider.getStringList());
 		} catch (final SQLException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -267,7 +267,7 @@ public class LocationNameStyleNavigator {
 
 		if (locationNameStylePid > 0) {
 			try {
-				tableViewer.setInput(provider.getLocationNameStyleList());
+				tableViewer.setInput(provider.getStringList());
 				tableViewer.refresh();
 
 				final TableItem[] items = tableViewer.getTable().getItems();

@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSONS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 
@@ -39,11 +39,10 @@ public class Persons {
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSONS( "
 			+ "PERSON_PID, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID, BIRTH_DATE_PID, DEATH_DATE_PID) VALUES ("
-			+ "?, ?, ?, ?, ?, ?)";
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 15, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSONS SET "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
-			+ "BIRTH_DATE_PID = ?, "
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, BIRTH_DATE_PID = ?, "
 			+ "DEATH_DATE_PID = ? WHERE PERSON_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSONS WHERE PERSON_PID = ?";
@@ -227,18 +226,15 @@ public class Persons {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setTimestamp(2, getInsertTstmp());
-		ps.setTimestamp(3, getUpdateTstmp());
-		ps.setInt(4, getTableId());
 		if (getBirthDatePid() == 0) {
-			ps.setNull(5, java.sql.Types.INTEGER);
+			ps.setNull(2, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(5, getBirthDatePid());
+			ps.setInt(2, getBirthDatePid());
 		}
 		if (getDeathDatePid() == 0) {
-			ps.setNull(6, java.sql.Types.INTEGER);
+			ps.setNull(3, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(6, getDeathDatePid());
+			ps.setInt(3, getDeathDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -302,20 +298,17 @@ public class Persons {
 	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setTimestamp(1, getInsertTstmp());
-		ps.setTimestamp(2, getUpdateTstmp());
-		ps.setInt(3, getTableId());
 		if (getBirthDatePid() == 0) {
-			ps.setNull(4, java.sql.Types.INTEGER);
+			ps.setNull(1, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(4, getBirthDatePid());
+			ps.setInt(1, getBirthDatePid());
 		}
 		if (getDeathDatePid() == 0) {
-			ps.setNull(5, java.sql.Types.INTEGER);
+			ps.setNull(2, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(5, getDeathDatePid());
+			ps.setInt(2, getDeathDatePid());
 		}
-		ps.setInt(6, getPersonPid());
+		ps.setInt(3, getPersonPid());
 		ps.executeUpdate();
 		conn.close();
 	}

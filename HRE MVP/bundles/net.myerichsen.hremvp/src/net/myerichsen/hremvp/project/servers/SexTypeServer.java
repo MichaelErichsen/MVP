@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
@@ -193,11 +193,18 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
+	 * @return the sexTypePid
+	 */
+	public int getSexTypePid() {
+		return sexTypePid;
+	}
+
+	/**
 	 * @return stringList A list of lists of pids, abbreviations and generic
 	 *         labels
 	 * @throws SQLException
 	 */
-	public List<List<String>> getSexTypeList() throws SQLException {
+	public List<List<String>> getStringList() throws SQLException {
 		List<String> stringList;
 		List<Dictionary> fkLabelPid;
 		String label = "";
@@ -237,7 +244,7 @@ public class SexTypeServer implements IHREServer {
 	 *         codes and generic labels
 	 * @throws SQLException
 	 */
-	public List<List<String>> getSexTypeList(int labelPid) throws SQLException {
+	public List<List<String>> getStringList(int labelPid) throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 
 		if (labelPid == 0) {
@@ -278,13 +285,6 @@ public class SexTypeServer implements IHREServer {
 			lls.add(stringList);
 		}
 		return lls;
-	}
-
-	/**
-	 * @return the sexTypePid
-	 */
-	public int getSexTypePid() {
-		return sexTypePid;
 	}
 
 	/**

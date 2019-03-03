@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.EventTypeServer;
  * Provides all data for an personEvent type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class EventTypeProvider implements IHREProvider {
@@ -88,23 +88,17 @@ public class EventTypeProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return stringList A list of lists of event type pids, label pids,
-	 *         abbreviations and generic labels
-	 * @throws SQLException
+	 * @return the eventTypePid
 	 */
-	public List<List<String>> getEventTypeList() throws SQLException {
-		return server.getEventTypeList();
+	public int getEventTypePid() {
+		return EventTypePid;
 	}
 
 	/**
-	 * @param labelPid
-	 * @return stringList A list of lists of pid, abbreviation and label in the
-	 *         active language
-	 * @throws SQLException
+	 * @return
 	 */
-	public List<List<String>> getEventTypeList(int labelPid)
-			throws SQLException {
-		return server.getEventTypeList(labelPid);
+	public int getLabelPid() {
+		return server.getLabelPid();
 	}
 
 //	/**
@@ -119,17 +113,22 @@ public class EventTypeProvider implements IHREProvider {
 //	}
 
 	/**
-	 * @return the eventTypePid
+	 * @return stringList A list of lists of event type pids, label pids,
+	 *         abbreviations and generic labels
+	 * @throws SQLException
 	 */
-	public int getEventTypePid() {
-		return EventTypePid;
+	public List<List<String>> getStringList() throws SQLException {
+		return server.getStringList();
 	}
 
 	/**
-	 * @return
+	 * @param labelPid
+	 * @return stringList A list of lists of pid, abbreviation and label in the
+	 *         active language
+	 * @throws SQLException
 	 */
-	public int getLabelPid() {
-		return server.getLabelPid();
+	public List<List<String>> getStringList(int labelPid) throws SQLException {
+		return server.getStringList(labelPid);
 	}
 
 	/**

@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.project.servers.PersonNameStyleServer;
  * Provide a person name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 3. mar. 2019
  *
  */
 public class PersonNameStyleProvider implements IHREProvider {
@@ -62,9 +62,9 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-	server.get(key);
-	setIsoCode(server.getIsoCode());
-	setLabelPid(server.getLabelPid());
+		server.get(key);
+		setIsoCode(server.getIsoCode());
+		setLabelPid(server.getLabelPid());
 	}
 
 	/**
@@ -92,8 +92,8 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<List<String>> getPersonNameStyleList() throws SQLException {
-		return server.getPersonNameStyleList();
+	public List<List<String>> getStringList() throws SQLException {
+		return server.getStringList();
 	}
 
 	/**
