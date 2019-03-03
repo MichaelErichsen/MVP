@@ -41,7 +41,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Display all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. nov. 2018
+ * @version 3. mar. 2019
  *
  */
 @SuppressWarnings("restriction")

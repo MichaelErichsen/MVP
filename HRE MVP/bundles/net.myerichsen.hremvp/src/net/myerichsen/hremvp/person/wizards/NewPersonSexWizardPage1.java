@@ -17,14 +17,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import net.myerichsen.hremvp.dialogs.DateDialog;
+import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.SexTypeNavigatorDialog;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
+import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Person sex wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 17. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class NewPersonSexWizardPage1 extends WizardPage {
@@ -37,6 +40,10 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	private Text textSex;
 	private int sexTypePid;
 	private Button btnCheckButtonPrimary;
+	private Text textFromDate;
+	private Text textToDate;
+	private int fromDatePid;
+	private int toDatePid;
 
 	/**
 	 * Constructor
@@ -49,6 +56,24 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		setDescription("Add a sex for the person.");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
+	}
+
+	/**
+	 *
+	 */
+	private void browseFromDates() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textFromDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textFromDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -76,9 +101,41 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	/**
 	 *
 	 */
+	private void browseToDates() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textToDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textToDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void clearFromDate() {
+		textFromDate.setText("");
+	}
+
+	/**
+	 *
+	 */
 	protected void clearSex() {
 		textSexTypePid.setText("");
 		textSex.setText("");
+	}
+
+	/**
+	 *
+	 */
+	private void clearToDate() {
+		textToDate.setText("");
 	}
 
 	@Override
@@ -133,8 +190,132 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		btnCheckButtonPrimary.setText("Primary");
 		new Label(container, SWT.NONE);
 
-		setPageComplete(false);
+		final Label lblFromDate = new Label(container, SWT.NONE);
+		lblFromDate.setText("From Date");
 
+		textFromDate = new Text(container, SWT.BORDER);
+		textFromDate.setEditable(false);
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		final Composite compositeFrom = new Composite(container, SWT.NONE);
+		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		btnNewFrom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				getNewFromDate();
+			}
+		});
+		btnNewFrom.setText("New");
+
+		final Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		btnBrowseFrom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseFromDates();
+			}
+		});
+		btnBrowseFrom.setText("Browse");
+
+		final Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		btnClearFrom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearFromDate();
+			}
+		});
+		btnClearFrom.setText("Clear");
+
+		final Label lblToDate = new Label(container, SWT.NONE);
+		lblToDate.setText("To Date");
+
+		textToDate = new Text(container, SWT.BORDER);
+		textToDate.setEditable(false);
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		final Composite compositeTo = new Composite(container, SWT.NONE);
+		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button btnNewTo = new Button(compositeTo, SWT.NONE);
+		btnNewTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				getNewToDate();
+			}
+		});
+		btnNewTo.setText("New");
+
+		final Button btnBrowseTo = new Button(compositeTo, SWT.NONE);
+		btnBrowseTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseToDates();
+			}
+		});
+		btnBrowseTo.setText("Browse");
+
+		final Button btnClearTo = new Button(compositeTo, SWT.NONE);
+		btnClearTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearToDate();
+			}
+		});
+		btnClearTo.setText("Clear");
+
+		setPageComplete(false);
+	}
+
+	/**
+	 * @return the fromDatePid
+	 */
+	public int getFromDatePid() {
+		return fromDatePid;
+	}
+
+	/**
+	 *
+	 */
+	private void getNewFromDate() {
+		final DateDialog dialog = new DateDialog(textFromDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				setFromDatePid(hdp.insert());
+				textFromDate.setText(dialog.getLocalDate().toString());
+			} catch (final Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void getNewToDate() {
+		final DateDialog dialog = new DateDialog(textToDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getLocalDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				setToDatePid(hdp.insert());
+				textToDate.setText(dialog.getLocalDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.severe(e1.getMessage());
+			}
+		}
 	}
 
 	/**
@@ -145,10 +326,24 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	}
 
 	/**
+	 * @return the toDatePid
+	 */
+	public int getToDatePid() {
+		return toDatePid;
+	}
+
+	/**
 	 * @return the btnCheckButtonPrimary
 	 */
 	public boolean isPrimary() {
 		return btnCheckButtonPrimary.getSelection();
+	}
+
+	/**
+	 * @param fromDatePid the fromDatePid to set
+	 */
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
 	}
 
 	/**
@@ -157,4 +352,12 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	public void setSexTypePid(int sexPid) {
 		sexTypePid = sexPid;
 	}
+
+	/**
+	 * @param toDatePid the toDatePid to set
+	 */
+	public void setToDatePid(int toDatePid) {
+		this.toDatePid = toDatePid;
+	}
+
 }
