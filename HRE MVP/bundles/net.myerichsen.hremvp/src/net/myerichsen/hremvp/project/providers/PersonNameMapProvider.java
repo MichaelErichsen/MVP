@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.project.servers.PersonNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 3. mar. 2019
  *
  */
 public class PersonNameMapProvider implements IHREProvider {
@@ -125,7 +125,8 @@ public class PersonNameMapProvider implements IHREProvider {
 
 	/**
 	 * @param personNameStylePid
-	 * @return
+	 * @return List A list of lists of name map pid, label pid, label and
+	 *         dictionary pid
 	 * @throws MvpException
 	 * @throws SQLException
 	 */

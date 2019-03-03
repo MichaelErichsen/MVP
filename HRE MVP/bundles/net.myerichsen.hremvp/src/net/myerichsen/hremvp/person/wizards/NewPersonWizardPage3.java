@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
 
 /**
@@ -64,20 +64,20 @@ public class NewPersonWizardPage3 extends WizardPage {
 			personNameStylePid = wizard.getPersonNameStylePid();
 
 			provider = new PersonNameMapProvider();
-			final List<PersonNameMaps> mapList = provider
-					.getFKNameStylePid(personNameStylePid);
+			List<List<String>> stringList = provider
+					.getStringList(personNameStylePid);
 			textFieldList = new ArrayList<>();
 
-			for (int i = 0; i < mapList.size(); i++) {
+			for (int i = 0; i < stringList.size(); i++) {
 				final Label lblNewLabel = new Label(container, SWT.NONE);
-				lblNewLabel.setText("mapList.get(i).getLabelPid()");
+				lblNewLabel.setText(stringList.get(i).get(3));
 
 				final Text text = new Text(container, SWT.BORDER);
 				text.setLayoutData(
 						new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				textFieldList.add(text);
 			}
-		} catch (final SQLException e) {
+		} catch (final SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
