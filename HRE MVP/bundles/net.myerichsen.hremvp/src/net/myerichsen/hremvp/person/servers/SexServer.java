@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Sexes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 4. mar. 2019
  *
  */
 //Use LocalDate
@@ -32,7 +32,7 @@ public class SexServer implements IHREServer {
 
 	private final Sexes sex;
 	private final SexTypes sexType;
-	Dictionary dictionary;
+	private Dictionary dictionary;
 
 	/**
 	 * Constructor
@@ -89,9 +89,12 @@ public class SexServer implements IHREServer {
 
 		sexType.get(sex.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
-//		setSexTypeLabel(sexType.getLabel());
-//		setLanguageLabel(language.getLabel());
-//		setIsocode(language.getIsocode());
+		int labelPid = sexType.getLabelPid();
+		List<Dictionary> fkLabelPid = new Dictionary().getFKLabelPid(labelPid);
+		dictionary = fkLabelPid.get(0);
+
+		setSexTypeLabel(dictionary.getLabel());
+		setIsocode(dictionary.getIsoCode());
 	}
 
 	/**

@@ -41,7 +41,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Display all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 4. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -70,17 +70,7 @@ public class SexView {
 	private Text textSexType;
 	private Text textAbbreviation;
 	private Text textLabel;
-	private Text textLanguagePid;
-	private Text textLanguageLabel;
 	private Text textIsoCode;
-
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
 	private final SexProvider provider;
 
@@ -104,8 +94,6 @@ public class SexView {
 		textSexType.setText("");
 		textAbbreviation.setText("");
 		textLabel.setText("");
-		textLanguagePid.setText("0");
-		textLanguageLabel.setText("");
 		textIsoCode.setText("");
 	}
 
@@ -191,21 +179,6 @@ public class SexView {
 		textLabel.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		final Label lblLanguageId = new Label(parent, SWT.NONE);
-		lblLanguageId.setText("Language Id");
-
-		textLanguagePid = new Text(parent, SWT.BORDER);
-		textLanguagePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblLanguage = new Label(parent, SWT.NONE);
-		lblLanguage.setText("Language");
-
-		textLanguageLabel = new Text(parent, SWT.BORDER);
-		textLanguageLabel.setEditable(false);
-		textLanguageLabel.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		final Label lblIsoCode = new Label(parent, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
 
@@ -214,12 +187,12 @@ public class SexView {
 		textIsoCode.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonSelect = new Button(composite, SWT.NONE);
+		Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -228,7 +201,7 @@ public class SexView {
 		});
 		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
+		Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -237,7 +210,7 @@ public class SexView {
 		});
 		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -246,7 +219,7 @@ public class SexView {
 		});
 		buttonUpdate.setText("Update");
 
-		buttonDelete = new Button(composite, SWT.NONE);
+		Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -255,7 +228,7 @@ public class SexView {
 		});
 		buttonDelete.setText("Delete");
 
-		buttonClear = new Button(composite, SWT.NONE);
+		Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -264,7 +237,7 @@ public class SexView {
 		});
 		buttonClear.setText("Clear");
 
-		buttonClose = new Button(composite, SWT.NONE);
+		Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -272,8 +245,6 @@ public class SexView {
 			}
 		});
 		buttonClose.setText("Close");
-
-//		get(1);
 	}
 
 	/**
@@ -288,7 +259,6 @@ public class SexView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
 
@@ -315,24 +285,22 @@ public class SexView {
 
 			textId.setText(Integer.toString(provider.getSexesPid()));
 			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
-			try {
-				textFromDate
-						.setText(Integer.toString(provider.getFromDatePid()));
-			} catch (final Exception e) {
-				textFromDate.setText("");
+			String s = "";
+			int datePid = provider.getFromDatePid();
+			if (datePid > 0) {
+				s = Integer.toString(datePid);
 			}
-			try {
-				textToDate.setText(Integer.toString(provider.getToDatePid()));
-			} catch (final Exception e) {
-				textToDate.setText("");
+			textFromDate.setText(s);
+			s = "";
+			datePid = provider.getToDatePid();
+			if (datePid > 0) {
+				s = Integer.toString(datePid);
 			}
+			textToDate.setText(s);
 			btnPrimarySex.setSelection(provider.isPrimarySex());
 			textSexType.setText(Integer.toString(provider.getSexTypePid()));
 			textAbbreviation.setText(provider.getAbbreviation());
 			textLabel.setText(provider.getSexTypeLabel());
-			textLanguagePid
-					.setText(Integer.toString(provider.getLanguagePid()));
-			textLanguageLabel.setText(provider.getLanguageLabel());
 			textIsoCode.setText(provider.getIsocode());
 
 			eventBroker.post("MESSAGE",
@@ -340,7 +308,6 @@ public class SexView {
 		} catch (final SQLException | MvpException e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
 	}

@@ -66,7 +66,6 @@ public class SexTypeNavigator {
 	private final SexTypeProvider provider;
 	private TableViewer tableViewer;
 	private int sexTypePid = 0;
-	private final int labelPid = 0;
 
 	/**
 	 * Constructor
