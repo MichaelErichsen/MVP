@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.LocationNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 4. mar. 2019
  *
  */
 public class LocationNameMapProvider implements IHREProvider {
@@ -62,8 +62,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.get();
 	}
 
 	/**

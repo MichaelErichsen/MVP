@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.EventTypeServer;
  * Provides all data for an personEvent type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 4. mar. 2019
  *
  */
 public class EventTypeProvider implements IHREProvider {
@@ -61,8 +61,7 @@ public class EventTypeProvider implements IHREProvider {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.get();
 	}
 
 	/**

@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameServer;
  * Provides all data for a single name for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. nov. 2018
+ * @version 4. mar. 2019
  *
  */
 public class LocationNameProvider implements IHREProvider {
@@ -61,8 +61,7 @@ public class LocationNameProvider implements IHREProvider {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.get();
 	}
 
 	/**
@@ -176,8 +175,7 @@ public class LocationNameProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList(key);
 	}
 
 	/**

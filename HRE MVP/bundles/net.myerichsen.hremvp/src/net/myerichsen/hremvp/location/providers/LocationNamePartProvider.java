@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.location.servers.LocationNamePartServer;
  * Provides all data for a single part view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. okt. 2018
+ * @version 4. mar. 2019
  *
  */
 public class LocationNamePartProvider implements IHREProvider {
@@ -54,8 +54,7 @@ public class LocationNamePartProvider implements IHREProvider {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.get();
 	}
 
 	/**
@@ -127,8 +126,7 @@ public class LocationNamePartProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList(key);
 	}
 
 	/**

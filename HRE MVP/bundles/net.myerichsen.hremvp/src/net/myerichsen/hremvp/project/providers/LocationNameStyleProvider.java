@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.LocationNameStyleServer;
  * Provide a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 4. mar. 2019
  *
  */
 public class LocationNameStyleProvider implements IHREProvider {
@@ -120,8 +120,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/**

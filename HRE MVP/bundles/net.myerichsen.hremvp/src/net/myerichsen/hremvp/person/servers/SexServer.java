@@ -164,7 +164,6 @@ public class SexServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

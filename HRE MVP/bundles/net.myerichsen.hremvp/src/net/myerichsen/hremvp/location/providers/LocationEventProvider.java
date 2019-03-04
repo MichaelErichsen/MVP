@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.location.servers.LocationEventServer;
  * Provides all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @version 4. mar. 2019
  *
  */
 public class LocationEventProvider implements IHREProvider {
@@ -36,7 +36,7 @@ public class LocationEventProvider implements IHREProvider {
 	 */
 	@Override
 	public void delete(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
+		server.delete(key);
 
 	}
 
@@ -47,8 +47,7 @@ public class LocationEventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.get();
 	}
 
 	/*
@@ -58,8 +57,7 @@ public class LocationEventProvider implements IHREProvider {
 	 */
 	@Override
 	public void get(int key) throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-
+		server.get(key);
 	}
 
 	/**
@@ -77,8 +75,7 @@ public class LocationEventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList(key);
 	}
 
 	/*

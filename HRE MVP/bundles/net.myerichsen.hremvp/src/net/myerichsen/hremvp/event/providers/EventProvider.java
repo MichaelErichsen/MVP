@@ -209,8 +209,7 @@ public class EventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/**

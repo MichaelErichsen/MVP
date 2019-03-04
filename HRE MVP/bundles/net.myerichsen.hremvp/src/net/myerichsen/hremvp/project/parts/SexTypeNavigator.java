@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sex types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. feb. 2019
+ * @version 4. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -235,7 +235,6 @@ public class SexTypeNavigator {
 	protected void openSexTypeView() {
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.opensextypeview", null);
-		// FIXME Null pointer exception
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
@@ -248,8 +247,6 @@ public class SexTypeNavigator {
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
 
-			// FIXME Labelpid
-			LOGGER.info("Setting label pid: " + labelPid);
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.EventTypes;
@@ -21,7 +22,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * @version 19. feb. 2019
  *
  */
-public class EventServer {
+public class EventServer implements IHREServer {
 //	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int EventPid;
 	private int TableId;
@@ -458,6 +459,25 @@ public class EventServer {
 		event.setToDatePid(ToDatePid);
 		event.setEventNamePid(EventNamePid);
 		event.update();
+	}
+
+	/**
+	 * @return
+	 */
+	public List<List<String>> getStringList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

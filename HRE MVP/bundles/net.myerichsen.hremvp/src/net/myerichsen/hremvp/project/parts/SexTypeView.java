@@ -193,7 +193,6 @@ public class SexTypeView {
 		labelPid = Integer.parseInt(ls.get(1));
 		textLabelPid.setText(ls.get(1));
 		textAbbreviation.setText(ls.get(2));
-		LOGGER.info("Received label id " + labelPid);
 
 		try {
 			tableViewer.setInput(provider.getStringList(labelPid));

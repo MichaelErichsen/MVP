@@ -404,7 +404,7 @@ public class ProjectNavigator {
 	 *
 	 */
 	protected void deleteSelectedProject(Shell shell) {
-		// FIXME Gets the wrong project
+		// TODO Gets the wrong project
 		getSelectedProject();
 
 		final ProjectModel model = ProjectList.getModel(selectionIndex);
