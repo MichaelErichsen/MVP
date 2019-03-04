@@ -7,7 +7,7 @@ import java.util.List;
  * Interface defining the HRE business interface
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 4. mar. 2019
  *
  */
 public interface IHREServer {
@@ -18,7 +18,7 @@ public interface IHREServer {
 	 * @throws SQLException
 	 * @throws MvpException
 	 */
-	void delete(int key) throws SQLException, MvpException;
+	void delete(int key) throws Exception;
 
 	/**
 	 * Get all rows
@@ -27,7 +27,7 @@ public interface IHREServer {
 	 * @throws SQLException
 	 * @throws MvpException
 	 */
-	List<?> get() throws SQLException, MvpException;
+	List<?> get() throws Exception;
 
 	/**
 	 * Get a row
@@ -38,7 +38,17 @@ public interface IHREServer {
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	void get(int key) throws SQLException, MvpException;
+	void get(int key) throws Exception;
+
+	/**
+	 * Get a list of list of strings
+	 *
+	 * @param key
+	 * @return List A list of lists of strings
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 */
+	List<List<String>> getStringList(int key) throws Exception;
 
 	/**
 	 * Insert a row
@@ -48,7 +58,7 @@ public interface IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	int insert() throws SQLException, MvpException;
+	int insert() throws Exception;
 
 	/**
 	 * Update a row
@@ -57,5 +67,5 @@ public interface IHREServer {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	void update() throws SQLException, MvpException;
+	void update() throws Exception;
 }

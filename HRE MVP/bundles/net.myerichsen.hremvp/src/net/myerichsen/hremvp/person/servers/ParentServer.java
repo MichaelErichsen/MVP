@@ -97,6 +97,17 @@ public class ParentServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#insert()
 	 */

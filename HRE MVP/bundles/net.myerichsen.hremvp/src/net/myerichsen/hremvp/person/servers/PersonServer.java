@@ -15,6 +15,7 @@ import org.json.JSONStringer;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
@@ -31,7 +32,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 4. mar. 2019
  *
  */
 public class PersonServer implements IHREServer {
@@ -45,6 +46,7 @@ public class PersonServer implements IHREServer {
 	private List<List<String>> personList;
 
 	private final Persons person;
+	Dictionary dictionary;
 
 	/**
 	 * Constructor
@@ -52,6 +54,7 @@ public class PersonServer implements IHREServer {
 	 */
 	public PersonServer() {
 		person = new Persons();
+		dictionary = new Dictionary();
 		nameList = new ArrayList<>();
 		personList = new ArrayList<>();
 	}
@@ -497,77 +500,6 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * Get a list of all names for the person
-	 *
-	 * @param key
-	 * @return
-	 * @throws MvpException
-	 * @throws SQLException
-	 */
-	public List<List<String>> getPersonNameList(int key)
-			throws SQLException, MvpException {
-		final List<List<String>> personNameList = new ArrayList<>();
-		List<String> stringList;
-
-		if (key == 0) {
-			stringList = new ArrayList<>();
-			stringList.add("0");
-			stringList.add("");
-			stringList.add("");
-			stringList.add("");
-			stringList.add("false");
-			personNameList.add(stringList);
-			return personNameList;
-		}
-
-		final PersonNames name = new PersonNames();
-		int namePid = 0;
-		StringBuilder sb;
-
-		for (final PersonNames names : name.getFKPersonPid(key)) {
-			stringList = new ArrayList<>();
-
-			namePid = names.getNamePid();
-			stringList.add(Integer.toString(namePid));
-
-			sb = new StringBuilder();
-			final PersonNameParts part = new PersonNameParts();
-
-			// FIXME java.lang.NullPointerException
-			for (final PersonNameParts namePart : part.getFKNamePid(namePid)) {
-				sb.append(namePart.getLabel() + " ");
-			}
-			stringList.add(sb.toString().trim());
-
-			final Hdates date = new Hdates();
-
-			int datePid = names.getFromDatePid();
-
-			if (datePid == 0) {
-				stringList.add("");
-			} else {
-				date.get(datePid);
-				stringList.add(date.getDate().toString());
-			}
-
-			datePid = names.getToDatePid();
-
-			if (datePid == 0) {
-				stringList.add("");
-			} else {
-				date.get(datePid);
-				stringList.add(date.getDate().toString());
-			}
-
-			stringList.add(Boolean.toString(name.isPrimaryName()));
-
-			personNameList.add(stringList);
-		}
-
-		return personNameList;
-	}
-
-	/**
 	 * @return the personPid
 	 */
 	public int getPersonPid() {
@@ -715,15 +647,20 @@ public class PersonServer implements IHREServer {
 
 	/**
 	 * @param key
-	 * @return the sexesList
+	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, Label,
+	 *         PrimarySex, FromDatePid, ToDatePid
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
 	public List<List<String>> getSexesList(int key)
 			throws SQLException, MvpException {
-		final SexTypes st = new SexTypes();
+		int sexTypePid;
+		int datePid;
 		List<String> ls;
+		String s;
 
+		final SexTypes st = new SexTypes();
+		Hdates hdates = new Hdates();
 		final List<List<String>> sexesList = new ArrayList<>();
 
 		if (key == 0) {
@@ -733,11 +670,34 @@ public class PersonServer implements IHREServer {
 		for (final Sexes sex : new Sexes().getFKPersonPid(key)) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(sex.getSexesPid()));
-			st.get(sex.getSexTypePid());
-			// FIXME Sex labels
-			ls.add("?");
-//			ls.add(st.getLabel());
+			ls.add(Integer.toString(sex.getPersonPid()));
+			sexTypePid = sex.getSexTypePid();
+			ls.add(Integer.toString(sexTypePid));
+
+			st.get(sexTypePid);
+			List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(st.getLabelPid());
+
+			ls.add(fkLabelPid.get(0).getLabel());
+
 			ls.add(Boolean.toString(sex.isPrimarySex()));
+			s = "";
+			datePid = sex.getFromDatePid();
+			if (datePid > 0) {
+
+				hdates.get(datePid);
+				s = hdates.getDate().toString();
+			}
+			ls.add(s);
+
+			s = "";
+			datePid = sex.getToDatePid();
+			if (datePid > 0) {
+
+				hdates.get(datePid);
+				s = hdates.getDate().toString();
+			}
+			ls.add(s);
 
 			sexesList.add(ls);
 		}
@@ -782,6 +742,78 @@ public class PersonServer implements IHREServer {
 			}
 		}
 		return siblingList;
+	}
+
+	/**
+	 * Get a list of all names for the person
+	 *
+	 * @param key
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	@Override
+	public List<List<String>> getStringList(int key)
+			throws SQLException, MvpException {
+		final List<List<String>> personNameList = new ArrayList<>();
+		List<String> stringList;
+
+		if (key == 0) {
+			stringList = new ArrayList<>();
+			stringList.add("0");
+			stringList.add("");
+			stringList.add("");
+			stringList.add("");
+			stringList.add("false");
+			personNameList.add(stringList);
+			return personNameList;
+		}
+
+		final PersonNames name = new PersonNames();
+		int namePid = 0;
+		StringBuilder sb;
+
+		for (final PersonNames names : name.getFKPersonPid(key)) {
+			stringList = new ArrayList<>();
+
+			namePid = names.getNamePid();
+			stringList.add(Integer.toString(namePid));
+
+			sb = new StringBuilder();
+			final PersonNameParts part = new PersonNameParts();
+
+			// FIXME java.lang.NullPointerException
+			for (final PersonNameParts namePart : part.getFKNamePid(namePid)) {
+				sb.append(namePart.getLabel() + " ");
+			}
+			stringList.add(sb.toString().trim());
+
+			final Hdates date = new Hdates();
+
+			int datePid = names.getFromDatePid();
+
+			if (datePid == 0) {
+				stringList.add("");
+			} else {
+				date.get(datePid);
+				stringList.add(date.getDate().toString());
+			}
+
+			datePid = names.getToDatePid();
+
+			if (datePid == 0) {
+				stringList.add("");
+			} else {
+				date.get(datePid);
+				stringList.add(date.getDate().toString());
+			}
+
+			stringList.add(Boolean.toString(name.isPrimaryName()));
+
+			personNameList.add(stringList);
+		}
+
+		return personNameList;
 	}
 
 	/**

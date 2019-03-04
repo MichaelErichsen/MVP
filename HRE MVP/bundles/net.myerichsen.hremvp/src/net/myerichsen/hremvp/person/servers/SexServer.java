@@ -157,6 +157,17 @@ public class SexServer implements IHREServer {
 		return sexTypePid;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @return the toDatePid
 	 */

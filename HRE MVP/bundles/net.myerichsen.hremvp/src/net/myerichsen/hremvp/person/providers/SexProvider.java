@@ -148,6 +148,17 @@ public class SexProvider implements IHREProvider {
 		return sexTypePid;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @return the toDatePid
 	 */

@@ -96,6 +96,17 @@ public class PersonNameStyleProvider implements IHREProvider {
 		return server.getStringList();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Insert a row
 	 *

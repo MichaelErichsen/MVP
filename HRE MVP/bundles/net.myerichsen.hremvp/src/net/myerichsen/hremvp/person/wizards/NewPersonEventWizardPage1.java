@@ -300,7 +300,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 	 * @return
 	 */
 	public int getEventPid() {
-// TODO
+// TODO Auto-generated method stub
 		return 0;
 	}
 

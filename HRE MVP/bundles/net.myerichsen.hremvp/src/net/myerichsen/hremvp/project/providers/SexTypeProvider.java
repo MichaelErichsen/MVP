@@ -198,6 +198,7 @@ public class SexTypeProvider implements IHREProvider {
 	 *         active language
 	 * @throws SQLException
 	 */
+	@Override
 	public List<List<String>> getStringList(int labelPid) throws SQLException {
 		return server.getStringList(labelPid);
 	}

@@ -138,11 +138,11 @@ public class PersonNameMapServer implements IHREServer {
 	 * @param personNameStylePid
 	 * @return List A list of lists of name map pid, label pid, label and
 	 *         dictionary pid
-	 * @throws MvpException
 	 * @throws SQLException
 	 */
+	@Override
 	public List<List<String>> getStringList(int personNameStylePid)
-			throws SQLException, MvpException {
+			throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 

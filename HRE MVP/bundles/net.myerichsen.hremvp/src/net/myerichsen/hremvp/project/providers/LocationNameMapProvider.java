@@ -116,6 +116,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Override
 	public List<List<String>> getStringList(int locationNameStylePid)
 			throws SQLException {
 		return server.getStringList(locationNameStylePid);

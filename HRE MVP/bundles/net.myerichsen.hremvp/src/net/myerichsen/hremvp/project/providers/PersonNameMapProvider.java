@@ -130,6 +130,7 @@ public class PersonNameMapProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
+	@Override
 	public List<List<String>> getStringList(int personNameStylePid)
 			throws SQLException, MvpException {
 		return server.getStringList(personNameStylePid);

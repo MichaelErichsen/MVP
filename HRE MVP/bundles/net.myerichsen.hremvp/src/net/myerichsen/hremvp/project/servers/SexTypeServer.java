@@ -244,6 +244,7 @@ public class SexTypeServer implements IHREServer {
 	 *         codes and generic labels
 	 * @throws SQLException
 	 */
+	@Override
 	public List<List<String>> getStringList(int labelPid) throws SQLException {
 		final List<List<String>> lls = new ArrayList<>();
 

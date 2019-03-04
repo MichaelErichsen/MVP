@@ -64,7 +64,7 @@ public class NewPersonWizardPage3 extends WizardPage {
 			personNameStylePid = wizard.getPersonNameStylePid();
 
 			provider = new PersonNameMapProvider();
-			List<List<String>> stringList = provider
+			final List<List<String>> stringList = provider
 					.getStringList(personNameStylePid);
 			textFieldList = new ArrayList<>();
 

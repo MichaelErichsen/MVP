@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sexes for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 4. mar. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonSexesView {
@@ -102,15 +102,15 @@ public class PersonSexesView {
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnSexId = tableViewerColumnId.getColumn();
 		tblclmnSexId.setWidth(100);
-		tblclmnSexId.setText("ID");
+		tblclmnSexId.setText("Sex Id");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnSex = tableViewerColumnLabel.getColumn();
-		tblclmnSex.setWidth(250);
+		tblclmnSex.setWidth(97);
 		tblclmnSex.setText("Sex");
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final TableViewerColumn tableViewerColumnPrimary = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -119,7 +119,22 @@ public class PersonSexesView {
 		tblclmnSexPrimary.setWidth(83);
 		tblclmnSexPrimary.setText("Primary");
 		tableViewerColumnPrimary
-				.setLabelProvider(new HREColumnLabelProvider(2));
+				.setLabelProvider(new HREColumnLabelProvider(4));
+
+		TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnFrom = tableViewerColumnFromDate.getColumn();
+		tblclmnFrom.setWidth(100);
+		tblclmnFrom.setText("From");
+		tableViewerColumnFromDate
+				.setLabelProvider(new HREColumnLabelProvider(5));
+
+		TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnTo = tableViewerColumnToDate.getColumn();
+		tblclmnTo.setWidth(100);
+		tblclmnTo.setText("To");
+		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(6));
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
@@ -146,7 +161,8 @@ public class PersonSexesView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getSexesList(0));
+
+			tableViewer.setInput(provider.getSexesList(personPid));
 		} catch (SQLException | MvpException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();

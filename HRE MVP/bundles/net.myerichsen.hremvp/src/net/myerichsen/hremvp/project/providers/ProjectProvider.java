@@ -75,6 +75,17 @@ public class ProjectProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */

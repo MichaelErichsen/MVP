@@ -142,6 +142,17 @@ public class ProjectServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */

@@ -114,6 +114,7 @@ public class DictionaryProvider implements IHREProvider {
 	 * @throws SQLException
 	 * @throws MvpException
 	 */
+	@Override
 	public List<List<String>> getStringList(int labelPid)
 			throws SQLException, MvpException {
 		return server.getStringList(labelPid);

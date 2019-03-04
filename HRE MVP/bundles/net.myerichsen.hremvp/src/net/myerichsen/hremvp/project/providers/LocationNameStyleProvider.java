@@ -113,6 +113,17 @@ public class LocationNameStyleProvider implements IHREProvider {
 		return server.getStringList();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @return the toDatePid
 	 */

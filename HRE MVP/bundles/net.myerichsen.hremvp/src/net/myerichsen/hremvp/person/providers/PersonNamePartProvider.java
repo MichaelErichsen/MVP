@@ -128,6 +128,17 @@ public class PersonNamePartProvider implements IHREProvider {
 		return partNo;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Insert a row
 	 *

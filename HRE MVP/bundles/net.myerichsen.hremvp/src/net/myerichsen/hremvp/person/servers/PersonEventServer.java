@@ -101,6 +101,17 @@ public class PersonEventServer implements IHREServer {
 		return Role;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @return
 	 * @throws SQLException

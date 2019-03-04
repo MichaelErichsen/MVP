@@ -97,6 +97,17 @@ public class ParentProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */

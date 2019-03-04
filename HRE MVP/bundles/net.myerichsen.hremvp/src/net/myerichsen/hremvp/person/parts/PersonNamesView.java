@@ -186,7 +186,7 @@ public class PersonNamesView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getPersonNameList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 		} catch (SQLException | MvpException e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -273,7 +273,7 @@ public class PersonNamesView {
 			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int namePid) {
 		LOGGER.fine("Received name id " + namePid);
 		try {
-			tableViewer.setInput(provider.getPersonNameList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());
@@ -292,7 +292,7 @@ public class PersonNamesView {
 		this.personPid = personPid;
 		try {
 			textId.setText(Integer.toString(personPid));
-			tableViewer.setInput(provider.getPersonNameList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (SQLException | MvpException e) {
 			LOGGER.severe(e.getMessage());

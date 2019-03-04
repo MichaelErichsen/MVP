@@ -7,7 +7,7 @@ import java.util.List;
  * Interface between visual parts and business logic
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 4. mar. 2019
  *
  */
 public interface IHREProvider {
@@ -20,7 +20,7 @@ public interface IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	void delete(int key) throws SQLException, MvpException;
+	void delete(int key) throws Exception;
 
 	/**
 	 * Get all rows
@@ -30,7 +30,7 @@ public interface IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	List<?> get() throws SQLException, MvpException;
+	List<?> get() throws Exception;
 
 	/**
 	 * Get a row
@@ -40,7 +40,17 @@ public interface IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	void get(int key) throws SQLException, MvpException;
+	void get(int key) throws Exception;
+
+	/**
+	 * Get a list of list of strings
+	 *
+	 * @param key
+	 * @return List A list of lists of strings
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
+	 */
+	List<List<String>> getStringList(int key) throws Exception;
 
 	/**
 	 * Insert a row
@@ -50,7 +60,7 @@ public interface IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	int insert() throws SQLException, MvpException;
+	int insert() throws Exception;
 
 	/**
 	 * Update a row
@@ -59,5 +69,5 @@ public interface IHREProvider {
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	void update() throws SQLException, MvpException;
+	void update() throws Exception;
 }

@@ -165,6 +165,17 @@ public class PersonNamePartServer implements IHREServer {
 		return partNo;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Insert a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}

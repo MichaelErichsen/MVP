@@ -201,17 +201,6 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param key
-	 * @return
-	 * @throws MvpException
-	 * @throws SQLException
-	 */
-	public List<List<String>> getPersonNameList(int key)
-			throws SQLException, MvpException {
-		return server.getPersonNameList(key);
-	}
-
-	/**
 	 * @return the personPid
 	 */
 	public int getPersonPid() {
@@ -228,7 +217,8 @@ public class PersonProvider implements IHREProvider {
 
 	/**
 	 * @param key
-	 * @return the sexesList
+	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, Label,
+	 *         PrimarySex, FromDatePid, ToDatePid
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
@@ -244,6 +234,18 @@ public class PersonProvider implements IHREProvider {
 	public List<List<String>> getSiblingList(int personPid)
 			throws SQLException {
 		return server.getSiblingList(personPid);
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws MvpException
+	 * @throws SQLException
+	 */
+	@Override
+	public List<List<String>> getStringList(int key)
+			throws SQLException, MvpException {
+		return server.getStringList(key);
 	}
 
 	/*
