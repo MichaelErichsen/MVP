@@ -217,8 +217,8 @@ public class PersonProvider implements IHREProvider {
 
 	/**
 	 * @param key
-	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, Label,
-	 *         PrimarySex, FromDatePid, ToDatePid
+	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, SexTypeLabel,
+	 *         PrimarySex, FromDate, ToDate
 	 * @throws MvpException
 	 * @throws SQLException
 	 */

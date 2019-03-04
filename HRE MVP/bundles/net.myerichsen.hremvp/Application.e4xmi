@@ -37,7 +37,7 @@
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_4TvI0BKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partstack.18" selectedElement="_Z2uXUBKsEemNAMxJdnZnGA">
                 <children xsi:type="basic:Part" xmi:id="_Z2uXUBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.eventsforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonEventsView" label="Events for Person"/>
-                <children xsi:type="basic:Part" xmi:id="_CxF4gBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.sexesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonSexesView" label="Sexes for Person"/>
+                <children xsi:type="basic:Part" xmi:id="_CxF4gBKsEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.part.sexesforperson" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonSexesNavigator" label="Sexes for Person"/>
               </children>
             </children>
             <children xsi:type="basic:PartSashContainer" xmi:id="_ziFXsBKrEemNAMxJdnZnGA" elementId="net.myerichsen.hremvp.partsashcontainer.14" horizontal="true">

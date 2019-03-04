@@ -15,11 +15,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -35,6 +30,8 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.listeners.NumericVerifyListener;
+import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 
 /**
@@ -45,16 +42,10 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  *
  */
 @SuppressWarnings("restriction")
-public class SexView {
+public class PersonSexView {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
@@ -67,45 +58,21 @@ public class SexView {
 	private Text textFromDate;
 	private Text textToDate;
 	private Button btnPrimarySex;
-	private Text textSexType;
+	private Text textSexTypePid;
 	private Text textAbbreviation;
 	private Text textLabel;
 	private Text textIsoCode;
 
-	private final SexProvider provider;
+	private SexProvider sexesProvider;
+	private PersonProvider provider;
+	private int sexPid;
 
 	/**
 	 * Constructor
 	 *
 	 */
-	public SexView() {
-		provider = new SexProvider();
-	}
-
-	/**
-	 *
-	 */
-	protected void clear() {
-		textId.setText("0");
-		textPersonPid.setText("0");
-		textFromDate.setText("");
-		textToDate.setText("");
-		btnPrimarySex.setSelection(true);
-		textSexType.setText("");
-		textAbbreviation.setText("");
-		textLabel.setText("");
-		textIsoCode.setText("");
-	}
-
-	/**
-	 *
-	 */
-	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2)
-				.getSelectedElement();
-		partService.hidePart(part, true);
+	public PersonSexView() {
+		sexesProvider = new SexProvider();
 	}
 
 	/**
@@ -121,6 +88,7 @@ public class SexView {
 		lblId.setText("ID");
 
 		textId = new Text(parent, SWT.BORDER);
+		textId.setEditable(false);
 		textId.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -128,6 +96,7 @@ public class SexView {
 		lblPerson.setText("Person");
 
 		textPersonPid = new Text(parent, SWT.BORDER);
+		textPersonPid.setEditable(false);
 		textPersonPid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -151,16 +120,17 @@ public class SexView {
 		btnPrimarySex.setText("Primary Sex");
 
 		final Label lblSexType = new Label(parent, SWT.NONE);
-		lblSexType.setText("Sex type\r\nDblClk to open");
+		lblSexType.setText("Sex type id\r\nDblClk to open");
 
-		textSexType = new Text(parent, SWT.BORDER);
-		textSexType.addMouseListener(new MouseAdapter() {
+		textSexTypePid = new Text(parent, SWT.BORDER);
+		textSexTypePid.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openSexTypeView();
 			}
 		});
-		textSexType.setLayoutData(
+		textSexTypePid.addVerifyListener(new NumericVerifyListener());
+		textSexTypePid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Label lblAbbreviation = new Label(parent, SWT.NONE);
@@ -189,26 +159,8 @@ public class SexView {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		Button buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
-			}
-		});
-		buttonSelect.setText("Select");
-
-		Button buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
-			}
-		});
-		buttonInsert.setText("Insert");
 
 		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
@@ -218,48 +170,6 @@ public class SexView {
 			}
 		});
 		buttonUpdate.setText("Update");
-
-		Button buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		Button buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		Button buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-	}
-
-	/**
-	 *
-	 */
-	protected void delete() {
-		try {
-			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE",
-					"Sex " + textId.getText() + " has been deleted");
-			clear();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-		}
 	}
 
 	/**
@@ -270,38 +180,26 @@ public class SexView {
 	}
 
 	/**
-	 *
-	 */
-	private void get() {
-		get(Integer.parseInt(textId.getText()));
-	}
-
-	/**
 	 * @param key
 	 */
 	private void get(int key) {
-		try {
-			provider.get(key);
+		sexPid = key;
 
-			textId.setText(Integer.toString(provider.getSexesPid()));
-			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
-			String s = "";
-			int datePid = provider.getFromDatePid();
-			if (datePid > 0) {
-				s = Integer.toString(datePid);
-			}
-			textFromDate.setText(s);
-			s = "";
-			datePid = provider.getToDatePid();
-			if (datePid > 0) {
-				s = Integer.toString(datePid);
-			}
-			textToDate.setText(s);
-			btnPrimarySex.setSelection(provider.isPrimarySex());
-			textSexType.setText(Integer.toString(provider.getSexTypePid()));
-			textAbbreviation.setText(provider.getAbbreviation());
-			textLabel.setText(provider.getSexTypeLabel());
-			textIsoCode.setText(provider.getIsocode());
+		try {
+			sexesProvider.get(key);
+			provider = new PersonProvider();
+			List<String> sexesList = provider.getSexesList(key).get(0);
+
+			textId.setText(sexesList.get(0));
+			textPersonPid.setText(sexesList.get(1));
+			textFromDate.setText(sexesList.get(5));
+			textToDate.setText(sexesList.get(6));
+			btnPrimarySex.setSelection(
+					sexesList.get(4).equals("true") ? true : false);
+			textSexTypePid.setText(sexesList.get(2));
+			textAbbreviation.setText(sexesProvider.getAbbreviation());
+			textLabel.setText(sexesList.get(3));
+			textIsoCode.setText(sexesProvider.getIsocode());
 
 			eventBroker.post("MESSAGE",
 					"Name " + textId.getText() + " has been fetched");
@@ -315,41 +213,12 @@ public class SexView {
 	/**
 	 *
 	 */
-	private void insert() {
-		// TODO insert() missing
-		// try {
-		// provider = new PersonNameProvider();
-		// provider.setNames(new Names());
-		// provider.setNamePid(Integer.parseInt(textId.getText()));
-		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));
-		// provider.setNameType(Integer.parseInt(textNameType.getText()));
-		//
-		// provider.setFromdate(dateTimeFrom.getYear() + "-" +
-		// dateTimeFrom.getMonth() +
-		// "-" + dateTimeFrom.getDay());
-		// Calendar calendar = Calendar.getInstance();
-		// dateTimeFrom.setDate(calendar.get(Calendar.YEAR),
-		// calendar.get(Calendar.MONTH),
-		// calendar.get(Calendar.DATE));
-		// dateTimeTo.setDate(calendar.get(Calendar.YEAR),
-		// calendar.get(Calendar.MONTH),
-		// calendar.get(Calendar.DATE));
-		// table.removeAll();
-		// provider.insert();
-		// } catch (final SQLException e) {
-		// e.printStackTrace();
-		// }
-	}
-
-	/**
-	 *
-	 */
 	protected void openSexTypeView() {
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.opensextypeview", null);
 		handlerService.executeHandler(command);
 
-		final int sexTypePid = Integer.parseInt(textSexType.getText());
+		final int sexTypePid = Integer.parseInt(textSexTypePid.getText());
 
 		LOGGER.info("Setting sex type pid: " + sexTypePid);
 		eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
@@ -378,15 +247,21 @@ public class SexView {
 	 *
 	 */
 	private void update() {
-		// try {
-		// provider = new Names();
-		// provider.setNamePid(Integer.parseInt(textId.getText()));
-		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));
-		// provider.setNameType(Integer.parseInt(textNameType.getText()));
-		// provider.update();
-		// } catch (final SQLException e) {
-		// e.printStackTrace();
-		// }
+		// TODO Clean up update function
+		try {
+			sexesProvider = new SexProvider();
+			sexesProvider.get(sexPid);
+			sexesProvider.setFromDatePid(0);
+			sexesProvider.setToDatePid(0);
+			sexesProvider.setPrimarySex(btnPrimarySex.getSelection());
+			sexesProvider
+					.setSexTypePid(Integer.parseInt(textSexTypePid.getText()));
+			sexesProvider.update();
+		} catch (SQLException | MvpException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+		sexesProvider.setFromDatePid(0);
 	}
 
 }

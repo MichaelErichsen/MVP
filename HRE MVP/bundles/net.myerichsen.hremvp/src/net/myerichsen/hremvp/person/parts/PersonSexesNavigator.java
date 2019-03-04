@@ -49,7 +49,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * @version 4. mar. 2019
  */
 @SuppressWarnings("restriction")
-public class PersonSexesView {
+public class PersonSexesNavigator {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -68,7 +68,7 @@ public class PersonSexesView {
 	 * Constructor
 	 *
 	 */
-	public PersonSexesView() {
+	public PersonSexesNavigator() {
 		try {
 			provider = new PersonProvider();
 		} catch (final SQLException e) {

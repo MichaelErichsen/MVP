@@ -647,8 +647,8 @@ public class PersonServer implements IHREServer {
 
 	/**
 	 * @param key
-	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, Label,
-	 *         PrimarySex, FromDatePid, ToDatePid
+	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, SexTypeLabel,
+	 *         PrimarySex, FromDate, ToDate
 	 * @throws MvpException
 	 * @throws SQLException
 	 */
@@ -684,7 +684,6 @@ public class PersonServer implements IHREServer {
 			s = "";
 			datePid = sex.getFromDatePid();
 			if (datePid > 0) {
-
 				hdates.get(datePid);
 				s = hdates.getDate().toString();
 			}
