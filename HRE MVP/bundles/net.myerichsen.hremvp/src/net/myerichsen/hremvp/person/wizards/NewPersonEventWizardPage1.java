@@ -10,6 +10,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -30,7 +31,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.person.dialogs.LocationDialog;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 import net.myerichsen.hremvp.person.dialogs.LocationNavigatorDialog;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
@@ -517,13 +518,9 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 	 *
 	 */
 	protected void getNewLocation() {
-		final LocationDialog dialog = new LocationDialog(
-				textLocation.getShell(), context);
-
-		if (dialog.open() == Window.OK) {
-
-		}
-
+		final WizardDialog dialog = new WizardDialog(textLocation.getShell(),
+				new NewLocationWizard(context));
+		dialog.open();
 	}
 
 	/**
