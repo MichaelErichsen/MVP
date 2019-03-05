@@ -8,10 +8,22 @@ import org.eclipse.jface.viewers.LabelProvider;
  * Default JFace combo label provider
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 4. mar. 2019
+ * @version 5. mar. 2019
  *
  */
 public class HREComboLabelProvider extends LabelProvider {
+	private int column;
+	
+	/**
+	 * Constructor
+	 *
+	 * @param column
+	 */
+	public HREComboLabelProvider(int column) {
+		super();
+		this.column = column;
+	}
+
 	/**
 	 * @param element
 	 * @return
@@ -20,6 +32,6 @@ public class HREComboLabelProvider extends LabelProvider {
 	@Override
 	public String getText(Object element) {
 		final List<String> list = (List<String>) element;
-		return list.get(2);
+		return list.get(column);
 	}
 }
