@@ -256,7 +256,7 @@ public class PersonSexView {
 			sexesProvider
 					.setSexTypePid(Integer.parseInt(textSexTypePid.getText()));
 			sexesProvider.update();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

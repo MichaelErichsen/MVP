@@ -7,36 +7,55 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
-import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
+import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.event.providers.EventProvider;
+import net.myerichsen.hremvp.event.wizards.NewEventWizard;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. dec. 2018
+ * @version 7. mar. 2019
  *
  */
 // FIXME Reopens blank Event View
@@ -52,8 +71,9 @@ public class EventNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private Table table;
 	private EventProvider provider;
+	private NavigatorFilter navigatorFilter;
+	private TableViewer tableViewer;
 
 	/**
 	 * Constructor
@@ -62,6 +82,7 @@ public class EventNavigator {
 	public EventNavigator() {
 		try {
 			provider = new EventProvider();
+			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -76,12 +97,11 @@ public class EventNavigator {
 	 * @param menuService The Eclipse menu service
 	 */
 	@PostConstruct
-	public void createControls(Composite parent, EMenuService menuService) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -95,8 +115,6 @@ public class EventNavigator {
 				openEventView();
 			}
 		});
-		menuService.registerContextMenu(tableViewer.getControl(),
-				"net.myerichsen.hremvp.popupmenu.eventmenu");
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -106,6 +124,7 @@ public class EventNavigator {
 		final TableColumn tblclmnId = tableViewerColumnID.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("Event ID");
+		tableViewerColumnID.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnEventName = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -113,6 +132,8 @@ public class EventNavigator {
 				.getColumn();
 		tblclmnPrimaryEventName.setWidth(100);
 		tblclmnPrimaryEventName.setText(" Event Name");
+		tableViewerColumnEventName
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnEventType = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -120,6 +141,8 @@ public class EventNavigator {
 				.getColumn();
 		tblclmnEventType.setWidth(100);
 		tblclmnEventType.setText("Event Type");
+		tableViewerColumnEventType
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnLanguage = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -127,28 +150,90 @@ public class EventNavigator {
 				.getColumn();
 		tblclmnLanguage.setWidth(100);
 		tblclmnLanguage.setText("Language");
+		tableViewerColumnLanguage
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
-		List<String> stringList;
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
 
-		try {
-			final List<List<String>> lls = provider.get();
-			table.removeAll();
-			TableItem item;
-
-			for (int i = 0; i < lls.size(); i++) {
-				stringList = lls.get(i);
-
-				item = new TableItem(table, SWT.NONE);
-
-				for (int j = 0; j < stringList.size(); j++) {
-					item.setText(j, stringList.get(j).trim());
-				}
+		final MenuItem mntmAddevent = new MenuItem(menu, SWT.NONE);
+		mntmAddevent.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewEventWizard(context));
+				dialog.open();
 			}
-		} catch (final Exception e1) {
-			e1.printStackTrace();
-			eventBroker.post("MESSAGE", e1.getMessage());
+		});
+		mntmAddevent.setText("Add event...");
+
+		final MenuItem mntmDeleteSelectedevent = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedevent.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteEvent(parent.getShell());
+			}
+		});
+		mntmDeleteSelectedevent.setText("Delete selected event...");
+
+		final Label lblNameFilter = new Label(parent, SWT.NONE);
+		lblNameFilter.setText("Name Filter");
+
+		final Text textNameFilter = new Text(parent, SWT.BORDER);
+		textNameFilter.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				navigatorFilter.setSearchText(textNameFilter.getText());
+				LOGGER.fine("Filter string: " + textNameFilter.getText());
+				tableViewer.refresh();
+			}
+		});
+
+		textNameFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList());
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
+
+//		List<String> stringList;
+//
+//		try {
+//			final List<List<String>> lls = provider.get();
+//			table.removeAll();
+//			TableItem item;
+//
+//			for (int i = 0; i < lls.size(); i++) {
+//				stringList = lls.get(i);
+//
+//				item = new TableItem(table, SWT.NONE);
+//
+//				for (int j = 0; j < stringList.size(); j++) {
+//					item.setText(j, stringList.get(j).trim());
+//				}
+//			}
+//		} catch (final Exception e1) {
+//			e1.printStackTrace();
+//			eventBroker.post("MESSAGE", e1.getMessage());
+//			LOGGER.severe(e1.getMessage());
+//		}
 	}
 
 	/**
@@ -197,7 +282,7 @@ public class EventNavigator {
 
 		int eventPid = 0;
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -214,5 +299,76 @@ public class EventNavigator {
 	 */
 	@Focus
 	public void setFocus() {
+	}
+
+	/**
+	 *
+	 */
+	protected void deleteEvent(Shell shell) {
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int eventPid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			eventPid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete event " + primaryName, null,
+				"Are you sure that you will delete event " + eventPid + ", "
+						+ primaryName + "?",
+				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Deletion of event " + primaryName + " has been canceled");
+			return;
+		}
+
+		try {
+			final EventProvider provider = new EventProvider();
+			provider.delete(eventPid);
+
+			LOGGER.info("event " + primaryName + " has been deleted");
+			eventBroker.post("MESSAGE",
+					"event " + primaryName + " has been deleted");
+			eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
+		} catch (Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param eventPid
+	 */
+	@Inject
+	@Optional
+	private void subscribeEventPidUpdateTopic(
+			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
+		LOGGER.fine("Received event id " + eventPid);
+
+		if (eventPid > 0) {
+			try {
+				tableViewer.setInput(provider.getStringList());
+				tableViewer.refresh();
+
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(eventPid);
+
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
+				}
+			} catch (Exception e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -50,8 +50,7 @@ public class OpenSexTypeViewHandler {
 						return;
 					}
 				} catch (final Exception e) {
-					LOGGER.severe(e.getMessage());
-					e.printStackTrace();
+					LOGGER.warning(e.getMessage());
 				}
 			}
 		}
