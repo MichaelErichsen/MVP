@@ -17,7 +17,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. feb. 2019
+ * @version 7. mar. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -105,8 +105,12 @@ public class Activator implements BundleActivator {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext bundleContext) throws Exception {
-		HreH2ConnectionPool.dispose();
+	public void stop(BundleContext bundleContext) {
+		try {
+			HreH2ConnectionPool.dispose();
+		} catch (Exception e1) {
+			LOGGER.severe(e1.getMessage());
+		}
 
 		final String command = "java -classpath " + HELPCLASSPATH
 				+ " org.eclipse.help.standalone.Infocenter -command shutdown";

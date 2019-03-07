@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * Display all locations
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 5. mar. 2019
  *

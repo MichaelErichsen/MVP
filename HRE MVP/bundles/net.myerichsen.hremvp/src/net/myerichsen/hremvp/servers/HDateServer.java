@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.servers;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +36,12 @@ public class HDateServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		date.delete(key);
 	}
 
@@ -50,11 +49,11 @@ public class HDateServer {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -75,12 +74,12 @@ public class HDateServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		date.get(key);
 		setTableId(date.getTableId());
 		setOriginalText(date.getOriginalText());
@@ -136,11 +135,11 @@ public class HDateServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		date.setTableId(751);
 		date.setOriginalText(getOriginalText());
 		date.setDate(getDate());
@@ -194,11 +193,11 @@ public class HDateServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		date.setTableId(getTableId());
 		date.setOriginalText(getOriginalText());
 		date.setDate(getDate());

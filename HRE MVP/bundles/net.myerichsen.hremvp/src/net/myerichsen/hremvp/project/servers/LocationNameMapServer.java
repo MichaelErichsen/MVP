@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,23 +38,23 @@ public class LocationNameMapServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		map.delete(key);
 	}
 
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	public void deleteLocationNameStylePid(int key)
-			throws SQLException, MvpException {
+			throws Exception {
 		final List<LocationNameMaps> fkLocationNameStylePid = map
 				.getFKLocationNameStylePid(key);
 
@@ -69,8 +68,7 @@ public class LocationNameMapServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -79,12 +77,12 @@ public class LocationNameMapServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		map.get(key);
 		setLocationNameMapPid(map.getLocationNameMapPid());
 		setLocationNameStylePid(map.getLocationNameStylePid());
@@ -120,14 +118,25 @@ public class LocationNameMapServer implements IHREServer {
 		return PartNo;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @param locationNameStylePid
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
 	public List<List<String>> getStringList(int locationNameStylePid)
-			throws SQLException {
+			throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -166,12 +175,12 @@ public class LocationNameMapServer implements IHREServer {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors.
 	 *
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		map.setLocationNameMapPid(LocationNameMapPid);
 		map.setLocationNameStylePid(LocationNameStylePid);
 		map.setPartNo(PartNo);
@@ -217,12 +226,12 @@ public class LocationNameMapServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors.
 	 *
 	 */
 	@Override
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		map.setLocationNameMapPid(LocationNameMapPid);
 		map.setLocationNameStylePid(LocationNameStylePid);
 		map.setPartNo(PartNo);

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +26,11 @@ public class PersonNameStyleServer implements IHREServer {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonNameStyleServer() throws SQLException {
+	public PersonNameStyleServer() throws Exception {
 		style = new PersonNameStyles();
 	}
 
@@ -39,21 +38,20 @@ public class PersonNameStyleServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		style.delete(key);
 	}
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	@Override
-	public List<PersonNameStyles> get() throws SQLException {
+	public List<PersonNameStyles> get() throws Exception {
 		return style.get();
 	}
 
@@ -63,7 +61,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		style.get(key);
 		setIsoCode(style.getIsoCode());
 		setLabelPid(style.getLabelPid());
@@ -92,9 +90,10 @@ public class PersonNameStyleServer implements IHREServer {
 
 	/**
 	 * @return List A list of lists of style id, iso code and style name
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		final Dictionary dictionary = new Dictionary();
@@ -116,11 +115,11 @@ public class PersonNameStyleServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -128,11 +127,11 @@ public class PersonNameStyleServer implements IHREServer {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		style.setNameStylePid(NameStylePid);
 		style.setIsoCode(IsoCode);
 		style.setLabelPid(LabelPid);
@@ -163,11 +162,11 @@ public class PersonNameStyleServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
 	@Override
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		style.setNameStylePid(NameStylePid);
 		style.setIsoCode(IsoCode);
 		style.setLabelPid(LabelPid);

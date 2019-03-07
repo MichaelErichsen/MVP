@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +43,13 @@ public class EventTypeServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		eventType.delete(key);
 	}
 
@@ -58,10 +57,9 @@ public class EventTypeServer implements IHREServer {
 	 * Get all rows
 	 *
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	@Override
-	public List<EventTypes> get() throws SQLException {
+	public List<EventTypes> get() throws Exception {
 		return eventType.get();
 	}
 
@@ -69,12 +67,12 @@ public class EventTypeServer implements IHREServer {
 //	 * Get all rows
 //	 *
 //	 * @return A list of lists of strings of pids and labels
-//	 * @throws SQLException An exception that provides information on a database
+//	 * @throws Exception An exception that provides information on a database
 //	 *                      access error or other errors
 //	 * @throws MvpException Application specific exception
 //	 */
 //	@Override
-//	public List<List<String>> get() throws SQLException, MvpException {
+//	public List<List<String>> get() throws Exception {
 //		final List<List<String>> lls = new ArrayList<>();
 //		List<String> stringList;
 //
@@ -95,13 +93,13 @@ public class EventTypeServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		eventType.get(key);
 		setEventTypePid(eventType.getEventTypePid());
 		setAbbreviation(eventType.getAbbreviation());
@@ -131,9 +129,10 @@ public class EventTypeServer implements IHREServer {
 	/**
 	 * @return stringList A list of lists of event type pids, label pids,
 	 *         abbreviations and generic labels
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		List<String> stringList;
 		List<Dictionary> fkLabelPid;
 		String label = "";
@@ -171,10 +170,10 @@ public class EventTypeServer implements IHREServer {
 	 * @param abbreviation
 	 * @return stringList A list of lists of event type pids, label pids, iso
 	 *         codes and generic labels
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int labelPid) throws SQLException {
+	public List<List<String>> getStringList(int labelPid) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 
 		if (labelPid == 0) {
@@ -221,11 +220,11 @@ public class EventTypeServer implements IHREServer {
 //	/**
 //	 * @param key
 //	 * @return
-//	 * @throws SQLException
+//	 * @throws Exception
 //	 * @throws MvpException
 //	 */
 //	public List<List<String>> getNameList(int key)
-//			throws SQLException, MvpException {
+//			throws Exception {
 //		List<String> stringList;
 //
 //		final List<List<String>> lls = new ArrayList<>();
@@ -259,12 +258,12 @@ public class EventTypeServer implements IHREServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		eventType.setAbbreviation(abbreviation);
 		final Dictionary dictionary = new Dictionary();
 		eventType.setLabelPid(dictionary.getNextLabelPid());
@@ -302,12 +301,12 @@ public class EventTypeServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		eventType.setEventTypePid(EventTypePid);
 		eventType.setTableId(TableId);
 		eventType.update();

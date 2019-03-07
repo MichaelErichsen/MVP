@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.wizards;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -20,7 +19,6 @@ import org.eclipse.swt.widgets.Text;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.listeners.NumericVerifyListener;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
 
@@ -105,7 +103,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 
 			comboIsoCode.setItems(singleArray);
 			comboIsoCode.select(index);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

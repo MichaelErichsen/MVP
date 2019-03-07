@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.parts;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -72,7 +71,7 @@ public class PersonNameStyleNavigator {
 	public PersonNameStyleNavigator() {
 		try {
 			provider = new PersonNameStyleProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -162,7 +161,7 @@ public class PersonNameStyleNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList());
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -278,7 +277,7 @@ public class PersonNameStyleNavigator {
 						break;
 					}
 				}
-			} catch (final SQLException e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.databaseadmin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -40,10 +39,10 @@ public class H2DatabaseProvider implements IContentProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException When failing
+	 * @throws Exception When failing
 	 *
 	 */
-	public H2DatabaseProvider() throws SQLException {
+	public H2DatabaseProvider() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		final String dbName = store.getString("DBNAME");
 

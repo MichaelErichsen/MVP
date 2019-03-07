@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +53,14 @@ public class Languages {
 	private int TableId;
 	private Languages model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -72,7 +71,7 @@ public class Languages {
 		conn.close();
 	}
 
-	public List<Languages> get() throws SQLException {
+	public List<Languages> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -91,7 +90,7 @@ public class Languages {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -163,7 +162,7 @@ public class Languages {
 		return UpdateTstmp;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -239,7 +238,7 @@ public class Languages {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getIsocode());

@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.project.providers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -61,7 +60,7 @@ public class SexTypeProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 
 	}
@@ -94,10 +93,9 @@ public class SexTypeProvider implements IHREProvider {
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	@Override
-	public List<SexTypes> get() throws SQLException {
+	public List<SexTypes> get() throws Exception {
 		return server.get();
 	}
 
@@ -105,13 +103,13 @@ public class SexTypeProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setSexTypePid(server.getSexTypePid());
 		setAbbreviation(server.getAbbreviation());
@@ -186,9 +184,10 @@ public class SexTypeProvider implements IHREProvider {
 	/**
 	 * @return
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		return server.getStringList();
 	}
 
@@ -196,10 +195,10 @@ public class SexTypeProvider implements IHREProvider {
 	 * @param labelPid
 	 * @return stringList A list of lists of pid, abbreviation and label in the
 	 *         active language
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int labelPid) throws SQLException {
+	public List<List<String>> getStringList(int labelPid) throws Exception {
 		return server.getStringList(labelPid);
 	}
 
@@ -213,12 +212,12 @@ public class SexTypeProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setAbbreviation(Abbreviation);
 		return server.insert();
 	}
@@ -287,12 +286,12 @@ public class SexTypeProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setSexTypePid(SexTypePid);
 		server.setAbbreviation(Abbreviation);
 		server.update();

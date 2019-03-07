@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +28,11 @@ public class LocationNameStyleServer implements IHREServer {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public LocationNameStyleServer() throws SQLException {
+	public LocationNameStyleServer() throws Exception {
 		style = new LocationNameStyles();
 	}
 
@@ -41,12 +40,12 @@ public class LocationNameStyleServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		style.delete(key);
 	}
 
@@ -55,8 +54,7 @@ public class LocationNameStyleServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<LocationNameStyles> get() throws SQLException {
+	public List<LocationNameStyles> get() throws Exception {
 		return style.get();
 	}
 
@@ -64,12 +62,12 @@ public class LocationNameStyleServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		style.get(key);
 		setLocationNameStylePid(key);
 		setIsoCode(style.getIsoCode());
@@ -108,9 +106,10 @@ public class LocationNameStyleServer implements IHREServer {
 
 	/**
 	 * @return lls A list of lists of pid, iso code,label pid and label
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		final Dictionary dictionary = new Dictionary();
@@ -132,11 +131,11 @@ public class LocationNameStyleServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -151,11 +150,11 @@ public class LocationNameStyleServer implements IHREServer {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		style.setLocationNameStylePid(LocationNameStylePid);
 		style.setIsoCode(IsoCode);
 		style.setLabelPid(LabelPid);
@@ -202,11 +201,11 @@ public class LocationNameStyleServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
 	@Override
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		style.setLocationNameStylePid(LocationNameStylePid);
 		style.setIsoCode(IsoCode);
 		style.setLabelPid(LabelPid);

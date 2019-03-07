@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -61,11 +60,11 @@ public class EventLocationView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public EventLocationView() throws SQLException {
+	public EventLocationView() throws Exception {
 		provider = new EventProvider();
 	}
 
@@ -194,13 +193,13 @@ public class EventLocationView {
 
 	/**
 	 * @param key
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
-			throws SQLException {
+			throws Exception {
 		get(key);
 	}
 

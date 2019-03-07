@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,22 +41,22 @@ public class PersonNameMapServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		map.delete(key);
 	}
 
 	/**
 	 * @param personNameStylePid
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	public void deletePersonNameStylePid(int personNameStylePid)
-			throws SQLException, MvpException {
+			throws Exception {
 		final List<PersonNameMaps> fkNameStylePid = map
 				.getFKNameStylePid(personNameStylePid);
 
@@ -72,8 +71,7 @@ public class PersonNameMapServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return null;
 	}
 
@@ -81,12 +79,12 @@ public class PersonNameMapServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		map.get(key);
 		setLabel("map.getLabelPid()");
 		setNameMapPid(map.getNameMapPid());
@@ -100,9 +98,9 @@ public class PersonNameMapServer implements IHREServer {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<PersonNameMaps> getFKNameStylePid(int key) throws SQLException {
+	public List<PersonNameMaps> getFKNameStylePid(int key) throws Exception {
 		return map.getFKNameStylePid(key);
 	}
 
@@ -134,15 +132,26 @@ public class PersonNameMapServer implements IHREServer {
 		return partNo;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @param personNameStylePid
 	 * @return List A list of lists of name map pid, label pid, label and
 	 *         dictionary pid
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
 	public List<List<String>> getStringList(int personNameStylePid)
-			throws SQLException {
+			throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -181,12 +190,12 @@ public class PersonNameMapServer implements IHREServer {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors.
 	 *
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		map.setLabelPid(0);
 		map.setNameMapPid(nameMapPid);
 		map.setNameStylePid(nameStylePid);
@@ -232,12 +241,12 @@ public class PersonNameMapServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors.
 	 *
 	 */
 	@Override
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		map.setLabelPid(0);
 		map.setNameMapPid(nameMapPid);
 		map.setNameStylePid(nameStylePid);

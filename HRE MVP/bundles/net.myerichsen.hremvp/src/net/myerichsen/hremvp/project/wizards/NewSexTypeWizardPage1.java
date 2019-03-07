@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.wizards;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -44,7 +43,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 	 * Constructor
 	 *
 	 * @param context
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	public NewSexTypeWizardPage1(IEclipseContext context) {
 		super("New sex type wizard Page 1");
@@ -54,7 +53,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 			provider = new SexTypeProvider();
 			dp = new DictionaryProvider();
 			labelPid = dp.getNextLabelPid();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -133,7 +132,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList(labelPid));
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,14 +70,14 @@ public class DictionaryEdited {
 	private String LabelType;
 	private DictionaryEdited model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -89,7 +88,7 @@ public class DictionaryEdited {
 		conn.close();
 	}
 
-	public List<DictionaryEdited> get() throws SQLException {
+	public List<DictionaryEdited> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -110,7 +109,7 @@ public class DictionaryEdited {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -139,7 +138,7 @@ public class DictionaryEdited {
 		return DictionaryPid;
 	}
 
-	public List<DictionaryEdited> getFKIsoCode(String key) throws SQLException {
+	public List<DictionaryEdited> getFKIsoCode(String key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_ISO_CODE);
 		ps.setString(1, key);
@@ -161,7 +160,7 @@ public class DictionaryEdited {
 		return modelList;
 	}
 
-	public List<DictionaryEdited> getFKLabelPid(int key) throws SQLException {
+	public List<DictionaryEdited> getFKLabelPid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LABEL_PID);
 		ps.setLong(1, key);
@@ -229,9 +228,9 @@ public class DictionaryEdited {
 	 * Returns the next label pid, but dows not create it
 	 *
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public int getNextLabelPid() throws SQLException {
+	public int getNextLabelPid() throws Exception {
 		int maxLabelPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAXLABELPID);
@@ -262,7 +261,7 @@ public class DictionaryEdited {
 		return UpdateTstmp;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -358,7 +357,7 @@ public class DictionaryEdited {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getLabelPid());

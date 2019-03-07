@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -105,11 +104,11 @@ public class EventViewOld {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public EventViewOld() throws SQLException {
+	public EventViewOld() throws Exception {
 		provider = new EventProvider();
 	}
 

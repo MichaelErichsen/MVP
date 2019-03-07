@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,14 +95,14 @@ public class LocationNames {
 	private int ToDatePid;
 	private LocationNames model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -114,7 +113,7 @@ public class LocationNames {
 		conn.close();
 	}
 
-	public List<LocationNames> get() throws SQLException {
+	public List<LocationNames> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -138,7 +137,7 @@ public class LocationNames {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -160,7 +159,7 @@ public class LocationNames {
 		conn.close();
 	}
 
-	public List<LocationNames> getFKFromDatePid(int key) throws SQLException {
+	public List<LocationNames> getFKFromDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
@@ -186,7 +185,7 @@ public class LocationNames {
 	}
 
 	public List<LocationNames> getFKLocationNameStylePid(int key)
-			throws SQLException {
+			throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LOCATION_NAME_STYLE_PID);
 		ps.setInt(1, key);
@@ -211,7 +210,7 @@ public class LocationNames {
 		return modelList;
 	}
 
-	public List<LocationNames> getFKLocationPid(int key) throws SQLException {
+	public List<LocationNames> getFKLocationPid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LOCATION_PID);
 		ps.setInt(1, key);
@@ -236,7 +235,7 @@ public class LocationNames {
 		return modelList;
 	}
 
-	public List<LocationNames> getFKToDatePid(int key) throws SQLException {
+	public List<LocationNames> getFKToDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
@@ -342,7 +341,7 @@ public class LocationNames {
 		return UpdateTstmp;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -476,7 +475,7 @@ public class LocationNames {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getLocationPid());

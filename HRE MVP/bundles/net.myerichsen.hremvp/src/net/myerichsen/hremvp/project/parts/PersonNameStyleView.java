@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -70,7 +69,7 @@ public class PersonNameStyleView {
 		try {
 			provider = new PersonNameStyleProvider();
 			pnmp = new PersonNameMapProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -197,7 +196,7 @@ public class PersonNameStyleView {
 
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 			tableViewer.setInput(pnmp.getStringList(personNameStylePid));
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -249,7 +248,7 @@ public class PersonNameStyleView {
 				}
 			}
 
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -317,7 +316,7 @@ public class PersonNameStyleView {
 					+ personNameStylePid + " has been updated");
 			eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
 					personNameStylePid);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -40,7 +39,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -83,11 +81,11 @@ public class PersonNamePartNavigator {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonNamePartNavigator() throws SQLException {
+	public PersonNamePartNavigator() throws Exception {
 		provider = new PersonNameProvider();
 	}
 
@@ -315,7 +313,7 @@ public class PersonNamePartNavigator {
 		// calendar.get(Calendar.DATE));
 		// table.removeAll();
 		// provider.insert();
-		// } catch (final SQLException e) {
+		// } catch (final Exception e) {
 		// e.printStackTrace();
 		// }
 	}
@@ -405,7 +403,7 @@ public class PersonNamePartNavigator {
 
 			tableViewer.setInput(provider.getNameList());
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -421,7 +419,7 @@ public class PersonNamePartNavigator {
 		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));
 		// provider.setNameType(Integer.parseInt(textNameType.getText()));
 		// provider.update();
-		// } catch (final SQLException e) {
+		// } catch (final Exception e) {
 		// e.printStackTrace();
 		// }
 	}

@@ -6,14 +6,14 @@ import org.eclipse.jface.viewers.LabelProvider;
 
 /**
  * Default JFace combo label provider
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 5. mar. 2019
  *
  */
 public class HREComboLabelProvider extends LabelProvider {
-	private int column;
-	
+	private final int column;
+
 	/**
 	 * Constructor
 	 *

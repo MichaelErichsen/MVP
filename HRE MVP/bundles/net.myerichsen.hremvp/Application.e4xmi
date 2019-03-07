@@ -57,7 +57,6 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_hBXFsOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.1" containerData="1280" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_ocrnwOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partstack.1" containerData="300">
             <children xsi:type="basic:Part" xmi:id="_pSAGMOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNavigator" label="Location Navigator"/>
-            <children xsi:type="basic:Part" xmi:id="_1UUBgOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnamestylenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.XLocationNameStyleNavigatorrrr" label="Location Name Style Navigator"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_82jjkOTTEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.2" containerData="980">
             <children xsi:type="basic:PartSashContainer" xmi:id="_D9w20OTUEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.3" horizontal="true">

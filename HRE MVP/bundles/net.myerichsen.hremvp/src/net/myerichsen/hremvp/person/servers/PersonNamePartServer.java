@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.servers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -40,13 +39,13 @@ public class PersonNamePartServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		part.delete(key);
 	}
 
@@ -55,8 +54,7 @@ public class PersonNamePartServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return null;
 	}
 
@@ -64,13 +62,13 @@ public class PersonNamePartServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		part.get(key);
 		setLabel(part.getLabel());
 		setNamePartPid(part.getNamePartPid());
@@ -117,9 +115,9 @@ public class PersonNamePartServer implements IHREServer {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<PersonNameParts> getFKNamePid(int key) throws SQLException {
+	public List<PersonNameParts> getFKNamePid(int key) throws Exception {
 		return part.getFKNamePid(key);
 	}
 
@@ -167,7 +165,18 @@ public class PersonNamePartServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
@@ -182,12 +191,12 @@ public class PersonNamePartServer implements IHREServer {
 	 *
 	 * @return
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		part.setLabel(label);
 		part.setNamePartPid(namePartPid);
 		part.setNamePid(namePid);
@@ -261,12 +270,12 @@ public class PersonNamePartServer implements IHREServer {
 	 * Update a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		part.setLabel(label);
 		part.setNamePartPid(namePartPid);
 		part.setNamePid(namePid);

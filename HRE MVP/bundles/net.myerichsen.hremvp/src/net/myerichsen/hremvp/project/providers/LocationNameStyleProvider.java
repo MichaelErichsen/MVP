@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -26,11 +25,11 @@ public class LocationNameStyleProvider implements IHREProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public LocationNameStyleProvider() throws SQLException {
+	public LocationNameStyleProvider() throws Exception {
 		server = new LocationNameStyleServer();
 	}
 
@@ -38,38 +37,26 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
-	/**
-	 * Get all rows
-	 *
-	 * @return A list of strings with pids and labels
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	@Override
-	public List<String> get() throws SQLException, MvpException {
-		return null;
-	}
 
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setIsoCode(server.getIsoCode());
 		setFromDatePid(server.getFromDatePid());
@@ -107,19 +94,20 @@ public class LocationNameStyleProvider implements IHREProvider {
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		return server.getStringList();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		return server.getStringList();
 	}
 
@@ -133,13 +121,13 @@ public class LocationNameStyleProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setLocationNameStylePid(LocationNameStylePid);
 		server.setIsoCode(IsoCode);
 		server.setFromDatePid(FromDatePid);
@@ -186,18 +174,26 @@ public class LocationNameStyleProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setLocationNameStylePid(LocationNameStylePid);
 		server.setIsoCode(IsoCode);
 		server.setFromDatePid(FromDatePid);
 		server.setToDatePid(ToDatePid);
 		server.setLabelPid(LabelPid);
 		server.update();
+	}
+
+	/**
+	 * @return
+	 */
+	public List<String> get() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -37,7 +36,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonSexWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -71,7 +69,7 @@ public class PersonSexesNavigator {
 	public PersonSexesNavigator() {
 		try {
 			provider = new PersonProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -121,17 +119,17 @@ public class PersonSexesNavigator {
 		tableViewerColumnPrimary
 				.setLabelProvider(new HREColumnLabelProvider(4));
 
-		TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnFrom = tableViewerColumnFromDate.getColumn();
+		final TableColumn tblclmnFrom = tableViewerColumnFromDate.getColumn();
 		tblclmnFrom.setWidth(100);
 		tblclmnFrom.setText("From");
 		tableViewerColumnFromDate
 				.setLabelProvider(new HREColumnLabelProvider(5));
 
-		TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnTo = tableViewerColumnToDate.getColumn();
+		final TableColumn tblclmnTo = tableViewerColumnToDate.getColumn();
 		tblclmnTo.setWidth(100);
 		tblclmnTo.setText("To");
 		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(6));
@@ -163,7 +161,7 @@ public class PersonSexesNavigator {
 		try {
 
 			tableViewer.setInput(provider.getSexesList(personPid));
-		} catch (SQLException | MvpException e1) {
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -229,7 +227,7 @@ public class PersonSexesNavigator {
 			provider.removeSex(sexPid);
 			eventBroker.post("MESSAGE",
 					"Sex " + primaryName + " has been removed");
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -256,7 +254,7 @@ public class PersonSexesNavigator {
 		try {
 			tableViewer.setInput(provider.getSexesList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

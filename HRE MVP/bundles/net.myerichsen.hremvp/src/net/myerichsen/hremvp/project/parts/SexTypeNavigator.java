@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.parts;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -175,7 +174,7 @@ public class SexTypeNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList());
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -215,7 +214,7 @@ public class SexTypeNavigator {
 			eventBroker.post("MESSAGE",
 					"Sex type " + primaryName + " has been deleted");
 			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -282,7 +281,7 @@ public class SexTypeNavigator {
 						break;
 					}
 				}
-			} catch (final SQLException e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

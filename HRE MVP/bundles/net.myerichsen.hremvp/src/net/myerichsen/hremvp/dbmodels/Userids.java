@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,14 +56,14 @@ public class Userids {
 	private int TableId;
 	private Userids model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -75,7 +74,7 @@ public class Userids {
 		conn.close();
 	}
 
-	public List<Userids> get() throws SQLException {
+	public List<Userids> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -93,7 +92,7 @@ public class Userids {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -110,7 +109,7 @@ public class Userids {
 		conn.close();
 	}
 
-	public List<Userids> getFKPersonPid(int key) throws SQLException {
+	public List<Userids> getFKPersonPid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PERSON_PID);
 		ps.setInt(1, key);
@@ -174,7 +173,7 @@ public class Userids {
 		return UseridPid;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -240,7 +239,7 @@ public class Userids {
 		this.UseridPid = UseridPid;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getPersonPid());

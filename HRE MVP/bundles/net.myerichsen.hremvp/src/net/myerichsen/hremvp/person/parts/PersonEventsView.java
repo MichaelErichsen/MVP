@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -41,7 +40,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonEventWizard;
@@ -209,7 +207,7 @@ public class PersonEventsView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPersonEventList(0));
-		} catch (SQLException | MvpException e1) {
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -275,7 +273,7 @@ public class PersonEventsView {
 			provider.removeEvent(EventPid);
 			eventBroker.post("MESSAGE",
 					"Event " + primaryName + " has been removed");
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -301,7 +299,7 @@ public class PersonEventsView {
 		try {
 			tableViewer.setInput(provider.getPersonEventList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

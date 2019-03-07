@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.dialogs;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -47,10 +46,10 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	 *
 	 * @param parentShell
 	 * @param context
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context)
-			throws SQLException {
+			throws Exception {
 		super(parentShell);
 		this.context = context;
 //		eventBroker = context.get(IEventBroker.class);
@@ -131,7 +130,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList());
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -64,11 +63,11 @@ public class LocationNameView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public LocationNameView() throws SQLException {
+	public LocationNameView() throws Exception {
 		provider = new LocationProvider();
 	}
 

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -33,32 +32,22 @@ public class PersonEventProvider implements IHREProvider {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 *
 	 */
-	public boolean areMoreEvents(int key) throws SQLException {
+	public boolean areMoreEvents(int key) throws Exception {
 		return server.areMoreEvents(key);
 	}
 
 	/**
 	 * @param personEventPid2
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		return null;
 	}
 
 	/*
@@ -67,7 +56,7 @@ public class PersonEventProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 
 	}
 
@@ -101,20 +90,31 @@ public class PersonEventProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		return server.getStringList(key);
 	}
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		server.setEventPid(EventPid);
 		server.setPersonPid(PersonPid);
 		server.setPrimaryEvent(isPrimaryEvent());
@@ -186,7 +186,7 @@ public class PersonEventProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 
 	}
 }

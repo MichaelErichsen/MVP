@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -58,25 +57,25 @@ public class SexTypeServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		sexType.delete(key);
 	}
 
 	/**
 	 * @param target The request target
 	 * @throws NumberFormatException A Number Format Exception
-	 * @throws SQLException          An exception that provides information on a
+	 * @throws Exception          An exception that provides information on a
 	 *                               database access error or other errors
 	 * @throws MvpException          Application specific exception
 	 */
 	public void deleteRemote(String target)
-			throws NumberFormatException, SQLException, MvpException {
+			throws NumberFormatException, Exception {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 		delete(Integer.parseInt(targetParts[targetSize - 1]));
@@ -86,10 +85,9 @@ public class SexTypeServer implements IHREServer {
 	 * Get all rows
 	 *
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	@Override
-	public List<SexTypes> get() throws SQLException {
+	public List<SexTypes> get() throws Exception {
 		return sexType.get();
 	}
 
@@ -97,13 +95,13 @@ public class SexTypeServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		sexType.get(key);
 		setSexTypePid(sexType.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
@@ -160,14 +158,14 @@ public class SexTypeServer implements IHREServer {
 	 * @param target   String
 	 * @return JSONString a JSON String
 	 * @throws NumberFormatException NumberFormatException
-	 * @throws SQLException          An exception that provides information on a
+	 * @throws Exception          An exception that provides information on a
 	 *                               database access error or other errors
 	 * @throws MvpException          Application specific exception
 	 * @throws IOException           IOException
 	 * @throws JSONException         JSONException
 	 */
 	public String getRemote(HttpServletResponse response, String target)
-			throws NumberFormatException, SQLException, MvpException,
+			throws NumberFormatException, Exception,
 			IOException, JSONException {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
@@ -202,9 +200,10 @@ public class SexTypeServer implements IHREServer {
 	/**
 	 * @return stringList A list of lists of pids, abbreviations and generic
 	 *         labels
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		List<String> stringList;
 		List<Dictionary> fkLabelPid;
 		String label = "";
@@ -242,10 +241,10 @@ public class SexTypeServer implements IHREServer {
 	 * @param abbreviation
 	 * @return stringList A list of lists of sex type pids, label pids, iso
 	 *         codes and generic labels
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int labelPid) throws SQLException {
+	public List<List<String>> getStringList(int labelPid) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 
 		if (labelPid == 0) {
@@ -291,11 +290,11 @@ public class SexTypeServer implements IHREServer {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		sexType.setAbbreviation(abbreviation);
 		final Dictionary dictionary = new Dictionary();
 		sexType.setLabelPid(dictionary.getNextLabelPid());
@@ -309,10 +308,10 @@ public class SexTypeServer implements IHREServer {
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
 	 * @throws JSONException JSONException
-	 * @throws SQLException  SQLException
+	 * @throws Exception  Exception
 	 */
 	public void insertRemote(HttpServletRequest request)
-			throws IOException, JSONException, SQLException {
+			throws IOException, JSONException, Exception {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 		final BufferedReader br = request.getReader();
@@ -372,12 +371,12 @@ public class SexTypeServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		sexType.setSexTypePid(sexTypePid);
 		sexType.setAbbreviation(abbreviation);
 		sexType.setTableId(TableId);
@@ -390,12 +389,12 @@ public class SexTypeServer implements IHREServer {
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
 	 * @throws JSONException JSONException
-	 * @throws SQLException  An exception that provides information on a
+	 * @throws Exception  An exception that provides information on a
 	 *                       database access error or other errors
 	 * @throws MvpException  Application specific exception
 	 */
 	public void updateRemote(HttpServletRequest request)
-			throws IOException, JSONException, SQLException, MvpException {
+			throws IOException, JSONException, Exception {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 		final BufferedReader br = request.getReader();

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -74,13 +73,13 @@ public class LocationGoogleMapBrowser {
 
 	/**
 	 * @param provider Location Provider
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Inject
 	@Optional
 	private void subscribeLocationGoogleMapBrowserUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_GOOGLE_MAP_UPDATE_TOPIC) LocationProvider provider)
-			throws SQLException {
+			throws Exception {
 		textLocationId.setText(Integer.toString(provider.getLocationPid()));
 		final LocationNameProvider lnp = new LocationNameProvider();
 		textLocationName

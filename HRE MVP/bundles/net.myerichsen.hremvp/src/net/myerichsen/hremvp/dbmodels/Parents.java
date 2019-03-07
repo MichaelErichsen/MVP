@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,14 +71,14 @@ public class Parents {
 	private int LanguagePid;
 	private Parents model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -90,7 +89,7 @@ public class Parents {
 		conn.close();
 	}
 
-	public List<Parents> get() throws SQLException {
+	public List<Parents> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -112,7 +111,7 @@ public class Parents {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -142,7 +141,7 @@ public class Parents {
 		return Child;
 	}
 
-	public List<Parents> getFKChild(int key) throws SQLException {
+	public List<Parents> getFKChild(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_CHILD);
 		ps.setInt(1, key);
@@ -165,7 +164,7 @@ public class Parents {
 		return modelList;
 	}
 
-	public List<Parents> getFKParent(int key) throws SQLException {
+	public List<Parents> getFKParent(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PARENT);
 		ps.setInt(1, key);
@@ -251,7 +250,7 @@ public class Parents {
 		return UpdateTstmp;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -363,7 +362,7 @@ public class Parents {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getChild());

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -115,11 +114,11 @@ public class LocationNameViewOld {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public LocationNameViewOld() throws SQLException {
+	public LocationNameViewOld() throws Exception {
 		provider = new LocationNameProvider();
 	}
 
@@ -605,7 +604,7 @@ public class LocationNameViewOld {
 	}
 
 	/**
-	 * @throws SQLException
+	 * @throws Exception
 	 *
 	 */
 	protected void openLocationNameStyleView() {
@@ -631,7 +630,7 @@ public class LocationNameViewOld {
 					break;
 				}
 			}
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -651,14 +650,14 @@ public class LocationNameViewOld {
 
 	/**
 	 * @param tableName
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	@Inject
 	@Optional
 	private void subscribeNameUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_NAME_PID_UPDATE_TOPIC) int locationNamePid)
-			throws SQLException, MvpException {
+			throws Exception {
 		LOGGER.info("Location name pid: " + locationNamePid);
 		get(locationNamePid);
 	}

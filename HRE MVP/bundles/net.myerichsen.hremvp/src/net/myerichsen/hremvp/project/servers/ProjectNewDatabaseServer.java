@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.project.servers;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -339,9 +338,9 @@ public class ProjectNewDatabaseServer {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public ProjectNewDatabaseServer() throws SQLException {
+	public ProjectNewDatabaseServer() throws Exception {
 		super();
 //		conn = HreH2ConnectionPool.getConnection();
 	}
@@ -350,11 +349,11 @@ public class ProjectNewDatabaseServer {
 	 * Provide the data
 	 *
 	 * @param dbName
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws BackingStoreException
 	 */
 	public void provide(String dbName)
-			throws SQLException, BackingStoreException {
+			throws Exception, BackingStoreException {
 		LOGGER.info("Provide the data");
 		HreH2ConnectionPool.createNew(dbName);
 		conn = HreH2ConnectionPool.getConnection();

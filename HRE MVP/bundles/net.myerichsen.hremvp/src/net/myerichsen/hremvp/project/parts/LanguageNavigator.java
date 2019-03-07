@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -36,7 +35,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
 import net.myerichsen.hremvp.project.wizards.NewLanguageWizard;
@@ -174,7 +172,7 @@ public class LanguageNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList());
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -216,7 +214,7 @@ public class LanguageNavigator {
 			eventBroker.post("MESSAGE",
 					"Language " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LANGUAGE_PID_UPDATE_TOPIC, 0);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -260,7 +258,7 @@ public class LanguageNavigator {
 					}
 				}
 			}
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

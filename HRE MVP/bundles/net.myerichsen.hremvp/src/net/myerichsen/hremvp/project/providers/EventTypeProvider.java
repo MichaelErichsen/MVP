@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -32,12 +31,12 @@ public class EventTypeProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
@@ -45,12 +44,12 @@ public class EventTypeProvider implements IHREProvider {
 //	 * Get all rows
 //	 *
 //	 * @return A list of lists of strings with pids and labels
-//	 * @throws SQLException An exception that provides information on a database
+//	 * @throws Exception An exception that provides information on a database
 //	 *                      access error or other errors
 //	 * @throws MvpException Application specific exception
 //	 */
 //	@Override
-//	public List<List<String>> get() throws SQLException, MvpException {
+//	public List<List<String>> get() throws Exception {
 //		return server.get();
 //	}
 
@@ -59,8 +58,7 @@ public class EventTypeProvider implements IHREProvider {
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return server.get();
 	}
 
@@ -68,12 +66,12 @@ public class EventTypeProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setEventTypePid(server.getEventTypePid());
 		setAbbreviation(server.getAbbreviation());
@@ -104,19 +102,20 @@ public class EventTypeProvider implements IHREProvider {
 //	 * @param key
 //	 * @return
 //	 * @throws MvpException
-//	 * @throws SQLException
+//	 * @throws Exception
 //	 */
 //	public List<List<String>> getNameList(int key)
-//			throws SQLException, MvpException {
+//			throws Exception {
 //		return server.getNameList(key);
 //	}
 
 	/**
 	 * @return stringList A list of lists of event type pids, label pids,
 	 *         abbreviations and generic labels
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		return server.getStringList();
 	}
 
@@ -124,10 +123,10 @@ public class EventTypeProvider implements IHREProvider {
 	 * @param labelPid
 	 * @return stringList A list of lists of pid, abbreviation and label in the
 	 *         active language
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int labelPid) throws SQLException {
+	public List<List<String>> getStringList(int labelPid) throws Exception {
 		return server.getStringList(labelPid);
 	}
 
@@ -143,12 +142,12 @@ public class EventTypeProvider implements IHREProvider {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setAbbreviation(Abbreviation);
 		return server.insert();
 	}
@@ -183,12 +182,12 @@ public class EventTypeProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setEventTypePid(EventTypePid);
 		server.setAbbreviation(Abbreviation);
 		server.update();

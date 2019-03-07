@@ -1,11 +1,9 @@
 package net.myerichsen.hremvp.location.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
@@ -27,7 +25,7 @@ public class LocationEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
@@ -37,8 +35,7 @@ public class LocationEventServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -49,7 +46,7 @@ public class LocationEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
@@ -89,11 +86,22 @@ public class LocationEventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -104,7 +112,7 @@ public class LocationEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -115,7 +123,7 @@ public class LocationEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		// TODO Auto-generated method stub
 
 	}

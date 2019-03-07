@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,7 +29,6 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -161,7 +159,7 @@ public class EventTypeView {
 			provider.get();
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 			tableViewer.setInput(provider.getStringList(labelPid));
-		} catch (final SQLException | MvpException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -204,7 +202,7 @@ public class EventTypeView {
 			labelPid = provider.getLabelPid();
 			tableViewer.setInput(provider.getStringList(labelPid));
 			tableViewer.refresh();
-		} catch (final SQLException | MvpException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -269,7 +267,7 @@ public class EventTypeView {
 			}
 			eventBroker.post("MESSAGE",
 					"Event type " + eventTypePid + " has been updated");
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

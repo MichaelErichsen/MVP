@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.providers;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -38,26 +37,25 @@ public class EventNameProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	@Override
-	public List<EventNames> get() throws SQLException {
+	public List<EventNames> get() throws Exception {
 		return server.get();
 	}
 
 	/**
 	 * @param parseInt
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 	}
 
@@ -92,10 +90,21 @@ public class EventNameProvider implements IHREProvider {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		return server.getStringList(key);
 	}
 
@@ -119,7 +128,7 @@ public class EventNameProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setEventNamePid(EventNamePid);
 		server.setEventTypePid(EventTypePid);
 		server.setLabel(Label);
@@ -174,7 +183,7 @@ public class EventNameProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setEventNamePid(EventNamePid);
 		server.setEventTypePid(EventTypePid);
 		server.setLabel(Label);

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -13,9 +12,18 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnViewerEditor;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
+import org.eclipse.jface.viewers.FocusCellHighlighter;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TableViewerEditor;
+import org.eclipse.jface.viewers.TableViewerFocusCellManager;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -30,7 +38,6 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -39,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a sex type with all national labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 6. mar. 2019
  *
  */
 
@@ -136,6 +143,64 @@ public class SexTypeView {
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
+		// FIXME Tabs
+		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				tableViewer, new FocusCellHighlighter(tableViewer) {
+
+				});
+
+		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+				tableViewer) {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy#
+			 * isEditorActivationEvent(org.eclipse.jface.viewers.
+			 * ColumnViewerEditorActivationEvent)
+			 */
+			@Override
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+				final ViewerCell cell = (ViewerCell) event.getSource();
+				LOGGER.info("Column index: " + cell.getColumnIndex());
+				return (cell.getColumnIndex() == 1)
+						|| (cell.getColumnIndex() == 2);
+			}
+
+		};
+
+		TableViewerEditor.create(tableViewer, focusCellManager,
+				editorActivationStrategy,
+				ColumnViewerEditor.TABBING_HORIZONTAL);
+
+		tableViewer.getTable().addKeyListener(new KeyListener() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.
+			 * events.KeyEvent)
+			 */
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				LOGGER.info("Key Pressed");
+				if (e.keyCode == SWT.TAB) {
+					LOGGER.info("Detected TAB key");
+					// set table viewer selection
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				LOGGER.info("Key Released");
+			}
+		});
+
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 		composite.setLayoutData(
@@ -160,7 +225,7 @@ public class SexTypeView {
 			provider.get();
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 			tableViewer.setInput(provider.getStringList(labelPid));
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -196,7 +261,7 @@ public class SexTypeView {
 
 		try {
 			tableViewer.setInput(provider.getStringList(labelPid));
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -261,7 +326,7 @@ public class SexTypeView {
 			}
 			eventBroker.post("MESSAGE",
 					"Sex type " + sexTypePid + " has been updated");
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

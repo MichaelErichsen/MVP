@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.providers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +31,11 @@ public class PersonNameProvider implements IHREProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonNameProvider() throws SQLException {
+	public PersonNameProvider() throws Exception {
 		server = new PersonNameServer();
 		nameList = new ArrayList<>();
 	}
@@ -45,12 +44,12 @@ public class PersonNameProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
@@ -59,8 +58,7 @@ public class PersonNameProvider implements IHREProvider {
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return null;
 	}
 
@@ -68,12 +66,12 @@ public class PersonNameProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setNamePid(key);
 		setPersonPid(server.getPersonPid());
@@ -111,10 +109,10 @@ public class PersonNameProvider implements IHREProvider {
 	 * Get a string of name parts for each name
 	 *
 	 * @return sa A list of name strings
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public String[] getNameStrings() throws SQLException {
+	public String[] getNameStrings() throws Exception {
 		return server.getNameStrings();
 	}
 
@@ -151,20 +149,31 @@ public class PersonNameProvider implements IHREProvider {
 	 *
 	 * @param personPid The persistent PID of the person
 	 * @return s The name
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public String getPrimaryNameString(int personPid) throws SQLException {
+	public String getPrimaryNameString(int personPid) throws Exception {
 		return server.getPrimaryNameString(personPid);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -181,12 +190,12 @@ public class PersonNameProvider implements IHREProvider {
 	 *
 	 * @return
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setNamePid(namePid);
 		server.setPersonPid(personPid);
 		server.setNameType(nameType);
@@ -270,12 +279,12 @@ public class PersonNameProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setNamePid(namePid);
 		server.setPersonPid(personPid);
 		server.setNameType(nameType);

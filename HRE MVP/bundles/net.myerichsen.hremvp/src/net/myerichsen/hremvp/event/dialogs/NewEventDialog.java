@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.dialogs;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -28,7 +27,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.event.providers.EventNameProvider;
@@ -457,7 +455,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdateProvider.get(fromDatePid);
 				eventStringList.add(Integer.toString(fromDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
-			} catch (SQLException | MvpException e) {
+			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("");
@@ -473,7 +471,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdateProvider.get(toDatePid);
 				eventStringList.add(Integer.toString(toDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
-			} catch (SQLException | MvpException e) {
+			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("0");

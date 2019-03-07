@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -37,7 +36,7 @@ public class DictionaryProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
@@ -46,8 +45,7 @@ public class DictionaryProvider implements IHREProvider {
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return server.get();
 	}
 
@@ -57,7 +55,7 @@ public class DictionaryProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setIsoCode(server.getIsoCode());
 		setLabel(server.getLabel());
@@ -101,22 +99,33 @@ public class DictionaryProvider implements IHREProvider {
 	}
 
 	/**
-	 * @throws SQLException
+	 * @throws Exception
 	 *
 	 */
-	public int getNextLabelPid() throws SQLException {
+	public int getNextLabelPid() throws Exception {
 		return server.getNextLabelPid();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
 	 * @param labelPid
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	@Override
 	public List<List<String>> getStringList(int labelPid)
-			throws SQLException, MvpException {
+			throws Exception {
 		return server.getStringList(labelPid);
 
 	}
@@ -127,7 +136,7 @@ public class DictionaryProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setIsoCode(IsoCode);
 		server.setLabel(Label);
 		server.setLabelPid(LabelPid);
@@ -176,7 +185,7 @@ public class DictionaryProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setDictionaryPid(DictionaryPid);
 		server.setIsoCode(IsoCode);
 		server.setLabel(Label);

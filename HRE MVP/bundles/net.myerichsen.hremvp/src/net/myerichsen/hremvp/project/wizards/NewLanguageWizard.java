@@ -1,13 +1,11 @@
 package net.myerichsen.hremvp.project.wizards;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
 
 /**
@@ -74,7 +72,7 @@ public class NewLanguageWizard extends Wizard {
 						net.myerichsen.hremvp.Constants.LANGUAGE_PID_UPDATE_TOPIC,
 						languagePid);
 				return true;
-			} catch (SQLException | MvpException e) {
+			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

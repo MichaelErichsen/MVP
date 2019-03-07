@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -70,11 +69,11 @@ public class LocationNamePartView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 *
 	 */
-	public LocationNamePartView() throws SQLException {
+	public LocationNamePartView() throws Exception {
 		provider = new LocationNamePartProvider();
 	}
 
@@ -222,7 +221,7 @@ public class LocationNamePartView {
 			eventBroker.post("MESSAGE", "Location Name Part " + textId.getText()
 					+ " has been deleted");
 			clear();
-		} catch (SQLException | NumberFormatException | MvpException e) {
+		} catch (Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}
@@ -294,14 +293,14 @@ public class LocationNamePartView {
 
 	/**
 	 * @param locationNamePartPid
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	@Inject
 	@Optional
 	private void subscribeLocationNamePartUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_NAME_PART_PID_UPDATE_TOPIC) int locationNamePartPid)
-			throws SQLException, MvpException {
+			throws Exception {
 		get(locationNamePartPid);
 	}
 

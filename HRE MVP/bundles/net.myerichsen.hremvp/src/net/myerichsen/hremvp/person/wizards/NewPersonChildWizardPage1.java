@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -22,7 +21,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
@@ -215,7 +213,7 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 			} else {
 				textChildDeathDate.setText("");
 			}
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

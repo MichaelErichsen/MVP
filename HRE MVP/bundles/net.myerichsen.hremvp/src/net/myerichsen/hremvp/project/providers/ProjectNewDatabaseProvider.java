@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.providers;
 
-import java.sql.SQLException;
 import java.util.prefs.BackingStoreException;
 
 import net.myerichsen.hremvp.project.servers.ProjectNewDatabaseServer;
@@ -18,9 +17,9 @@ public class ProjectNewDatabaseProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public ProjectNewDatabaseProvider() throws SQLException {
+	public ProjectNewDatabaseProvider() throws Exception {
 		server = new ProjectNewDatabaseServer();
 	}
 
@@ -29,13 +28,13 @@ public class ProjectNewDatabaseProvider {
 	 *
 	 * @param dbName
 	 *
-	 * @throws SQLException          When failing
+	 * @throws Exception          When failing
 	 * @throws BackingStoreException Preferences file access failure
 	 * @throws                       java.util.prefs.BackingStoreException
 	 * @throws                       org.osgi.service.prefs.BackingStoreException
 	 */
 	public void provide(String dbName)
-			throws SQLException, BackingStoreException {
+			throws Exception, BackingStoreException {
 		server.provide(dbName);
 	}
 }

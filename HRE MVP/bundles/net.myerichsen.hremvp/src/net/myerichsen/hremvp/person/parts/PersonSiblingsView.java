@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -57,11 +56,11 @@ public class PersonSiblingsView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonSiblingsView() throws SQLException {
+	public PersonSiblingsView() throws Exception {
 		provider = new PersonProvider();
 	}
 
@@ -103,7 +102,7 @@ public class PersonSiblingsView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getSiblingList(0));
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -154,7 +153,7 @@ public class PersonSiblingsView {
 		LOGGER.fine("Received person id " + personPid);
 		try {
 			tableViewer.setInput(provider.getSiblingList(personPid));
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

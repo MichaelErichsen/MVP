@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +32,10 @@ public class LanguageServer implements IHREServer {
 	/**
 	 * @param key
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		language.delete(key);
 	}
 
@@ -44,12 +43,11 @@ public class LanguageServer implements IHREServer {
 	 * Get all rows
 	 *
 	 * @return A list of lists of Pids, ISO Codes and labels
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	@Override
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -72,7 +70,7 @@ public class LanguageServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		language.get();
 	}
 
@@ -99,9 +97,10 @@ public class LanguageServer implements IHREServer {
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getStringList() throws SQLException {
+	@Override
+	public List<List<String>> getStringList() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		final List<Languages> list = language.get();
@@ -119,11 +118,11 @@ public class LanguageServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -137,10 +136,10 @@ public class LanguageServer implements IHREServer {
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		language.setIsocode(Isocode);
 		language.setLabel(Label);
 		language.setTableId(7);
@@ -181,7 +180,7 @@ public class LanguageServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		language.setLanguagePid(LanguagePid);
 		language.setIsocode(Isocode);
 		language.setLabel(Label);

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,7 +27,6 @@ import org.eclipse.swt.widgets.Text;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
@@ -131,7 +129,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hdatePid);
 				textToDate.setText(hdp.getDate().toString());
-			} catch (SQLException | MvpException e) {
+			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}
@@ -421,7 +419,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				}
 			}
 			comboLanguage.select(index);
-		} catch (SQLException | MvpException e1) {
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -430,7 +428,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 			// Populate event type combo box
 			eventTypeList = new EventTypeProvider().getStringList();
 			comboViewerEventType.setInput(eventTypeList);
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

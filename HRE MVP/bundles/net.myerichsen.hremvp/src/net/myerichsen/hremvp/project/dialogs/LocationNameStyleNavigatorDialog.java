@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.dialogs;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -60,7 +59,7 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 		super(parentShell);
 		try {
 			provider = new LocationNameStyleProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

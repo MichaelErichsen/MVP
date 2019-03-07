@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.wizards;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -41,10 +40,10 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
-	private IPreferenceStore store = new ScopedPreferenceStore(
-			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final IEclipseContext context;
 
 	private ComboViewer comboViewerLocationNameStyles;
@@ -91,7 +90,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		lblLocationNameStyle.setText("Location Name Style");
 
 		comboViewerLocationNameStyles = new ComboViewer(container, SWT.NONE);
-		Combo comboLocationNameStyles = comboViewerLocationNameStyles
+		final Combo comboLocationNameStyles = comboViewerLocationNameStyles
 				.getCombo();
 		comboLocationNameStyles.addSelectionListener(new SelectionAdapter() {
 
@@ -131,7 +130,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 			}
 		});
 
-		Composite compositeFrom = new Composite(container, SWT.BORDER);
+		final Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayout(new GridLayout(2, false));
 		compositeFrom.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -155,7 +154,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		compositeFromButtons.setSize(137, 31);
 		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -179,7 +178,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -199,7 +198,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -208,7 +207,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		});
 		btnClearFrom.setText("Clear");
 
-		Composite compositeTo = new Composite(container, SWT.BORDER);
+		final Composite compositeTo = new Composite(container, SWT.BORDER);
 		compositeTo.setLayout(new GridLayout(2, false));
 		compositeTo.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -232,7 +231,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		compositeToButtons.setSize(211, 31);
 		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -241,7 +240,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		});
 		btnCopyFromTo.setText("Copy From");
 
-		Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -265,7 +264,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		});
 		btnNewTo.setText("New");
 
-		Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -285,7 +284,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -309,7 +308,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 		try {
 			// Populate location name style combo box
-			List<List<String>> styleList = new LocationNameStyleProvider()
+			final List<List<String>> styleList = new LocationNameStyleProvider()
 					.getStringList();
 			comboViewerLocationNameStyles.setInput(styleList);
 			final int llsSize = styleList.size();
@@ -323,7 +322,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 			}
 			comboLocationNameStyles.select(index);
 
-		} catch (SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -336,6 +335,14 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	public Button getBtnPrimaryLocationName() {
 		return btnPrimaryLocationName;
+	}
+
+	/**
+	 * @return
+	 */
+	public Label getComboLocationNameStyles() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -385,13 +392,5 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	public void setToDatePid(int toDatePid) {
 		this.toDatePid = toDatePid;
-	}
-
-	/**
-	 * @return
-	 */
-	public Label getComboLocationNameStyles() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

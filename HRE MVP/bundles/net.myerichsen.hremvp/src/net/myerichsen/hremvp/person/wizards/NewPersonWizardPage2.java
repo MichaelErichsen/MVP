@@ -167,7 +167,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 //			PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
 //			pnsp.get(defaultStyle);
 //			textPersonNameStyle.setText(pnsp.getLabel());
-//		} catch (SQLException | MvpException e1) {
+//		} catch (Exception e1) {
 //			LOGGER.severe(e1.getMessage());
 //			e1.printStackTrace();
 //		}

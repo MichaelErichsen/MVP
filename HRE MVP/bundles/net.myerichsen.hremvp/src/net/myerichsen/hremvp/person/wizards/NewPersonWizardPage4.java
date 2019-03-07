@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -22,7 +21,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
@@ -764,7 +762,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textChildBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textChildDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -787,7 +785,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textFatherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textFatherDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -810,7 +808,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textMotherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textMotherDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -833,7 +831,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textPartnerBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textPartnerDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

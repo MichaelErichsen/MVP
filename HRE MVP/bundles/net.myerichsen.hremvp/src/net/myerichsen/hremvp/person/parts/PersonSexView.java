@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -157,12 +156,12 @@ public class PersonSexView {
 		textIsoCode.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Composite composite = new Composite(parent, SWT.NONE);
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -188,7 +187,7 @@ public class PersonSexView {
 		try {
 			sexesProvider.get(key);
 			provider = new PersonProvider();
-			List<String> sexesList = provider.getSexesList(key).get(0);
+			final List<String> sexesList = provider.getSexesList(key).get(0);
 
 			textId.setText(sexesList.get(0));
 			textPersonPid.setText(sexesList.get(1));
@@ -203,7 +202,7 @@ public class PersonSexView {
 
 			eventBroker.post("MESSAGE",
 					"Name " + textId.getText() + " has been fetched");
-		} catch (final SQLException | MvpException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -257,7 +256,7 @@ public class PersonSexView {
 			sexesProvider
 					.setSexTypePid(Integer.parseInt(textSexTypePid.getText()));
 			sexesProvider.update();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -9,8 +8,9 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -20,11 +20,14 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,14 +35,17 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 
@@ -47,7 +53,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. feb. 2019
+ * @version 7. mar. 2019
  *
  */
 public class LocationNavigator {
@@ -64,6 +70,7 @@ public class LocationNavigator {
 
 	private LocationProvider provider;
 	private TableViewer tableViewer;
+	private NavigatorFilter navigatorFilter;
 
 	/**
 	 * Constructor
@@ -72,6 +79,7 @@ public class LocationNavigator {
 	public LocationNavigator() {
 		try {
 			provider = new LocationProvider();
+			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -82,12 +90,12 @@ public class LocationNavigator {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent
-	 * @param context
+	 * @param parent  The parent composite
+	 * @param context The Eclipse context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
-		parent.setLayout(new GridLayout(1, false));
+		parent.setLayout(new GridLayout(2, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
@@ -100,7 +108,7 @@ public class LocationNavigator {
 
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -139,30 +147,29 @@ public class LocationNavigator {
 		});
 		mntmDeleteSelectedLocation.setText("Delete selected location...");
 
-		// FIXME Change to Jface
-		List<String> stringList;
+		final Label lblNameFilter = new Label(parent, SWT.NONE);
+		lblNameFilter.setText("Name Filter");
 
-		try {
-			final List<List<String>> lls = provider.get();
-			table.removeAll();
-			TableItem item;
+		final Text textNameFilter = new Text(parent, SWT.BORDER);
+		textNameFilter.addKeyListener(new KeyAdapter() {
 
-			for (int i = 0; i < lls.size(); i++) {
-				stringList = lls.get(i);
-
-				if (stringList.get(1).trim().length() > 0) {
-
-					item = new TableItem(table, SWT.NONE);
-
-					for (int j = 0; j < stringList.size(); j++) {
-						item.setText(j, stringList.get(j).trim());
-					}
-				}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				navigatorFilter.setSearchText(textNameFilter.getText());
+				LOGGER.fine("Filter string: " + textNameFilter.getText());
+				tableViewer.refresh();
 			}
-		} catch (final Exception e1) {
-			e1.printStackTrace();
-			eventBroker.post("MESSAGE", e1.getMessage());
+		});
+
+		textNameFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList());
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
+			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 	}
 
@@ -203,7 +210,7 @@ public class LocationNavigator {
 			provider.delete(locationPid);
 			eventBroker.post("MESSAGE",
 					"Location " + primaryName + " has been deleted");
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -263,8 +270,33 @@ public class LocationNavigator {
 		LOGGER.info("Location Pid: " + locationPid);
 	}
 
-	@Focus
-	public void setFocus() {
-	}
+	/**
+	 * @param personPid
+	 */
+	@Inject
+	@Optional
+	private void subscribeLocationPidUpdateTopic(
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
+		LOGGER.fine("Received person id " + locationPid);
 
+		if (locationPid > 0) {
+			try {
+				tableViewer.setInput(provider.getStringList());
+				tableViewer.refresh();
+
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(locationPid);
+
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
+				}
+			} catch (Exception e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -15,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
 
 /**
@@ -77,7 +75,7 @@ public class NewPersonWizardPage3 extends WizardPage {
 						new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				textFieldList.add(text);
 			}
-		} catch (final SQLException | MvpException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

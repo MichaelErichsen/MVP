@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.dialogs;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -61,7 +60,7 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		super(parentShell);
 		try {
 			provider = new PersonNameStyleProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -140,7 +139,7 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList());
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

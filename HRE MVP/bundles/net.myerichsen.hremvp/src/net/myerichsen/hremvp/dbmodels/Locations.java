@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,14 +78,14 @@ public class Locations {
 	private int ToDatePid;
 	private Locations model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -97,7 +96,7 @@ public class Locations {
 		conn.close();
 	}
 
-	public List<Locations> get() throws SQLException {
+	public List<Locations> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -120,7 +119,7 @@ public class Locations {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -142,7 +141,7 @@ public class Locations {
 		conn.close();
 	}
 
-	public List<Locations> getFKFromDatePid(int key) throws SQLException {
+	public List<Locations> getFKFromDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
@@ -166,7 +165,7 @@ public class Locations {
 		return modelList;
 	}
 
-	public List<Locations> getFKToDatePid(int key) throws SQLException {
+	public List<Locations> getFKToDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
@@ -271,7 +270,7 @@ public class Locations {
 		return ZCoordinate;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -404,7 +403,7 @@ public class Locations {
 		this.ZCoordinate = ZCoordinate;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setBoolean(1, isPrimaryLocation());

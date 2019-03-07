@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.location.parts;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -100,11 +99,11 @@ public class LocationView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public LocationView() throws SQLException {
+	public LocationView() throws Exception {
 		provider = new LocationProvider();
 	}
 

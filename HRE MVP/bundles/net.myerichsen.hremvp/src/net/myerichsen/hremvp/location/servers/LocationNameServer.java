@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -52,38 +51,28 @@ public class LocationNameServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		name.delete(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		name.get(key);
 		setFromDatePid1(name.getFromDatePid());
 		setLocationNamePid(key);
@@ -156,10 +145,10 @@ public class LocationNameServer implements IHREServer {
 	 * Get a string of name parts for each name
 	 *
 	 * @return sa An array of strings
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public String[] getNameStrings() throws SQLException {
+	public String[] getNameStrings() throws Exception {
 		StringBuilder sb;
 		LocationNames aName;
 
@@ -209,10 +198,10 @@ public class LocationNameServer implements IHREServer {
 	 *
 	 * @param locationPid The persistent ID of the location
 	 * @return s The primary name
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public String getPrimaryNameString(int locationPid) throws SQLException {
+	public String getPrimaryNameString(int locationPid) throws Exception {
 		final StringBuilder sb = new StringBuilder();
 		LocationNames aName;
 
@@ -246,7 +235,18 @@ public class LocationNameServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
@@ -267,12 +267,12 @@ public class LocationNameServer implements IHREServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		name.setFromDatePid(fromDatePid);
 		name.setLocationNamePid(locationNamePid);
 		name.setLocationNameStylePid(locationNameStylePid);
@@ -370,12 +370,12 @@ public class LocationNameServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		name.setFromDatePid(fromDatePid);
 		name.setLocationNamePid(locationNamePid);
 		name.setLocationNameStylePid(locationNameStylePid);
@@ -384,6 +384,14 @@ public class LocationNameServer implements IHREServer {
 		name.setToDatePid(toDatePid);
 		name.setPreposition(preposition);
 		name.update();
+	}
+
+	/**
+	 * @return
+	 */
+	public List<?> get() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

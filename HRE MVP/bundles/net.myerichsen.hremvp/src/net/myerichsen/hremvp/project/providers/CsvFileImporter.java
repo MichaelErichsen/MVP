@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.providers;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
@@ -38,7 +37,7 @@ public class CsvFileImporter {
 				LOGGER.info(rowCount + " rows has been imported from "
 						+ csvFileNames[i]);
 
-			} catch (final SQLException e1) {
+			} catch (final Exception e1) {
 				e1.printStackTrace();
 				LOGGER.severe(e1.getMessage());
 			}

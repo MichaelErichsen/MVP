@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -70,10 +69,10 @@ public class PersonNameMapView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors.
 	 */
-	public PersonNameMapView() throws SQLException {
+	public PersonNameMapView() throws Exception {
 		provider = new PersonNameMapProvider();
 	}
 
@@ -276,7 +275,7 @@ public class PersonNameMapView {
 			provider.insert();
 			eventBroker.post("MESSAGE",
 					"Name Map " + textId.getText() + " has been inserted");
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -292,13 +291,13 @@ public class PersonNameMapView {
 
 	/**
 	 * @param nameMapPid
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Inject
 	@Optional
 	private void subscribeNameMapUpdateTopic(
 			@UIEventTopic(Constants.PERSON_NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid)
-			throws SQLException {
+			throws Exception {
 		get(nameMapPid);
 	}
 
@@ -314,7 +313,7 @@ public class PersonNameMapView {
 			provider.update();
 			eventBroker.post("MESSAGE",
 					"Name Map " + textId.getText() + " has been updated");
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());

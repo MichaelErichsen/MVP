@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.servers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -48,37 +47,27 @@ public class SexServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		sex.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		return null;
 	}
 
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		sex.get(key);
 		setSexesPid(sex.getSexesPid());
 		setPersonPid(sex.getPersonPid());
@@ -89,8 +78,9 @@ public class SexServer implements IHREServer {
 
 		sexType.get(sex.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
-		int labelPid = sexType.getLabelPid();
-		List<Dictionary> fkLabelPid = new Dictionary().getFKLabelPid(labelPid);
+		final int labelPid = sexType.getLabelPid();
+		final List<Dictionary> fkLabelPid = new Dictionary()
+				.getFKLabelPid(labelPid);
 		dictionary = fkLabelPid.get(0);
 
 		setSexTypeLabel(dictionary.getLabel());
@@ -162,7 +152,18 @@ public class SexServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
@@ -182,12 +183,12 @@ public class SexServer implements IHREServer {
 	 *
 	 * @return
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		sex.setSexesPid(sexesPid);
 		sex.setPersonPid(personPid);
 		sex.setSexTypePid(sexTypePid);
@@ -284,12 +285,12 @@ public class SexServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		sex.setSexesPid(sexesPid);
 		sex.setPersonPid(personPid);
 		sex.setSexTypePid(sexTypePid);

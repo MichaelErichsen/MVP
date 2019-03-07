@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,14 +91,14 @@ public class Partners {
 	private int LanguagePid;
 	private Partners model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -110,7 +109,7 @@ public class Partners {
 		conn.close();
 	}
 
-	public List<Partners> get() throws SQLException {
+	public List<Partners> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -134,7 +133,7 @@ public class Partners {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -157,7 +156,7 @@ public class Partners {
 		conn.close();
 	}
 
-	public List<Partners> getFKFromDatePid(int key) throws SQLException {
+	public List<Partners> getFKFromDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
@@ -182,7 +181,7 @@ public class Partners {
 		return modelList;
 	}
 
-	public List<Partners> getFKPartner1(int key) throws SQLException {
+	public List<Partners> getFKPartner1(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PARTNER1);
 		ps.setInt(1, key);
@@ -207,7 +206,7 @@ public class Partners {
 		return modelList;
 	}
 
-	public List<Partners> getFKPartner2(int key) throws SQLException {
+	public List<Partners> getFKPartner2(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PARTNER2);
 		ps.setInt(1, key);
@@ -232,7 +231,7 @@ public class Partners {
 		return modelList;
 	}
 
-	public List<Partners> getFKToDatePid(int key) throws SQLException {
+	public List<Partners> getFKToDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
@@ -347,7 +346,7 @@ public class Partners {
 		return UpdateTstmp;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -487,7 +486,7 @@ public class Partners {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getPartner1());

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -38,7 +37,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
@@ -81,7 +79,7 @@ public class PersonNavigator {
 	 * Create contents of the view part
 	 *
 	 * @param parent  The parent composite
-	 * @param context
+	 * @param context The Eclipse context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -178,7 +176,7 @@ public class PersonNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPersonList());
-		} catch (SQLException | MvpException e1) {
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -219,7 +217,7 @@ public class PersonNavigator {
 			eventBroker.post("MESSAGE",
 					"Person " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -271,7 +269,7 @@ public class PersonNavigator {
 						break;
 					}
 				}
-			} catch (SQLException | MvpException e) {
+			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

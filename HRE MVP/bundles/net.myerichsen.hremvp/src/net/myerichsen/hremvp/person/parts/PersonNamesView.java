@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -39,7 +38,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonNameWizard;
@@ -77,7 +75,7 @@ public class PersonNamesView {
 	public PersonNamesView() {
 		try {
 			provider = new PersonProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -187,7 +185,7 @@ public class PersonNamesView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList(personPid));
-		} catch (SQLException | MvpException e1) {
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -228,7 +226,7 @@ public class PersonNamesView {
 			eventBroker.post("MESSAGE",
 					"Name " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, 0);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -275,7 +273,7 @@ public class PersonNamesView {
 		try {
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -294,7 +292,7 @@ public class PersonNamesView {
 			textId.setText(Integer.toString(personPid));
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

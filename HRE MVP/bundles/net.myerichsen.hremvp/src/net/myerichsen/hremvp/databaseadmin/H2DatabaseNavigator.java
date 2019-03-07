@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.databaseadmin;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -163,7 +162,7 @@ public class H2DatabaseNavigator {
 				item.setText(0, model.getTableName());
 				item.setText(1, Long.toString(model.getRowCount()));
 			}
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}

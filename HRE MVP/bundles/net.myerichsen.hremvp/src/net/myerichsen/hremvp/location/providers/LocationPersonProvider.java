@@ -1,10 +1,8 @@
 package net.myerichsen.hremvp.location.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.location.servers.LocationPersonServer;
 
 /**
@@ -20,11 +18,11 @@ public class LocationPersonProvider implements IHREProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public LocationPersonProvider() throws SQLException {
+	public LocationPersonProvider() throws Exception {
 		server = new LocationPersonServer();
 	}
 
@@ -34,7 +32,7 @@ public class LocationPersonProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
@@ -43,8 +41,7 @@ public class LocationPersonProvider implements IHREProvider {
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return server.get();
 	}
 
@@ -54,7 +51,7 @@ public class LocationPersonProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 	}
 
@@ -68,11 +65,22 @@ public class LocationPersonProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		return server.getStringList(key);
 	}
 
@@ -82,7 +90,7 @@ public class LocationPersonProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -93,7 +101,7 @@ public class LocationPersonProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		// TODO Auto-generated method stub
 
 	}

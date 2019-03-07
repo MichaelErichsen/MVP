@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.servers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -39,13 +38,13 @@ public class LocationNamePartServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		part.delete(key);
 	}
 
@@ -54,8 +53,7 @@ public class LocationNamePartServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -64,13 +62,13 @@ public class LocationNamePartServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		part.get(key);
 		setLabel(part.getLabel());
 		setLocationNamePartPid(part.getLocationNamePartPid());
@@ -151,11 +149,22 @@ public class LocationNamePartServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -166,12 +175,12 @@ public class LocationNamePartServer implements IHREServer {
 	 *
 	 * @return int Persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		part.setLabel(label);
 		part.setLocationNamePartPid(locationNamePartPid);
 		part.setLocationNamePid(locationNamePid);
@@ -247,12 +256,12 @@ public class LocationNamePartServer implements IHREServer {
 	 * Update a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.LocationNameMaps}
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		part.setLabel(label);
 		part.setLocationNamePartPid(locationNamePartPid);
 		part.setLocationNamePid(locationNamePid);

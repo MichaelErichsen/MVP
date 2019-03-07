@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class DictionaryServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		dictionary.delete(key);
 	}
 
@@ -49,8 +48,7 @@ public class DictionaryServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return null;
 	}
 
@@ -60,7 +58,7 @@ public class DictionaryServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		dictionary.get(key);
 		setIsoCode(dictionary.getIsoCode());
 		setLabel(dictionary.getLabel());
@@ -105,21 +103,32 @@ public class DictionaryServer implements IHREServer {
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public int getNextLabelPid() throws SQLException {
+	public int getNextLabelPid() throws Exception {
 		return dictionary.getNextLabelPid();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
 	 * @param labelPid
 	 * @return List A list of lists of iso code, label text and dictionary pid
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	@Override
 	public List<List<String>> getStringList(int labelPid)
-			throws SQLException, MvpException {
+			throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -144,7 +153,7 @@ public class DictionaryServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		dictionary.setIsoCode(IsoCode);
 		dictionary.setLabel(Label);
 		dictionary.setLabelPid(LabelPid);
@@ -194,7 +203,7 @@ public class DictionaryServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		dictionary.setDictionaryPid(DictionaryPid);
 		dictionary.setIsoCode(IsoCode);
 		dictionary.setLabel(Label);

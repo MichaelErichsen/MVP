@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -78,7 +77,7 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 						new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				textFieldList.add(text);
 			}
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

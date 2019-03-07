@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -56,7 +55,7 @@ public class PersonView {
 	private int birthDatePid;
 	private int deathDatePid;
 
-	public PersonView() throws SQLException {
+	public PersonView() throws Exception {
 		provider = new PersonProvider();
 	}
 
@@ -446,13 +445,13 @@ public class PersonView {
 
 	/**
 	 * @param personPid
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid)
-			throws SQLException {
+			throws Exception {
 		LOGGER.info("Receiving person pid " + personPid);
 		this.personPid = personPid;
 		get(personPid);

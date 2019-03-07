@@ -1,10 +1,8 @@
 package net.myerichsen.hremvp.person.servers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Partners;
 
 /**
@@ -37,18 +35,8 @@ public class PartnerServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		return null;
 	}
 
 	/*
@@ -57,7 +45,7 @@ public class PartnerServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 
 	}
 
@@ -98,11 +86,22 @@ public class PartnerServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -120,7 +119,7 @@ public class PartnerServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		// FIXME SEVERE: Referential integrity constraint violation:
 		// "PERSONS_PARTNERS_FK: PUBLIC.PARTNERS FOREIGN KEY(PARTNER1)
 		// REFERENCES PUBLIC.PERSONS(PERSON_PID) (0)"; SQL statement:
@@ -199,7 +198,7 @@ public class PartnerServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 
 	}
 }

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.servers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -33,9 +32,9 @@ public class PersonEventServer implements IHREServer {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public boolean areMoreEvents(int key) throws SQLException {
+	public boolean areMoreEvents(int key) throws Exception {
 		final List<PersonEvents> peList = personEvent.getFKEventPid(key);
 		if (peList.size() > 0) {
 			return true;
@@ -46,21 +45,11 @@ public class PersonEventServer implements IHREServer {
 	/**
 	 * @param key
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		personEvent.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		return null;
 	}
 
 	/*
@@ -69,7 +58,7 @@ public class PersonEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 
 	}
 
@@ -103,21 +92,32 @@ public class PersonEventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws SQLException {
+	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Override
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		personEvent.setEventPid(EventPid);
 		personEvent.setPersonPid(PersonPid);
 		personEvent.setPrimaryEvent(isPrimaryEvent());
@@ -188,7 +188,7 @@ public class PersonEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 
 	}
 

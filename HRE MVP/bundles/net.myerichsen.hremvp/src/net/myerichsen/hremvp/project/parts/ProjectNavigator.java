@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -61,7 +60,6 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.project.dialogs.ProjectNameSummaryDialog;
 import net.myerichsen.hremvp.project.models.ProjectList;
@@ -143,7 +141,7 @@ public class ProjectNavigator {
 			eventBroker.post("MESSAGE",
 					"Project database " + dbName + " has been backed up to "
 							+ path + "\\" + dbName + ".zip");
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -151,9 +149,9 @@ public class ProjectNavigator {
 
 	/**
 	 * @param dbName
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	private void closeDbIfActive(final String dbName) throws SQLException {
+	private void closeDbIfActive(final String dbName) throws Exception {
 		final String activeName = store.getString("DBNAME");
 
 		if (activeName.equals(dbName)) {
@@ -394,7 +392,7 @@ public class ProjectNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.get());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -934,7 +932,7 @@ public class ProjectNavigator {
 		try {
 			tableViewer.setInput(provider.get());
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
