@@ -13,9 +13,9 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
 import net.myerichsen.hremvp.location.providers.LocationNameProvider;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage3;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage1;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage2;
-import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage3;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
 
 /**
@@ -30,9 +30,9 @@ public class NewEventWizard extends Wizard {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private final IEclipseContext context;
-	private NewLocationWizardPage1 page1;
-	private NewLocationWizardPage2 page2;
-	private NewLocationWizardPage3 page3;
+	private NewLocationWizardPage3 page1;
+	private NewLocationWizardPage1 page2;
+	private NewLocationWizardPage2 page3;
 	private NewLocationWizardPage4 page4;
 	private int locationNameStyle = 0;
 	private String locationName;
@@ -56,7 +56,7 @@ public class NewEventWizard extends Wizard {
 	 *
 	 */
 	public void addPage3() {
-		page3 = new NewLocationWizardPage3(context);
+		page3 = new NewLocationWizardPage2(context);
 		addPage(page3);
 	}
 
@@ -75,9 +75,9 @@ public class NewEventWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewLocationWizardPage1(context);
+		page1 = new NewLocationWizardPage3(context);
 		addPage(page1);
-		page2 = new NewLocationWizardPage2(context);
+		page2 = new NewLocationWizardPage1(context);
 		addPage(page2);
 	}
 
@@ -98,21 +98,21 @@ public class NewEventWizard extends Wizard {
 	/**
 	 * @return the page1
 	 */
-	public NewLocationWizardPage1 getPage1() {
+	public NewLocationWizardPage3 getPage1() {
 		return page1;
 	}
 
 	/**
 	 * @return the page2
 	 */
-	public NewLocationWizardPage2 getPage2() {
+	public NewLocationWizardPage1 getPage2() {
 		return page2;
 	}
 
 	/**
 	 * @return the page3
 	 */
-	public NewLocationWizardPage3 getPage3() {
+	public NewLocationWizardPage2 getPage3() {
 		return page3;
 	}
 

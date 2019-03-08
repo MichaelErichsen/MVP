@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Composite;
  * Location summary wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. okt. 2018
+ * @version 8. mar. 2019
  *
  */
 public class NewLocationWizardPage4 extends WizardPage {
@@ -22,7 +22,7 @@ public class NewLocationWizardPage4 extends WizardPage {
 	public NewLocationWizardPage4() {
 		super("wizardPage");
 		setTitle("Confirmation");
-		setDescription("Insert the new location");
+		setDescription("Confirm the new location");
 	}
 
 	/*
@@ -44,9 +44,9 @@ public class NewLocationWizardPage4 extends WizardPage {
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		browser.setUrl(
 				"http://www.google.com/maps/@?api=1&map_action=map&center="
-						+ wizard.getPage1().getTextXCoordinate().getText()
+						+ wizard.getPage3().getTextXCoordinate().getText()
 						+ ", "
-						+ wizard.getPage1().getTextYCoordinate().getText()
+						+ wizard.getPage3().getTextYCoordinate().getText()
 						+ "&basemap=terrain");
 
 	}

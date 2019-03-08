@@ -34,7 +34,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors.
 	 * @throws MvpException Application specific exception
 	 */
@@ -49,8 +49,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 * @throws Exception
 	 * @throws MvpException
 	 */
-	public void deleteLocationNameStylePid(int key)
-			throws Exception {
+	public void deleteLocationNameStylePid(int key) throws Exception {
 		server.deleteLocationNameStylePid(key);
 	}
 
@@ -67,7 +66,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors.
 	 * @throws MvpException Application specific exception
 	 */
@@ -121,7 +120,8 @@ public class LocationNameMapProvider implements IHREProvider {
 
 	/**
 	 * @param locationNameStylePid
-	 * @return
+	 * @return lls A list of lists of location name map pid, label pid, part no,
+	 *         label and dictionary pid
 	 * @throws Exception
 	 */
 	@Override
@@ -134,7 +134,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 * Insert a row
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors.
+	 *                   access error or other errors.
 	 *
 	 */
 	@Override
@@ -178,7 +178,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 * Update a row
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors.
+	 *                   access error or other errors.
 	 *
 	 */
 	@Override

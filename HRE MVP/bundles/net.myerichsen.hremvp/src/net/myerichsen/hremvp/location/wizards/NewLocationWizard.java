@@ -30,7 +30,7 @@ public class NewLocationWizard extends Wizard {
 	private NewLocationWizardPage2 page2;
 	private NewLocationWizardPage3 page3;
 	private NewLocationWizardPage4 page4;
-	private int locationNameStyle = 0;
+	private int locationNameStylePid = 0;
 	private String locationName;
 
 	/**
@@ -43,6 +43,14 @@ public class NewLocationWizard extends Wizard {
 		setWindowTitle("New Location");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
+	}
+
+	/**
+	 *
+	 */
+	public void addPage2() {
+		page2 = new NewLocationWizardPage2(context);
+		addPage(page2);
 	}
 
 	/**
@@ -70,8 +78,8 @@ public class NewLocationWizard extends Wizard {
 	public void addPages() {
 		page1 = new NewLocationWizardPage1(context);
 		addPage(page1);
-		page2 = new NewLocationWizardPage2(context);
-		addPage(page2);
+//		page2 = new NewLocationWizardPage2(context);
+//		addPage(page2);
 	}
 
 	/**
@@ -84,8 +92,8 @@ public class NewLocationWizard extends Wizard {
 	/**
 	 * @return the locationNameStyle
 	 */
-	public int getLocationNameStyle() {
-		return locationNameStyle;
+	public int getLocationNameStylePid() {
+		return locationNameStylePid;
 	}
 
 	/**
@@ -127,37 +135,37 @@ public class NewLocationWizard extends Wizard {
 
 		try {
 			final LocationProvider lp = new LocationProvider();
-			lp.setFromDatePid(page1.getFromDatePid());
-			lp.setToDatePid(page1.getFromDatePid());
+			lp.setFromDatePid(page3.getFromDatePid());
+			lp.setToDatePid(page3.getFromDatePid());
 			lp.setxCoordinate(
-					new BigDecimal(page1.getTextXCoordinate().getText()));
+					new BigDecimal(page3.getTextXCoordinate().getText()));
 			lp.setyCoordinate(
-					new BigDecimal(page1.getTextYCoordinate().getText()));
+					new BigDecimal(page3.getTextYCoordinate().getText()));
 			lp.setzCoordinate(
-					new BigDecimal(page1.getTextZCoordinate().getText()));
+					new BigDecimal(page3.getTextZCoordinate().getText()));
 			lp.setPrimaryLocation(
-					page1.getBtnCheckButtonPrimary().getSelection());
+					page3.getBtnCheckButtonPrimary().getSelection());
 			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 
 			final LocationNameProvider lnp = new LocationNameProvider();
 			lnp.setLocationPid(locationPid);
-			lnp.setFromDatePid(page2.getFromDatePid());
-			lnp.setToDatePid(page2.getFromDatePid());
+			lnp.setFromDatePid(page1.getFromDatePid());
+			lnp.setToDatePid(page1.getFromDatePid());
 			lnp.setPrimaryLocationName(true);
 
-			final String s = page2.getComboLocationNameStyles().getText();
+			final String s = page1.getComboLocationNameStyles().getText();
 			final String[] sa = s.split(",");
 			lnp.setLocationNameStylePid(Integer.parseInt(sa[0]));
 
 			lnp.setPrimaryLocationName(
-					page2.getBtnPrimaryLocationName().getSelection());
-			lnp.setPreposition(page2.getTextPreposition().getText());
+					page1.getBtnPrimaryLocationName().getSelection());
+			lnp.setPreposition(page1.getTextPreposition().getText());
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
-			final List<Label> labelList = page3.getLabelList();
-			final List<Text> textList = page3.getTextList();
+			final List<Label> labelList = page2.getLabelList();
+			final List<Text> textList = page2.getTextList();
 
 			for (int i = 0; i < labelList.size(); i++) {
 				final LocationNamePartProvider lnpp = new LocationNamePartProvider();
@@ -190,8 +198,8 @@ public class NewLocationWizard extends Wizard {
 	/**
 	 * @param locationNameStyle the locationNameStyle to set
 	 */
-	public void setLocationNameStyle(int locationNameStyle) {
-		this.locationNameStyle = locationNameStyle;
+	public void setLocationNameStylePid(int locationNameStylePid) {
+		this.locationNameStylePid = locationNameStylePid;
 	}
 
 }
