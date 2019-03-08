@@ -55,10 +55,9 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. mar. 2019
+ * @version 8. mar. 2019
  *
  */
-// FIXME Reopens blank Event View
 public class EventNavigator {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -257,17 +256,20 @@ public class EventNavigator {
 		MPart part = MBasicFactory.INSTANCE.createPart();
 
 		boolean found = false;
-// FIXME Opening a second window titled "Event"
 		for (final MPartStack mPartStack : stacks) {
 			final List<MStackElement> a = mPartStack.getChildren();
 
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-				if (part.getContributionURI().equals(contributionURI)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					found = true;
-					break;
+			try {
+				for (int i = 0; i < a.size(); i++) {
+					part = (MPart) a.get(i);
+					if (part.getContributionURI().equals(contributionURI)) {
+						partService.showPart(part, PartState.ACTIVATE);
+						found = true;
+						break;
+					}
 				}
+			} catch (Exception e) {
+				LOGGER.info(e.getMessage());
 			}
 		}
 

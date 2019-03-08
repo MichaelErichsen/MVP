@@ -158,41 +158,10 @@ public class SexTypeView {
 
 		TableViewerEditor.create(tableViewer, focusCellManager,
 				editorActivationStrategy,
-				ColumnViewerEditor.TABBING_HORIZONTAL);
-
-//		tableViewer.getTable().addKeyListener(new KeyListener() {
-//
-//			/*
-//			 * (non-Javadoc)
-//			 *
-//			 * @see
-//			 * org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.
-//			 * events.KeyEvent)
-//			 */
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//
-//			}
-//
-//			/*
-//			 * (non-Javadoc)
-//			 * 
-//			 * @see
-//			 * org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.
-//			 * events.KeyEvent)
-//			 */
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				if (e.keyCode == SWT.TAB) {
-//					int itemCount = tableViewer.getTable().getItemCount();
-//					int selectionIndex = tableViewer.getTable()
-//							.getSelectionIndex();
-//					if (selectionIndex < itemCount - 1) {
-//						tableViewer.getTable().setSelection(selectionIndex + 1);
-//					}
-//				}
-//			}
-//		});
+				ColumnViewerEditor.TABBING_HORIZONTAL
+						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+						| ColumnViewerEditor.TABBING_VERTICAL
+						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
 
 		tableViewer.getTable().addTraverseListener(new TraverseListener() {
 			/*
@@ -205,7 +174,7 @@ public class SexTypeView {
 			@Override
 			public void keyTraversed(TraverseEvent e) {
 				if (e.keyCode == SWT.TAB) {
-					LOGGER.info("Traversed " + e.keyCode);
+					LOGGER.fine("Traversed " + e.keyCode);
 
 					int itemCount = tableViewer.getTable().getItemCount();
 					int selectionIndex = tableViewer.getTable()
@@ -276,6 +245,7 @@ public class SexTypeView {
 			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
 		sexTypePid = Integer.parseInt(ls.get(0));
 		textSexTypePid.setText(ls.get(0));
+		// FIXME java.lang.NumberFormatException: For input string: "ENUS"
 		labelPid = Integer.parseInt(ls.get(1));
 		textLabelPid.setText(ls.get(1));
 		textAbbreviation.setText(ls.get(2));
