@@ -15,17 +15,16 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
-import org.eclipse.jface.viewers.FocusCellHighlighter;
+import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.jface.viewers.TableViewerFocusCellManager;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -43,10 +42,10 @@ import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display a sex type with all national labels
+ * Display a sex type with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 6. mar. 2019
+ * @version 8. mar. 2019
  *
  */
 
@@ -143,62 +142,84 @@ public class SexTypeView {
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
-		// FIXME Tabs
-		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
-				tableViewer, new FocusCellHighlighter(tableViewer) {
-
-				});
-
-		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
 				tableViewer) {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy#
-			 * isEditorActivationEvent(org.eclipse.jface.viewers.
-			 * ColumnViewerEditorActivationEvent)
-			 */
-			@Override
 			protected boolean isEditorActivationEvent(
 					ColumnViewerEditorActivationEvent event) {
-				final ViewerCell cell = (ViewerCell) event.getSource();
-				LOGGER.info("Column index: " + cell.getColumnIndex());
-				return (cell.getColumnIndex() == 1)
-						|| (cell.getColumnIndex() == 2);
+				return event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL
+						|| event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION
+						|| (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED
+								&& event.keyCode == SWT.CR)
+						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC;
 			}
-
 		};
 
 		TableViewerEditor.create(tableViewer, focusCellManager,
 				editorActivationStrategy,
 				ColumnViewerEditor.TABBING_HORIZONTAL);
 
-		tableViewer.getTable().addKeyListener(new KeyListener() {
+//		tableViewer.getTable().addKeyListener(new KeyListener() {
+//
+//			/*
+//			 * (non-Javadoc)
+//			 *
+//			 * @see
+//			 * org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.
+//			 * events.KeyEvent)
+//			 */
+//			@Override
+//			public void keyPressed(KeyEvent e) {
+//
+//			}
+//
+//			/*
+//			 * (non-Javadoc)
+//			 * 
+//			 * @see
+//			 * org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.
+//			 * events.KeyEvent)
+//			 */
+//			@Override
+//			public void keyReleased(KeyEvent e) {
+//				if (e.keyCode == SWT.TAB) {
+//					int itemCount = tableViewer.getTable().getItemCount();
+//					int selectionIndex = tableViewer.getTable()
+//							.getSelectionIndex();
+//					if (selectionIndex < itemCount - 1) {
+//						tableViewer.getTable().setSelection(selectionIndex + 1);
+//					}
+//				}
+//			}
+//		});
 
+		tableViewer.getTable().addTraverseListener(new TraverseListener() {
 			/*
 			 * (non-Javadoc)
-			 *
+			 * 
 			 * @see
-			 * org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.
-			 * events.KeyEvent)
+			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
+			 * swt.events.TraverseEvent)
 			 */
 			@Override
-			public void keyPressed(KeyEvent e) {
-
-				LOGGER.info("Key Pressed");
+			public void keyTraversed(TraverseEvent e) {
 				if (e.keyCode == SWT.TAB) {
-					LOGGER.info("Detected TAB key");
-					// set table viewer selection
+					LOGGER.info("Traversed " + e.keyCode);
+
+					int itemCount = tableViewer.getTable().getItemCount();
+					int selectionIndex = tableViewer.getTable()
+							.getSelectionIndex();
+					if (selectionIndex < itemCount - 1) {
+						e.doit = false;
+
+					} else {
+						e.doit = true;
+					}
+
 				}
 			}
 
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-				LOGGER.info("Key Released");
-			}
 		});
 
 		final Composite composite = new Composite(parent, SWT.NONE);
