@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. nov. 2018
+ * @version 8. mar. 2019
  *
  */
 public class NewLocationWizard extends Wizard {
