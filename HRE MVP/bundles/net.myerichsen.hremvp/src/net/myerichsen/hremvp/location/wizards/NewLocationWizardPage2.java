@@ -2,8 +2,6 @@ package net.myerichsen.hremvp.location.wizards;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.http.StatusLine;
@@ -13,36 +11,53 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnViewerEditor;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
+import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TableViewerEditor;
+import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.LocationNameMapProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. mar. 2019
+ * @version 9. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final List<Text> textList = new ArrayList<>();
-	private final List<Label> labelList = new ArrayList<>();
 	private Text textGoogleMapsKey;
 	private final IEclipseContext context;
+	private LocationNameMapProvider provider;
+	private TableViewer tableViewer;
+	private Text textCoordinates;
 
 	/**
 	 * Constructor
@@ -56,6 +71,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		setTitle("Location Name Parts");
 		setDescription(
 				"Enter the parts of the location name. Get coordinates from Google.");
+		provider = new LocationNameMapProvider();
 	}
 
 	/*
@@ -69,46 +85,108 @@ public class NewLocationWizardPage2 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 
-		try {
-			LocationNameMapProvider provider = new LocationNameMapProvider();
-//			final LocationNameStyleProvider provider = new LocationNameStyleProvider();
-			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+		tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = tableViewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-			if (wizard != null) {
-				final int key = wizard.getLocationNameStylePid();
-				LOGGER.info("Key: " + key);
+		TableViewerColumn tableViewerColumnMapPid = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnMapPid = tableViewerColumnMapPid.getColumn();
+		tblclmnMapPid.setWidth(70);
+		tblclmnMapPid.setText("Map Pid");
+		tableViewerColumnMapPid.setLabelProvider(new HREColumnLabelProvider(0));
 
-				// FIXME Change to table
-				if (key != 0) {
-					provider.get(key);
-					List<List<String>> stringList = provider.getStringList(key);
-					labelList.clear();
-					textList.clear();
+		TableViewerColumn tableViewerColumnLabelPid = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnLabelPid = tableViewerColumnLabelPid.getColumn();
+		tblclmnLabelPid.setWidth(70);
+		tblclmnLabelPid.setText("Label Pid");
+		tableViewerColumnLabelPid
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
-					// A list of lists of location name map pid, label pid, part
-					// no, label and dictionary pid
-					for (List<String> list : stringList) {
+		TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
+		tblclmnPartNo.setWidth(70);
+		tblclmnPartNo.setText("Part no.");
+		tableViewerColumnPartNo.setLabelProvider(new HREColumnLabelProvider(2));
 
-						final Label label = new Label(container, SWT.NONE);
-						label.setText(list.get(3));
-						labelList.add(label);
+		TableViewerColumn tableViewerColumnMapLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnMapLabel = tableViewerColumnMapLabel.getColumn();
+		tblclmnMapLabel.setWidth(200);
+		tblclmnMapLabel.setText("Map Label");
+		tableViewerColumnMapLabel
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
-						final Text text = new Text(container, SWT.BORDER);
-						text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-								true, false, 1, 1));
-						text.setText("");
-						textList.add(text);
+		TableViewerColumn tableViewerColumnPartLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnPartLabel = tableViewerColumnPartLabel.getColumn();
+		tblclmnPartLabel.setWidth(200);
+		tblclmnPartLabel.setText("Part Label");
+		tableViewerColumnPartLabel.setEditingSupport(
+				new HreTypeLabelEditingSupport(tableViewer, 4));
+		tableViewerColumnPartLabel
+				.setLabelProvider(new HREColumnLabelProvider(4));
 
-						container.getParent().layout();
+		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+				tableViewer) {
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+				return event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL
+						|| event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION
+						|| (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED
+								&& event.keyCode == SWT.CR)
+						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC;
+			}
+		};
 
-						LOGGER.fine("Added " + label.getText() + " and "
-								+ text.getText());
+		TableViewerEditor.create(tableViewer, focusCellManager,
+				editorActivationStrategy,
+				ColumnViewerEditor.TABBING_HORIZONTAL
+						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+						| ColumnViewerEditor.TABBING_VERTICAL
+						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
+
+		tableViewer.getTable().addTraverseListener(new TraverseListener() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
+			 * swt.events.TraverseEvent)
+			 */
+			@Override
+			public void keyTraversed(TraverseEvent e) {
+				if (e.keyCode == SWT.TAB) {
+					LOGGER.fine("Traversed " + e.keyCode);
+
+					int itemCount = tableViewer.getTable().getItemCount();
+					int selectionIndex = tableViewer.getTable()
+							.getSelectionIndex();
+					if (selectionIndex < itemCount - 1) {
+						e.doit = false;
+
+					} else {
+						e.doit = true;
 					}
+
 				}
 			}
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-		}
+
+		});
+
+		final Label lblGoogleMapsKey = new Label(container, SWT.NONE);
+		lblGoogleMapsKey.setText("Google Maps Key");
+
+		textGoogleMapsKey = new Text(container, SWT.BORDER | SWT.PASSWORD);
+		textGoogleMapsKey.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Button btnGetCoordinatesFrom = new Button(container, SWT.NONE);
 		btnGetCoordinatesFrom.addMouseListener(new MouseAdapter() {
@@ -118,18 +196,26 @@ public class NewLocationWizardPage2 extends WizardPage {
 			}
 		});
 		btnGetCoordinatesFrom.setText("Get coordinates from Google");
-		new Label(container, SWT.NONE);
 
-		final Label lblGoogleMapsKey = new Label(container, SWT.NONE);
-		lblGoogleMapsKey.setText("Google Maps Key");
-
-		textGoogleMapsKey = new Text(container, SWT.BORDER | SWT.PASSWORD);
-		textGoogleMapsKey.setLayoutData(
+		textCoordinates = new Text(container, SWT.BORDER);
+		textCoordinates.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textCoordinates.setEditable(false);
 
 		setControl(container);
 
-		setPageComplete(false);
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+			int locationNameStylePid = wizard.getPage1()
+					.getLocationNameStylePid();
+			tableViewer.setInput(provider.getStringList(locationNameStylePid));
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
+
+		setPageComplete(true);
 	}
 
 	/**
@@ -148,8 +234,9 @@ public class NewLocationWizardPage2 extends WizardPage {
 			return;
 		}
 
-		for (final Text aText : textList) {
-			locationPart = aText.getText();
+		TableItem[] items = tableViewer.getTable().getItems();
+		for (int i = 0; i < items.length; i++) {
+			locationPart = items[i].getText(4);
 			if (locationPart.length() > 0) {
 				valid = true;
 				sb.append(locationPart + " ");
@@ -157,8 +244,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 		}
 
 		if (valid == false) {
-			textList.get(0).setFocus();
-			eventBroker.post("MESSAGE", "Please insert a location name");
+			tableViewer.getTable().select(0);
+			eventBroker.post("MESSAGE", "Please enter a location name");
 			return;
 		}
 
@@ -209,9 +296,12 @@ public class NewLocationWizardPage2 extends WizardPage {
 			final JSONObject location = geometry.getJSONObject("location");
 			final Double lat = location.getDouble("lat");
 			final Double lng = location.getDouble("lng");
-			LOGGER.info("Lat " + lat + ", lng " + lng);
+			LOGGER.fine("Lat " + lat + ", lng " + lng);
+			textCoordinates.setText("Lat " + lat + ", lng " + lng);
 
 			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+			wizard.addPage3();
+			// FIXME Null pointer exception
 			wizard.getPage3().getTextXCoordinate()
 					.setText(Double.toString(lat));
 			wizard.getPage3().getTextYCoordinate()
@@ -229,17 +319,4 @@ public class NewLocationWizardPage2 extends WizardPage {
 		}
 	}
 
-	/**
-	 * @return the labelList
-	 */
-	public List<Label> getLabelList() {
-		return labelList;
-	}
-
-	/**
-	 * @return the textList
-	 */
-	public List<Text> getTextList() {
-		return textList;
-	}
 }

@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. mar. 2019
+ * @version 9. mar. 2019
  *
  */
 public class NewLocationWizardPage1 extends WizardPage {
@@ -106,7 +106,6 @@ public class NewLocationWizardPage1 extends WizardPage {
 						.getSelectionIndex();
 				locationNameStylePid = Integer
 						.parseInt(styleList.get(selectionIndex).get(0));
-				LOGGER.info("Selection: " + locationNameStylePid);
 
 				final NewLocationWizard wizard = (NewLocationWizard) getWizard();
 				wizard.setLocationNameStylePid(locationNameStylePid);
@@ -345,6 +344,13 @@ public class NewLocationWizardPage1 extends WizardPage {
 	}
 
 	/**
+	 * @return the locationNameStylePid
+	 */
+	public int getLocationNameStylePid() {
+		return locationNameStylePid;
+	}
+
+	/**
 	 * @return the textFromDate
 	 */
 	public Text getTextFromDate() {
@@ -377,6 +383,13 @@ public class NewLocationWizardPage1 extends WizardPage {
 	 */
 	public void setFromDatePid(int fromDatePid) {
 		this.fromDatePid = fromDatePid;
+	}
+
+	/**
+	 * @param locationNameStylePid the locationNameStylePid to set
+	 */
+	public void setLocationNameStylePid(int locationNameStylePid) {
+		this.locationNameStylePid = locationNameStylePid;
 	}
 
 	/**

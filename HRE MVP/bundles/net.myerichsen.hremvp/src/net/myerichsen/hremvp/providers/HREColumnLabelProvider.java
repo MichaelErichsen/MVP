@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
  * Default JFace table label provider
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 10. feb. 2019
+ * @version 9. mar. 2019
  *
  */
 public class HREColumnLabelProvider extends ColumnLabelProvider {

@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.LocationNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 9. mar. 2019
  *
  */
 public class LocationNameMapProvider implements IHREProvider {
@@ -121,7 +121,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	/**
 	 * @param locationNameStylePid
 	 * @return lls A list of lists of location name map pid, label pid, part no,
-	 *         label and dictionary pid
+	 *         label, a blank field, and dictionary pid
 	 * @throws Exception
 	 */
 	@Override

@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. mar. 2019
+ * @version 9. mar. 2019
  *
  */
 public class LocationNameMapServer implements IHREServer {
@@ -131,7 +131,7 @@ public class LocationNameMapServer implements IHREServer {
 	/**
 	 * @param locationNameStylePid
 	 * @return lls A list of lists of location name map pid, label pid, part no,
-	 *         label and dictionary pid
+	 *         label, a blank field, and dictionary pid
 	 * @throws Exception
 	 */
 	@Override
@@ -156,6 +156,7 @@ public class LocationNameMapServer implements IHREServer {
 				final List<Dictionary> fkLabelPid = dictionary
 						.getFKLabelPid(labelPid);
 				stringList.add(fkLabelPid.get(0).getLabel());
+				stringList.add("");
 				stringList.add(
 						Integer.toString(fkLabelPid.get(0).getDictionaryPid()));
 				lls.add(stringList);

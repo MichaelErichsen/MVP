@@ -1,21 +1,17 @@
 package net.myerichsen.hremvp.event.wizards;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
 import net.myerichsen.hremvp.location.providers.LocationNameProvider;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
-import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage3;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage1;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage2;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage3;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
 
 /**
@@ -161,18 +157,18 @@ public class NewEventWizard extends Wizard {
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
-			final List<Label> labelList = page3.getLabelList();
-			final List<Text> textList = page3.getTextList();
+//			final List<Label> labelList = page3.getLabelList();
+//			final List<Text> textList = page3.getTextList();
 
-			for (int i = 0; i < labelList.size(); i++) {
-				final LocationNamePartProvider lnpp = new LocationNamePartProvider();
-				lnpp.setLocationNamePid(locationNamePid);
-				lnpp.setPartNo(i + 1);
-				lnpp.setLabel(textList.get(i).getText());
-				final int locationNamePartPid = lnpp.insert();
-				LOGGER.info(
-						"Inserted location name part " + locationNamePartPid);
-			}
+//			for (int i = 0; i < labelList.size(); i++) {
+//				final LocationNamePartProvider lnpp = new LocationNamePartProvider();
+//				lnpp.setLocationNamePid(locationNamePid);
+//				lnpp.setPartNo(i + 1);
+//				lnpp.setLabel(textList.get(i).getText());
+//				final int locationNamePartPid = lnpp.insert();
+//				LOGGER.info(
+//						"Inserted location name part " + locationNamePartPid);
+//			}
 
 			eventBroker.post("MESSAGE", locationName
 					+ " inserted in the database as no. " + locationPid);
