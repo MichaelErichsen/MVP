@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. mar. 2019
+ * @version 10. mar. 2019
  *
  */
 public class NewEventWizard extends Wizard {
@@ -147,7 +147,7 @@ public class NewEventWizard extends Wizard {
 			lnp.setToDatePid(page2.getFromDatePid());
 			lnp.setPrimaryLocationName(true);
 
-			final String s = page2.getComboLocationNameStyles().getText();
+			final String s = page2.getComboLocationNameStyle();
 			final String[] sa = s.split(",");
 			lnp.setLocationNameStylePid(Integer.parseInt(sa[0]));
 

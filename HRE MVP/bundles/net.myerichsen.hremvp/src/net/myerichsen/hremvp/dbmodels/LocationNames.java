@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the LOCATION_NAMES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 10. mar. 2019
  *
  */
 
@@ -62,14 +62,13 @@ public class LocationNames {
 			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, "
 			+ "PREPOSITION, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, "
-			+ "?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 8, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAMES SET "
-			+ "LOCATION_PID = ?, PRIMARY_LOCATION_NAME = ?, "
-			+ "LOCATION_NAME_STYLE_PID = ?, PREPOSITION = ?, "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
-			+ "FROM_DATE_PID = ?, "
-			+ "TO_DATE_PID = ? WHERE LOCATION_NAME_PID = ?";
+			+ "LOCATION_PID = ?, PRIMARY_LOCATION_NAME = ?"
+			+ ", LOCATION_NAME_STYLE_PID = ?, PREPOSITION = ?"
+			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP, FROM_DATE_PID = ?"
+			+ ", TO_DATE_PID = ? WHERE LOCATION_NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAMES WHERE LOCATION_NAME_PID = ?";
 
@@ -357,18 +356,15 @@ public class LocationNames {
 		ps.setBoolean(3, isPrimaryLocationName());
 		ps.setInt(4, getLocationNameStylePid());
 		ps.setString(5, getPreposition());
-		ps.setTimestamp(6, getInsertTstmp());
-		ps.setTimestamp(7, getUpdateTstmp());
-		ps.setInt(8, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(9, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(9, getFromDatePid());
+			ps.setInt(6, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(10, java.sql.Types.INTEGER);
+			ps.setNull(7, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(10, getToDatePid());
+			ps.setInt(7, getToDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -482,20 +478,17 @@ public class LocationNames {
 		ps.setBoolean(2, isPrimaryLocationName());
 		ps.setInt(3, getLocationNameStylePid());
 		ps.setString(4, getPreposition());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getFromDatePid());
+			ps.setInt(5, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(9, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(9, getToDatePid());
+			ps.setInt(6, getToDatePid());
 		}
-		ps.setInt(10, getLocationNamePid());
+		ps.setInt(7, getLocationNamePid());
 		ps.executeUpdate();
 		conn.close();
 	}

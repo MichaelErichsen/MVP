@@ -137,8 +137,6 @@ public class NewLocationWizard extends Wizard {
 					new BigDecimal(page3.getTextZCoordinate().getText()));
 			lp.setPrimaryLocation(
 					page3.getBtnCheckButtonPrimary().getSelection());
-			// FIXME SEVERE: NULL not allowed for column "INSERT_TSTMP"; SQL
-			// statement:
 			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 
@@ -148,9 +146,8 @@ public class NewLocationWizard extends Wizard {
 			lnp.setToDatePid(page1.getFromDatePid());
 			lnp.setPrimaryLocationName(true);
 
-			final String s = page1.getComboLocationNameStyles().getText();
-			final String[] sa = s.split(",");
-			lnp.setLocationNameStylePid(Integer.parseInt(sa[0]));
+			final String s = page1.getComboLocationNameStyle();
+			lnp.setLocationNameStylePid(Integer.parseInt(s));
 
 			lnp.setPrimaryLocationName(
 					page1.getBtnPrimaryLocationName().getSelection());
@@ -158,6 +155,7 @@ public class NewLocationWizard extends Wizard {
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
+			// FIXME Location Name Parts
 //			final List<Label> labelList = page2.getLabelList();
 //			final List<Text> textList = page2.getTextList();
 //

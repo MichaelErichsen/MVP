@@ -15,44 +15,46 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the LOCATIONS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 10. mar. 2019
  *
  */
 
 public class Locations {
-	private static final String SELECT = "SELECT LOCATION_PID, "
-			+ "PRIMARY_LOCATION, X_COORDINATE, Y_COORDINATE, "
-			+ "Z_COORDINATE, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT = "SELECT " + "LOCATION_PID, "
+			+ "PRIMARY_LOCATION, " + "X_COORDINATE, " + "Y_COORDINATE, "
+			+ "Z_COORDINATE, " + "INSERT_TSTMP, " + "UPDATE_TSTMP, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ?";
 	private static final String SELECT_FROM_DATE_PID = "SELECT "
-			+ "LOCATION_PID, PRIMARY_LOCATION, X_COORDINATE, "
-			+ "Y_COORDINATE, Z_COORDINATE, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, " + "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE FROM_DATE_PID = ? ORDER BY LOCATION_PID";
 	private static final String SELECT_TO_DATE_PID = "SELECT "
-			+ "LOCATION_PID, PRIMARY_LOCATION, X_COORDINATE, "
-			+ "Y_COORDINATE, Z_COORDINATE, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, " + "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE TO_DATE_PID = ? ORDER BY LOCATION_PID";
-	private static final String SELECTALL = "SELECT LOCATION_PID, "
-			+ "PRIMARY_LOCATION, X_COORDINATE, Y_COORDINATE, "
-			+ "Z_COORDINATE, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECTALL = "SELECT " + "LOCATION_PID, "
+			+ "PRIMARY_LOCATION, " + "X_COORDINATE, " + "Y_COORDINATE, "
+			+ "Z_COORDINATE, " + "INSERT_TSTMP, " + "UPDATE_TSTMP, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS ORDER BY LOCATION_PID";
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_PID) FROM PUBLIC.LOCATIONS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.LOCATIONS( "
-			+ "LOCATION_PID, PRIMARY_LOCATION, X_COORDINATE, "
-			+ "Y_COORDINATE, Z_COORDINATE, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, " + "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
+			+ "CURRENT_TIMESTAMP, " + "CURRENT_TIMESTAMP, " + "9, " + "?, "
+			+ "?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATIONS SET "
-			+ "PRIMARY_LOCATION = ?, X_COORDINATE = ?, "
-			+ "Y_COORDINATE = ?, Z_COORDINATE = ?, INSERT_TSTMP = ?, "
-			+ "UPDATE_TSTMP = ?, TABLE_ID = ?, FROM_DATE_PID = ?, "
-			+ "TO_DATE_PID = ? WHERE LOCATION_PID = ?";
+			+ "PRIMARY_LOCATION = ?" + ", X_COORDINATE = ?"
+			+ ", Y_COORDINATE = ?" + ", Z_COORDINATE = ?"
+			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP" + ", FROM_DATE_PID = ?"
+			+ ", TO_DATE_PID = ? WHERE LOCATION_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ?";
 
@@ -286,18 +288,15 @@ public class Locations {
 		ps.setBigDecimal(3, getXCoordinate());
 		ps.setBigDecimal(4, getYCoordinate());
 		ps.setBigDecimal(5, getZCoordinate());
-		ps.setTimestamp(6, getInsertTstmp());
-		ps.setTimestamp(7, getUpdateTstmp());
-		ps.setInt(8, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(9, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(9, getFromDatePid());
+			ps.setInt(6, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(10, java.sql.Types.INTEGER);
+			ps.setNull(7, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(10, getToDatePid());
+			ps.setInt(7, getToDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -410,20 +409,17 @@ public class Locations {
 		ps.setBigDecimal(2, getXCoordinate());
 		ps.setBigDecimal(3, getYCoordinate());
 		ps.setBigDecimal(4, getZCoordinate());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getFromDatePid());
+			ps.setInt(5, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(9, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(9, getToDatePid());
+			ps.setInt(6, getToDatePid());
 		}
-		ps.setInt(10, getLocationPid());
+		ps.setInt(7, getLocationPid());
 		ps.executeUpdate();
 		conn.close();
 	}
