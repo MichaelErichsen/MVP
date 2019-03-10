@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Base location data wizard page 3
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. mar. 2019
+ * @version 10. mar. 2019
  *
  */
 public class NewLocationWizardPage3 extends WizardPage {
@@ -37,18 +37,11 @@ public class NewLocationWizardPage3 extends WizardPage {
 	private Text textFromDateSort;
 	private Text textFromOriginal;
 	private Text textFromSurety;
-	private Button btnNewFrom;
-	private Button btnBrowseFrom;
-	private Button btnClearFrom;
 
 	private Text textToDate;
 	private Text textToDateSort;
 	private Text textToOriginal;
 	private Text textToSurety;
-	private Button btnCopyFromTo;
-	private Button btnNewTo;
-	private Button btnBrowseTo;
-	private Button btnClearTo;
 
 	private Text textXCoordinate;
 	private Text textYCoordinate;
@@ -115,7 +108,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -144,7 +137,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -167,7 +160,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -209,7 +202,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		compositeTo.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		btnCopyFromTo = new Button(compositeTo, SWT.NONE);
+		Button btnCopyFromTo = new Button(compositeTo, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -223,7 +216,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnCopyFromTo.setText("Copy From");
 
-		btnNewTo = new Button(compositeTo, SWT.NONE);
+		Button btnNewTo = new Button(compositeTo, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -249,7 +242,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnNewTo.setText("New");
 
-		btnBrowseTo = new Button(compositeTo, SWT.NONE);
+		Button btnBrowseTo = new Button(compositeTo, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -272,7 +265,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		btnClearTo = new Button(compositeTo, SWT.NONE);
+		Button btnClearTo = new Button(compositeTo, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -287,12 +280,15 @@ public class NewLocationWizardPage3 extends WizardPage {
 		final Label lblXCoordinate = new Label(container, SWT.NONE);
 		lblXCoordinate.setText("X Coordinate");
 
+		final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+
 		textXCoordinate = new Text(container, SWT.BORDER);
 		textXCoordinate.setText("0");
 		textXCoordinate.setToolTipText("Latitude (-180 to 180)");
 		textXCoordinate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textXCoordinate.addListener(SWT.Verify, new DoubleListener());
+		textXCoordinate.setText(Double.toString(wizard.getPage2().getLat()));
 		new Label(container, SWT.NONE);
 
 		final Label lblYCoordinate = new Label(container, SWT.NONE);
@@ -304,6 +300,8 @@ public class NewLocationWizardPage3 extends WizardPage {
 		textYCoordinate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textYCoordinate.addListener(SWT.Verify, new DoubleListener());
+		textYCoordinate.setText(Double.toString(wizard.getPage2().getLng()));
+
 		new Label(container, SWT.NONE);
 
 		final Label lblZCoordinate = new Label(container, SWT.NONE);
@@ -315,6 +313,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		textZCoordinate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textZCoordinate.addListener(SWT.Verify, new DoubleListener());
+
 		new Label(container, SWT.NONE);
 
 		new Label(container, SWT.NONE);

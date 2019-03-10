@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. mar. 2019
+ * @version 10. mar. 2019
  *
  */
 public class NewLocationWizard extends Wizard {
@@ -52,15 +52,9 @@ public class NewLocationWizard extends Wizard {
 	/**
 	 *
 	 */
-	public void addPage3() {
+	public void addBackPages() {
 		page3 = new NewLocationWizardPage3(context);
 		addPage(page3);
-	}
-
-	/**
-	 *
-	 */
-	public void addPage4() {
 		page4 = new NewLocationWizardPage4();
 		addPage(page4);
 	}
@@ -143,6 +137,8 @@ public class NewLocationWizard extends Wizard {
 					new BigDecimal(page3.getTextZCoordinate().getText()));
 			lp.setPrimaryLocation(
 					page3.getBtnCheckButtonPrimary().getSelection());
+			// FIXME SEVERE: NULL not allowed for column "INSERT_TSTMP"; SQL
+			// statement:
 			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 

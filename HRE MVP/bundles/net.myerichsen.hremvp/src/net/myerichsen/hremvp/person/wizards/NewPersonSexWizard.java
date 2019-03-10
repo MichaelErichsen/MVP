@@ -65,7 +65,7 @@ public class NewPersonSexWizard extends Wizard {
 			sexProvider.setPersonPid(personPid);
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(page1.isPrimary());
-			// FIXME Get pids if not 0
+			// FIXME Get date pids if not 0
 //			sexProvider.setFromDatePid(0);
 //			sexProvider.setToDatePid(0);
 			try {

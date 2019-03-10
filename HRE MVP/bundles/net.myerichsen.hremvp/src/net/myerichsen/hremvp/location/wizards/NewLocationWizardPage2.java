@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. mar. 2019
+ * @version 10. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -55,9 +55,11 @@ public class NewLocationWizardPage2 extends WizardPage {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Text textGoogleMapsKey;
 	private final IEclipseContext context;
-	private LocationNameMapProvider provider;
+	private final LocationNameMapProvider provider;
 	private TableViewer tableViewer;
 	private Text textCoordinates;
+	private double lat;
+	private double lng;
 
 	/**
 	 * Constructor
@@ -87,44 +89,47 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		TableViewerColumn tableViewerColumnMapPid = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnMapPid = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnMapPid = tableViewerColumnMapPid.getColumn();
+		final TableColumn tblclmnMapPid = tableViewerColumnMapPid.getColumn();
 		tblclmnMapPid.setWidth(70);
 		tblclmnMapPid.setText("Map Pid");
 		tableViewerColumnMapPid.setLabelProvider(new HREColumnLabelProvider(0));
 
-		TableViewerColumn tableViewerColumnLabelPid = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnLabelPid = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnLabelPid = tableViewerColumnLabelPid.getColumn();
+		final TableColumn tblclmnLabelPid = tableViewerColumnLabelPid
+				.getColumn();
 		tblclmnLabelPid.setWidth(70);
 		tblclmnLabelPid.setText("Label Pid");
 		tableViewerColumnLabelPid
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
-		TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
+		final TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
 		tblclmnPartNo.setWidth(70);
 		tblclmnPartNo.setText("Part no.");
 		tableViewerColumnPartNo.setLabelProvider(new HREColumnLabelProvider(2));
 
-		TableViewerColumn tableViewerColumnMapLabel = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnMapLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnMapLabel = tableViewerColumnMapLabel.getColumn();
+		final TableColumn tblclmnMapLabel = tableViewerColumnMapLabel
+				.getColumn();
 		tblclmnMapLabel.setWidth(200);
 		tblclmnMapLabel.setText("Map Label");
 		tableViewerColumnMapLabel
 				.setLabelProvider(new HREColumnLabelProvider(3));
 
-		TableViewerColumn tableViewerColumnPartLabel = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnPartLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnPartLabel = tableViewerColumnPartLabel.getColumn();
+		final TableColumn tblclmnPartLabel = tableViewerColumnPartLabel
+				.getColumn();
 		tblclmnPartLabel.setWidth(200);
 		tblclmnPartLabel.setText("Part Label");
 		tableViewerColumnPartLabel.setEditingSupport(
@@ -132,17 +137,18 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewerColumnPartLabel
 				.setLabelProvider(new HREColumnLabelProvider(4));
 
-		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
 				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
-		ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
 				tableViewer) {
+			@Override
 			protected boolean isEditorActivationEvent(
 					ColumnViewerEditorActivationEvent event) {
-				return event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL
-						|| event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION
-						|| (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED
-								&& event.keyCode == SWT.CR)
-						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC;
+				return (event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL)
+						|| (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION)
+						|| ((event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED)
+								&& (event.keyCode == SWT.CR))
+						|| (event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
 			}
 		};
 
@@ -156,7 +162,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewer.getTable().addTraverseListener(new TraverseListener() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
 			 * swt.events.TraverseEvent)
@@ -166,10 +172,10 @@ public class NewLocationWizardPage2 extends WizardPage {
 				if (e.keyCode == SWT.TAB) {
 					LOGGER.fine("Traversed " + e.keyCode);
 
-					int itemCount = tableViewer.getTable().getItemCount();
-					int selectionIndex = tableViewer.getTable()
+					final int itemCount = tableViewer.getTable().getItemCount();
+					final int selectionIndex = tableViewer.getTable()
 							.getSelectionIndex();
-					if (selectionIndex < itemCount - 1) {
+					if (selectionIndex < (itemCount - 1)) {
 						e.doit = false;
 
 					} else {
@@ -207,7 +213,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-			int locationNameStylePid = wizard.getPage1()
+			final int locationNameStylePid = wizard.getPage1()
 					.getLocationNameStylePid();
 			tableViewer.setInput(provider.getStringList(locationNameStylePid));
 		} catch (final Exception e1) {
@@ -234,9 +240,9 @@ public class NewLocationWizardPage2 extends WizardPage {
 			return;
 		}
 
-		TableItem[] items = tableViewer.getTable().getItems();
-		for (int i = 0; i < items.length; i++) {
-			locationPart = items[i].getText(4);
+		final TableItem[] items = tableViewer.getTable().getItems();
+		for (final TableItem item : items) {
+			locationPart = item.getText(4);
 			if (locationPart.length() > 0) {
 				valid = true;
 				sb.append(locationPart + " ");
@@ -294,19 +300,13 @@ public class NewLocationWizardPage2 extends WizardPage {
 			final JSONObject result0 = results.getJSONObject(0);
 			final JSONObject geometry = result0.getJSONObject("geometry");
 			final JSONObject location = geometry.getJSONObject("location");
-			final Double lat = location.getDouble("lat");
-			final Double lng = location.getDouble("lng");
+			lat = location.getDouble("lat");
+			lng = location.getDouble("lng");
 			LOGGER.fine("Lat " + lat + ", lng " + lng);
 			textCoordinates.setText("Lat " + lat + ", lng " + lng);
 
 			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-			wizard.addPage3();
-			// FIXME Null pointer exception
-			wizard.getPage3().getTextXCoordinate()
-					.setText(Double.toString(lat));
-			wizard.getPage3().getTextYCoordinate()
-					.setText(Double.toString(lng));
-			wizard.addPage4();
+			wizard.addBackPages();
 			wizard.getContainer().updateButtons();
 			wizard.setLocationName(result0.getString("formatted_address"));
 			setPageComplete(true);
@@ -316,7 +316,22 @@ public class NewLocationWizardPage2 extends WizardPage {
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @return the lat
+	 */
+	public double getLat() {
+		return lat;
+	}
+
+	/**
+	 * @return the lng
+	 */
+	public double getLng() {
+		return lng;
 	}
 
 }

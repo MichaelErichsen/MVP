@@ -16,7 +16,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * "mvp-log.%u.%g.txt".
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. feb. 2019
+ * @version 10. mar. 2019
  *
  */
 public class HreLogger {
@@ -41,5 +41,9 @@ public class HreLogger {
 
 		LOGGER.info("--------------------------------------------------------");
 		LOGGER.info("Log file path: " + logFilePath);
+
+		// Used by org.apache.http.client.methods.HttpGet
+		System.setProperty("org.apache.commons.logging.Log",
+				"org.apache.commons.logging.impl.Jdk14Logger");
 	}
 }
