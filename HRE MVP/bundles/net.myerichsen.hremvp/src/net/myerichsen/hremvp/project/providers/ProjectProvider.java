@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.ProjectServer;
  * Provides all registered projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. feb. 2019
+ * @version 11. mar. 2019
  *
  */
 public class ProjectProvider implements IHREProvider {
@@ -78,8 +78,7 @@ public class ProjectProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*

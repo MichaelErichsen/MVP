@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameServer;
  * Provides all data for a single name for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class LocationNameProvider implements IHREProvider {
@@ -33,7 +33,7 @@ public class LocationNameProvider implements IHREProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public LocationNameProvider() throws Exception {
@@ -44,7 +44,7 @@ public class LocationNameProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -66,7 +66,7 @@ public class LocationNameProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -133,7 +133,7 @@ public class LocationNameProvider implements IHREProvider {
 	 *
 	 * @return sa An array of strings
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String[] getNameStrings() throws Exception {
 		return server.getNameStrings();
@@ -159,7 +159,7 @@ public class LocationNameProvider implements IHREProvider {
 	 * @param locationPid The persistent ID of the location
 	 * @return s The primary name
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String getPrimaryNameString(int locationPid) throws Exception {
 		final String s = server.getPrimaryNameString(locationPid);
@@ -173,8 +173,7 @@ public class LocationNameProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*
@@ -199,7 +198,7 @@ public class LocationNameProvider implements IHREProvider {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -295,7 +294,7 @@ public class LocationNameProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Display all data about a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. jan. 2019
+ * @version 11. mar. 2019
  */
 public class LocationNameView {
 	private final static Logger LOGGER = Logger
@@ -184,7 +184,7 @@ public class LocationNameView {
 	 *
 	 */
 	private void openGoogleMaps() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationGoogleMapBrowser";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationGoogleMapBrowser";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);

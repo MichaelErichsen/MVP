@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.LocationNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class LocationNameMapProvider implements IHREProvider {
@@ -114,8 +114,7 @@ public class LocationNameMapProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/**

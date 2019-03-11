@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  * Provides all data for a single name for a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. feb. 2019
+ * @version 11. mar. 2019
  *
  */
 public class PersonNameProvider implements IHREProvider {
@@ -32,7 +32,7 @@ public class PersonNameProvider implements IHREProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public PersonNameProvider() throws Exception {
@@ -44,7 +44,7 @@ public class PersonNameProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -66,7 +66,7 @@ public class PersonNameProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -110,7 +110,7 @@ public class PersonNameProvider implements IHREProvider {
 	 *
 	 * @return sa A list of name strings
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String[] getNameStrings() throws Exception {
 		return server.getNameStrings();
@@ -150,7 +150,7 @@ public class PersonNameProvider implements IHREProvider {
 	 * @param personPid The persistent PID of the person
 	 * @return s The name
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String getPrimaryNameString(int personPid) throws Exception {
 		return server.getPrimaryNameString(personPid);
@@ -163,8 +163,7 @@ public class PersonNameProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*
@@ -174,8 +173,7 @@ public class PersonNameProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/**
@@ -190,7 +188,7 @@ public class PersonNameProvider implements IHREProvider {
 	 *
 	 * @return
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -279,7 +277,7 @@ public class PersonNameProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.person.servers.SexServer;
  * Provide all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class SexProvider implements IHREProvider {
@@ -40,7 +40,7 @@ public class SexProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -50,12 +50,11 @@ public class SexProvider implements IHREProvider {
 		server.delete(key);
 	}
 
-
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -145,8 +144,7 @@ public class SexProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*
@@ -169,7 +167,7 @@ public class SexProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 * @return
@@ -272,7 +270,7 @@ public class SexProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

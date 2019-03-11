@@ -227,7 +227,7 @@ public class LocationNavigator {
 	 *
 	 */
 	protected void openLocationView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationView";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
@@ -240,10 +240,14 @@ public class LocationNavigator {
 
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
-				if (part.getContributionURI().equals(contributionURI)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					found = true;
-					break;
+				try {
+					if (part.getContributionURI().equals(contributionURI)) {
+						partService.showPart(part, PartState.ACTIVATE);
+						found = true;
+						break;
+					}
+				} catch (Exception e) {
+					LOGGER.info(e.getMessage());
 				}
 			}
 		}

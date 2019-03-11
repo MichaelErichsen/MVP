@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.project.servers.PersonNameStyleServer;
  * Provide a person name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class PersonNameStyleProvider implements IHREProvider {
@@ -25,7 +25,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public PersonNameStyleProvider() throws Exception {
@@ -36,7 +36,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -102,14 +102,13 @@ public class PersonNameStyleProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/**
 	 * Insert a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -145,7 +144,7 @@ public class PersonNameStyleProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *

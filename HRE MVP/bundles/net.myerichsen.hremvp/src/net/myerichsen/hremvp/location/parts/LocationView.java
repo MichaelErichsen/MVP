@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display static data about a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. jan. 2019
+ * @version 11. mar. 2019
  */
 public class LocationView {
 	private final static Logger LOGGER = Logger
@@ -100,7 +100,7 @@ public class LocationView {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public LocationView() throws Exception {
@@ -521,7 +521,7 @@ public class LocationView {
 	 *
 	 */
 	private void openGoogleMaps() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationGoogleMapBrowser";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationGoogleMapBrowser";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
@@ -534,10 +534,14 @@ public class LocationView {
 
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
-				if (part.getContributionURI().equals(contributionURI)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					found = true;
-					break;
+				try {
+					if (part.getContributionURI().equals(contributionURI)) {
+						partService.showPart(part, PartState.ACTIVATE);
+						found = true;
+						break;
+					}
+				} catch (Exception e) {
+					LOGGER.info(e.getMessage());
 				}
 			}
 		}

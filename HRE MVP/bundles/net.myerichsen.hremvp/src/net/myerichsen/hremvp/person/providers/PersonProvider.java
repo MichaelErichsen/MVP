@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -26,7 +26,7 @@ public class PersonProvider implements IHREProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public PersonProvider() throws Exception {
@@ -182,8 +182,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getPersonEventList(int key)
-			throws Exception {
+	public List<List<String>> getPersonEventList(int key) throws Exception {
 		return server.getPersonEventList(key);
 	}
 
@@ -193,8 +192,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getPersonList()
-			throws Exception {
+	public List<List<String>> getPersonList() throws Exception {
 		return server.getPersonList();
 	}
 
@@ -220,8 +218,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getSexesList(int key)
-			throws Exception {
+	public List<List<String>> getSexesList(int key) throws Exception {
 		return server.getSexesList(key);
 	}
 
@@ -229,8 +226,7 @@ public class PersonProvider implements IHREProvider {
 	 * @return the siblingList
 	 * @throws Exception
 	 */
-	public List<List<String>> getSiblingList(int personPid)
-			throws Exception {
+	public List<List<String>> getSiblingList(int personPid) throws Exception {
 		return server.getSiblingList(personPid);
 	}
 
@@ -241,8 +237,7 @@ public class PersonProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/**
@@ -252,8 +247,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int key)
-			throws Exception {
+	public List<List<String>> getStringList(int key) throws Exception {
 		return server.getStringList(key);
 	}
 
@@ -276,8 +270,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public void removeChild(int parentPid, int childPid)
-			throws Exception {
+	public void removeChild(int parentPid, int childPid) throws Exception {
 		server.removeChild(parentPid, childPid);
 	}
 
@@ -297,8 +290,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public void removeParent(int personPid, int parentPid)
-			throws Exception {
+	public void removeParent(int personPid, int parentPid) throws Exception {
 		server.removeParent(personPid, parentPid);
 	}
 
@@ -308,8 +300,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public void removePartner(int personPid, int partnerPid)
-			throws Exception {
+	public void removePartner(int personPid, int partnerPid) throws Exception {
 		server.removePartner(personPid, partnerPid);
 	}
 
@@ -347,7 +338,7 @@ public class PersonProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.location.servers.LocationEventServer;
  * Provides all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class LocationEventProvider implements IHREProvider {
@@ -20,7 +20,7 @@ public class LocationEventProvider implements IHREProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public LocationEventProvider() throws Exception {
@@ -72,8 +72,7 @@ public class LocationEventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*
