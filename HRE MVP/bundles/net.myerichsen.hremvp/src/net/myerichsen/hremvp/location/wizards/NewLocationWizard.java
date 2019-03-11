@@ -165,7 +165,7 @@ public class NewLocationWizard extends Wizard {
 				lnpp = new LocationNamePartProvider();
 				lnpp.setLocationNamePid(locationNamePid);
 				lnpp.setPartNo(i + 1);
-				lnpp.setLabel(stringList.get(i).get(3));
+				lnpp.setLabel(stringList.get(i).get(4));
 				final int locationNamePartPid = lnpp.insert();
 				LOGGER.info(
 						"Inserted location name part " + locationNamePartPid);

@@ -48,12 +48,13 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class LocationNavigator {
@@ -110,18 +111,20 @@ public class LocationNavigator {
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnPrimaryLocationName = tableViewerColumn_1
+		final TableColumn tblclmnPrimaryLocationName = tableViewerColumnName
 				.getColumn();
 		tblclmnPrimaryLocationName.setWidth(400);
 		tblclmnPrimaryLocationName.setText("Primary Location Name");
+		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
