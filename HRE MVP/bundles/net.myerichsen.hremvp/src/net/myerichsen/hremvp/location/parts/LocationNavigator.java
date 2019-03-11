@@ -46,6 +46,9 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.NavigatorFilter;
+import net.myerichsen.hremvp.location.providers.LocationEventProvider;
+import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
+import net.myerichsen.hremvp.location.providers.LocationNameProvider;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -204,15 +207,32 @@ public class LocationNavigator {
 		}
 
 		try {
+			// Delete all location events for location
+			LocationEventProvider lep = new LocationEventProvider();
+			lep.deleteAllEventLinksForLocation(locationPid);
+
+			// Delete all location name parts
+			LocationNameProvider lnp = new LocationNameProvider();
+			List<Integer> locationNamePidList = lnp
+					.getFKLocationPid(locationPid);
+
+			LocationNamePartProvider lnpp = new LocationNamePartProvider();
+			for (int i = 0; i < locationNamePidList.size(); i++) {
+				lnpp.deleteAllNamePartsForLocationName(
+						locationNamePidList.get(i));
+			}
+
+			// Delete all location names for location
+			lnp.deleteAllNamesForLocation(locationPid);
+
+			// Delete location
 			final LocationProvider provider = new LocationProvider();
-			// FIXME SEVERE: Referential integrity constraint violation:
-			// "LOCATIONS_LOCATION_NAMES_FK: PUBLIC.LOCATION_NAMES FOREIGN
-			// KEY(LOCATION_PID) REFERENCES PUBLIC.LOCATIONS(LOCATION_PID)
-			// (14)"; SQL statement:
-			// DELETE FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ? [23503-197]
 			provider.delete(locationPid);
+
+			LOGGER.info("Location " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Location " + primaryName + " has been deleted");
+			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
 		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();

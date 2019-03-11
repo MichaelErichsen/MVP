@@ -13,11 +13,22 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @version 11. mar. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
-//	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private final static Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private LocationEvents locationEvent;
+
+	/**
+	 * Constructor
+	 *
+	 */
+	public LocationEventServer() {
+		super();
+		locationEvent = new LocationEvents();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -28,6 +39,19 @@ public class LocationEventServer implements IHREServer {
 	public void delete(int key) throws Exception {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllEventLinksForLocation(int locationPid) throws Exception {
+		List<LocationEvents> fkLocationPid = locationEvent
+				.getFKLocationPid(locationPid);
+
+		for (LocationEvents event : fkLocationPid) {
+			locationEvent.delete(event.getLocationEventsPid());
+		}
 	}
 
 	/*

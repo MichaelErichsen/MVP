@@ -53,6 +53,14 @@ public class LocationNameProvider implements IHREProvider {
 		server.delete(key);
 	}
 
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllNamesForLocation(int locationPid) throws Exception {
+		server.deleteAllNamesForLocation(locationPid);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -84,6 +92,15 @@ public class LocationNameProvider implements IHREProvider {
 		setPreposition(server.getPreposition());
 		setMapList(server.getMapList());
 		setPartList(server.getPartList());
+	}
+
+	/**
+	 * @param locationPid
+	 * @return A list of location name pids
+	 * @throws Exception
+	 */
+	public List<Integer> getFKLocationPid(int locationPid) throws Exception {
+		return server.getFKLocationPid(locationPid);
 	}
 
 	/**

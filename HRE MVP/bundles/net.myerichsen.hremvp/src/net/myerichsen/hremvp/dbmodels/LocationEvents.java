@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the LOCATION_EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 11. mar. 2019
  *
  */
 
@@ -42,12 +42,13 @@ public class LocationEvents {
 	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_EVENTS( "
 			+ "LOCATION_EVENTS_PID, EVENT_PID, LOCATION_PID, "
 			+ "PRIMARY_EVENT, PRIMARY_LOCATION, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, "
+			+ "?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4) ";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_EVENTS SET "
-			+ "EVENT_PID = ?, LOCATION_PID = ?, PRIMARY_EVENT = ?, "
-			+ "PRIMARY_LOCATION = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
-			+ "TABLE_ID = ? WHERE LOCATION_EVENTS_PID = ?";
+			+ "EVENT_PID = ?, LOCATION_PID = ?, PRIMARY_EVENT = ?"
+			+ ", PRIMARY_LOCATION = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP"
+			+ " WHERE LOCATION_EVENTS_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_EVENTS WHERE LOCATION_EVENTS_PID = ?";
 
@@ -244,9 +245,6 @@ public class LocationEvents {
 		ps.setInt(3, getLocationPid());
 		ps.setBoolean(4, isPrimaryEvent());
 		ps.setBoolean(5, isPrimaryLocation());
-		ps.setTimestamp(6, getInsertTstmp());
-		ps.setTimestamp(7, getUpdateTstmp());
-		ps.setInt(8, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -349,10 +347,7 @@ public class LocationEvents {
 		ps.setInt(2, getLocationPid());
 		ps.setBoolean(3, isPrimaryEvent());
 		ps.setBoolean(4, isPrimaryLocation());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
-		ps.setInt(8, getLocationEventsPid());
+		ps.setInt(5, getLocationEventsPid());
 		ps.executeUpdate();
 		conn.close();
 	}

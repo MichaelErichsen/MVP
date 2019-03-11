@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNames}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class LocationNameServer implements IHREServer {
@@ -51,7 +51,7 @@ public class LocationNameServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -61,12 +61,33 @@ public class LocationNameServer implements IHREServer {
 		name.delete(key);
 	}
 
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllNamesForLocation(int locationPid) throws Exception {
+		final List<LocationNames> fkLocationPid = name
+				.getFKLocationPid(locationPid);
+
+		for (final LocationNames locationNames : fkLocationPid) {
+			name.delete(locationNames.getLocationNamePid());
+		}
+
+	}
+
+	/**
+	 * @return
+	 */
+	public List<?> get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -97,6 +118,22 @@ public class LocationNameServer implements IHREServer {
 //			throw new MvpException("Map list size: " + mapList.size()
 //					+ ", part list size: " + partList.size());
 //		}
+	}
+
+	/**
+	 * @param locationPid
+	 * @return A list of location name pids
+	 * @throws Exception
+	 */
+	public List<Integer> getFKLocationPid(int locationPid) throws Exception {
+		final List<LocationNames> fkLocationPid = name
+				.getFKLocationPid(locationPid);
+		final List<Integer> li = new ArrayList<>();
+
+		for (final LocationNames locationNames : fkLocationPid) {
+			li.add(locationNames.getLocationNamePid());
+		}
+		return li;
 	}
 
 	/**
@@ -146,7 +183,7 @@ public class LocationNameServer implements IHREServer {
 	 *
 	 * @return sa An array of strings
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String[] getNameStrings() throws Exception {
 		StringBuilder sb;
@@ -199,7 +236,7 @@ public class LocationNameServer implements IHREServer {
 	 * @param locationPid The persistent ID of the location
 	 * @return s The primary name
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String getPrimaryNameString(int locationPid) throws Exception {
 		final StringBuilder sb = new StringBuilder();
@@ -267,7 +304,7 @@ public class LocationNameServer implements IHREServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -370,7 +407,7 @@ public class LocationNameServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -384,14 +421,6 @@ public class LocationNameServer implements IHREServer {
 		name.setToDatePid(toDatePid);
 		name.setPreposition(preposition);
 		name.update();
-	}
-
-	/**
-	 * @return
-	 */
-	public List<?> get() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

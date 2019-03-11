@@ -35,7 +35,15 @@ public class LocationEventProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws Exception {
 		server.delete(key);
+	}
 
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllEventLinksForLocation(int locationPid)
+			throws Exception {
+		server.deleteAllEventLinksForLocation(locationPid);
 	}
 
 	/*

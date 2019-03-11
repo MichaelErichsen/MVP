@@ -352,7 +352,10 @@ public class LocationView {
 	 */
 	private void get(int key) {
 		try {
-			provider.get(key);
+			try {
+				provider.get(key);
+			} catch (Exception e2) {
+			}
 			textId.setText(Integer.toString(key));
 
 			final HDateProvider hdp = new HDateProvider();

@@ -12,7 +12,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
  * @version 21. nov. 2018
  *
  */
-// FIXME !MESSAGE Perspective with ID net.myerichsen.hremvp.perspective.
+// TODO !MESSAGE Perspective with ID net.myerichsen.hremvp.perspective.
 // eventperspective not found in the current window.
 public class EventPerspectiveHandler {
 	/**

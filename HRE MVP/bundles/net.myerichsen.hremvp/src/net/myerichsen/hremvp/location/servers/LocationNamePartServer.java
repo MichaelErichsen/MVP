@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 11. mar. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -38,7 +38,7 @@ public class LocationNamePartServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -46,6 +46,21 @@ public class LocationNamePartServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 		part.delete(key);
+	}
+
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllNamePartsForLocationName(int locationNamePid)
+			throws Exception {
+		List<LocationNameParts> fkLocationNamePid = part
+				.getFKLocationNamePid(locationNamePid);
+
+		for (LocationNameParts locationNameParts : fkLocationNamePid) {
+			part.delete(locationNameParts.getLocationNamePartPid());
+		}
+
 	}
 
 	/*
@@ -62,7 +77,7 @@ public class LocationNamePartServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -175,7 +190,7 @@ public class LocationNamePartServer implements IHREServer {
 	 *
 	 * @return int Persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -256,7 +271,7 @@ public class LocationNamePartServer implements IHREServer {
 	 * Update a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.LocationNameMaps}
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -271,7 +286,7 @@ public class LocationNamePartServer implements IHREServer {
 		final LocationNames name = new LocationNames();
 		name.get(locationNamePid);
 
-//		final LocationNameMaps map = new LocationNameMaps();
+//		FIXME final LocationNameMaps map = new LocationNameMaps();
 //		final List<LocationNameMaps> mapList = map
 //				.getFKLocationNameStylePid(name.getLocationNameStylePid());
 //		Boolean found = false;

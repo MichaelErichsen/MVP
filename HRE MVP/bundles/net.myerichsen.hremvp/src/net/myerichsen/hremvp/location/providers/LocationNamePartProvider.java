@@ -46,6 +46,16 @@ public class LocationNamePartProvider implements IHREProvider {
 		server.delete(key);
 	}
 
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllNamePartsForLocationName(int locationPid)
+			throws Exception {
+		server.deleteAllNamePartsForLocationName(locationPid);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
