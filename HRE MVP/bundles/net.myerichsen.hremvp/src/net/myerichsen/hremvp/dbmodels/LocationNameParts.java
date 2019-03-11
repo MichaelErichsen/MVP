@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the LOCATION_NAME_PARTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 11. mar. 2019
  *
  */
 
@@ -35,12 +35,13 @@ public class LocationNameParts {
 	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_PARTS( "
 			+ "LOCATION_NAME_PART_PID, LOCATION_NAME_PID, LABEL, "
 			+ "PART_NO, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			+ "TABLE_ID) VALUES (?, ?, ?, ?, "
+			+ "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 18) ";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_PARTS SET "
-			+ "LOCATION_NAME_PID = ?, LABEL = ?, PART_NO = ?, "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, "
-			+ "TABLE_ID = ? WHERE LOCATION_NAME_PART_PID = ?";
+			+ "LOCATION_NAME_PID = ?, LABEL = ?, PART_NO = ?"
+			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP"
+			+ " WHERE LOCATION_NAME_PART_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAME_PARTS WHERE LOCATION_NAME_PART_PID = ?";
 
@@ -220,9 +221,6 @@ public class LocationNameParts {
 		ps.setInt(2, getLocationNamePid());
 		ps.setString(3, getLabel());
 		ps.setInt(4, getPartNo());
-		ps.setTimestamp(5, getInsertTstmp());
-		ps.setTimestamp(6, getUpdateTstmp());
-		ps.setInt(7, getTableId());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -297,10 +295,7 @@ public class LocationNameParts {
 		ps.setInt(1, getLocationNamePid());
 		ps.setString(2, getLabel());
 		ps.setInt(3, getPartNo());
-		ps.setTimestamp(4, getInsertTstmp());
-		ps.setTimestamp(5, getUpdateTstmp());
-		ps.setInt(6, getTableId());
-		ps.setInt(7, getLocationNamePartPid());
+		ps.setInt(4, getLocationNamePartPid());
 		ps.executeUpdate();
 		conn.close();
 	}

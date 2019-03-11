@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. feb. 2019
+ * @version 11. mar. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -48,6 +48,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("DEFAULTPERSONNAMESTYLE", "1");
 		store.setDefault("DEFAULTLOCATIONNAMESTYLE", "1");
 		store.setDefault("TREEGENERATIONS", 5);
+		store.setDefault("GOOGLEAPIKEY", "");
 
 		// H2
 		store.setDefault("H2TRACELEVEL", "1");

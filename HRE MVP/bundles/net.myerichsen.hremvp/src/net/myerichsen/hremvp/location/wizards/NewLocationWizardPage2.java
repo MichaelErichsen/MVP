@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.location.wizards;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.http.StatusLine;
@@ -9,8 +10,10 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
@@ -38,6 +41,8 @@ import org.eclipse.swt.widgets.Text;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.providers.LocationNameMapProvider;
@@ -47,19 +52,22 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Text textGoogleMapsKey;
+	final IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private Text textGoogleApiKey;
 	private final IEclipseContext context;
 	private final LocationNameMapProvider provider;
 	private TableViewer tableViewer;
 	private Text textCoordinates;
 	private double lat;
 	private double lng;
+	private List<List<String>> stringList;
 
 	/**
 	 * Constructor
@@ -188,11 +196,12 @@ public class NewLocationWizardPage2 extends WizardPage {
 		});
 
 		final Label lblGoogleMapsKey = new Label(container, SWT.NONE);
-		lblGoogleMapsKey.setText("Google Maps Key");
+		lblGoogleMapsKey.setText("Google API Key");
 
-		textGoogleMapsKey = new Text(container, SWT.BORDER | SWT.PASSWORD);
-		textGoogleMapsKey.setLayoutData(
+		textGoogleApiKey = new Text(container, SWT.BORDER | SWT.PASSWORD);
+		textGoogleApiKey.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textGoogleApiKey.setText(store.getString("GOOGLEAPIKEY"));
 
 		final Button btnGetCoordinatesFrom = new Button(container, SWT.NONE);
 		btnGetCoordinatesFrom.addMouseListener(new MouseAdapter() {
@@ -215,7 +224,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
 			final int locationNameStylePid = wizard.getPage1()
 					.getLocationNameStylePid();
-			tableViewer.setInput(provider.getStringList(locationNameStylePid));
+			stringList = provider.getStringList(locationNameStylePid);
+			tableViewer.setInput(stringList);
 		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
@@ -233,9 +243,9 @@ public class NewLocationWizardPage2 extends WizardPage {
 		StringBuilder sb = new StringBuilder();
 		String locationPart;
 
-		if ((textGoogleMapsKey == null)
-				|| (textGoogleMapsKey.getText().length() == 0)) {
-			textGoogleMapsKey.setFocus();
+		if ((textGoogleApiKey == null)
+				|| (textGoogleApiKey.getText().length() == 0)) {
+			textGoogleApiKey.setFocus();
 			eventBroker.post("MESSAGE", "Please insert Google Map Key");
 			return;
 		}
@@ -262,7 +272,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 			final HttpGet request = new HttpGet(
 					"https://maps.googleapis.com/maps/api/geocode/json?address="
 							+ locationPart + "&key="
-							+ textGoogleMapsKey.getText().trim());
+							+ textGoogleApiKey.getText().trim());
 			final CloseableHttpResponse response = client.execute(request);
 
 			final StatusLine statusLine = response.getStatusLine();
@@ -332,6 +342,13 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	public double getLng() {
 		return lng;
+	}
+
+	/**
+	 * @return the stringList
+	 */
+	public List<List<String>> getStringList() {
+		return stringList;
 	}
 
 }

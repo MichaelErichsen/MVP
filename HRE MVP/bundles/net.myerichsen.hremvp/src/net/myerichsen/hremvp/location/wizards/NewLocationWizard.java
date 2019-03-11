@@ -1,12 +1,15 @@
 package net.myerichsen.hremvp.location.wizards;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
+import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
 import net.myerichsen.hremvp.location.providers.LocationNameProvider;
 import net.myerichsen.hremvp.location.providers.LocationProvider;
 
@@ -14,7 +17,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class NewLocationWizard extends Wizard {
@@ -155,22 +158,22 @@ public class NewLocationWizard extends Wizard {
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
-			// FIXME Location Name Parts
-//			final List<Label> labelList = page2.getLabelList();
-//			final List<Text> textList = page2.getTextList();
-//
-//			for (int i = 0; i < labelList.size(); i++) {
-//				final LocationNamePartProvider lnpp = new LocationNamePartProvider();
-//				lnpp.setLocationNamePid(locationNamePid);
-//				lnpp.setPartNo(i + 1);
-//				lnpp.setLabel(textList.get(i).getText());
-//				final int locationNamePartPid = lnpp.insert();
-//				LOGGER.info(
-//						"Inserted location name part " + locationNamePartPid);
-//			}
+			LocationNamePartProvider lnpp;
+			List<List<String>> stringList = getPage2().getStringList();
+
+			for (int i = 0; i < stringList.size(); i++) {
+				lnpp = new LocationNamePartProvider();
+				lnpp.setLocationNamePid(locationNamePid);
+				lnpp.setPartNo(i + 1);
+				lnpp.setLabel(stringList.get(i).get(3));
+				final int locationNamePartPid = lnpp.insert();
+				LOGGER.info(
+						"Inserted location name part " + locationNamePartPid);
+			}
 
 			eventBroker.post("MESSAGE", locationName
 					+ " inserted in the database as no. " + locationPid);
+			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
 			return true;
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());

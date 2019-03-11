@@ -25,10 +25,10 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
- * Preference page for client
+ * Preference page for HRE MVP client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -165,6 +165,9 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					entryNamesAndValues, getFieldEditorParent()));
 		}
 
+		addField(new StringFieldEditor("GOOGLEAPIKEY", "Google API Key", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE,
+				getFieldEditorParent()));
 	}
 
 	/*
