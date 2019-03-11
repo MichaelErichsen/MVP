@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Locations}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. mar. 2019
+ * @version 11. mar. 2019
  *
  */
 public class LocationServer implements IHREServer {
@@ -46,7 +46,7 @@ public class LocationServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -60,7 +60,7 @@ public class LocationServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -90,7 +90,8 @@ public class LocationServer implements IHREServer {
 			pid = lnl.get(i).getLocationNamePid();
 			sl.add(Integer.toString(pid));
 			lns.get(pid);
-			sl.add(lns.getNameStrings()[i]);
+//			sl.add(lns.getNameStrings()[i]);
+			sl.add("deprecated");
 			sl.add(Boolean.toString(lns.isPrimaryLocationName()));
 			sl.add(Integer.toString(lns.getToDatePid()));
 			sl.add(Integer.toString(lns.getFromDatePid()));
@@ -122,7 +123,7 @@ public class LocationServer implements IHREServer {
 	/**
 	 * @return the primary name of the location
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String getPrimaryName() throws Exception {
 		final StringBuilder sb = new StringBuilder();
@@ -151,13 +152,12 @@ public class LocationServer implements IHREServer {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public List<List<String>> getStringList()
-			throws Exception {
+	public List<List<String>> getStringList() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -244,7 +244,7 @@ public class LocationServer implements IHREServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -319,7 +319,7 @@ public class LocationServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

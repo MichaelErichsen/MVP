@@ -86,6 +86,16 @@ public class LocationNamePartProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param locationNamePid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Integer> getFKLocationNamePid(int locationNamePid)
+			throws Exception {
+		return server.getFKLocationNamePid(locationNamePid);
+	}
+
+	/**
 	 * @return the label
 	 */
 	public String getLabel() {

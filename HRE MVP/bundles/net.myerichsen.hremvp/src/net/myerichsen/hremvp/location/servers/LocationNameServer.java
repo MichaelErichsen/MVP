@@ -10,6 +10,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
 import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
 import net.myerichsen.hremvp.dbmodels.LocationNames;
+import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Business logic interface for
@@ -33,7 +34,7 @@ public class LocationNameServer implements IHREServer {
 	private List<LocationNameMaps> mapList;
 	private List<LocationNameParts> partList;
 
-	private final LocationNames name;
+	private LocationNames name;
 	private final LocationNameStyles style;
 
 	/**
@@ -179,44 +180,6 @@ public class LocationNameServer implements IHREServer {
 	}
 
 	/**
-	 * Get a string of name parts for each name
-	 *
-	 * @return sa An array of strings
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
-	 */
-	public String[] getNameStrings() throws Exception {
-		StringBuilder sb;
-		LocationNames aName;
-
-		final int locationPid = name.getLocationPid();
-		List<LocationNames> nameList = new ArrayList<>();
-		nameList = new LocationNames().getFKLocationPid(locationPid);
-
-		final String[] sa = new String[nameList.size()];
-
-		for (int i = 0; i < nameList.size(); i++) {
-			sb = new StringBuilder();
-			aName = nameList.get(i);
-			final List<LocationNameParts> npl = new LocationNameParts()
-					.getFKLocationNamePid(aName.getLocationNamePid());
-
-			// Concatenate non-null name parts
-			for (final LocationNameParts PersonNameParts : npl) {
-				if (PersonNameParts.getLocationNamePid() == aName
-						.getLocationNamePid()) {
-					if (PersonNameParts.getLabel() != null) {
-						sb.append(PersonNameParts.getLabel() + " ");
-					}
-				}
-			}
-			sa[i] = sb.toString().trim();
-		}
-
-		return sa;
-	}
-
-	/**
 	 * @return the partList
 	 */
 	public List<LocationNameParts> getPartList() {
@@ -288,8 +251,60 @@ public class LocationNameServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> stringList;
+		StringBuilder sb;
+		int pid;
+		int datePid;
+		String s;
+
+		HDateProvider hdp = new HDateProvider();
+		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
+		for (final LocationNames locationNames : name.getFKLocationPid(key)) {
+			stringList = new ArrayList<>();
+
+			pid = locationNames.getLocationNamePid();
+			stringList.add(Integer.toString(pid));
+			LOGGER.fine("Pid: " + pid);
+
+			sb = new StringBuilder();
+			// Concatenate non-null name parts
+			for (final LocationNameParts PersonNameParts : new LocationNameParts()
+					.getFKLocationNamePid(pid)) {
+				if (PersonNameParts.getLocationNamePid() == pid) {
+					if (PersonNameParts.getLabel() != null) {
+						sb.append(PersonNameParts.getLabel() + " ");
+					}
+				}
+			}
+			stringList.add(sb.toString());
+			LOGGER.fine(sb.toString());
+
+			stringList.add(
+					Boolean.toString(locationNames.isPrimaryLocationName()));
+			s = "";
+			datePid = locationNames.getFromDatePid();
+			if (datePid != 0) {
+				hdp.get(datePid);
+				s = hdp.getDate().toString();
+			}
+			stringList.add(s);
+
+			s = "";
+			datePid = locationNames.getToDatePid();
+			if (datePid != 0) {
+				hdp.get(datePid);
+				s = hdp.getDate().toString();
+			}
+			stringList.add(s);
+
+			lls.add(stringList);
+		}
+		return lls;
 	}
 
 	/**

@@ -145,16 +145,16 @@ public class LocationNameProvider implements IHREProvider {
 		return mapList;
 	}
 
-	/**
-	 * Get a string of name parts for each name
-	 *
-	 * @return sa An array of strings
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
-	 */
-	public String[] getNameStrings() throws Exception {
-		return server.getNameStrings();
-	}
+//	/**
+//	 * Get a string of name parts for each name
+//	 *
+//	 * @return sa An array of strings
+//	 * @throws Exception An exception that provides information on a database
+//	 *                   access error or other errors
+//	 */
+//	public String[] getNameStrings() throws Exception {
+//		return server.getNameStrings();
+//	}
 
 	/**
 	 * @return the partList

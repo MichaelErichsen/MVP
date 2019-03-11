@@ -22,7 +22,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 public class OpenLocationNamePartViewHandler {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNamePartView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNamePartsView";
 
 	/**
 	 * @param partService  The Eclipse part service

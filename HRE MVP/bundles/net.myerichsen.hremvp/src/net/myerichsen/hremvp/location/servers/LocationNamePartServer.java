@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.location.servers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -54,10 +55,10 @@ public class LocationNamePartServer implements IHREServer {
 	 */
 	public void deleteAllNamePartsForLocationName(int locationNamePid)
 			throws Exception {
-		List<LocationNameParts> fkLocationNamePid = part
+		final List<LocationNameParts> fkLocationNamePid = part
 				.getFKLocationNamePid(locationNamePid);
 
-		for (LocationNameParts locationNameParts : fkLocationNamePid) {
+		for (final LocationNameParts locationNameParts : fkLocationNamePid) {
 			part.delete(locationNameParts.getLocationNamePartPid());
 		}
 
@@ -117,7 +118,24 @@ public class LocationNamePartServer implements IHREServer {
 //				setMapLabel("mapList.get(i).getLabelPid()");
 //				break;
 //			}
-//		}
+	}
+
+	/**
+	 * @param locationNamePid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Integer> getFKLocationNamePid(int locationNamePid)
+			throws Exception {
+		final List<Integer> li = new ArrayList<>();
+
+		final List<LocationNameParts> fkLocationNamePid = part
+				.getFKLocationNamePid(locationNamePid);
+
+		for (final LocationNameParts locationNameParts : fkLocationNamePid) {
+			li.add(locationNameParts.getLocationNamePartPid());
+		}
+		return li;
 	}
 
 	/**
@@ -286,7 +304,8 @@ public class LocationNamePartServer implements IHREServer {
 		final LocationNames name = new LocationNames();
 		name.get(locationNamePid);
 
-//		FIXME final LocationNameMaps map = new LocationNameMaps();
+//		FIXME Update
+//		final LocationNameMaps map = new LocationNameMaps();
 //		final List<LocationNameMaps> mapList = map
 //				.getFKLocationNameStylePid(name.getLocationNameStylePid());
 //		Boolean found = false;
