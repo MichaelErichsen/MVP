@@ -87,12 +87,7 @@ public class LocationView {
 	private Button btnClearTo;
 
 	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
 	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
 	private final LocationProvider provider;
 
@@ -105,34 +100,6 @@ public class LocationView {
 	 */
 	public LocationView() throws Exception {
 		provider = new LocationProvider();
-	}
-
-	/**
-	 *
-	 */
-	protected void clear() {
-		textId.setText("0");
-		textFromDatePid.setText("");
-		textFromDate.setText("");
-		textFromOriginal.setText("");
-		textToDatePid.setText("");
-		textToDate.setText("");
-		textToOriginal.setText("");
-		textXCoordinate.setText("0.0");
-		textYCoordinate.setText("0.0");
-		textZCoordinate.setText("0.0");
-		btnPrimaryLocation.setSelection(false);
-	}
-
-	/**
-	 *
-	 */
-	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2)
-				.getSelectedElement();
-		partService.hidePart(part, true);
 	}
 
 	/**
@@ -359,25 +326,9 @@ public class LocationView {
 				.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		composite = new Composite(parent, SWT.NONE);
+		composite.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
-			}
-		});
-		buttonSelect.setText("Select");
-
-		buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
-			}
-		});
-		buttonInsert.setText("Insert");
 
 		buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
@@ -387,49 +338,6 @@ public class LocationView {
 			}
 		});
 		buttonUpdate.setText("Update");
-
-		buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-	}
-
-	/**
-	 *
-	 */
-	protected void delete() {
-		try {
-			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE",
-					"Location Name " + textId.getText() + " has been deleted");
-			clear();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -437,13 +345,6 @@ public class LocationView {
 	 */
 	@PreDestroy
 	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	private void get() {
-		get(Integer.parseInt(textId.getText()));
 	}
 
 	/**
@@ -492,28 +393,6 @@ public class LocationView {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 *
-	 */
-	protected void insert() {
-		try {
-			provider.setFromDatePid(
-					Integer.parseInt(textFromDatePid.getText()));
-			provider.setToDatePid(Integer.parseInt(textToDatePid.getText()));
-			provider.setLocationPid(Integer.parseInt(textId.getText()));
-			provider.setPrimaryLocation(btnPrimaryLocation.getSelection());
-			provider.setxCoordinate(new BigDecimal(textXCoordinate.getText()));
-			provider.setyCoordinate(new BigDecimal(textYCoordinate.getText()));
-			provider.setzCoordinate(new BigDecimal(textZCoordinate.getText()));
-			provider.insert();
-			eventBroker.post("MESSAGE",
-					"Location Name " + textId.getText() + " has been inserted");
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
 		}
 	}
 
