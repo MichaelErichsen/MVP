@@ -49,12 +49,12 @@ import net.myerichsen.hremvp.location.wizards.NewLocationNameWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all data about a location
+ * Display all names of a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 12. mar. 2019
  */
-public class LocationNameView {
+public class LocationNameNavigator {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
@@ -78,7 +78,7 @@ public class LocationNameView {
 	 *                   access error or other errors
 	 *
 	 */
-	public LocationNameView() throws Exception {
+	public LocationNameNavigator() throws Exception {
 		provider = new LocationNameProvider();
 	}
 

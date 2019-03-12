@@ -69,7 +69,7 @@
             </children>
             <children xsi:type="basic:PartSashContainer" xmi:id="_FHamgOTUEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.4" horizontal="true">
               <children xsi:type="basic:PartStack" xmi:id="__5ZCcOTTEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partstack.5" selectedElement="_d_a3UOTTEeiOQPtyES1FZg">
-                <children xsi:type="basic:Part" xmi:id="_d_a3UOTTEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnameview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameView" label="Location Name View"/>
+                <children xsi:type="basic:Part" xmi:id="_d_a3UOTTEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnameview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameNavigator" label="Location Name View"/>
                 <children xsi:type="basic:Part" xmi:id="_d83kgOTREeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.googlemapsview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationGoogleMapBrowser" label="Google Maps View"/>
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_LXcaIOTUEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partstack.7">
@@ -161,7 +161,7 @@
   <handlers xmi:id="_cTcQsKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.handler.1" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.TableNavigatorHandler" command="_LGKFUKhZEeibyfLs7dGugQ"/>
   <handlers xmi:id="_i4PacKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.handler.2" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.TableEditorHandler" command="_Ui9-AKhZEeibyfLs7dGugQ"/>
   <handlers xmi:id="_c_YEoKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.handler.3" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNameViewHandler" command="_Z-VVgKiQEeijn8bOcRpvRw"/>
-  <handlers xmi:id="_LA4U0K-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.handler.4" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNameViewHandler" command="_HYFpMK-NEeiFg6Dg1VDbHw"/>
+  <handlers xmi:id="_LA4U0K-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.handler.4" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNameNavigatorHandler" command="_HYFpMK-NEeiFg6Dg1VDbHw"/>
   <handlers xmi:id="_xmtBwLFTEei7F_uEER0ShA" elementId="net.myerichsen.hremvp.handler.6" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenLocationNameMapViewHandler" command="_tbsZ4LFTEei7F_uEER0ShA"/>
   <handlers xmi:id="_i1iNsLQrEeiJPpXgDiVWkw" elementId="net.myerichsen.hremvp.handler.7" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNamePartViewHandler" command="_c4b9ILQrEeiJPpXgDiVWkw"/>
   <handlers xmi:id="_jXHOwLRBEeiB6astfjEjxQ" elementId="net.myerichsen.hremvp.handler.8" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenLocationNameStyleViewHandler" command="_hBeNELRBEeiB6astfjEjxQ"/>
@@ -205,7 +205,7 @@
   <commands xmi:id="_LGKFUKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.command.tablenavigatoropen" commandName="tablenavigatoropen" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_Ui9-AKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.command.tableeditoropen" commandName="tableeditoropen" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_Z-VVgKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.command.openpersonnameview" commandName="openPersonNameView" category="_oxYVUBNHEemEvqVth7AYPg"/>
-  <commands xmi:id="_HYFpMK-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.command.openlocationnameview" commandName="openLocationNameView" category="_lxRDoBylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_HYFpMK-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.command.openlocationnamenavigator" commandName="openLocationNameNavigator" category="_lxRDoBylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_tbsZ4LFTEei7F_uEER0ShA" elementId="net.myerichsen.hremvp.command.openlocationnamemapview" commandName="openLocationNameMapView" category="_UIbmMOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_c4b9ILQrEeiJPpXgDiVWkw" elementId="net.myerichsen.hremvp.command.openlocationnamepartview" commandName="openLocationNamePartView" category="_UIbmMOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_hBeNELRBEeiB6astfjEjxQ" elementId="net.myerichsen.hremvp.command.openlocationnamestyleview" commandName="openLocationNameStyleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>

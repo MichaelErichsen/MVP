@@ -29,10 +29,10 @@ import net.myerichsen.hremvp.person.providers.PersonNameListProvider;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 
 /**
- * Display a list of all names
+ * Display all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 12. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -47,9 +47,9 @@ public class PersonNameNavigator {
 	private EHandlerService handlerService;
 
 	PersonNameListProvider provider;
-	private Table table;
+	private TableViewer tableViewer;
 
-	// To string now invalid in name column
+	// FIXME To string now invalid in name column
 	/**
 	 * Constructor
 	 *
@@ -67,9 +67,8 @@ public class PersonNameNavigator {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		final TableViewer tableViewer = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -110,7 +109,7 @@ public class PersonNameNavigator {
 				"net.myerichsen.hremvp.command.opennameview", null);
 		handlerService.executeHandler(command);
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -137,10 +136,12 @@ public class PersonNameNavigator {
 
 			final List<PersonNames> rowList = provider.getModelList();
 
-			table.removeAll();
+			// FIXME Change to JFace
+			tableViewer.getTable().removeAll();
 
 			for (int i = 0; i < rowList.size(); i++) {
-				final TableItem item = new TableItem(table, SWT.NONE);
+				final TableItem item = new TableItem(tableViewer.getTable(),
+						SWT.NONE);
 				final PersonNames row = rowList.get(i);
 				item.setText(0, Integer.toString(row.getNamePid()));
 				personNameProvider.get(row.getNamePid());

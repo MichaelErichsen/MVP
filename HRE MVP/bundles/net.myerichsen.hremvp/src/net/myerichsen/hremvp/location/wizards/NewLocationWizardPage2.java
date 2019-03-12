@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 12. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -243,20 +243,20 @@ public class NewLocationWizardPage2 extends WizardPage {
 		StringBuilder sb = new StringBuilder();
 		String locationPart;
 
+		for (final TableItem item : tableViewer.getTable().getItems()) {
+			locationPart = item.getText(4);
+			if (locationPart.length() > 0) {
+				valid = true;
+				setPageComplete(true);
+				sb.append(locationPart + " ");
+			}
+		}
+
 		if ((textGoogleApiKey == null)
 				|| (textGoogleApiKey.getText().length() == 0)) {
 			textGoogleApiKey.setFocus();
 			eventBroker.post("MESSAGE", "Please insert Google Map Key");
 			return;
-		}
-
-		final TableItem[] items = tableViewer.getTable().getItems();
-		for (final TableItem item : items) {
-			locationPart = item.getText(4);
-			if (locationPart.length() > 0) {
-				valid = true;
-				sb.append(locationPart + " ");
-			}
 		}
 
 		if (valid == false) {
@@ -319,7 +319,6 @@ public class NewLocationWizardPage2 extends WizardPage {
 			wizard.addBackPages();
 			wizard.getContainer().updateButtons();
 			wizard.setLocationName(result0.getString("formatted_address"));
-			setPageComplete(true);
 			eventBroker.post("MESSAGE",
 					"Geocoded address " + result0.getString("formatted_address")
 							+ " as lat " + lat + ", lng " + lng);

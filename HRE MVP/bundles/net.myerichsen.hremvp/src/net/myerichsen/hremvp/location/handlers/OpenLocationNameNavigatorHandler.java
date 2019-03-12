@@ -14,15 +14,15 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 /**
- * Handler to open the Location Name view
+ * Handler to open the Location Name navigator
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. feb. 2019
+ * @version 12. mar. 2019
  */
-public class OpenLocationNameViewHandler {
+public class OpenLocationNameNavigatorHandler {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameViewOld";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameNavigator";
 
 	/**
 	 * @param partService  The Eclipse part service

@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display static data about a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 12. mar. 2019
  */
 public class LocationView {
 	private final static Logger LOGGER = Logger
@@ -444,7 +444,7 @@ public class LocationView {
 	 *
 	 */
 	protected void openLocationNameView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationNameViewOld";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameNavigator";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
