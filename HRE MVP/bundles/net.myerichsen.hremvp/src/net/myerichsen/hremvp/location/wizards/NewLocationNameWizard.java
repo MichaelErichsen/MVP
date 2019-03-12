@@ -1,217 +1,192 @@
 package net.myerichsen.hremvp.location.wizards;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.logging.Logger;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jface.wizard.IWizardContainer;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.wizard.Wizard;
+
+import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
+import net.myerichsen.hremvp.location.providers.LocationNameProvider;
+import net.myerichsen.hremvp.location.providers.LocationProvider;
 
 /**
- * @author  Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 11. mar. 2019
+ * Wizard to add a new location name
+ *
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 12. mar. 2019
  *
  */
-public class NewLocationNameWizard implements IWizard {
+public class NewLocationNameWizard extends Wizard {
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	private final IEclipseContext context;
+	private NewLocationNameWizardPage1 page1;
+	private NewLocationNameWizardPage2 page2;
+	private NewLocationNameWizardPage3 page3;
+	private int locationNameStylePid = 0;
+	private String locationName;
 
 	/**
 	 * Constructor
 	 *
-	 * @param context
+	 * @param context The Eclipse Context
+	 *
 	 */
 	public NewLocationNameWizard(IEclipseContext context) {
-		// TODO Auto-generated constructor stub
+		setWindowTitle("New Location");
+		setForcePreviousAndNextButtons(true);
+		this.context = context;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#addPages()
+	/**
+	 *
+	 */
+	public void addPage2() {
+		page2 = new NewLocationNameWizardPage2(context);
+		addPage(page2);
+	}
+
+	/**
+	 *
+	 */
+	public void addBackPages() {
+		page3 = new NewLocationNameWizardPage3(context);
+		addPage(page3);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.jface.wizard.Wizard#addPages()
 	 */
 	@Override
 	public void addPages() {
-		// TODO Auto-generated method stub
-
+		page1 = new NewLocationNameWizardPage1(context);
+		addPage(page1);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#canFinish()
+	/**
+	 * @return the locationName
 	 */
-	@Override
-	public boolean canFinish() {
-		// TODO Auto-generated method stub
-		return false;
+	public String getLocationName() {
+		return locationName;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#createPageControls(org.eclipse.swt.widgets.Composite)
+	/**
+	 * @return the locationNameStyle
 	 */
-	@Override
-	public void createPageControls(Composite pageContainer) {
-		// TODO Auto-generated method stub
-
+	public int getLocationNameStylePid() {
+		return locationNameStylePid;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#dispose()
+	/**
+	 * @return the page1
 	 */
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
+	public NewLocationNameWizardPage1 getPage1() {
+		return page1;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getContainer()
+	/**
+	 * @return the page2
 	 */
-	@Override
-	public IWizardContainer getContainer() {
-		// TODO Auto-generated method stub
-		return null;
+	public NewLocationNameWizardPage2 getPage2() {
+		return page2;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getDefaultPageImage()
+	/**
+	 * @return the page3
 	 */
-	@Override
-	public Image getDefaultPageImage() {
-		// TODO Auto-generated method stub
-		return null;
+	public NewLocationNameWizardPage3 getPage3() {
+		return page3;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getDialogSettings()
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@Override
-	public IDialogSettings getDialogSettings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
-	 */
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getPage(java.lang.String)
-	 */
-	@Override
-	public IWizardPage getPage(String pageName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getPageCount()
-	 */
-	@Override
-	public int getPageCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getPages()
-	 */
-	@Override
-	public IWizardPage[] getPages() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
-	 */
-	@Override
-	public IWizardPage getPreviousPage(IWizardPage page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getStartingPage()
-	 */
-	@Override
-	public IWizardPage getStartingPage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getTitleBarColor()
-	 */
-	@Override
-	public RGB getTitleBarColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#getWindowTitle()
-	 */
-	@Override
-	public String getWindowTitle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#isHelpAvailable()
-	 */
-	@Override
-	public boolean isHelpAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#needsPreviousAndNextButtons()
-	 */
-	@Override
-	public boolean needsPreviousAndNextButtons() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#needsProgressMonitor()
-	 */
-	@Override
-	public boolean needsProgressMonitor() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#performCancel()
-	 */
-	@Override
-	public boolean performCancel() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
-	 */
-	@Override
+	// FIXME Does not work yet
+	// FIXME Remove geocoding
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
+		final IEventBroker eventBroker = context.get(IEventBroker.class);
+
+		try {
+			final LocationProvider lp = new LocationProvider();
+			if (page3 == null) {
+				return false;
+			}
+
+			lp.setFromDatePid(page3.getFromDatePid());
+			lp.setToDatePid(page3.getFromDatePid());
+			lp.setxCoordinate(
+					new BigDecimal(page3.getTextXCoordinate().getText()));
+			lp.setyCoordinate(
+					new BigDecimal(page3.getTextYCoordinate().getText()));
+			lp.setzCoordinate(
+					new BigDecimal(page3.getTextZCoordinate().getText()));
+			lp.setPrimaryLocation(
+					page3.getBtnCheckButtonPrimary().getSelection());
+			final int locationPid = lp.insert();
+			LOGGER.info("Inserted location " + locationPid);
+
+			final LocationNameProvider lnp = new LocationNameProvider();
+			lnp.setLocationPid(locationPid);
+			lnp.setFromDatePid(page1.getFromDatePid());
+			lnp.setToDatePid(page1.getFromDatePid());
+			lnp.setPrimaryLocationName(true);
+
+			final String s = page1.getComboLocationNameStyle();
+			lnp.setLocationNameStylePid(Integer.parseInt(s));
+
+			lnp.setPrimaryLocationName(
+					page1.getBtnPrimaryLocationName().getSelection());
+			lnp.setPreposition(page1.getTextPreposition().getText());
+			final int locationNamePid = lnp.insert();
+			LOGGER.info("Inserted location name " + locationNamePid);
+
+			LocationNamePartProvider lnpp;
+			List<List<String>> stringList = getPage2().getStringList();
+
+			for (int i = 0; i < stringList.size(); i++) {
+				lnpp = new LocationNamePartProvider();
+				lnpp.setLocationNamePid(locationNamePid);
+				lnpp.setPartNo(i + 1);
+				lnpp.setLabel(stringList.get(i).get(4));
+				final int locationNamePartPid = lnpp.insert();
+				LOGGER.info(
+						"Inserted location name part " + locationNamePartPid);
+			}
+
+			eventBroker.post("MESSAGE", locationName
+					+ " inserted in the database as no. " + locationPid);
+			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
+			return true;
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
+		}
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.IWizard#setContainer(org.eclipse.jface.wizard.IWizardContainer)
+	/**
+	 * @param locationName the locationName to set
 	 */
-	@Override
-	public void setContainer(IWizardContainer wizardContainer) {
-		// TODO Auto-generated method stub
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 
+	/**
+	 * @param locationNameStyle the locationNameStyle to set
+	 */
+	public void setLocationNameStylePid(int locationNameStylePid) {
+		this.locationNameStylePid = locationNameStylePid;
 	}
 
 }

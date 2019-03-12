@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a sex type with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 8. mar. 2019
+ * @version 12. mar. 2019
  *
  */
 
@@ -289,7 +289,7 @@ public class SexTypeView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
+					LOGGER.fine(input.get(i).get(2) + ", " + input.get(i).get(3)
 							+ " - " + existingElement.get(0) + ", "
 							+ existingElement.get(1) + ", "
 							+ existingElement.get(2));
@@ -305,7 +305,7 @@ public class SexTypeView {
 							dp.setLabelPid(provider.getLabelPid());
 							dp.setLabelType("SEX");
 							dp.update();
-							LOGGER.info("Updated dictionary element "
+							LOGGER.fine("Updated dictionary element "
 									+ input.get(i).get(0) + ", "
 									+ input.get(i).get(1) + ", "
 									+ input.get(i).get(2) + ", "

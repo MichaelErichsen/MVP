@@ -5,6 +5,8 @@ import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
 import net.myerichsen.hremvp.dbmodels.LocationNames;
 
@@ -13,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 12. mar. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -198,8 +200,36 @@ public class LocationNamePartServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> stringList;
+		List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
+		Dictionary dictionary = new Dictionary();
+
+		LocationNames ln = new LocationNames();
+		ln.get(part.getLocationNamePid());
+
+		List<LocationNameMaps> lnm = new LocationNameMaps()
+				.getFKLocationNameStylePid(ln.getLocationNameStylePid());
+
+		List<LocationNameParts> lnp = part.getFKLocationNamePid(key);
+
+		for (int i = 0; i < lnp.size(); i++) {
+			stringList = new ArrayList<>();
+			stringList
+					.add(Integer.toString(lnp.get(i).getLocationNamePartPid()));
+			stringList.add(Integer.toString(lnp.get(i).getPartNo()));
+
+			int labelPid = lnm.get(i).getLabelPid();
+			List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+			stringList.add(fkLabelPid.get(0).getLabel());
+			stringList.add(lnp.get(i).getLabel());
+			lls.add(stringList);
+		}
+		return lls;
 	}
 
 	/**
@@ -299,28 +329,6 @@ public class LocationNamePartServer implements IHREServer {
 		part.setLocationNamePartPid(locationNamePartPid);
 		part.setLocationNamePid(locationNamePid);
 		part.setPartNo(partNo);
-
-		// Check if matching map part no exists
-		final LocationNames name = new LocationNames();
-		name.get(locationNamePid);
-
-//		FIXME Update
-//		final LocationNameMaps map = new LocationNameMaps();
-//		final List<LocationNameMaps> mapList = map
-//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-//		Boolean found = false;
-//
-//		for (int i = 0; i < mapList.size(); i++) {
-//			if (mapList.get(i).getPartNo() == partNo) {
-//				found = true;
-//				break;
-//			}
-//		}
-//
-//		if (!found) {
-//			throw new MvpException("Part number " + partNo
-//					+ " does not exist in matching location name map");
-//		}
-//		part.update();
+		part.update();
 	}
 }
