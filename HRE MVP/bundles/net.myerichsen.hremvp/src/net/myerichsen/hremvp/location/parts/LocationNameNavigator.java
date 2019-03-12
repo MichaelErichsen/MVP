@@ -114,7 +114,7 @@ public class LocationNameNavigator {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				openLocationNamePartsView();
+				openLocationNamePartsNavigator();
 			}
 		});
 		table.setLinesVisible(true);
@@ -287,8 +287,8 @@ public class LocationNameNavigator {
 	/**
 	 *
 	 */
-	protected void openLocationNamePartsView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNamePartsView";
+	protected void openLocationNamePartsNavigator() {
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNamePartNavigator";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);

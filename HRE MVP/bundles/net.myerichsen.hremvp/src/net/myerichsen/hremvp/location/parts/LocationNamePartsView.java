@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
  * @version 12. mar. 2019
  *
  */
-public class LocztionNamePartView {
+public class LocationNamePartsView {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
@@ -67,7 +67,7 @@ public class LocztionNamePartView {
 	 *                   access error or other errors
 	 *
 	 */
-	public LocztionNamePartView() throws Exception {
+	public LocationNamePartsView() throws Exception {
 		provider = new LocationNamePartProvider();
 	}
 

@@ -207,6 +207,11 @@ public class NewLocationWizardPage2 extends WizardPage {
 		btnGetCoordinatesFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				for (final TableItem item : tableViewer.getTable().getItems()) {
+					if (item.getText(4).length() > 0) {
+						setPageComplete(true);
+					}
+				}
 				geocode();
 			}
 		});
