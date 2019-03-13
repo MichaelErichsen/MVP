@@ -36,14 +36,15 @@ public class NewLocationNameStyleWizardPage2 extends WizardPage {
 	private Text textNamePartCount;
 	private List<List<String>> lls;
 
+	// FIXME Make editable table better
 	/**
 	 * Constructor
 	 *
 	 * @param context
 	 */
 	public NewLocationNameStyleWizardPage2(IEclipseContext context) {
-		super("location name style wizard Page 2");
-		setTitle("location name style");
+		super("Location name style wizard Page 2");
+		setTitle("Location name style");
 		setDescription("Add parts of a new location name style");
 	}
 
