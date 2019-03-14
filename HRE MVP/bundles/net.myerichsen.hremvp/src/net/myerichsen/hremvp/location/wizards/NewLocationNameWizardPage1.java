@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * New location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 14. mar. 2019
  *
  */
 public class NewLocationNameWizardPage1 extends WizardPage {
@@ -129,27 +129,29 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
-		lblFromDate.setSize(55, 15);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textFromDate.setSize(427, 21);
 		textFromDate.setEditable(false);
-		new Label(compositeFrom, SWT.NONE);
-		new Label(compositeFrom, SWT.NONE);
 
 		final Composite compositeFromButtons = new Composite(compositeFrom,
 				SWT.NONE);
 		compositeFromButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeFromButtons.setSize(137, 31);
 		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateDialog dialog = new DateDialog(
@@ -173,6 +175,13 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateNavigatorDialog dialog = new DateNavigatorDialog(
@@ -193,6 +202,13 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				textFromDate.setText("");
@@ -206,26 +222,28 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
-		lblToDate.setSize(40, 15);
 		lblToDate.setText("To Date");
 
 		textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textToDate.setSize(427, 21);
 		textToDate.setEditable(false);
-		new Label(compositeTo, SWT.NONE);
-		new Label(compositeTo, SWT.NONE);
 
 		final Composite compositeToButtons = new Composite(compositeTo,
 				SWT.NONE);
 		compositeToButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeToButtons.setSize(211, 31);
 		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				textToDate.setText(textFromDate.getText());
@@ -236,6 +254,13 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateDialog dialog = new DateDialog(textToDate.getShell(),
@@ -259,6 +284,13 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateNavigatorDialog dialog = new DateNavigatorDialog(
@@ -279,6 +311,13 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 			}

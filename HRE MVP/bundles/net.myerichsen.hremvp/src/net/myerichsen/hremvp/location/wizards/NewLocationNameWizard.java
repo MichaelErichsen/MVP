@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.wizards;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,13 +10,12 @@ import org.eclipse.jface.wizard.Wizard;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
 import net.myerichsen.hremvp.location.providers.LocationNameProvider;
-import net.myerichsen.hremvp.location.providers.LocationProvider;
 
 /**
  * Wizard to add a new location name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 14. mar. 2019
  *
  */
 public class NewLocationNameWizard extends Wizard {
@@ -26,6 +24,66 @@ public class NewLocationNameWizard extends Wizard {
 
 	private final IEclipseContext context;
 	private NewLocationNameWizardPage1 page1;
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
+	 */
+	@Override
+	// FIXME Does not work yet
+	public boolean performFinish() {
+		final IEventBroker eventBroker = context.get(IEventBroker.class);
+		try {
+			final LocationNameProvider lnp = new LocationNameProvider();
+	
+			if (page3 == null) {
+				return false;
+			}
+	
+			lnp.setFromDatePid(page3.getFromDatePid());
+			lnp.setToDatePid(page3.getFromDatePid());
+			final int locationPid = lnp.insert();
+			LOGGER.info("Inserted location name " + locationPid);
+	
+			lnp.setLocationPid(locationPid);
+			lnp.setFromDatePid(page1.getFromDatePid());
+			lnp.setToDatePid(page1.getFromDatePid());
+			lnp.setPrimaryLocationName(true);
+	
+			final String s = page1.getComboLocationNameStyle();
+			lnp.setLocationNameStylePid(Integer.parseInt(s));
+	
+			lnp.setPrimaryLocationName(
+					page1.getBtnPrimaryLocationName().getSelection());
+			lnp.setPreposition(page1.getTextPreposition().getText());
+			final int locationNamePid = lnp.insert();
+			LOGGER.info("Inserted location name " + locationNamePid);
+	
+			LocationNamePartProvider lnpp;
+			List<List<String>> stringList = getPage2().getStringList();
+	
+			for (int i = 0; i < stringList.size(); i++) {
+				lnpp = new LocationNamePartProvider();
+				lnpp.setLocationNamePid(locationNamePid);
+				lnpp.setPartNo(i + 1);
+				lnpp.setLabel(stringList.get(i).get(4));
+				final int locationNamePartPid = lnpp.insert();
+				LOGGER.info(
+						"Inserted location name part " + locationNamePartPid);
+			}
+	
+			eventBroker.post("MESSAGE", locationName
+					+ " inserted in the database as no. " + locationPid);
+			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
+			return true;
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	private NewLocationNameWizardPage2 page2;
 	private NewLocationNameWizardPage3 page3;
 	private int locationNameStylePid = 0;
@@ -38,7 +96,7 @@ public class NewLocationNameWizard extends Wizard {
 	 *
 	 */
 	public NewLocationNameWizard(IEclipseContext context) {
-		setWindowTitle("New Location");
+		setWindowTitle("New Location Name");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 	}
@@ -103,76 +161,6 @@ public class NewLocationNameWizard extends Wizard {
 	 */
 	public NewLocationNameWizardPage3 getPage3() {
 		return page3;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	// FIXME Does not work yet
-	// FIXME Remove geocoding
-	public boolean performFinish() {
-		final IEventBroker eventBroker = context.get(IEventBroker.class);
-
-		try {
-			final LocationProvider lp = new LocationProvider();
-			if (page3 == null) {
-				return false;
-			}
-
-			lp.setFromDatePid(page3.getFromDatePid());
-			lp.setToDatePid(page3.getFromDatePid());
-			lp.setxCoordinate(
-					new BigDecimal(page3.getTextXCoordinate().getText()));
-			lp.setyCoordinate(
-					new BigDecimal(page3.getTextYCoordinate().getText()));
-			lp.setzCoordinate(
-					new BigDecimal(page3.getTextZCoordinate().getText()));
-			lp.setPrimaryLocation(
-					page3.getBtnCheckButtonPrimary().getSelection());
-			final int locationPid = lp.insert();
-			LOGGER.info("Inserted location " + locationPid);
-
-			final LocationNameProvider lnp = new LocationNameProvider();
-			lnp.setLocationPid(locationPid);
-			lnp.setFromDatePid(page1.getFromDatePid());
-			lnp.setToDatePid(page1.getFromDatePid());
-			lnp.setPrimaryLocationName(true);
-
-			final String s = page1.getComboLocationNameStyle();
-			lnp.setLocationNameStylePid(Integer.parseInt(s));
-
-			lnp.setPrimaryLocationName(
-					page1.getBtnPrimaryLocationName().getSelection());
-			lnp.setPreposition(page1.getTextPreposition().getText());
-			final int locationNamePid = lnp.insert();
-			LOGGER.info("Inserted location name " + locationNamePid);
-
-			LocationNamePartProvider lnpp;
-			List<List<String>> stringList = getPage2().getStringList();
-
-			for (int i = 0; i < stringList.size(); i++) {
-				lnpp = new LocationNamePartProvider();
-				lnpp.setLocationNamePid(locationNamePid);
-				lnpp.setPartNo(i + 1);
-				lnpp.setLabel(stringList.get(i).get(4));
-				final int locationNamePartPid = lnpp.insert();
-				LOGGER.info(
-						"Inserted location name part " + locationNamePartPid);
-			}
-
-			eventBroker.post("MESSAGE", locationName
-					+ " inserted in the database as no. " + locationPid);
-			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
-			return true;
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
-		return false;
 	}
 
 	/**

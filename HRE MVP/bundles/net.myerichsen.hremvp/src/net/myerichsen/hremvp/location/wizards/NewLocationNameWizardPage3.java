@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.listeners.DoubleListener;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
@@ -42,10 +41,6 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 	private Text textToDateSort;
 	private Text textToOriginal;
 	private Text textToSurety;
-
-	private Text textXCoordinate;
-	private Text textYCoordinate;
-	private Text textZCoordinate;
 	private Button btnCheckButtonPrimary;
 
 	private int fromDatePid;
@@ -60,8 +55,7 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 	public NewLocationNameWizardPage3(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("New Location");
-		setDescription(
-				"Enter optional time limitation for the location. Coordinates can have been set by Google.");
+		setDescription("Enter optional time limitation for the location.\r\n");
 		this.context = context;
 	}
 
@@ -277,45 +271,6 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 		});
 		btnClearTo.setText("Clear");
 
-		final Label lblXCoordinate = new Label(container, SWT.NONE);
-		lblXCoordinate.setText("X Coordinate");
-
-		final NewLocationNameWizard wizard = (NewLocationNameWizard) getWizard();
-
-		textXCoordinate = new Text(container, SWT.BORDER);
-		textXCoordinate.setText("0");
-		textXCoordinate.setToolTipText("Latitude (-180 to 180)");
-		textXCoordinate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textXCoordinate.addListener(SWT.Verify, new DoubleListener());
-		textXCoordinate.setText(Double.toString(wizard.getPage2().getLat()));
-		new Label(container, SWT.NONE);
-
-		final Label lblYCoordinate = new Label(container, SWT.NONE);
-		lblYCoordinate.setText("Y Coordinate");
-
-		textYCoordinate = new Text(container, SWT.BORDER);
-		textYCoordinate.setText("0");
-		textYCoordinate.setToolTipText("Longitude (-90 to 90)");
-		textYCoordinate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textYCoordinate.addListener(SWT.Verify, new DoubleListener());
-		textYCoordinate.setText(Double.toString(wizard.getPage2().getLng()));
-
-		new Label(container, SWT.NONE);
-
-		final Label lblZCoordinate = new Label(container, SWT.NONE);
-		lblZCoordinate.setText("Z Coordinate");
-
-		textZCoordinate = new Text(container, SWT.BORDER);
-		textZCoordinate.setText("0");
-		textZCoordinate.setToolTipText("Elevation above sea level in meters");
-		textZCoordinate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textZCoordinate.addListener(SWT.Verify, new DoubleListener());
-
-		new Label(container, SWT.NONE);
-
 		new Label(container, SWT.NONE);
 
 		btnCheckButtonPrimary = new Button(container, SWT.CHECK);
@@ -342,27 +297,6 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 	}
 
 	/**
-	 * @return the textXCoordinate
-	 */
-	public Text getTextXCoordinate() {
-		return textXCoordinate;
-	}
-
-	/**
-	 * @return the textYCoordinate
-	 */
-	public Text getTextYCoordinate() {
-		return textYCoordinate;
-	}
-
-	/**
-	 * @return the textZCoordinate
-	 */
-	public Text getTextZCoordinate() {
-		return textZCoordinate;
-	}
-
-	/**
 	 * @return the toDatePid
 	 */
 	public int getToDatePid() {
@@ -381,27 +315,6 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 	 */
 	public void setFromDatePid(int fromDatePid) {
 		this.fromDatePid = fromDatePid;
-	}
-
-	/**
-	 * @param textXCoordinate the textXCoordinate to set
-	 */
-	public void setTextXCoordinate(Text textXCoordinate) {
-		this.textXCoordinate = textXCoordinate;
-	}
-
-	/**
-	 * @param textYCoordinate the textYCoordinate to set
-	 */
-	public void setTextYCoordinate(Text textYCoordinate) {
-		this.textYCoordinate = textYCoordinate;
-	}
-
-	/**
-	 * @param textZCoordinate the textZCoordinate to set
-	 */
-	public void setTextZCoordinate(Text textZCoordinate) {
-		this.textZCoordinate = textZCoordinate;
 	}
 
 	/**

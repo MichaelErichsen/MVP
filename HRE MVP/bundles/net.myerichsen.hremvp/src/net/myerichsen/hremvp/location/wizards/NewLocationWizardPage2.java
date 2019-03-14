@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 14. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -252,11 +252,16 @@ public class NewLocationWizardPage2 extends WizardPage {
 			locationPart = item.getText(4);
 			if (locationPart.length() > 0) {
 				valid = true;
-				setPageComplete(true);
 				sb.append(locationPart + " ");
 			}
 		}
 
+		if (valid) {
+			setPageComplete(true);
+			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+			wizard.addBackPages();
+			wizard.getContainer().updateButtons();
+		}
 		if ((textGoogleApiKey == null)
 				|| (textGoogleApiKey.getText().length() == 0)) {
 			textGoogleApiKey.setFocus();
@@ -274,10 +279,11 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 		try {
 			final CloseableHttpClient client = HttpClients.createDefault();
-			final HttpGet request = new HttpGet(
-					"https://maps.googleapis.com/maps/api/geocode/json?address="
-							+ locationPart + "&key="
-							+ textGoogleApiKey.getText().trim());
+			String requestString = "https://maps.googleapis.com/maps/api/geocode/json?address="
+					+ locationPart + "&key="
+					+ textGoogleApiKey.getText().trim();
+			final HttpGet request = new HttpGet(requestString);
+
 			final CloseableHttpResponse response = client.execute(request);
 
 			final StatusLine statusLine = response.getStatusLine();
@@ -328,9 +334,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 					"Geocoded address " + result0.getString("formatted_address")
 							+ " as lat " + lat + ", lng " + lng);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
+			LOGGER.severe(e.getCause() + ": " + e.getMessage());
+			eventBroker.post("MESSAGE", e.getCause() + ": " + e.getMessage());
 		}
 	}
 
