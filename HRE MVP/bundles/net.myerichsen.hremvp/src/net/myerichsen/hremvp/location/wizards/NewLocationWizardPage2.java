@@ -77,6 +77,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	public NewLocationWizardPage2(IEclipseContext context) {
 		super("wizardPage");
+		LOGGER.info("Wizard page 2");
 		this.context = context;
 		setTitle("Location Name Parts");
 		setDescription(
@@ -92,6 +93,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	@Override
 	public void createControl(Composite parent) {
+		LOGGER.info("Create controls");
 		final Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 

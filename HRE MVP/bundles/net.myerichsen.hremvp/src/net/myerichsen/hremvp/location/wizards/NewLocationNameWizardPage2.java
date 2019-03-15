@@ -35,9 +35,10 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * New location name wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. mar. 2019
+ * @version 15. mar. 2019
  *
  */
+// FIXME Test for some data entered
 public class NewLocationNameWizardPage2 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -56,8 +57,7 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 	public NewLocationNameWizardPage2(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("Location Name Parts");
-		setDescription(
-				"Enter the parts of the location name. Get coordinates from Google.");
+		setDescription("Enter the parts of the location name.");
 		provider = new LocationNameMapProvider();
 	}
 
@@ -171,6 +171,8 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 			}
 
 		});
+
+		setControl(container);
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
