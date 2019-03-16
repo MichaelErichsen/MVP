@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * New location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewLocationNameWizardPage1 extends WizardPage {
@@ -327,7 +327,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		new Label(container, SWT.NONE);
 
 		btnPrimaryLocationName = new Button(container, SWT.CHECK);
-		btnPrimaryLocationName.setSelection(true);
+		btnPrimaryLocationName.setSelection(false);
 		btnPrimaryLocationName.setText("Primary Location Name");
 
 		final Label lblPreposition = new Label(container, SWT.NONE);

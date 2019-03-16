@@ -17,6 +17,8 @@ import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
@@ -24,6 +26,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
@@ -35,7 +38,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * New location name wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 // FIXME Test for some data entered
@@ -75,6 +78,29 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
+		table.addFocusListener(new FocusAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
+			 * events.FocusEvent)
+			 */
+			@Override
+			public void focusLost(FocusEvent e) {
+				TableItem[] tableItems = table.getItems();
+
+				for (int i = 0; i < tableItems.length; i++) {
+					if (tableItems[i].getText(4).length() > 0) {
+						setPageComplete(true);
+						NewLocationNameWizard wizard = (NewLocationNameWizard) getWizard();
+						wizard.addBackPages();
+						wizard.getContainer().updateButtons();
+						break;
+					}
+				}
+			}
+		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));

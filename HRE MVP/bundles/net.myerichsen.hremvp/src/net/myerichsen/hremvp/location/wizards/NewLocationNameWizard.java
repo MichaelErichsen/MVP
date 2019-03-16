@@ -24,6 +24,7 @@ public class NewLocationNameWizard extends Wizard {
 
 	private final IEclipseContext context;
 	private NewLocationNameWizardPage1 page1;
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -35,33 +36,44 @@ public class NewLocationNameWizard extends Wizard {
 		final IEventBroker eventBroker = context.get(IEventBroker.class);
 		try {
 			final LocationNameProvider lnp = new LocationNameProvider();
-	
+
 			if (page3 == null) {
 				return false;
 			}
-	
+
 			lnp.setFromDatePid(page3.getFromDatePid());
-			lnp.setToDatePid(page3.getFromDatePid());
+			// FIXME lnp.setToDatePid(page3.getFromDatePid());SEVERE:
+			// Referential
+			// integrity constraint violation: "LOCATIONS_LOCATION_NAMES_FK:
+			// PUBLIC.LOCATION_NAMES FOREIGN KEY(LOCATION_PID) REFERENCES
+			// PUBLIC.LOCATIONS(LOCATION_PID) (0)"; SQL statement:
+			// INSERT INTO PUBLIC.LOCATION_NAMES( LOCATION_NAME_PID,
+			// LOCATION_PID,
+			// PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION,
+			// INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, TO_DATE_PID)
+			// VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 8,
+			// ?, ?) [23506-168]
+
 			final int locationPid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationPid);
-	
+
 			lnp.setLocationPid(locationPid);
 			lnp.setFromDatePid(page1.getFromDatePid());
 			lnp.setToDatePid(page1.getFromDatePid());
 			lnp.setPrimaryLocationName(true);
-	
+
 			final String s = page1.getComboLocationNameStyle();
 			lnp.setLocationNameStylePid(Integer.parseInt(s));
-	
+
 			lnp.setPrimaryLocationName(
 					page1.getBtnPrimaryLocationName().getSelection());
 			lnp.setPreposition(page1.getTextPreposition().getText());
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
-	
+
 			LocationNamePartProvider lnpp;
 			List<List<String>> stringList = getPage2().getStringList();
-	
+
 			for (int i = 0; i < stringList.size(); i++) {
 				lnpp = new LocationNamePartProvider();
 				lnpp.setLocationNamePid(locationNamePid);
@@ -71,7 +83,7 @@ public class NewLocationNameWizard extends Wizard {
 				LOGGER.info(
 						"Inserted location name part " + locationNamePartPid);
 			}
-	
+
 			eventBroker.post("MESSAGE", locationName
 					+ " inserted in the database as no. " + locationPid);
 			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);

@@ -24,7 +24,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * New location name wizard page 3
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewLocationNameWizardPage3 extends WizardPage {
@@ -41,7 +41,6 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 	private Text textToDateSort;
 	private Text textToOriginal;
 	private Text textToSurety;
-	private Button btnCheckButtonPrimary;
 
 	private int fromDatePid;
 	private int toDatePid;
@@ -54,8 +53,9 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 	 */
 	public NewLocationNameWizardPage3(IEclipseContext context) {
 		super("wizardPage");
-		setTitle("New Location");
-		setDescription("Enter optional time limitation for the location.\r\n");
+		setTitle("New Location Name");
+		setDescription(
+				"Enter optional time limitation for the location name.\r\n");
 		this.context = context;
 	}
 
@@ -270,23 +270,6 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 			}
 		});
 		btnClearTo.setText("Clear");
-
-		new Label(container, SWT.NONE);
-
-		btnCheckButtonPrimary = new Button(container, SWT.CHECK);
-		btnCheckButtonPrimary.setToolTipText("Default");
-		btnCheckButtonPrimary.setSelection(true);
-		btnCheckButtonPrimary.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		btnCheckButtonPrimary.setText("Primary Location");
-		new Label(container, SWT.NONE);
-	}
-
-	/**
-	 * @return the btnCheckButtonPrimary
-	 */
-	public Button getBtnCheckButtonPrimary() {
-		return btnCheckButtonPrimary;
 	}
 
 	/**
@@ -301,13 +284,6 @@ public class NewLocationNameWizardPage3 extends WizardPage {
 	 */
 	public int getToDatePid() {
 		return toDatePid;
-	}
-
-	/**
-	 * @param btnCheckButtonPrimary the btnCheckButtonPrimary to set
-	 */
-	public void setBtnCheckButtonPrimary(Button btnCheckButtonPrimary) {
-		this.btnCheckButtonPrimary = btnCheckButtonPrimary;
 	}
 
 	/**
