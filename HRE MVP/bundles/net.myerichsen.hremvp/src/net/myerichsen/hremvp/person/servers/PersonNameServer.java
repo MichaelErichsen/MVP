@@ -365,7 +365,7 @@ public class PersonNameServer implements IHREServer {
 	}
 
 	/**
-	 * @param toDatePid the toDatePid to set
+	 * @param data.toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDate) {
 		toDatePid = toDate;

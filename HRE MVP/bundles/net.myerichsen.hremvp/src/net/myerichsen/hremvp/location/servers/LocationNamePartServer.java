@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 17. mar. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -210,9 +210,8 @@ public class LocationNamePartServer implements IHREServer {
 		Dictionary dictionary = new Dictionary();
 
 		LocationNames ln = new LocationNames();
-		ln.get(part.getLocationNamePid());
+		ln.get(key);
 
-		// FIXME Location name style from location name
 		List<LocationNameMaps> lnm = new LocationNameMaps()
 				.getFKLocationNameStylePid(ln.getLocationNameStylePid());
 
@@ -249,28 +248,6 @@ public class LocationNamePartServer implements IHREServer {
 		part.setLocationNamePartPid(locationNamePartPid);
 		part.setLocationNamePid(locationNamePid);
 		part.setPartNo(partNo);
-
-		// Check if matching map part no exists
-		final LocationNames name = new LocationNames();
-		name.get(locationNamePid);
-
-//		final LocationNameMaps map = new LocationNameMaps();
-//		final List<LocationNameMaps> mapList = map
-//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-//		Boolean found = false;
-//
-//		for (int i = 0; i < mapList.size(); i++) {
-//			if (mapList.get(i).getPartNo() == partNo) {
-//				found = true;
-//				break;
-//			}
-//		}
-
-//		if (!found) {
-//			throw new MvpException("Part number " + partNo
-//					+ " does not exist in matching location name map");
-//		}
-
 		return part.insert();
 	}
 

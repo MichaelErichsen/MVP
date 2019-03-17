@@ -193,7 +193,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 
 	/**
 	 * @param shell
-	 * @param context
+	 * @param data.context
 	 *
 	 */
 	protected void openDateDialog(Shell shell) {

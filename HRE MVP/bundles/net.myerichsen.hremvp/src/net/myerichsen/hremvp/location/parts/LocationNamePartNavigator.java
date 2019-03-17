@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Maintain all parts of a location name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 17. mar. 2019
  */
 public class LocationNamePartNavigator {
 	private final static Logger LOGGER = Logger
@@ -50,7 +50,7 @@ public class LocationNamePartNavigator {
 
 	private LocationNamePartProvider provider;
 	private TableViewer tableViewer;
-	private int locationNamePartPid = 0;
+	private int locationNamePid = 0;
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -178,7 +178,7 @@ public class LocationNamePartNavigator {
 		buttonUpdate.setText("Update");
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getStringList(locationNamePartPid));
+		tableViewer.setInput(provider.getStringList(locationNamePid));
 	}
 
 	/**
@@ -201,18 +201,17 @@ public class LocationNamePartNavigator {
 	@Inject
 	@Optional
 	private void subscribeLocationNamePidUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_NAME_PID_UPDATE_TOPIC) int locationNamePartPid) {
-		LOGGER.fine("Received location name id " + locationNamePartPid);
+			@UIEventTopic(Constants.LOCATION_NAME_PID_UPDATE_TOPIC) int locationNamePid) {
+		LOGGER.info("Received location name id " + locationNamePid);
 
-		if (locationNamePartPid == 0) {
+		if (locationNamePid == 0) {
 			return;
 		}
 
-		this.locationNamePartPid = locationNamePartPid;
+		this.locationNamePid = locationNamePid;
 
 		try {
-			provider.get(locationNamePartPid);
-			tableViewer.setInput(provider.getStringList(locationNamePartPid));
+			tableViewer.setInput(provider.getStringList(locationNamePid));
 			tableViewer.refresh();
 		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
@@ -229,7 +228,7 @@ public class LocationNamePartNavigator {
 
 		try {
 			List<List<String>> locationNamePartList = provider
-					.getStringList(locationNamePartPid);
+					.getStringList(locationNamePid);
 			List<List<String>> input = (List<List<String>>) tableViewer
 					.getInput();
 
@@ -244,29 +243,9 @@ public class LocationNamePartNavigator {
 						provider.update();
 					}
 				}
-//				for (final List<String> existingElement : stringList) {
-//					if (input.get(i).get(2).equals(existingElement.get(0))) {
-//						if ((input.get(i).get(3)
-//								.equals(existingElement.get(1)) == false)) {
-//							dp = new DictionaryProvider();
-//							dp.setDictionaryPid(
-//									Integer.parseInt(existingElement.get(2)));
-//							dp.setIsoCode(input.get(i).get(2));
-//							dp.setLabel(input.get(i).get(3));
-//							dp.setLabelPid(provider.getLabelPid());
-//							dp.setLabelType("SEX");
-//							dp.update();
-//							LOGGER.fine("Updated dictionary element "
-//									+ input.get(i).get(0) + ", "
-//									+ input.get(i).get(1) + ", "
-//									+ input.get(i).get(2) + ", "
-//									+ input.get(i).get(3));
-//						}
-//						break;
-//					}
-//				}
-				eventBroker.post("MESSAGE", "Location name "
-						+ locationNamePartPid + " has been updated");
+
+				eventBroker.post("MESSAGE", "Location name " + locationNamePid
+						+ " has been updated");
 			}
 		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());

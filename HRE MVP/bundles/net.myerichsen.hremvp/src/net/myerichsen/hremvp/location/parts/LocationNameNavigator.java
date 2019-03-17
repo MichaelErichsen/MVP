@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all names of a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 17. mar. 2019
  */
 public class LocationNameNavigator {
 	private final static Logger LOGGER = Logger
@@ -248,42 +248,6 @@ public class LocationNameNavigator {
 	public void dispose() {
 	}
 
-//	/**
-//	 *
-//	 */
-//	private void openGoogleMaps() {
-//		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationGoogleMapBrowser";
-//
-//		final List<MPartStack> stacks = modelService.findElements(application,
-//				null, MPartStack.class, null);
-//		MPart part = MBasicFactory.INSTANCE.createPart();
-//		Boolean found = false;
-//
-//		for (final MPartStack mPartStack : stacks) {
-//			final List<MStackElement> a = mPartStack.getChildren();
-//
-//			for (int i = 0; i < a.size(); i++) {
-//				part = (MPart) a.get(i);
-//				if (part.getContributionURI().equals(contributionURI)) {
-//					partService.showPart(part, PartState.ACTIVATE);
-//					found = true;
-//					break;
-//				}
-//			}
-//		}
-//
-//		if (!found) {
-//			part.setLabel("Google Maps View");
-//			part.setCloseable(true);
-//			part.setVisible(true);
-//			part.setContributionURI(contributionURI);
-//			stacks.get(stacks.size() - 2).getChildren().add(part);
-//			partService.showPart(part, PartState.ACTIVATE);
-//		}
-//
-//		eventBroker.post(Constants.LOCATION_GOOGLE_MAP_UPDATE_TOPIC, provider);
-//	}
-
 	/**
 	 *
 	 */
@@ -313,7 +277,7 @@ public class LocationNameNavigator {
 		}
 
 		if (!found) {
-			part.setLabel("Location Name Parts View");
+			part.setLabel("Location Name Parts");
 			part.setCloseable(true);
 			part.setVisible(true);
 			part.setContributionURI(contributionURI);

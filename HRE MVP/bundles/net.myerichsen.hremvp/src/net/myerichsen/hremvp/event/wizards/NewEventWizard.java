@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.wizards;
 
-import java.math.BigDecimal;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -18,7 +17,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. mar. 2019
+ * @version 17. mar. 2019
  *
  */
 public class NewEventWizard extends Wizard {
@@ -130,12 +129,12 @@ public class NewEventWizard extends Wizard {
 			final LocationProvider lp = new LocationProvider();
 			lp.setFromDatePid(page1.getFromDatePid());
 			lp.setToDatePid(page1.getFromDatePid());
-			lp.setxCoordinate(
-					new BigDecimal(page1.getTextXCoordinate().getText()));
-			lp.setyCoordinate(
-					new BigDecimal(page1.getTextYCoordinate().getText()));
-			lp.setzCoordinate(
-					new BigDecimal(page1.getTextZCoordinate().getText()));
+//			lp.setxCoordinate(
+//					new BigDecimal(page1.getTextXCoordinate().getText()));
+//			lp.setyCoordinate(
+//					new BigDecimal(page1.getTextYCoordinate().getText()));
+//			lp.setzCoordinate(
+//					new BigDecimal(page1.getTextZCoordinate().getText()));
 			lp.setPrimaryLocation(
 					page1.getBtnCheckButtonPrimary().getSelection());
 			final int locationPid = lp.insert();

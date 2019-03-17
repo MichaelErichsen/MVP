@@ -213,7 +213,7 @@ public class SexServer implements IHREServer {
 	}
 
 	/**
-	 * @param fromDatePid the fromDatePid to set
+	 * @param data.fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int fromdate) {
 		fromDatePid = fromdate;
@@ -276,7 +276,7 @@ public class SexServer implements IHREServer {
 	}
 
 	/**
-	 * @param toDatePid the toDatePid to set
+	 * @param data.toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int todate) {
 		toDatePid = todate;

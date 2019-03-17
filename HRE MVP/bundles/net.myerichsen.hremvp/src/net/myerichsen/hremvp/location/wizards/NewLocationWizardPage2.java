@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. mar. 2019
+ * @version 17. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -68,6 +68,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 	private double lat;
 	private double lng;
 	private List<List<String>> stringList;
+	private int locationNameStylePid = 0;
 
 	/**
 	 * Constructor
@@ -229,8 +230,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-			final int locationNameStylePid = wizard.getPage1()
-					.getLocationNameStylePid();
+			locationNameStylePid = wizard.getPage1().getLocationNameStylePid();
 			stringList = provider.getStringList(locationNameStylePid);
 			tableViewer.setInput(stringList);
 		} catch (final Exception e1) {
@@ -329,6 +329,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 			textCoordinates.setText("Lat " + lat + ", lng " + lng);
 
 			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+			wizard.setxCoordinate(lat);
+			wizard.setyCoordinate(lng);
 			wizard.addBackPages();
 			wizard.getContainer().updateButtons();
 			wizard.setLocationName(result0.getString("formatted_address"));
@@ -341,25 +343,5 @@ public class NewLocationWizardPage2 extends WizardPage {
 		}
 	}
 
-	/**
-	 * @return the lat
-	 */
-	public double getLat() {
-		return lat;
-	}
-
-	/**
-	 * @return the lng
-	 */
-	public double getLng() {
-		return lng;
-	}
-
-	/**
-	 * @return the stringList
-	 */
-	public List<List<String>> getStringList() {
-		return stringList;
-	}
 
 }

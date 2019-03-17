@@ -6,7 +6,6 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * Location summary wizard page
@@ -40,21 +39,13 @@ public class NewLocationWizardPage4 extends WizardPage {
 		container.setLayout(new GridLayout(1, false));
 
 		final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-		String x = wizard.getPage3().getTextXCoordinate().getText();
-		String y = wizard.getPage3().getTextYCoordinate().getText();
 
-		if ((x.isEmpty() || y.isEmpty())) {
-			final Label label = new Label(container, SWT.NONE);
-			label.setText("No map available");
-		} else {
-			final Browser browser = new Browser(container, SWT.NONE);
-			browser.setLayoutData(
-					new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-			String urlString = "http://www.google.com/maps/@?api=1&map_action=map&center="
-					+ wizard.getPage3().getTextXCoordinate().getText() + ", "
-					+ wizard.getPage3().getTextYCoordinate().getText()
-					+ "&basemap=terrain";
-			browser.setUrl(urlString);
-		}
+		final Browser browser = new Browser(container, SWT.NONE);
+		browser.setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		String urlString = "http://www.google.com/maps/@?api=1&map_action=map&center="
+				+ wizard.getxCoordinate() + ", " + wizard.getyCoordinate()
+				+ "&basemap=terrain";
+		browser.setUrl(urlString);
 	}
 }

@@ -212,7 +212,7 @@ public class PersonNameProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param fromDatePid the fromDatePid to set
+	 * @param data.fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int i) {
 		fromDatePid = i;
@@ -268,7 +268,7 @@ public class PersonNameProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param toDatePid the toDatePid to set
+	 * @param data.toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDate) {
 		toDatePid = toDate;

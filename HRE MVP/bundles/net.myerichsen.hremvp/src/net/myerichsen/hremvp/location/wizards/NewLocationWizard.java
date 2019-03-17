@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 17. mar. 2019
  *
  */
 public class NewLocationWizard extends Wizard {
@@ -31,7 +31,13 @@ public class NewLocationWizard extends Wizard {
 	private NewLocationWizardPage4 page4;
 	private int locationNameStylePid = 0;
 	private String locationName;
+	private Double xCoordinate = 0D;
+	private Double yCoordinate = 0D;
+	private Double zCoordinate = 0D;
+	private Boolean primary = true;
+	private List<List<String>> locationNamePartList;
 
+	// FIXME Does not save location name parts
 	/**
 	 * Constructor
 	 *
@@ -47,19 +53,19 @@ public class NewLocationWizard extends Wizard {
 	/**
 	 *
 	 */
-	public void addPage2() {
-		page2 = new NewLocationWizardPage2(context);
-		addPage(page2);
-	}
-
-	/**
-	 *
-	 */
 	public void addBackPages() {
 		page3 = new NewLocationWizardPage3(context);
 		addPage(page3);
 		page4 = new NewLocationWizardPage4();
 		addPage(page4);
+	}
+
+	/**
+	 *
+	 */
+	public void addPage2() {
+		page2 = new NewLocationWizardPage2(context);
+		addPage(page2);
 	}
 
 	/*
@@ -115,6 +121,34 @@ public class NewLocationWizard extends Wizard {
 		return page4;
 	}
 
+	/**
+	 * @return the primary
+	 */
+	public Boolean getPrimary() {
+		return primary;
+	}
+
+	/**
+	 * @return the xCoordinate
+	 */
+	public Double getxCoordinate() {
+		return xCoordinate;
+	}
+
+	/**
+	 * @return the yCoordinate
+	 */
+	public Double getyCoordinate() {
+		return yCoordinate;
+	}
+
+	/**
+	 * @return the zCoordinate
+	 */
+	public Double getzCoordinate() {
+		return zCoordinate;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -132,14 +166,10 @@ public class NewLocationWizard extends Wizard {
 
 			lp.setFromDatePid(page3.getFromDatePid());
 			lp.setToDatePid(page3.getFromDatePid());
-			lp.setxCoordinate(
-					new BigDecimal(page3.getTextXCoordinate().getText()));
-			lp.setyCoordinate(
-					new BigDecimal(page3.getTextYCoordinate().getText()));
-			lp.setzCoordinate(
-					new BigDecimal(page3.getTextZCoordinate().getText()));
-			lp.setPrimaryLocation(
-					page3.getBtnCheckButtonPrimary().getSelection());
+			lp.setxCoordinate(BigDecimal.valueOf(xCoordinate));
+			lp.setyCoordinate(BigDecimal.valueOf(yCoordinate));
+			lp.setzCoordinate(BigDecimal.valueOf(zCoordinate));
+			lp.setPrimaryLocation(primary);
 			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 
@@ -152,14 +182,13 @@ public class NewLocationWizard extends Wizard {
 			final String s = page1.getComboLocationNameStyle();
 			lnp.setLocationNameStylePid(Integer.parseInt(s));
 
-			lnp.setPrimaryLocationName(
-					page1.getBtnPrimaryLocationName().getSelection());
+			lnp.setPrimaryLocationName(primary);
 			lnp.setPreposition(page1.getTextPreposition().getText());
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
 			LocationNamePartProvider lnpp;
-			List<List<String>> stringList = getPage2().getStringList();
+			final List<List<String>> stringList = getPage2().getStringList();
 
 			for (int i = 0; i < stringList.size(); i++) {
 				lnpp = new LocationNamePartProvider();
@@ -195,6 +224,34 @@ public class NewLocationWizard extends Wizard {
 	 */
 	public void setLocationNameStylePid(int locationNameStylePid) {
 		this.locationNameStylePid = locationNameStylePid;
+	}
+
+	/**
+	 * @param primary the primary to set
+	 */
+	public void setPrimary(Boolean primary) {
+		this.primary = primary;
+	}
+
+	/**
+	 * @param xCoordinate the xCoordinate to set
+	 */
+	public void setxCoordinate(Double xCoordinate) {
+		this.xCoordinate = xCoordinate;
+	}
+
+	/**
+	 * @param yCoordinate the yCoordinate to set
+	 */
+	public void setyCoordinate(Double yCoordinate) {
+		this.yCoordinate = yCoordinate;
+	}
+
+	/**
+	 * @param zCoordinate the zCoordinate to set
+	 */
+	public void setzCoordinate(Double zCoordinate) {
+		this.zCoordinate = zCoordinate;
 	}
 
 }
