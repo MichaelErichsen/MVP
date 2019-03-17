@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Base location data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. nov. 2018
+ * @version 16. mar. 2019
  *
  */
 public class NewEventWizardPage1 extends WizardPage {
@@ -124,12 +124,12 @@ public class NewEventWizardPage1 extends WizardPage {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						fromDatePid = hdp.insert();
-						textFromDate.setText(dialog.getLocalDate().toString());
+						textFromDate.setText(dialog.getDate().toString());
 						if (textFromDateSort.getText().length() == 0) {
 							textFromDateSort
 									.setText(dialog.getSortDate().toString());
@@ -232,12 +232,12 @@ public class NewEventWizardPage1 extends WizardPage {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						toDatePid = hdp.insert();
-						textToDate.setText(dialog.getLocalDate().toString());
+						textToDate.setText(dialog.getDate().toString());
 						textToDateSort.setText(dialog.getSortDate().toString());
 						textToOriginal.setText(dialog.getOriginal());
 						textToSurety.setText(dialog.getSurety());

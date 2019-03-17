@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 3. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
@@ -290,12 +290,12 @@ public class NewPersonWizardPage2 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				fromDatePid = hdp.insert();
-				textFromDate.setText(dialog.getLocalDate().toString());
+				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -311,12 +311,12 @@ public class NewPersonWizardPage2 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				toDatePid = hdp.insert();
-				textToDate.setText(dialog.getLocalDate().toString());
+				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}

@@ -1,10 +1,10 @@
 package net.myerichsen.hremvp.dbmodels;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +55,8 @@ public class Hdates {
 	private Timestamp UpdateTstmp;
 	private int TableId;
 	private String OriginalText;
-	private LocalDate Date;
-	private LocalDate SortDate;
+	private Date Date;
+	private Date SortDate;
 	private String Surety;
 	private Hdates model;
 
@@ -90,8 +90,8 @@ public class Hdates {
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setOriginalText(rs.getString("ORIGINAL_TEXT"));
-			model.setDate(rs.getObject("DATE", LocalDate.class));
-			model.setSortDate(rs.getObject("SORT_DATE", LocalDate.class));
+			model.setDate(rs.getDate("DATE"));
+			model.setSortDate(rs.getDate("SORT_DATE"));
 			model.setSurety(rs.getString("SURETY"));
 			modelList.add(model);
 		}
@@ -110,8 +110,8 @@ public class Hdates {
 			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setOriginalText(rs.getString("ORIGINAL_TEXT"));
-			setDate(rs.getObject("DATE", LocalDate.class));
-			setSortDate(rs.getObject("SORT_DATE", LocalDate.class));
+			setDate(rs.getDate("DATE"));
+			setSortDate(rs.getDate("SORT_DATE"));
 			setSurety(rs.getString("SURETY"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -124,7 +124,7 @@ public class Hdates {
 	 *
 	 * @return Contents of the DATE column
 	 */
-	public LocalDate getDate() {
+	public Date getDate() {
 		return Date;
 	}
 
@@ -160,7 +160,7 @@ public class Hdates {
 	 *
 	 * @return Contents of the SORT_DATE column
 	 */
-	public LocalDate getSortDate() {
+	public Date getSortDate() {
 		return SortDate;
 	}
 
@@ -204,8 +204,8 @@ public class Hdates {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setString(2, getOriginalText());
-		ps.setObject(3, getDate());
-		ps.setObject(4, getSortDate());
+		ps.setDate(3, getDate());
+		ps.setDate(4, getSortDate());
 		ps.setString(5, getSurety());
 		ps.executeUpdate();
 		conn.close();
@@ -217,7 +217,7 @@ public class Hdates {
 	 *
 	 * @param Date Contents of the DATE column
 	 */
-	public void setDate(LocalDate Date) {
+	public void setDate(java.sql.Date Date) {
 		this.Date = Date;
 	}
 
@@ -253,7 +253,7 @@ public class Hdates {
 	 *
 	 * @param SortDate Contents of the SORT_DATE column
 	 */
-	public void setSortDate(LocalDate SortDate) {
+	public void setSortDate(java.sql.Date SortDate) {
 		this.SortDate = SortDate;
 	}
 
@@ -288,8 +288,8 @@ public class Hdates {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getOriginalText());
-		ps.setObject(2, getDate());
-		ps.setObject(3, getSortDate());
+		ps.setDate(2, getDate());
+		ps.setDate(3, getSortDate());
 		ps.setString(4, getSurety());
 		ps.setInt(5, getHdatePid());
 		ps.executeUpdate();

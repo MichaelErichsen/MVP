@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 15. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
@@ -709,13 +709,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				partnerToDatePid = hdp.insert();
-				textPartnershipEndDate
-						.setText(dialog.getLocalDate().toString());
+				textPartnershipEndDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}
@@ -732,13 +731,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				partnerFromDatePid = hdp.insert();
-				textPartnershipStartDate
-						.setText(dialog.getLocalDate().toString());
+				textPartnershipStartDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}

@@ -34,10 +34,10 @@ import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Dialog to create a new personEvent
+ * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 22. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -515,12 +515,12 @@ public class NewEventDialog extends TitleAreaDialog {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				fromDatePid = hdp.insert();
-				textFromDate.setText(dialog.getLocalDate().toString());
+				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -536,12 +536,12 @@ public class NewEventDialog extends TitleAreaDialog {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				toDatePid = hdp.insert();
-				textToDate.setText(dialog.getLocalDate().toString());
+				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}

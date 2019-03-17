@@ -164,7 +164,7 @@ public class LocationNameNavigator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewLocationNameWizard(context));
+						new NewLocationNameWizard(locationPid, context));
 				dialog.open();
 			}
 		});

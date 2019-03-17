@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. mar. 2019
+ * @version 16. mar. 2019
  */
 public class NewLocationWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
@@ -159,12 +159,12 @@ public class NewLocationWizardPage1 extends WizardPage {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						fromDatePid = hdp.insert();
-						textFromDate.setText(dialog.getLocalDate().toString());
+						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
 					}
@@ -268,12 +268,12 @@ public class NewLocationWizardPage1 extends WizardPage {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						toDatePid = hdp.insert();
-						textToDate.setText(dialog.getLocalDate().toString());
+						textToDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
 					}

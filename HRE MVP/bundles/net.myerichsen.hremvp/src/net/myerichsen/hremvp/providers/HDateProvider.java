@@ -1,6 +1,6 @@
 package net.myerichsen.hremvp.providers;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 import net.myerichsen.hremvp.MvpException;
@@ -10,15 +10,15 @@ import net.myerichsen.hremvp.servers.HDateServer;
  * Provides all data for a single historical date
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class HDateProvider {
 	private int HdatePid;
 	private int TableId;
 	private String OriginalText;
-	private LocalDate Date;
-	private LocalDate SortDate;
+	private Date Date;
+	private Date SortDate;
 	private String Surety;
 
 	private final HDateServer server;
@@ -27,7 +27,7 @@ public class HDateProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public HDateProvider() throws Exception {
@@ -38,7 +38,7 @@ public class HDateProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -50,7 +50,7 @@ public class HDateProvider {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings with pids and labels
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -62,7 +62,7 @@ public class HDateProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -78,7 +78,7 @@ public class HDateProvider {
 	/**
 	 * @return the date
 	 */
-	public LocalDate getDate() {
+	public Date getDate() {
 		return Date;
 	}
 
@@ -99,7 +99,7 @@ public class HDateProvider {
 	/**
 	 * @return the sortDate
 	 */
-	public LocalDate getSortDate() {
+	public Date getSortDate() {
 		return SortDate;
 	}
 
@@ -122,7 +122,7 @@ public class HDateProvider {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -136,10 +136,10 @@ public class HDateProvider {
 	}
 
 	/**
-	 * @param localDate the date to set
+	 * @param date2 the date to set
 	 */
-	public void setDate(LocalDate localDate) {
-		Date = localDate;
+	public void setDate(Date date2) {
+		Date = date2;
 	}
 
 	/**
@@ -157,10 +157,10 @@ public class HDateProvider {
 	}
 
 	/**
-	 * @param sortDate the sortDate to set
+	 * @param date2 the sortDate to set
 	 */
-	public void setSortDate(LocalDate sortDate) {
-		SortDate = sortDate;
+	public void setSortDate(Date date2) {
+		SortDate = date2;
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class HDateProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

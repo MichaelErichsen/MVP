@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNames}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 public class LocationNameServer implements IHREServer {
@@ -326,7 +326,6 @@ public class LocationNameServer implements IHREServer {
 	@Override
 	public int insert() throws Exception {
 		name.setFromDatePid(fromDatePid);
-		name.setLocationNamePid(locationNamePid);
 		name.setLocationNameStylePid(locationNameStylePid);
 		name.setLocationPid(locationPid);
 		name.setPrimaryLocationName(primaryLocationName);

@@ -1,6 +1,6 @@
 package net.myerichsen.hremvp.servers;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +11,15 @@ import net.myerichsen.hremvp.dbmodels.Hdates;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.HDates}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class HDateServer {
 	private int HdatePid;
 	private int TableId;
 	private String OriginalText;
-	private LocalDate Date;
-	private LocalDate SortDate;
+	private Date Date;
+	private Date SortDate;
 	private String Surety;
 
 	private final Hdates date;
@@ -36,7 +36,7 @@ public class HDateServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -49,7 +49,7 @@ public class HDateServer {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -74,7 +74,7 @@ public class HDateServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -91,7 +91,7 @@ public class HDateServer {
 	/**
 	 * @return the date
 	 */
-	public LocalDate getDate() {
+	public Date getDate() {
 		return Date;
 	}
 
@@ -112,7 +112,7 @@ public class HDateServer {
 	/**
 	 * @return the sortDate
 	 */
-	public LocalDate getSortDate() {
+	public java.sql.Date getSortDate() {
 		return SortDate;
 	}
 
@@ -135,24 +135,24 @@ public class HDateServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	public int insert() throws Exception {
-		date.setTableId(751);
 		date.setOriginalText(getOriginalText());
 		date.setDate(getDate());
 		date.setSortDate(getSortDate());
 		date.setSurety(getSurety());
+
 		return date.insert();
 	}
 
 	/**
-	 * @param localDate the date to set
+	 * @param date2 the date to set
 	 */
-	public void setDate(LocalDate localDate) {
-		Date = localDate;
+	public void setDate(Date date2) {
+		Date = date2;
 	}
 
 	/**
@@ -170,10 +170,10 @@ public class HDateServer {
 	}
 
 	/**
-	 * @param localDate the sortDate to set
+	 * @param date2 the sortDate to set
 	 */
-	public void setSortDate(LocalDate localDate) {
-		SortDate = localDate;
+	public void setSortDate(Date date2) {
+		SortDate = date2;
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class HDateServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

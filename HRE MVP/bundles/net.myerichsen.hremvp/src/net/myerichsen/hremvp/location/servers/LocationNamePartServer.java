@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 16. mar. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -212,12 +212,13 @@ public class LocationNamePartServer implements IHREServer {
 		LocationNames ln = new LocationNames();
 		ln.get(part.getLocationNamePid());
 
+		// FIXME Location name style from location name
 		List<LocationNameMaps> lnm = new LocationNameMaps()
 				.getFKLocationNameStylePid(ln.getLocationNameStylePid());
 
 		List<LocationNameParts> lnp = part.getFKLocationNamePid(key);
 
-		for (int i = 0; i < lnp.size(); i++) {
+		for (int i = 0; i < lnm.size(); i++) {
 			stringList = new ArrayList<>();
 			stringList
 					.add(Integer.toString(lnp.get(i).getLocationNamePartPid()));

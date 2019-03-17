@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class PersonView {
@@ -378,13 +378,13 @@ public class PersonView {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				birthDatePid = hdp.insert();
 				textBirthDatePid.setText(Integer.toString(birthDatePid));
-				textBirthDate.setText(dialog.getLocalDate().toString());
+				textBirthDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -400,13 +400,13 @@ public class PersonView {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				deathDatePid = hdp.insert();
 				textDeathDatePid.setText(Integer.toString(deathDatePid));
-				textDeathDate.setText(dialog.getLocalDate().toString());
+				textDeathDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}

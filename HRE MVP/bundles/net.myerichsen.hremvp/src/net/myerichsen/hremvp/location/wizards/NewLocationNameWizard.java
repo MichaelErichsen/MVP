@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.location.providers.LocationNameProvider;
  * Wizard to add a new location name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewLocationNameWizard extends Wizard {
@@ -24,101 +24,25 @@ public class NewLocationNameWizard extends Wizard {
 
 	private final IEclipseContext context;
 	private NewLocationNameWizardPage1 page1;
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	// FIXME Does not work yet
-	public boolean performFinish() {
-		final IEventBroker eventBroker = context.get(IEventBroker.class);
-		try {
-			final LocationNameProvider lnp = new LocationNameProvider();
-
-			if (page3 == null) {
-				return false;
-			}
-
-			lnp.setFromDatePid(page3.getFromDatePid());
-			// FIXME lnp.setToDatePid(page3.getFromDatePid());SEVERE:
-			// Referential
-			// integrity constraint violation: "LOCATIONS_LOCATION_NAMES_FK:
-			// PUBLIC.LOCATION_NAMES FOREIGN KEY(LOCATION_PID) REFERENCES
-			// PUBLIC.LOCATIONS(LOCATION_PID) (0)"; SQL statement:
-			// INSERT INTO PUBLIC.LOCATION_NAMES( LOCATION_NAME_PID,
-			// LOCATION_PID,
-			// PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION,
-			// INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, TO_DATE_PID)
-			// VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 8,
-			// ?, ?) [23506-168]
-
-			final int locationPid = lnp.insert();
-			LOGGER.info("Inserted location name " + locationPid);
-
-			lnp.setLocationPid(locationPid);
-			lnp.setFromDatePid(page1.getFromDatePid());
-			lnp.setToDatePid(page1.getFromDatePid());
-			lnp.setPrimaryLocationName(true);
-
-			final String s = page1.getComboLocationNameStyle();
-			lnp.setLocationNameStylePid(Integer.parseInt(s));
-
-			lnp.setPrimaryLocationName(
-					page1.getBtnPrimaryLocationName().getSelection());
-			lnp.setPreposition(page1.getTextPreposition().getText());
-			final int locationNamePid = lnp.insert();
-			LOGGER.info("Inserted location name " + locationNamePid);
-
-			LocationNamePartProvider lnpp;
-			List<List<String>> stringList = getPage2().getStringList();
-
-			for (int i = 0; i < stringList.size(); i++) {
-				lnpp = new LocationNamePartProvider();
-				lnpp.setLocationNamePid(locationNamePid);
-				lnpp.setPartNo(i + 1);
-				lnpp.setLabel(stringList.get(i).get(4));
-				final int locationNamePartPid = lnpp.insert();
-				LOGGER.info(
-						"Inserted location name part " + locationNamePartPid);
-			}
-
-			eventBroker.post("MESSAGE", locationName
-					+ " inserted in the database as no. " + locationPid);
-			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
-			return true;
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
-		return false;
-	}
-
 	private NewLocationNameWizardPage2 page2;
+
 	private NewLocationNameWizardPage3 page3;
 	private int locationNameStylePid = 0;
 	private String locationName;
+	private int locationPid = 0;
 
 	/**
 	 * Constructor
 	 *
-	 * @param context The Eclipse Context
+	 * @param locationPid
+	 * @param context     The Eclipse Context
 	 *
 	 */
-	public NewLocationNameWizard(IEclipseContext context) {
+	public NewLocationNameWizard(int locationPid, IEclipseContext context) {
 		setWindowTitle("New Location Name");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
-	}
-
-	/**
-	 *
-	 */
-	public void addPage2() {
-		page2 = new NewLocationNameWizardPage2(context);
-		addPage(page2);
+		this.locationPid = locationPid;
 	}
 
 	/**
@@ -127,6 +51,14 @@ public class NewLocationNameWizard extends Wizard {
 	public void addBackPages() {
 		page3 = new NewLocationNameWizardPage3(context);
 		addPage(page3);
+	}
+
+	/**
+	 *
+	 */
+	public void addPage2() {
+		page2 = new NewLocationNameWizardPage2(context);
+		addPage(page2);
 	}
 
 	/*
@@ -173,6 +105,61 @@ public class NewLocationNameWizard extends Wizard {
 	 */
 	public NewLocationNameWizardPage3 getPage3() {
 		return page3;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
+	 */
+	@Override
+	public boolean performFinish() {
+		final IEventBroker eventBroker = context.get(IEventBroker.class);
+		try {
+			final LocationNameProvider lnp = new LocationNameProvider();
+
+			if (page3 == null) {
+				return false;
+			}
+
+			// Insert new location name
+			lnp.setLocationPid(locationPid);
+			lnp.setFromDatePid(page1.getFromDatePid());
+			lnp.setToDatePid(page1.getFromDatePid());
+
+			final String s = page1.getComboLocationNameStyle();
+			lnp.setLocationNameStylePid(Integer.parseInt(s));
+
+			lnp.setPrimaryLocationName(
+					page1.getBtnPrimaryLocationName().getSelection());
+			lnp.setPreposition(page1.getTextPreposition().getText());
+			final int locationNamePid = lnp.insert();
+			LOGGER.info("Inserted location name " + locationNamePid);
+
+			// Insert location name parts
+			LocationNamePartProvider lnpp;
+			final List<List<String>> stringList = getPage2().getStringList();
+
+			for (int i = 0; i < stringList.size(); i++) {
+				lnpp = new LocationNamePartProvider();
+				lnpp.setLocationNamePid(locationNamePid);
+				lnpp.setPartNo(i + 1);
+				lnpp.setLabel(stringList.get(i).get(4));
+				final int locationNamePartPid = lnpp.insert();
+				LOGGER.info(
+						"Inserted location name part " + locationNamePartPid);
+			}
+
+			eventBroker.post("MESSAGE", locationName
+					+ " inserted in the database as no. " + locationPid);
+			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
+			return true;
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			eventBroker.post("MESSAGE", e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**

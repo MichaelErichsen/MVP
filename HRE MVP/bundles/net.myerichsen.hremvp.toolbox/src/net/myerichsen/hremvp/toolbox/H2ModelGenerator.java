@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Utility to generate a Java model class representing an HRE H2 Table
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 
@@ -70,7 +70,7 @@ public class H2ModelGenerator {
 			return "Clob";
 		}
 		if (string.equals("DATE")) {
-			return "LocalDate";
+			return "Date";
 		}
 		if (string.equals("DECIMAL")) {
 			return "BigDecimal";
@@ -133,15 +133,15 @@ public class H2ModelGenerator {
 		writer.println("model = new " + toCamelCase(tableName) + "();");
 
 		for (int i = 0; i < fields.size(); i++) {
-			if (types.get(i).equalsIgnoreCase("LocalDate")) {
-				writer.println("model.set" + toCamelCase(fields.get(i))
-						+ "(rs.getObject(\"" + fields.get(i)
-						+ "\", LocalDate.class));");
-			} else {
-				writer.println("model.set" + toCamelCase(fields.get(i))
-						+ "(rs.get" + toCamelCase(types.get(i)) + "(\""
-						+ fields.get(i) + "\"));");
-			}
+//			if (types.get(i).equalsIgnoreCase("LocalDate")) {
+//				writer.println("model.set" + toCamelCase(fields.get(i))
+//						+ "(rs.getObject(\"" + fields.get(i)
+//						+ "\", LocalDate.class));");
+//			} else {
+			writer.println("model.set" + toCamelCase(fields.get(i)) + "(rs.get"
+					+ toCamelCase(types.get(i)) + "(\"" + fields.get(i)
+					+ "\"));");
+//			}
 		}
 
 		writer.println("modelList.add(model);");
@@ -160,15 +160,15 @@ public class H2ModelGenerator {
 		writer.println("if (rs.next()) {");
 
 		for (int i = 0; i < fields.size(); i++) {
-			if (types.get(i).equalsIgnoreCase("LocalDate")) {
-				writer.println(
-						"set" + toCamelCase(fields.get(i)) + "(rs.getObject(\""
-								+ fields.get(i) + "\", LocalDate.class));");
-			} else {
-				writer.println("set" + toCamelCase(fields.get(i)) + "(rs.get"
-						+ toCamelCase(types.get(i)) + "(\"" + fields.get(i)
-						+ "\"));");
-			}
+//			if (types.get(i).equalsIgnoreCase("LocalDate")) {
+//				writer.println(
+//						"set" + toCamelCase(fields.get(i)) + "(rs.getObject(\""
+//								+ fields.get(i) + "\", LocalDate.class));");
+//			} else {
+			writer.println("set" + toCamelCase(fields.get(i)) + "(rs.get"
+					+ toCamelCase(types.get(i)) + "(\"" + fields.get(i)
+					+ "\"));");
+//			}
 		}
 
 		writer.println(
@@ -204,15 +204,15 @@ public class H2ModelGenerator {
 			writer.println("model = new " + toCamelCase(tableName) + "();");
 
 			for (int i = 0; i < fields.size(); i++) {
-				if (types.get(i).equalsIgnoreCase("LocalDate")) {
-					writer.println("model.set" + toCamelCase(fields.get(i))
-							+ "(rs.getObject(\"" + fields.get(i)
-							+ "\", LocalDate.class));");
-				} else {
-					writer.println("model.set" + toCamelCase(fields.get(i))
-							+ "(rs.get" + toCamelCase(types.get(i)) + "(\""
-							+ fields.get(i) + "\"));");
-				}
+//				if (types.get(i).equalsIgnoreCase("LocalDate")) {
+//					writer.println("model.set" + toCamelCase(fields.get(i))
+//							+ "(rs.getObject(\"" + fields.get(i)
+//							+ "\", LocalDate.class));");
+//				} else {
+				writer.println("model.set" + toCamelCase(fields.get(i))
+						+ "(rs.get" + toCamelCase(types.get(i)) + "(\""
+						+ fields.get(i) + "\"));");
+//				}
 			}
 
 			writer.println("modelList.add(model);");
@@ -254,9 +254,9 @@ public class H2ModelGenerator {
 			if (type.equalsIgnoreCase("Boolean")) {
 				writer.println("ps.set" + toCamelCase(type) + "(" + (index++)
 						+ ", is" + toCamelCase(field) + "());");
-			} else if (type.equalsIgnoreCase("LocalDate")) {
-				writer.println("ps.setObject(" + (index++) + ", get"
-						+ toCamelCase(field) + "());");
+//			} else if (type.equalsIgnoreCase("LocalDate")) {
+//				writer.println("ps.setObject(" + (index++) + ", get"
+//						+ toCamelCase(field) + "());");
 			} else {
 				if (field.endsWith("DATE_PID")) {
 					writer.println("if (get" + toCamelCase(field) + "() == 0)");
@@ -297,9 +297,9 @@ public class H2ModelGenerator {
 			if (type.equalsIgnoreCase("Boolean")) {
 				writer.println("ps.set" + toCamelCase(type) + "(" + index++
 						+ ", is" + toCamelCase(field) + "());");
-			} else if (type.equalsIgnoreCase("LocalDate")) {
-				writer.println("ps.setObject(" + (index++) + ", get"
-						+ toCamelCase(field) + "());");
+//			} else if (type.equalsIgnoreCase("LocalDate")) {
+//				writer.println("ps.setObject(" + (index++) + ", get"
+//						+ toCamelCase(field) + "());");
 			} else {
 				if (field.endsWith("DATE_PID")) {
 					writer.println("if (get" + toCamelCase(field) + "() == 0)");

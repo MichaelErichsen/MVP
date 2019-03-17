@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameServer;
  * Provides all data for a single name for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 16. mar. 2019
  *
  */
 public class LocationNameProvider implements IHREProvider {
@@ -222,7 +222,6 @@ public class LocationNameProvider implements IHREProvider {
 	@Override
 	public int insert() throws Exception {
 		server.setFromDatePid(fromDatePid);
-		server.setLocationNamePid(locationNamePid);
 		server.setLocationNameStylePid(locationNameStylePid);
 		server.setLocationPid(locationPid);
 		server.setPrimaryLocationName(primaryLocationName);

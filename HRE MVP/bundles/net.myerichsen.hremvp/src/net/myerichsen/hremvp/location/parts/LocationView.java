@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display static data about a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 16. mar. 2019
  */
 public class LocationView {
 	private final static Logger LOGGER = Logger
@@ -171,13 +171,13 @@ public class LocationView {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						final int hdatePid = hdp.insert();
 						textFromDatePid.setText(Integer.toString(hdatePid));
-						textFromDate.setText(dialog.getLocalDate().toString());
+						textFromDate.setText(dialog.getDate().toString());
 						textFromOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
@@ -261,13 +261,13 @@ public class LocationView {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						final int hdatePid = hdp.insert();
 						textToDatePid.setText(Integer.toString(hdatePid));
-						textToDate.setText(dialog.getLocalDate().toString());
+						textToDate.setText(dialog.getDate().toString());
 						textToOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
