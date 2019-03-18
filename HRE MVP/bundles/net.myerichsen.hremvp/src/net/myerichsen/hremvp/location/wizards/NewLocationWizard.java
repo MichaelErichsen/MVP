@@ -207,15 +207,14 @@ public class NewLocationWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
+		if (page3 == null) {
+			return false;
+		}
+
 		final IEventBroker eventBroker = context.get(IEventBroker.class);
 
 		try {
 			final LocationProvider lp = new LocationProvider();
-
-			if (page3 == null) {
-				return false;
-			}
-
 			lp.setFromDatePid(fromDatePid);
 			lp.setToDatePid(toDatePid);
 			lp.setxCoordinate(BigDecimal.valueOf(xCoordinate));

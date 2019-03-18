@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.location.wizards;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -41,7 +42,6 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * @version 16. mar. 2019
  *
  */
-// FIXME Test for some data entered
 public class NewLocationNameWizardPage2 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -51,7 +51,7 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 
 	private final LocationNameMapProvider provider;
 	private TableViewer tableViewer;
-	private List<List<String>> stringList;
+	private List<List<String>> lls;
 
 	/**
 	 * Constructor
@@ -93,19 +93,21 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 			public void focusLost(FocusEvent e) {
 				TableItem[] tableItems = table.getItems();
 				Boolean found = false;
+				List<String> stringList = new ArrayList<String>();
 
 				for (int i = 0; i < tableItems.length; i++) {
 					String text = tableItems[i].getText(4);
+					stringList.add(text);
+
 					if (text.length() > 0) {
-						stringList.get(i).set(4, text);
+						lls.get(i).set(4, text);
 						found = true;
 					}
 				}
 
 				if (found) {
+					wizard.setLocationNamePartList(stringList);
 					setPageComplete(true);
-					wizard.addBackPages();
-					wizard.getContainer().updateButtons();
 				}
 
 			}
@@ -211,11 +213,10 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			final NewLocationNameWizard wizard = (NewLocationNameWizard) getWizard();
-			final int locationNameStylePid = wizard.getPage1()
-					.getLocationNameStylePid();
-			stringList = provider.getStringList(locationNameStylePid);
-			tableViewer.setInput(stringList);
+			wizard = (NewLocationNameWizard) getWizard();
+			final int locationNameStylePid = wizard.getLocationNameStylePid();
+			lls = provider.getStringList(locationNameStylePid);
+			tableViewer.setInput(lls);
 		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();

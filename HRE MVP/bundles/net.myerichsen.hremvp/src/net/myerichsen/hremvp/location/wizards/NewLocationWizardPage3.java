@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Base location data wizard page 3
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 18. mar. 2019
  *
  */
 public class NewLocationWizardPage3 extends WizardPage {

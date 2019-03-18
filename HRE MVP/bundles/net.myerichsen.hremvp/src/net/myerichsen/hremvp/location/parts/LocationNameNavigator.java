@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all names of a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 18. mar. 2019
  */
 public class LocationNameNavigator {
 	private final static Logger LOGGER = Logger
@@ -229,6 +229,9 @@ public class LocationNameNavigator {
 				lnpp.delete(integer);
 			}
 
+			LocationNameProvider lnp = new LocationNameProvider();
+			lnp.delete(locationNamePid);			
+			
 			LOGGER.info("Location name " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Location name " + primaryName + " has been deleted");
