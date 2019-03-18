@@ -36,24 +36,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
-
-	private Text textFromDate;
-	private Text textFromDateSort;
-	private Text textFromOriginal;
-	private Text textFromSurety;
-
-	private Text textToDate;
-	private Text textToDateSort;
-	private Text textToOriginal;
-	private Text textToSurety;
-
-	private Text textXCoordinate;
-	private Text textYCoordinate;
-	private Text textZCoordinate;
-	private Button btnCheckButtonPrimary;
-
-	private int fromDatePid;
-	private int toDatePid;
+	private NewLocationWizard wizard;
 
 	/**
 	 * Constructor
@@ -80,39 +63,28 @@ public class NewLocationWizardPage3 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(3, false));
+		container.setLayout(new GridLayout(2, false));
 
-		final Label lblFromDate = new Label(container, SWT.NONE);
+		Composite compositeFrom = new Composite(container, SWT.BORDER);
+		compositeFrom.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeFrom.setLayout(new GridLayout(2, false));
+
+		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
 
-		textFromDate = new Text(container, SWT.BORDER);
-		textFromDate.setEditable(false);
+		Text textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setEditable(false);
 
-		textFromDateSort = new Text(container, SWT.BORDER);
-		textFromDateSort.setEditable(false);
-		textFromDateSort.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		textFromOriginal = new Text(container, SWT.BORDER);
-		textFromOriginal.setEditable(false);
-		textFromOriginal.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textFromSurety = new Text(container, SWT.BORDER);
-		textFromSurety.setEditable(false);
-		textFromSurety.setLayoutData(
-				new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		final Composite compositeFrom = new Composite(container, SWT.NONE);
-		compositeFrom.setLayoutData(
+		final Composite compositeFromButtons = new Composite(compositeFrom,
+				SWT.NONE);
+		compositeFromButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
+		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -132,14 +104,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
-						fromDatePid = hdp.insert();
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setFromDatePid(hdp.insert());
 						textFromDate.setText(dialog.getDate().toString());
-						if (textFromDateSort.getText().length() == 0) {
-							textFromDateSort
-									.setText(dialog.getSortDate().toString());
-						}
-						textFromOriginal.setText(dialog.getOriginal());
-						textFromSurety.setText(dialog.getSurety());
 					} catch (final Exception e1) {
 						e1.printStackTrace();
 					}
@@ -148,7 +115,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		final Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -166,10 +133,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 						final int hdatePid = dialog.getHdatePid();
 						final HDateProvider hdp = new HDateProvider();
 						hdp.get(hdatePid);
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
-						textFromDateSort.setText(hdp.getSortDate().toString());
-						textFromOriginal.setText(hdp.getOriginalText());
-						textFromSurety.setText(hdp.getSurety());
 					} catch (final Exception e1) {
 						e1.printStackTrace();
 					}
@@ -178,7 +144,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		final Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -189,45 +155,33 @@ public class NewLocationWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setFromDatePid(0);
 				textFromDate.setText("");
-				textFromDateSort.setText("");
-				textFromOriginal.setText("");
-				textFromSurety.setText("");
 			}
 		});
 		btnClearFrom.setText("Clear");
 
-		final Label lblToDate = new Label(container, SWT.NONE);
+		Composite compositeTo = new Composite(container, SWT.BORDER);
+		compositeTo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeTo.setLayout(new GridLayout(2, false));
+
+		final Label lblToDate = new Label(compositeTo, SWT.NONE);
 		lblToDate.setText("To Date");
 
-		textToDate = new Text(container, SWT.BORDER);
-		textToDate.setEditable(false);
+		Text textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setEditable(false);
 
-		textToDateSort = new Text(container, SWT.BORDER);
-		textToDateSort.setEditable(false);
-		textToDateSort.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		textToOriginal = new Text(container, SWT.BORDER);
-		textToOriginal.setEditable(false);
-		textToOriginal.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textToSurety = new Text(container, SWT.BORDER);
-		textToSurety.setEditable(false);
-		textToSurety.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		final Composite compositeTo = new Composite(container, SWT.NONE);
-		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeTo.setLayoutData(
+		final Composite compositeToButtons = new Composite(compositeTo,
+				SWT.NONE);
+		compositeToButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnCopyFromTo = new Button(compositeTo, SWT.NONE);
+		final Button btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -238,17 +192,14 @@ public class NewLocationWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setToDatePid(wizard.getFromDatePid());
 				textToDate.setText(textFromDate.getText());
-				if (textToDateSort.getText().length() == 0) {
-					textToDateSort.setText(textFromDateSort.getText());
-				}
-				textToOriginal.setText(textFromOriginal.getText());
-				textToSurety.setText(textToSurety.getText());
 			}
 		});
 		btnCopyFromTo.setText("Copy From");
 
-		final Button btnNewTo = new Button(compositeTo, SWT.NONE);
+		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -268,11 +219,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
-						toDatePid = hdp.insert();
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setToDatePid(hdp.insert());
 						textToDate.setText(dialog.getDate().toString());
-						textToDateSort.setText(dialog.getSortDate().toString());
-						textToOriginal.setText(dialog.getOriginal());
-						textToSurety.setText(dialog.getSurety());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
 					}
@@ -281,7 +230,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnNewTo.setText("New");
 
-		final Button btnBrowseTo = new Button(compositeTo, SWT.NONE);
+		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -299,10 +248,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 						final int hdatePid = dialog.getHdatePid();
 						final HDateProvider hdp = new HDateProvider();
 						hdp.get(hdatePid);
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
-						textToDateSort.setText(hdp.getSortDate().toString());
-						textToOriginal.setText(hdp.getOriginalText());
-						textToSurety.setText(hdp.getSurety());
 					} catch (final Exception e1) {
 						e1.printStackTrace();
 					}
@@ -311,7 +259,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		final Button btnClearTo = new Button(compositeTo, SWT.NONE);
+		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -322,10 +270,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setToDatePid(0);
 				textToDate.setText("");
-				textToDateSort.setText("");
-				textToOriginal.setText("");
-				textToSurety.setText("");
 			}
 		});
 		btnClearTo.setText("Clear");
@@ -333,9 +280,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 		final Label lblXCoordinate = new Label(container, SWT.NONE);
 		lblXCoordinate.setText("X Coordinate");
 
-		final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+		wizard = (NewLocationWizard) getWizard();
 
-		textXCoordinate = new Text(container, SWT.BORDER);
+		Text textXCoordinate = new Text(container, SWT.BORDER);
 		textXCoordinate.addModifyListener(new ModifyListener() {
 			/*
 			 * (non-Javadoc)
@@ -345,6 +292,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 			 * events.ModifyEvent)
 			 */
 			public void modifyText(ModifyEvent e) {
+				wizard = (NewLocationWizard) getWizard();
 				wizard.setxCoordinate(
 						Double.valueOf(textXCoordinate.getText()));
 			}
@@ -355,12 +303,11 @@ public class NewLocationWizardPage3 extends WizardPage {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textXCoordinate.addListener(SWT.Verify, new DoubleListener());
 		textXCoordinate.setText(Double.toString(wizard.getxCoordinate()));
-		new Label(container, SWT.NONE);
 
 		final Label lblYCoordinate = new Label(container, SWT.NONE);
 		lblYCoordinate.setText("Y Coordinate");
 
-		textYCoordinate = new Text(container, SWT.BORDER);
+		Text textYCoordinate = new Text(container, SWT.BORDER);
 		textYCoordinate.addModifyListener(new ModifyListener() {
 			/*
 			 * (non-Javadoc)
@@ -370,6 +317,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 			 * events.ModifyEvent)
 			 */
 			public void modifyText(ModifyEvent e) {
+				wizard = (NewLocationWizard) getWizard();
 				wizard.setyCoordinate(
 						Double.valueOf(textYCoordinate.getText()));
 			}
@@ -381,12 +329,10 @@ public class NewLocationWizardPage3 extends WizardPage {
 		textYCoordinate.addListener(SWT.Verify, new DoubleListener());
 		textYCoordinate.setText(Double.toString(wizard.getyCoordinate()));
 
-		new Label(container, SWT.NONE);
-
 		final Label lblZCoordinate = new Label(container, SWT.NONE);
 		lblZCoordinate.setText("Z Coordinate");
 
-		textZCoordinate = new Text(container, SWT.BORDER);
+		Text textZCoordinate = new Text(container, SWT.BORDER);
 		textZCoordinate.addModifyListener(new ModifyListener() {
 			/*
 			 * (non-Javadoc)
@@ -396,6 +342,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 			 * events.ModifyEvent)
 			 */
 			public void modifyText(ModifyEvent e) {
+				wizard = (NewLocationWizard) getWizard();
 				wizard.setzCoordinate(
 						Double.valueOf(textZCoordinate.getText()));
 			}
@@ -408,9 +355,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 
 		new Label(container, SWT.NONE);
 
-		new Label(container, SWT.NONE);
-
-		btnCheckButtonPrimary = new Button(container, SWT.CHECK);
+		Button btnCheckButtonPrimary = new Button(container, SWT.CHECK);
 		btnCheckButtonPrimary.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -421,7 +366,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
-				wizard.setPrimary(getBtnCheckButtonPrimary().getSelection());
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setIsPrimaryLocationName(
+						btnCheckButtonPrimary.getSelection());
 			}
 		});
 		btnCheckButtonPrimary.setToolTipText("Default");
@@ -429,69 +376,6 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnCheckButtonPrimary.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		btnCheckButtonPrimary.setText("Primary Location");
-		new Label(container, SWT.NONE);
 	}
 
-	/**
-	 * @return the btnCheckButtonPrimary
-	 */
-	public Button getBtnCheckButtonPrimary() {
-		return btnCheckButtonPrimary;
-	}
-
-	/**
-	 * @return the fromDatePid
-	 */
-	public int getFromDatePid() {
-		return fromDatePid;
-	}
-
-	/**
-	 * @return the toDatePid
-	 */
-	public int getToDatePid() {
-		return toDatePid;
-	}
-
-	/**
-	 * @param btnCheckButtonPrimary the btnCheckButtonPrimary to set
-	 */
-	public void setBtnCheckButtonPrimary(Button btnCheckButtonPrimary) {
-		this.btnCheckButtonPrimary = btnCheckButtonPrimary;
-	}
-
-	/**
-	 * @param fromDatePid the fromDatePid to set
-	 */
-	public void setFromDatePid(int fromDatePid) {
-		this.fromDatePid = fromDatePid;
-	}
-
-	/**
-	 * @param textXCoordinate the textXCoordinate to set
-	 */
-	public void setTextXCoordinate(Text textXCoordinate) {
-		this.textXCoordinate = textXCoordinate;
-	}
-
-	/**
-	 * @param textYCoordinate the textYCoordinate to set
-	 */
-	public void setTextYCoordinate(Text textYCoordinate) {
-		this.textYCoordinate = textYCoordinate;
-	}
-
-	/**
-	 * @param textZCoordinate the textZCoordinate to set
-	 */
-	public void setTextZCoordinate(Text textZCoordinate) {
-		this.textZCoordinate = textZCoordinate;
-	}
-
-	/**
-	 * @param toDatePid the toDatePid to set
-	 */
-	public void setToDatePid(int toDatePid) {
-		this.toDatePid = toDatePid;
-	}
 }

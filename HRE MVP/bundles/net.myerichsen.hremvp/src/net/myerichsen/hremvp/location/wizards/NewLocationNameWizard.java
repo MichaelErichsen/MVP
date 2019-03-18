@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.location.wizards;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -8,7 +7,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
 import net.myerichsen.hremvp.location.providers.LocationNameProvider;
 
 /**
@@ -137,18 +135,18 @@ public class NewLocationNameWizard extends Wizard {
 			LOGGER.info("Inserted location name " + locationNamePid);
 
 			// Insert location name parts
-			LocationNamePartProvider lnpp;
-			final List<List<String>> stringList = getPage2().getStringList();
-
-			for (int i = 0; i < stringList.size(); i++) {
-				lnpp = new LocationNamePartProvider();
-				lnpp.setLocationNamePid(locationNamePid);
-				lnpp.setPartNo(i + 1);
-				lnpp.setLabel(stringList.get(i).get(4));
-				final int locationNamePartPid = lnpp.insert();
-				LOGGER.info(
-						"Inserted location name part " + locationNamePartPid);
-			}
+//			LocationNamePartProvider lnpp;
+//			final List<List<String>> stringList = getPage2().getStringList();
+//
+//			for (int i = 0; i < stringList.size(); i++) {
+//				lnpp = new LocationNamePartProvider();
+//				lnpp.setLocationNamePid(locationNamePid);
+//				lnpp.setPartNo(i + 1);
+//				lnpp.setLabel(stringList.get(i).get(4));
+//				final int locationNamePartPid = lnpp.insert();
+//				LOGGER.info(
+//						"Inserted location name part " + locationNamePartPid);
+//			}
 
 			eventBroker.post("MESSAGE", locationName
 					+ " inserted in the database as no. " + locationPid);

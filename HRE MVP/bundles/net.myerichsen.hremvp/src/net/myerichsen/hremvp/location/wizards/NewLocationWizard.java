@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.location.wizards;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,7 +18,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 18. mar. 2019
  *
  */
 public class NewLocationWizard extends Wizard {
@@ -29,15 +30,23 @@ public class NewLocationWizard extends Wizard {
 	private NewLocationWizardPage2 page2;
 	private NewLocationWizardPage3 page3;
 	private NewLocationWizardPage4 page4;
+	// Page 1
 	private int locationNameStylePid = 0;
+	private int nameFromDatePid = 0;
+	private int nameToDatePid = 0;
+	private String preposition = "";
+	private Boolean isPrimaryLocationName = true;
+	// Page 2
 	private String locationName;
+	private List<String> locationNamePartList = new ArrayList<>();
 	private Double xCoordinate = 0D;
 	private Double yCoordinate = 0D;
+	// Page 3
+	private int fromDatePid = 0;
+	private int toDatePid = 0;
 	private Double zCoordinate = 0D;
-	private Boolean primary = true;
-	private List<List<String>> locationNamePartList;
+	private Boolean isPrimaryLocation = true;
 
-	// FIXME Does not save location name parts
 	/**
 	 * Constructor
 	 *
@@ -80,10 +89,31 @@ public class NewLocationWizard extends Wizard {
 	}
 
 	/**
-	 * @return the locationName
+	 * @return the fromDatePid
 	 */
-	public String getLocationName() {
-		return locationName;
+	public int getFromDatePid() {
+		return fromDatePid;
+	}
+
+	/**
+	 * @return the isPrimaryLocation
+	 */
+	public Boolean getIsPrimaryLocation() {
+		return isPrimaryLocation;
+	}
+
+	/**
+	 * @return the isPrimaryLocationName
+	 */
+	public Boolean getIsPrimaryLocationName() {
+		return isPrimaryLocationName;
+	}
+
+	/**
+	 * @return the locationNamePartList
+	 */
+	public List<String> getLocationNamePartList() {
+		return locationNamePartList;
 	}
 
 	/**
@@ -91,6 +121,20 @@ public class NewLocationWizard extends Wizard {
 	 */
 	public int getLocationNameStylePid() {
 		return locationNameStylePid;
+	}
+
+	/**
+	 * @return the nameFromDatePid
+	 */
+	public int getNameFromDatepid() {
+		return nameFromDatePid;
+	}
+
+	/**
+	 * @return the nameToDatePid
+	 */
+	public int getNameToDatePid() {
+		return nameToDatePid;
 	}
 
 	/**
@@ -122,10 +166,17 @@ public class NewLocationWizard extends Wizard {
 	}
 
 	/**
-	 * @return the primary
+	 * @return the preposition
 	 */
-	public Boolean getPrimary() {
-		return primary;
+	public String getPreposition() {
+		return preposition;
+	}
+
+	/**
+	 * @return the toDatePid
+	 */
+	public int getToDatePid() {
+		return toDatePid;
 	}
 
 	/**
@@ -160,41 +211,41 @@ public class NewLocationWizard extends Wizard {
 
 		try {
 			final LocationProvider lp = new LocationProvider();
+
 			if (page3 == null) {
 				return false;
 			}
 
-			lp.setFromDatePid(page3.getFromDatePid());
-			lp.setToDatePid(page3.getFromDatePid());
+			lp.setFromDatePid(fromDatePid);
+			lp.setToDatePid(toDatePid);
 			lp.setxCoordinate(BigDecimal.valueOf(xCoordinate));
 			lp.setyCoordinate(BigDecimal.valueOf(yCoordinate));
 			lp.setzCoordinate(BigDecimal.valueOf(zCoordinate));
-			lp.setPrimaryLocation(primary);
+			lp.setPrimaryLocation(isPrimaryLocation);
+
 			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 
 			final LocationNameProvider lnp = new LocationNameProvider();
 			lnp.setLocationPid(locationPid);
-			lnp.setFromDatePid(page1.getFromDatePid());
-			lnp.setToDatePid(page1.getFromDatePid());
-			lnp.setPrimaryLocationName(true);
+			lnp.setFromDatePid(nameFromDatePid);
+			lnp.setToDatePid(nameToDatePid);
+			lnp.setPrimaryLocationName(isPrimaryLocationName);
+			lnp.setLocationNameStylePid(locationNameStylePid);
+			lnp.setPrimaryLocationName(isPrimaryLocationName);
+			lnp.setPreposition(preposition);
 
-			final String s = page1.getComboLocationNameStyle();
-			lnp.setLocationNameStylePid(Integer.parseInt(s));
-
-			lnp.setPrimaryLocationName(primary);
-			lnp.setPreposition(page1.getTextPreposition().getText());
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
 			LocationNamePartProvider lnpp;
-			final List<List<String>> stringList = getPage2().getStringList();
 
-			for (int i = 0; i < stringList.size(); i++) {
+			for (int i = 0; i < locationNamePartList.size(); i++) {
 				lnpp = new LocationNamePartProvider();
 				lnpp.setLocationNamePid(locationNamePid);
 				lnpp.setPartNo(i + 1);
-				lnpp.setLabel(stringList.get(i).get(4));
+				lnpp.setLabel(locationNamePartList.get(i));
+
 				final int locationNamePartPid = lnpp.insert();
 				LOGGER.info(
 						"Inserted location name part " + locationNamePartPid);
@@ -203,6 +254,8 @@ public class NewLocationWizard extends Wizard {
 			eventBroker.post("MESSAGE", locationName
 					+ " inserted in the database as no. " + locationPid);
 			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
+			eventBroker.post(Constants.LOCATION_NAME_PID_UPDATE_TOPIC,
+					locationNamePid);
 			return true;
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
@@ -213,10 +266,39 @@ public class NewLocationWizard extends Wizard {
 	}
 
 	/**
-	 * @param locationName the locationName to set
+	 * @param fromDatePid the fromDatePid to set
 	 */
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
+	}
+
+	/**
+	 * @param isPrimaryLocation the isPrimaryLocation to set
+	 */
+	public void setIsPrimaryLocation(Boolean isPrimaryLocation) {
+		this.isPrimaryLocation = isPrimaryLocation;
+	}
+
+	/**
+	 * @param isPrimaryLocationName the isPrimaryLocationName to set
+	 */
+	public void setIsPrimaryLocationName(Boolean isPrimaryLocationName) {
+		this.isPrimaryLocationName = isPrimaryLocationName;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setLocationName(String string) {
+		locationName = string;
+
+	}
+
+	/**
+	 * @param stringList the locationNamePartList to set
+	 */
+	public void setLocationNamePartList(List<String> stringList) {
+		this.locationNamePartList = stringList;
 	}
 
 	/**
@@ -227,10 +309,31 @@ public class NewLocationWizard extends Wizard {
 	}
 
 	/**
-	 * @param primary the primary to set
+	 * @param nameFromDatepid the nameFromDatepid to set
 	 */
-	public void setPrimary(Boolean primary) {
-		this.primary = primary;
+	public void setNameFromDatePid(int nameFromDatePid) {
+		this.nameFromDatePid = nameFromDatePid;
+	}
+
+	/**
+	 * @param nameToDatePid the nameToDatePid to set
+	 */
+	public void setNameToDatePid(int nameToDatePid) {
+		this.nameToDatePid = nameToDatePid;
+	}
+
+	/**
+	 * @param preposition the preposition to set
+	 */
+	public void setPreposition(String preposition) {
+		this.preposition = preposition;
+	}
+
+	/**
+	 * @param toDatePid the toDatePid to set
+	 */
+	public void setToDatePid(int toDatePid) {
+		this.toDatePid = toDatePid;
 	}
 
 	/**

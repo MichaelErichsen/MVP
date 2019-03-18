@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.location.wizards;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,6 +26,8 @@ import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TraverseEvent;
@@ -52,7 +55,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 18. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -60,6 +63,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	NewLocationWizard wizard;
+
 	private Text textGoogleApiKey;
 	private final IEclipseContext context;
 	private final LocationNameMapProvider provider;
@@ -101,6 +106,34 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
+		table.addFocusListener(new FocusAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
+			 * events.FocusEvent)
+			 */
+			@Override
+			public void focusLost(FocusEvent e) {
+				List<String> stringList = new ArrayList<>();
+				TableItem[] items = tableViewer.getTable().getItems();
+
+				for (int i = 0; i < items.length; i++) {
+					TableItem tableItem = items[i];
+					String text = tableItem.getText(4);
+
+					if (text.length() == 0) {
+						text = "";
+					}
+
+					stringList.add(text);
+				}
+
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setLocationNamePartList(stringList);
+			}
+		});
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -229,8 +262,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-			locationNameStylePid = wizard.getPage1().getLocationNameStylePid();
+			wizard = (NewLocationWizard) getWizard();
+			locationNameStylePid = wizard.getLocationNameStylePid();
 			stringList = provider.getStringList(locationNameStylePid);
 			tableViewer.setInput(stringList);
 		} catch (final Exception e1) {
@@ -260,7 +293,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 		if (valid) {
 			setPageComplete(true);
-			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
+			wizard = (NewLocationWizard) getWizard();
 			wizard.addBackPages();
 			wizard.getContainer().updateButtons();
 		}
@@ -328,7 +361,6 @@ public class NewLocationWizardPage2 extends WizardPage {
 			LOGGER.fine("Lat " + lat + ", lng " + lng);
 			textCoordinates.setText("Lat " + lat + ", lng " + lng);
 
-			final NewLocationWizard wizard = (NewLocationWizard) getWizard();
 			wizard.setxCoordinate(lat);
 			wizard.setyCoordinate(lng);
 			wizard.addBackPages();
@@ -342,6 +374,5 @@ public class NewLocationWizardPage2 extends WizardPage {
 			eventBroker.post("MESSAGE", e.getCause() + ": " + e.getMessage());
 		}
 	}
-
 
 }

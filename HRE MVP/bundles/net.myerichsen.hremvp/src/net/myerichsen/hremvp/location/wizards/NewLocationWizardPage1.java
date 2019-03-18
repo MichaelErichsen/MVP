@@ -12,6 +12,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -37,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 17. mar. 2019
  */
 public class NewLocationWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
@@ -45,17 +47,10 @@ public class NewLocationWizardPage1 extends WizardPage {
 	private final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final IEclipseContext context;
+	private NewLocationWizard wizard;
 
 	private ComboViewer comboViewerLocationNameStyles;
-	private Text textFromDate;
-	private Text textToDate;
-	private Text textPreposition;
-	private Button btnPrimaryLocationName;
-
-	private int fromDatePid;
-	private int toDatePid;
-	private int locationNameStylePid;
-	protected List<List<String>> styleList;
+	private List<List<String>> styleList;
 
 	/**
 	 * Constructor
@@ -70,6 +65,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 		setDescription(
 				"Add the name style, optionally time limitations for the name "
 						+ "of the location, and a preposition for reporting use.\r\n\r\n");
+
 	}
 
 	/*
@@ -105,11 +101,9 @@ public class NewLocationWizardPage1 extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				final int selectionIndex = comboLocationNameStyles
 						.getSelectionIndex();
-				locationNameStylePid = Integer
-						.parseInt(styleList.get(selectionIndex).get(0));
-
-				final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-				wizard.setLocationNameStylePid(locationNameStylePid);
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setLocationNameStylePid(
+						Integer.parseInt(styleList.get(selectionIndex).get(0)));
 				setPageComplete(true);
 				wizard.addPage2();
 				wizard.getContainer().updateButtons();
@@ -131,7 +125,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
 
-		textFromDate = new Text(compositeFrom, SWT.BORDER);
+		Text textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textFromDate.setEditable(false);
@@ -163,7 +157,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
-						fromDatePid = hdp.insert();
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setNameFromDatePid(hdp.insert());
 						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
@@ -191,6 +186,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 						final int hdatePid = dialog.getHdatePid();
 						final HDateProvider hdp = new HDateProvider();
 						hdp.get(hdatePid);
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setNameFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
 						e1.printStackTrace();
@@ -211,6 +208,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setNameFromDatePid(0);
 				textFromDate.setText("");
 			}
 		});
@@ -224,7 +223,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
 		lblToDate.setText("To Date");
 
-		textToDate = new Text(compositeTo, SWT.BORDER);
+		Text textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textToDate.setEditable(false);
@@ -246,6 +245,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setNameFromDatePid(wizard.getToDatePid());
 				textToDate.setText(textFromDate.getText());
 			}
 		});
@@ -272,7 +273,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
-						toDatePid = hdp.insert();
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setNameToDatePid(hdp.insert());
 						textToDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
@@ -300,6 +302,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 						final int hdatePid = dialog.getHdatePid();
 						final HDateProvider hdp = new HDateProvider();
 						hdp.get(hdatePid);
+						wizard = (NewLocationWizard) getWizard();
+						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
 						e1.printStackTrace();
@@ -311,25 +315,68 @@ public class NewLocationWizardPage1 extends WizardPage {
 
 		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setNameToDatePid(0);
+				textToDate.setText("");
 			}
 		});
 		btnClearTo.setText("Clear");
 
 		new Label(container, SWT.NONE);
 
-		btnPrimaryLocationName = new Button(container, SWT.CHECK);
+		Button btnPrimaryLocationName = new Button(container, SWT.CHECK);
 		btnPrimaryLocationName.setSelection(true);
 		btnPrimaryLocationName.setText("Primary Location Name");
+		btnPrimaryLocationName.addFocusListener(new FocusListener() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.
+			 * events.FocusEvent)
+			 */
+			@Override
+			public void focusLost(org.eclipse.swt.events.FocusEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setIsPrimaryLocationName(
+						btnPrimaryLocationName.getSelection());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+
+		});
 
 		final Label lblPreposition = new Label(container, SWT.NONE);
 		lblPreposition.setText("Preposition");
 
-		textPreposition = new Text(container, SWT.BORDER);
+		Text textPreposition = new Text(container, SWT.BORDER);
 		textPreposition.setToolTipText("Optional. Used for reporting");
 		textPreposition.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPreposition.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setPreposition(textPreposition.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+		});
 
 		try {
 			// Populate location name style combo box
@@ -348,17 +395,9 @@ public class NewLocationWizardPage1 extends WizardPage {
 
 		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
-			e1.printStackTrace();
 		}
 
 		setPageComplete(false);
-	}
-
-	/**
-	 * @return the btnPrimaryLocationName
-	 */
-	public Button getBtnPrimaryLocationName() {
-		return btnPrimaryLocationName;
 	}
 
 	/**
@@ -372,66 +411,4 @@ public class NewLocationWizardPage1 extends WizardPage {
 		return ls.get(0);
 	}
 
-	/**
-	 * @return the fromDatePid
-	 */
-	public int getFromDatePid() {
-		return fromDatePid;
-	}
-
-	/**
-	 * @return the locationNameStylePid
-	 */
-	public int getLocationNameStylePid() {
-		return locationNameStylePid;
-	}
-
-	/**
-	 * @return the textFromDate
-	 */
-	public Text getTextFromDate() {
-		return textFromDate;
-	}
-
-	/**
-	 * @return the textPreposition
-	 */
-	public Text getTextPreposition() {
-		return textPreposition;
-	}
-
-	/**
-	 * @return the textToDate
-	 */
-	public Text getTextToDate() {
-		return textToDate;
-	}
-
-	/**
-	 * @return the toDatePid
-	 */
-	public int getToDatePid() {
-		return toDatePid;
-	}
-
-	/**
-	 * @param fromDatePid the fromDatePid to set
-	 */
-	public void setFromDatePid(int fromDatePid) {
-		this.fromDatePid = fromDatePid;
-	}
-
-	/**
-	 * @param locationNameStylePid the locationNameStylePid to set
-	 */
-	public void setLocationNameStylePid(int locationNameStylePid) {
-		this.locationNameStylePid = locationNameStylePid;
-	}
-
-	/**
-	 * @param toDatePid the toDatePid to set
-	 */
-	public void setToDatePid(int toDatePid) {
-		this.toDatePid = toDatePid;
-	}
 }

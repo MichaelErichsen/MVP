@@ -127,32 +127,32 @@ public class NewEventWizard extends Wizard {
 	public boolean performFinish() {
 		try {
 			final LocationProvider lp = new LocationProvider();
-			lp.setFromDatePid(page1.getFromDatePid());
-			lp.setToDatePid(page1.getFromDatePid());
+//			lp.setFromDatePid(page1.getFromDatePid());
+//			lp.setToDatePid(page1.getFromDatePid());
 //			lp.setxCoordinate(
 //					new BigDecimal(page1.getTextXCoordinate().getText()));
 //			lp.setyCoordinate(
 //					new BigDecimal(page1.getTextYCoordinate().getText()));
 //			lp.setzCoordinate(
 //					new BigDecimal(page1.getTextZCoordinate().getText()));
-			lp.setPrimaryLocation(
-					page1.getBtnCheckButtonPrimary().getSelection());
+//			lp.setPrimaryLocation(
+//					page1.getBtnCheckButtonPrimary().getSelection());
 			final int locationPid = lp.insert();
 			LOGGER.info("Inserted location " + locationPid);
 
 			final LocationNameProvider lnp = new LocationNameProvider();
 			lnp.setLocationPid(locationPid);
-			lnp.setFromDatePid(page2.getFromDatePid());
-			lnp.setToDatePid(page2.getFromDatePid());
+//			lnp.setFromDatePid(page2.getFromDatePid());
+//			lnp.setToDatePid(page2.getFromDatePid());
 			lnp.setPrimaryLocationName(true);
 
 			final String s = page2.getComboLocationNameStyle();
 			final String[] sa = s.split(",");
 			lnp.setLocationNameStylePid(Integer.parseInt(sa[0]));
 
-			lnp.setPrimaryLocationName(
-					page2.getBtnPrimaryLocationName().getSelection());
-			lnp.setPreposition(page2.getTextPreposition().getText());
+//			lnp.setPrimaryLocationName(
+//					page2.getBtnPrimaryLocationName().getSelection());
+//			lnp.setPreposition(page2.getTextPreposition().getText());
 			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 

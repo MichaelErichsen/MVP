@@ -47,6 +47,8 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private NewLocationNameWizard wizard;
+
 	private final LocationNameMapProvider provider;
 	private TableViewer tableViewer;
 	private List<List<String>> stringList;
@@ -61,6 +63,7 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 		super("wizardPage");
 		setTitle("Location Name Parts");
 		setDescription("Enter the parts of the location name.");
+		wizard = (NewLocationNameWizard) getWizard();
 		provider = new LocationNameMapProvider();
 	}
 
@@ -89,16 +92,22 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 			@Override
 			public void focusLost(FocusEvent e) {
 				TableItem[] tableItems = table.getItems();
+				Boolean found = false;
 
 				for (int i = 0; i < tableItems.length; i++) {
-					if (tableItems[i].getText(4).length() > 0) {
-						setPageComplete(true);
-						NewLocationNameWizard wizard = (NewLocationNameWizard) getWizard();
-						wizard.addBackPages();
-						wizard.getContainer().updateButtons();
-						break;
+					String text = tableItems[i].getText(4);
+					if (text.length() > 0) {
+						stringList.get(i).set(4, text);
+						found = true;
 					}
 				}
+
+				if (found) {
+					setPageComplete(true);
+					wizard.addBackPages();
+					wizard.getContainer().updateButtons();
+				}
+
 			}
 		});
 		table.setLinesVisible(true);
@@ -213,13 +222,6 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 		}
 
 		setPageComplete(true);
-	}
-
-	/**
-	 * @return the stringList
-	 */
-	public List<List<String>> getStringList() {
-		return stringList;
 	}
 
 }
