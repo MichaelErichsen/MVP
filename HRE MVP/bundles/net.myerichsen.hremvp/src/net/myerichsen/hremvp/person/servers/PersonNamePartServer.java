@@ -1,16 +1,16 @@
 package net.myerichsen.hremvp.person.servers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
-import net.myerichsen.hremvp.dbmodels.NameParts;
-import net.myerichsen.hremvp.dbmodels.Names;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
+import net.myerichsen.hremvp.dbmodels.PersonNameParts;
+import net.myerichsen.hremvp.dbmodels.PersonNames;
 
 /**
- * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.NameParts}
+ * Business logic interface for
+ * {@link net.myerichsen.hremvp.dbmodels.PersonNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 5. feb. 2019
@@ -25,27 +25,27 @@ public class PersonNamePartServer implements IHREServer {
 	private String label;
 	private int partNo;
 
-	private final NameParts part;
+	private final PersonNameParts part;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public PersonNamePartServer() {
-		part = new NameParts();
+		part = new PersonNameParts();
 	}
 
 	/**
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		part.delete(key);
 	}
 
@@ -54,8 +54,7 @@ public class PersonNamePartServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return null;
 	}
 
@@ -63,13 +62,13 @@ public class PersonNamePartServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		part.get(key);
 		setLabel(part.getLabel());
 		setNamePartPid(part.getNamePartPid());
@@ -78,12 +77,13 @@ public class PersonNamePartServer implements IHREServer {
 
 		// Get name
 		final StringBuilder sb = new StringBuilder();
-		final List<NameParts> partList = new NameParts().getFKNamePid(namePid);
+		final List<PersonNameParts> partList = new PersonNameParts()
+				.getFKNamePid(namePid);
 
-		for (final NameParts nameParts : partList) {
-			if (nameParts.getNamePid() == namePid) {
-				if (nameParts.getLabel() != null) {
-					sb.append(nameParts.getLabel() + " ");
+		for (final PersonNameParts PersonNameParts : partList) {
+			if (PersonNameParts.getNamePid() == namePid) {
+				if (PersonNameParts.getLabel() != null) {
+					sb.append(PersonNameParts.getLabel() + " ");
 				}
 			}
 		}
@@ -92,11 +92,11 @@ public class PersonNamePartServer implements IHREServer {
 
 		// Get map label
 		setMapLabel("Label");
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		name.get(namePid);
 
-		final NameMaps map = new NameMaps();
-		final List<NameMaps> mapList = map
+		final PersonNameMaps map = new PersonNameMaps();
+		final List<PersonNameMaps> mapList = map
 				.getFKNameStylePid(name.getNameStylePid());
 
 		if (mapList.size() != partList.size()) {
@@ -106,7 +106,7 @@ public class PersonNamePartServer implements IHREServer {
 
 		for (int i = 0; i < mapList.size(); i++) {
 			if (mapList.get(i).getPartNo() == partNo) {
-				setMapLabel(mapList.get(i).getLabel());
+				setMapLabel("mapList.get(i).getLabelPid()");
 				break;
 			}
 		}
@@ -115,9 +115,9 @@ public class PersonNamePartServer implements IHREServer {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<NameParts> getFKNamePid(int key) throws SQLException {
+	public List<PersonNameParts> getFKNamePid(int key) throws Exception {
 		return part.getFKNamePid(key);
 	}
 
@@ -163,29 +163,51 @@ public class PersonNamePartServer implements IHREServer {
 		return partNo;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Insert a row. Checks if a matching part number exists in
-	 * {@link net.myerichsen.hremvp.dbmodels.NameMaps}
+	 * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
 	 *
 	 * @return
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		part.setLabel(label);
 		part.setNamePartPid(namePartPid);
 		part.setNamePid(namePid);
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		name.get(namePid);
 
-//		final NameMaps map = new NameMaps();
-//		final List<NameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
+//		final PersonNameMaps map = new PersonNameMaps();
+//		final List<PersonNameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
 //		Boolean found = false;
 //
 //		for (int i = 0; i < mapList.size(); i++) {
@@ -246,25 +268,25 @@ public class PersonNamePartServer implements IHREServer {
 
 	/**
 	 * Update a row. Checks if a matching part number exists in
-	 * {@link net.myerichsen.hremvp.dbmodels.NameMaps}
+	 * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		part.setLabel(label);
 		part.setNamePartPid(namePartPid);
 		part.setNamePid(namePid);
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		final Names name = new Names();
+		final PersonNames name = new PersonNames();
 		name.get(namePid);
 
-		final NameMaps map = new NameMaps();
-		final List<NameMaps> mapList = map
+		final PersonNameMaps map = new PersonNameMaps();
+		final List<PersonNameMaps> mapList = map
 				.getFKNameStylePid(name.getNameStylePid());
 		Boolean found = false;
 

@@ -3,7 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,36 +13,29 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the LOCATION_NAME_STYLES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 02. mar. 2019
  *
  */
 
 public class LocationNameStyles {
-	private static final String SELECT = "SELECT LOCATION_NAME_STYLE_PID, LABEL, LANGUAGE_PID, "
-			+ "TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAME_STYLES WHERE LOCATION_NAME_STYLE_PID = ?";
-	private static final String SELECT_LANGUAGE_PID = "SELECT LOCATION_NAME_STYLE_PID, LABEL, "
-			+ "LANGUAGE_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAME_STYLES WHERE LANGUAGE_PID = ? ORDER BY LOCATION_NAME_STYLE_PID";
-	private static final String SELECT_FROM_DATE_PID = "SELECT LOCATION_NAME_STYLE_PID, LABEL, "
-			+ "LANGUAGE_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAME_STYLES WHERE FROM_DATE_PID = ? ORDER BY LOCATION_NAME_STYLE_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT LOCATION_NAME_STYLE_PID, LABEL, "
-			+ "LANGUAGE_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAME_STYLES WHERE TO_DATE_PID = ? ORDER BY LOCATION_NAME_STYLE_PID";
-	private static final String SELECTALL = "SELECT LOCATION_NAME_STYLE_PID, LABEL, LANGUAGE_PID, "
-			+ "TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAME_STYLES ORDER BY LOCATION_NAME_STYLE_PID";
-
+	private static final String SELECT = "SELECT LOCATION_NAME_STYLE_PID, "
+			+ "ISO_CODE, FROM_DATE_PID, TO_DATE_PID, LABEL_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_STYLES WHERE LOCATION_NAME_STYLE_PID = ?";
+	private static final String SELECTALL = "SELECT "
+			+ "LOCATION_NAME_STYLE_PID, ISO_CODE, FROM_DATE_PID, "
+			+ "TO_DATE_PID, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.LOCATION_NAME_STYLES ORDER BY LOCATION_NAME_STYLE_PID";
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_NAME_STYLE_PID) FROM PUBLIC.LOCATION_NAME_STYLES";
-
-	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_STYLES( LOCATION_NAME_STYLE_PID, "
-			+ "LABEL, LANGUAGE_PID, TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?)";
-
-	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_STYLES SET LABEL = ?, "
-			+ "LANGUAGE_PID = ?, TABLE_ID = ?, FROM_DATE_PID = ?, "
-			+ "TO_DATE_PID = ? WHERE LOCATION_NAME_STYLE_PID = ?";
+	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAME_STYLES( "
+			+ "LOCATION_NAME_STYLE_PID, ISO_CODE, FROM_DATE_PID, "
+			+ "TO_DATE_PID, LABEL_PID, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 16)";
+	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAME_STYLES SET "
+			+ "ISO_CODE = ?, FROM_DATE_PID = ?, TO_DATE_PID = ?, "
+			+ "LABEL_PID = ?, INSERT_TSTMP = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP "
+			+ "WHERE LOCATION_NAME_STYLE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAME_STYLES WHERE LOCATION_NAME_STYLE_PID = ?";
 
@@ -57,21 +50,23 @@ public class LocationNameStyles {
 	private Connection conn;
 
 	private int LocationNameStylePid;
-	private String Label;
-	private int LanguagePid;
-	private int TableId;
+	private String IsoCode;
 	private int FromDatePid;
 	private int ToDatePid;
+	private int LabelPid;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
+	private int TableId;
 	private LocationNameStyles model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -82,7 +77,7 @@ public class LocationNameStyles {
 		conn.close();
 	}
 
-	public List<LocationNameStyles> get() throws SQLException {
+	public List<LocationNameStyles> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -90,96 +85,37 @@ public class LocationNameStyles {
 		while (rs.next()) {
 			model = new LocationNameStyles();
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setIsoCode(rs.getString("ISO_CODE"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			model.setTableId(rs.getInt("TABLE_ID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			setLabel(rs.getString("LABEL"));
-			setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			setTableId(rs.getInt("TABLE_ID"));
+			setIsoCode(rs.getString("ISO_CODE"));
 			setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			setToDatePid(rs.getInt("TO_DATE_PID"));
+			setLabelPid(rs.getInt("LABEL_PID"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			setTableId(rs.getInt("TABLE_ID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
-	}
-
-	public List<LocationNameStyles> getFKFromDatePid(int key)
-			throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new LocationNameStyles();
-			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
-			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	public List<LocationNameStyles> getFKLanguagePid(int key)
-			throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new LocationNameStyles();
-			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
-			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	public List<LocationNameStyles> getFKToDatePid(int key)
-			throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new LocationNameStyles();
-			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
-			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
 	}
 
 	/**
@@ -192,21 +128,30 @@ public class LocationNameStyles {
 	}
 
 	/**
-	 * Get the Label field.
+	 * Get the InsertTstmp field.
 	 *
-	 * @return Contents of the LABEL column
+	 * @return Contents of the INSERT_TSTMP column
 	 */
-	public String getLabel() {
-		return Label;
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
-	 * Get the LanguagePid field.
+	 * Get the IsoCode field.
 	 *
-	 * @return Contents of the LANGUAGE_PID column
+	 * @return Contents of the ISO_CODE column
 	 */
-	public int getLanguagePid() {
-		return LanguagePid;
+	public String getIsoCode() {
+		return IsoCode;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
@@ -236,7 +181,16 @@ public class LocationNameStyles {
 		return ToDatePid;
 	}
 
-	public int insert() throws SQLException {
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -248,19 +202,18 @@ public class LocationNameStyles {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setString(2, getLabel());
-		ps.setInt(3, getLanguagePid());
-		ps.setInt(4, getTableId());
+		ps.setString(2, getIsoCode());
 		if (getFromDatePid() == 0) {
-			ps.setNull(5, java.sql.Types.INTEGER);
+			ps.setNull(3, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(5, getFromDatePid());
+			ps.setInt(3, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(6, java.sql.Types.INTEGER);
+			ps.setNull(4, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(6, getToDatePid());
+			ps.setInt(4, getToDatePid());
 		}
+		ps.setInt(5, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -276,21 +229,30 @@ public class LocationNameStyles {
 	}
 
 	/**
-	 * Set the Label field
+	 * Set the InsertTstmp field
 	 *
-	 * @param Label Contents of the LABEL column
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
 	 */
-	public void setLabel(String Label) {
-		this.Label = Label;
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
-	 * Set the LanguagePid field
+	 * Set the IsoCode field
 	 *
-	 * @param LanguagePid Contents of the LANGUAGE_PID column
+	 * @param IsoCode Contents of the ISO_CODE column
 	 */
-	public void setLanguagePid(int LanguagePid) {
-		this.LanguagePid = LanguagePid;
+	public void setIsoCode(String IsoCode) {
+		this.IsoCode = IsoCode;
+	}
+
+	/**
+	 * Set the LabelPid field
+	 *
+	 * @param LabelPid Contents of the LABEL_PID column
+	 */
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -321,23 +283,31 @@ public class LocationNameStyles {
 		this.ToDatePid = ToDatePid;
 	}
 
-	public void update() throws SQLException {
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getLabel());
-		ps.setInt(2, getLanguagePid());
-		ps.setInt(3, getTableId());
+		ps.setString(1, getIsoCode());
 		if (getFromDatePid() == 0) {
-			ps.setNull(4, java.sql.Types.INTEGER);
+			ps.setNull(2, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(4, getFromDatePid());
+			ps.setInt(2, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(5, java.sql.Types.INTEGER);
+			ps.setNull(3, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(5, getToDatePid());
+			ps.setInt(3, getToDatePid());
 		}
-		ps.setInt(6, getLocationNameStylePid());
+		ps.setInt(4, getLabelPid());
+		ps.setInt(5, getLocationNameStylePid());
 		ps.executeUpdate();
 		conn.close();
 	}

@@ -20,19 +20,14 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.SexTypeNavigatorDialog;
-import net.myerichsen.hremvp.person.providers.SexTypeProvider;
+import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. feb. 2019
- *
- */
-/**
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 14. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -130,7 +125,6 @@ public class NewPersonWizardPage1 extends WizardPage {
 
 				final SexTypeProvider provider = new SexTypeProvider();
 				provider.get(sexTypePid);
-				textSex.setText(provider.getLabel());
 			}
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
@@ -361,12 +355,12 @@ public class NewPersonWizardPage1 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				BirthDatePid = hdp.insert();
-				textBirthDate.setText(dialog.getLocalDate().toString());
+				textBirthDate.setText(dialog.getDate().toString());
 				if (textBirthDateSort.getText().length() == 0) {
 					textBirthDateSort.setText(dialog.getSortDate().toString());
 				}
@@ -387,12 +381,12 @@ public class NewPersonWizardPage1 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				DeathDatePid = hdp.insert();
-				textDeathDate.setText(dialog.getLocalDate().toString());
+				textDeathDate.setText(dialog.getDate().toString());
 				textDeathDateSort.setText(dialog.getSortDate().toString());
 				textDeathOriginal.setText(dialog.getOriginal());
 				textDeathSurety.setText(dialog.getSurety());

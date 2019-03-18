@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.location.servers;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -16,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Locations}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @version 11. mar. 2019
  *
  */
 public class LocationServer implements IHREServer {
@@ -47,26 +46,118 @@ public class LocationServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		location.delete(key);
+	}
+
+	/**
+	 * Get a row
+	 *
+	 * @param key The persistent id of the row
+	 * @throws Exception    An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
+	 *
+	 */
+	@Override
+	public void get(int key) throws Exception {
+		location.get(key);
+		setFromDatePid(location.getFromDatePid());
+		setLocationPid(key);
+		setPrimaryLocation(location.isPrimaryLocation());
+		setToDatePid(location.getToDatePid());
+		setxCoordinate(location.getXCoordinate());
+		setyCoordinate(location.getYCoordinate());
+		setzCoordinate(location.getZCoordinate());
+
+		nameList = new ArrayList<>();
+
+		final List<LocationNames> lnl = new LocationNames()
+				.getFKLocationPid(key);
+
+		final LocationNameServer lns = new LocationNameServer();
+		List<String> sl;
+		int pid;
+
+		for (int i = 0; i < lnl.size(); i++) {
+			sl = new ArrayList<>();
+			pid = lnl.get(i).getLocationNamePid();
+			sl.add(Integer.toString(pid));
+			lns.get(pid);
+//			sl.add(lns.getNameStrings()[i]);
+			sl.add("deprecated");
+			sl.add(Boolean.toString(lns.isPrimaryLocationName()));
+			sl.add(Integer.toString(lns.getToDatePid()));
+			sl.add(Integer.toString(lns.getFromDatePid()));
+			nameList.add(sl);
+		}
+	}
+
+	/**
+	 * @return the fromDatePid
+	 */
+	public int getFromDatePid() {
+		return fromDatePid;
+	}
+
+	/**
+	 * @return the locationPid
+	 */
+	public int getLocationPid() {
+		return locationPid;
+	}
+
+	/**
+	 * @return the nameList
+	 */
+	public List<List<String>> getNameList() {
+		return nameList;
+	}
+
+	/**
+	 * @return the primary name of the location
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
+	 */
+	public String getPrimaryName() throws Exception {
+		final StringBuilder sb = new StringBuilder();
+		final LocationNameParts part = new LocationNameParts();
+		List<LocationNameParts> partList;
+		final List<LocationNames> lnl = new LocationNames()
+				.getFKLocationPid(locationPid);
+
+		for (final LocationNames name : lnl) {
+			if (name.isPrimaryLocationName()) {
+				partList = part.getFKLocationNamePid(name.getLocationNamePid());
+
+				for (int i = 0; i < partList.size(); i++) {
+					if (partList.get(i) != null) {
+						sb.append(partList.get(i).getLabel() + ", ");
+					}
+				}
+				break;
+			}
+		}
+		final String primaryName = sb.toString();
+		return primaryName;
 	}
 
 	/**
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<List<String>> getStringList() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -109,95 +200,15 @@ public class LocationServer implements IHREServer {
 		return lls;
 	}
 
-	/**
-	 * Get a row
+	/*
+	 * (non-Javadoc)
 	 *
-	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
-		location.get(key);
-		setFromDatePid(location.getFromDatePid());
-		setLocationPid(key);
-		setPrimaryLocation(location.isPrimaryLocation());
-		setToDatePid(location.getToDatePid());
-		setxCoordinate(location.getXCoordinate());
-		setyCoordinate(location.getYCoordinate());
-		setzCoordinate(location.getZCoordinate());
-
-		nameList = new ArrayList<>();
-
-		final List<LocationNames> lnl = new LocationNames()
-				.getFKLocationPid(key);
-
-		final LocationNameServer lns = new LocationNameServer();
-		List<String> sl;
-		int pid;
-
-		for (int i = 0; i < lnl.size(); i++) {
-			sl = new ArrayList<>();
-			pid = lnl.get(i).getLocationNamePid();
-			sl.add(Integer.toString(pid));
-			lns.get(pid);
-			sl.add(lns.getNameStrings()[i]);
-			sl.add(Boolean.toString(lns.isPrimaryLocationName()));
-			sl.add(Integer.toString(lns.getToDatePid()));
-			sl.add(Integer.toString(lns.getFromDatePid()));
-			nameList.add(sl);
-		}
-	}
-
-	/**
-	 * @return the fromDatePid
-	 */
-	public int getFromDatePid() {
-		return fromDatePid;
-	}
-
-	/**
-	 * @return the locationPid
-	 */
-	public int getLocationPid() {
-		return locationPid;
-	}
-
-	/**
-	 * @return the nameList
-	 */
-	public List<List<String>> getNameList() {
-		return nameList;
-	}
-
-	/**
-	 * @return the primary name of the location
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
-	 */
-	public String getPrimaryName() throws SQLException {
-		final StringBuilder sb = new StringBuilder();
-		final LocationNameParts part = new LocationNameParts();
-		List<LocationNameParts> partList;
-		final List<LocationNames> lnl = new LocationNames()
-				.getFKLocationPid(locationPid);
-
-		for (final LocationNames name : lnl) {
-			if (name.isPrimaryLocationName()) {
-				partList = part.getFKLocationNamePid(name.getLocationNamePid());
-
-				for (int i = 0; i < partList.size(); i++) {
-					if (partList.get(i) != null) {
-						sb.append(partList.get(i).getLabel() + ", ");
-					}
-				}
-				break;
-			}
-		}
-		final String primaryName = sb.toString();
-		return primaryName;
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -233,12 +244,12 @@ public class LocationServer implements IHREServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		location.setFromDatePid(fromDatePid);
 		location.setLocationPid(locationPid);
 		location.setPrimaryLocation(primaryLocation);
@@ -308,12 +319,12 @@ public class LocationServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		location.setFromDatePid(fromDatePid);
 		location.setLocationPid(locationPid);
 		location.setPrimaryLocation(primaryLocation);
@@ -323,4 +334,5 @@ public class LocationServer implements IHREServer {
 		location.setZCoordinate(zCoordinate);
 		location.update();
 	}
+
 }

@@ -1,22 +1,21 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 
 /**
- * Wizard to add an existing person as a child
+ * Wizard to add a sex to a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 19. feb. 2019
+ * @version 3. mar. 2019
  *
  */
+// FIXME Add from and to dates to insert and update
 public class NewPersonSexWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -33,7 +32,7 @@ public class NewPersonSexWizard extends Wizard {
 	 * @param context
 	 */
 	public NewPersonSexWizard(int personPid, IEclipseContext context) {
-		setWindowTitle("Add child");
+		setWindowTitle("Add a sex");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
@@ -66,6 +65,9 @@ public class NewPersonSexWizard extends Wizard {
 			sexProvider.setPersonPid(personPid);
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(page1.isPrimary());
+			// FIXME Get date pids if not 0
+//			sexProvider.setFromDatePid(0);
+//			sexProvider.setToDatePid(0);
 			try {
 				// FIXME SEVERE: Referential integrity constraint violation:
 				// "SEX_TYPES_SEXES_FK: PUBLIC.SEXES FOREIGN KEY(SEX_TYPE_PID)
@@ -86,7 +88,7 @@ public class NewPersonSexWizard extends Wizard {
 						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 						personPid);
 				return true;
-			} catch (SQLException | MvpException e) {
+			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

@@ -16,14 +16,13 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 /**
  * Handler to open the Location View
  *
- * @version 2018-09-12
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- *
+ * @version 24. feb. 2019
  */
 public class OpenLocationViewHandler {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationView";
 
 	/**
 	 * @param partService  The Eclipse part service

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.dialogs;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -29,8 +28,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.filters.NavigatorFilter;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.providers.HDateProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -38,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all historical dates
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 19. feb. 2019
  *
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
@@ -66,7 +64,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		try {
 			provider = new HDateProvider();
 			navigatorFilter = new NavigatorFilter();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -132,13 +130,13 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnHistoricalDate = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnStoredDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnHistoricalDate = tableViewerColumnHistoricalDate
+		final TableColumn tblclmnStoredDate = tableViewerColumnStoredDate
 				.getColumn();
-		tblclmnHistoricalDate.setWidth(100);
-		tblclmnHistoricalDate.setText("Historical Date");
-		tableViewerColumnHistoricalDate
+		tblclmnStoredDate.setWidth(100);
+		tblclmnStoredDate.setText("Stored Date");
+		tableViewerColumnStoredDate
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnOriginalInputFormat = new TableViewerColumn(
@@ -170,7 +168,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.get());
-		} catch (SQLException | MvpException e1) {
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -195,7 +193,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 
 	/**
 	 * @param shell
-	 * @param context
+	 * @param data.context
 	 *
 	 */
 	protected void openDateDialog(Shell shell) {

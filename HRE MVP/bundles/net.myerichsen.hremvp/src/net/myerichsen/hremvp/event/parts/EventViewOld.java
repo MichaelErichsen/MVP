@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,7 +49,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all data about an personEvent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. dec. 2018
+ * @version 16. mar. 2019
  */
 
 @SuppressWarnings("restriction")
@@ -105,11 +104,11 @@ public class EventViewOld {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 *
 	 */
-	public EventViewOld() throws SQLException {
+	public EventViewOld() throws Exception {
 		provider = new EventProvider();
 	}
 
@@ -204,12 +203,12 @@ public class EventViewOld {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						hdp.insert();
-						textFromDate.setText(dialog.getLocalDate().toString());
+						textFromDate.setText(dialog.getDate().toString());
 						if (textFromDateSort.getText().length() == 0) {
 							textFromDateSort
 									.setText(dialog.getSortDate().toString());
@@ -312,12 +311,12 @@ public class EventViewOld {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						hdp.insert();
-						textToDate.setText(dialog.getLocalDate().toString());
+						textToDate.setText(dialog.getDate().toString());
 						textToDateSort.setText(dialog.getSortDate().toString());
 						textToOriginal.setText(dialog.getOriginal());
 						textToSurety.setText(dialog.getSurety());

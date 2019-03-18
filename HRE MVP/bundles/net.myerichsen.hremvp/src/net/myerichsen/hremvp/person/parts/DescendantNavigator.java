@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -57,7 +56,7 @@ public class DescendantNavigator {
 		try {
 			provider = new PersonProvider();
 			treePersonList = createTreePersonList(2);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -103,11 +102,11 @@ public class DescendantNavigator {
 	 *
 	 * @return
 	 *
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	private List<TreePerson> createTreePersonList(int personPid)
-			throws SQLException, MvpException {
+			throws Exception {
 		TreePerson person;
 		final List<TreePerson> tpList = new ArrayList<>();
 
@@ -163,7 +162,7 @@ public class DescendantNavigator {
 			treePersonList = createTreePersonList(personPid);
 			treeViewer.setInput(treePersonList);
 			treeViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

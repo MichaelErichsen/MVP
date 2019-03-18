@@ -12,6 +12,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
  * @version 21. nov. 2018
  *
  */
+// TODO !MESSAGE Perspective with ID net.myerichsen.hremvp.perspective.
+// eventperspective not found in the current window.
 public class EventPerspectiveHandler {
 	/**
 	 * @param app          The Eclipse application

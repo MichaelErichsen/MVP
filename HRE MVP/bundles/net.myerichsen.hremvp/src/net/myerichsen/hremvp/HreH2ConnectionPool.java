@@ -3,7 +3,6 @@ package net.myerichsen.hremvp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 
@@ -18,7 +17,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 1. feb. 2019
+ * @version 7. mar. 2019
  */
 public class HreH2ConnectionPool {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
@@ -64,10 +63,10 @@ public class HreH2ConnectionPool {
 	/**
 	 * Dispose the connection pool.
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public static void dispose() throws SQLException {
+	public static void dispose() throws Exception {
 		final Connection conn = HreH2ConnectionPool.getConnection();
 		final PreparedStatement ps = conn.prepareStatement("SHUTDOWN");
 		ps.executeUpdate();
@@ -80,10 +79,10 @@ public class HreH2ConnectionPool {
 
 	/**
 	 * @return A JDBC connection
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public static Connection getConnection() throws SQLException {
+	public static Connection getConnection() throws Exception {
 		final String dbName = store.getString("DBNAME");
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
 		dbPath = store.getString("DBPATH");
@@ -111,7 +110,7 @@ public class HreH2ConnectionPool {
 
 					LOGGER.info("H2 Version is " + h2Version);
 				}
-			} catch (final SQLException e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				store.setValue("H2VERSION", h2Version);
 
@@ -122,8 +121,7 @@ public class HreH2ConnectionPool {
 		LOGGER.fine("Reusing connection pool, Max: "
 				+ connectionPool.getMaxConnections() + ", Active: "
 				+ connectionPool.getActiveConnections());
-		// TODO 2019-02-01 17:53:38 jdbc[3]: java.lang.Exception: Open Stack
-		// Trace
+
 		return connectionPool.getConnection();
 	}
 
@@ -132,10 +130,10 @@ public class HreH2ConnectionPool {
 	 *
 	 * @param dbName Name of database
 	 * @return A JDBC Connection
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public static Connection getConnection(String dbName) throws SQLException {
+	public static Connection getConnection(String dbName) throws Exception {
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
 		dbPath = store.getString("DBPATH");
 		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName

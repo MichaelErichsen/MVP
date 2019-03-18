@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -37,7 +36,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonPartnerWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -71,7 +69,7 @@ public class PersonPartnersView {
 	public PersonPartnersView() {
 		try {
 			provider = new PersonProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -156,7 +154,7 @@ public class PersonPartnersView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPartnerList(0));
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -224,7 +222,7 @@ public class PersonPartnersView {
 			provider.removePartner(personPid, PartnerPid);
 			eventBroker.post("MESSAGE",
 					"Partner " + primaryName + " has been removed");
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -251,7 +249,7 @@ public class PersonPartnersView {
 		try {
 			tableViewer.setInput(provider.getPartnerList(personPid));
 			tableViewer.refresh();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

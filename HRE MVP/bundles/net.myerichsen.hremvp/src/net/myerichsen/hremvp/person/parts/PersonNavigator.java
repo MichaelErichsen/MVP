@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -38,8 +37,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.filters.NavigatorFilter;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -48,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class PersonNavigator {
@@ -81,7 +79,7 @@ public class PersonNavigator {
 	 * Create contents of the view part
 	 *
 	 * @param parent  The parent composite
-	 * @param context
+	 * @param context The Eclipse context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -128,6 +126,12 @@ public class PersonNavigator {
 
 		final MenuItem mntmAddPerson = new MenuItem(menu, SWT.NONE);
 		mntmAddPerson.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
@@ -139,6 +143,12 @@ public class PersonNavigator {
 
 		final MenuItem mntmDeleteSelectedPerson = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedPerson.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				deletePerson(parent.getShell());
@@ -166,7 +176,7 @@ public class PersonNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPersonList());
-		} catch (SQLException | MvpException e1) {
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -207,7 +217,7 @@ public class PersonNavigator {
 			eventBroker.post("MESSAGE",
 					"Person " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -218,13 +228,6 @@ public class PersonNavigator {
 	 */
 	@PreDestroy
 	public void dispose() {
-	}
-
-	/**
-	 * @return
-	 */
-	public TableViewer getTableViewer() {
-		return tableViewer;
 	}
 
 	/**
@@ -251,22 +254,25 @@ public class PersonNavigator {
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
 		LOGGER.fine("Received person id " + personPid);
-		try {
-			tableViewer.setInput(provider.getPersonList());
-			tableViewer.refresh();
 
-			TableItem[] items = tableViewer.getTable().getItems();
-			String item0 = Integer.toString(personPid);
+		if (personPid > 0) {
+			try {
+				tableViewer.setInput(provider.getPersonList());
+				tableViewer.refresh();
 
-			for (int i = 0; i < items.length; i++) {
-				if (item0.equals(items[i].getText(0))) {
-					tableViewer.getTable().setSelection(i);
-					break;
+				final TableItem[] items = tableViewer.getTable().getItems();
+				final String item0 = Integer.toString(personPid);
+
+				for (int i = 0; i < items.length; i++) {
+					if (item0.equals(items[i].getText(0))) {
+						tableViewer.getTable().setSelection(i);
+						break;
+					}
 				}
+			} catch (Exception e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
 			}
-		} catch (SQLException | MvpException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
 		}
 	}
 }

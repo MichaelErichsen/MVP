@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.databaseadmin;
 
 import java.sql.Blob;
 import java.sql.Clob;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -148,7 +147,7 @@ public class H2TableEditor {
 					}
 					eventBroker.post("MESSAGE",
 							"Record " + recordNum + " has been selected");
-				} catch (final SQLException e2) {
+				} catch (final Exception e2) {
 					e2.printStackTrace();
 					eventBroker.post("MESSAGE", e2.getMessage());
 				}
@@ -212,7 +211,7 @@ public class H2TableEditor {
 							tableName);
 					eventBroker.post("MESSAGE",
 							"Record " + insertRecordNum + " has been inserted");
-				} catch (final SQLException e1) {
+				} catch (final Exception e1) {
 					e1.printStackTrace();
 					eventBroker.post("MESSAGE", e1.getMessage());
 				}
@@ -274,7 +273,7 @@ public class H2TableEditor {
 							tableName);
 					eventBroker.post("MESSAGE",
 							"Record " + updateRecordNum + " has been updated");
-				} catch (final SQLException e1) {
+				} catch (final Exception e1) {
 					e1.printStackTrace();
 					eventBroker.post("MESSAGE", e1.getMessage());
 				}
@@ -367,7 +366,7 @@ public class H2TableEditor {
 
 		try {
 			createLines();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
@@ -405,9 +404,9 @@ public class H2TableEditor {
 
 	/**
 	 * @param scrolledComposite
-	 * @throws SQLException When failing
+	 * @throws Exception When failing
 	 */
-	private void createLines() throws SQLException {
+	private void createLines() throws Exception {
 		Text text;
 		Label label2;
 
@@ -447,7 +446,7 @@ public class H2TableEditor {
 					final String s = new String(
 							DatatypeConverter.printHexBinary(ba));
 					text.setText(s);
-				} catch (final SQLException e) {
+				} catch (final Exception e) {
 					eventBroker.post("MESSAGE", e.getMessage());
 				}
 				lineList.add(text);
@@ -491,7 +490,7 @@ public class H2TableEditor {
 				try {
 					text.setText(new String(
 							clob.getSubString(1L, (int) clob.length())));
-				} catch (final SQLException e) {
+				} catch (final Exception e) {
 					eventBroker.post("MESSAGE", e.getMessage());
 				}
 				lineList.add(text);
@@ -611,7 +610,7 @@ public class H2TableEditor {
 			eventBroker.post("MESSAGE",
 					"Record " + recordNum + " has been deleted");
 
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
@@ -648,13 +647,13 @@ public class H2TableEditor {
 
 	/**
 	 * @param recordNumString
-	 * @throws SQLException When failing
+	 * @throws Exception When failing
 	 */
 	@Inject
 	@Optional
 	private void subscribeRecordNumUpdateTopic(
 			@UIEventTopic(Constants.RECORDNUM_UPDATE_TOPIC) String recordNumString)
-			throws SQLException {
+			throws Exception {
 		recordNum = Integer.parseInt(recordNumString);
 		createLines();
 	}

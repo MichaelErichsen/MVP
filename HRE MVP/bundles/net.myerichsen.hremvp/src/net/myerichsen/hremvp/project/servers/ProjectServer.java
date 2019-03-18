@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,7 +34,7 @@ public class ProjectServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 
 	}
 
@@ -44,8 +43,7 @@ public class ProjectServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> ls;
 		final int projectCount = store.getInt("projectcount");
@@ -72,7 +70,7 @@ public class ProjectServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		projectId = key;
 		final String propKey = new String("project." + key + ".name");
 		projectName = store.getString(propKey);
@@ -81,10 +79,10 @@ public class ProjectServer implements IHREServer {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
-	public List<String> getElement(int key) throws SQLException, MvpException {
+	public List<String> getElement(int key) throws Exception {
 		get(key);
 		final List<String> element = new ArrayList<>();
 		element.add(Integer.toString(projectId));
@@ -143,10 +141,31 @@ public class ProjectServer implements IHREServer {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		return 0;
 	}
 
@@ -156,7 +175,7 @@ public class ProjectServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 
 	}
 }

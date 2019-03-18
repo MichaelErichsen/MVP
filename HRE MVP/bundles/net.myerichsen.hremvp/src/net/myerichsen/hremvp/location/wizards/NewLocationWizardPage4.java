@@ -11,10 +11,12 @@ import org.eclipse.swt.widgets.Composite;
  * Location summary wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. okt. 2018
+ * @version 17. mar. 2019
  *
  */
 public class NewLocationWizardPage4 extends WizardPage {
+	NewLocationWizard wizard;
+
 	/**
 	 * Constructor
 	 *
@@ -22,7 +24,8 @@ public class NewLocationWizardPage4 extends WizardPage {
 	public NewLocationWizardPage4() {
 		super("wizardPage");
 		setTitle("Confirmation");
-		setDescription("Insert the new location");
+		setDescription("Confirm the new location");
+		wizard = (NewLocationWizard) getWizard();
 	}
 
 	/*
@@ -38,16 +41,13 @@ public class NewLocationWizardPage4 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(1, false));
 
-		final NewLocationWizard wizard = (NewLocationWizard) getWizard();
 		final Browser browser = new Browser(container, SWT.NONE);
 		browser.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		browser.setUrl(
-				"http://www.google.com/maps/@?api=1&map_action=map&center="
-						+ wizard.getPage1().getTextXCoordinate().getText()
-						+ ", "
-						+ wizard.getPage1().getTextYCoordinate().getText()
-						+ "&basemap=terrain");
-
+		wizard = (NewLocationWizard) getWizard();
+		String urlString = "http://www.google.com/maps/@?api=1&map_action=map&center="
+				+ wizard.getxCoordinate() + ", " + wizard.getyCoordinate()
+				+ "&basemap=terrain";
+		browser.setUrl(urlString);
 	}
 }

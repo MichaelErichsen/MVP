@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -11,7 +10,7 @@ import net.myerichsen.hremvp.person.servers.SexServer;
  * Provide all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. jan. 2019
+ * @version 11. mar. 2019
  *
  */
 public class SexProvider implements IHREProvider {
@@ -41,37 +40,27 @@ public class SexProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		return null;
 	}
 
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setSexesPid(server.getSexesPid());
 		setPersonPid(server.getPersonPid());
@@ -148,6 +137,26 @@ public class SexProvider implements IHREProvider {
 		return sexTypePid;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		return server.getStringList();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		return server.getStringList(key);
+	}
+
 	/**
 	 * @return the toDatePid
 	 */
@@ -158,13 +167,13 @@ public class SexProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 * @return
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setSexesPid(sexesPid);
 		server.setPersonPid(personPid);
 		server.setSexTypePid(sexTypePid);
@@ -189,7 +198,7 @@ public class SexProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param fromDatePid the fromDatePid to set
+	 * @param data.fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int i) {
 		fromDatePid = i;
@@ -252,7 +261,7 @@ public class SexProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param toDatePid the toDatePid to set
+	 * @param data.toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int todate) {
 		toDatePid = todate;
@@ -261,12 +270,12 @@ public class SexProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setSexesPid(sexesPid);
 		server.setPersonPid(personPid);
 		server.setSexTypePid(sexTypePid);

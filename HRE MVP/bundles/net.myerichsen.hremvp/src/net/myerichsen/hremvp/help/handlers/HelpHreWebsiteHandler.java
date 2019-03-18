@@ -15,7 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Open HRE Web site in an embedded browser
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 28. feb. 2019
  *
  */
 public class HelpHreWebsiteHandler {
@@ -28,7 +28,7 @@ public class HelpHreWebsiteHandler {
 		part.setCloseable(true);
 		part.setVisible(true);
 		part.setContributionURI(
-				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.HelpHreWebsite");
+				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.help.parts.HelpHreWebsite");
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
 		stacks.get(stacks.size() - 2).getChildren().add(part);

@@ -4,7 +4,7 @@ package net.myerichsen.hremvp;
  * Constants used by database access and personEvent handling
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 25. feb. 2019
  *
  */
 public class Constants {
@@ -36,9 +36,12 @@ public class Constants {
 	/**
 	 * Eclipse events
 	 */
+	public static final String DATABASE_UPDATE_TOPIC = "DATABASE_UPDATE_TOPIC";
 	public static final String EVENT_PID_UPDATE_TOPIC = "EVENT_PID_UPDATE_TOPIC";
 	public static final String EVENT_TYPE_PID_UPDATE_TOPIC = "EVENT_TYPE_PID_UPDATE_TOPIC";
 	public static final String HDATE_PID_UPDATE_TOPIC = "HDATE_PID_UPDATE_TOPIC";
+	public static final String KEY_UPDATE_TOPIC = "KEY_UPDATE_TOPIC";
+	public static final String LABEL_PID_UPDATE_TOPIC = "LABEL_PID_UPDATE_TOPIC";
 	public static final String LANGUAGE_PID_UPDATE_TOPIC = "LANGUAGE_PID_UPDATE_TOPIC";
 	public static final String LOCATION_GOOGLE_MAP_UPDATE_TOPIC = "LOCATION_GOOGLE_MAP_UPDATE_TOPIC";
 	public static final String LOCATION_NAME_MAP_PID_UPDATE_TOPIC = "LOCATION_NAME_MAP_PID_UPDATE_TOPIC";
@@ -47,19 +50,17 @@ public class Constants {
 	public static final String LOCATION_NAME_STYLE_PID_UPDATE_TOPIC = "LOCATION_NAME_STYLE_PID_UPDATE_TOPIC";
 	public static final String LOCATION_PID_UPDATE_TOPIC = "LOCATION_PID_UPDATE_TOPIC";
 	public static final String LOG_REFRESH_UPDATE_TOPIC = "LOG_REFRESH_UPDATE_TOPIC";
-	public static final String NAME_MAP_PID_UPDATE_TOPIC = "NAME_MAP_PID_UPDATE_TOPIC";
-	public static final String NAME_PART_PID_UPDATE_TOPIC = "NAME_PART_PID_UPDATE_TOPIC";
-	public static final String NAME_PID_UPDATE_TOPIC = "NAME_PID_UPDATE_TOPIC";
-	public static final String NAME_STYLE_PID_UPDATE_TOPIC = "NAME_STYLE_PID_UPDATE_TOPIC";
+	public static final String PERSON_NAME_MAP_PID_UPDATE_TOPIC = "PERSON_NAME_MAP_PID_UPDATE_TOPIC";
+	public static final String PERSON_NAME_PART_PID_UPDATE_TOPIC = "PERSON_NAME_PART_PID_UPDATE_TOPIC";
+	public static final String PERSON_NAME_PID_UPDATE_TOPIC = "PERSON_NAME_PID_UPDATE_TOPIC";
+	public static final String PERSON_NAME_STYLE_PID_UPDATE_TOPIC = "PERSON_NAME_STYLE_PID_UPDATE_TOPIC";
 	public static final String PERSON_PID_UPDATE_TOPIC = "PERSON_PID_UPDATE_TOPIC";
+	public static final String PROJECT_LIST_UPDATE_TOPIC = "PROJECT_LIST_UPDATE_TOPIC";
+	public static final String PROJECT_PROPERTIES_UPDATE_TOPIC = "PROJECT_PROPERTIES_UPDATE_TOPIC";
+	public static final String RECORDNUM_UPDATE_TOPIC = "RECORDNUM_UPDATE_TOPIC";
+	public static final String SAMPLE_MODEL_UPDATE_TOPIC = "SAMPLE_MODEL_UPDATE_TOPIC";
+	public static final String SELECTION_INDEX_TOPIC = "SELECTION_INDEX_TOPIC";
 	public static final String SEX_PID_UPDATE_TOPIC = "SEX_PID_UPDATE_TOPIC";
 	public static final String SEX_TYPE_PID_UPDATE_TOPIC = "SEX_TYPE_PID_UPDATE_TOPIC";
 	public static final String TABLENAME_UPDATE_TOPIC = "TABLENAME_UPDATE_TOPIC";
-	public static final String DATABASE_UPDATE_TOPIC = "DATABASE_UPDATE_TOPIC";
-	public static final String RECORDNUM_UPDATE_TOPIC = "RECORDNUM_UPDATE_TOPIC";
-	public static final String SELECTION_INDEX_TOPIC = "SELECTION_INDEX_TOPIC";
-	public static final String SAMPLE_MODEL_UPDATE_TOPIC = "SAMPLE_MODEL_UPDATE_TOPIC";
-	public static final String KEY_UPDATE_TOPIC = "KEY_UPDATE_TOPIC";
-	public static final String PROJECT_LIST_UPDATE_TOPIC = "PROJECT_LIST_UPDATE_TOPIC";
-	public static final String PROJECT_PROPERTIES_UPDATE_TOPIC = "PROJECT_PROPERTIES_UPDATE_TOPIC";
 }

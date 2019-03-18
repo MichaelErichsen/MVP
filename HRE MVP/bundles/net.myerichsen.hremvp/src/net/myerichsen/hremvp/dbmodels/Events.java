@@ -3,7 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,27 +13,39 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the EVENTS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 3. mar. 2019
  *
  */
 
 public class Events {
-	private static final String SELECT = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
+	private static final String SELECT = "SELECT EVENT_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "FROM_DATE_PID, TO_DATE_PID, "
 			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
-	private static final String SELECT_FROM_DATE_PID = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE FROM_DATE_PID = ? ORDER BY EVENT_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE TO_DATE_PID = ? ORDER BY EVENT_PID";
-	private static final String SELECTALL = "SELECT EVENT_PID, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID, EVENT_NAME_PID FROM PUBLIC.EVENTS ORDER BY EVENT_PID";
+	private static final String SELECT_FROM_DATE_PID = "SELECT EVENT_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "FROM_DATE_PID, TO_DATE_PID, "
+			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE FROM_DATE_PID = ? ORDER BY EVENT_PID";
+	private static final String SELECT_TO_DATE_PID = "SELECT EVENT_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "FROM_DATE_PID, TO_DATE_PID, "
+			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE TO_DATE_PID = ? ORDER BY EVENT_PID";
+	private static final String SELECTALL = "SELECT EVENT_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "FROM_DATE_PID, TO_DATE_PID, "
+			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS ORDER BY EVENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_PID) FROM PUBLIC.EVENTS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( EVENT_PID, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_NAME_PID) VALUES (?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( "
+			+ "EVENT_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_NAME_PID) VALUES ("
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, ?, ?, ?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET TABLE_ID = ?, FROM_DATE_PID = ?, "
-			+ "TO_DATE_PID = ?, EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET "
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, "
+			+ "FROM_DATE_PID = ?, TO_DATE_PID = ?, "
+			+ "EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
 
@@ -48,20 +60,22 @@ public class Events {
 	private Connection conn;
 
 	private int EventPid;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int FromDatePid;
 	private int ToDatePid;
 	private int EventNamePid;
 	private Events model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -72,7 +86,7 @@ public class Events {
 		conn.close();
 	}
 
-	public List<Events> get() throws SQLException {
+	public List<Events> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -80,6 +94,8 @@ public class Events {
 		while (rs.next()) {
 			model = new Events();
 			model.setEventPid(rs.getInt("EVENT_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -90,13 +106,15 @@ public class Events {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setEventPid(rs.getInt("EVENT_PID"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -125,7 +143,7 @@ public class Events {
 		return EventPid;
 	}
 
-	public List<Events> getFKFromDatePid(int key) throws SQLException {
+	public List<Events> getFKFromDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
@@ -134,6 +152,8 @@ public class Events {
 		while (rs.next()) {
 			model = new Events();
 			model.setEventPid(rs.getInt("EVENT_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -144,7 +164,7 @@ public class Events {
 		return modelList;
 	}
 
-	public List<Events> getFKToDatePid(int key) throws SQLException {
+	public List<Events> getFKToDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
@@ -153,6 +173,8 @@ public class Events {
 		while (rs.next()) {
 			model = new Events();
 			model.setEventPid(rs.getInt("EVENT_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -173,6 +195,15 @@ public class Events {
 	}
 
 	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
+	}
+
+	/**
 	 * Get the TableId field.
 	 *
 	 * @return Contents of the TABLE_ID column
@@ -190,7 +221,16 @@ public class Events {
 		return ToDatePid;
 	}
 
-	public int insert() throws SQLException {
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -202,18 +242,17 @@ public class Events {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(3, java.sql.Types.INTEGER);
+			ps.setNull(2, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(3, getFromDatePid());
+			ps.setInt(2, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(4, java.sql.Types.INTEGER);
+			ps.setNull(3, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(4, getToDatePid());
+			ps.setInt(3, getToDatePid());
 		}
-		ps.setInt(5, getEventNamePid());
+		ps.setInt(4, getEventNamePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -247,6 +286,15 @@ public class Events {
 	}
 
 	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
+	}
+
+	/**
 	 * Set the TableId field
 	 *
 	 * @param TableId Contents of the TABLE_ID column
@@ -264,22 +312,30 @@ public class Events {
 		this.ToDatePid = ToDatePid;
 	}
 
-	public void update() throws SQLException {
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(2, java.sql.Types.INTEGER);
+			ps.setNull(1, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(2, getFromDatePid());
+			ps.setInt(1, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(3, java.sql.Types.INTEGER);
+			ps.setNull(2, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(3, getToDatePid());
+			ps.setInt(2, getToDatePid());
 		}
-		ps.setInt(4, getEventNamePid());
-		ps.setInt(5, getEventPid());
+		ps.setInt(3, getEventNamePid());
+		ps.setInt(4, getEventPid());
 		ps.executeUpdate();
 		conn.close();
 	}

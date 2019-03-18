@@ -18,15 +18,14 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.person.dialogs.PersonNameStyleNavigatorDialog;
-import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.project.dialogs.PersonNameStyleNavigatorDialog;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 25. jan. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
@@ -51,7 +50,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		super("wizardPage");
 		setTitle("Person name style and dates");
 		setDescription(
-				"Set the name style for the new person and optionally dates limiting the validity of the name. More names can be added later");
+				"Set the name style for the new person and optionally dates limiting the validity of the name");
 		this.context = context;
 	}
 
@@ -82,12 +81,12 @@ public class NewPersonWizardPage2 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				personNameStylePid = dialog.getPersonNameStylePid();
-				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
-				pnsp.get(personNameStylePid);
-				textPersonNameStyle.setText(pnsp.getLabel());
+//				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
+//				pnsp.get(personNameStylePid);
+				textPersonNameStyle.setText(dialog.getPersonNameStyle());
 				final NewPersonWizard wizard = (NewPersonWizard) getWizard();
 				wizard.setPersonNameStylePid(personNameStylePid);
-				wizard.setLanguagePid(pnsp.getLanguagePid());
+//				wizard.setLanguagePid(pnsp.getLanguagePid());
 				setPageComplete(true);
 				wizard.addBackPages();
 				wizard.getContainer().updateButtons();
@@ -168,7 +167,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 //			PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
 //			pnsp.get(defaultStyle);
 //			textPersonNameStyle.setText(pnsp.getLabel());
-//		} catch (SQLException | MvpException e1) {
+//		} catch (Exception e1) {
 //			LOGGER.severe(e1.getMessage());
 //			e1.printStackTrace();
 //		}
@@ -291,12 +290,12 @@ public class NewPersonWizardPage2 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				fromDatePid = hdp.insert();
-				textFromDate.setText(dialog.getLocalDate().toString());
+				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -312,12 +311,12 @@ public class NewPersonWizardPage2 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				toDatePid = hdp.insert();
-				textToDate.setText(dialog.getLocalDate().toString());
+				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}

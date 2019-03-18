@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -35,7 +34,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 6. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class PersonView {
@@ -56,7 +55,7 @@ public class PersonView {
 	private int birthDatePid;
 	private int deathDatePid;
 
-	public PersonView() throws SQLException {
+	public PersonView() throws Exception {
 		provider = new PersonProvider();
 	}
 
@@ -379,13 +378,13 @@ public class PersonView {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				birthDatePid = hdp.insert();
 				textBirthDatePid.setText(Integer.toString(birthDatePid));
-				textBirthDate.setText(dialog.getLocalDate().toString());
+				textBirthDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -401,13 +400,13 @@ public class PersonView {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				deathDatePid = hdp.insert();
 				textDeathDatePid.setText(Integer.toString(deathDatePid));
-				textDeathDate.setText(dialog.getLocalDate().toString());
+				textDeathDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}
@@ -446,13 +445,13 @@ public class PersonView {
 
 	/**
 	 * @param personPid
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid)
-			throws SQLException {
+			throws Exception {
 		LOGGER.info("Receiving person pid " + personPid);
 		this.personPid = personPid;
 		get(personPid);

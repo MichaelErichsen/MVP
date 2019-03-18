@@ -1,11 +1,9 @@
 package net.myerichsen.hremvp.location.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
@@ -15,11 +13,22 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @version 11. mar. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
-//	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private final static Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private LocationEvents locationEvent;
+
+	/**
+	 * Constructor
+	 *
+	 */
+	public LocationEventServer() {
+		super();
+		locationEvent = new LocationEvents();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -27,9 +36,22 @@ public class LocationEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllEventLinksForLocation(int locationPid) throws Exception {
+		List<LocationEvents> fkLocationPid = locationEvent
+				.getFKLocationPid(locationPid);
+
+		for (LocationEvents event : fkLocationPid) {
+			locationEvent.delete(event.getLocationEventsPid());
+		}
 	}
 
 	/*
@@ -37,8 +59,7 @@ public class LocationEventServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -49,7 +70,7 @@ public class LocationEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
@@ -90,10 +111,32 @@ public class LocationEventServer implements IHREServer {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -104,7 +147,7 @@ public class LocationEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		// TODO Auto-generated method stub
 
 	}

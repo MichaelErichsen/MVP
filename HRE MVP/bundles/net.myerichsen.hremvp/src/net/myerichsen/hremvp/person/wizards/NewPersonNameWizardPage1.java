@@ -18,15 +18,15 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.person.dialogs.PersonNameStyleNavigatorDialog;
-import net.myerichsen.hremvp.person.providers.PersonNameStyleProvider;
+import net.myerichsen.hremvp.project.dialogs.PersonNameStyleNavigatorDialog;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 8. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 // TODO Add primary check button and name type
@@ -85,10 +85,10 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 				personNameStylePid = dialog.getPersonNameStylePid();
 				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
 				pnsp.get(personNameStylePid);
-				textPersonNameStyle.setText(pnsp.getLabel());
+				// FIXME textPersonNameStyle.setText(pnsp.getLabel());
 				final NewPersonNameWizard wizard = (NewPersonNameWizard) getWizard();
 				wizard.setPersonNameStylePid(personNameStylePid);
-				wizard.setLanguagePid(pnsp.getLanguagePid());
+				// FIXME wizard.setLanguagePid(pnsp.getLanguagePid());
 				setPageComplete(true);
 				wizard.addPage2();
 				wizard.getContainer().updateButtons();
@@ -284,12 +284,12 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				fromDatePid = hdp.insert();
-				textFromDate.setText(dialog.getLocalDate().toString());
+				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -305,12 +305,12 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				toDatePid = hdp.insert();
-				textToDate.setText(dialog.getLocalDate().toString());
+				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}

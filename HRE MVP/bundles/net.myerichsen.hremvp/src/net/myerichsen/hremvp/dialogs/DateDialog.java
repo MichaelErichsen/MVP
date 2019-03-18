@@ -1,6 +1,6 @@
 package net.myerichsen.hremvp.dialogs;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -265,7 +265,7 @@ public class DateDialog extends TitleAreaDialog {
 				textArabic.setText("");
 				textJewish.setText("");
 				textIndian.setText("");
-				setLocalDate(LocalDate.of(year, month, day));
+				setDate(java.sql.Date.valueOf(year + "-" + month + "-" + day));
 			} else {
 				textStoredFormat.setFocus();
 				eventBroker.post("MESSAGE", "Invalid date format");
@@ -288,11 +288,11 @@ public class DateDialog extends TitleAreaDialog {
 	private Text textJewishOutput;
 	private Text textArabicOutput;
 	private Text textIndianOutput;
-	private LocalDate localDate;
+	private Date Date;
 	private Text textSortDate;
 	private Text textSurety;
 	private String surety = "";
-	private LocalDate sortDate;
+	private Date sortDate;
 	private String original = "";
 	private int hDatePid = 0;
 
@@ -395,7 +395,8 @@ public class DateDialog extends TitleAreaDialog {
 					final int month = Integer.parseInt(sa[1]);
 					final int day = Integer.parseInt(sa[2]);
 
-					sortDate = LocalDate.of(year, month, day);
+					sortDate = java.sql.Date
+							.valueOf(year + "-" + month + "-" + day);
 				} else {
 					textSortDate.setFocus();
 					eventBroker.post("MESSAGE", "Invalid date format");
@@ -548,10 +549,10 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @return the localDate
+	 * @return the Date
 	 */
-	public LocalDate getLocalDate() {
-		return localDate;
+	public Date getDate() {
+		return Date;
 	}
 
 	/**
@@ -564,9 +565,9 @@ public class DateDialog extends TitleAreaDialog {
 	/**
 	 * @return the sortDate
 	 */
-	public LocalDate getSortDate() {
+	public Date getSortDate() {
 		if (sortDate == null) {
-			sortDate = localDate;
+			sortDate = Date;
 		}
 		return sortDate;
 	}
@@ -716,10 +717,10 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @param localDate the localDate to set
+	 * @param Date the Date to set
 	 */
-	protected void setLocalDate(LocalDate localDate) {
-		this.localDate = localDate;
+	protected void setDate(Date Date) {
+		this.Date = Date;
 	}
 
 	/**
@@ -732,7 +733,7 @@ public class DateDialog extends TitleAreaDialog {
 	/**
 	 * @param sortDate the sortDate to set
 	 */
-	public void setSortDate(LocalDate sortDate) {
+	public void setSortDate(Date sortDate) {
 		this.sortDate = sortDate;
 	}
 
@@ -744,7 +745,7 @@ public class DateDialog extends TitleAreaDialog {
 	public void setStoredFormat(int year, int month, int day) {
 		textStoredFormat.setText(year + "-" + String.format("%02d", month) + "-"
 				+ String.format("%02d", day));
-		setLocalDate(LocalDate.of(year, month, day));
+		setDate(java.sql.Date.valueOf(year + "-" + month + "-" + day));
 	}
 
 	/**

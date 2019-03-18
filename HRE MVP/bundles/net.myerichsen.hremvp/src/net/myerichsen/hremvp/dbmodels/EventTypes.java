@@ -3,7 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,21 +13,26 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the EVENT_TYPES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class EventTypes {
-	private static final String SELECT = "SELECT EVENT_TYPE_PID, TABLE_ID, "
-			+ "LABEL FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
-	private static final String SELECTALL = "SELECT EVENT_TYPE_PID, TABLE_ID, "
-			+ "LABEL FROM PUBLIC.EVENT_TYPES ORDER BY EVENT_TYPE_PID";
+	private static final String SELECT = "SELECT EVENT_TYPE_PID, "
+			+ "ABBREVIATION, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
+	private static final String SELECTALL = "SELECT EVENT_TYPE_PID, "
+			+ "ABBREVIATION, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "LABEL_PID FROM PUBLIC.EVENT_TYPES ORDER BY EVENT_TYPE_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_TYPE_PID) FROM PUBLIC.EVENT_TYPES";
-	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_TYPES( EVENT_TYPE_PID, TABLE_ID, "
-			+ "LABEL) VALUES (?, ?, ?)";
-	private static final String UPDATE = "UPDATE PUBLIC.EVENT_TYPES SET TABLE_ID = ?, "
-			+ "LABEL = ? WHERE EVENT_TYPE_PID = ?";
+	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_TYPES( "
+			+ "EVENT_TYPE_PID, ABBREVIATION, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, LABEL_PID) VALUES (?, "
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 17, ?)";
+	private static final String UPDATE = "UPDATE PUBLIC.EVENT_TYPES SET "
+			+ "ABBREVIATION = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
+			+ "LABEL_PID = ? WHERE EVENT_TYPE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
 
@@ -42,18 +47,21 @@ public class EventTypes {
 	private Connection conn;
 
 	private int EventTypePid;
+	private String Abbreviation;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
-	private String Label;
+	private int LabelPid;
 	private EventTypes model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -64,7 +72,7 @@ public class EventTypes {
 		conn.close();
 	}
 
-	public List<EventTypes> get() throws SQLException {
+	public List<EventTypes> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -72,27 +80,42 @@ public class EventTypes {
 		while (rs.next()) {
 			model = new EventTypes();
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
+			model.setAbbreviation(rs.getString("ABBREVIATION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			setTableId(rs.getInt("TABLE_ID"));
-			setLabel(rs.getString("LABEL"));
+			setAbbreviation(rs.getString("ABBREVIATION"));
+//			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+//			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+//			setTableId(rs.getInt("TABLE_ID"));
+			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
+	}
+
+	/**
+	 * Get the Abbreviation field.
+	 *
+	 * @return Contents of the ABBREVIATION column
+	 */
+	public String getAbbreviation() {
+		return Abbreviation;
 	}
 
 	/**
@@ -105,12 +128,21 @@ public class EventTypes {
 	}
 
 	/**
-	 * Get the Label field.
+	 * Get the InsertTstmp field.
 	 *
-	 * @return Contents of the LABEL column
+	 * @return Contents of the INSERT_TSTMP column
 	 */
-	public String getLabel() {
-		return Label;
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
+	}
+
+	/**
+	 * Get the LabelPid field.
+	 *
+	 * @return Contents of the LABEL_PID column
+	 */
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
@@ -122,7 +154,16 @@ public class EventTypes {
 		return TableId;
 	}
 
-	public int insert() throws SQLException {
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -134,11 +175,23 @@ public class EventTypes {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getTableId());
-		ps.setString(3, getLabel());
+		ps.setString(2, getAbbreviation());
+//		ps.setTimestamp(3, getInsertTstmp());
+//		ps.setTimestamp(4, getUpdateTstmp());
+//		ps.setInt(5, getTableId());
+		ps.setInt(3, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
+	}
+
+	/**
+	 * Set the Abbreviation field
+	 *
+	 * @param Abbreviation Contents of the ABBREVIATION column
+	 */
+	public void setAbbreviation(String Abbreviation) {
+		this.Abbreviation = Abbreviation;
 	}
 
 	/**
@@ -151,12 +204,21 @@ public class EventTypes {
 	}
 
 	/**
-	 * Set the Label field
+	 * Set the InsertTstmp field
 	 *
-	 * @param Label Contents of the LABEL column
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
 	 */
-	public void setLabel(String Label) {
-		this.Label = Label;
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
+	}
+
+	/**
+	 * Set the LabelPid field
+	 *
+	 * @param LabelPid Contents of the LABEL_PID column
+	 */
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -168,11 +230,23 @@ public class EventTypes {
 		this.TableId = TableId;
 	}
 
-	public void update() throws SQLException {
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTableId());
-		ps.setString(2, getLabel());
+		ps.setString(1, getAbbreviation());
+//		ps.setTimestamp(2, getInsertTstmp());
+//		ps.setTimestamp(3, getUpdateTstmp());
+//		ps.setInt(4, getTableId());
+		ps.setInt(2, getLabelPid());
 		ps.setInt(3, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();

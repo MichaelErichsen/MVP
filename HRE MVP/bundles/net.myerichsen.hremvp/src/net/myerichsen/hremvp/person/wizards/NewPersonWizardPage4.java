@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -22,7 +21,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
@@ -33,7 +31,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 15. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {
@@ -711,13 +709,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				partnerToDatePid = hdp.insert();
-				textPartnershipEndDate
-						.setText(dialog.getLocalDate().toString());
+				textPartnershipEndDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}
@@ -734,13 +731,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.setDate(dialog.getLocalDate());
+				hdp.setDate(dialog.getDate());
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
 				partnerFromDatePid = hdp.insert();
-				textPartnershipStartDate
-						.setText(dialog.getLocalDate().toString());
+				textPartnershipStartDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}
@@ -764,7 +760,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textChildBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textChildDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -787,7 +783,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textFatherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textFatherDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -810,7 +806,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textMotherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textMotherDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -833,7 +829,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textPartnerBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textPartnerDeathDate.setText(dateProvider.getDate().toString());
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

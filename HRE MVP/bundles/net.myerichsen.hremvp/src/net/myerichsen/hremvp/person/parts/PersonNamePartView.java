@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -64,11 +63,11 @@ public class PersonNamePartView {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 *
 	 */
-	public PersonNamePartView() throws SQLException {
+	public PersonNamePartView() throws Exception {
 		provider = new PersonNamePartProvider();
 	}
 
@@ -216,7 +215,7 @@ public class PersonNamePartView {
 			eventBroker.post("MESSAGE",
 					" Name Part " + textId.getText() + " has been deleted");
 			clear();
-		} catch (SQLException | NumberFormatException | MvpException e) {
+		} catch (Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}
@@ -285,14 +284,14 @@ public class PersonNamePartView {
 
 	/**
 	 * @param namePartPid
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	@Inject
 	@Optional
 	private void subscribeNamePartUpdateTopic(
-			@UIEventTopic(Constants.NAME_PART_PID_UPDATE_TOPIC) int namePartPid)
-			throws SQLException, MvpException {
+			@UIEventTopic(Constants.PERSON_NAME_PART_PID_UPDATE_TOPIC) int namePartPid)
+			throws Exception {
 		if (namePartPid > 0) {
 			get(namePartPid);
 		}

@@ -1,10 +1,11 @@
 package net.myerichsen.hremvp.location.servers;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
 import net.myerichsen.hremvp.dbmodels.LocationNames;
@@ -14,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. okt. 2018
+ * @version 17. mar. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -40,14 +41,29 @@ public class LocationNamePartServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		part.delete(key);
+	}
+
+	/**
+	 * @param locationPid
+	 * @throws Exception
+	 */
+	public void deleteAllNamePartsForLocationName(int locationNamePid)
+			throws Exception {
+		final List<LocationNameParts> fkLocationNamePid = part
+				.getFKLocationNamePid(locationNamePid);
+
+		for (final LocationNameParts locationNameParts : fkLocationNamePid) {
+			part.delete(locationNameParts.getLocationNamePartPid());
+		}
+
 	}
 
 	/*
@@ -55,8 +71,7 @@ public class LocationNamePartServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -65,13 +80,13 @@ public class LocationNamePartServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		part.get(key);
 		setLabel(part.getLabel());
 		setLocationNamePartPid(part.getLocationNamePartPid());
@@ -96,16 +111,33 @@ public class LocationNamePartServer implements IHREServer {
 		final LocationNames name = new LocationNames();
 		name.get(locationNamePid);
 
-		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map
-				.getFKLocationNameStylePid(name.getLocationNameStylePid());
+//		final LocationNameMaps map = new LocationNameMaps();
+//		final List<LocationNameMaps> mapList = map
+//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
+//
+//		for (int i = 0; i < mapList.size(); i++) {
+//			if (mapList.get(i).getPartNo() == partNo) {
+//				setMapLabel("mapList.get(i).getLabelPid()");
+//				break;
+//			}
+	}
 
-		for (int i = 0; i < mapList.size(); i++) {
-			if (mapList.get(i).getPartNo() == partNo) {
-				setMapLabel(mapList.get(i).getLabel());
-				break;
-			}
+	/**
+	 * @param locationNamePid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Integer> getFKLocationNamePid(int locationNamePid)
+			throws Exception {
+		final List<Integer> li = new ArrayList<>();
+
+		final List<LocationNameParts> fkLocationNamePid = part
+				.getFKLocationNamePid(locationNamePid);
+
+		for (final LocationNameParts locationNameParts : fkLocationNamePid) {
+			li.add(locationNameParts.getLocationNamePartPid());
 		}
+		return li;
 	}
 
 	/**
@@ -150,44 +182,72 @@ public class LocationNamePartServer implements IHREServer {
 		return partNo;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		List<String> stringList;
+		List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
+		Dictionary dictionary = new Dictionary();
+
+		LocationNames ln = new LocationNames();
+		ln.get(key);
+
+		List<LocationNameMaps> lnm = new LocationNameMaps()
+				.getFKLocationNameStylePid(ln.getLocationNameStylePid());
+
+		List<LocationNameParts> lnp = part.getFKLocationNamePid(key);
+
+		for (int i = 0; i < lnm.size(); i++) {
+			stringList = new ArrayList<>();
+			stringList
+					.add(Integer.toString(lnp.get(i).getLocationNamePartPid()));
+			stringList.add(Integer.toString(lnp.get(i).getPartNo()));
+
+			int labelPid = lnm.get(i).getLabelPid();
+			List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+			stringList.add(fkLabelPid.get(0).getLabel());
+			stringList.add(lnp.get(i).getLabel());
+			lls.add(stringList);
+		}
+		return lls;
+	}
+
 	/**
 	 * Insert a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.LocationNameMaps}
 	 *
 	 * @return int Persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		part.setLabel(label);
 		part.setLocationNamePartPid(locationNamePartPid);
 		part.setLocationNamePid(locationNamePid);
 		part.setPartNo(partNo);
-
-		// Check if matching map part no exists
-		final LocationNames name = new LocationNames();
-		name.get(locationNamePid);
-
-		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map
-				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-		Boolean found = false;
-
-		for (int i = 0; i < mapList.size(); i++) {
-			if (mapList.get(i).getPartNo() == partNo) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			throw new MvpException("Part number " + partNo
-					+ " does not exist in matching location name map");
-		}
-
 		return part.insert();
 	}
 
@@ -237,37 +297,16 @@ public class LocationNamePartServer implements IHREServer {
 	 * Update a row. Checks if a matching part number exists in
 	 * {@link net.myerichsen.hremvp.dbmodels.LocationNameMaps}
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		part.setLabel(label);
 		part.setLocationNamePartPid(locationNamePartPid);
 		part.setLocationNamePid(locationNamePid);
 		part.setPartNo(partNo);
-
-		// Check if matching map part no exists
-		final LocationNames name = new LocationNames();
-		name.get(locationNamePid);
-
-		final LocationNameMaps map = new LocationNameMaps();
-		final List<LocationNameMaps> mapList = map
-				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-		Boolean found = false;
-
-		for (int i = 0; i < mapList.size(); i++) {
-			if (mapList.get(i).getPartNo() == partNo) {
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			throw new MvpException("Part number " + partNo
-					+ " does not exist in matching location name map");
-		}
 		part.update();
 	}
 }

@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.servers;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +11,15 @@ import net.myerichsen.hremvp.dbmodels.Hdates;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.HDates}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. feb. 2019
+ * @version 16. mar. 2019
  *
  */
 public class HDateServer {
 	private int HdatePid;
 	private int TableId;
 	private String OriginalText;
-	private LocalDate Date;
-	private LocalDate SortDate;
+	private Date Date;
+	private Date SortDate;
 	private String Surety;
 
 	private final Hdates date;
@@ -37,12 +36,12 @@ public class HDateServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		date.delete(key);
 	}
 
@@ -50,11 +49,11 @@ public class HDateServer {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
@@ -75,12 +74,12 @@ public class HDateServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		date.get(key);
 		setTableId(date.getTableId());
 		setOriginalText(date.getOriginalText());
@@ -92,7 +91,7 @@ public class HDateServer {
 	/**
 	 * @return the date
 	 */
-	public LocalDate getDate() {
+	public Date getDate() {
 		return Date;
 	}
 
@@ -113,7 +112,7 @@ public class HDateServer {
 	/**
 	 * @return the sortDate
 	 */
-	public LocalDate getSortDate() {
+	public java.sql.Date getSortDate() {
 		return SortDate;
 	}
 
@@ -136,24 +135,24 @@ public class HDateServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public int insert() throws SQLException, MvpException {
-		date.setTableId(751);
+	public int insert() throws Exception {
 		date.setOriginalText(getOriginalText());
 		date.setDate(getDate());
 		date.setSortDate(getSortDate());
 		date.setSurety(getSurety());
+
 		return date.insert();
 	}
 
 	/**
-	 * @param localDate the date to set
+	 * @param date2 the date to set
 	 */
-	public void setDate(LocalDate localDate) {
-		Date = localDate;
+	public void setDate(Date date2) {
+		Date = date2;
 	}
 
 	/**
@@ -171,10 +170,10 @@ public class HDateServer {
 	}
 
 	/**
-	 * @param localDate the sortDate to set
+	 * @param date2 the sortDate to set
 	 */
-	public void setSortDate(LocalDate localDate) {
-		SortDate = localDate;
+	public void setSortDate(Date date2) {
+		SortDate = date2;
 	}
 
 	/**
@@ -194,11 +193,11 @@ public class HDateServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		date.setTableId(getTableId());
 		date.setOriginalText(getOriginalText());
 		date.setDate(getDate());

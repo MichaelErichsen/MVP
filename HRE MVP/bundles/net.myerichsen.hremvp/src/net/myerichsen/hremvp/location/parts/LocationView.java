@@ -1,7 +1,6 @@
 package net.myerichsen.hremvp.location.parts;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -47,7 +46,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display static data about a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. jan. 2019
+ * @version 16. mar. 2019
  */
 public class LocationView {
 	private final static Logger LOGGER = Logger
@@ -88,52 +87,19 @@ public class LocationView {
 	private Button btnClearTo;
 
 	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
 	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
 	private final LocationProvider provider;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 *
 	 */
-	public LocationView() throws SQLException {
+	public LocationView() throws Exception {
 		provider = new LocationProvider();
-	}
-
-	/**
-	 *
-	 */
-	protected void clear() {
-		textId.setText("0");
-		textFromDatePid.setText("");
-		textFromDate.setText("");
-		textFromOriginal.setText("");
-		textToDatePid.setText("");
-		textToDate.setText("");
-		textToOriginal.setText("");
-		textXCoordinate.setText("0.0");
-		textYCoordinate.setText("0.0");
-		textZCoordinate.setText("0.0");
-		btnPrimaryLocation.setSelection(false);
-	}
-
-	/**
-	 *
-	 */
-	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2)
-				.getSelectedElement();
-		partService.hidePart(part, true);
 	}
 
 	/**
@@ -205,13 +171,13 @@ public class LocationView {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						final int hdatePid = hdp.insert();
 						textFromDatePid.setText(Integer.toString(hdatePid));
-						textFromDate.setText(dialog.getLocalDate().toString());
+						textFromDate.setText(dialog.getDate().toString());
 						textFromOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
@@ -295,13 +261,13 @@ public class LocationView {
 				if (dialog.open() == Window.OK) {
 					try {
 						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
+						hdp.setDate(dialog.getDate());
 						hdp.setSortDate(dialog.getSortDate());
 						hdp.setOriginalText(dialog.getOriginal());
 						hdp.setSurety(dialog.getSurety());
 						final int hdatePid = hdp.insert();
 						textToDatePid.setText(Integer.toString(hdatePid));
-						textToDate.setText(dialog.getLocalDate().toString());
+						textToDate.setText(dialog.getDate().toString());
 						textToOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
@@ -360,25 +326,9 @@ public class LocationView {
 				.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		composite = new Composite(parent, SWT.NONE);
+		composite.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
-			}
-		});
-		buttonSelect.setText("Select");
-
-		buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
-			}
-		});
-		buttonInsert.setText("Insert");
 
 		buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
@@ -388,49 +338,6 @@ public class LocationView {
 			}
 		});
 		buttonUpdate.setText("Update");
-
-		buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-	}
-
-	/**
-	 *
-	 */
-	protected void delete() {
-		try {
-			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE",
-					"Location Name " + textId.getText() + " has been deleted");
-			clear();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -441,18 +348,14 @@ public class LocationView {
 	}
 
 	/**
-	 *
-	 */
-	private void get() {
-		get(Integer.parseInt(textId.getText()));
-	}
-
-	/**
 	 * @param key
 	 */
 	private void get(int key) {
 		try {
-			provider.get(key);
+			try {
+				provider.get(key);
+			} catch (Exception e2) {
+			}
 			textId.setText(Integer.toString(key));
 
 			final HDateProvider hdp = new HDateProvider();
@@ -499,30 +402,8 @@ public class LocationView {
 	/**
 	 *
 	 */
-	protected void insert() {
-		try {
-			provider.setFromDatePid(
-					Integer.parseInt(textFromDatePid.getText()));
-			provider.setToDatePid(Integer.parseInt(textToDatePid.getText()));
-			provider.setLocationPid(Integer.parseInt(textId.getText()));
-			provider.setPrimaryLocation(btnPrimaryLocation.getSelection());
-			provider.setxCoordinate(new BigDecimal(textXCoordinate.getText()));
-			provider.setyCoordinate(new BigDecimal(textYCoordinate.getText()));
-			provider.setzCoordinate(new BigDecimal(textZCoordinate.getText()));
-			provider.insert();
-			eventBroker.post("MESSAGE",
-					"Location Name " + textId.getText() + " has been inserted");
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 */
 	private void openGoogleMaps() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationGoogleMapBrowser";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationGoogleMapBrowser";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
@@ -535,10 +416,14 @@ public class LocationView {
 
 			for (int i = 0; i < a.size(); i++) {
 				part = (MPart) a.get(i);
-				if (part.getContributionURI().equals(contributionURI)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					found = true;
-					break;
+				try {
+					if (part.getContributionURI().equals(contributionURI)) {
+						partService.showPart(part, PartState.ACTIVATE);
+						found = true;
+						break;
+					}
+				} catch (Exception e) {
+					LOGGER.info(e.getMessage());
 				}
 			}
 		}
@@ -559,7 +444,7 @@ public class LocationView {
 	 *
 	 */
 	protected void openLocationNameView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationNameViewOld";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNameNavigator";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);

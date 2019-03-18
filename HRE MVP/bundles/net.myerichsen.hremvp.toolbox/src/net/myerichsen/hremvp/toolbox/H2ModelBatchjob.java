@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,8 @@ public class H2ModelBatchjob {
 	 */
 	public static void main(String[] args) {
 		if (args.length < 2) {
-			System.out.println("Usage: H2ModelBatchjob <h2database> <outputdirectory>");
+			System.out.println(
+					"Usage: H2ModelBatchjob <h2database> <outputdirectory>");
 			System.exit(16);
 		}
 
@@ -41,7 +41,8 @@ public class H2ModelBatchjob {
 		// Fetch all table names from Database catalog
 		try {
 			final String connectionName = "jdbc:h2:" + databaseName;
-			final Connection conn = DriverManager.getConnection(connectionName, "sa", "");
+			final Connection conn = DriverManager.getConnection(connectionName,
+					"sa", "");
 			final PreparedStatement ps = conn.prepareStatement(TABLES);
 			final ResultSet rs = ps.executeQuery();
 
@@ -53,14 +54,15 @@ public class H2ModelBatchjob {
 			}
 
 			conn.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(16);
 		}
 
 		// Call H2ModelGenerator for each table name
 		for (String tableName : tableNames) {
-			System.out.println("Generating " + tableName + " in " + databaseName + " to " + outputDirectory);
+			System.out.println("Generating " + tableName + " in " + databaseName
+					+ " to " + outputDirectory);
 
 			H2ModelGenerator generator;
 			try {

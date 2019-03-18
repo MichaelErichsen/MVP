@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -8,7 +7,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 
@@ -88,7 +86,7 @@ public class NewPersonEventWizard extends Wizard {
 						personPid);
 				return true;
 			}
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

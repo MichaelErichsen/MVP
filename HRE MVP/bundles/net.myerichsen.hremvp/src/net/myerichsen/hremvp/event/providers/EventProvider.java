@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.providers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,11 +38,11 @@ public class EventProvider implements IHREProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public EventProvider() throws SQLException {
+	public EventProvider() throws Exception {
 		server = new EventServer();
 		personList = new ArrayList<>();
 		locationList = new ArrayList<>();
@@ -53,12 +52,12 @@ public class EventProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
@@ -66,12 +65,11 @@ public class EventProvider implements IHREProvider {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings with pids and labels
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	@Override
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws Exception {
 		return server.get();
 	}
 
@@ -79,12 +77,12 @@ public class EventProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setEventPid(server.getEventPid());
 		setFromDatePid(server.getFromDatePid());
@@ -189,9 +187,9 @@ public class EventProvider implements IHREProvider {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<String> getLocationList(int key) throws SQLException {
+	public List<String> getLocationList(int key) throws Exception {
 		return server.getLocationList(key);
 	}
 
@@ -200,6 +198,27 @@ public class EventProvider implements IHREProvider {
 	 */
 	public List<List<String>> getPersonList() {
 		return personList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		return server.getStringList();
 	}
 
 	/**
@@ -226,12 +245,12 @@ public class EventProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setEventPid(EventPid);
 		server.setFromDatePid(FromDatePid);
 		server.setToDatePid(ToDatePid);
@@ -354,12 +373,12 @@ public class EventProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setEventPid(EventPid);
 		server.setFromDatePid(FromDatePid);
 		server.setToDatePid(ToDatePid);

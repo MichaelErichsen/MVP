@@ -1,65 +1,79 @@
 package net.myerichsen.hremvp.location.wizards;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.jface.window.Window;
+import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnViewerEditor;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
+import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TableViewerEditor;
+import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import net.myerichsen.hremvp.dialogs.DateDialog;
-import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.location.providers.LocationNameStyleProvider;
-import net.myerichsen.hremvp.providers.HDateProvider;
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
+import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.project.providers.LocationNameMapProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Location name wizard page
+ * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. nov. 2018
+ * @version 18. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
-//	private IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Text textFromDate;
-	private Text textFromDateSort;
-	private Text textFromOriginal;
-	private Text textFromSurety;
-	private Button btnNewFrom;
-	private Button btnBrowseFrom;
-	private Button btnClearFrom;
+	final IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	NewLocationWizard wizard;
 
-	private Text textToDate;
-	private Text textToDateSort;
-	private Text textToOriginal;
-	private Text textToSurety;
-	private Button btnCopyFromTo;
-	private Button btnNewTo;
-	private Button btnBrowseTo;
-	private Button btnClearTo;
-
-	private Text textPreposition;
-	private Combo comboLocationNameStyles;
+	private Text textGoogleApiKey;
 	private final IEclipseContext context;
-	private Button btnPrimaryLocationName;
-
-	private int fromDatePid;
-	private int toDatePid;
+	private final LocationNameMapProvider provider;
+	private TableViewer tableViewer;
+	private Text textCoordinates;
+	private double lat;
+	private double lng;
+	private List<List<String>> stringList;
+	private int locationNameStylePid = 0;
 
 	/**
 	 * Constructor
@@ -69,10 +83,12 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	public NewLocationWizardPage2(IEclipseContext context) {
 		super("wizardPage");
+		LOGGER.info("Wizard page 2");
 		this.context = context;
-		setTitle("Location Name");
+		setTitle("Location Name Parts");
 		setDescription(
-				"Add the first name of the location. More location names can be added later");
+				"Enter the parts of the location name. Get coordinates from Google.");
+		provider = new LocationNameMapProvider();
 	}
 
 	/*
@@ -83,317 +99,280 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	@Override
 	public void createControl(Composite parent) {
+		LOGGER.info("Create controls");
 		final Composite container = new Composite(parent, SWT.NONE);
+		container.setLayout(new GridLayout(2, false));
+
+		tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
+		final Table table = tableViewer.getTable();
+		table.addFocusListener(new FocusAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
+			 * events.FocusEvent)
+			 */
+			@Override
+			public void focusLost(FocusEvent e) {
+				List<String> stringList = new ArrayList<>();
+				TableItem[] items = tableViewer.getTable().getItems();
+
+				for (int i = 0; i < items.length; i++) {
+					TableItem tableItem = items[i];
+					String text = tableItem.getText(4);
+
+					if (text.length() == 0) {
+						text = "";
+					}
+
+					stringList.add(text);
+				}
+
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setLocationNamePartList(stringList);
+			}
+		});
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		final TableViewerColumn tableViewerColumnMapPid = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnMapPid = tableViewerColumnMapPid.getColumn();
+		tblclmnMapPid.setWidth(70);
+		tblclmnMapPid.setText("Map Pid");
+		tableViewerColumnMapPid.setLabelProvider(new HREColumnLabelProvider(0));
+
+		final TableViewerColumn tableViewerColumnLabelPid = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLabelPid = tableViewerColumnLabelPid
+				.getColumn();
+		tblclmnLabelPid.setWidth(70);
+		tblclmnLabelPid.setText("Label Pid");
+		tableViewerColumnLabelPid
+				.setLabelProvider(new HREColumnLabelProvider(1));
+
+		final TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnPartNo = tableViewerColumnPartNo.getColumn();
+		tblclmnPartNo.setWidth(70);
+		tblclmnPartNo.setText("Part no.");
+		tableViewerColumnPartNo.setLabelProvider(new HREColumnLabelProvider(2));
+
+		final TableViewerColumn tableViewerColumnMapLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnMapLabel = tableViewerColumnMapLabel
+				.getColumn();
+		tblclmnMapLabel.setWidth(200);
+		tblclmnMapLabel.setText("Map Label");
+		tableViewerColumnMapLabel
+				.setLabelProvider(new HREColumnLabelProvider(3));
+
+		final TableViewerColumn tableViewerColumnPartLabel = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnPartLabel = tableViewerColumnPartLabel
+				.getColumn();
+		tblclmnPartLabel.setWidth(200);
+		tblclmnPartLabel.setText("Part Label");
+		tableViewerColumnPartLabel.setEditingSupport(
+				new HreTypeLabelEditingSupport(tableViewer, 4));
+		tableViewerColumnPartLabel
+				.setLabelProvider(new HREColumnLabelProvider(4));
+
+		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+				tableViewer) {
+			@Override
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+				return (event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL)
+						|| (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION)
+						|| ((event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED)
+								&& (event.keyCode == SWT.CR))
+						|| (event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
+			}
+		};
+
+		TableViewerEditor.create(tableViewer, focusCellManager,
+				editorActivationStrategy,
+				ColumnViewerEditor.TABBING_HORIZONTAL
+						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+						| ColumnViewerEditor.TABBING_VERTICAL
+						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
+
+		tableViewer.getTable().addTraverseListener(new TraverseListener() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
+			 * swt.events.TraverseEvent)
+			 */
+			@Override
+			public void keyTraversed(TraverseEvent e) {
+				if (e.keyCode == SWT.TAB) {
+					LOGGER.fine("Traversed " + e.keyCode);
+
+					final int itemCount = tableViewer.getTable().getItemCount();
+					final int selectionIndex = tableViewer.getTable()
+							.getSelectionIndex();
+					if (selectionIndex < (itemCount - 1)) {
+						e.doit = false;
+
+					} else {
+						e.doit = true;
+					}
+
+				}
+			}
+
+		});
+
+		final Label lblGoogleMapsKey = new Label(container, SWT.NONE);
+		lblGoogleMapsKey.setText("Google API Key");
+
+		textGoogleApiKey = new Text(container, SWT.BORDER | SWT.PASSWORD);
+		textGoogleApiKey.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textGoogleApiKey.setText(store.getString("GOOGLEAPIKEY"));
+
+		final Button btnGetCoordinatesFrom = new Button(container, SWT.NONE);
+		btnGetCoordinatesFrom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				for (final TableItem item : tableViewer.getTable().getItems()) {
+					if (item.getText(4).length() > 0) {
+						setPageComplete(true);
+					}
+				}
+				geocode();
+			}
+		});
+		btnGetCoordinatesFrom.setText("Get coordinates from Google");
+
+		textCoordinates = new Text(container, SWT.BORDER);
+		textCoordinates.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textCoordinates.setEditable(false);
 
 		setControl(container);
-		container.setLayout(new GridLayout(3, false));
 
-		final Label lblLocationNameStyle = new Label(container, SWT.NONE);
-		lblLocationNameStyle.setText("Location Name Style");
-
-		comboLocationNameStyles = new Combo(container, SWT.NONE);
-		comboLocationNameStyles.setToolTipText("Mandatory");
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			final LocationNameStyleProvider provider = new LocationNameStyleProvider();
-			final List<String> stringList = provider.get();
-			for (final String string : stringList) {
-				comboLocationNameStyles.add(string);
-			}
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			wizard = (NewLocationWizard) getWizard();
+			locationNameStylePid = wizard.getLocationNameStylePid();
+			stringList = provider.getStringList(locationNameStylePid);
+			tableViewer.setInput(stringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
-		comboLocationNameStyles.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final String s = comboLocationNameStyles.getText();
-				final String[] sa = s.split(",");
-				final NewLocationWizard wizard = (NewLocationWizard) getWizard();
-				final int locationNameStylePid = Integer.parseInt(sa[0]);
-				wizard.setLocationNameStyle(locationNameStylePid);
-				setPageComplete(true);
-				wizard.addPage3();
-				wizard.getContainer().updateButtons();
+
+		setPageComplete(true);
+	}
+
+	/**
+	 *
+	 */
+	protected void geocode() {
+		final IEventBroker eventBroker = context.get(IEventBroker.class);
+		boolean valid = false;
+		StringBuilder sb = new StringBuilder();
+		String locationPart;
+
+		for (final TableItem item : tableViewer.getTable().getItems()) {
+			locationPart = item.getText(4);
+			if (locationPart.length() > 0) {
+				valid = true;
+				sb.append(locationPart + " ");
 			}
-		});
-		comboLocationNameStyles.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		}
 
-		final Label lblFromDate = new Label(container, SWT.NONE);
-		lblFromDate.setText("From Date");
+		if (valid) {
+			setPageComplete(true);
+			wizard = (NewLocationWizard) getWizard();
+			wizard.addBackPages();
+			wizard.getContainer().updateButtons();
+		}
+		if ((textGoogleApiKey == null)
+				|| (textGoogleApiKey.getText().length() == 0)) {
+			textGoogleApiKey.setFocus();
+			eventBroker.post("MESSAGE", "Please insert Google Map Key");
+			return;
+		}
 
-		textFromDate = new Text(container, SWT.BORDER);
-		textFromDate.setEditable(false);
-		textFromDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		if (valid == false) {
+			tableViewer.getTable().select(0);
+			eventBroker.post("MESSAGE", "Please enter a location name");
+			return;
+		}
 
-		textFromDateSort = new Text(container, SWT.BORDER);
-		textFromDateSort.setEditable(false);
-		textFromDateSort.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
+		locationPart = sb.toString().trim().replace(' ', '+');
 
-		textFromOriginal = new Text(container, SWT.BORDER);
-		textFromOriginal.setEditable(false);
-		textFromOriginal.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		try {
+			final CloseableHttpClient client = HttpClients.createDefault();
+			String requestString = "https://maps.googleapis.com/maps/api/geocode/json?address="
+					+ locationPart + "&key="
+					+ textGoogleApiKey.getText().trim();
+			final HttpGet request = new HttpGet(requestString);
 
-		textFromSurety = new Text(container, SWT.BORDER);
-		textFromSurety.setEditable(false);
-		textFromSurety.setLayoutData(
-				new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
-		new Label(container, SWT.NONE);
+			final CloseableHttpResponse response = client.execute(request);
 
-		final Composite compositeFrom = new Composite(container, SWT.NONE);
-		compositeFrom.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
+			final StatusLine statusLine = response.getStatusLine();
 
-		btnNewFrom = new Button(compositeFrom, SWT.NONE);
-		btnNewFrom.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(
-						textFromDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						fromDatePid = hdp.insert();
-						textFromDate.setText(dialog.getLocalDate().toString());
-						if (textFromDateSort.getText().length() == 0) {
-							textFromDateSort
-									.setText(dialog.getSortDate().toString());
-						}
-						textFromOriginal.setText(dialog.getOriginal());
-						textFromSurety.setText(dialog.getSurety());
-					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
-					}
-				}
+			if (statusLine.getStatusCode() != 200) {
+				throw new MvpException(statusLine.getReasonPhrase());
 			}
-		});
-		btnNewFrom.setText("New");
 
-		btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
-		btnBrowseFrom.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(
-						textFromDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						textFromDate.setText(hdp.getDate().toString());
-						textFromDateSort.setText(hdp.getSortDate().toString());
-						textFromOriginal.setText(hdp.getOriginalText());
-						textFromSurety.setText(hdp.getSurety());
-					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
-				}
+			final BufferedReader br = new BufferedReader(
+					new InputStreamReader(response.getEntity().getContent()));
+
+			String s;
+			sb = new StringBuilder();
+
+			while (null != (s = br.readLine())) {
+				sb.append(s);
 			}
-		});
-		btnBrowseFrom.setText("Browse");
 
-		btnClearFrom = new Button(compositeFrom, SWT.NONE);
-		btnClearFrom.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				textFromDate.setText("");
-				textFromDateSort.setText("");
-				textFromOriginal.setText("");
-				textFromSurety.setText("");
+			br.close();
+			response.close();
+			client.close();
+
+			final JSONObject jsonObject = new JSONObject(sb.toString());
+
+			LOGGER.fine(jsonObject.toString(2));
+
+			final String status = jsonObject.getString("status");
+
+			if (!status.equals("OK")) {
+				throw new MvpException(
+						status + ", " + jsonObject.getString("error_message"));
 			}
-		});
-		btnClearFrom.setText("Clear");
 
-		final Label lblToDate = new Label(container, SWT.NONE);
-		lblToDate.setText("To Date");
+			final JSONArray results = jsonObject.getJSONArray("results");
+			final JSONObject result0 = results.getJSONObject(0);
+			final JSONObject geometry = result0.getJSONObject("geometry");
+			final JSONObject location = geometry.getJSONObject("location");
+			lat = location.getDouble("lat");
+			lng = location.getDouble("lng");
+			LOGGER.fine("Lat " + lat + ", lng " + lng);
+			textCoordinates.setText("Lat " + lat + ", lng " + lng);
 
-		textToDate = new Text(container, SWT.BORDER);
-		textToDate.setEditable(false);
-		textToDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textToDateSort = new Text(container, SWT.BORDER);
-		textToDateSort.setEditable(false);
-		textToDateSort.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		textToOriginal = new Text(container, SWT.BORDER);
-		textToOriginal.setEditable(false);
-		textToOriginal.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textToSurety = new Text(container, SWT.BORDER);
-		textToSurety.setEditable(false);
-		textToSurety.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		final Composite compositeTo = new Composite(container, SWT.NONE);
-		compositeTo.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		btnCopyFromTo = new Button(compositeTo, SWT.NONE);
-		btnCopyFromTo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				textToDate.setText(textFromDate.getText());
-				if (textToDateSort.getText().length() == 0) {
-					textToDateSort.setText(textFromDateSort.getText());
-				}
-				textToOriginal.setText(textFromOriginal.getText());
-				textToSurety.setText(textToSurety.getText());
-			}
-		});
-		btnCopyFromTo.setText("Copy From");
-
-		btnNewTo = new Button(compositeTo, SWT.NONE);
-		btnNewTo.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textToDate.getShell(),
-						context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getLocalDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						toDatePid = hdp.insert();
-						textToDate.setText(dialog.getLocalDate().toString());
-						textToDateSort.setText(dialog.getSortDate().toString());
-						textToOriginal.setText(dialog.getOriginal());
-						textToSurety.setText(dialog.getSurety());
-					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
-					}
-				}
-			}
-		});
-		btnNewTo.setText("New");
-
-		btnBrowseTo = new Button(compositeTo, SWT.NONE);
-		btnBrowseTo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(
-						textToDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						textToDate.setText(hdp.getDate().toString());
-						textToDateSort.setText(hdp.getSortDate().toString());
-						textToOriginal.setText(hdp.getOriginalText());
-						textToSurety.setText(hdp.getSurety());
-					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
-		btnBrowseTo.setText("Browse");
-
-		btnClearTo = new Button(compositeTo, SWT.NONE);
-		btnClearTo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-			}
-		});
-		btnClearTo.setText("Clear");
-
-		new Label(container, SWT.NONE);
-
-		btnPrimaryLocationName = new Button(container, SWT.CHECK);
-		btnPrimaryLocationName.setSelection(true);
-		btnPrimaryLocationName.setText("Primary Location Name");
-		new Label(container, SWT.NONE);
-
-		final Label lblPreposition = new Label(container, SWT.NONE);
-		lblPreposition.setText("Preposition");
-
-		textPreposition = new Text(container, SWT.BORDER);
-		textPreposition.setToolTipText("Optional. Used for reporting");
-		textPreposition.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		setPageComplete(false);
+			wizard.setxCoordinate(lat);
+			wizard.setyCoordinate(lng);
+			wizard.addBackPages();
+			wizard.getContainer().updateButtons();
+			wizard.setLocationName(result0.getString("formatted_address"));
+			eventBroker.post("MESSAGE",
+					"Geocoded address " + result0.getString("formatted_address")
+							+ " as lat " + lat + ", lng " + lng);
+		} catch (final Exception e) {
+			LOGGER.severe(e.getCause() + ": " + e.getMessage());
+			eventBroker.post("MESSAGE", e.getCause() + ": " + e.getMessage());
+		}
 	}
 
-	/**
-	 * @return the btnPrimaryLocationName
-	 */
-	public Button getBtnPrimaryLocationName() {
-		return btnPrimaryLocationName;
-	}
-
-	/**
-	 * @return the comboLocationNameStyles
-	 */
-	public Combo getComboLocationNameStyles() {
-		return comboLocationNameStyles;
-	}
-
-	/**
-	 * @return the fromDatePid
-	 */
-	public int getFromDatePid() {
-		return fromDatePid;
-	}
-
-	/**
-	 * @return the textFromDate
-	 */
-	public Text getTextFromDate() {
-		return textFromDate;
-	}
-
-	/**
-	 * @return the textPreposition
-	 */
-	public Text getTextPreposition() {
-		return textPreposition;
-	}
-
-	/**
-	 * @return the textToDate
-	 */
-	public Text getTextToDate() {
-		return textToDate;
-	}
-
-	/**
-	 * @return the toDatePid
-	 */
-	public int getToDatePid() {
-		return toDatePid;
-	}
-
-	/**
-	 * @param fromDatePid the fromDatePid to set
-	 */
-	public void setFromDatePid(int fromDatePid) {
-		this.fromDatePid = fromDatePid;
-	}
-
-	/**
-	 * @param toDatePid the toDatePid to set
-	 */
-	public void setToDatePid(int toDatePid) {
-		this.toDatePid = toDatePid;
-	}
 }

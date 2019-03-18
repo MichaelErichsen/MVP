@@ -3,7 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,41 +13,62 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the LOCATION_NAMES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 10. mar. 2019
  *
  */
 
 public class LocationNames {
-	private static final String SELECT = "SELECT LOCATION_NAME_PID, LOCATION_PID, "
-			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID FROM PUBLIC.LOCATION_NAMES WHERE LOCATION_NAME_PID = ?";
-	private static final String SELECT_LOCATION_PID = "SELECT LOCATION_NAME_PID, LOCATION_PID, "
-			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT = "SELECT LOCATION_NAME_PID, "
+			+ "LOCATION_PID, PRIMARY_LOCATION_NAME, "
+			+ "LOCATION_NAME_STYLE_PID, PREPOSITION, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAMES WHERE LOCATION_NAME_PID = ?";
+	private static final String SELECT_LOCATION_PID = "SELECT "
+			+ "LOCATION_NAME_PID, LOCATION_PID, "
+			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, "
+			+ "PREPOSITION, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAMES WHERE LOCATION_PID = ? ORDER BY LOCATION_NAME_PID";
-	private static final String SELECT_LOCATION_NAME_STYLE_PID = "SELECT LOCATION_NAME_PID, LOCATION_PID, "
-			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_LOCATION_NAME_STYLE_PID = "SELECT "
+			+ "LOCATION_NAME_PID, LOCATION_PID, "
+			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, "
+			+ "PREPOSITION, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAMES WHERE LOCATION_NAME_STYLE_PID = ? ORDER BY LOCATION_NAME_PID";
-	private static final String SELECT_FROM_DATE_PID = "SELECT LOCATION_NAME_PID, LOCATION_PID, "
-			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_FROM_DATE_PID = "SELECT "
+			+ "LOCATION_NAME_PID, LOCATION_PID, "
+			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, "
+			+ "PREPOSITION, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAMES WHERE FROM_DATE_PID = ? ORDER BY LOCATION_NAME_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT LOCATION_NAME_PID, LOCATION_PID, "
-			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_TO_DATE_PID = "SELECT "
+			+ "LOCATION_NAME_PID, LOCATION_PID, "
+			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, "
+			+ "PREPOSITION, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAMES WHERE TO_DATE_PID = ? ORDER BY LOCATION_NAME_PID";
 
-	private static final String SELECTALL = "SELECT LOCATION_NAME_PID, LOCATION_PID, "
-			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID FROM PUBLIC.LOCATION_NAMES ORDER BY LOCATION_NAME_PID";
+	private static final String SELECTALL = "SELECT LOCATION_NAME_PID, "
+			+ "LOCATION_PID, PRIMARY_LOCATION_NAME, "
+			+ "LOCATION_NAME_STYLE_PID, PREPOSITION, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, "
+			+ "TO_DATE_PID FROM PUBLIC.LOCATION_NAMES ORDER BY LOCATION_NAME_PID";
 
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_NAME_PID) FROM PUBLIC.LOCATION_NAMES";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAMES( LOCATION_NAME_PID, "
-			+ "LOCATION_PID, PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, PREPOSITION, "
-			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.LOCATION_NAMES( "
+			+ "LOCATION_NAME_PID, LOCATION_PID, "
+			+ "PRIMARY_LOCATION_NAME, LOCATION_NAME_STYLE_PID, "
+			+ "PREPOSITION, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES (?, "
+			+ "?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 8, ?, ?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAMES SET LOCATION_PID = ?, "
-			+ "PRIMARY_LOCATION_NAME = ?, LOCATION_NAME_STYLE_PID = ?, PREPOSITION = ?, TABLE_ID = ?, "
-			+ "FROM_DATE_PID = ?, TO_DATE_PID = ? WHERE LOCATION_NAME_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.LOCATION_NAMES SET "
+			+ "LOCATION_PID = ?, PRIMARY_LOCATION_NAME = ?"
+			+ ", LOCATION_NAME_STYLE_PID = ?, PREPOSITION = ?"
+			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP, FROM_DATE_PID = ?"
+			+ ", TO_DATE_PID = ? WHERE LOCATION_NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATION_NAMES WHERE LOCATION_NAME_PID = ?";
 
@@ -66,19 +87,21 @@ public class LocationNames {
 	private boolean PrimaryLocationName;
 	private int LocationNameStylePid;
 	private String Preposition;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int FromDatePid;
 	private int ToDatePid;
 	private LocationNames model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -89,7 +112,7 @@ public class LocationNames {
 		conn.close();
 	}
 
-	public List<LocationNames> get() throws SQLException {
+	public List<LocationNames> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -102,6 +125,8 @@ public class LocationNames {
 					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -111,7 +136,7 @@ public class LocationNames {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -122,6 +147,8 @@ public class LocationNames {
 			setPrimaryLocationName(rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			setPreposition(rs.getString("PREPOSITION"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -131,7 +158,7 @@ public class LocationNames {
 		conn.close();
 	}
 
-	public List<LocationNames> getFKFromDatePid(int key) throws SQLException {
+	public List<LocationNames> getFKFromDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
@@ -145,6 +172,8 @@ public class LocationNames {
 					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -155,7 +184,7 @@ public class LocationNames {
 	}
 
 	public List<LocationNames> getFKLocationNameStylePid(int key)
-			throws SQLException {
+			throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LOCATION_NAME_STYLE_PID);
 		ps.setInt(1, key);
@@ -169,6 +198,8 @@ public class LocationNames {
 					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -178,7 +209,7 @@ public class LocationNames {
 		return modelList;
 	}
 
-	public List<LocationNames> getFKLocationPid(int key) throws SQLException {
+	public List<LocationNames> getFKLocationPid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_LOCATION_PID);
 		ps.setInt(1, key);
@@ -192,6 +223,8 @@ public class LocationNames {
 					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -201,7 +234,7 @@ public class LocationNames {
 		return modelList;
 	}
 
-	public List<LocationNames> getFKToDatePid(int key) throws SQLException {
+	public List<LocationNames> getFKToDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
@@ -215,6 +248,8 @@ public class LocationNames {
 					rs.getBoolean("PRIMARY_LOCATION_NAME"));
 			model.setLocationNameStylePid(rs.getInt("LOCATION_NAME_STYLE_PID"));
 			model.setPreposition(rs.getString("PREPOSITION"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -231,6 +266,15 @@ public class LocationNames {
 	 */
 	public int getFromDatePid() {
 		return FromDatePid;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -287,7 +331,16 @@ public class LocationNames {
 		return ToDatePid;
 	}
 
-	public int insert() throws SQLException {
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -303,16 +356,15 @@ public class LocationNames {
 		ps.setBoolean(3, isPrimaryLocationName());
 		ps.setInt(4, getLocationNameStylePid());
 		ps.setString(5, getPreposition());
-		ps.setInt(6, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(7, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(7, getFromDatePid());
+			ps.setInt(6, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(7, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getToDatePid());
+			ps.setInt(7, getToDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -335,6 +387,15 @@ public class LocationNames {
 	 */
 	public void setFromDatePid(int FromDatePid) {
 		this.FromDatePid = FromDatePid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -401,25 +462,33 @@ public class LocationNames {
 		this.ToDatePid = ToDatePid;
 	}
 
-	public void update() throws SQLException {
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getLocationPid());
 		ps.setBoolean(2, isPrimaryLocationName());
 		ps.setInt(3, getLocationNameStylePid());
 		ps.setString(4, getPreposition());
-		ps.setInt(5, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(6, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(6, getFromDatePid());
+			ps.setInt(5, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(7, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(7, getToDatePid());
+			ps.setInt(6, getToDatePid());
 		}
-		ps.setInt(8, getLocationNamePid());
+		ps.setInt(7, getLocationNamePid());
 		ps.executeUpdate();
 		conn.close();
 	}

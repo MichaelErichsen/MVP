@@ -1,22 +1,20 @@
 package net.myerichsen.hremvp.person.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.NameMaps;
-import net.myerichsen.hremvp.dbmodels.NameParts;
-import net.myerichsen.hremvp.dbmodels.NameStyles;
-import net.myerichsen.hremvp.dbmodels.Names;
+import net.myerichsen.hremvp.dbmodels.PersonNameParts;
+import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
+import net.myerichsen.hremvp.dbmodels.PersonNames;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jan. 2019
+ * @version 3. mar. 2019
  *
  */
 //Use LocalDate
@@ -32,14 +30,14 @@ public class PersonNameServer implements IHREServer {
 	private int nameStylePid;
 	List<List<String>> nameList;
 
-	private Names name;
+	private PersonNames name;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public PersonNameServer() {
-		name = new Names();
+		name = new PersonNames();
 		nameList = new ArrayList<>();
 	}
 
@@ -47,17 +45,17 @@ public class PersonNameServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
-		final NameParts part = new NameParts();
+	public void delete(int key) throws Exception {
+		final PersonNameParts part = new PersonNameParts();
 		part.getFKNamePid(key);
 
-		for (final NameParts np : part.getFKNamePid(key)) {
+		for (final PersonNameParts np : part.getFKNamePid(key)) {
 			np.delete(np.getNamePartPid());
 		}
 
@@ -69,8 +67,7 @@ public class PersonNameServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
 	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
+	public List<?> get() throws Exception {
 		return null;
 	}
 
@@ -78,13 +75,13 @@ public class PersonNameServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		name.get(key);
 		setNamePid(key);
 		setPersonPid(name.getPersonPid());
@@ -93,28 +90,28 @@ public class PersonNameServer implements IHREServer {
 		setPrimaryName(name.isPrimaryName());
 		setNameStylePid(name.getNameStylePid());
 
-		final NameStyles ns = new NameStyles();
+		final PersonNameStyles ns = new PersonNameStyles();
 		ns.get(name.getNameStylePid());
-		setNameTypeLabel(ns.getLabel());
+		setNameTypeLabel("ns.getLabelPid()");
 
-		NameMaps map;
-		NameParts part;
-		List<NameMaps> mapList;
-		List<NameParts> partList;
+//		PersonNameMaps map;
+		PersonNameParts part;
+//		List<PersonNameMaps> mapList;
+		List<PersonNameParts> partList;
 		List<String> ls;
 
 		nameList.clear();
 
-		map = new NameMaps();
-		mapList = map.getFKNameStylePid(name.getNameStylePid());
+//		map = new PersonNameMaps();
+//		mapList = map.getFKNameStylePid(name.getNameStylePid());
 
-		part = new NameParts();
+		part = new PersonNameParts();
 		partList = part.getFKNamePid(key);
 
 		for (int i = 0; i < partList.size(); i++) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(partList.get(i).getNamePartPid()));
-			ls.add(mapList.get(i).getLabel());
+			ls.add("mapList.get(i).getLabelPid()");
 			if (partList.get(i).getLabel() != null) {
 				ls.add(partList.get(i).getLabel());
 			} else {
@@ -150,15 +147,15 @@ public class PersonNameServer implements IHREServer {
 	 * Get a string of name parts for each name
 	 *
 	 * @return sa An array of names
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public String[] getNameStrings() throws SQLException {
+	public String[] getNameStrings() throws Exception {
 		StringBuilder sb;
 
 		final int personPid = name.getPersonPid();
-		List<Names> nameList = new ArrayList<>();
-		nameList = new Names().getFKPersonPid(personPid);
+		List<PersonNames> nameList = new ArrayList<>();
+		nameList = new PersonNames().getFKPersonPid(personPid);
 
 		final String[] sa = new String[nameList.size()];
 
@@ -167,18 +164,18 @@ public class PersonNameServer implements IHREServer {
 			name = nameList.get(i);
 			LOGGER.fine("Name " + name.getNamePid() + ", person "
 					+ name.getPersonPid());
-			final List<NameParts> npl = new NameParts()
+			final List<PersonNameParts> npl = new PersonNameParts()
 					.getFKNamePid(name.getNamePid());
 
 			LOGGER.fine("List size " + npl.size());
 			// Concatenate non-null name parts
-			for (final NameParts nameParts : npl) {
-				LOGGER.fine("Name part " + nameParts.getNamePartPid()
-						+ ", name " + nameParts.getNamePid());
-				if (nameParts.getNamePid() == name.getNamePid()) {
-					if (nameParts.getLabel() != null) {
-						sb.append(nameParts.getLabel().trim() + " ");
-						LOGGER.fine("Part " + nameParts.getLabel());
+			for (final PersonNameParts PersonNameParts : npl) {
+				LOGGER.fine("Name part " + PersonNameParts.getNamePartPid()
+						+ ", name " + PersonNameParts.getNamePid());
+				if (PersonNameParts.getNamePid() == name.getNamePid()) {
+					if (PersonNameParts.getLabel() != null) {
+						sb.append(PersonNameParts.getLabel().trim() + " ");
+						LOGGER.fine("Part " + PersonNameParts.getLabel());
 					}
 				}
 			}
@@ -222,36 +219,59 @@ public class PersonNameServer implements IHREServer {
 	 *
 	 * @param personPid The persistent PID of the person
 	 * @return s The name
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 */
-	public String getPrimaryNameString(int personPid) throws SQLException {
+	public String getPrimaryNameString(int personPid) throws Exception {
 		final StringBuilder sb = new StringBuilder();
-		Names name;
+		PersonNames name;
 
-		List<Names> nameList = new ArrayList<>();
-		nameList = new Names().getFKPersonPid(personPid);
+		List<PersonNames> nameList = new ArrayList<>();
+		nameList = new PersonNames().getFKPersonPid(personPid);
 
 		for (int i = 0; i < nameList.size(); i++) {
 			name = nameList.get(i);
 
 			if (name.isPrimaryName()) {
-				final List<NameParts> npl = new NameParts()
+				final List<PersonNameParts> npl = new PersonNameParts()
 						.getFKNamePid(name.getNamePid());
 
 				// Concatenate non-null name parts
-				for (final NameParts nameParts : npl) {
-					if (nameParts.getNamePid() == name.getNamePid()) {
-						if (nameParts.getLabel() != null) {
-							sb.append(nameParts.getLabel() + " ");
+				for (final PersonNameParts PersonNameParts : npl) {
+					if (PersonNameParts.getNamePid() == name.getNamePid()) {
+						if (PersonNameParts.getLabel() != null) {
+							sb.append(PersonNameParts.getLabel() + " ");
 						}
 					}
 				}
 				break;
 			}
 		}
+
 		final String s = sb.toString().trim();
 		return s;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -266,12 +286,12 @@ public class PersonNameServer implements IHREServer {
 	 *
 	 * @return
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		name.setNamePid(namePid);
 		name.setPersonPid(personPid);
 		name.setFromDatePid(fromDatePid);
@@ -345,7 +365,7 @@ public class PersonNameServer implements IHREServer {
 	}
 
 	/**
-	 * @param toDatePid the toDatePid to set
+	 * @param data.toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDate) {
 		toDatePid = toDate;
@@ -354,12 +374,12 @@ public class PersonNameServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		name.setNamePid(namePid);
 		name.setPersonPid(personPid);
 		name.setFromDatePid(fromDatePid);

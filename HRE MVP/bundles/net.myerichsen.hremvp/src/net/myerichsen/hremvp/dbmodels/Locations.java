@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,33 +14,47 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the LOCATIONS database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 10. mar. 2019
  *
  */
 
 public class Locations {
-	private static final String SELECT = "SELECT LOCATION_PID, PRIMARY_LOCATION, X_COORDINATE, "
-			+ "Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT = "SELECT " + "LOCATION_PID, "
+			+ "PRIMARY_LOCATION, " + "X_COORDINATE, " + "Y_COORDINATE, "
+			+ "Z_COORDINATE, " + "INSERT_TSTMP, " + "UPDATE_TSTMP, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ?";
-	private static final String SELECT_FROM_DATE_PID = "SELECT LOCATION_PID, PRIMARY_LOCATION, "
-			+ "X_COORDINATE, Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_FROM_DATE_PID = "SELECT "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, " + "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE FROM_DATE_PID = ? ORDER BY LOCATION_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT LOCATION_PID, PRIMARY_LOCATION, "
-			+ "X_COORDINATE, Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECT_TO_DATE_PID = "SELECT "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, " + "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS WHERE TO_DATE_PID = ? ORDER BY LOCATION_PID";
-	private static final String SELECTALL = "SELECT LOCATION_PID, PRIMARY_LOCATION, X_COORDINATE, "
-			+ "Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
+	private static final String SELECTALL = "SELECT " + "LOCATION_PID, "
+			+ "PRIMARY_LOCATION, " + "X_COORDINATE, " + "Y_COORDINATE, "
+			+ "Z_COORDINATE, " + "INSERT_TSTMP, " + "UPDATE_TSTMP, "
+			+ "TABLE_ID, " + "FROM_DATE_PID, "
 			+ "TO_DATE_PID FROM PUBLIC.LOCATIONS ORDER BY LOCATION_PID";
 	private static final String SELECTMAX = "SELECT MAX(LOCATION_PID) FROM PUBLIC.LOCATIONS";
 
-	private static final String INSERT = "INSERT INTO PUBLIC.LOCATIONS( LOCATION_PID, PRIMARY_LOCATION, "
-			+ "X_COORDINATE, Y_COORDINATE, Z_COORDINATE, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO PUBLIC.LOCATIONS( "
+			+ "LOCATION_PID, " + "PRIMARY_LOCATION, " + "X_COORDINATE, "
+			+ "Y_COORDINATE, " + "Z_COORDINATE, " + "INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, " + "TABLE_ID, " + "FROM_DATE_PID, "
+			+ "TO_DATE_PID) VALUES (" + "?, " + "?, " + "?, " + "?, " + "?, "
+			+ "CURRENT_TIMESTAMP, " + "CURRENT_TIMESTAMP, " + "9, " + "?, "
+			+ "?)";
 
-	private static final String UPDATE = "UPDATE PUBLIC.LOCATIONS SET PRIMARY_LOCATION = ?, "
-			+ "X_COORDINATE = ?, Y_COORDINATE = ?, Z_COORDINATE = ?, TABLE_ID = ?, "
-			+ "FROM_DATE_PID = ?, TO_DATE_PID = ? WHERE LOCATION_PID = ?";
+	private static final String UPDATE = "UPDATE PUBLIC.LOCATIONS SET "
+			+ "PRIMARY_LOCATION = ?" + ", X_COORDINATE = ?"
+			+ ", Y_COORDINATE = ?" + ", Z_COORDINATE = ?"
+			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP" + ", FROM_DATE_PID = ?"
+			+ ", TO_DATE_PID = ? WHERE LOCATION_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.LOCATIONS WHERE LOCATION_PID = ?";
 
@@ -59,19 +73,21 @@ public class Locations {
 	private BigDecimal XCoordinate;
 	private BigDecimal YCoordinate;
 	private BigDecimal ZCoordinate;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int FromDatePid;
 	private int ToDatePid;
 	private Locations model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -82,7 +98,7 @@ public class Locations {
 		conn.close();
 	}
 
-	public List<Locations> get() throws SQLException {
+	public List<Locations> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -94,6 +110,8 @@ public class Locations {
 			model.setXCoordinate(rs.getBigDecimal("X_COORDINATE"));
 			model.setYCoordinate(rs.getBigDecimal("Y_COORDINATE"));
 			model.setZCoordinate(rs.getBigDecimal("Z_COORDINATE"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -103,7 +121,7 @@ public class Locations {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -114,6 +132,8 @@ public class Locations {
 			setXCoordinate(rs.getBigDecimal("X_COORDINATE"));
 			setYCoordinate(rs.getBigDecimal("Y_COORDINATE"));
 			setZCoordinate(rs.getBigDecimal("Z_COORDINATE"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -123,7 +143,7 @@ public class Locations {
 		conn.close();
 	}
 
-	public List<Locations> getFKFromDatePid(int key) throws SQLException {
+	public List<Locations> getFKFromDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
 		ps.setInt(1, key);
@@ -136,6 +156,8 @@ public class Locations {
 			model.setXCoordinate(rs.getBigDecimal("X_COORDINATE"));
 			model.setYCoordinate(rs.getBigDecimal("Y_COORDINATE"));
 			model.setZCoordinate(rs.getBigDecimal("Z_COORDINATE"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -145,7 +167,7 @@ public class Locations {
 		return modelList;
 	}
 
-	public List<Locations> getFKToDatePid(int key) throws SQLException {
+	public List<Locations> getFKToDatePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
 		ps.setInt(1, key);
@@ -158,6 +180,8 @@ public class Locations {
 			model.setXCoordinate(rs.getBigDecimal("X_COORDINATE"));
 			model.setYCoordinate(rs.getBigDecimal("Y_COORDINATE"));
 			model.setZCoordinate(rs.getBigDecimal("Z_COORDINATE"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
@@ -174,6 +198,15 @@ public class Locations {
 	 */
 	public int getFromDatePid() {
 		return FromDatePid;
+	}
+
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -204,6 +237,15 @@ public class Locations {
 	}
 
 	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
+	/**
 	 * Get the XCoordinate field.
 	 *
 	 * @return Contents of the X_COORDINATE column
@@ -230,7 +272,7 @@ public class Locations {
 		return ZCoordinate;
 	}
 
-	public int insert() throws SQLException {
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -246,16 +288,15 @@ public class Locations {
 		ps.setBigDecimal(3, getXCoordinate());
 		ps.setBigDecimal(4, getYCoordinate());
 		ps.setBigDecimal(5, getZCoordinate());
-		ps.setInt(6, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(7, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(7, getFromDatePid());
+			ps.setInt(6, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(7, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getToDatePid());
+			ps.setInt(7, getToDatePid());
 		}
 		ps.executeUpdate();
 		conn.close();
@@ -278,6 +319,15 @@ public class Locations {
 	 */
 	public void setFromDatePid(int FromDatePid) {
 		this.FromDatePid = FromDatePid;
+	}
+
+	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -317,6 +367,15 @@ public class Locations {
 	}
 
 	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
+	/**
 	 * Set the XCoordinate field
 	 *
 	 * @param XCoordinate Contents of the X_COORDINATE column
@@ -343,25 +402,24 @@ public class Locations {
 		this.ZCoordinate = ZCoordinate;
 	}
 
-	public void update() throws SQLException {
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setBoolean(1, isPrimaryLocation());
 		ps.setBigDecimal(2, getXCoordinate());
 		ps.setBigDecimal(3, getYCoordinate());
 		ps.setBigDecimal(4, getZCoordinate());
-		ps.setInt(5, getTableId());
 		if (getFromDatePid() == 0) {
-			ps.setNull(6, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(6, getFromDatePid());
+			ps.setInt(5, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(7, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(7, getToDatePid());
+			ps.setInt(6, getToDatePid());
 		}
-		ps.setInt(8, getLocationPid());
+		ps.setInt(7, getLocationPid());
 		ps.executeUpdate();
 		conn.close();
 	}

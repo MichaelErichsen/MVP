@@ -1,20 +1,18 @@
 package net.myerichsen.hremvp.person.wizards;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.ParentProvider;
 
 /**
  * Wizard to add an existing person as a child
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 15. feb. 2019
+ * @version 20. feb. 2019
  *
  */
 public class NewPersonChildWizard extends Wizard {
@@ -34,7 +32,7 @@ public class NewPersonChildWizard extends Wizard {
 	 * @param context
 	 */
 	public NewPersonChildWizard(int personPid, IEclipseContext context) {
-		setWindowTitle("Add child");
+		setWindowTitle("Add a child");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
@@ -80,7 +78,7 @@ public class NewPersonChildWizard extends Wizard {
 						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 						personPid);
 				return true;
-			} catch (SQLException | MvpException e) {
+			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

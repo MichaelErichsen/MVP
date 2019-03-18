@@ -1,10 +1,8 @@
 package net.myerichsen.hremvp.person.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.servers.PartnerServer;
 
 /**
@@ -37,19 +35,10 @@ public class PartnerProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	@Override
-	public List<?> get() throws SQLException, MvpException {
-		return null;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -57,7 +46,7 @@ public class PartnerProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 
 	}
 
@@ -96,6 +85,28 @@ public class PartnerProvider implements IHREProvider {
 		return Role;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @return the toDatePid
 	 */
@@ -109,7 +120,7 @@ public class PartnerProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setPartner1(Partner1);
 		server.setPartner2(Partner2);
 		server.setPrimaryPartner(PrimaryPartner);
@@ -181,7 +192,7 @@ public class PartnerProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 
 	}
 }

@@ -132,13 +132,13 @@ public class NewPersonNameWizard extends Wizard {
 			// Page 2
 			// Name parts
 			PersonNamePartProvider personNamePartProvider;
-			final List<String> nameParts = page2.getNameParts();
+			final List<String> PersonNameParts = page2.getPersonNameParts();
 			String string;
 			int namePartPid;
 
 			// Create each name part
-			for (int i = 0; i < nameParts.size(); i++) {
-				string = nameParts.get(i);
+			for (int i = 0; i < PersonNameParts.size(); i++) {
+				string = PersonNameParts.get(i);
 
 				if (string != null) {
 					personNamePartProvider = new PersonNamePartProvider();
@@ -157,7 +157,7 @@ public class NewPersonNameWizard extends Wizard {
 					net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 					personPid);
 			eventBroker.post(
-					net.myerichsen.hremvp.Constants.NAME_PID_UPDATE_TOPIC,
+					net.myerichsen.hremvp.Constants.PERSON_NAME_PID_UPDATE_TOPIC,
 					namePid);
 			return true;
 		} catch (

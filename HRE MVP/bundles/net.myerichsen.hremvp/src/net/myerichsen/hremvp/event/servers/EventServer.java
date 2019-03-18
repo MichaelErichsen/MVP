@@ -1,10 +1,10 @@
 package net.myerichsen.hremvp.event.servers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.EventTypes;
@@ -18,10 +18,10 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. jan. 2019
+ * @version 19. feb. 2019
  *
  */
-public class EventServer {
+public class EventServer implements IHREServer {
 //	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int EventPid;
 	private int TableId;
@@ -58,12 +58,13 @@ public class EventServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void delete(int key) throws SQLException, MvpException {
+	@Override
+	public void delete(int key) throws Exception {
 		event.delete(key);
 	}
 
@@ -71,16 +72,15 @@ public class EventServer {
 	 * Get all rows
 	 *
 	 * @return A list of strings of pids and labels
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<List<String>> get() throws SQLException, MvpException {
+	public List<List<String>> get() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		int namePid;
 		int eventTypePid;
-		int languagePid;
 		int eventPid;
 
 		final Events event = new Events();
@@ -101,10 +101,9 @@ public class EventServer {
 
 			eventTypePid = name.getEventTypePid();
 			type.get(eventTypePid);
-			stringList.add(type.getLabel());
+			// FIXME Labels
+			stringList.add("type.getLabel()");
 
-			languagePid = name.getLanguagePid();
-			language.get(languagePid);
 			stringList.add(language.getLabel());
 
 			lls.add(stringList);
@@ -117,12 +116,13 @@ public class EventServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
 	 */
-	public void get(int key) throws SQLException, MvpException {
+	@Override
+	public void get(int key) throws Exception {
 		event.get(key);
 		setEventPid(event.getEventPid());
 
@@ -154,7 +154,6 @@ public class EventServer {
 		setEventName(anEventName.getLabel());
 
 		final Languages aLanguage = new Languages();
-		setLanguagePid(anEventName.getLanguagePid());
 		aLanguage.get(LanguagePid);
 		setIsoCode(aLanguage.getIsocode());
 		setLanguage(aLanguage.getLabel());
@@ -162,7 +161,8 @@ public class EventServer {
 		final EventTypes anEventType = new EventTypes();
 		setEventTypePid(anEventName.getEventTypePid());
 		anEventType.get(EventTypePid);
-		setEventType(anEventType.getLabel());
+		// FIXME Labels
+//		setEventType(anEventType.getLabel());
 	}
 
 	/**
@@ -252,9 +252,9 @@ public class EventServer {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<String> getLocationList(int key) throws SQLException {
+	public List<String> getLocationList(int key) throws Exception {
 		LocationServer ls;
 
 		final List<String> locationStringList = new ArrayList<>();
@@ -281,6 +281,26 @@ public class EventServer {
 	 */
 	public List<List<String>> getPersonList() {
 		return personList;
+	}
+
+	/**
+	 * @return
+	 */
+	@Override
+	public List<List<String>> getStringList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -314,11 +334,12 @@ public class EventServer {
 	/**
 	 * Insert a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public int insert() throws SQLException, MvpException {
+	@Override
+	public int insert() throws Exception {
 		event.setEventPid(EventPid);
 		event.setTableId(Constants.EVENTS_TABLE_ID);
 		event.setFromDatePid(FromDatePid);
@@ -449,11 +470,12 @@ public class EventServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void update() throws SQLException, MvpException {
+	@Override
+	public void update() throws Exception {
 		event.setEventPid(EventPid);
 		event.setTableId(Constants.EVENTS_TABLE_ID);
 		event.setFromDatePid(FromDatePid);

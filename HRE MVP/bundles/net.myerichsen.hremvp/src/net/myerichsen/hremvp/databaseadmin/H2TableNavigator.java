@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.databaseadmin;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -91,7 +90,7 @@ public class H2TableNavigator {
 			eventBroker.post("MESSAGE",
 					"All rows have been deleted from " + tableName);
 			updateGui();
-		} catch (final SQLException e1) {
+		} catch (final Exception e1) {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.severe(e1.getMessage());
@@ -259,7 +258,7 @@ public class H2TableNavigator {
 			csvFile.write(fileName, rs, "UTF-8");
 			eventBroker.post("MESSAGE",
 					"Table " + tableName + " has been exported to " + fileName);
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -307,7 +306,7 @@ public class H2TableNavigator {
 						rowCount + " rows has been imported from " + fileName);
 				eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
 				updateGui();
-			} catch (final SQLException e1) {
+			} catch (final Exception e1) {
 				e1.printStackTrace();
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
@@ -408,7 +407,7 @@ public class H2TableNavigator {
 					}
 				}
 			}
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());

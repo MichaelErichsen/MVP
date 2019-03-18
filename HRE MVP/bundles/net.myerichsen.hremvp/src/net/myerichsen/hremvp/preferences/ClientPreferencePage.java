@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.preferences;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,14 +20,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
-import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.providers.LanguageProvider;
+import net.myerichsen.hremvp.project.providers.LanguageProvider;
+import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 
 /**
- * Preference page for client
+ * Preference page for HRE MVP client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 11. mar. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -41,6 +41,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 	private IntegerFieldEditor helpportIntegerFieldEditor;
 	private IntegerFieldEditor serverportIntegerFieldEditor;
 	private ComboFieldEditor comboGuiLanguage;
+	private ComboFieldEditor comboPersonNameStyle;
+	private ComboFieldEditor comboLocationNameStyle;
 
 	/**
 	 * Constructor
@@ -97,12 +99,15 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				"Port Number for local HRE Server", getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
-		LanguageProvider languageProvider = new LanguageProvider();
-		try {
-			List<List<String>> languageList = languageProvider.get();
+		final String[][] entryNamesAndValues = {
+				{ "Not defined yet", "Not defined yet" } };
 
-			int llsSize = languageList.size();
-			String[][] doubleArray = new String[llsSize][2];
+		try {
+			final LanguageProvider languageProvider = new LanguageProvider();
+			final List<List<String>> languageList = languageProvider.get();
+
+			final int llsSize = languageList.size();
+			final String[][] doubleArray = new String[llsSize][2];
 
 			for (int i = 0; i < llsSize; i++) {
 				doubleArray[i][0] = languageList.get(i).get(2);
@@ -112,15 +117,56 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 			comboGuiLanguage = new ComboFieldEditor("GUILANGUAGE",
 					"GUI Language", doubleArray, getFieldEditorParent());
 			addField(comboGuiLanguage);
-		} catch (SQLException | MvpException e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+		} catch (final Exception e) {
+			addField(new ComboFieldEditor("", "GUI Language",
+					entryNamesAndValues, getFieldEditorParent()));
 		}
 
-		// FIXME Should also be populated from database table
-		addField(new ComboFieldEditor("DEFAULTPERSONNAMESTYLE",
-				"Default Person Name Style",
-				new String[][] { { "name_1", "1" }, { "name_2", "value_2" } },
+		try {
+			final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
+			final List<List<String>> personNameStyleList = pnsp.getStringList();
+
+			final int llsSize = personNameStyleList.size();
+			final String[][] doubleArray = new String[llsSize][2];
+
+			for (int i = 0; i < llsSize; i++) {
+				doubleArray[i][0] = personNameStyleList.get(i).get(2);
+				doubleArray[i][1] = personNameStyleList.get(i).get(1);
+			}
+
+			comboPersonNameStyle = new ComboFieldEditor(
+					"DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
+					doubleArray, getFieldEditorParent());
+			addField(comboPersonNameStyle);
+		} catch (final Exception e) {
+			addField(new ComboFieldEditor("", "Default Person Name Style",
+					entryNamesAndValues, getFieldEditorParent()));
+		}
+
+		try {
+			final LocationNameStyleProvider lnsp = new LocationNameStyleProvider();
+			final List<List<String>> LocationNameStyleList = lnsp
+					.getStringList();
+
+			final int llsSize = LocationNameStyleList.size();
+			final String[][] doubleArray = new String[llsSize][2];
+
+			for (int i = 0; i < llsSize; i++) {
+				doubleArray[i][0] = LocationNameStyleList.get(i).get(2);
+				doubleArray[i][1] = LocationNameStyleList.get(i).get(1);
+			}
+
+			comboLocationNameStyle = new ComboFieldEditor(
+					"DEFAULTLOCATIONNAMESTYLE", "Default Location Name Style",
+					doubleArray, getFieldEditorParent());
+			addField(comboLocationNameStyle);
+		} catch (final Exception e) {
+			addField(new ComboFieldEditor("", "Default Location Name Style",
+					entryNamesAndValues, getFieldEditorParent()));
+		}
+
+		addField(new StringFieldEditor("GOOGLEAPIKEY", "Google API Key", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE,
 				getFieldEditorParent()));
 	}
 

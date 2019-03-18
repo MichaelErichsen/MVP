@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.dialogs;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -22,14 +21,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.person.providers.SexTypeProvider;
+import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all sex types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 3. mar. 2019
  *
  */
 public class SexTypeNavigatorDialog extends TitleAreaDialog {
@@ -38,7 +37,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	IEclipseContext context;
 //	private final IEventBroker eventBroker;
 
-	private SexTypeProvider provider;
+	private final SexTypeProvider provider;
 	private int sexTypePid;
 	private TableViewer tableViewer;
 
@@ -47,10 +46,10 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	 *
 	 * @param parentShell
 	 * @param context
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context)
-			throws SQLException {
+			throws Exception {
 		super(parentShell);
 		this.context = context;
 //		eventBroker = context.get(IEventBroker.class);
@@ -88,11 +87,11 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -130,8 +129,8 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getSexTypeList());
-		} catch (SQLException e1) {
+			tableViewer.setInput(provider.getStringList());
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

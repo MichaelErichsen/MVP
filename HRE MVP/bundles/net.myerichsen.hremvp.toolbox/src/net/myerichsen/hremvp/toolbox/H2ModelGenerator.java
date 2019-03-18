@@ -9,23 +9,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Utility to generate a Java model class representing an HRE H2 Table
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jan. 2019
+ * @version 16. mar. 2019
  *
  */
 
 public class H2ModelGenerator {
-	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME FROM INFORMATION_SCHEMA.COLUMNS "
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, COLUMN_DEFAULT FROM INFORMATION_SCHEMA.COLUMNS "
 			+ "WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
 	private static final String FOREIGNKEYS = "SELECT CL.COLUMN_NAME, CL.TYPE_NAME "
 			+ "FROM INFORMATION_SCHEMA.COLUMNS AS CL, INFORMATION_SCHEMA.CONSTRAINTS AS CT "
@@ -39,6 +41,7 @@ public class H2ModelGenerator {
 	private static String primaryKey = "PRIMARY_KEY";
 	private static String primaryKeyType = "void";
 	private static PrintWriter writer;
+	private static int tableId;
 
 	/**
 	 * Constructor
@@ -67,7 +70,7 @@ public class H2ModelGenerator {
 			return "Clob";
 		}
 		if (string.equals("DATE")) {
-			return "LocalDate";
+			return "Date";
 		}
 		if (string.equals("DECIMAL")) {
 			return "BigDecimal";
@@ -95,11 +98,12 @@ public class H2ModelGenerator {
 
 	/**
 	 * @throws IOException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	private static void createDatabaseOperations() throws IOException, SQLException {
+	private static void createDatabaseOperations()
+			throws IOException, Exception {
 		// delete()
-		writer.println("public void delete() throws SQLException {");
+		writer.println("public void delete() throws Exception {");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
 		writer.println("ps = conn.prepareStatement(DELETEALL);");
 		writer.println("ps.executeUpdate();");
@@ -107,7 +111,8 @@ public class H2ModelGenerator {
 		writer.println("}\r\n");
 
 		// delete(key)
-		writer.println("public void delete(" + primaryKeyType + " key) throws SQLException, MvpException {");
+		writer.println("public void delete(" + primaryKeyType
+				+ " key) throws Exception {");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
 		writer.println("ps = conn.prepareStatement(DELETE);");
 		writer.println("ps.set" + toCamelCase(primaryKeyType) + "(1, key);");
@@ -117,21 +122,26 @@ public class H2ModelGenerator {
 		writer.println("}\r\n");
 
 		// get()
-		writer.println("public List<" + toCamelCase(tableName) + "> get() throws SQLException {");
+		writer.println("public List<" + toCamelCase(tableName)
+				+ "> get() throws Exception {");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
 		writer.println("ps = conn.prepareStatement(SELECTALL);");
 		writer.println("rs = ps.executeQuery();");
-		writer.println("modelList = new ArrayList<" + toCamelCase(tableName) + ">();");
+		writer.println(
+				"modelList = new ArrayList<" + toCamelCase(tableName) + ">();");
 		writer.println("while (rs.next()) {");
 		writer.println("model = new " + toCamelCase(tableName) + "();");
 
 		for (int i = 0; i < fields.size(); i++) {
-			if (types.get(i).equalsIgnoreCase("LocalDate")) {
-				writer.println("model.set" + toCamelCase(fields.get(i)) + "(rs.getObject(\"" + fields.get(i)
-						+ "\", LocalDate.class));");
-			} else
-				writer.println("model.set" + toCamelCase(fields.get(i)) + "(rs.get" + toCamelCase(types.get(i)) + "(\""
-						+ fields.get(i) + "\"));");
+//			if (types.get(i).equalsIgnoreCase("LocalDate")) {
+//				writer.println("model.set" + toCamelCase(fields.get(i))
+//						+ "(rs.getObject(\"" + fields.get(i)
+//						+ "\", LocalDate.class));");
+//			} else {
+			writer.println("model.set" + toCamelCase(fields.get(i)) + "(rs.get"
+					+ toCamelCase(types.get(i)) + "(\"" + fields.get(i)
+					+ "\"));");
+//			}
 		}
 
 		writer.println("modelList.add(model);");
@@ -141,7 +151,8 @@ public class H2ModelGenerator {
 		writer.println("}\r\n");
 
 		// get(key)
-		writer.println("public void get(" + primaryKeyType + " key) throws SQLException, MvpException {");
+		writer.println("public void get(" + primaryKeyType
+				+ " key) throws Exception {");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
 		writer.println("ps = conn.prepareStatement(SELECT);");
 		writer.println("ps.set" + toCamelCase(primaryKeyType) + "(1, key);");
@@ -149,21 +160,26 @@ public class H2ModelGenerator {
 		writer.println("if (rs.next()) {");
 
 		for (int i = 0; i < fields.size(); i++) {
-			if (types.get(i).equalsIgnoreCase("LocalDate")) {
-				writer.println("set" + toCamelCase(fields.get(i)) + "(rs.getObject(\"" + fields.get(i)
-						+ "\", LocalDate.class));");
-			} else
-				writer.println("set" + toCamelCase(fields.get(i)) + "(rs.get" + toCamelCase(types.get(i)) + "(\""
-						+ fields.get(i) + "\"));");
+//			if (types.get(i).equalsIgnoreCase("LocalDate")) {
+//				writer.println(
+//						"set" + toCamelCase(fields.get(i)) + "(rs.getObject(\""
+//								+ fields.get(i) + "\", LocalDate.class));");
+//			} else {
+			writer.println("set" + toCamelCase(fields.get(i)) + "(rs.get"
+					+ toCamelCase(types.get(i)) + "(\"" + fields.get(i)
+					+ "\"));");
+//			}
 		}
 
-		writer.println("} else { throw new MvpException(\"ID \" + key + \" not found\"); }");
+		writer.println(
+				"} else { throw new MvpException(\"ID \" + key + \" not found\"); }");
 		writer.println("conn.close();");
 		writer.println("}\r\n");
 
 		// getFK...()
 		final String connectionName = "jdbc:h2:" + databaseName;
-		final Connection conn = DriverManager.getConnection(connectionName, "sa", "");
+		final Connection conn = DriverManager.getConnection(connectionName,
+				"sa", "");
 		final PreparedStatement ps = conn.prepareStatement(FOREIGNKEYS);
 		ps.setString(1, tableName);
 		final ResultSet rs = ps.executeQuery();
@@ -174,23 +190,29 @@ public class H2ModelGenerator {
 			columnName = rs.getString(1);
 			typeName = convertType(rs.getString(2));
 
-			writer.println("public List<" + toCamelCase(tableName) + "> getFK" + toCamelCase(columnName) + "("
-					+ typeName + " key) throws SQLException {");
+			writer.println("public List<" + toCamelCase(tableName) + "> getFK"
+					+ toCamelCase(columnName) + "(" + typeName
+					+ " key) throws Exception {");
 			writer.println("conn = HreH2ConnectionPool.getConnection();");
-			writer.println("ps = conn.prepareStatement(SELECT_" + columnName + ");");
+			writer.println(
+					"ps = conn.prepareStatement(SELECT_" + columnName + ");");
 			writer.println("ps.set" + toCamelCase(typeName) + "(1, key);");
 			writer.println("rs = ps.executeQuery();");
-			writer.println("modelList = new ArrayList<" + toCamelCase(tableName) + ">();");
+			writer.println("modelList = new ArrayList<" + toCamelCase(tableName)
+					+ ">();");
 			writer.println("while (rs.next()) {");
 			writer.println("model = new " + toCamelCase(tableName) + "();");
 
 			for (int i = 0; i < fields.size(); i++) {
-				if (types.get(i).equalsIgnoreCase("LocalDate")) {
-					writer.println("model.set" + toCamelCase(fields.get(i)) + "(rs.getObject(\"" + fields.get(i)
-							+ "\", LocalDate.class));");
-				} else
-					writer.println("model.set" + toCamelCase(fields.get(i)) + "(rs.get" + toCamelCase(types.get(i))
-							+ "(\"" + fields.get(i) + "\"));");
+//				if (types.get(i).equalsIgnoreCase("LocalDate")) {
+//					writer.println("model.set" + toCamelCase(fields.get(i))
+//							+ "(rs.getObject(\"" + fields.get(i)
+//							+ "\", LocalDate.class));");
+//				} else {
+				writer.println("model.set" + toCamelCase(fields.get(i))
+						+ "(rs.get" + toCamelCase(types.get(i)) + "(\""
+						+ fields.get(i) + "\"));");
+//				}
 			}
 
 			writer.println("modelList.add(model);");
@@ -201,7 +223,7 @@ public class H2ModelGenerator {
 		}
 
 		// insert()
-		writer.println("public int insert() throws SQLException {");
+		writer.println("public int insert() throws Exception {");
 		writer.println("int maxPid = 0;");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
 		writer.println("ps = conn.prepareStatement(SELECTMAX);");
@@ -213,26 +235,37 @@ public class H2ModelGenerator {
 		String type;
 
 		String field;
+		int index = 1;
 
 		for (int i = 0; i < fields.size(); i++) {
 			field = fields.get(i);
 			if (field.equals(primaryKey)) {
-				writer.println("ps.setInt(" + (i + 1) + ", maxPid);");
+				writer.println("ps.setInt(" + (index++) + ", maxPid);");
+				continue;
+			} else if (field.equals("INSERT_TSTMP")) {
+				continue;
+			} else if (field.equals("UPDATE_TSTMP")) {
+				continue;
+			} else if (field.equals("TABLE_ID")) {
 				continue;
 			}
 
 			type = types.get(i);
 			if (type.equalsIgnoreCase("Boolean")) {
-				writer.println("ps.set" + toCamelCase(type) + "(" + (i + 1) + ", is" + toCamelCase(field) + "());");
-			} else if (type.equalsIgnoreCase("LocalDate")) {
-				writer.println("ps.setObject(" + (i + 1) + ", get" + toCamelCase(field) + "());");
+				writer.println("ps.set" + toCamelCase(type) + "(" + (index++)
+						+ ", is" + toCamelCase(field) + "());");
+//			} else if (type.equalsIgnoreCase("LocalDate")) {
+//				writer.println("ps.setObject(" + (index++) + ", get"
+//						+ toCamelCase(field) + "());");
 			} else {
 				if (field.endsWith("DATE_PID")) {
 					writer.println("if (get" + toCamelCase(field) + "() == 0)");
-					writer.println("ps.setNull(" + (i + 1) + ", java.sql.Types.INTEGER);");
+					writer.println("ps.setNull(" + (index)
+							+ ", java.sql.Types.INTEGER);");
 					writer.println("else");
 				}
-				writer.println("ps.set" + toCamelCase(type) + "(" + (i + 1) + ", get" + toCamelCase(field) + "());");
+				writer.println("ps.set" + toCamelCase(type) + "(" + (index++)
+						+ ", get" + toCamelCase(field) + "());");
 			}
 		}
 
@@ -242,36 +275,46 @@ public class H2ModelGenerator {
 		writer.println("}\r\n");
 
 		// update()
-		writer.println("public void update() throws SQLException {");
+		writer.println("public void update() throws Exception {");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
 		writer.println("ps = conn.prepareStatement(UPDATE);");
 
-		int counter = 1;
+		index = 1;
 
 		for (int i = 0; i < fields.size(); i++) {
 			field = fields.get(i);
 			if (field.equals(primaryKey)) {
 				continue;
+			} else if (field.equals("INSERT_TSTMP")) {
+				continue;
+			} else if (field.equals("UPDATE_TSTMP")) {
+				continue;
+			} else if (field.equals("TABLE_ID")) {
+				continue;
 			}
 
 			type = types.get(i);
 			if (type.equalsIgnoreCase("Boolean")) {
-				writer.println("ps.set" + toCamelCase(type) + "(" + counter++ + ", is" + toCamelCase(field) + "());");
-			} else if (type.equalsIgnoreCase("LocalDate")) {
-				writer.println("ps.setObject(" + (i + 1) + ", get" + toCamelCase(field) + "());");
+				writer.println("ps.set" + toCamelCase(type) + "(" + index++
+						+ ", is" + toCamelCase(field) + "());");
+//			} else if (type.equalsIgnoreCase("LocalDate")) {
+//				writer.println("ps.setObject(" + (index++) + ", get"
+//						+ toCamelCase(field) + "());");
 			} else {
 				if (field.endsWith("DATE_PID")) {
 					writer.println("if (get" + toCamelCase(field) + "() == 0)");
-					writer.println("ps.setNull(" + counter + ", java.sql.Types.INTEGER);");
+					writer.println("ps.setNull(" + index
+							+ ", java.sql.Types.INTEGER);");
 					writer.println("else");
 				}
-				writer.println("ps.set" + toCamelCase(type) + "(" + counter++ + ", get" + toCamelCase(field) + "());");
+				writer.println("ps.set" + toCamelCase(type) + "(" + index++
+						+ ", get" + toCamelCase(field) + "());");
 			}
 		}
 
 		// Primary key
-		int i = fields.size();
-		writer.println("ps.setInt(" + i + ", get" + toCamelCase(primaryKey) + "());");
+		writer.println("ps.setInt(" + index + ", get" + toCamelCase(primaryKey)
+				+ "());");
 
 		writer.println("ps.executeUpdate();");
 		writer.println("conn.close();");
@@ -284,7 +327,8 @@ public class H2ModelGenerator {
 	 */
 	private static void createFields() throws IOException {
 		for (int i = 0; i < fields.size(); i++) {
-			writer.println("private " + types.get(i) + " " + toCamelCase(fields.get(i)) + ";");
+			writer.println("private " + types.get(i) + " "
+					+ toCamelCase(fields.get(i)) + ";");
 		}
 		writer.println("private " + toCamelCase(tableName) + " model;\r\n");
 	}
@@ -303,7 +347,8 @@ public class H2ModelGenerator {
 			writer.println("/**");
 			writer.println("* Get the " + field + " field.");
 			writer.println("*");
-			writer.println("* @return Contents of the " + fields.get(i) + " column");
+			writer.println(
+					"* @return Contents of the " + fields.get(i) + " column");
 			writer.println("*/");
 
 			type = types.get(i);
@@ -328,7 +373,7 @@ public class H2ModelGenerator {
 		writer.println("import java.sql.LocalDate;");
 		writer.println("import java.sql.PreparedStatement;");
 		writer.println("import java.sql.ResultSet;");
-		writer.println("import java.sql.SQLException;");
+		writer.println("import java.sql.Exception;");
 		writer.println("import java.sql.Timestamp;");
 		writer.println("import java.util.ArrayList;");
 		writer.println("import java.util.List;");
@@ -336,7 +381,8 @@ public class H2ModelGenerator {
 		writer.println("import net.myerichsen.hremvp.MvpException;\r\n");
 
 		writer.println("/**");
-		writer.println("* The persistent class for the " + tableName + " database table");
+		writer.println("* The persistent class for the " + tableName
+				+ " database table");
 		writer.println("*");
 
 		final DateFormat dateFormat = new SimpleDateFormat("dd. MMM yyyy");
@@ -344,12 +390,14 @@ public class H2ModelGenerator {
 		final Date date = new Date();
 
 		writer.println(
-				"* @author H2ModelGenerator, &copy; History Research Environment Ltd., " + yearFormat.format(date));
+				"* @author H2ModelGenerator, &copy; History Research Environment Ltd., "
+						+ yearFormat.format(date));
 		writer.println("* @version " + dateFormat.format(date));
 		writer.println("*");
 		writer.println("*/\r\n");
 		writer.println("public class " + toCamelCase(tableName) + " {");
-		writer.println("private List<" + toCamelCase(tableName) + "> modelList;");
+		writer.println(
+				"private List<" + toCamelCase(tableName) + "> modelList;");
 		writer.println("private PreparedStatement ps;");
 		writer.println("private ResultSet rs;");
 		writer.println("private Connection conn;");
@@ -369,11 +417,13 @@ public class H2ModelGenerator {
 			writer.println("/**");
 			writer.println("* Set the " + field + " field");
 			writer.println("*");
-			writer.println("* @param " + field + " Contents of the " + fields.get(i) + " column");
+			writer.println("* @param " + field + " Contents of the "
+					+ fields.get(i) + " column");
 			writer.println("*/");
 
 			type = types.get(i);
-			writer.println("public void set" + field + "(" + type + " " + field + ") {");
+			writer.println("public void set" + field + "(" + type + " " + field
+					+ ") {");
 			writer.println("this." + field + " = " + field + ";");
 			writer.println("}\r\n");
 		}
@@ -381,10 +431,10 @@ public class H2ModelGenerator {
 
 	/**
 	 * @throws IOException
-	 * @throws SQLException
+	 * @throws Exception
 	 *
 	 */
-	private static void createSql() throws IOException, SQLException {
+	private static void createSql() throws IOException, Exception {
 		// SELECT
 		writer.println("private static final String SELECT = \"SELECT \" +");
 
@@ -392,12 +442,13 @@ public class H2ModelGenerator {
 			writer.println("\"" + fields.get(i) + ", \" +");
 		}
 
-		writer.println("\"" + fields.get(fields.size() - 1) + " FROM PUBLIC." + tableName + " WHERE " + primaryKey
-				+ " = ?\";\r\n");
+		writer.println("\"" + fields.get(fields.size() - 1) + " FROM PUBLIC."
+				+ tableName + " WHERE " + primaryKey + " = ?\";\r\n");
 
 		// SELECT FOREIGN KEYS
 		final String connectionName = "jdbc:h2:" + databaseName;
-		final Connection conn = DriverManager.getConnection(connectionName, "sa", "");
+		final Connection conn = DriverManager.getConnection(connectionName,
+				"sa", "");
 		final PreparedStatement ps = conn.prepareStatement(FOREIGNKEYS);
 		ps.setString(1, tableName);
 		final ResultSet rs = ps.executeQuery();
@@ -406,12 +457,14 @@ public class H2ModelGenerator {
 		while (rs.next()) {
 			columnName = rs.getString(1);
 
-			writer.println("private static final String SELECT_" + columnName + " = \"SELECT \" +");
+			writer.println("private static final String SELECT_" + columnName
+					+ " = \"SELECT \" +");
 
 			for (int i = 0; i < (fields.size() - 1); i++) {
 				writer.println("\"" + fields.get(i) + ", \" +  ");
 			}
-			writer.println("\"" + fields.get(fields.size() - 1) + " FROM PUBLIC." + tableName + " WHERE " + columnName
+			writer.println("\"" + fields.get(fields.size() - 1)
+					+ " FROM PUBLIC." + tableName + " WHERE " + columnName
 					+ " = ? ORDER BY " + primaryKey + "\";\r\n");
 		}
 
@@ -422,15 +475,17 @@ public class H2ModelGenerator {
 			writer.println("\"" + fields.get(i) + ", \" +  ");
 		}
 
-		writer.println("\"" + fields.get(fields.size() - 1) + " FROM PUBLIC." + tableName + " ORDER BY " + primaryKey
-				+ "\";\r\n");
+		writer.println("\"" + fields.get(fields.size() - 1) + " FROM PUBLIC."
+				+ tableName + " ORDER BY " + primaryKey + "\";\r\n");
 
 		// SELECTMAX
-		writer.println("private static final String SELECTMAX = \"SELECT MAX(" + primaryKey + ") FROM PUBLIC."
-				+ tableName + "\";\r\n");
+		writer.println("private static final String SELECTMAX = \"SELECT MAX("
+				+ primaryKey + ") FROM PUBLIC." + tableName + "\";\r\n");
 
 		// INSERT
-		writer.println("private static final String INSERT = \"INSERT INTO PUBLIC." + tableName + "( \" +");
+		writer.println(
+				"private static final String INSERT = \"INSERT INTO PUBLIC."
+						+ tableName + "( \" +");
 
 		String field;
 
@@ -441,30 +496,95 @@ public class H2ModelGenerator {
 		writer.println("\"" + fields.get(fields.size() - 1) + ") VALUES (\" +");
 
 		for (int i = 0; i < (fields.size() - 1); i++) {
-			writer.println("\"?, \" +");
+			field = fields.get(i);
+			if ((field.equals("INSERT_TSTMP"))
+					|| (field.equals("UPDATE_TSTMP"))) {
+				writer.println("\"CURRENT_TIMESTAMP, \" +");
+			} else if (field.equals("TABLE_ID")) {
+				writer.println("\"" + tableId + ", \" +");
+			} else {
+				writer.println("\"?, \" +");
+			}
 		}
 
-		writer.println("\"?)\";\r\n");
+		field = fields.get(fields.size() - 1);
+		if ((field.equals("INSERT_TSTMP")) || (field.equals("UPDATE_TSTMP"))) {
+			writer.println("\"CURRENT_TIMESTAMP)\";\r\n");
+		} else if (field.equals("TABLE_ID")) {
+			writer.println("\"" + tableId + ") \";\r\n");
+		} else {
+			writer.println("\"?)\";\r\n");
+		}
 
 		// UPDATE
-		writer.println("private static final String UPDATE = \"UPDATE PUBLIC." + tableName + " SET \" +");
+		writer.println("private static final String UPDATE = \"UPDATE PUBLIC."
+				+ tableName + " SET \" +");
 
-		for (int i = 0; i < (fields.size() - 1); i++) {
+		Boolean comma = true;
+
+		// First column
+		field = fields.get(0);
+		if (field.equals(primaryKey)) {
+			comma = false;
+		} else if (field.equals("INSERT_TSTMP")) {
+			comma = false;
+		} else if (field.equals("UPDATE_TSTMP")) {
+			writer.println("\"UPDATE_TSTMP = CURRENT_TIMESTAMP\" +");
+		} else if (field.equals("TABLE_ID")) {
+			comma = false;
+		} else {
+			writer.println("\"" + field + " = ?\" +");
+		}
+
+		// Middle columns
+		for (int i = 1; i < (fields.size() - 1); i++) {
 			field = fields.get(i);
 			if (field.equals(primaryKey)) {
 				continue;
+			} else if (field.equals("INSERT_TSTMP")) {
+				continue;
+			} else if (field.equals("UPDATE_TSTMP")) {
+				if (comma) {
+					writer.println("\", UPDATE_TSTMP = CURRENT_TIMESTAMP\" +");
+				} else {
+					writer.println("\"UPDATE_TSTMP = CURRENT_TIMESTAMP\" +");
+					comma = true;
+				}
+			} else if (field.equals("TABLE_ID")) {
+				continue;
+			} else {
+				if (comma) {
+					writer.println("\", " + field + " = ?\" +");
+				} else {
+					writer.println("\"" + field + " = ?\" +");
+					comma = true;
+				}
 			}
-			writer.println("\"" + field + " = ?, \" +");
+
 		}
 
-		writer.println("\"" + fields.get(fields.size() - 1) + " = ? WHERE " + primaryKey + " = ?\";\r\n");
+		// Last column
+		if (field.equals("INSERT_TSTMP")) {
+			writer.println("\" WHERE " + primaryKey + " = ?\";\r\n");
+		} else if (field.equals("UPDATE_TSTMP")) {
+			writer.println("\" WHERE " + primaryKey + " = ?\";\r\n");
+		} else if (field.equals("TABLE_ID")) {
+			writer.println("\" WHERE " + primaryKey + " = ?\";\r\n");
+		} else {
+			writer.println("\", " + fields.get(fields.size() - 1)
+					+ " = ? WHERE " + primaryKey + " = ?\";\r\n");
+
+		}
 
 		// DELETE
-		writer.println("private static final String DELETE = \"DELETE FROM PUBLIC." + tableName + " WHERE " + primaryKey
-				+ " = ?\";\r\n");
+		writer.println(
+				"private static final String DELETE = \"DELETE FROM PUBLIC."
+						+ tableName + " WHERE " + primaryKey + " = ?\";\r\n");
 
 		// DELETEALL
-		writer.println("private static final String DELETEALL = \"DELETE FROM PUBLIC." + tableName + "\";\r\n");
+		writer.println(
+				"private static final String DELETEALL = \"DELETE FROM PUBLIC."
+						+ tableName + "\";\r\n");
 	}
 
 	/**
@@ -480,16 +600,17 @@ public class H2ModelGenerator {
 	 */
 	public static void main(String[] args) throws IOException {
 		if (args.length < 3) {
-			System.out.println("Usage: H2ModelGenerator <h2database> <tablename> <outputfile>");
+			System.out.println(
+					"Usage: H2ModelGenerator <h2database> <tablename> <outputfile>");
 			System.exit(16);
 		}
 
-		H2ModelGenerator generator = new H2ModelGenerator();
+		final H2ModelGenerator generator = new H2ModelGenerator();
 		databaseName = args[0];
 		tableName = args[1].toUpperCase();
 		outputDirectory = args[2];
-		System.out.println(
-				"Generating Model Class for table " + tableName + " in " + databaseName + " into " + outputDirectory);
+		System.out.println("Generating Model Class for table " + tableName
+				+ " in " + databaseName + " into " + outputDirectory);
 
 		extracted(generator);
 	}
@@ -525,19 +646,24 @@ public class H2ModelGenerator {
 	public void generate() {
 		fields = new ArrayList<>();
 		types = new ArrayList<>();
-		final File outputFile = new File(outputDirectory + "/" + toCamelCase(tableName) + ".java");
+		final File outputFile = new File(
+				outputDirectory + "/" + toCamelCase(tableName) + ".java");
 
 		try {
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
+			writer = new PrintWriter(
+					new BufferedWriter(new FileWriter(outputFile)));
 			createHeader();
 
 			final String connectionName = "jdbc:h2:" + databaseName;
-			final Connection conn = DriverManager.getConnection(connectionName, "sa", "");
+			final Connection conn = DriverManager.getConnection(connectionName,
+					"sa", "");
 
-			final ResultSet pks = conn.getMetaData().getPrimaryKeys(null, null, tableName);
+			final ResultSet pks = conn.getMetaData().getPrimaryKeys(null, null,
+					tableName);
 
 			if (pks.next()) {
 				primaryKey = pks.getString(4);
+				LOGGER.fine("Primary key: " + pks.getString(4));
 			}
 
 			final PreparedStatement ps = conn.prepareStatement(COLUMNS);
@@ -555,6 +681,10 @@ public class H2ModelGenerator {
 
 				if (field.equals(primaryKey)) {
 					primaryKeyType = type;
+				} else if (field.equals("TABLE_ID")) {
+					tableId = rs.getInt(3);
+					LOGGER.fine("Field: " + field + ", type: " + type
+							+ ", default: " + tableId);
 				}
 			}
 
@@ -574,7 +704,7 @@ public class H2ModelGenerator {
 			types = null;
 		} catch (
 
-		final SQLException | IOException e) {
+		final Exception e) {
 			e.printStackTrace();
 			System.exit(8);
 		}

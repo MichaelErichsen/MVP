@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -39,7 +38,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonNameWizard;
@@ -77,7 +75,7 @@ public class PersonNamesView {
 	public PersonNamesView() {
 		try {
 			provider = new PersonProvider();
-		} catch (final SQLException e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
@@ -186,8 +184,8 @@ public class PersonNamesView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getPersonNameList(personPid));
-		} catch (SQLException | MvpException e1) {
+			tableViewer.setInput(provider.getStringList(personPid));
+		} catch (Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -227,8 +225,8 @@ public class PersonNamesView {
 			LOGGER.info("Name " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Name " + primaryName + " has been deleted");
-			eventBroker.post(Constants.NAME_PID_UPDATE_TOPIC, 0);
-		} catch (SQLException | MvpException e) {
+			eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, 0);
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -257,7 +255,7 @@ public class PersonNamesView {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int namePid = Integer.parseInt(selection[0].getText(0));
 		LOGGER.info("Setting name pid: " + namePid);
-		eventBroker.post(Constants.NAME_PID_UPDATE_TOPIC, namePid);
+		eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, namePid);
 	}
 
 	@Focus
@@ -270,12 +268,12 @@ public class PersonNamesView {
 	@Inject
 	@Optional
 	private void subscribeNamePidUpdateTopic(
-			@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int namePid) {
+			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int namePid) {
 		LOGGER.fine("Received name id " + namePid);
 		try {
-			tableViewer.setInput(provider.getPersonNameList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -292,9 +290,9 @@ public class PersonNamesView {
 		this.personPid = personPid;
 		try {
 			textId.setText(Integer.toString(personPid));
-			tableViewer.setInput(provider.getPersonNameList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

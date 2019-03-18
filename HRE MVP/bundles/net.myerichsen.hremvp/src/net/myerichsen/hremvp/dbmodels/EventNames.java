@@ -3,7 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,35 +13,29 @@ import net.myerichsen.hremvp.MvpException;
 /**
  * The persistent class for the EVENT_NAMES database table
  *
- * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. nov. 2018
+ * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
+ * @version 24. feb. 2019
  *
  */
 
 public class EventNames {
-	private static final String SELECT = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
+	private static final String SELECT = "SELECT EVENT_NAME_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
-	private static final String SELECT_LANGUAGE_PID = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
-			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE LANGUAGE_PID = ? ORDER BY EVENT_NAME_PID";
-	private static final String SELECT_EVENT_TYPE_PID = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
-			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_TYPE_PID = ? ORDER BY EVENT_NAME_PID";
-	private static final String SELECTALL = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
+	private static final String SELECTALL = "SELECT EVENT_NAME_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES ORDER BY EVENT_NAME_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_NAME_PID) FROM PUBLIC.EVENT_NAMES";
-
-	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_NAMES( EVENT_NAME_PID, TABLE_ID, "
-			+ "LABEL, LANGUAGE_PID, EVENT_TYPE_PID) VALUES (?, ?, ?, ?, ?)";
-
-	private static final String UPDATE = "UPDATE PUBLIC.EVENT_NAMES SET TABLE_ID = ?, LABEL = ?, "
-			+ "LANGUAGE_PID = ?, EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
+	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_NAMES( "
+			+ "EVENT_NAME_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, LABEL, EVENT_TYPE_PID) VALUES (?, ?, ?, ?, ?, ?)";
+	private static final String UPDATE = "UPDATE PUBLIC.EVENT_NAMES SET "
+			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
+			+ "LABEL = ?, EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.EVENT_NAMES";
-
-	private static final String SELECT_LANGUAGE_PID_EVENT_TYPE_PID = "SELECT EVENT_NAME_PID, TABLE_ID, LABEL, LANGUAGE_PID, "
-			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE LANGUAGE_PID = ? "
-			+ "AND EVENT_TYPE_PID = ? ORDER BY EVENT_NAME_PID";
 
 	private List<EventNames> modelList;
 
@@ -52,20 +46,21 @@ public class EventNames {
 	private Connection conn;
 
 	private int EventNamePid;
+	private Timestamp InsertTstmp;
+	private Timestamp UpdateTstmp;
 	private int TableId;
 	private String Label;
-	private int LanguagePid;
 	private int EventTypePid;
 	private EventNames model;
 
-	public void delete() throws SQLException {
+	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -76,7 +71,7 @@ public class EventNames {
 		conn.close();
 	}
 
-	public List<EventNames> get() throws SQLException {
+	public List<EventNames> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -84,9 +79,10 @@ public class EventNames {
 		while (rs.next()) {
 			model = new EventNames();
 			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			modelList.add(model);
 		}
@@ -94,16 +90,17 @@ public class EventNames {
 		return modelList;
 	}
 
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setLabel(rs.getString("LABEL"));
-			setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -129,63 +126,13 @@ public class EventNames {
 		return EventTypePid;
 	}
 
-	public List<EventNames> getFKCombined(int languagePid, int eventTypePid)
-			throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID_EVENT_TYPE_PID);
-		ps.setInt(1, languagePid);
-		ps.setInt(2, eventTypePid);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new EventNames();
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	public List<EventNames> getFKEventTypePid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_EVENT_TYPE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new EventNames();
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
-	}
-
-	public List<EventNames> getFKLanguagePid(int key) throws SQLException {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_LANGUAGE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new EventNames();
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
 	}
 
 	/**
@@ -198,15 +145,6 @@ public class EventNames {
 	}
 
 	/**
-	 * Get the LanguagePid field.
-	 *
-	 * @return Contents of the LANGUAGE_PID column
-	 */
-	public int getLanguagePid() {
-		return LanguagePid;
-	}
-
-	/**
 	 * Get the TableId field.
 	 *
 	 * @return Contents of the TABLE_ID column
@@ -215,7 +153,16 @@ public class EventNames {
 		return TableId;
 	}
 
-	public int insert() throws SQLException {
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
+	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -227,10 +174,11 @@ public class EventNames {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setInt(2, getTableId());
-		ps.setString(3, getLabel());
-		ps.setInt(4, getLanguagePid());
-		ps.setInt(5, getEventTypePid());
+		ps.setTimestamp(2, getInsertTstmp());
+		ps.setTimestamp(3, getUpdateTstmp());
+		ps.setInt(4, getTableId());
+		ps.setString(5, getLabel());
+		ps.setInt(6, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -255,21 +203,21 @@ public class EventNames {
 	}
 
 	/**
+	 * Set the InsertTstmp field
+	 *
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 */
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
+	}
+
+	/**
 	 * Set the Label field
 	 *
 	 * @param Label Contents of the LABEL column
 	 */
 	public void setLabel(String Label) {
 		this.Label = Label;
-	}
-
-	/**
-	 * Set the LanguagePid field
-	 *
-	 * @param LanguagePid Contents of the LANGUAGE_PID column
-	 */
-	public void setLanguagePid(int LanguagePid) {
-		this.LanguagePid = LanguagePid;
 	}
 
 	/**
@@ -281,14 +229,24 @@ public class EventNames {
 		this.TableId = TableId;
 	}
 
-	public void update() throws SQLException {
+	/**
+	 * Set the UpdateTstmp field
+	 *
+	 * @param UpdateTstmp Contents of the UPDATE_TSTMP column
+	 */
+	public void setUpdateTstmp(Timestamp UpdateTstmp) {
+		this.UpdateTstmp = UpdateTstmp;
+	}
+
+	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getTableId());
-		ps.setString(2, getLabel());
-		ps.setInt(3, getLanguagePid());
-		ps.setInt(4, getEventTypePid());
-		ps.setInt(5, getEventNamePid());
+		ps.setTimestamp(1, getInsertTstmp());
+		ps.setTimestamp(2, getUpdateTstmp());
+		ps.setInt(3, getTableId());
+		ps.setString(4, getLabel());
+		ps.setInt(5, getEventTypePid());
+		ps.setInt(6, getEventNamePid());
 		ps.executeUpdate();
 		conn.close();
 	}

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -12,7 +11,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 11. mar. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -26,11 +25,11 @@ public class PersonProvider implements IHREProvider {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 *
 	 */
-	public PersonProvider() throws SQLException {
+	public PersonProvider() throws Exception {
 		server = new PersonServer();
 	}
 
@@ -40,17 +39,16 @@ public class PersonProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws SQLException, MvpException {
+	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
 
-	@Override
-	public List<Persons> get() throws SQLException, MvpException {
+	public List<Persons> get() throws Exception {
 		return server.get();
 	}
 
 	@Override
-	public void get(int key) throws SQLException, MvpException {
+	public void get(int key) throws Exception {
 		server.get(key);
 		setBirthDatePid(server.getBirthDatePid());
 		setDeathDatePid(server.getDeathDatePid());
@@ -100,9 +98,9 @@ public class PersonProvider implements IHREProvider {
 	/**
 	 * @return
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getAllNames() throws SQLException, MvpException {
+	public List<List<String>> getAllNames() throws Exception {
 		return server.getAllNames();
 	}
 
@@ -111,10 +109,10 @@ public class PersonProvider implements IHREProvider {
 	 * @param parseInt
 	 * @return
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
 	public List<List<String>> getAncestorList(int personId, int generations)
-			throws SQLException, MvpException {
+			throws Exception {
 		return server.getAncestorList(personId, 0, generations);
 	}
 
@@ -128,9 +126,9 @@ public class PersonProvider implements IHREProvider {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getChildrenList(int key) throws SQLException {
+	public List<List<String>> getChildrenList(int key) throws Exception {
 		return server.getChildrenList(key);
 	}
 
@@ -145,11 +143,11 @@ public class PersonProvider implements IHREProvider {
 	 * @param key
 	 * @param generations
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 * @throws MvpException
 	 */
 	public List<List<String>> getDescendantList(int key, int generations)
-			throws SQLException, MvpException {
+			throws Exception {
 		return server.getDescendantList(key, 0, generations);
 	}
 
@@ -163,18 +161,18 @@ public class PersonProvider implements IHREProvider {
 	/**
 	 * @param key
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getParentList(int key) throws SQLException {
+	public List<List<String>> getParentList(int key) throws Exception {
 		return server.getParentList(key);
 	}
 
 	/**
 	 * @param key
 	 * @return the partnerList
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getPartnerList(int key) throws SQLException {
+	public List<List<String>> getPartnerList(int key) throws Exception {
 		return server.getPartnerList(key);
 	}
 
@@ -182,32 +180,20 @@ public class PersonProvider implements IHREProvider {
 	 * @param personPid2
 	 * @return the personEventList
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getPersonEventList(int key)
-			throws SQLException, MvpException {
+	public List<List<String>> getPersonEventList(int key) throws Exception {
 		return server.getPersonEventList(key);
 	}
 
 	/**
-	 * @return the personList
+	 * @return List of lists of pid, primary name string, birth date and death
+	 *         date
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getPersonList()
-			throws SQLException, MvpException {
+	public List<List<String>> getPersonList() throws Exception {
 		return server.getPersonList();
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws MvpException
-	 * @throws SQLException
-	 */
-	public List<List<String>> getPersonNameList(int key)
-			throws SQLException, MvpException {
-		return server.getPersonNameList(key);
 	}
 
 	/**
@@ -219,30 +205,50 @@ public class PersonProvider implements IHREProvider {
 
 	/**
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public String getPrimaryName() throws SQLException {
+	public String getPrimaryName() throws Exception {
 		return server.getPrimaryName();
 	}
 
 	/**
 	 * @param key
-	 * @return the sexesList
+	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, SexTypeLabel,
+	 *         PrimarySex, FromDate, ToDate
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getSexesList(int key)
-			throws SQLException, MvpException {
+	public List<List<String>> getSexesList(int key) throws Exception {
 		return server.getSexesList(key);
 	}
 
 	/**
 	 * @return the siblingList
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public List<List<String>> getSiblingList(int personPid)
-			throws SQLException {
+	public List<List<String>> getSiblingList(int personPid) throws Exception {
 		return server.getSiblingList(personPid);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		return server.getStringList();
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 * @throws MvpException
+	 * @throws Exception
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		return server.getStringList(key);
 	}
 
 	/*
@@ -251,7 +257,7 @@ public class PersonProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
-	public int insert() throws SQLException, MvpException {
+	public int insert() throws Exception {
 		server.setBirthDatePid(birthDatePid);
 		server.setDeathDatePid(deathDatePid);
 		server.setPersonPid(personPid);
@@ -262,10 +268,9 @@ public class PersonProvider implements IHREProvider {
 	 * @param parentPid
 	 * @param childPid
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public void removeChild(int parentPid, int childPid)
-			throws SQLException, MvpException {
+	public void removeChild(int parentPid, int childPid) throws Exception {
 		server.removeChild(parentPid, childPid);
 	}
 
@@ -273,9 +278,9 @@ public class PersonProvider implements IHREProvider {
 	 * @param personPid
 	 * @param eventPid
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public void removeEvent(int eventPid) throws SQLException, MvpException {
+	public void removeEvent(int eventPid) throws Exception {
 		server.removeEvent(eventPid);
 	}
 
@@ -283,10 +288,9 @@ public class PersonProvider implements IHREProvider {
 	 * @param personPid
 	 * @param parentPid
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public void removeParent(int personPid, int parentPid)
-			throws SQLException, MvpException {
+	public void removeParent(int personPid, int parentPid) throws Exception {
 		server.removeParent(personPid, parentPid);
 	}
 
@@ -294,10 +298,9 @@ public class PersonProvider implements IHREProvider {
 	 * @param personPid2
 	 * @param partnerPid
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public void removePartner(int personPid, int partnerPid)
-			throws SQLException, MvpException {
+	public void removePartner(int personPid, int partnerPid) throws Exception {
 		server.removePartner(personPid, partnerPid);
 	}
 
@@ -305,9 +308,9 @@ public class PersonProvider implements IHREProvider {
 	 * @param personPid
 	 * @param sexPid
 	 * @throws MvpException
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public void removeSex(int sexPid) throws SQLException, MvpException {
+	public void removeSex(int sexPid) throws Exception {
 		server.removeSex(sexPid);
 	}
 
@@ -335,12 +338,12 @@ public class PersonProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public void update() throws SQLException, MvpException {
+	public void update() throws Exception {
 		server.setBirthDatePid(birthDatePid);
 		server.setDeathDatePid(deathDatePid);
 		server.setPersonPid(personPid);

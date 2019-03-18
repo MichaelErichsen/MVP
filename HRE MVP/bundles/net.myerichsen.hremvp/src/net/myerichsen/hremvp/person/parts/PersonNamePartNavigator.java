@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -40,7 +39,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -83,11 +81,11 @@ public class PersonNamePartNavigator {
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
+	 * @throws Exception An exception that provides information on a database
 	 *                      access error or other errors
 	 *
 	 */
-	public PersonNamePartNavigator() throws SQLException {
+	public PersonNamePartNavigator() throws Exception {
 		provider = new PersonNameProvider();
 	}
 
@@ -175,20 +173,20 @@ public class PersonNamePartNavigator {
 		btnPrimaryName.setText("Primary Name");
 		new Label(parent, SWT.NONE);
 
-		final Label lblNameParts = new Label(parent, SWT.NONE);
-		lblNameParts.setText("Name Parts\r\nDblclk to open");
+		final Label lblPersonNameParts = new Label(parent, SWT.NONE);
+		lblPersonNameParts.setText("Name Parts\r\nDblclk to open");
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		final Table tableNameParts = tableViewer.getTable();
-		tableNameParts.addMouseListener(new MouseAdapter() {
+		final Table tablePersonNameParts = tableViewer.getTable();
+		tablePersonNameParts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openNamePartView();
 			}
 		});
-		tableNameParts.setLinesVisible(true);
-		tableNameParts.setHeaderVisible(true);
-		tableNameParts.setLayoutData(
+		tablePersonNameParts.setLinesVisible(true);
+		tablePersonNameParts.setHeaderVisible(true);
+		tablePersonNameParts.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
@@ -315,7 +313,7 @@ public class PersonNamePartNavigator {
 		// calendar.get(Calendar.DATE));
 		// table.removeAll();
 		// provider.insert();
-		// } catch (final SQLException e) {
+		// } catch (final Exception e) {
 		// e.printStackTrace();
 		// }
 	}
@@ -340,7 +338,7 @@ public class PersonNamePartNavigator {
 		}
 
 		LOGGER.info("Setting name part pid: " + namePartPid);
-		eventBroker.post(Constants.NAME_PART_PID_UPDATE_TOPIC,
+		eventBroker.post(Constants.PERSON_NAME_PART_PID_UPDATE_TOPIC,
 				Integer.parseInt(namePartPid));
 	}
 
@@ -356,7 +354,8 @@ public class PersonNamePartNavigator {
 
 		final int nameStylePid = Integer.parseInt(textNameStylePid.getText());
 		LOGGER.info("Setting name style pid: " + nameStylePid);
-		eventBroker.post(Constants.NAME_STYLE_PID_UPDATE_TOPIC, nameStylePid);
+		eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
+				nameStylePid);
 	}
 
 	/**
@@ -372,7 +371,7 @@ public class PersonNamePartNavigator {
 	@Inject
 	@Optional
 	private void subscribeNamePidUpdateTopic(
-			@UIEventTopic(Constants.NAME_PID_UPDATE_TOPIC) int key) {
+			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int key) {
 		LOGGER.fine("Received name id " + key);
 
 		if (key == 0) {
@@ -404,7 +403,7 @@ public class PersonNamePartNavigator {
 
 			tableViewer.setInput(provider.getNameList());
 			tableViewer.refresh();
-		} catch (SQLException | MvpException e) {
+		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -420,7 +419,7 @@ public class PersonNamePartNavigator {
 		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));
 		// provider.setNameType(Integer.parseInt(textNameType.getText()));
 		// provider.update();
-		// } catch (final SQLException e) {
+		// } catch (final Exception e) {
 		// e.printStackTrace();
 		// }
 	}
