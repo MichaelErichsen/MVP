@@ -57,5 +57,10 @@ public class NewEventWizardPage2 extends WizardPage {
 		btnPrimaryLocation.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnPrimaryLocation.setSelection(true);
 		btnPrimaryLocation.setText("Primary Location");
+		
+		Button btnPrimaryEvent = new Button(container, SWT.CHECK);
+		btnPrimaryEvent.setSelection(true);
+		btnPrimaryEvent.setText("Primary Event");
+		new Label(container, SWT.NONE);
 	}
 }

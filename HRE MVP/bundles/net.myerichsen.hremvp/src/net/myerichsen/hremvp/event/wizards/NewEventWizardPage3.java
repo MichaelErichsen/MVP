@@ -60,10 +60,15 @@ public class NewEventWizardPage3 extends WizardPage {
 		
 		textRole = new Text(container, SWT.BORDER);
 		textRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
 		
 		Button btnPrimaryperson = new Button(container, SWT.CHECK);
+		btnPrimaryperson.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnPrimaryperson.setSelection(true);
-		btnPrimaryperson.setText("PrimaryPerson");
+		btnPrimaryperson.setText("Primary Person");
+		
+		Button btnCheckButton = new Button(container, SWT.CHECK);
+		btnCheckButton.setSelection(true);
+		btnCheckButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnCheckButton.setText("Primary Event");
 	}
 }
