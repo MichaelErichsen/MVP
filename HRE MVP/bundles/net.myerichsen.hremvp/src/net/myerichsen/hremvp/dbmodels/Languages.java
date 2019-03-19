@@ -19,25 +19,17 @@ import net.myerichsen.hremvp.MvpException;
  */
 
 public class Languages {
-	private List<Languages> modelList;
-	private PreparedStatement ps;
-	private ResultSet rs;
-	private Connection conn;
 	private static final String SELECT = "SELECT LANGUAGE_PID, "
 			+ "ISOCODE, LABEL, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";
-
 	private static final String SELECTALL = "SELECT LANGUAGE_PID, "
 			+ "ISOCODE, LABEL, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.LANGUAGES ORDER BY LANGUAGE_PID";
-
 	private static final String SELECTMAX = "SELECT MAX(LANGUAGE_PID) FROM PUBLIC.LANGUAGES";
-
 	private static final String INSERT = "INSERT INTO PUBLIC.LANGUAGES( "
 			+ "LANGUAGE_PID, ISOCODE, LABEL, INSERT_TSTMP, "
 			+ "UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, "
 			+ "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 7) ";
-
 	private static final String UPDATE = "UPDATE PUBLIC.LANGUAGES SET "
 			+ "ISOCODE = ?, LABEL = ?"
 			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP WHERE LANGUAGE_PID = ?";
@@ -45,6 +37,14 @@ public class Languages {
 	private static final String DELETE = "DELETE FROM PUBLIC.LANGUAGES WHERE LANGUAGE_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.LANGUAGES";
+
+	private List<Languages> modelList;
+
+	private PreparedStatement ps;
+
+	private ResultSet rs;
+
+	private Connection conn;
 
 	private int LanguagePid;
 	private String Isocode;
@@ -76,7 +76,7 @@ public class Languages {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Languages>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Languages();
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
@@ -109,6 +109,60 @@ public class Languages {
 		conn.close();
 	}
 
+	/**
+	 * Get the InsertTstmp field.
+	 *
+	 * @return Contents of the INSERT_TSTMP column
+	 */
+	public Timestamp getInsertTstmp() {
+		return InsertTstmp;
+	}
+
+	/**
+	 * Get the Isocode field.
+	 *
+	 * @return Contents of the ISOCODE column
+	 */
+	public String getIsocode() {
+		return Isocode;
+	}
+
+	/**
+	 * Get the Label field.
+	 *
+	 * @return Contents of the LABEL column
+	 */
+	public String getLabel() {
+		return Label;
+	}
+
+	/**
+	 * Get the LanguagePid field.
+	 *
+	 * @return Contents of the LANGUAGE_PID column
+	 */
+	public int getLanguagePid() {
+		return LanguagePid;
+	}
+
+	/**
+	 * Get the TableId field.
+	 *
+	 * @return Contents of the TABLE_ID column
+	 */
+	public int getTableId() {
+		return TableId;
+	}
+
+	/**
+	 * Get the UpdateTstmp field.
+	 *
+	 * @return Contents of the UPDATE_TSTMP column
+	 */
+	public Timestamp getUpdateTstmp() {
+		return UpdateTstmp;
+	}
+
 	public int insert() throws Exception {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
@@ -128,77 +182,13 @@ public class Languages {
 		return maxPid;
 	}
 
-	public void update() throws Exception {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getIsocode());
-		ps.setString(2, getLabel());
-		ps.setInt(3, getLanguagePid());
-		ps.executeUpdate();
-		conn.close();
-	}
-
 	/**
-	 * Get the LanguagePid field.
+	 * Set the InsertTstmp field
 	 *
-	 * @return Contents of the LANGUAGE_PID column
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
 	 */
-	public int getLanguagePid() {
-		return this.LanguagePid;
-	}
-
-	/**
-	 * Get the Isocode field.
-	 *
-	 * @return Contents of the ISOCODE column
-	 */
-	public String getIsocode() {
-		return this.Isocode;
-	}
-
-	/**
-	 * Get the Label field.
-	 *
-	 * @return Contents of the LABEL column
-	 */
-	public String getLabel() {
-		return this.Label;
-	}
-
-	/**
-	 * Get the InsertTstmp field.
-	 *
-	 * @return Contents of the INSERT_TSTMP column
-	 */
-	public Timestamp getInsertTstmp() {
-		return this.InsertTstmp;
-	}
-
-	/**
-	 * Get the UpdateTstmp field.
-	 *
-	 * @return Contents of the UPDATE_TSTMP column
-	 */
-	public Timestamp getUpdateTstmp() {
-		return this.UpdateTstmp;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return this.TableId;
-	}
-
-	/**
-	 * Set the LanguagePid field
-	 *
-	 * @param LanguagePid Contents of the LANGUAGE_PID column
-	 */
-	public void setLanguagePid(int LanguagePid) {
-		this.LanguagePid = LanguagePid;
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -220,12 +210,21 @@ public class Languages {
 	}
 
 	/**
-	 * Set the InsertTstmp field
+	 * Set the LanguagePid field
 	 *
-	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 * @param LanguagePid Contents of the LANGUAGE_PID column
 	 */
-	public void setInsertTstmp(Timestamp InsertTstmp) {
-		this.InsertTstmp = InsertTstmp;
+	public void setLanguagePid(int LanguagePid) {
+		this.LanguagePid = LanguagePid;
+	}
+
+	/**
+	 * Set the TableId field
+	 *
+	 * @param TableId Contents of the TABLE_ID column
+	 */
+	public void setTableId(int TableId) {
+		this.TableId = TableId;
 	}
 
 	/**
@@ -237,13 +236,14 @@ public class Languages {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	/**
-	 * Set the TableId field
-	 *
-	 * @param TableId Contents of the TABLE_ID column
-	 */
-	public void setTableId(int TableId) {
-		this.TableId = TableId;
+	public void update() throws Exception {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setString(1, getIsocode());
+		ps.setString(2, getLabel());
+		ps.setInt(3, getLanguagePid());
+		ps.executeUpdate();
+		conn.close();
 	}
 
 }

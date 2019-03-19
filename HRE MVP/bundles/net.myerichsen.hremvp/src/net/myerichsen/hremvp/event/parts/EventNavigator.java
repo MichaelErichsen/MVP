@@ -55,7 +55,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. mar. 2019
+ * @version 19. mar. 2019
  *
  */
 public class EventNavigator {
@@ -211,33 +211,8 @@ public class EventNavigator {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
-
-//		List<String> stringList;
-//
-//		try {
-//			final List<List<String>> lls = provider.get();
-//			table.removeAll();
-//			TableItem item;
-//
-//			for (int i = 0; i < lls.size(); i++) {
-//				stringList = lls.get(i);
-//
-//				item = new TableItem(table, SWT.NONE);
-//
-//				for (int j = 0; j < stringList.size(); j++) {
-//					item.setText(j, stringList.get(j).trim());
-//				}
-//			}
-//		} catch (final Exception e1) {
-//			e1.printStackTrace();
-//			eventBroker.post("MESSAGE", e1.getMessage());
-//			LOGGER.severe(e1.getMessage());
-//		}
 	}
 
-	/**
-	 *
-	 */
 	/**
 	 *
 	 */

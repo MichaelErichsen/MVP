@@ -14,12 +14,12 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENT_NAMES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 19. mar. 2019
  *
  */
 
 public class EventNames {
-	private static final String SELECT = "SELECT EVENT_NAME_PID, "
+	private static final String SELECT = "SELECT ExceptionEVENT_NAME_PID, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, LABEL, "
 			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
 	private static final String SELECTALL = "SELECT EVENT_NAME_PID, "
@@ -28,10 +28,12 @@ public class EventNames {
 	private static final String SELECTMAX = "SELECT MAX(EVENT_NAME_PID) FROM PUBLIC.EVENT_NAMES";
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_NAMES( "
 			+ "EVENT_NAME_PID, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID, LABEL, EVENT_TYPE_PID) VALUES (?, ?, ?, ?, ?, ?)";
+			+ "TABLE_ID, LABEL, EVENT_TYPE_PID) VALUES (?, "
+			+ "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 17, ?, "
+			+ "?)";
 	private static final String UPDATE = "UPDATE PUBLIC.EVENT_NAMES SET "
-			+ "INSERT_TSTMP = ?, UPDATE_TSTMP = ?, TABLE_ID = ?, "
-			+ "LABEL = ?, EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, LABEL = ?"
+			+ ", EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
 
@@ -174,11 +176,8 @@ public class EventNames {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setTimestamp(2, getInsertTstmp());
-		ps.setTimestamp(3, getUpdateTstmp());
-		ps.setInt(4, getTableId());
-		ps.setString(5, getLabel());
-		ps.setInt(6, getEventTypePid());
+		ps.setString(2, getLabel());
+		ps.setInt(3, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -241,12 +240,9 @@ public class EventNames {
 	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setTimestamp(1, getInsertTstmp());
-		ps.setTimestamp(2, getUpdateTstmp());
-		ps.setInt(3, getTableId());
-		ps.setString(4, getLabel());
-		ps.setInt(5, getEventTypePid());
-		ps.setInt(6, getEventNamePid());
+		ps.setString(1, getLabel());
+		ps.setInt(2, getEventTypePid());
+		ps.setInt(3, getEventNamePid());
 		ps.executeUpdate();
 		conn.close();
 	}

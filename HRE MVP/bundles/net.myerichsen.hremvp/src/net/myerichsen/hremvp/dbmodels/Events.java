@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 3. mar. 2019
+ * @version 19. mar. 2019
  *
  */
 
@@ -40,12 +40,12 @@ public class Events {
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( "
 			+ "EVENT_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_NAME_PID) VALUES ("
-			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, ?, ?, ?)";
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, "
+			+ "?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET "
-			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, "
-			+ "FROM_DATE_PID = ?, TO_DATE_PID = ?, "
-			+ "EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
+			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, FROM_DATE_PID = ?"
+			+ ", TO_DATE_PID = ?, EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
 

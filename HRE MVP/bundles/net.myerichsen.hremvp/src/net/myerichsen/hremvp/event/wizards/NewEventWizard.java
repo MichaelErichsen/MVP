@@ -6,33 +6,29 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
-import net.myerichsen.hremvp.location.providers.LocationNameProvider;
-import net.myerichsen.hremvp.location.providers.LocationProvider;
-import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage1;
-import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage2;
-import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage3;
-import net.myerichsen.hremvp.location.wizards.NewLocationWizardPage4;
-
 /**
- * Wizard to add a new location
+ * Wizard to add a new Event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 19. mar. 2019
  *
  */
 public class NewEventWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private IEclipseContext context;
 
-	private final IEclipseContext context;
-	private NewLocationWizardPage3 page1;
-	private NewLocationWizardPage1 page2;
-	private NewLocationWizardPage2 page3;
-	private NewLocationWizardPage4 page4;
-	private int locationNameStyle = 0;
-	private String locationName;
+	private NewEventWizardPage1 page1;
+	private NewEventWizardPage2 page2;
+	private NewEventWizardPage3 page3;
+
+	private int EventNameStyle = 0;
+	private String EventName;
 
 	private final IEventBroker eventBroker;
+
+	private int fromDatePid;
+	private int toDatePid;
 
 	/**
 	 * Constructor
@@ -41,26 +37,10 @@ public class NewEventWizard extends Wizard {
 	 *
 	 */
 	public NewEventWizard(IEclipseContext context) {
-		setWindowTitle("New Location");
+		setWindowTitle("New Event");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
-	}
-
-	/**
-	 *
-	 */
-	public void addPage3() {
-		page3 = new NewLocationWizardPage2(context);
-		addPage(page3);
-	}
-
-	/**
-	 *
-	 */
-	public void addPage4() {
-		page4 = new NewLocationWizardPage4();
-		addPage(page4);
 	}
 
 	/*
@@ -70,52 +50,40 @@ public class NewEventWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewLocationWizardPage3(context);
+		page1 = new NewEventWizardPage1(context);
 		addPage(page1);
-		page2 = new NewLocationWizardPage1(context);
+		page2 = new NewEventWizardPage2(context);
 		addPage(page2);
+		page3 = new NewEventWizardPage3(context);
+		addPage(page3);
 	}
 
 	/**
-	 * @return the locationName
+	 * @return the EventName
 	 */
-	public String getLocationName() {
-		return locationName;
+	public String getEventName() {
+		return EventName;
 	}
 
 	/**
-	 * @return the locationNameStyle
+	 * @return the EventNameStyle
 	 */
-	public int getLocationNameStyle() {
-		return locationNameStyle;
+	public int getEventNameStyle() {
+		return EventNameStyle;
 	}
 
 	/**
-	 * @return the page1
+	 * @return the fromDatePid
 	 */
-	public NewLocationWizardPage3 getPage1() {
-		return page1;
+	public int getFromDatePid() {
+		return fromDatePid;
 	}
 
 	/**
-	 * @return the page2
+	 * @return the toDatePid
 	 */
-	public NewLocationWizardPage1 getPage2() {
-		return page2;
-	}
-
-	/**
-	 * @return the page3
-	 */
-	public NewLocationWizardPage2 getPage3() {
-		return page3;
-	}
-
-	/**
-	 * @return the page4
-	 */
-	public NewLocationWizardPage4 getPage4() {
-		return page4;
+	public int getToDatePid() {
+		return toDatePid;
 	}
 
 	/*
@@ -125,73 +93,35 @@ public class NewEventWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		try {
-			final LocationProvider lp = new LocationProvider();
-//			lp.setFromDatePid(page1.getFromDatePid());
-//			lp.setToDatePid(page1.getFromDatePid());
-//			lp.setxCoordinate(
-//					new BigDecimal(page1.getTextXCoordinate().getText()));
-//			lp.setyCoordinate(
-//					new BigDecimal(page1.getTextYCoordinate().getText()));
-//			lp.setzCoordinate(
-//					new BigDecimal(page1.getTextZCoordinate().getText()));
-//			lp.setPrimaryLocation(
-//					page1.getBtnCheckButtonPrimary().getSelection());
-			final int locationPid = lp.insert();
-			LOGGER.info("Inserted location " + locationPid);
-
-			final LocationNameProvider lnp = new LocationNameProvider();
-			lnp.setLocationPid(locationPid);
-//			lnp.setFromDatePid(page2.getFromDatePid());
-//			lnp.setToDatePid(page2.getFromDatePid());
-			lnp.setPrimaryLocationName(true);
-
-			final String s = page2.getComboLocationNameStyle();
-			final String[] sa = s.split(",");
-			lnp.setLocationNameStylePid(Integer.parseInt(sa[0]));
-
-//			lnp.setPrimaryLocationName(
-//					page2.getBtnPrimaryLocationName().getSelection());
-//			lnp.setPreposition(page2.getTextPreposition().getText());
-			final int locationNamePid = lnp.insert();
-			LOGGER.info("Inserted location name " + locationNamePid);
-
-//			final List<Label> labelList = page3.getLabelList();
-//			final List<Text> textList = page3.getTextList();
-
-//			for (int i = 0; i < labelList.size(); i++) {
-//				final LocationNamePartProvider lnpp = new LocationNamePartProvider();
-//				lnpp.setLocationNamePid(locationNamePid);
-//				lnpp.setPartNo(i + 1);
-//				lnpp.setLabel(textList.get(i).getText());
-//				final int locationNamePartPid = lnpp.insert();
-//				LOGGER.info(
-//						"Inserted location name part " + locationNamePartPid);
-//			}
-
-			eventBroker.post("MESSAGE", locationName
-					+ " inserted in the database as no. " + locationPid);
-			return true;
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
 		return false;
 	}
 
 	/**
-	 * @param locationName the locationName to set
+	 * @param EventName the EventName to set
 	 */
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
+	public void setEventName(String EventName) {
+		this.EventName = EventName;
 	}
 
 	/**
-	 * @param locationNameStyle the locationNameStyle to set
+	 * @param EventNameStyle the EventNameStyle to set
 	 */
-	public void setLocationNameStyle(int locationNameStyle) {
-		this.locationNameStyle = locationNameStyle;
+	public void setEventNameStyle(int EventNameStyle) {
+		this.EventNameStyle = EventNameStyle;
+	}
+
+	/**
+	 * @param fromDatePid the fromDatePid to set
+	 */
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
+	}
+
+	/**
+	 * @param toDatePid the toDatePid to set
+	 */
+	public void setToDatePid(int toDatePid) {
+		this.toDatePid = toDatePid;
 	}
 
 }
