@@ -47,8 +47,7 @@ public class Locations {
 			+ "Y_COORDINATE, Z_COORDINATE, INSERT_TSTMP, "
 			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, "
 			+ "TO_DATE_PID) VALUES (?, ?, ?, ?, ?, "
-			+ "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 9, ?, "
-			+ "?)";
+			+ "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 9, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.LOCATIONS SET "
 			+ "PRIMARY_LOCATION = ?, X_COORDINATE = ?"

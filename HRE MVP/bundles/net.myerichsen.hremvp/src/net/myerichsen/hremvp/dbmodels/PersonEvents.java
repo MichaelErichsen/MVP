@@ -14,15 +14,14 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. mar. 2019
+ * @version 20. mar. 2019
  *
  */
 
 public class PersonEvents {
 	private static final String SELECT = "SELECT PERSON_EVENT_PID, "
 			+ "EVENT_PID, PERSON_PID, ROLE, PRIMARY_PERSON, "
-			+ "PRIMARY_EVENT, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID, "
+			+ "PRIMARY_EVENT, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";
 	private static final String SELECT_EVENT_PID = "SELECT "
 			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
@@ -36,8 +35,7 @@ public class PersonEvents {
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_PID = ? ORDER BY PERSON_EVENT_PID";
 	private static final String SELECTALL = "SELECT PERSON_EVENT_PID, "
 			+ "EVENT_PID, PERSON_PID, ROLE, PRIMARY_PERSON, "
-			+ "PRIMARY_EVENT, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID, "
+			+ "PRIMARY_EVENT, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS ORDER BY PERSON_EVENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(PERSON_EVENT_PID) FROM PUBLIC.PERSON_EVENTS";
 
@@ -45,8 +43,7 @@ public class PersonEvents {
 			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
 			+ "PRIMARY_PERSON, PRIMARY_EVENT, INSERT_TSTMP, "
 			+ "UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID) VALUES (?, "
-			+ "?, ?, ?, ?, ?, CURRENT_TIMESTAMP, "
-			+ "CURRENT_TIMESTAMP, 2, ?)";
+			+ "?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_EVENTS SET "
 			+ "EVENT_PID = ?, PERSON_PID = ?, ROLE = ?"

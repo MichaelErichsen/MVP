@@ -40,8 +40,7 @@ public class Events {
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( "
 			+ "EVENT_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_NAME_PID) VALUES ("
-			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, "
-			+ "?, ?, ?)";
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET "
 			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, FROM_DATE_PID = ?"

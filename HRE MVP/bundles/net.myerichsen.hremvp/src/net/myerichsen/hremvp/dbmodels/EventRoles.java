@@ -11,34 +11,35 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.MvpException;
 
 /**
- * The persistent class for the EVENT_NAMES database table
+ * The persistent class for the EVENT_ROLES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. mar. 2019
+ * @version 20. mar. 2019
  *
  */
 
-public class EventNames {
-	private static final String SELECT = "SELECT ExceptionEVENT_NAME_PID, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, LABEL, "
-			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
-	private static final String SELECTALL = "SELECT EVENT_NAME_PID, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, LABEL, "
-			+ "EVENT_TYPE_PID FROM PUBLIC.EVENT_NAMES ORDER BY EVENT_NAME_PID";
-	private static final String SELECTMAX = "SELECT MAX(EVENT_NAME_PID) FROM PUBLIC.EVENT_NAMES";
-	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_NAMES( "
-			+ "EVENT_NAME_PID, INSERT_TSTMP, UPDATE_TSTMP, "
-			+ "TABLE_ID, LABEL, EVENT_TYPE_PID) VALUES (?, "
-			+ "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 17, ?, ?)";
-	private static final String UPDATE = "UPDATE PUBLIC.EVENT_NAMES SET "
-			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, LABEL = ?"
-			+ ", EVENT_TYPE_PID = ? WHERE EVENT_NAME_PID = ?";
+public class EventRoles {
+	private static final String SELECT = "SELECT EVENT_ROLE_PID, "
+			+ "ABBREVIATION, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES WHERE EVENT_ROLE_PID = ?";
+	private static final String SELECTALL = "SELECT EVENT_ROLE_PID, "
+			+ "ABBREVIATION, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES ORDER BY EVENT_ROLE_PID";
+	private static final String SELECTMAX = "SELECT MAX(EVENT_ROLE_PID) FROM PUBLIC.EVENT_ROLES";
+	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_ROLES( "
+			+ "EVENT_ROLE_PID, ABBREVIATION, LABEL_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID) VALUES (?, "
+			+ "?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 25) ";
+	private static final String UPDATE = "UPDATE PUBLIC.EVENT_ROLES SET "
+			+ "ABBREVIATION = ?, LABEL_PID = ?"
+			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP"
+			+ " WHERE EVENT_ROLE_PID = ?";
 
-	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_NAMES WHERE EVENT_NAME_PID = ?";
+	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_ROLES WHERE EVENT_ROLE_PID = ?";
 
-	private static final String DELETEALL = "DELETE FROM PUBLIC.EVENT_NAMES";
+	private static final String DELETEALL = "DELETE FROM PUBLIC.EVENT_ROLES";
 
-	private List<EventNames> modelList;
+	private List<EventRoles> modelList;
 
 	private PreparedStatement ps;
 
@@ -46,13 +47,13 @@ public class EventNames {
 
 	private Connection conn;
 
-	private int EventNamePid;
+	private int EventRolePid;
+	private String Abbreviation;
+	private int LabelPid;
 	private Timestamp InsertTstmp;
 	private Timestamp UpdateTstmp;
 	private int TableId;
-	private String Label;
-	private int EventTypePid;
-	private EventNames model;
+	private EventRoles model;
 
 	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
@@ -72,19 +73,19 @@ public class EventNames {
 		conn.close();
 	}
 
-	public List<EventNames> get() throws Exception {
+	public List<EventRoles> get() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new EventNames();
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			model = new EventRoles();
+			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
+			model.setAbbreviation(rs.getString("ABBREVIATION"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLabel(rs.getString("LABEL"));
-			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -97,12 +98,12 @@ public class EventNames {
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		if (rs.next()) {
-			setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
+			setAbbreviation(rs.getString("ABBREVIATION"));
+			setLabelPid(rs.getInt("LABEL_PID"));
 			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
-			setLabel(rs.getString("LABEL"));
-			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
@@ -110,21 +111,21 @@ public class EventNames {
 	}
 
 	/**
-	 * Get the EventNamePid field.
+	 * Get the Abbreviation field.
 	 *
-	 * @return Contents of the EVENT_NAME_PID column
+	 * @return Contents of the ABBREVIATION column
 	 */
-	public int getEventNamePid() {
-		return EventNamePid;
+	public String getAbbreviation() {
+		return Abbreviation;
 	}
 
 	/**
-	 * Get the EventTypePid field.
+	 * Get the EventRolePid field.
 	 *
-	 * @return Contents of the EVENT_TYPE_PID column
+	 * @return Contents of the EVENT_ROLE_PID column
 	 */
-	public int getEventTypePid() {
-		return EventTypePid;
+	public int getEventRolePid() {
+		return EventRolePid;
 	}
 
 	/**
@@ -137,12 +138,12 @@ public class EventNames {
 	}
 
 	/**
-	 * Get the Label field.
+	 * Get the LabelPid field.
 	 *
-	 * @return Contents of the LABEL column
+	 * @return Contents of the LABEL_PID column
 	 */
-	public String getLabel() {
-		return Label;
+	public int getLabelPid() {
+		return LabelPid;
 	}
 
 	/**
@@ -175,29 +176,29 @@ public class EventNames {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setString(2, getLabel());
-		ps.setInt(3, getEventTypePid());
+		ps.setString(2, getAbbreviation());
+		ps.setInt(3, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
 	}
 
 	/**
-	 * Set the EventNamePid field
+	 * Set the Abbreviation field
 	 *
-	 * @param EventNamePid Contents of the EVENT_NAME_PID column
+	 * @param Abbreviation Contents of the ABBREVIATION column
 	 */
-	public void setEventNamePid(int EventNamePid) {
-		this.EventNamePid = EventNamePid;
+	public void setAbbreviation(String Abbreviation) {
+		this.Abbreviation = Abbreviation;
 	}
 
 	/**
-	 * Set the EventTypePid field
+	 * Set the EventRolePid field
 	 *
-	 * @param EventTypePid Contents of the EVENT_TYPE_PID column
+	 * @param EventRolePid Contents of the EVENT_ROLE_PID column
 	 */
-	public void setEventTypePid(int EventTypePid) {
-		this.EventTypePid = EventTypePid;
+	public void setEventRolePid(int EventRolePid) {
+		this.EventRolePid = EventRolePid;
 	}
 
 	/**
@@ -210,12 +211,12 @@ public class EventNames {
 	}
 
 	/**
-	 * Set the Label field
+	 * Set the LabelPid field
 	 *
-	 * @param Label Contents of the LABEL column
+	 * @param LabelPid Contents of the LABEL_PID column
 	 */
-	public void setLabel(String Label) {
-		this.Label = Label;
+	public void setLabelPid(int LabelPid) {
+		this.LabelPid = LabelPid;
 	}
 
 	/**
@@ -239,9 +240,9 @@ public class EventNames {
 	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getLabel());
-		ps.setInt(2, getEventTypePid());
-		ps.setInt(3, getEventNamePid());
+		ps.setString(1, getAbbreviation());
+		ps.setInt(2, getLabelPid());
+		ps.setInt(3, getEventRolePid());
 		ps.executeUpdate();
 		conn.close();
 	}

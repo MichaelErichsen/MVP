@@ -71,6 +71,10 @@ public class NewEventWizardPage1 extends WizardPage {
 		Combo comboEventType = comboViewer.getCombo();
 		comboEventType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
+		Composite compositeRole = new Composite(container, SWT.BORDER);
+		compositeRole.setLayout(new GridLayout(1, false));
+		compositeRole.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		
 		Label lblEventName = new Label(container, SWT.NONE);
 		lblEventName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEventName.setText("Event Name");
