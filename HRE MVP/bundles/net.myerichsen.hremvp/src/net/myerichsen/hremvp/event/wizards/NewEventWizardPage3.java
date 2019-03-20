@@ -3,6 +3,10 @@ package net.myerichsen.hremvp.event.wizards;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -34,36 +38,72 @@ public class NewEventWizardPage3 extends WizardPage {
 		Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(2, false));
-		
+		container.setLayout(new GridLayout(1, false));
+
 		Composite compositePerson = new Composite(container, SWT.BORDER);
-		GridData gd_compositePerson = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		GridData gd_compositePerson = new GridData(SWT.FILL, SWT.CENTER, true,
+				false, 2, 1);
 		gd_compositePerson.widthHint = 560;
 		compositePerson.setLayoutData(gd_compositePerson);
-		compositePerson.setLayout(new GridLayout(1, false));
+		compositePerson.setLayout(new GridLayout(2, false));
 
 		Label lblPerson = new Label(compositePerson, SWT.NONE);
-		lblPerson.setSize(36, 15);
 		lblPerson.setText("Person");
-		
-				textPerson = new Text(compositePerson, SWT.BORDER);
-				textPerson.setSize(541, 21);
-				textPerson.setEditable(false);
 
-		Composite compositePersonButtones = new Composite(compositePerson, SWT.NONE);
-		compositePersonButtones.setSize(137, 31);
-		compositePersonButtones.setLayout(new RowLayout(SWT.HORIZONTAL));
+		textPerson = new Text(compositePerson, SWT.BORDER);
+		textPerson.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPerson.setEditable(false);
 
-		Button btnNewPerson = new Button(compositePersonButtones, SWT.NONE);
+		Composite compositePersonButtons = new Composite(compositePerson,
+				SWT.NONE);
+		compositePersonButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositePersonButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		Button btnNewPerson = new Button(compositePersonButtons, SWT.NONE);
+		btnNewPerson.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+		});
 		btnNewPerson.setText("New");
 
-		Button btnBrowsePerson = new Button(compositePersonButtones, SWT.NONE);
+		Button btnBrowsePerson = new Button(compositePersonButtons, SWT.NONE);
+		btnBrowsePerson.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+		});
 		btnBrowsePerson.setText("Browse");
 
-		Button btnClearPerson = new Button(compositePersonButtones, SWT.NONE);
-		btnClearPerson.setText("Clear");
-		btnNewPerson.setText("New");
-		btnBrowsePerson.setText("Browse");
+		Button btnClearPerson = new Button(compositePersonButtons, SWT.NONE);
+		btnClearPerson.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+		});
 		btnClearPerson.setText("Clear");
 
 		Composite compositeRole = new Composite(container, SWT.BORDER);
@@ -77,6 +117,7 @@ public class NewEventWizardPage3 extends WizardPage {
 		label.setText("Event Role");
 
 		textEventRole = new Text(compositeRole, SWT.BORDER);
+		textEventRole.setEditable(false);
 		textEventRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -86,18 +127,81 @@ public class NewEventWizardPage3 extends WizardPage {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		Button btnNewRole = new Button(compositeRoleButtons, SWT.NONE);
+		btnNewRole.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+		});
+		btnNewRole.setText("New");
 
 		Button btnBrowseRole = new Button(compositeRoleButtons, SWT.NONE);
+		btnBrowseRole.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+		});
+		btnBrowseRole.setText("Browse");
 
 		Button btnClearRole = new Button(compositeRoleButtons, SWT.NONE);
+		btnClearRole.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+		});
+		btnClearRole.setText("Clear");
 
 		Button btnPrimaryperson = new Button(container, SWT.CHECK);
+		btnPrimaryperson.addFocusListener(new FocusAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
+			 * events.FocusEvent)
+			 */
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
 		btnPrimaryperson.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnPrimaryperson.setSelection(true);
 		btnPrimaryperson.setText("Primary Person");
 
 		Button btnCheckButton = new Button(container, SWT.CHECK);
+		btnCheckButton.addFocusListener(new FocusAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
+			 * events.FocusEvent)
+			 */
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
 		btnCheckButton.setSelection(true);
 		btnCheckButton.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));

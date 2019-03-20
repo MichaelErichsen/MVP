@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.event.wizards;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -12,6 +13,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -19,14 +21,12 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.providers.HDateProvider;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ComboViewer;
 
 /**
  * Base location data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. mar. 2019
+ * @version 20. mar. 2019
  *
  */
 public class NewEventWizardPage1 extends WizardPage {
@@ -63,34 +63,35 @@ public class NewEventWizardPage1 extends WizardPage {
 		setControl(container);
 		GridLayout gl_container = new GridLayout(2, false);
 		container.setLayout(gl_container);
-		
+
 		Label lblEventType = new Label(container, SWT.NONE);
 		lblEventType.setText("Event Type");
-		
+
 		ComboViewer comboViewer = new ComboViewer(container, SWT.NONE);
 		Combo comboEventType = comboViewer.getCombo();
-		comboEventType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Composite compositeRole = new Composite(container, SWT.BORDER);
-		compositeRole.setLayout(new GridLayout(1, false));
-		compositeRole.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		
+		comboEventType.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		Label lblEventName = new Label(container, SWT.NONE);
-		lblEventName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblEventName.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEventName.setText("Event Name");
-		
+
 		textEventName = new Text(container, SWT.BORDER);
-		textEventName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
+		textEventName.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		Label lblIsoCode = new Label(container, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
-		
-		ComboViewer comboViewer_1 = new ComboViewer(container, SWT.NONE);
-		Combo comboIsoCode = comboViewer_1.getCombo();
-		comboIsoCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		ComboViewer comboViewerIsoCode = new ComboViewer(container, SWT.NONE);
+		Combo comboIsoCode = comboViewerIsoCode.getCombo();
+		comboIsoCode.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite compositeFrom = new Composite(container, SWT.BORDER);
-		compositeFrom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeFrom.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		compositeFrom.setLayout(new GridLayout(2, false));
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
@@ -185,7 +186,8 @@ public class NewEventWizardPage1 extends WizardPage {
 		btnClearFrom.setText("Clear");
 
 		final Composite compositeTo = new Composite(container, SWT.BORDER);
-		compositeTo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeTo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		compositeTo.setLayout(new GridLayout(2, false));
 
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
