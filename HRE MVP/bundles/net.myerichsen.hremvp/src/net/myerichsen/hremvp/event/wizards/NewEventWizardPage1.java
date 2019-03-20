@@ -1,14 +1,18 @@
 package net.myerichsen.hremvp.event.wizards;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -20,7 +24,10 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
+import net.myerichsen.hremvp.project.providers.EventTypeProvider;
+import net.myerichsen.hremvp.project.providers.LanguageProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Base location data wizard page
@@ -35,6 +42,7 @@ public class NewEventWizardPage1 extends WizardPage {
 	private final IEclipseContext context;
 	private NewEventWizard wizard;
 	private Text textEventName;
+	private List<List<String>> languageStringList;
 
 	/**
 	 * Constructor
@@ -61,18 +69,36 @@ public class NewEventWizardPage1 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		GridLayout gl_container = new GridLayout(2, false);
+		final GridLayout gl_container = new GridLayout(2, false);
 		container.setLayout(gl_container);
 
-		Label lblEventType = new Label(container, SWT.NONE);
+		final Label lblEventType = new Label(container, SWT.NONE);
 		lblEventType.setText("Event Type");
 
-		ComboViewer comboViewer = new ComboViewer(container, SWT.NONE);
-		Combo comboEventType = comboViewer.getCombo();
+		final ComboViewer comboViewerEventType = new ComboViewer(container,
+				SWT.NONE);
+		final Combo comboEventType = comboViewerEventType.getCombo();
+		comboEventType.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboEventType.getSelectionIndex();
+				wizard = (NewEventWizard) getWizard();
+//		FIXME		wizard.setEventTypePid(Integer.parseInt(styleList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerEventType
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerEventType.setLabelProvider(new HREComboLabelProvider(2));
 		comboEventType.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblEventName = new Label(container, SWT.NONE);
+		final Label lblEventName = new Label(container, SWT.NONE);
 		lblEventName.setLayoutData(
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEventName.setText("Event Name");
@@ -81,12 +107,25 @@ public class NewEventWizardPage1 extends WizardPage {
 		textEventName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblIsoCode = new Label(container, SWT.NONE);
-		lblIsoCode.setText("ISO Code");
+		final Label lblLanguage = new Label(container, SWT.NONE);
+		lblLanguage.setText("Language");
 
-		ComboViewer comboViewerIsoCode = new ComboViewer(container, SWT.NONE);
-		Combo comboIsoCode = comboViewerIsoCode.getCombo();
-		comboIsoCode.setLayoutData(
+		final ComboViewer comboViewerLanguage = new ComboViewer(container,
+				SWT.NONE);
+		final Combo comboLanguage = comboViewerLanguage.getCombo();
+		comboLanguage.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboLanguage.getSelectionIndex();
+				wizard = (NewEventWizard) getWizard();
+//		FIXME		wizard.setLocationNameStylePid(
+//						Integer.parseInt(styleList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerLanguage
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerLanguage.setLabelProvider(new HREComboLabelProvider(2));
+		comboLanguage.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite compositeFrom = new Composite(container, SWT.BORDER);
@@ -96,7 +135,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
 
-		Text textFromDate = new Text(compositeFrom, SWT.BORDER);
+		final Text textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setEditable(false);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -107,11 +146,11 @@ public class NewEventWizardPage1 extends WizardPage {
 		compositeFromButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -138,11 +177,11 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -167,11 +206,11 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -193,7 +232,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
 		lblToDate.setText("To Date");
 
-		Text textToDate = new Text(compositeTo, SWT.BORDER);
+		final Text textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setEditable(false);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -204,11 +243,11 @@ public class NewEventWizardPage1 extends WizardPage {
 		compositeToButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
-		Button btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -222,11 +261,11 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnCopyFromTo.setText("Copy From");
 
-		Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -253,11 +292,11 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnNewTo.setText("New");
 
-		Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -282,11 +321,11 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -299,6 +338,15 @@ public class NewEventWizardPage1 extends WizardPage {
 			}
 		});
 		btnClearTo.setText("Clear");
-	}
 
+		// Populate combo boxes
+		try {
+			comboViewerEventType
+					.setInput(new EventTypeProvider().getStringList());
+			languageStringList = new LanguageProvider().getStringList();
+			comboViewerLanguage.setInput(languageStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+		}
+	}
 }

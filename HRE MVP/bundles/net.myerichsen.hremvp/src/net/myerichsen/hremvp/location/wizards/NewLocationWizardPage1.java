@@ -8,7 +8,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -39,7 +38,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 20. mar. 2019
  */
 public class NewLocationWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
@@ -400,15 +399,15 @@ public class NewLocationWizardPage1 extends WizardPage {
 		setPageComplete(false);
 	}
 
-	/**
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public String getComboLocationNameStyle() {
-		IStructuredSelection structuredSelection = comboViewerLocationNameStyles
-				.getStructuredSelection();
-		List<String> ls = (List<String>) structuredSelection.getFirstElement();
-		return ls.get(0);
-	}
+//	/**
+//	 * @return
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public String getComboLocationNameStyle() {
+//		IStructuredSelection structuredSelection = comboViewerLocationNameStyles
+//				.getStructuredSelection();
+//		List<String> ls = (List<String>) structuredSelection.getFirstElement();
+//		return ls.get(0);
+//	}
 
 }

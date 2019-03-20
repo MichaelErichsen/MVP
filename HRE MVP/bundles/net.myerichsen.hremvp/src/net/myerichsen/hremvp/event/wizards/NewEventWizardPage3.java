@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.jface.viewers.ComboViewer;
 
 /**
  * Wizard page to add a person to an event
@@ -24,7 +26,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class NewEventWizardPage3 extends WizardPage {
 	private Text textPerson;
-	private Text textEventRole;
 
 	public NewEventWizardPage3(IEclipseContext context) {
 		super("wizardPage");
@@ -115,61 +116,10 @@ public class NewEventWizardPage3 extends WizardPage {
 
 		Label label = new Label(compositeRole, SWT.NONE);
 		label.setText("Event Role");
-
-		textEventRole = new Text(compositeRole, SWT.BORDER);
-		textEventRole.setEditable(false);
-		textEventRole.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		Composite compositeRoleButtons = new Composite(compositeRole, SWT.NONE);
-		compositeRoleButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeRoleButtons.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-
-		Button btnNewRole = new Button(compositeRoleButtons, SWT.NONE);
-		btnNewRole.addMouseListener(new MouseAdapter() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
-			 * events.MouseEvent)
-			 */
-			@Override
-			public void mouseDown(MouseEvent e) {
-			}
-		});
-		btnNewRole.setText("New");
-
-		Button btnBrowseRole = new Button(compositeRoleButtons, SWT.NONE);
-		btnBrowseRole.addMouseListener(new MouseAdapter() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
-			 * events.MouseEvent)
-			 */
-			@Override
-			public void mouseDown(MouseEvent e) {
-			}
-		});
-		btnBrowseRole.setText("Browse");
-
-		Button btnClearRole = new Button(compositeRoleButtons, SWT.NONE);
-		btnClearRole.addMouseListener(new MouseAdapter() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
-			 * events.MouseEvent)
-			 */
-			@Override
-			public void mouseDown(MouseEvent e) {
-			}
-		});
-		btnClearRole.setText("Clear");
+		
+		ComboViewer comboViewerRole = new ComboViewer(compositeRole, SWT.NONE);
+		Combo comboRole = comboViewerRole.getCombo();
+		comboRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Button btnPrimaryperson = new Button(container, SWT.CHECK);
 		btnPrimaryperson.addFocusListener(new FocusAdapter() {
