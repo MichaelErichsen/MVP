@@ -1,6 +1,10 @@
 package net.myerichsen.hremvp.event.wizards;
 
+import java.util.logging.Logger;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -11,29 +15,47 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ComboViewer;
+
+import net.myerichsen.hremvp.person.dialogs.PersonDialog;
+import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 
 /**
  * Wizard page to add a person to an event
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 20. mar. 2019
+ * @version 21. mar. 2019
  *
  */
 public class NewEventWizardPage3 extends WizardPage {
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private IEclipseContext context;
+	private NewEventWizard wizard;
 	private Text textPerson;
 
+	/**
+	 * Constructor
+	 *
+	 * @param context
+	 */
 	public NewEventWizardPage3(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("New Event");
 		setDescription(
 				"Enter an optional person for the event. More can be added later");
+		this.context = context;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets.Composite)
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
@@ -42,9 +64,9 @@ public class NewEventWizardPage3 extends WizardPage {
 		container.setLayout(new GridLayout(1, false));
 
 		Composite compositePerson = new Composite(container, SWT.BORDER);
-		GridData gd_compositePerson = new GridData(SWT.FILL, SWT.CENTER, true,
-				false, 2, 1);
-		gd_compositePerson.widthHint = 560;
+		GridData gd_compositePerson = new GridData(SWT.LEFT, SWT.CENTER, false,
+				false, 1, 1);
+		gd_compositePerson.widthHint = 559;
 		compositePerson.setLayoutData(gd_compositePerson);
 		compositePerson.setLayout(new GridLayout(2, false));
 
@@ -73,6 +95,12 @@ public class NewEventWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				PersonDialog dialog = new PersonDialog(getShell(), context);
+
+				if (dialog.open() == Window.OK) {
+					// TODO
+					setErrorMessage("Aargh ralle");
+				}
 			}
 		});
 		btnNewPerson.setText("New");
@@ -88,6 +116,16 @@ public class NewEventWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				PersonNavigatorDialog dialog = new PersonNavigatorDialog(
+						getShell(), context);
+
+				if (dialog.open() == Window.OK) {
+					int personPid = dialog.getPersonPid();
+					wizard = (NewEventWizard) getWizard();
+					wizard.setPersonPid(personPid);
+					textPerson.setText(dialog.getPersonName());
+					setErrorMessage(null);
+				}
 			}
 		});
 		btnBrowsePerson.setText("Browse");
@@ -103,23 +141,26 @@ public class NewEventWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewEventWizard) getWizard();
+				wizard.setPersonPid(0);
+				textPerson.setText("");
+				setErrorMessage(null);
 			}
 		});
 		btnClearPerson.setText("Clear");
 
 		Composite compositeRole = new Composite(container, SWT.BORDER);
-		GridData gd_compositeRole = new GridData(SWT.FILL, SWT.CENTER, false,
-				false, 2, 1);
-		gd_compositeRole.widthHint = 558;
-		compositeRole.setLayoutData(gd_compositeRole);
+		compositeRole.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		compositeRole.setLayout(new GridLayout(2, false));
 
 		Label label = new Label(compositeRole, SWT.NONE);
 		label.setText("Event Role");
-		
+
 		ComboViewer comboViewerRole = new ComboViewer(compositeRole, SWT.NONE);
 		Combo comboRole = comboViewerRole.getCombo();
-		comboRole.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		comboRole.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Button btnPrimaryperson = new Button(container, SWT.CHECK);
 		btnPrimaryperson.addFocusListener(new FocusAdapter() {
@@ -132,6 +173,8 @@ public class NewEventWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
+				wizard = (NewEventWizard) getWizard();
+				wizard.setIsPrimaryPerson(btnPrimaryperson.getSelection());
 			}
 		});
 		btnPrimaryperson.setLayoutData(
@@ -139,8 +182,8 @@ public class NewEventWizardPage3 extends WizardPage {
 		btnPrimaryperson.setSelection(true);
 		btnPrimaryperson.setText("Primary Person");
 
-		Button btnCheckButton = new Button(container, SWT.CHECK);
-		btnCheckButton.addFocusListener(new FocusAdapter() {
+		Button btnPrimaryPersonEvent = new Button(container, SWT.CHECK);
+		btnPrimaryPersonEvent.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
 			 * 
@@ -150,11 +193,14 @@ public class NewEventWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
+				wizard = (NewEventWizard) getWizard();
+				wizard.setIsPrimaryPersonEvent(
+						btnPrimaryPersonEvent.getSelection());
 			}
 		});
-		btnCheckButton.setSelection(true);
-		btnCheckButton.setLayoutData(
+		btnPrimaryPersonEvent.setSelection(true);
+		btnPrimaryPersonEvent.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		btnCheckButton.setText("Primary Event");
+		btnPrimaryPersonEvent.setText("Primary Event");
 	}
 }

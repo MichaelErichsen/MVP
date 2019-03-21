@@ -9,6 +9,7 @@
             <children xsi:type="basic:Part" xmi:id="_xxk-MDTrEemOOs3bT9vLww" elementId="net.myerichsen.hremvp.part.languages" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LanguageNavigator" label="Languages"/>
             <children xsi:type="basic:Part" xmi:id="_05nHUDUFEem8BOgG02KwDA" elementId="net.myerichsen.hremvp.part.sextypes" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.SexTypeNavigator" label="Sex Types"/>
             <children xsi:type="basic:Part" xmi:id="_hl_-IPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.part.eventtypenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.EventTypeNavigator" label="Event Types" tooltip="Event Types"/>
+            <children xsi:type="basic:Part" xmi:id="_wc0M0Eu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.part.eventroles" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.EventRoleNavigator" label="Event Roles"/>
             <children xsi:type="basic:Part" xmi:id="_UWdMADhkEemK2cr2JpreEw" elementId="net.myerichsen.hremvp.part.personnamestyles" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.PersonNameStyleNavigator" label="Person Name Styles" tooltip="Person Name Styles"/>
             <children xsi:type="basic:Part" xmi:id="_kPa7wDx1Eemh9Naf7FyRjw" elementId="net.myerichsen.hremvp.part.locationnamestyles" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LocationNameStyleNavigator" label="Location Name Styles" tooltip="Location Name Styles"/>
           </children>
@@ -188,6 +189,7 @@
   <handlers xmi:id="_VDQvcBNIEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.handler.29" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.PersonPerspectiveHandler" command="_0GArQBNHEemEvqVth7AYPg"/>
   <handlers xmi:id="_81Z30CsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handler.42" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenPersonNamePartNavigatorHandler" command="_1hj2wCsCEemcPL7Gvwj8Zw"/>
   <handlers xmi:id="_PUpJMDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.handler.5" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.HreUpdateHandler" command="_KX47UDIoEemFh8IjP8PYwQ"/>
+  <handlers xmi:id="_ffd64Eu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.handler.23" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenEventRoleViewHandler" command="_UJqgQEu3EemeNo01Nx-9Hg"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1o" keySequence="M1+O"/>
@@ -233,6 +235,7 @@
   <commands xmi:id="_gN7cECF1EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.command.personwebsearch" commandName="personWebSearch" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_1hj2wCsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.command.openpersonnamepartnavigator" commandName="openPersonNamePartNavigator" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_KX47UDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.command.updatehre" commandName="updateHre" category="_fymHQOWmEeirzfgMfQV5uA"/>
+  <commands xmi:id="_UJqgQEu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.command.openeventroleview" commandName="openEventRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

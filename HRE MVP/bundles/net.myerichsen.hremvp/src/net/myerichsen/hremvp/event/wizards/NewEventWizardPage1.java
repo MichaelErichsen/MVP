@@ -41,8 +41,9 @@ public class NewEventWizardPage1 extends WizardPage {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private NewEventWizard wizard;
-	private Text textEventName;
+//	private Text textEventName;
 	private List<List<String>> languageStringList;
+	private List<List<String>> eventStringList;
 
 	/**
 	 * Constructor
@@ -89,7 +90,8 @@ public class NewEventWizardPage1 extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				final int selectionIndex = comboEventType.getSelectionIndex();
 				wizard = (NewEventWizard) getWizard();
-//		FIXME		wizard.setEventTypePid(Integer.parseInt(styleList.get(selectionIndex).get(0)));
+				wizard.setEventTypePid(Integer
+						.parseInt(eventStringList.get(selectionIndex).get(0)));
 			}
 		});
 		comboViewerEventType
@@ -103,7 +105,7 @@ public class NewEventWizardPage1 extends WizardPage {
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEventName.setText("Event Name");
 
-		textEventName = new Text(container, SWT.BORDER);
+		Text textEventName = new Text(container, SWT.BORDER);
 		textEventName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -118,8 +120,8 @@ public class NewEventWizardPage1 extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				final int selectionIndex = comboLanguage.getSelectionIndex();
 				wizard = (NewEventWizard) getWizard();
-//		FIXME		wizard.setLocationNameStylePid(
-//						Integer.parseInt(styleList.get(selectionIndex).get(0)));
+				wizard.setLocationPid(Integer.parseInt(
+						languageStringList.get(selectionIndex).get(0)));
 			}
 		});
 		comboViewerLanguage
@@ -341,8 +343,8 @@ public class NewEventWizardPage1 extends WizardPage {
 
 		// Populate combo boxes
 		try {
-			comboViewerEventType
-					.setInput(new EventTypeProvider().getStringList());
+			eventStringList = new EventTypeProvider().getStringList();
+			comboViewerEventType.setInput(eventStringList);
 			languageStringList = new LanguageProvider().getStringList();
 			comboViewerLanguage.setInput(languageStringList);
 		} catch (final Exception e1) {

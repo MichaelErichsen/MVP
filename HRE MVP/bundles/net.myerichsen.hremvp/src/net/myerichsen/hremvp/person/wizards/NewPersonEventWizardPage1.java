@@ -29,8 +29,8 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
+import net.myerichsen.hremvp.location.dialogs.LocationNavigatorDialog;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
-import net.myerichsen.hremvp.person.dialogs.LocationNavigatorDialog;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.project.providers.LanguageProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;

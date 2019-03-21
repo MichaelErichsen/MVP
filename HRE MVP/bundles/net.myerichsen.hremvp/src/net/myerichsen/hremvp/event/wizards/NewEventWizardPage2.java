@@ -1,6 +1,9 @@
 package net.myerichsen.hremvp.event.wizards;
 
+import java.util.logging.Logger;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -15,6 +18,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import net.myerichsen.hremvp.location.dialogs.LocationDialog;
+import net.myerichsen.hremvp.location.dialogs.LocationNavigatorDialog;
+import net.myerichsen.hremvp.location.providers.LocationProvider;
+
 /**
  * Wizard page to add a location for an event
  * 
@@ -23,15 +30,30 @@ import org.eclipse.swt.widgets.Text;
  *
  */
 public class NewEventWizardPage2 extends WizardPage {
-	private Text textLocation;
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private IEclipseContext context;
+	private NewEventWizard wizard;
 
+	/**
+	 * Constructor
+	 *
+	 * @param context
+	 */
 	public NewEventWizardPage2(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("New Event");
 		setDescription(
 				"Enter an optional location for the event. More can be added later");
+		this.context = context;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
+	 * widgets.Composite)
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
@@ -47,7 +69,7 @@ public class NewEventWizardPage2 extends WizardPage {
 		Label lblLocation = new Label(compositeLocation, SWT.NONE);
 		lblLocation.setText("Location");
 
-		textLocation = new Text(compositeLocation, SWT.BORDER);
+		Text textLocation = new Text(compositeLocation, SWT.BORDER);
 		textLocation.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textLocation.setEditable(false);
@@ -68,6 +90,21 @@ public class NewEventWizardPage2 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				LocationDialog dialog = new LocationDialog(getShell(), context);
+				if (dialog.open() == Window.OK) {
+					try {
+						int locationPid = dialog.getLocationPid();
+						wizard = (NewEventWizard) getWizard();
+						wizard.setLocationPid(locationPid);
+						LocationProvider provider = new LocationProvider();
+						provider.get(locationPid);
+						textLocation.setText(provider.getPrimaryName());
+					} catch (Exception e1) {
+						LOGGER.severe(e1.getMessage());
+						e1.printStackTrace();
+					}
+				}
+
 			}
 		});
 		btnNew.setText("New");
@@ -83,6 +120,22 @@ public class NewEventWizardPage2 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				LocationNavigatorDialog dialog = new LocationNavigatorDialog(
+						getShell(), context);
+
+				if (dialog.open() == Window.OK) {
+					try {
+						int locationPid = dialog.getLocationPid();
+						wizard = (NewEventWizard) getWizard();
+						wizard.setLocationPid(locationPid);
+						LocationProvider provider = new LocationProvider();
+						provider.get(locationPid);
+						textLocation.setText(provider.getPrimaryName());
+					} catch (Exception e1) {
+						LOGGER.severe(e1.getMessage());
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		btnBrowse.setText("Browse");
@@ -98,6 +151,9 @@ public class NewEventWizardPage2 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
+				wizard = (NewEventWizard) getWizard();
+				wizard.setLocationPid(0);
+				textLocation.setText("");
 			}
 		});
 		btnClear.setText("Clear");

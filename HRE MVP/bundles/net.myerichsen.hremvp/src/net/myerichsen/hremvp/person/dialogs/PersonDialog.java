@@ -5,13 +5,21 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Display all locations
- *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 5. mar. 2019
+ * @version 21. mar. 2019
  *
  */
-public class LocationNavigatorDialog extends TitleAreaDialog {
+public class PersonDialog extends TitleAreaDialog {
+
+	/**
+	 * Constructor
+	 *
+	 * @param parentShell
+	 */
+	public PersonDialog(Shell parentShell) {
+		super(parentShell);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Constructor
@@ -19,8 +27,9 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 	 * @param shell
 	 * @param context
 	 */
-	public LocationNavigatorDialog(Shell parentShell, IEclipseContext context) {
-		super(parentShell);
+	public PersonDialog(Shell shell, IEclipseContext context) {
+		super(shell);
+		// TODO
 	}
 
 }

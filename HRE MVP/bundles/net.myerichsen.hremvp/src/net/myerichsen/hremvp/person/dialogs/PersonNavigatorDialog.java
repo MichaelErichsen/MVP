@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 10. feb. 2019
+ * @version 21. mar. 2019
  *
  */
 public class PersonNavigatorDialog extends TitleAreaDialog {

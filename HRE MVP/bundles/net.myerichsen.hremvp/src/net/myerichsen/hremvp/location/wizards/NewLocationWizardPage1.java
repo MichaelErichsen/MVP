@@ -64,7 +64,6 @@ public class NewLocationWizardPage1 extends WizardPage {
 		setDescription(
 				"Add the name style, optionally time limitations for the name "
 						+ "of the location, and a preposition for reporting use.\r\n\r\n");
-
 	}
 
 	/*
