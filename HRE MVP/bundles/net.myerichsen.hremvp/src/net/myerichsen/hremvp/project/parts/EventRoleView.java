@@ -45,10 +45,11 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. mar. 2019
+ * @version 22. mar. 2019
  *
  */
 
+// FIXME Populate type field
 public class EventRoleView {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -64,6 +65,7 @@ public class EventRoleView {
 	private DictionaryProvider dp;
 	private int eventRolePid = 0;
 	private int labelPid = 0;
+	private Text textEventTypePid;
 
 	/**
 	 * Constructor
@@ -95,6 +97,18 @@ public class EventRoleView {
 		textLabelPid.setEditable(false);
 		textLabelPid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		Label lblEventTypeId = new Label(parent, SWT.NONE);
+		lblEventTypeId.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblEventTypeId.setText("Event Type id");
+
+		textEventTypePid = new Text(parent, SWT.BORDER);
+		textEventTypePid.setEditable(false);
+		textEventTypePid.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 
 		final Label lblAbbreviation = new Label(parent, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");

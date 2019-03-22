@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.project.providers.LanguageProvider;
  * Add a person name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 26. feb. 2019
+ * @version 22. mar. 2019
  *
  */
 public class NewPersonNameStyleWizardPage1 extends WizardPage {
@@ -45,7 +45,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 	 * @param context
 	 */
 	public NewPersonNameStyleWizardPage1(IEclipseContext context) {
-		super("Person name style wizard Page 1");
+		super("Person name style wizard page 1");
 		setTitle("Person name style");
 		setDescription("Add static data for a new person name style");
 	}
@@ -81,6 +81,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		final Label lblIsoCode = new Label(container, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
 
+		// FIXME Change combo to JFace
 		comboIsoCode = new Combo(container, SWT.BORDER);
 		comboIsoCode.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));

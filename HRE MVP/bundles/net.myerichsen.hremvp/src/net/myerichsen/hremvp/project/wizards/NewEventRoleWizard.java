@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.project.providers.EventRoleProvider;
  * Wizard to add a event Role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. mar. 2019
+ * @version 22. mar. 2019
  *
  */
 public class NewEventRoleWizard extends Wizard {
@@ -34,7 +34,7 @@ public class NewEventRoleWizard extends Wizard {
 	 * @param context
 	 */
 	public NewEventRoleWizard(int eventRolePid, IEclipseContext context) {
-		setWindowTitle("Add an event Role");
+		setWindowTitle("Add an event role");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
@@ -102,6 +102,14 @@ public class NewEventRoleWizard extends Wizard {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param parseInt
+	 */
+	public void setEventRolePid(int parseInt) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

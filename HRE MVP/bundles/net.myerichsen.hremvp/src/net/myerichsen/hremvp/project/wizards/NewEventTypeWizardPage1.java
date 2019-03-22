@@ -25,14 +25,12 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new event type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 25. feb. 2019
+ * @version 22. mar. 2019
  *
  */
 public class NewEventTypeWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-	private Text textLabelPid;
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private EventTypeProvider provider;
@@ -71,15 +69,6 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
-
-		final Label lblLabelPid = new Label(container, SWT.NONE);
-		lblLabelPid.setText("New event type label pid");
-
-		textLabelPid = new Text(container, SWT.BORDER);
-		textLabelPid.setEditable(false);
-		textLabelPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textLabelPid.setText(Integer.toString(labelPid));
 
 		final Label lblAbbreviation = new Label(container, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation (Max 8 characters)");

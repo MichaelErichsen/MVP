@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all event roles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. mar. 2019
+ * @version 22. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -110,6 +110,15 @@ public class EventRoleNavigator {
 		tblclmnId.setWidth(80);
 		tblclmnId.setText("Event Role ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+
+		TableViewerColumn tableViewerColumnTypePid = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnEventTypePid = tableViewerColumnTypePid.getColumn();
+		tblclmnEventTypePid.setWidth(80);
+		tblclmnEventTypePid.setText("Event Type Pid");
+		// FIXME Fix field population
+		tableViewerColumnTypePid
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
