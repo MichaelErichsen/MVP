@@ -82,7 +82,7 @@ public class PersonNamePartNavigator {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public PersonNamePartNavigator() throws Exception {
@@ -403,7 +403,7 @@ public class PersonNamePartNavigator {
 
 			tableViewer.setInput(provider.getNameList());
 			tableViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

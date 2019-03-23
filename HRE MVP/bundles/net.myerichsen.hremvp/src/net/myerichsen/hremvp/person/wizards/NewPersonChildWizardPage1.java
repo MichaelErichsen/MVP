@@ -213,7 +213,7 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 			} else {
 				textChildDeathDate.setText("");
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

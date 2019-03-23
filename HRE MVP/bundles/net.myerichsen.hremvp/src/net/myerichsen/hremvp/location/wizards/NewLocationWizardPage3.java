@@ -65,7 +65,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
 
-		Composite compositeFrom = new Composite(container, SWT.BORDER);
+		final Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		compositeFrom.setLayout(new GridLayout(2, false));
@@ -73,7 +73,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
 
-		Text textFromDate = new Text(compositeFrom, SWT.BORDER);
+		final Text textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textFromDate.setEditable(false);
@@ -88,7 +88,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -119,7 +119,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -148,7 +148,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -162,7 +162,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		});
 		btnClearFrom.setText("Clear");
 
-		Composite compositeTo = new Composite(container, SWT.BORDER);
+		final Composite compositeTo = new Composite(container, SWT.BORDER);
 		compositeTo.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		compositeTo.setLayout(new GridLayout(2, false));
@@ -170,7 +170,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
 		lblToDate.setText("To Date");
 
-		Text textToDate = new Text(compositeTo, SWT.BORDER);
+		final Text textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textToDate.setEditable(false);
@@ -185,7 +185,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -203,7 +203,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -234,7 +234,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -263,7 +263,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -282,15 +282,16 @@ public class NewLocationWizardPage3 extends WizardPage {
 
 		wizard = (NewLocationWizard) getWizard();
 
-		Text textXCoordinate = new Text(container, SWT.BORDER);
+		final Text textXCoordinate = new Text(container, SWT.BORDER);
 		textXCoordinate.addModifyListener(new ModifyListener() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
 			 * events.ModifyEvent)
 			 */
+			@Override
 			public void modifyText(ModifyEvent e) {
 				wizard = (NewLocationWizard) getWizard();
 				wizard.setxCoordinate(
@@ -307,15 +308,16 @@ public class NewLocationWizardPage3 extends WizardPage {
 		final Label lblYCoordinate = new Label(container, SWT.NONE);
 		lblYCoordinate.setText("Y Coordinate");
 
-		Text textYCoordinate = new Text(container, SWT.BORDER);
+		final Text textYCoordinate = new Text(container, SWT.BORDER);
 		textYCoordinate.addModifyListener(new ModifyListener() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
 			 * events.ModifyEvent)
 			 */
+			@Override
 			public void modifyText(ModifyEvent e) {
 				wizard = (NewLocationWizard) getWizard();
 				wizard.setyCoordinate(
@@ -332,15 +334,16 @@ public class NewLocationWizardPage3 extends WizardPage {
 		final Label lblZCoordinate = new Label(container, SWT.NONE);
 		lblZCoordinate.setText("Z Coordinate");
 
-		Text textZCoordinate = new Text(container, SWT.BORDER);
+		final Text textZCoordinate = new Text(container, SWT.BORDER);
 		textZCoordinate.addModifyListener(new ModifyListener() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
 			 * events.ModifyEvent)
 			 */
+			@Override
 			public void modifyText(ModifyEvent e) {
 				wizard = (NewLocationWizard) getWizard();
 				wizard.setzCoordinate(
@@ -355,11 +358,11 @@ public class NewLocationWizardPage3 extends WizardPage {
 
 		new Label(container, SWT.NONE);
 
-		Button btnCheckButtonPrimary = new Button(container, SWT.CHECK);
+		final Button btnCheckButtonPrimary = new Button(container, SWT.CHECK);
 		btnCheckButtonPrimary.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
 			 * events.FocusEvent)

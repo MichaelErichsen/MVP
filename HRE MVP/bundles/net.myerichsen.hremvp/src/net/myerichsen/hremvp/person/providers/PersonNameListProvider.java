@@ -33,7 +33,7 @@ public class PersonNameListProvider implements IHREProvider {
 	/**
 	 * @param namePid Persistent ID of the Name
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors.
+	 *                   access error or other errors.
 	 */
 	public void add(int namePid) throws Exception {
 		model = new PersonNames();

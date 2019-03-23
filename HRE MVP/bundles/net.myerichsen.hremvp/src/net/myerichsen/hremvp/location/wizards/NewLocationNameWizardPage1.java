@@ -124,7 +124,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
 
-		Text textFromDate = new Text(compositeFrom, SWT.BORDER);
+		final Text textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textFromDate.setEditable(false);
@@ -140,7 +140,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -171,7 +171,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -200,7 +200,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -220,7 +220,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
 		lblToDate.setText("To Date");
 
-		Text textToDate = new Text(compositeTo, SWT.BORDER);
+		final Text textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textToDate.setEditable(false);
@@ -235,7 +235,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -254,7 +254,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -285,7 +285,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -314,7 +314,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -330,14 +330,18 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 		new Label(container, SWT.NONE);
 
-		Button btnPrimaryLocationName = new Button(container, SWT.CHECK);
+		final Button btnPrimaryLocationName = new Button(container, SWT.CHECK);
 		btnPrimaryLocationName.setSelection(false);
 		btnPrimaryLocationName.setText("Primary Location Name");
 		btnPrimaryLocationName.addFocusListener(new FocusListener() {
 
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.
 			 * events.FocusEvent)
@@ -349,29 +353,25 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 						btnPrimaryLocationName.getSelection());
 			}
 
-			@Override
-			public void focusGained(FocusEvent e) {
-			}
-
 		});
 
 		final Label lblPreposition = new Label(container, SWT.NONE);
 		lblPreposition.setText("Preposition");
 
-		Text textPreposition = new Text(container, SWT.BORDER);
+		final Text textPreposition = new Text(container, SWT.BORDER);
 		textPreposition.setToolTipText("Optional. Used for reporting");
 		textPreposition.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textPreposition.addFocusListener(new FocusListener() {
 
 			@Override
-			public void focusLost(FocusEvent e) {
-				wizard = (NewLocationNameWizard) getWizard();
-				wizard.setPreposition(textPreposition.getText());
+			public void focusGained(FocusEvent e) {
 			}
 
 			@Override
-			public void focusGained(FocusEvent e) {
+			public void focusLost(FocusEvent e) {
+				wizard = (NewLocationNameWizard) getWizard();
+				wizard.setPreposition(textPreposition.getText());
 			}
 		});
 
@@ -403,9 +403,10 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 	 */
 	@SuppressWarnings("unchecked")
 	public String getComboLocationNameStyle() {
-		IStructuredSelection structuredSelection = comboViewerLocationNameStyles
+		final IStructuredSelection structuredSelection = comboViewerLocationNameStyles
 				.getStructuredSelection();
-		List<String> ls = (List<String>) structuredSelection.getFirstElement();
+		final List<String> ls = (List<String>) structuredSelection
+				.getFirstElement();
 		return ls.get(0);
 	}
 

@@ -56,7 +56,7 @@ public class DescendantNavigator {
 		try {
 			provider = new PersonProvider();
 			treePersonList = createTreePersonList(2);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -162,7 +162,7 @@ public class DescendantNavigator {
 			treePersonList = createTreePersonList(personPid);
 			treeViewer.setInput(treePersonList);
 			treeViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

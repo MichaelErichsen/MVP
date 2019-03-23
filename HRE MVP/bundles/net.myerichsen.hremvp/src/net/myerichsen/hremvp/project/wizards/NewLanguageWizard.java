@@ -72,7 +72,7 @@ public class NewLanguageWizard extends Wizard {
 						net.myerichsen.hremvp.Constants.LANGUAGE_PID_UPDATE_TOPIC,
 						languagePid);
 				return true;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

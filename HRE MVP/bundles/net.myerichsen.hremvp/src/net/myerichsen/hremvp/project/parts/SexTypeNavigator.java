@@ -214,7 +214,7 @@ public class SexTypeNavigator {
 			eventBroker.post("MESSAGE",
 					"Sex type " + primaryName + " has been deleted");
 			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

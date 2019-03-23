@@ -10,11 +10,12 @@ import net.myerichsen.hremvp.project.servers.EventRoleServer;
  * Provides all data for an personEvent Role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class EventRoleProvider implements IHREProvider {
 	private int EventRolePid;
+	private int EventTypePid;
 	private String Abbreviation;
 	private int TableId;
 	private final EventRoleServer server;
@@ -31,7 +32,7 @@ public class EventRoleProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -66,7 +67,7 @@ public class EventRoleProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -92,10 +93,10 @@ public class EventRoleProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return
+	 * @return the eventTypePid
 	 */
-	public int getLabelPid() {
-		return server.getLabelPid();
+	public int getEventTypePid() {
+		return EventTypePid;
 	}
 
 //	/**
@@ -110,8 +111,15 @@ public class EventRoleProvider implements IHREProvider {
 //	}
 
 	/**
+	 * @return
+	 */
+	public int getLabelPid() {
+		return server.getLabelPid();
+	}
+
+	/**
 	 * @return stringList A list of lists of event Role pids, label pids,
-	 *         abbreviations and generic labels
+	 *         abbreviations, generic labels and type pids
 	 * @throws Exception
 	 */
 	@Override
@@ -142,13 +150,14 @@ public class EventRoleProvider implements IHREProvider {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
 	public int insert() throws Exception {
 		server.setAbbreviation(Abbreviation);
+		server.setEventTypePid(EventTypePid);
 		return server.insert();
 	}
 
@@ -167,6 +176,13 @@ public class EventRoleProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param eventTypePid the eventTypePid to set
+	 */
+	public void setEventTypePid(int eventTypePid) {
+		EventTypePid = eventTypePid;
+	}
+
+	/**
 	 * @param labelPid the labelPid to set
 	 */
 	public void setLabelPid(int labelPid) {
@@ -182,7 +198,7 @@ public class EventRoleProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

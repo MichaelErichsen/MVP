@@ -39,7 +39,6 @@ public class PartnerProvider implements IHREProvider {
 
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 *

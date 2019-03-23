@@ -420,7 +420,7 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 			} else {
 				textPartnerDeathDate.setText("");
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

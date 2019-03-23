@@ -124,8 +124,7 @@ public class DictionaryProvider implements IHREProvider {
 	 * @throws MvpException
 	 */
 	@Override
-	public List<List<String>> getStringList(int labelPid)
-			throws Exception {
+	public List<List<String>> getStringList(int labelPid) throws Exception {
 		return server.getStringList(labelPid);
 
 	}

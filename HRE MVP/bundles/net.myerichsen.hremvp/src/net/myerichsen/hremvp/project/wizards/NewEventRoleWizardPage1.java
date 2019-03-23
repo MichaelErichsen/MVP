@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new event Role for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class NewEventRoleWizardPage1 extends WizardPage {
@@ -140,8 +140,8 @@ public class NewEventRoleWizardPage1 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
 
-		final Label lblNewEventType = new Label(container, SWT.NONE);
-		lblNewEventType.setText("New event type pid");
+		final Label lblEventType = new Label(container, SWT.NONE);
+		lblEventType.setText("Event type pid");
 
 		final ComboViewer comboViewerEventTypePid = new ComboViewer(container,
 				SWT.NONE);
@@ -159,7 +159,7 @@ public class NewEventRoleWizardPage1 extends WizardPage {
 				final int selectionIndex = comboEventTypePid
 						.getSelectionIndex();
 				wizard = (NewEventRoleWizard) getWizard();
-				wizard.setEventRolePid(Integer.parseInt(
+				wizard.setEventTypePid(Integer.parseInt(
 						eventRoleStringList.get(selectionIndex).get(0)));
 			}
 		});

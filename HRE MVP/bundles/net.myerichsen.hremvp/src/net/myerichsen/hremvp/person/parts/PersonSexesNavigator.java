@@ -161,7 +161,7 @@ public class PersonSexesNavigator {
 		try {
 
 			tableViewer.setInput(provider.getSexesList(personPid));
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -227,7 +227,7 @@ public class PersonSexesNavigator {
 			provider.removeSex(sexPid);
 			eventBroker.post("MESSAGE",
 					"Sex " + primaryName + " has been removed");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -254,7 +254,7 @@ public class PersonSexesNavigator {
 		try {
 			tableViewer.setInput(provider.getSexesList(personPid));
 			tableViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

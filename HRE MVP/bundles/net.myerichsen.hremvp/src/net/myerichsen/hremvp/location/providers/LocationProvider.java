@@ -30,7 +30,7 @@ public class LocationProvider implements IHREProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public LocationProvider() throws Exception {
@@ -41,7 +41,7 @@ public class LocationProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -54,7 +54,7 @@ public class LocationProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -97,7 +97,7 @@ public class LocationProvider implements IHREProvider {
 	 *
 	 * @return name The primary name of the location
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String getPrimaryName() throws Exception {
 		return server.getPrimaryName();
@@ -107,13 +107,12 @@ public class LocationProvider implements IHREProvider {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings with pids and labels
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
 	@Override
-	public List<List<String>> getStringList()
-			throws Exception {
+	public List<List<String>> getStringList() throws Exception {
 		return server.getStringList();
 	}
 
@@ -161,7 +160,7 @@ public class LocationProvider implements IHREProvider {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -243,7 +242,7 @@ public class LocationProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

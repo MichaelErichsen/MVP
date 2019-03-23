@@ -57,7 +57,7 @@ public class SexTypeServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -70,7 +70,7 @@ public class SexTypeServer implements IHREServer {
 	/**
 	 * @param target The request target
 	 * @throws NumberFormatException A Number Format Exception
-	 * @throws Exception          An exception that provides information on a
+	 * @throws Exception             An exception that provides information on a
 	 *                               database access error or other errors
 	 * @throws MvpException          Application specific exception
 	 */
@@ -95,7 +95,7 @@ public class SexTypeServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -158,15 +158,15 @@ public class SexTypeServer implements IHREServer {
 	 * @param target   String
 	 * @return JSONString a JSON String
 	 * @throws NumberFormatException NumberFormatException
-	 * @throws Exception          An exception that provides information on a
+	 * @throws Exception             An exception that provides information on a
 	 *                               database access error or other errors
 	 * @throws MvpException          Application specific exception
 	 * @throws IOException           IOException
 	 * @throws JSONException         JSONException
 	 */
 	public String getRemote(HttpServletResponse response, String target)
-			throws NumberFormatException, Exception,
-			IOException, JSONException {
+			throws NumberFormatException, Exception, IOException,
+			JSONException {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
@@ -291,7 +291,7 @@ public class SexTypeServer implements IHREServer {
 	 * Insert a row
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	@Override
 	public int insert() throws Exception {
@@ -308,7 +308,7 @@ public class SexTypeServer implements IHREServer {
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
 	 * @throws JSONException JSONException
-	 * @throws Exception  Exception
+	 * @throws Exception     Exception
 	 */
 	public void insertRemote(HttpServletRequest request)
 			throws IOException, JSONException, Exception {
@@ -371,7 +371,7 @@ public class SexTypeServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -389,7 +389,7 @@ public class SexTypeServer implements IHREServer {
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
 	 * @throws JSONException JSONException
-	 * @throws Exception  An exception that provides information on a
+	 * @throws Exception     An exception that provides information on a
 	 *                       database access error or other errors
 	 * @throws MvpException  Application specific exception
 	 */

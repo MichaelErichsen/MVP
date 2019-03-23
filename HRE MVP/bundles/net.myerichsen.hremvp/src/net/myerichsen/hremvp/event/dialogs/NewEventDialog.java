@@ -455,7 +455,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdateProvider.get(fromDatePid);
 				eventStringList.add(Integer.toString(fromDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("");
@@ -471,7 +471,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdateProvider.get(toDatePid);
 				eventStringList.add(Integer.toString(toDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("0");

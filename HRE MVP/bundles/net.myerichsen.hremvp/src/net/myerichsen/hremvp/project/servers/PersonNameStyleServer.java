@@ -27,7 +27,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public PersonNameStyleServer() throws Exception {
@@ -38,7 +38,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -128,7 +128,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * Insert a row
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	@Override
 	public int insert() throws Exception {
@@ -163,7 +163,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 * Update a row
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	@Override
 	public void update() throws Exception {

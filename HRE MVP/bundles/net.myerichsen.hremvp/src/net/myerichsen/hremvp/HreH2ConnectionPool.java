@@ -64,7 +64,7 @@ public class HreH2ConnectionPool {
 	 * Dispose the connection pool.
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public static void dispose() throws Exception {
 		final Connection conn = HreH2ConnectionPool.getConnection();
@@ -80,7 +80,7 @@ public class HreH2ConnectionPool {
 	/**
 	 * @return A JDBC connection
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public static Connection getConnection() throws Exception {
 		final String dbName = store.getString("DBNAME");
@@ -131,7 +131,7 @@ public class HreH2ConnectionPool {
 	 * @param dbName Name of database
 	 * @return A JDBC Connection
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public static Connection getConnection(String dbName) throws Exception {
 		h2TraceLevel = store.getInt("H2TRACELEVEL");

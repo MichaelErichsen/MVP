@@ -28,13 +28,12 @@ public class ProjectNewDatabaseProvider {
 	 *
 	 * @param dbName
 	 *
-	 * @throws Exception          When failing
+	 * @throws Exception             When failing
 	 * @throws BackingStoreException Preferences file access failure
 	 * @throws                       java.util.prefs.BackingStoreException
 	 * @throws                       org.osgi.service.prefs.BackingStoreException
 	 */
-	public void provide(String dbName)
-			throws Exception, BackingStoreException {
+	public void provide(String dbName) throws Exception, BackingStoreException {
 		server.provide(dbName);
 	}
 }

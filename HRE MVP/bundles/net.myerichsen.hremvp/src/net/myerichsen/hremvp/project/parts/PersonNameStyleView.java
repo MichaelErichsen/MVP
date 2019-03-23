@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a Name Style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class PersonNameStyleView {
@@ -81,6 +81,61 @@ public class PersonNameStyleView {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 *
+	 */
+	private void addEditingSupport() {
+		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+				tableViewer) {
+			@Override
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+				return (event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL)
+						|| (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION)
+						|| ((event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED)
+								&& (event.keyCode == SWT.CR))
+						|| (event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
+			}
+		};
+
+		TableViewerEditor.create(tableViewer, focusCellManager,
+				editorActivationStrategy,
+				ColumnViewerEditor.TABBING_HORIZONTAL
+						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+						| ColumnViewerEditor.TABBING_VERTICAL
+						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
+
+		tableViewer.getTable().addTraverseListener(new TraverseListener() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
+			 * swt.events.TraverseEvent)
+			 */
+			@Override
+			public void keyTraversed(TraverseEvent e) {
+				if (e.keyCode == SWT.TAB) {
+					LOGGER.fine("Traversed " + e.keyCode);
+
+					final int itemCount = tableViewer.getTable().getItemCount();
+					final int selectionIndex = tableViewer.getTable()
+							.getSelectionIndex();
+					if (selectionIndex < (itemCount - 1)) {
+						e.doit = false;
+
+					} else {
+						e.doit = true;
+					}
+
+				}
+			}
+
+		});
 	}
 
 	/**
@@ -170,55 +225,7 @@ public class PersonNameStyleView {
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 		tableViewerColumnMapLabel
 				.setLabelProvider(new HREColumnLabelProvider(3));
-
-		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
-				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
-		ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
-				tableViewer) {
-			protected boolean isEditorActivationEvent(
-					ColumnViewerEditorActivationEvent event) {
-				return event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL
-						|| event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION
-						|| (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED
-								&& event.keyCode == SWT.CR)
-						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC;
-			}
-		};
-
-		TableViewerEditor.create(tableViewer, focusCellManager,
-				editorActivationStrategy,
-				ColumnViewerEditor.TABBING_HORIZONTAL
-						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
-						| ColumnViewerEditor.TABBING_VERTICAL
-						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
-
-		tableViewer.getTable().addTraverseListener(new TraverseListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
-			 * swt.events.TraverseEvent)
-			 */
-			@Override
-			public void keyTraversed(TraverseEvent e) {
-				if (e.keyCode == SWT.TAB) {
-					LOGGER.fine("Traversed " + e.keyCode);
-
-					int itemCount = tableViewer.getTable().getItemCount();
-					int selectionIndex = tableViewer.getTable()
-							.getSelectionIndex();
-					if (selectionIndex < itemCount - 1) {
-						e.doit = false;
-
-					} else {
-						e.doit = true;
-					}
-
-				}
-			}
-
-		});
+		addEditingSupport();
 
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
@@ -305,7 +312,7 @@ public class PersonNameStyleView {
 				}
 			}
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -373,7 +380,7 @@ public class PersonNameStyleView {
 					+ personNameStylePid + " has been updated");
 			eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
 					personNameStylePid);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

@@ -354,7 +354,7 @@ public class LocationView {
 		try {
 			try {
 				provider.get(key);
-			} catch (Exception e2) {
+			} catch (final Exception e2) {
 			}
 			textId.setText(Integer.toString(key));
 
@@ -422,7 +422,7 @@ public class LocationView {
 						found = true;
 						break;
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					LOGGER.info(e.getMessage());
 				}
 			}

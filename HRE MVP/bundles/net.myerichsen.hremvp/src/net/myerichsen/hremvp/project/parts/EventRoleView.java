@@ -45,11 +45,10 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 
-// FIXME Populate type field
 public class EventRoleView {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -76,6 +75,61 @@ public class EventRoleView {
 	}
 
 	/**
+	 *
+	 */
+	private void addEditingSupport() {
+		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+				tableViewer) {
+			@Override
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+				return (event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL)
+						|| (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION)
+						|| ((event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED)
+								&& (event.keyCode == SWT.CR))
+						|| (event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
+			}
+		};
+
+		TableViewerEditor.create(tableViewer, focusCellManager,
+				editorActivationStrategy,
+				ColumnViewerEditor.TABBING_HORIZONTAL
+						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+						| ColumnViewerEditor.TABBING_VERTICAL
+						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
+
+		tableViewer.getTable().addTraverseListener(new TraverseListener() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
+			 * swt.events.TraverseEvent)
+			 */
+			@Override
+			public void keyTraversed(TraverseEvent e) {
+				if (e.keyCode == SWT.TAB) {
+					LOGGER.fine("Traversed " + e.keyCode);
+
+					final int itemCount = tableViewer.getTable().getItemCount();
+					final int selectionIndex = tableViewer.getTable()
+							.getSelectionIndex();
+					if (selectionIndex < (itemCount - 1)) {
+						e.doit = false;
+
+					} else {
+						e.doit = true;
+					}
+
+				}
+			}
+
+		});
+	}
+
+	/**
 	 * Create contents of the view part.
 	 */
 	@PostConstruct
@@ -98,7 +152,7 @@ public class EventRoleView {
 		textLabelPid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblEventTypeId = new Label(parent, SWT.NONE);
+		final Label lblEventTypeId = new Label(parent, SWT.NONE);
 		lblEventTypeId.setLayoutData(
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEventTypeId.setText("Event Type id");
@@ -156,54 +210,7 @@ public class EventRoleView {
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
-		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
-				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
-		ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
-				tableViewer) {
-			protected boolean isEditorActivationEvent(
-					ColumnViewerEditorActivationEvent event) {
-				return event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL
-						|| event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION
-						|| (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED
-								&& event.keyCode == SWT.CR)
-						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC;
-			}
-		};
-
-		TableViewerEditor.create(tableViewer, focusCellManager,
-				editorActivationStrategy,
-				ColumnViewerEditor.TABBING_HORIZONTAL
-						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
-						| ColumnViewerEditor.TABBING_VERTICAL
-						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
-
-		tableViewer.getTable().addTraverseListener(new TraverseListener() {
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
-			 * swt.events.TraverseEvent)
-			 */
-			@Override
-			public void keyTraversed(TraverseEvent e) {
-				if (e.keyCode == SWT.TAB) {
-					LOGGER.fine("Traversed " + e.keyCode);
-
-					int itemCount = tableViewer.getTable().getItemCount();
-					int selectionIndex = tableViewer.getTable()
-							.getSelectionIndex();
-					if (selectionIndex < itemCount - 1) {
-						e.doit = false;
-
-					} else {
-						e.doit = true;
-					}
-
-				}
-			}
-
-		});
+		addEditingSupport();
 
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -252,8 +259,8 @@ public class EventRoleView {
 	}
 
 	/**
-	 * @param ls A list of lists of event Role pids, dictionary pids,
-	 *           abbreviations and generic labels
+	 * @param ls A list of event role pid, event type pid, dictionary pid and
+	 *           abbreviation
 	 *
 	 */
 	@Inject
@@ -265,9 +272,11 @@ public class EventRoleView {
 			provider.get();
 			final String eventRolePidString = ls.get(0);
 			textEventRolePid.setText(eventRolePidString);
+			final String eventTypePidString = ls.get(1);
+			textEventTypePid.setText(eventTypePidString);
 			eventRolePid = Integer.parseInt(eventRolePidString);
-			textLabelPid.setText(ls.get(1));
-			textAbbreviation.setText(ls.get(2));
+			textLabelPid.setText(ls.get(2));
+			textAbbreviation.setText(ls.get(3));
 
 			provider.get(eventRolePid);
 			labelPid = provider.getLabelPid();
@@ -338,9 +347,10 @@ public class EventRoleView {
 			}
 			eventBroker.post("MESSAGE",
 					"Event Role " + eventRolePid + " has been updated");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -201,21 +201,21 @@ public class LocationNamePartServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		List<String> stringList;
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 
 		if (key == 0) {
 			return lls;
 		}
 
-		Dictionary dictionary = new Dictionary();
+		final Dictionary dictionary = new Dictionary();
 
-		LocationNames ln = new LocationNames();
+		final LocationNames ln = new LocationNames();
 		ln.get(key);
 
-		List<LocationNameMaps> lnm = new LocationNameMaps()
+		final List<LocationNameMaps> lnm = new LocationNameMaps()
 				.getFKLocationNameStylePid(ln.getLocationNameStylePid());
 
-		List<LocationNameParts> lnp = part.getFKLocationNamePid(key);
+		final List<LocationNameParts> lnp = part.getFKLocationNamePid(key);
 
 		for (int i = 0; i < lnm.size(); i++) {
 			stringList = new ArrayList<>();
@@ -223,8 +223,9 @@ public class LocationNamePartServer implements IHREServer {
 					.add(Integer.toString(lnp.get(i).getLocationNamePartPid()));
 			stringList.add(Integer.toString(lnp.get(i).getPartNo()));
 
-			int labelPid = lnm.get(i).getLabelPid();
-			List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+			final int labelPid = lnm.get(i).getLabelPid();
+			final List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(labelPid);
 			stringList.add(fkLabelPid.get(0).getLabel());
 			stringList.add(lnp.get(i).getLabel());
 			lls.add(stringList);

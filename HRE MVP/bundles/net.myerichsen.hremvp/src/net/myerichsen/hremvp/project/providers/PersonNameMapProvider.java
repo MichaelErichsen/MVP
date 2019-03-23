@@ -37,7 +37,7 @@ public class PersonNameMapProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors.
 	 * @throws MvpException Application specific exception
 	 */
@@ -60,7 +60,7 @@ public class PersonNameMapProvider implements IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors.
 	 * @throws MvpException Application specific exception
 	 */
@@ -147,7 +147,7 @@ public class PersonNameMapProvider implements IHREProvider {
 	 * Insert a row
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors.
+	 *                   access error or other errors.
 	 *
 	 */
 	@Override
@@ -198,7 +198,7 @@ public class PersonNameMapProvider implements IHREProvider {
 	 * Update a row
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors.
+	 *                   access error or other errors.
 	 *
 	 */
 	@Override

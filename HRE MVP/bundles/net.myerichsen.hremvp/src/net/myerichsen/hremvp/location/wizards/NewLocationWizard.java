@@ -297,7 +297,7 @@ public class NewLocationWizard extends Wizard {
 	 * @param stringList the locationNamePartList to set
 	 */
 	public void setLocationNamePartList(List<String> stringList) {
-		this.locationNamePartList = stringList;
+		locationNamePartList = stringList;
 	}
 
 	/**

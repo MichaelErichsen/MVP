@@ -106,7 +106,7 @@ public class H2PreferencePage extends FieldEditorPreferencePage
 			} catch (final SQLException e) {
 				LOGGER.severe(e.getMessage() + ", " + e.getErrorCode() + ", "
 						+ e.getSQLState());
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

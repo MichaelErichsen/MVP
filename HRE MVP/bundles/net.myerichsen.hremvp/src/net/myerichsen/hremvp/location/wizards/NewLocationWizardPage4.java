@@ -45,7 +45,7 @@ public class NewLocationWizardPage4 extends WizardPage {
 		browser.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		wizard = (NewLocationWizard) getWizard();
-		String urlString = "http://www.google.com/maps/@?api=1&map_action=map&center="
+		final String urlString = "http://www.google.com/maps/@?api=1&map_action=map&center="
 				+ wizard.getxCoordinate() + ", " + wizard.getyCoordinate()
 				+ "&basemap=terrain";
 		browser.setUrl(urlString);

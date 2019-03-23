@@ -215,7 +215,7 @@ public class PersonNamePartView {
 			eventBroker.post("MESSAGE",
 					" Name Part " + textId.getText() + " has been deleted");
 			clear();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}

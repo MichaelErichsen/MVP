@@ -173,7 +173,7 @@ public class LocationNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList());
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
@@ -208,15 +208,15 @@ public class LocationNavigator {
 
 		try {
 			// Delete all location events for location
-			LocationEventProvider lep = new LocationEventProvider();
+			final LocationEventProvider lep = new LocationEventProvider();
 			lep.deleteAllEventLinksForLocation(locationPid);
 
 			// Delete all location name parts
-			LocationNameProvider lnp = new LocationNameProvider();
-			List<Integer> locationNamePidList = lnp
+			final LocationNameProvider lnp = new LocationNameProvider();
+			final List<Integer> locationNamePidList = lnp
 					.getFKLocationPid(locationPid);
 
-			LocationNamePartProvider lnpp = new LocationNamePartProvider();
+			final LocationNamePartProvider lnpp = new LocationNamePartProvider();
 			for (int i = 0; i < locationNamePidList.size(); i++) {
 				lnpp.deleteAllNamePartsForLocationName(
 						locationNamePidList.get(i));
@@ -233,7 +233,7 @@ public class LocationNavigator {
 			eventBroker.post("MESSAGE",
 					"Location " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -266,7 +266,7 @@ public class LocationNavigator {
 						found = true;
 						break;
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					LOGGER.info(e.getMessage());
 				}
 			}
@@ -320,7 +320,7 @@ public class LocationNavigator {
 						break;
 					}
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

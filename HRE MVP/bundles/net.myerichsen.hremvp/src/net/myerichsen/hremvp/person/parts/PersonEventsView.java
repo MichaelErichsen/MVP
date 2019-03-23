@@ -207,7 +207,7 @@ public class PersonEventsView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPersonEventList(0));
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -273,7 +273,7 @@ public class PersonEventsView {
 			provider.removeEvent(EventPid);
 			eventBroker.post("MESSAGE",
 					"Event " + primaryName + " has been removed");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -299,7 +299,7 @@ public class PersonEventsView {
 		try {
 			tableViewer.setInput(provider.getPersonEventList(personPid));
 			tableViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

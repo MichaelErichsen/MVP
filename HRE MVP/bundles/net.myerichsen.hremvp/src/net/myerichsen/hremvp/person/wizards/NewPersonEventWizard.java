@@ -86,7 +86,7 @@ public class NewPersonEventWizard extends Wizard {
 						personPid);
 				return true;
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

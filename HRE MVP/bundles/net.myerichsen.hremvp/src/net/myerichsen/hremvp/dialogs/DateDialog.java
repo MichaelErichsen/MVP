@@ -534,6 +534,13 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @return the Date
+	 */
+	public Date getDate() {
+		return Date;
+	}
+
+	/**
 	 * @return the hDatePid
 	 */
 	public int gethDatePid() {
@@ -546,13 +553,6 @@ public class DateDialog extends TitleAreaDialog {
 	@Override
 	protected Point getInitialSize() {
 		return new Point(681, 517);
-	}
-
-	/**
-	 * @return the Date
-	 */
-	public Date getDate() {
-		return Date;
 	}
 
 	/**
@@ -621,6 +621,13 @@ public class DateDialog extends TitleAreaDialog {
 			textOriginal.setText(date);
 			setOriginal(date);
 		}
+	}
+
+	/**
+	 * @param Date the Date to set
+	 */
+	protected void setDate(Date Date) {
+		this.Date = Date;
 	}
 
 	/**
@@ -714,13 +721,6 @@ public class DateDialog extends TitleAreaDialog {
 			textOriginal.setText(date);
 			setOriginal(date);
 		}
-	}
-
-	/**
-	 * @param Date the Date to set
-	 */
-	protected void setDate(Date Date) {
-		this.Date = Date;
 	}
 
 	/**

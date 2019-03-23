@@ -11,10 +11,10 @@ import net.myerichsen.hremvp.project.providers.DictionaryProvider;
 import net.myerichsen.hremvp.project.providers.EventRoleProvider;
 
 /**
- * Wizard to add a event Role
+ * Wizard to add an event role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class NewEventRoleWizard extends Wizard {
@@ -25,6 +25,7 @@ public class NewEventRoleWizard extends Wizard {
 
 	private NewEventRoleWizardPage1 page1;
 	private EventRoleProvider provider;
+	private int eventTypePid = 0;
 
 	/**
 	 * Constructor
@@ -52,6 +53,13 @@ public class NewEventRoleWizard extends Wizard {
 		addPage(page1);
 	}
 
+	/**
+	 * @return the eventTypePid
+	 */
+	public int getEventTypePid() {
+		return eventTypePid;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -67,6 +75,7 @@ public class NewEventRoleWizard extends Wizard {
 			try {
 				provider = new EventRoleProvider();
 				provider.setAbbreviation(abbreviation);
+				provider.setEventTypePid(eventTypePid);
 
 				final int eventRolePid = provider.insert();
 				LOGGER.info("Inserted event role " + eventRolePid);
@@ -109,7 +118,14 @@ public class NewEventRoleWizard extends Wizard {
 	 */
 	public void setEventRolePid(int parseInt) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	/**
+	 * @param eventTypePid the eventTypePid to set
+	 */
+	public void setEventTypePid(int eventTypePid) {
+		this.eventTypePid = eventTypePid;
 	}
 
 }

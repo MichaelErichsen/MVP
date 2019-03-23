@@ -67,7 +67,7 @@ public class PersonParentsView {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public PersonParentsView() {
@@ -224,7 +224,7 @@ public class PersonParentsView {
 			provider.removeParent(personPid, ParentPid);
 			eventBroker.post("MESSAGE",
 					"Parent " + primaryName + " has been removed");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

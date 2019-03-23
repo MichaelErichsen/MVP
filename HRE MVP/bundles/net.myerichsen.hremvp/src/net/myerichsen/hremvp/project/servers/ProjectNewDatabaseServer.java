@@ -352,8 +352,7 @@ public class ProjectNewDatabaseServer {
 	 * @throws Exception
 	 * @throws BackingStoreException
 	 */
-	public void provide(String dbName)
-			throws Exception, BackingStoreException {
+	public void provide(String dbName) throws Exception, BackingStoreException {
 		LOGGER.info("Provide the data");
 		HreH2ConnectionPool.createNew(dbName);
 		conn = HreH2ConnectionPool.getConnection();

@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
 public class LocationEventServer implements IHREServer {
 //	private final static Logger LOGGER = Logger
 //			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private LocationEvents locationEvent;
+	private final LocationEvents locationEvent;
 
 	/**
 	 * Constructor
@@ -45,11 +45,12 @@ public class LocationEventServer implements IHREServer {
 	 * @param locationPid
 	 * @throws Exception
 	 */
-	public void deleteAllEventLinksForLocation(int locationPid) throws Exception {
-		List<LocationEvents> fkLocationPid = locationEvent
+	public void deleteAllEventLinksForLocation(int locationPid)
+			throws Exception {
+		final List<LocationEvents> fkLocationPid = locationEvent
 				.getFKLocationPid(locationPid);
 
-		for (LocationEvents event : fkLocationPid) {
+		for (final LocationEvents event : fkLocationPid) {
 			locationEvent.delete(event.getLocationEventsPid());
 		}
 	}

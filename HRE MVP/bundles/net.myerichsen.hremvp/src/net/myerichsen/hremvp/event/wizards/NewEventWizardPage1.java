@@ -82,7 +82,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		comboEventType.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -105,7 +105,7 @@ public class NewEventWizardPage1 extends WizardPage {
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEventName.setText("Event Name");
 
-		Text textEventName = new Text(container, SWT.BORDER);
+		final Text textEventName = new Text(container, SWT.BORDER);
 		textEventName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 

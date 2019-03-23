@@ -176,7 +176,7 @@ public class PersonNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPersonList());
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -217,7 +217,7 @@ public class PersonNavigator {
 			eventBroker.post("MESSAGE",
 					"Person " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -269,7 +269,7 @@ public class PersonNavigator {
 						break;
 					}
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

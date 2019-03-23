@@ -108,7 +108,7 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext bundleContext) {
 		try {
 			HreH2ConnectionPool.dispose();
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 		}
 

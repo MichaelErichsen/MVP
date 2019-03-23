@@ -392,7 +392,7 @@ public class ProjectNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.get());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -932,7 +932,7 @@ public class ProjectNavigator {
 		try {
 			tableViewer.setInput(provider.get());
 			tableViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

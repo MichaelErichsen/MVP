@@ -44,6 +44,13 @@ public class LocationPersonServer implements IHREServer {
 
 	}
 
+	/**
+	 * @return
+	 */
+	public List<?> get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -130,14 +137,6 @@ public class LocationPersonServer implements IHREServer {
 	public void update() throws Exception {
 		// TODO Auto-generated method stub
 
-	}
-
-	/**
-	 * @return
-	 */
-	public List<?> get() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

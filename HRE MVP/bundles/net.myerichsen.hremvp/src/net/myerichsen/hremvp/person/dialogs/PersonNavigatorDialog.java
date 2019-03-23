@@ -175,7 +175,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getPersonList());
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

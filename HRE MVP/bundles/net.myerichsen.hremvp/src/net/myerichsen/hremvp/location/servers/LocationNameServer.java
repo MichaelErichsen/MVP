@@ -34,7 +34,7 @@ public class LocationNameServer implements IHREServer {
 	private List<LocationNameMaps> mapList;
 	private List<LocationNameParts> partList;
 
-	private LocationNames name;
+	private final LocationNames name;
 	private final LocationNameStyles style;
 
 	/**
@@ -257,7 +257,7 @@ public class LocationNameServer implements IHREServer {
 		int datePid;
 		String s;
 
-		HDateProvider hdp = new HDateProvider();
+		final HDateProvider hdp = new HDateProvider();
 		final List<List<String>> lls = new ArrayList<>();
 
 		if (key == 0) {

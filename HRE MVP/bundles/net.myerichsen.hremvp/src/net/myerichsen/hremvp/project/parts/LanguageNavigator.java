@@ -214,7 +214,7 @@ public class LanguageNavigator {
 			eventBroker.post("MESSAGE",
 					"Language " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LANGUAGE_PID_UPDATE_TOPIC, 0);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

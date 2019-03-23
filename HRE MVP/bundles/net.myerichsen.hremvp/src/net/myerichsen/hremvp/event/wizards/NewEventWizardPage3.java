@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 
 /**
  * Wizard page to add a person to an event
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 21. mar. 2019
  *
@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 public class NewEventWizardPage3 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEclipseContext context;
+	private final IEclipseContext context;
 	private NewEventWizard wizard;
 	private Text textPerson;
 
@@ -52,25 +52,25 @@ public class NewEventWizardPage3 extends WizardPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
 	 * widgets.Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NONE);
+		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
 		container.setLayout(new GridLayout(1, false));
 
-		Composite compositePerson = new Composite(container, SWT.BORDER);
-		GridData gd_compositePerson = new GridData(SWT.LEFT, SWT.CENTER, false,
-				false, 1, 1);
+		final Composite compositePerson = new Composite(container, SWT.BORDER);
+		final GridData gd_compositePerson = new GridData(SWT.LEFT, SWT.CENTER,
+				false, false, 1, 1);
 		gd_compositePerson.widthHint = 559;
 		compositePerson.setLayoutData(gd_compositePerson);
 		compositePerson.setLayout(new GridLayout(2, false));
 
-		Label lblPerson = new Label(compositePerson, SWT.NONE);
+		final Label lblPerson = new Label(compositePerson, SWT.NONE);
 		lblPerson.setText("Person");
 
 		textPerson = new Text(compositePerson, SWT.BORDER);
@@ -78,24 +78,26 @@ public class NewEventWizardPage3 extends WizardPage {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textPerson.setEditable(false);
 
-		Composite compositePersonButtons = new Composite(compositePerson,
+		final Composite compositePersonButtons = new Composite(compositePerson,
 				SWT.NONE);
 		compositePersonButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositePersonButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnNewPerson = new Button(compositePersonButtons, SWT.NONE);
+		final Button btnNewPerson = new Button(compositePersonButtons,
+				SWT.NONE);
 		btnNewPerson.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				PersonDialog dialog = new PersonDialog(getShell(), context);
+				final PersonDialog dialog = new PersonDialog(getShell(),
+						context);
 
 				if (dialog.open() == Window.OK) {
 					// TODO
@@ -105,22 +107,23 @@ public class NewEventWizardPage3 extends WizardPage {
 		});
 		btnNewPerson.setText("New");
 
-		Button btnBrowsePerson = new Button(compositePersonButtons, SWT.NONE);
+		final Button btnBrowsePerson = new Button(compositePersonButtons,
+				SWT.NONE);
 		btnBrowsePerson.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				PersonNavigatorDialog dialog = new PersonNavigatorDialog(
+				final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
 						getShell(), context);
 
 				if (dialog.open() == Window.OK) {
-					int personPid = dialog.getPersonPid();
+					final int personPid = dialog.getPersonPid();
 					wizard = (NewEventWizard) getWizard();
 					wizard.setPersonPid(personPid);
 					textPerson.setText(dialog.getPersonName());
@@ -130,11 +133,12 @@ public class NewEventWizardPage3 extends WizardPage {
 		});
 		btnBrowsePerson.setText("Browse");
 
-		Button btnClearPerson = new Button(compositePersonButtons, SWT.NONE);
+		final Button btnClearPerson = new Button(compositePersonButtons,
+				SWT.NONE);
 		btnClearPerson.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -149,24 +153,25 @@ public class NewEventWizardPage3 extends WizardPage {
 		});
 		btnClearPerson.setText("Clear");
 
-		Composite compositeRole = new Composite(container, SWT.BORDER);
+		final Composite compositeRole = new Composite(container, SWT.BORDER);
 		compositeRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		compositeRole.setLayout(new GridLayout(2, false));
 
-		Label label = new Label(compositeRole, SWT.NONE);
+		final Label label = new Label(compositeRole, SWT.NONE);
 		label.setText("Event Role");
 
-		ComboViewer comboViewerRole = new ComboViewer(compositeRole, SWT.NONE);
-		Combo comboRole = comboViewerRole.getCombo();
+		final ComboViewer comboViewerRole = new ComboViewer(compositeRole,
+				SWT.NONE);
+		final Combo comboRole = comboViewerRole.getCombo();
 		comboRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Button btnPrimaryperson = new Button(container, SWT.CHECK);
+		final Button btnPrimaryperson = new Button(container, SWT.CHECK);
 		btnPrimaryperson.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
 			 * events.FocusEvent)
@@ -182,11 +187,11 @@ public class NewEventWizardPage3 extends WizardPage {
 		btnPrimaryperson.setSelection(true);
 		btnPrimaryperson.setText("Primary Person");
 
-		Button btnPrimaryPersonEvent = new Button(container, SWT.CHECK);
+		final Button btnPrimaryPersonEvent = new Button(container, SWT.CHECK);
 		btnPrimaryPersonEvent.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
 			 * events.FocusEvent)

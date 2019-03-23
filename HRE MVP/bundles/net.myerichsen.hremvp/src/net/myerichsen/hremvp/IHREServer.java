@@ -23,7 +23,7 @@ public interface IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -35,7 +35,7 @@ public interface IHREServer {
 	 *
 	 * @return List A list of lists of strings
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	List<List<String>> getStringList() throws Exception;
 
@@ -45,7 +45,7 @@ public interface IHREServer {
 	 * @param key
 	 * @return List A list of lists of strings
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	List<List<String>> getStringList(int key) throws Exception;
 
@@ -53,7 +53,7 @@ public interface IHREServer {
 	 * Insert a row
 	 *
 	 * @return The Pid of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -62,7 +62,7 @@ public interface IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

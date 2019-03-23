@@ -129,7 +129,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hdatePid);
 				textToDate.setText(hdp.getDate().toString());
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}
@@ -419,7 +419,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				}
 			}
 			comboLanguage.select(index);
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}

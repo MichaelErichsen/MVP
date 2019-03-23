@@ -19,7 +19,7 @@ public class LocationDialog extends TitleAreaDialog {
 
 	/**
 	 * Create the dialog.
-	 * 
+	 *
 	 * @param parentShell
 	 * @param context
 	 */
@@ -28,24 +28,8 @@ public class LocationDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * Create contents of the dialog.
-	 * 
-	 * @param parent
-	 */
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		setMessage("Add a new location");
-		setTitle("Location");
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-		return area;
-	}
-
-	/**
 	 * Create contents of the button bar.
-	 * 
+	 *
 	 * @param parent
 	 */
 	@Override
@@ -54,6 +38,22 @@ public class LocationDialog extends TitleAreaDialog {
 				true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
+	}
+
+	/**
+	 * Create contents of the dialog.
+	 *
+	 * @param parent
+	 */
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		setMessage("Add a new location");
+		setTitle("Location");
+		final Composite area = (Composite) super.createDialogArea(parent);
+		final Composite container = new Composite(area, SWT.NONE);
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		return area;
 	}
 
 	/**

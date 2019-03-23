@@ -24,7 +24,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
 
 /**
  * Wizard page to add a location for an event
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 20. mar. 2019
  *
@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
 public class NewEventWizardPage2 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEclipseContext context;
+	private final IEclipseContext context;
 	private NewEventWizard wizard;
 
 	/**
@@ -50,56 +50,59 @@ public class NewEventWizardPage2 extends WizardPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
 	 * widgets.Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NONE);
+		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
 		container.setLayout(new GridLayout(1, false));
 
-		Composite compositeLocation = new Composite(container, SWT.BORDER);
+		final Composite compositeLocation = new Composite(container,
+				SWT.BORDER);
 		compositeLocation.setLayout(new GridLayout(2, false));
 		compositeLocation.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Label lblLocation = new Label(compositeLocation, SWT.NONE);
+		final Label lblLocation = new Label(compositeLocation, SWT.NONE);
 		lblLocation.setText("Location");
 
-		Text textLocation = new Text(compositeLocation, SWT.BORDER);
+		final Text textLocation = new Text(compositeLocation, SWT.BORDER);
 		textLocation.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textLocation.setEditable(false);
 
-		Composite compositeButtons = new Composite(compositeLocation, SWT.NONE);
+		final Composite compositeButtons = new Composite(compositeLocation,
+				SWT.NONE);
 		compositeButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnNew = new Button(compositeButtons, SWT.NONE);
+		final Button btnNew = new Button(compositeButtons, SWT.NONE);
 		btnNew.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				LocationDialog dialog = new LocationDialog(getShell(), context);
+				final LocationDialog dialog = new LocationDialog(getShell(),
+						context);
 				if (dialog.open() == Window.OK) {
 					try {
-						int locationPid = dialog.getLocationPid();
+						final int locationPid = dialog.getLocationPid();
 						wizard = (NewEventWizard) getWizard();
 						wizard.setLocationPid(locationPid);
-						LocationProvider provider = new LocationProvider();
+						final LocationProvider provider = new LocationProvider();
 						provider.get(locationPid);
 						textLocation.setText(provider.getPrimaryName());
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
 						e1.printStackTrace();
 					}
@@ -109,29 +112,29 @@ public class NewEventWizardPage2 extends WizardPage {
 		});
 		btnNew.setText("New");
 
-		Button btnBrowse = new Button(compositeButtons, SWT.NONE);
+		final Button btnBrowse = new Button(compositeButtons, SWT.NONE);
 		btnBrowse.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				LocationNavigatorDialog dialog = new LocationNavigatorDialog(
+				final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
 						getShell(), context);
 
 				if (dialog.open() == Window.OK) {
 					try {
-						int locationPid = dialog.getLocationPid();
+						final int locationPid = dialog.getLocationPid();
 						wizard = (NewEventWizard) getWizard();
 						wizard.setLocationPid(locationPid);
-						LocationProvider provider = new LocationProvider();
+						final LocationProvider provider = new LocationProvider();
 						provider.get(locationPid);
 						textLocation.setText(provider.getPrimaryName());
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
 						e1.printStackTrace();
 					}
@@ -140,11 +143,11 @@ public class NewEventWizardPage2 extends WizardPage {
 		});
 		btnBrowse.setText("Browse");
 
-		Button btnClear = new Button(compositeButtons, SWT.NONE);
+		final Button btnClear = new Button(compositeButtons, SWT.NONE);
 		btnClear.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -158,11 +161,11 @@ public class NewEventWizardPage2 extends WizardPage {
 		});
 		btnClear.setText("Clear");
 
-		Button btnPrimaryLocation = new Button(container, SWT.CHECK);
+		final Button btnPrimaryLocation = new Button(container, SWT.CHECK);
 		btnPrimaryLocation.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
 			 * events.FocusEvent)
@@ -176,13 +179,13 @@ public class NewEventWizardPage2 extends WizardPage {
 		btnPrimaryLocation.setSelection(true);
 		btnPrimaryLocation.setText("Primary Location");
 
-		Button btnPrimaryEvent = new Button(container, SWT.CHECK);
+		final Button btnPrimaryEvent = new Button(container, SWT.CHECK);
 		btnPrimaryEvent.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnPrimaryEvent.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
 			 * events.FocusEvent)

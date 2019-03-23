@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class EventRoleServer implements IHREServer {
@@ -26,6 +26,7 @@ public class EventRoleServer implements IHREServer {
 	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int EventRolePid;
+	private int EventTypePid;
 	private String abbreviation;
 	private int TableId = 17;
 
@@ -43,7 +44,7 @@ public class EventRoleServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -93,7 +94,7 @@ public class EventRoleServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -120,6 +121,13 @@ public class EventRoleServer implements IHREServer {
 	}
 
 	/**
+	 * @return the eventTypePid
+	 */
+	public int getEventTypePid() {
+		return EventTypePid;
+	}
+
+	/**
 	 * @return
 	 */
 	public int getLabelPid() {
@@ -128,7 +136,7 @@ public class EventRoleServer implements IHREServer {
 
 	/**
 	 * @return stringList A list of lists of event Role pids, label pids,
-	 *         abbreviations and generic labels
+	 *         abbreviations, generic labels and event type pids
 	 * @throws Exception
 	 */
 	@Override
@@ -144,7 +152,7 @@ public class EventRoleServer implements IHREServer {
 		final Dictionary dictionary = new Dictionary();
 
 		final List<EventRoles> list = eventRole.get();
-
+//
 		for (final EventRoles st : list) {
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(st.getEventRolePid()));
@@ -160,10 +168,40 @@ public class EventRoleServer implements IHREServer {
 			}
 
 			stringList.add(label);
+			stringList.add(Integer.toString(st.getEventTypePid()));
 			lls.add(stringList);
 		}
 		return lls;
 	}
+
+//	/**
+//	 * @param key
+//	 * @return
+//	 * @throws Exception
+//	 * @throws MvpException
+//	 */
+//	public List<List<String>> getNameList(int key)
+//			throws Exception {
+//		List<String> stringList;
+//
+//		final List<List<String>> lls = new ArrayList<>();
+//		final EventNames names = new EventNames();
+//		final List<EventNames> eventNameList = names.getFKEventRolePid(key);
+//		new Languages();
+//
+//		for (final EventNames eventNames : eventNameList) {
+//			stringList = new ArrayList<>();
+//			stringList.add(Integer.toString(eventNames.getEventRolePid()));
+//			stringList.add(eventNames.getLabel());
+//
+////			language.get(eventNames.getLanguagePid());
+////			stringList.add(language.getLabel());
+////			stringList.add(language.getIsocode());
+//			lls.add(stringList);
+//		}
+//
+//		return lls;
+//	}
 
 	/**
 	 * @param labelPid
@@ -217,35 +255,6 @@ public class EventRoleServer implements IHREServer {
 		return lls;
 	}
 
-//	/**
-//	 * @param key
-//	 * @return
-//	 * @throws Exception
-//	 * @throws MvpException
-//	 */
-//	public List<List<String>> getNameList(int key)
-//			throws Exception {
-//		List<String> stringList;
-//
-//		final List<List<String>> lls = new ArrayList<>();
-//		final EventNames names = new EventNames();
-//		final List<EventNames> eventNameList = names.getFKEventRolePid(key);
-//		new Languages();
-//
-//		for (final EventNames eventNames : eventNameList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(eventNames.getEventRolePid()));
-//			stringList.add(eventNames.getLabel());
-//
-////			language.get(eventNames.getLanguagePid());
-////			stringList.add(language.getLabel());
-////			stringList.add(language.getIsocode());
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
-
 	/**
 	 * @return the tableId
 	 */
@@ -258,7 +267,7 @@ public class EventRoleServer implements IHREServer {
 	 *
 	 * @return int The persistent ID of the inserted row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -267,6 +276,7 @@ public class EventRoleServer implements IHREServer {
 		eventRole.setAbbreviation(abbreviation);
 		final Dictionary dictionary = new Dictionary();
 		eventRole.setLabelPid(dictionary.getNextLabelPid());
+		eventRole.setEventTypePid(EventTypePid);
 		eventRole.setTableId(TableId);
 		return eventRole.insert();
 	}
@@ -286,6 +296,13 @@ public class EventRoleServer implements IHREServer {
 	}
 
 	/**
+	 * @param eventTypePid the eventTypePid to set
+	 */
+	public void setEventTypePid(int eventTypePid) {
+		EventTypePid = eventTypePid;
+	}
+
+	/**
 	 * @param labelPid the labelPid to set
 	 */
 	public void setLabelPid(int labelPid) {
@@ -301,7 +318,7 @@ public class EventRoleServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

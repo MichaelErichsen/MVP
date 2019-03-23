@@ -100,7 +100,7 @@ public class EventNavigator {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -207,75 +207,10 @@ public class EventNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList());
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	protected void openEventView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		boolean found = false;
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			try {
-				for (int i = 0; i < a.size(); i++) {
-					part = (MPart) a.get(i);
-					if (part.getContributionURI().equals(contributionURI)) {
-						partService.showPart(part, PartState.ACTIVATE);
-						found = true;
-						break;
-					}
-				}
-			} catch (Exception e) {
-				LOGGER.info(e.getMessage());
-			}
-		}
-
-		if (!found) {
-			part.setLabel("Event View");
-			part.setCloseable(true);
-			part.setVisible(true);
-			part.setContributionURI(contributionURI);
-			stacks.get(stacks.size() - 5).getChildren().add(part);
-			partService.showPart(part, PartState.ACTIVATE);
-		}
-
-		int eventPid = 0;
-
-		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			eventPid = Integer.parseInt(selectedRow.getText(0));
-		}
-
-		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
-				eventPid);
-		LOGGER.info("Event Pid: " + eventPid);
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**
@@ -313,10 +248,75 @@ public class EventNavigator {
 			eventBroker.post("MESSAGE",
 					"event " + primaryName + " has been deleted");
 			eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 *
+	 */
+	@PreDestroy
+	public void dispose() {
+	}
+
+	/**
+	 *
+	 */
+	protected void openEventView() {
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
+
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		MPart part = MBasicFactory.INSTANCE.createPart();
+
+		boolean found = false;
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			try {
+				for (int i = 0; i < a.size(); i++) {
+					part = (MPart) a.get(i);
+					if (part.getContributionURI().equals(contributionURI)) {
+						partService.showPart(part, PartState.ACTIVATE);
+						found = true;
+						break;
+					}
+				}
+			} catch (final Exception e) {
+				LOGGER.info(e.getMessage());
+			}
+		}
+
+		if (!found) {
+			part.setLabel("Event View");
+			part.setCloseable(true);
+			part.setVisible(true);
+			part.setContributionURI(contributionURI);
+			stacks.get(stacks.size() - 5).getChildren().add(part);
+			partService.showPart(part, PartState.ACTIVATE);
+		}
+
+		int eventPid = 0;
+
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
+
+		if (selectedRows.length > 0) {
+			final TableItem selectedRow = selectedRows[0];
+			eventPid = Integer.parseInt(selectedRow.getText(0));
+		}
+
+		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
+				eventPid);
+		LOGGER.info("Event Pid: " + eventPid);
+	}
+
+	/**
+	 *
+	 */
+	@Focus
+	public void setFocus() {
 	}
 
 	/**
@@ -342,7 +342,7 @@ public class EventNavigator {
 						break;
 					}
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

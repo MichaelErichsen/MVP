@@ -222,7 +222,7 @@ public class PersonPartnersView {
 			provider.removePartner(personPid, PartnerPid);
 			eventBroker.post("MESSAGE",
 					"Partner " + primaryName + " has been removed");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

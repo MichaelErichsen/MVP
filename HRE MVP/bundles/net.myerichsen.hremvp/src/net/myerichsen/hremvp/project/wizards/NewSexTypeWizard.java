@@ -91,7 +91,7 @@ public class NewSexTypeWizard extends Wizard {
 						net.myerichsen.hremvp.Constants.SEX_TYPE_PID_UPDATE_TOPIC,
 						sexTypePid);
 				return true;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

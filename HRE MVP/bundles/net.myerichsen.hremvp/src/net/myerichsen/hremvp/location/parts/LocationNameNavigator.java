@@ -222,16 +222,16 @@ public class LocationNameNavigator {
 
 		try {
 			final LocationNamePartProvider lnpp = new LocationNamePartProvider();
-			List<Integer> fkLocationNamePid = lnpp
+			final List<Integer> fkLocationNamePid = lnpp
 					.getFKLocationNamePid(locationNamePid);
 
-			for (Integer integer : fkLocationNamePid) {
+			for (final Integer integer : fkLocationNamePid) {
 				lnpp.delete(integer);
 			}
 
-			LocationNameProvider lnp = new LocationNameProvider();
-			lnp.delete(locationNamePid);			
-			
+			final LocationNameProvider lnp = new LocationNameProvider();
+			lnp.delete(locationNamePid);
+
 			LOGGER.info("Location name " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Location name " + primaryName + " has been deleted");
@@ -274,7 +274,7 @@ public class LocationNameNavigator {
 						break;
 					}
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.info(e.getMessage());
 			}
 		}

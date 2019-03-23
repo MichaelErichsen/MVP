@@ -55,7 +55,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -91,6 +91,61 @@ public class NewLocationWizardPage2 extends WizardPage {
 		provider = new LocationNameMapProvider();
 	}
 
+	/**
+	 *
+	 */
+	private void addEditingSupport() {
+		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
+				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
+				tableViewer) {
+			@Override
+			protected boolean isEditorActivationEvent(
+					ColumnViewerEditorActivationEvent event) {
+				return (event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL)
+						|| (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION)
+						|| ((event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED)
+								&& (event.keyCode == SWT.CR))
+						|| (event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
+			}
+		};
+
+		TableViewerEditor.create(tableViewer, focusCellManager,
+				editorActivationStrategy,
+				ColumnViewerEditor.TABBING_HORIZONTAL
+						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+						| ColumnViewerEditor.TABBING_VERTICAL
+						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
+
+		tableViewer.getTable().addTraverseListener(new TraverseListener() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
+			 * swt.events.TraverseEvent)
+			 */
+			@Override
+			public void keyTraversed(TraverseEvent e) {
+				if (e.keyCode == SWT.TAB) {
+					LOGGER.fine("Traversed " + e.keyCode);
+
+					final int itemCount = tableViewer.getTable().getItemCount();
+					final int selectionIndex = tableViewer.getTable()
+							.getSelectionIndex();
+					if (selectionIndex < (itemCount - 1)) {
+						e.doit = false;
+
+					} else {
+						e.doit = true;
+					}
+
+				}
+			}
+
+		});
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -109,18 +164,17 @@ public class NewLocationWizardPage2 extends WizardPage {
 		table.addFocusListener(new FocusAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.
 			 * events.FocusEvent)
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
-				List<String> stringList = new ArrayList<>();
-				TableItem[] items = tableViewer.getTable().getItems();
+				final List<String> stringList = new ArrayList<>();
+				final TableItem[] items = tableViewer.getTable().getItems();
 
-				for (int i = 0; i < items.length; i++) {
-					TableItem tableItem = items[i];
+				for (final TableItem tableItem : items) {
 					String text = tableItem.getText(4);
 
 					if (text.length() == 0) {
@@ -181,55 +235,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewerColumnPartLabel
 				.setLabelProvider(new HREColumnLabelProvider(4));
 
-		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
-				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
-		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
-				tableViewer) {
-			@Override
-			protected boolean isEditorActivationEvent(
-					ColumnViewerEditorActivationEvent event) {
-				return (event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL)
-						|| (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION)
-						|| ((event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED)
-								&& (event.keyCode == SWT.CR))
-						|| (event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
-			}
-		};
-
-		TableViewerEditor.create(tableViewer, focusCellManager,
-				editorActivationStrategy,
-				ColumnViewerEditor.TABBING_HORIZONTAL
-						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
-						| ColumnViewerEditor.TABBING_VERTICAL
-						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
-
-		tableViewer.getTable().addTraverseListener(new TraverseListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
-			 * swt.events.TraverseEvent)
-			 */
-			@Override
-			public void keyTraversed(TraverseEvent e) {
-				if (e.keyCode == SWT.TAB) {
-					LOGGER.fine("Traversed " + e.keyCode);
-
-					final int itemCount = tableViewer.getTable().getItemCount();
-					final int selectionIndex = tableViewer.getTable()
-							.getSelectionIndex();
-					if (selectionIndex < (itemCount - 1)) {
-						e.doit = false;
-
-					} else {
-						e.doit = true;
-					}
-
-				}
-			}
-
-		});
+		addEditingSupport();
 
 		final Label lblGoogleMapsKey = new Label(container, SWT.NONE);
 		lblGoogleMapsKey.setText("Google API Key");
@@ -314,7 +320,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 		try {
 			final CloseableHttpClient client = HttpClients.createDefault();
-			String requestString = "https://maps.googleapis.com/maps/api/geocode/json?address="
+			final String requestString = "https://maps.googleapis.com/maps/api/geocode/json?address="
 					+ locationPart + "&key="
 					+ textGoogleApiKey.getText().trim();
 			final HttpGet request = new HttpGet(requestString);

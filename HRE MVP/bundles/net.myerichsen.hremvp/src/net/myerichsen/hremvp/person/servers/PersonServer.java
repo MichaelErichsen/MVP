@@ -62,7 +62,7 @@ public class PersonServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -145,7 +145,7 @@ public class PersonServer implements IHREServer {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -157,7 +157,7 @@ public class PersonServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -196,7 +196,7 @@ public class PersonServer implements IHREServer {
 	 * Get all names for the person
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -412,8 +412,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getPersonEventList(int key)
-			throws Exception {
+	public List<List<String>> getPersonEventList(int key) throws Exception {
 		Events event;
 		EventNames eventName;
 		List<String> ls;
@@ -464,8 +463,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getPersonList()
-			throws Exception {
+	public List<List<String>> getPersonList() throws Exception {
 		List<String> ls;
 		final PersonNameServer pns = new PersonNameServer();
 
@@ -523,7 +521,7 @@ public class PersonServer implements IHREServer {
 	 *                               attempted to converta string to one of the
 	 *                               numeric types, but that the string does
 	 *                               nothave the appropriate format.
-	 * @throws Exception          An exception that provides information on a
+	 * @throws Exception             An exception that provides information on a
 	 *                               database access error or other errors
 	 * @throws MvpException          Application specific exception
 	 * @throws IOException           Signals that an I/O exception of some sort
@@ -650,8 +648,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getSexesList(int key)
-			throws Exception {
+	public List<List<String>> getSexesList(int key) throws Exception {
 		int sexTypePid;
 		int datePid;
 		List<String> ls;
@@ -706,8 +703,7 @@ public class PersonServer implements IHREServer {
 	 * @return the siblingList
 	 * @throws Exception
 	 */
-	public List<List<String>> getSiblingList(int personPid)
-			throws Exception {
+	public List<List<String>> getSiblingList(int personPid) throws Exception {
 		final List<List<String>> siblingList = new ArrayList<>();
 		List<String> ls;
 
@@ -761,8 +757,7 @@ public class PersonServer implements IHREServer {
 	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int key)
-			throws Exception {
+	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> personNameList = new ArrayList<>();
 		List<String> stringList;
 
@@ -828,7 +823,7 @@ public class PersonServer implements IHREServer {
 	 * Insert a row
 	 *
 	 * @return The pid of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -855,8 +850,7 @@ public class PersonServer implements IHREServer {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public void removeChild(int parentPid, int childPid)
-			throws Exception {
+	public void removeChild(int parentPid, int childPid) throws Exception {
 		final Parents parent = new Parents();
 
 		for (final Parents p : parent.getFKParent(parentPid)) {
@@ -886,8 +880,7 @@ public class PersonServer implements IHREServer {
 	 * @throws Exception
 	 * @throws MvpException
 	 */
-	public void removeParent(int personPid, int parentPid)
-			throws Exception {
+	public void removeParent(int personPid, int parentPid) throws Exception {
 		final Parents parent = new Parents();
 
 		for (final Parents p : parent.getFKChild(parentPid)) {
@@ -903,8 +896,7 @@ public class PersonServer implements IHREServer {
 	 * @throws Exception
 	 * @throws MvpException
 	 */
-	public void removePartner(int personPid, int partnerPid)
-			throws Exception {
+	public void removePartner(int personPid, int partnerPid) throws Exception {
 		final Partners partner = new Partners();
 
 		for (final Partners p : partner.getFKPartner1(personPid)) {
@@ -974,7 +966,7 @@ public class PersonServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

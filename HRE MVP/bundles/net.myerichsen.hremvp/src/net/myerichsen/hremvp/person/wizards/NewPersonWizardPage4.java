@@ -760,7 +760,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textChildBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textChildDeathDate.setText(dateProvider.getDate().toString());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -783,7 +783,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textFatherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textFatherDeathDate.setText(dateProvider.getDate().toString());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -806,7 +806,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textMotherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textMotherDeathDate.setText(dateProvider.getDate().toString());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
@@ -829,7 +829,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textPartnerBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textPartnerDeathDate.setText(dateProvider.getDate().toString());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();

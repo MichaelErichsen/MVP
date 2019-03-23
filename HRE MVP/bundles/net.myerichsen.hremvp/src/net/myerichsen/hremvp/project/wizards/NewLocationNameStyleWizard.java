@@ -159,7 +159,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 
 			return true;
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

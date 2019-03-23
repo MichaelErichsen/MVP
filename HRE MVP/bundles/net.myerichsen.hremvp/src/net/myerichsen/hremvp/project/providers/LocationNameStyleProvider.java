@@ -26,7 +26,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public LocationNameStyleProvider() throws Exception {
@@ -37,7 +37,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -46,12 +46,19 @@ public class LocationNameStyleProvider implements IHREProvider {
 		server.delete(key);
 	}
 
+	/**
+	 * @return
+	 */
+	public List<String> get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -121,7 +128,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -174,7 +181,7 @@ public class LocationNameStyleProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -187,13 +194,5 @@ public class LocationNameStyleProvider implements IHREProvider {
 		server.setToDatePid(ToDatePid);
 		server.setLabelPid(LabelPid);
 		server.update();
-	}
-
-	/**
-	 * @return
-	 */
-	public List<String> get() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

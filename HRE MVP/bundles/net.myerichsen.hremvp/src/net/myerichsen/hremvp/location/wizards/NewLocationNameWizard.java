@@ -70,6 +70,13 @@ public class NewLocationNameWizard extends Wizard {
 	}
 
 	/**
+	 * @return the fromDatePid
+	 */
+	public int getFromDatePid() {
+		return fromDatePid;
+	}
+
+	/**
 	 * @return the isPrimaryLocationName
 	 */
 	public Boolean getIsPrimaryLocationName() {
@@ -98,20 +105,6 @@ public class NewLocationNameWizard extends Wizard {
 	}
 
 	/**
-	 * @return the fromDatePid
-	 */
-	public int getFromDatePid() {
-		return fromDatePid;
-	}
-
-	/**
-	 * @return the toDatePid
-	 */
-	public int getToDatePid() {
-		return toDatePid;
-	}
-
-	/**
 	 * @return the page1
 	 */
 	public NewLocationNameWizardPage1 getPage1() {
@@ -130,6 +123,13 @@ public class NewLocationNameWizard extends Wizard {
 	 */
 	public String getPreposition() {
 		return preposition;
+	}
+
+	/**
+	 * @return the toDatePid
+	 */
+	public int getToDatePid() {
+		return toDatePid;
 	}
 
 	/*
@@ -155,7 +155,7 @@ public class NewLocationNameWizard extends Wizard {
 			lnp.setToDatePid(toDatePid);
 			lnp.setPreposition(preposition);
 			lnp.setPrimaryLocationName(isPrimaryLocationName);
-			int locationNamePid = lnp.insert();
+			final int locationNamePid = lnp.insert();
 			LOGGER.info("Inserted location name " + locationNamePid);
 
 			LocationNamePartProvider lnpp;
@@ -187,6 +187,13 @@ public class NewLocationNameWizard extends Wizard {
 	}
 
 	/**
+	 * @param fromDatePid the fromDatePid to set
+	 */
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
+	}
+
+	/**
 	 * @param isPrimaryLocationName the isPrimaryLocationName to set
 	 */
 	public void setIsPrimaryLocationName(Boolean isPrimaryLocationName) {
@@ -215,10 +222,10 @@ public class NewLocationNameWizard extends Wizard {
 	}
 
 	/**
-	 * @param fromDatePid the fromDatePid to set
+	 * @param preposition the preposition to set
 	 */
-	public void setFromDatePid(int fromDatePid) {
-		this.fromDatePid = fromDatePid;
+	public void setPreposition(String preposition) {
+		this.preposition = preposition;
 	}
 
 	/**
@@ -226,13 +233,6 @@ public class NewLocationNameWizard extends Wizard {
 	 */
 	public void setToDatePid(int toDatePid) {
 		this.toDatePid = toDatePid;
-	}
-
-	/**
-	 * @param preposition the preposition to set
-	 */
-	public void setPreposition(String preposition) {
-		this.preposition = preposition;
 	}
 
 }

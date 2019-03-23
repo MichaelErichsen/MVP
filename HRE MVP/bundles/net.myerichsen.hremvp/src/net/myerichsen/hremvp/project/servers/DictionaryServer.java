@@ -127,8 +127,7 @@ public class DictionaryServer implements IHREServer {
 	 * @throws MvpException
 	 */
 	@Override
-	public List<List<String>> getStringList(int labelPid)
-			throws Exception {
+	public List<List<String>> getStringList(int labelPid) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 

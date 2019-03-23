@@ -221,7 +221,7 @@ public class PersonChildrenView {
 			provider.removeChild(personPid, childPid);
 			eventBroker.post("MESSAGE",
 					"Child " + primaryName + " has been removed");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

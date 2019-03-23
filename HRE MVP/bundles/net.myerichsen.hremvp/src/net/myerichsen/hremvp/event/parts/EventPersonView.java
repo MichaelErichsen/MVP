@@ -61,7 +61,7 @@ public class EventPersonView {
 	 * Constructor
 	 *
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 *
 	 */
 	public EventPersonView() throws Exception {

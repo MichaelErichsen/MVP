@@ -168,7 +168,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.get());
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -193,7 +193,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 
 	/**
 	 * @param shell
-	 * @param data.context
+	 * @param       data.context
 	 *
 	 */
 	protected void openDateDialog(Shell shell) {

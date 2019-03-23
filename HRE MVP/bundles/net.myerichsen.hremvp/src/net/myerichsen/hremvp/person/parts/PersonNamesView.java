@@ -185,7 +185,7 @@ public class PersonNamesView {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList(personPid));
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
 			e1.printStackTrace();
 		}
@@ -226,7 +226,7 @@ public class PersonNamesView {
 			eventBroker.post("MESSAGE",
 					"Name " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, 0);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -273,7 +273,7 @@ public class PersonNamesView {
 		try {
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -292,7 +292,7 @@ public class PersonNamesView {
 			textId.setText(Integer.toString(personPid));
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

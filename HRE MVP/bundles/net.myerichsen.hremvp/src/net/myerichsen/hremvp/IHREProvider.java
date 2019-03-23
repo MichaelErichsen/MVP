@@ -15,7 +15,7 @@ public interface IHREProvider {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -25,7 +25,7 @@ public interface IHREProvider {
 	 * Get a row
 	 *
 	 * @param key The persistent ID of the person
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -36,7 +36,7 @@ public interface IHREProvider {
 	 *
 	 * @return List A list of lists of strings
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	List<List<String>> getStringList() throws Exception;
 
@@ -46,7 +46,7 @@ public interface IHREProvider {
 	 * @param key
 	 * @return List A list of lists of strings
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	List<List<String>> getStringList(int key) throws Exception;
 
@@ -54,7 +54,7 @@ public interface IHREProvider {
 	 * Insert a row
 	 *
 	 * @return The Pid of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -63,7 +63,7 @@ public interface IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

@@ -38,6 +38,13 @@ public class ParentServer implements IHREServer {
 
 	}
 
+	/**
+	 * @return
+	 */
+	public List<?> get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -178,13 +185,5 @@ public class ParentServer implements IHREServer {
 	@Override
 	public void update() throws Exception {
 
-	}
-
-	/**
-	 * @return
-	 */
-	public List<?> get() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

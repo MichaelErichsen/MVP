@@ -104,7 +104,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 
 			comboIsoCode.setItems(singleArray);
 			comboIsoCode.select(index);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

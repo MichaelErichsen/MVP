@@ -14,24 +14,32 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENT_ROLES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 20. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 
 public class EventRoles {
 	private static final String SELECT = "SELECT EVENT_ROLE_PID, "
-			+ "ABBREVIATION, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "EVENT_TYPE_PID, ABBREVIATION, LABEL_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES WHERE EVENT_ROLE_PID = ?";
+	private static final String SELECT_EVENT_TYPE_PID = "SELECT "
+			+ "EVENT_ROLE_PID, EVENT_TYPE_PID, ABBREVIATION, "
+			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES WHERE EVENT_TYPE_PID = ? ORDER BY EVENT_ROLE_PID";
 	private static final String SELECTALL = "SELECT EVENT_ROLE_PID, "
-			+ "ABBREVIATION, LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "EVENT_TYPE_PID, ABBREVIATION, LABEL_PID, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES ORDER BY EVENT_ROLE_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_ROLE_PID) FROM PUBLIC.EVENT_ROLES";
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_ROLES( "
-			+ "EVENT_ROLE_PID, ABBREVIATION, LABEL_PID, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID) VALUES (?, "
-			+ "?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 25) ";
+			+ "EVENT_ROLE_PID, EVENT_TYPE_PID, ABBREVIATION, "
+			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID) VALUES (?, ?, ?, ?, "
+			+ "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 25) ";
+
 	private static final String UPDATE = "UPDATE PUBLIC.EVENT_ROLES SET "
-			+ "ABBREVIATION = ?, LABEL_PID = ?"
+			+ "EVENT_TYPE_PID = ?, ABBREVIATION = ?, LABEL_PID = ?"
 			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP"
 			+ " WHERE EVENT_ROLE_PID = ?";
 
@@ -48,6 +56,7 @@ public class EventRoles {
 	private Connection conn;
 
 	private int EventRolePid;
+	private int EventTypePid;
 	private String Abbreviation;
 	private int LabelPid;
 	private Timestamp InsertTstmp;
@@ -81,6 +90,7 @@ public class EventRoles {
 		while (rs.next()) {
 			model = new EventRoles();
 			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
+			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
@@ -99,6 +109,7 @@ public class EventRoles {
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
+			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			setAbbreviation(rs.getString("ABBREVIATION"));
 			setLabelPid(rs.getInt("LABEL_PID"));
 			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
@@ -126,6 +137,36 @@ public class EventRoles {
 	 */
 	public int getEventRolePid() {
 		return EventRolePid;
+	}
+
+	/**
+	 * Get the EventTypePid field.
+	 *
+	 * @return Contents of the EVENT_TYPE_PID column
+	 */
+	public int getEventTypePid() {
+		return EventTypePid;
+	}
+
+	public List<EventRoles> getFKEventTypePid(int key) throws Exception {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECT_EVENT_TYPE_PID);
+		ps.setInt(1, key);
+		rs = ps.executeQuery();
+		modelList = new ArrayList<>();
+		while (rs.next()) {
+			model = new EventRoles();
+			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
+			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
+			model.setAbbreviation(rs.getString("ABBREVIATION"));
+			model.setLabelPid(rs.getInt("LABEL_PID"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			model.setTableId(rs.getInt("TABLE_ID"));
+			modelList.add(model);
+		}
+		conn.close();
+		return modelList;
 	}
 
 	/**
@@ -176,8 +217,9 @@ public class EventRoles {
 
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
-		ps.setString(2, getAbbreviation());
-		ps.setInt(3, getLabelPid());
+		ps.setInt(2, getEventTypePid());
+		ps.setString(3, getAbbreviation());
+		ps.setInt(4, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -199,6 +241,15 @@ public class EventRoles {
 	 */
 	public void setEventRolePid(int EventRolePid) {
 		this.EventRolePid = EventRolePid;
+	}
+
+	/**
+	 * Set the EventTypePid field
+	 *
+	 * @param EventTypePid Contents of the EVENT_TYPE_PID column
+	 */
+	public void setEventTypePid(int EventTypePid) {
+		this.EventTypePid = EventTypePid;
 	}
 
 	/**
@@ -240,9 +291,10 @@ public class EventRoles {
 	public void update() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
-		ps.setString(1, getAbbreviation());
-		ps.setInt(2, getLabelPid());
-		ps.setInt(3, getEventRolePid());
+		ps.setInt(1, getEventTypePid());
+		ps.setString(2, getAbbreviation());
+		ps.setInt(3, getLabelPid());
+		ps.setInt(4, getEventRolePid());
 		ps.executeUpdate();
 		conn.close();
 	}

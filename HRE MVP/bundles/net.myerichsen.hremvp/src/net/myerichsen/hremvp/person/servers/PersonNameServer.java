@@ -45,7 +45,7 @@ public class PersonNameServer implements IHREServer {
 	 * Delete a row
 	 *
 	 * @param key The persistent ID of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -75,7 +75,7 @@ public class PersonNameServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 *
@@ -148,7 +148,7 @@ public class PersonNameServer implements IHREServer {
 	 *
 	 * @return sa An array of names
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String[] getNameStrings() throws Exception {
 		StringBuilder sb;
@@ -220,7 +220,7 @@ public class PersonNameServer implements IHREServer {
 	 * @param personPid The persistent PID of the person
 	 * @return s The name
 	 * @throws Exception An exception that provides information on a database
-	 *                      access error or other errors
+	 *                   access error or other errors
 	 */
 	public String getPrimaryNameString(int personPid) throws Exception {
 		final StringBuilder sb = new StringBuilder();
@@ -286,7 +286,7 @@ public class PersonNameServer implements IHREServer {
 	 *
 	 * @return
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
@@ -374,7 +374,7 @@ public class PersonNameServer implements IHREServer {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

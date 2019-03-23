@@ -56,7 +56,7 @@ public class AncestorNavigator {
 		try {
 			provider = new PersonProvider();
 			treePersonList = createTreePersonList(1);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
@@ -162,7 +162,7 @@ public class AncestorNavigator {
 			treePersonList = createTreePersonList(personPid);
 			treeViewer.setInput(treePersonList);
 			treeViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}

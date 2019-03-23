@@ -78,7 +78,7 @@ public class NewPersonChildWizard extends Wizard {
 						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 						personPid);
 				return true;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
 				e.printStackTrace();
 			}

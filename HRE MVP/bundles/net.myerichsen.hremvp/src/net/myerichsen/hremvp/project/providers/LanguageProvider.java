@@ -41,7 +41,7 @@ public class LanguageProvider implements IHREProvider {
 
 	/**
 	 * @return A list of lists of Pids, ISO Codes and labels
-	 * @throws Exception An exception that provides information on a database
+	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */

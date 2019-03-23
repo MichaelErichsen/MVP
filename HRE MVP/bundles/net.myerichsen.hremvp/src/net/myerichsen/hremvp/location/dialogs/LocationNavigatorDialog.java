@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
 
 /**
  * Dialog to select an existing location
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 20. mar. 2019
  *
@@ -31,67 +31,29 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
 public class LocationNavigatorDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private IEclipseContext context;
 	private LocationProvider provider;
 	private Table table;
 	private Text textFilter;
 
 	/**
 	 * Create the dialog.
-	 * 
+	 *
 	 * @param parentShell
 	 */
 	public LocationNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
 		setHelpAvailable(false);
-		this.context = context;
 		try {
 			provider = new LocationProvider();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Create contents of the dialog.
-	 * 
-	 * @param parent
-	 */
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		setMessage("Select a location");
-		setTitle("Location");
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayout(new GridLayout(2, false));
-		container.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-		TableViewer tableViewer = new TableViewer(container,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer,
-				SWT.NONE);
-		TableColumn tblclmnLocation = tableViewerColumn.getColumn();
-		tblclmnLocation.setWidth(411);
-		tblclmnLocation.setText("Location");
-
-		Label lblLocationFilter = new Label(container, SWT.NONE);
-		lblLocationFilter.setText("Location filter");
-
-		textFilter = new Text(container, SWT.BORDER);
-		textFilter.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		return area;
-	}
-
-	/**
 	 * Create contents of the button bar.
-	 * 
+	 *
 	 * @param parent
 	 */
 	@Override
@@ -100,6 +62,42 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 				true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
+	}
+
+	/**
+	 * Create contents of the dialog.
+	 *
+	 * @param parent
+	 */
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		setMessage("Select a location");
+		setTitle("Location");
+		final Composite area = (Composite) super.createDialogArea(parent);
+		final Composite container = new Composite(area, SWT.NONE);
+		container.setLayout(new GridLayout(2, false));
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		final TableViewer tableViewer = new TableViewer(container,
+				SWT.BORDER | SWT.FULL_SELECTION);
+		table = tableViewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnLocation = tableViewerColumn.getColumn();
+		tblclmnLocation.setWidth(411);
+		tblclmnLocation.setText("Location");
+
+		final Label lblLocationFilter = new Label(container, SWT.NONE);
+		lblLocationFilter.setText("Location filter");
+
+		textFilter = new Text(container, SWT.BORDER);
+		textFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		return area;
 	}
 
 	/**
