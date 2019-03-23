@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Provides all data for a single location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class LocationProvider implements IHREProvider {
@@ -22,8 +22,6 @@ public class LocationProvider implements IHREProvider {
 	private BigDecimal xCoordinate;
 	private BigDecimal yCoordinate;
 	private BigDecimal zCoordinate;
-	private List<List<String>> nameList;
-
 	private final LocationServer server;
 
 	/**
@@ -87,9 +85,10 @@ public class LocationProvider implements IHREProvider {
 
 	/**
 	 * @return the nameList
+	 * @throws Exception
 	 */
-	public List<List<String>> getNameList() {
-		return nameList;
+	public List<List<String>> getNameList() throws Exception {
+		return server.getNameList();
 	}
 
 	/**
@@ -201,7 +200,6 @@ public class LocationProvider implements IHREProvider {
 	 * @param nameList the nameList to set
 	 */
 	public void setNameList(List<List<String>> nameList) {
-		this.nameList = nameList;
 	}
 
 	/**

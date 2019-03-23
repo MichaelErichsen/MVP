@@ -13,12 +13,18 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
 //	private final static Logger LOGGER = Logger
 //			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private int LocationEventsPid;
+	private int EventPid;
+	private int LocationPid;
+	private boolean PrimaryEvent;
+	private boolean PrimaryLocation;
+
 	private final LocationEvents locationEvent;
 
 	/**
@@ -109,6 +115,27 @@ public class LocationEventServer implements IHREServer {
 		return lls;
 	}
 
+	/**
+	 * @return the eventPid
+	 */
+	public int getEventPid() {
+		return EventPid;
+	}
+
+	/**
+	 * @return the locationEventsPid
+	 */
+	public int getLocationEventsPid() {
+		return LocationEventsPid;
+	}
+
+	/**
+	 * @return the locationPid
+	 */
+	public int getLocationPid() {
+		return LocationPid;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -138,8 +165,60 @@ public class LocationEventServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		locationEvent.setEventPid(EventPid);
+		locationEvent.setLocationPid(LocationPid);
+		locationEvent.setPrimaryEvent(PrimaryEvent);
+		locationEvent.setPrimaryLocation(PrimaryLocation);
+		return locationEvent.insert();
+	}
+
+	/**
+	 * @return the primaryEvent
+	 */
+	public boolean isPrimaryEvent() {
+		return PrimaryEvent;
+	}
+
+	/**
+	 * @return the primaryLocation
+	 */
+	public boolean isPrimaryLocation() {
+		return PrimaryLocation;
+	}
+
+	/**
+	 * @param eventPid the eventPid to set
+	 */
+	public void setEventPid(int eventPid) {
+		EventPid = eventPid;
+	}
+
+	/**
+	 * @param locationEventsPid the locationEventsPid to set
+	 */
+	public void setLocationEventsPid(int locationEventsPid) {
+		LocationEventsPid = locationEventsPid;
+	}
+
+	/**
+	 * @param locationPid the locationPid to set
+	 */
+	public void setLocationPid(int locationPid) {
+		LocationPid = locationPid;
+	}
+
+	/**
+	 * @param primaryEvent the primaryEvent to set
+	 */
+	public void setPrimaryEvent(boolean primaryEvent) {
+		PrimaryEvent = primaryEvent;
+	}
+
+	/**
+	 * @param primaryLocation the primaryLocation to set
+	 */
+	public void setPrimaryLocation(boolean primaryLocation) {
+		PrimaryLocation = primaryLocation;
 	}
 
 	/*

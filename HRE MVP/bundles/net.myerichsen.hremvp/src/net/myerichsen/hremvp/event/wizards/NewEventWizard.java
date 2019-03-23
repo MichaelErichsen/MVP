@@ -6,6 +6,11 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.wizard.Wizard;
 
+import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.event.providers.EventProvider;
+import net.myerichsen.hremvp.location.providers.LocationEventProvider;
+import net.myerichsen.hremvp.person.providers.PersonEventProvider;
+
 /**
  * Wizard to add a new Event
  *
@@ -24,21 +29,21 @@ public class NewEventWizard extends Wizard {
 
 	// Page 1
 	private int eventTypePid = 0;
-	private String EventName = "";
+	private String eventName = "";
 	private int languagePid = 0;
 	private int fromDatePid = 0;
 	private int toDatePid = 0;
 
 	// Page 2
 	private int locationPid = 0;
-	private Boolean isPrimaryLocation = true;
-	private Boolean isPrimaryLocationEvent = true;
+	private Boolean primaryLocation = true;
+	private Boolean primaryLocationEvent = true;
 
 	// Page 3
 	private int personPid = 0;
 	private int eventRolePid = 0;
-	private Boolean isPrimaryPerson = true;
-	private Boolean isPrimaryPersonEvent = true;
+	private Boolean primaryPerson = true;
+	private Boolean primaryPersonEvent = true;
 
 	private final IEventBroker eventBroker;
 
@@ -71,10 +76,10 @@ public class NewEventWizard extends Wizard {
 	}
 
 	/**
-	 * @return the EventName
+	 * @return the eventName
 	 */
 	public String getEventName() {
-		return EventName;
+		return eventName;
 	}
 
 	/**
@@ -99,31 +104,31 @@ public class NewEventWizard extends Wizard {
 	}
 
 	/**
-	 * @return the isPrimaryLocation
+	 * @return the primaryLocation
 	 */
 	public Boolean getIsPrimaryLocation() {
-		return isPrimaryLocation;
+		return primaryLocation;
 	}
 
 	/**
-	 * @return the isPrimaryLocationEvent
+	 * @return the primaryLocationEvent
 	 */
 	public Boolean getIsPrimaryLocationEvent() {
-		return isPrimaryLocationEvent;
+		return primaryLocationEvent;
 	}
 
 	/**
-	 * @return the isPrimaryPerson
+	 * @return the primaryPerson
 	 */
 	public Boolean getIsPrimaryPerson() {
-		return isPrimaryPerson;
+		return primaryPerson;
 	}
 
 	/**
-	 * @return the isPrimaryPersonEvent
+	 * @return the primaryPersonEvent
 	 */
 	public Boolean getIsPrimaryPersonEvent() {
-		return isPrimaryPersonEvent;
+		return primaryPersonEvent;
 	}
 
 	/**
@@ -182,31 +187,60 @@ public class NewEventWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-//		// Page 1
-//		private int eventTypePid = 0;
-//		private String EventName = "";
-//		private int languagePid = 0;
-//		private int fromDatePid = 0;
-//		private int toDatePid = 0;
-//
-//		// Page 2
-//		private int locationPid = 0;
-//		private Boolean isPrimaryLocation = true;
-//		private Boolean isPrimaryLocationEvent = true;
-//
-//		// Page 3
-//		private int personPid = 0;
-//		private int eventRolePid = 0;
-//		private Boolean isPrimaryPerson = true;
-//		private Boolean isPrimaryPersonEvent = true;
+		try {
+			EventProvider provider = new EventProvider();
+			provider.setFromDatePid(fromDatePid);
+			provider.setToDatePid(toDatePid);
+			provider.setEventName(eventName);
+			int eventPid = provider.insert();
+			LOGGER.info("Inserted event pid " + eventPid);
+
+			if (locationPid != 0) {
+				LocationEventProvider lep = new LocationEventProvider();
+				lep.setLocationPid(locationPid);
+				lep.setPrimaryLocation(primaryLocation);
+				lep.setPrimaryEvent(primaryLocationEvent);
+
+				// FIXME SEVERE: Referential integrity constraint violation:
+				// "CONSTRAINT_C8: PUBLIC.LOCATION_EVENTS FOREIGN
+				// KEY(LOCATION_PID)
+				// REFERENCES PUBLIC.LOCATIONS(LOCATION_PID) (2)"; SQL
+				// statement:
+				// INSERT INTO PUBLIC.LOCATION_EVENTS( LOCATION_EVENTS_PID,
+				// EVENT_PID, LOCATION_PID, PRIMARY_EVENT, PRIMARY_LOCATION,
+				// INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID) VALUES (?, ?, ?, ?, ?,
+				// CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4) [23506-168]
+
+				int locationEventPid = lep.insert();
+				LOGGER.info("Inserted location event " + locationEventPid);
+			}
+
+			if (personPid != 0) {
+				PersonEventProvider pep = new PersonEventProvider();
+				pep.setPersonPid(personPid);
+				pep.setEventPid(eventRolePid);
+				pep.setPrimaryPerson(primaryPerson);
+				pep.setPrimaryEvent(primaryPersonEvent);
+				int personEventPid = pep.insert();
+				LOGGER.info("Inserted person event pid " + personEventPid);
+			}
+
+			eventBroker.post("MESSAGE",
+					eventName + " inserted in the database as no. " + eventPid);
+			eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
+			return true;
+		} catch (Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	/**
-	 * @param EventName the EventName to set
+	 * @param eventName the eventName to set
 	 */
 	public void setEventName(String EventName) {
-		this.EventName = EventName;
+		this.eventName = EventName;
 	}
 
 	/**
@@ -231,31 +265,31 @@ public class NewEventWizard extends Wizard {
 	}
 
 	/**
-	 * @param isPrimaryLocation the isPrimaryLocation to set
+	 * @param primaryLocation the primaryLocation to set
 	 */
 	public void setIsPrimaryLocation(Boolean isPrimaryLocation) {
-		this.isPrimaryLocation = isPrimaryLocation;
+		this.primaryLocation = isPrimaryLocation;
 	}
 
 	/**
-	 * @param isPrimaryLocationEvent the isPrimaryLocationEvent to set
+	 * @param primaryLocationEvent the primaryLocationEvent to set
 	 */
 	public void setIsPrimaryLocationEvent(Boolean isPrimaryLocationEvent) {
-		this.isPrimaryLocationEvent = isPrimaryLocationEvent;
+		this.primaryLocationEvent = isPrimaryLocationEvent;
 	}
 
 	/**
-	 * @param isPrimaryPerson the isPrimaryPerson to set
+	 * @param primaryPerson the primaryPerson to set
 	 */
 	public void setIsPrimaryPerson(Boolean isPrimaryPerson) {
-		this.isPrimaryPerson = isPrimaryPerson;
+		this.primaryPerson = isPrimaryPerson;
 	}
 
 	/**
-	 * @param isPrimaryPersonEvent the isPrimaryPersonEvent to set
+	 * @param primaryPersonEvent the primaryPersonEvent to set
 	 */
 	public void setIsPrimaryPersonEvent(Boolean isPrimaryPersonEvent) {
-		this.isPrimaryPersonEvent = isPrimaryPersonEvent;
+		this.primaryPersonEvent = isPrimaryPersonEvent;
 	}
 
 	/**

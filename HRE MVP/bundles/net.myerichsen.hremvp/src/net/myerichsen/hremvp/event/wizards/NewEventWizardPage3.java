@@ -2,9 +2,14 @@ package net.myerichsen.hremvp.event.wizards;
 
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -20,14 +25,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.myerichsen.hremvp.person.dialogs.PersonDialog;
+import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
+import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
 
 /**
  * Wizard page to add a person to an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class NewEventWizardPage3 extends WizardPage {
@@ -96,13 +103,9 @@ public class NewEventWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final PersonDialog dialog = new PersonDialog(getShell(),
-						context);
-
-				if (dialog.open() == Window.OK) {
-					// TODO
-					setErrorMessage("Aargh ralle");
-				}
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewPersonWizard(context));
+				dialog.open();
 			}
 		});
 		btnNewPerson.setText("New");
@@ -207,5 +210,30 @@ public class NewEventWizardPage3 extends WizardPage {
 		btnPrimaryPersonEvent.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnPrimaryPersonEvent.setText("Primary Event");
+		
+		// FIXME Role combo not populated
+	}
+
+	/**
+	 * @param personPid
+	 */
+	@Inject
+	@Optional
+	private void subscribePersonPidUpdateTopic(
+			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+		LOGGER.fine("Received person id " + personPid);
+
+		if (personPid > 0) {
+			try {
+				wizard = (NewEventWizard) getWizard();
+				wizard.setPersonPid(personPid);
+				final PersonProvider provider = new PersonProvider();
+				provider.get(personPid);
+				textPerson.setText(provider.getPrimaryName());
+			} catch (final Exception e) {
+				LOGGER.severe(e.getMessage());
+				e.printStackTrace();
+			}
+		}
 	}
 }

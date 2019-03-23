@@ -115,8 +115,26 @@ public class LocationServer implements IHREServer {
 
 	/**
 	 * @return the nameList
+	 * @throws Exception
 	 */
-	public List<List<String>> getNameList() {
+	public List<List<String>> getNameList() throws Exception {
+		List<String> sl;
+		int pid;
+		nameList = new ArrayList<>();
+		final LocationNameServer lns = new LocationNameServer();
+		List<Locations> ll = location.get();
+
+		for (Locations locations : ll) {
+			sl = new ArrayList<>();
+
+			pid = locations.getLocationPid();
+			sl.add(Integer.toString(pid));
+			sl.add(lns.getPrimaryNameString(pid));
+			sl.add(Boolean.toString(lns.isPrimaryLocationName()));
+			sl.add(Integer.toString(lns.getToDatePid()));
+			sl.add(Integer.toString(lns.getFromDatePid()));
+			nameList.add(sl);
+		}
 		return nameList;
 	}
 

@@ -32,10 +32,10 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all persons.
+ * Dialog to select a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 21. mar. 2019
+ * @version 23. mar. 2019
  *
  */
 public class PersonNavigatorDialog extends TitleAreaDialog {
@@ -94,7 +94,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setMessage("Select a person.");
+		setMessage("Select a person");
 		setTitle("Persons");
 		final Composite area = (Composite) super.createDialogArea(parent);
 		final Composite container = new Composite(area, SWT.NONE);
@@ -109,6 +109,12 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		table.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final TableItem[] items = table.getSelection();
@@ -161,6 +167,13 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		textNameFilter = new Text(container, SWT.BORDER);
 		textNameFilter.addKeyListener(new KeyAdapter() {
 
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
+			 * events.KeyEvent)
+			 */
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
