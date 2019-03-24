@@ -8,14 +8,14 @@ import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 19. jan. 2019
+ * @version 24. mar. 2019
  *
  */
 public class PersonEventServer implements IHREServer {
 	private int PersonEventPid;
 	private int EventPid;
 	private int PersonPid;
-	private String Role;
+	private int EventRolePid;
 	private boolean PrimaryPerson;
 	private boolean PrimaryEvent;
 
@@ -84,10 +84,10 @@ public class PersonEventServer implements IHREServer {
 	}
 
 	/**
-	 * @return the role
+	 * @return the rolePid
 	 */
-	public String getRole() {
-		return Role;
+	public int getRolePid() {
+		return EventRolePid;
 	}
 
 	/*
@@ -122,7 +122,7 @@ public class PersonEventServer implements IHREServer {
 		personEvent.setPersonPid(PersonPid);
 		personEvent.setPrimaryEvent(isPrimaryEvent());
 		personEvent.setPrimaryPerson(isPrimaryPerson());
-		personEvent.setRole(Role);
+		personEvent.setEventRolePid(EventRolePid);
 		return personEvent.insert();
 	}
 
@@ -176,10 +176,10 @@ public class PersonEventServer implements IHREServer {
 	}
 
 	/**
-	 * @param role the role to set
+	 * @param rolePid the rolePid to set
 	 */
-	public void setRole(String role) {
-		Role = role;
+	public void setRolePid(int rolePid) {
+		EventRolePid = rolePid;
 	}
 
 	/*

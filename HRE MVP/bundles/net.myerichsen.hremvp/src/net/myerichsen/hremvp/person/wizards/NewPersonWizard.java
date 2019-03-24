@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 24. mar. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -277,7 +277,7 @@ public class NewPersonWizard extends Wizard {
 				pep.setPersonPid(personPid);
 				pep.setPrimaryEvent(true);
 				pep.setPrimaryPerson(true);
-				pep.setRole(list.get(2));
+				pep.setRolePid(Integer.parseInt(list.get(2)));
 				final int personEventPid = pep.insert();
 				LOGGER.info("Inserted person-event pid " + personEventPid);
 

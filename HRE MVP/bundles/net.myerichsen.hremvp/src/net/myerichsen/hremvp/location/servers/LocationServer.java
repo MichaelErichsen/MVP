@@ -122,9 +122,9 @@ public class LocationServer implements IHREServer {
 		int pid;
 		nameList = new ArrayList<>();
 		final LocationNameServer lns = new LocationNameServer();
-		List<Locations> ll = location.get();
+		final List<Locations> ll = location.get();
 
-		for (Locations locations : ll) {
+		for (final Locations locations : ll) {
 			sl = new ArrayList<>();
 
 			pid = locations.getLocationPid();

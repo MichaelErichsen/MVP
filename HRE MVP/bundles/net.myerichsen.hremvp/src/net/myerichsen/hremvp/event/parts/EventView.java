@@ -33,19 +33,16 @@ import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
- * Display all data about an personEvent
+ * Display all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @versi
  */
 public class EventView {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private IEventBroker eventBroker;
-
-	private ScrolledComposite scrolledComposite;
-	private Composite composite_1;
 
 	private Text textId;
 	private Text textEventName;
@@ -54,17 +51,7 @@ public class EventView {
 	private Text textEventTypePid;
 	private Text textEventType;
 	private Text textFromDate;
-	private Button btnNewFrom;
-	private Button btnBrowseFrom;
-	private Button btnClearFrom;
 	private Text textToDate;
-	private Button btnCopyFromTo;
-	private Button btnNewTo;
-	private Button btnBrowseTo;
-	private Button btnClearTo;
-
-	private Composite composite;
-	private Button buttonUpdate;
 
 	private final EventProvider provider;
 
@@ -101,14 +88,15 @@ public class EventView {
 	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
-		scrolledComposite = new ScrolledComposite(parent,
-				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		final ScrolledComposite scrolledComposite = new ScrolledComposite(
+				parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		scrolledComposite.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 
-		composite_1 = new Composite(scrolledComposite, SWT.NONE);
+		final Composite composite_1 = new Composite(scrolledComposite,
+				SWT.NONE);
 		composite_1.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
 		scrolledComposite.setExpandHorizontal(true);
@@ -172,8 +160,15 @@ public class EventView {
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateDialog dialog = new DateDialog(
@@ -196,8 +191,15 @@ public class EventView {
 		});
 		btnNewFrom.setText("New");
 
-		btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateNavigatorDialog dialog = new DateNavigatorDialog(
@@ -216,8 +218,15 @@ public class EventView {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
+		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				textFromDate.setText("");
@@ -239,8 +248,15 @@ public class EventView {
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnCopyFromTo = new Button(compositeToButtons, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				textToDate.setText(textFromDate.getText());
@@ -248,8 +264,15 @@ public class EventView {
 		});
 		btnCopyFromTo.setText("Copy From");
 
-		btnNewTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateDialog dialog = new DateDialog(textToDate.getShell(),
@@ -272,8 +295,15 @@ public class EventView {
 		});
 		btnNewTo.setText("New");
 
-		btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				final DateNavigatorDialog dialog = new DateNavigatorDialog(
@@ -292,8 +322,15 @@ public class EventView {
 		});
 		btnBrowseTo.setText("Browse");
 
-		btnClearTo = new Button(compositeToButtons, SWT.NONE);
+		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				textToDate.setText("");
@@ -305,21 +342,25 @@ public class EventView {
 		scrolledComposite
 				.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-		composite = new Composite(parent, SWT.NONE);
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				update();
 			}
 		});
 		buttonUpdate.setText("Update");
-
-//		get(1);
 	}
 
 	/**
@@ -365,13 +406,18 @@ public class EventView {
 	}
 
 	/**
-	 * @param key
+	 * @param eventPid
 	 */
 	@Inject
 	@Optional
 	private void subscribeLocationPidUpdateTopic(
-			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int key) {
-		get(key);
+			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
+		if (eventPid != 0) {
+			get(eventPid);
+		} else {
+			eventBroker.post("MESSAGE",
+					"No event has been added. Please check your input");
+		}
 	}
 
 	/**
@@ -389,7 +435,5 @@ public class EventView {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.severe(e.getMessage());
 		}
-
 	}
-
 }

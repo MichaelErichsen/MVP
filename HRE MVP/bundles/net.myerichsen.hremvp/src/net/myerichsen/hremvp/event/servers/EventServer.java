@@ -6,8 +6,6 @@ import java.util.List;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.EventNames;
-import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Languages;
@@ -79,13 +77,12 @@ public class EventServer implements IHREServer {
 	public List<List<String>> get() throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
-		int namePid;
-		int eventTypePid;
+//		final int namePid;
+//		int eventTypePid;
 		int eventPid;
 
 		final Events event = new Events();
-		final EventNames name = new EventNames();
-		final EventTypes type = new EventTypes();
+//		final EventTypes type = new EventTypes();
 		final Languages language = new Languages();
 
 		final List<Events> eventList = event.get();
@@ -95,12 +92,10 @@ public class EventServer implements IHREServer {
 			eventPid = thisEvent.getEventPid();
 			stringList.add(Integer.toString(eventPid));
 
-			namePid = thisEvent.getEventNamePid();
-			name.get(namePid);
-			stringList.add(name.getLabel());
-
-			eventTypePid = name.getEventTypePid();
-			type.get(eventTypePid);
+//			stringList.add(name.getLabel());
+//
+//			eventTypePid = name.getEventTypePid();
+//			type.get(eventTypePid);
 			// FIXME Labels
 			stringList.add("type.getLabel()");
 
@@ -148,19 +143,19 @@ public class EventServer implements IHREServer {
 			setToDateOriginal("");
 		}
 
-		final EventNames anEventName = new EventNames();
-		setEventNamePid(event.getEventNamePid());
-		anEventName.get(EventNamePid);
-		setEventName(anEventName.getLabel());
+//		final EventNames anEventName = new EventNames();
+//		setEventNamePid(event.getEventNamePid());
+//		anEventName.get(EventNamePid);
+//		setEventName(anEventName.getLabel());
 
 		final Languages aLanguage = new Languages();
 		aLanguage.get(LanguagePid);
 		setIsoCode(aLanguage.getIsocode());
 		setLanguage(aLanguage.getLabel());
 
-		final EventTypes anEventType = new EventTypes();
-		setEventTypePid(anEventName.getEventTypePid());
-		anEventType.get(EventTypePid);
+//		final EventTypes anEventType = new EventTypes();
+//		setEventTypePid(anEventName.getEventTypePid());
+//		anEventType.get(EventTypePid);
 		// FIXME Labels
 //		setEventType(anEventType.getLabel());
 	}
@@ -344,7 +339,7 @@ public class EventServer implements IHREServer {
 		event.setTableId(Constants.EVENTS_TABLE_ID);
 		event.setFromDatePid(FromDatePid);
 		event.setToDatePid(ToDatePid);
-		event.setEventNamePid(EventNamePid);
+//		event.setEventNamePid(EventNamePid);
 		return event.insert();
 	}
 
@@ -480,7 +475,7 @@ public class EventServer implements IHREServer {
 		event.setTableId(Constants.EVENTS_TABLE_ID);
 		event.setFromDatePid(FromDatePid);
 		event.setToDatePid(ToDatePid);
-		event.setEventNamePid(EventNamePid);
+//		event.setEventNamePid(EventNamePid);
 		event.update();
 	}
 

@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.event.providers.EventNameProvider;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 
@@ -37,7 +36,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. mar. 2019
+ * @version 24. mar. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -50,8 +49,6 @@ public class NewEventDialog extends TitleAreaDialog {
 
 	private Text textEventStylePid;
 	private Text textEventStyleLabel;
-	private Text textEventNamePid;
-	private Text textEventNameLabel;
 	private Text textRole;
 	private Text textFromDate;
 	private Text textToDate;
@@ -73,26 +70,6 @@ public class NewEventDialog extends TitleAreaDialog {
 		setHelpAvailable(false);
 		this.context = context;
 		eventStringList = new ArrayList<>();
-	}
-
-	/**
-	 *
-	 */
-	protected void browseEventNames() {
-		final EventNameNavigatorDialog dialog = new EventNameNavigatorDialog(
-				textEventNamePid.getShell(), context);
-
-		if (dialog.open() == Window.OK) {
-			try {
-				eventNamePid = dialog.getEventNamePid();
-				textEventNamePid.setText(Integer.toString(eventNamePid));
-				nameLabel = dialog.getEventNameLabel();
-				textEventNameLabel.setText(nameLabel);
-			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
-				eventBroker.post("MESSAGE", e.getMessage());
-			}
-		}
 	}
 
 	/**
@@ -149,16 +126,6 @@ public class NewEventDialog extends TitleAreaDialog {
 				e1.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 *
-	 */
-	protected void clearEventName() {
-		textEventNameLabel.setText("");
-		textEventNamePid.setText("");
-		eventNamePid = 0;
-		nameLabel = "";
 	}
 
 	/**
@@ -282,48 +249,11 @@ public class NewEventDialog extends TitleAreaDialog {
 		final Label lblEventName = new Label(compositeEventName, SWT.NONE);
 		lblEventName.setText("Event Name");
 
-		textEventNamePid = new Text(compositeEventName, SWT.BORDER);
-
-		textEventNameLabel = new Text(compositeEventName, SWT.BORDER);
-		textEventNameLabel.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textEventNameLabel.setEditable(false);
-
 		Composite compositeEventNameButtons;
 		compositeEventNameButtons = new Composite(compositeEventName, SWT.NONE);
 		compositeEventNameButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		compositeEventNameButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		final Button btnUpdateEventName = new Button(compositeEventNameButtons,
-				SWT.NONE);
-		btnUpdateEventName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				updateEventName();
-			}
-		});
-		btnUpdateEventName.setText("Update");
-
-		final Button btnBrowseEventName = new Button(compositeEventNameButtons,
-				SWT.NONE);
-		btnBrowseEventName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				browseEventNames();
-			}
-		});
-		btnBrowseEventName.setText("Browse");
-
-		final Button btnClearEventName = new Button(compositeEventNameButtons,
-				SWT.NONE);
-		btnClearEventName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				clearEventName();
-			}
-		});
-		btnClearEventName.setText("Clear");
 
 		final Label lblRole = new Label(container, SWT.NONE);
 		lblRole.setText("Role");
@@ -556,13 +486,6 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @return the textEventNamePid
-	 */
-	public Text getTextEventNamePid() {
-		return textEventNamePid;
-	}
-
-	/**
 	 * @return the toDatePid
 	 */
 	public int getToDatePid() {
@@ -598,34 +521,10 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @param textEventNamePid the textEventNamePid to set
-	 */
-	public void setTextEventNamePid(Text textEventNamePid) {
-		this.textEventNamePid = textEventNamePid;
-	}
-
-	/**
 	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDatePid) {
 		this.toDatePid = toDatePid;
-	}
-
-	/**
-	 *
-	 */
-	protected void updateEventName() {
-		try {
-			final EventNameProvider provider = new EventNameProvider();
-			eventNamePid = Integer.parseInt(textEventNamePid.getText());
-			provider.get(eventNamePid);
-			nameLabel = provider.getLabel();
-			textEventNameLabel.setText(nameLabel);
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	/**

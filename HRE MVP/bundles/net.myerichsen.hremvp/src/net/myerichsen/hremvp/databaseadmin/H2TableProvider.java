@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * Provide H2 data to the table navigator and the table editor
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. okt. 2018
+ * @version 24. mar. 2019
  *
  */
 public class H2TableProvider implements IContentProvider {
@@ -377,6 +377,8 @@ public class H2TableProvider implements IContentProvider {
 		String s = tableName.substring(0, tableName.length() - 1);
 		if (tableName.equals("SEXES")) {
 			s = "SEXES";
+		} else if (tableName.equals("DICTIONARY")) {
+			s = "DICTIONARY";
 		}
 
 		final String SELECTALL = "SELECT * FROM PUBLIC." + tableName

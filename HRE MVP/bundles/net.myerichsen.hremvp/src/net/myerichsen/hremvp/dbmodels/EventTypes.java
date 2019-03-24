@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENT_TYPES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 24. mar. 2019
  *
  */
 
@@ -29,10 +29,10 @@ public class EventTypes {
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_TYPES( "
 			+ "EVENT_TYPE_PID, ABBREVIATION, INSERT_TSTMP, "
 			+ "UPDATE_TSTMP, TABLE_ID, LABEL_PID) VALUES (?, "
-			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 17, ?)";
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 23, ?)";
 	private static final String UPDATE = "UPDATE PUBLIC.EVENT_TYPES SET "
-			+ "ABBREVIATION = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
-			+ "LABEL_PID = ? WHERE EVENT_TYPE_PID = ?";
+			+ "ABBREVIATION = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP"
+			+ " WHERE EVENT_TYPE_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENT_TYPES WHERE EVENT_TYPE_PID = ?";
 
@@ -99,9 +99,9 @@ public class EventTypes {
 		if (rs.next()) {
 			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			setAbbreviation(rs.getString("ABBREVIATION"));
-//			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
-//			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
-//			setTableId(rs.getInt("TABLE_ID"));
+			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			setTableId(rs.getInt("TABLE_ID"));
 			setLabelPid(rs.getInt("LABEL_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
@@ -176,9 +176,6 @@ public class EventTypes {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setString(2, getAbbreviation());
-//		ps.setTimestamp(3, getInsertTstmp());
-//		ps.setTimestamp(4, getUpdateTstmp());
-//		ps.setInt(5, getTableId());
 		ps.setInt(3, getLabelPid());
 		ps.executeUpdate();
 		conn.close();
@@ -243,9 +240,6 @@ public class EventTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getAbbreviation());
-//		ps.setTimestamp(2, getInsertTstmp());
-//		ps.setTimestamp(3, getUpdateTstmp());
-//		ps.setInt(4, getTableId());
 		ps.setInt(2, getLabelPid());
 		ps.setInt(3, getEventTypePid());
 		ps.executeUpdate();

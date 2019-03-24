@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 19. mar. 2019
+ * @version 24. mar. 2019
  *
  */
 
@@ -22,29 +22,24 @@ public class Events {
 	private static final String SELECT = "SELECT EVENT_PID, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
-	private static final String SELECT_FROM_DATE_PID = "SELECT EVENT_PID, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "EVENT_TYPE_PID FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
+	private static final String SELECT_EVENT_TYPE_PID = "SELECT "
+			+ "EVENT_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE FROM_DATE_PID = ? ORDER BY EVENT_PID";
-	private static final String SELECT_TO_DATE_PID = "SELECT EVENT_PID, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS WHERE TO_DATE_PID = ? ORDER BY EVENT_PID";
+			+ "EVENT_TYPE_PID FROM PUBLIC.EVENTS WHERE EVENT_TYPE_PID = ? ORDER BY EVENT_PID";
 	private static final String SELECTALL = "SELECT EVENT_PID, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "EVENT_NAME_PID FROM PUBLIC.EVENTS ORDER BY EVENT_PID";
+			+ "EVENT_TYPE_PID FROM PUBLIC.EVENTS ORDER BY EVENT_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_PID) FROM PUBLIC.EVENTS";
-
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENTS( "
 			+ "EVENT_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_NAME_PID) VALUES ("
+			+ "FROM_DATE_PID, TO_DATE_PID, EVENT_TYPE_PID) VALUES ("
 			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.EVENTS SET "
 			+ "UPDATE_TSTMP = CURRENT_TIMESTAMP, FROM_DATE_PID = ?"
-			+ ", TO_DATE_PID = ?, EVENT_NAME_PID = ? WHERE EVENT_PID = ?";
+			+ ", TO_DATE_PID = ?, EVENT_TYPE_PID = ? WHERE EVENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.EVENTS WHERE EVENT_PID = ?";
 
@@ -64,7 +59,7 @@ public class Events {
 	private int TableId;
 	private int FromDatePid;
 	private int ToDatePid;
-	private int EventNamePid;
+	private int EventTypePid;
 	private Events model;
 
 	public void delete() throws Exception {
@@ -98,7 +93,7 @@ public class Events {
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -117,20 +112,11 @@ public class Events {
 			setTableId(rs.getInt("TABLE_ID"));
 			setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			setToDatePid(rs.getInt("TO_DATE_PID"));
-			setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
-	}
-
-	/**
-	 * Get the EventNamePid field.
-	 *
-	 * @return Contents of the EVENT_NAME_PID column
-	 */
-	public int getEventNamePid() {
-		return EventNamePid;
 	}
 
 	/**
@@ -142,30 +128,18 @@ public class Events {
 		return EventPid;
 	}
 
-	public List<Events> getFKFromDatePid(int key) throws Exception {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_FROM_DATE_PID);
-		ps.setInt(1, key);
-		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
-		while (rs.next()) {
-			model = new Events();
-			model.setEventPid(rs.getInt("EVENT_PID"));
-			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
-			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
-			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
-			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
-			modelList.add(model);
-		}
-		conn.close();
-		return modelList;
+	/**
+	 * Get the EventTypePid field.
+	 *
+	 * @return Contents of the EVENT_TYPE_PID column
+	 */
+	public int getEventTypePid() {
+		return EventTypePid;
 	}
 
-	public List<Events> getFKToDatePid(int key) throws Exception {
+	public List<Events> getFKEventTypePid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(SELECT_TO_DATE_PID);
+		ps = conn.prepareStatement(SELECT_EVENT_TYPE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
 		modelList = new ArrayList<>();
@@ -177,7 +151,7 @@ public class Events {
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
-			model.setEventNamePid(rs.getInt("EVENT_NAME_PID"));
+			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -251,19 +225,10 @@ public class Events {
 		} else {
 			ps.setInt(3, getToDatePid());
 		}
-		ps.setInt(4, getEventNamePid());
+		ps.setInt(4, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
-	}
-
-	/**
-	 * Set the EventNamePid field
-	 *
-	 * @param EventNamePid Contents of the EVENT_NAME_PID column
-	 */
-	public void setEventNamePid(int EventNamePid) {
-		this.EventNamePid = EventNamePid;
 	}
 
 	/**
@@ -273,6 +238,15 @@ public class Events {
 	 */
 	public void setEventPid(int EventPid) {
 		this.EventPid = EventPid;
+	}
+
+	/**
+	 * Set the EventTypePid field
+	 *
+	 * @param EventTypePid Contents of the EVENT_TYPE_PID column
+	 */
+	public void setEventTypePid(int EventTypePid) {
+		this.EventTypePid = EventTypePid;
 	}
 
 	/**
@@ -333,7 +307,7 @@ public class Events {
 		} else {
 			ps.setInt(2, getToDatePid());
 		}
-		ps.setInt(3, getEventNamePid());
+		ps.setInt(3, getEventTypePid());
 		ps.setInt(4, getEventPid());
 		ps.executeUpdate();
 		conn.close();

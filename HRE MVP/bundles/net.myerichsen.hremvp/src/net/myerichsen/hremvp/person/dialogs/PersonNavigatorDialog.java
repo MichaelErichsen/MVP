@@ -111,7 +111,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		table.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -169,7 +169,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
 			 * events.KeyEvent)

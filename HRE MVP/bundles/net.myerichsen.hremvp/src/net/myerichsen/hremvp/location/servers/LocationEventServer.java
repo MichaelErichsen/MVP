@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
-import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
 
@@ -92,10 +91,9 @@ public class LocationEventServer implements IHREServer {
 		List<String> stringList;
 
 		int eventPid;
-		int namePid;
+//		int namePid;
 
 		final Events event = new Events();
-		final EventNames name = new EventNames();
 		final LocationEvents link = new LocationEvents();
 		final List<LocationEvents> a = link.getFKLocationPid(locationPid);
 
@@ -106,9 +104,9 @@ public class LocationEventServer implements IHREServer {
 			event.get(eventPid);
 			stringList.add(Integer.toString(eventPid));
 
-			namePid = event.getEventNamePid();
-			name.get(namePid);
-			stringList.add(name.getLabel());
+//			namePid = event.getEventNamePid();
+//			name.get(namePid);
+//			stringList.add(name.getLabel());
 			lls.add(stringList);
 		}
 

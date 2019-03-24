@@ -15,7 +15,6 @@ import org.json.JSONStringer;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
-import net.myerichsen.hremvp.dbmodels.EventNames;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Parents;
@@ -31,8 +30,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
- *
+ * @version 24. mar. 2019
  */
 public class PersonServer implements IHREServer {
 	private final static Logger LOGGER = Logger
@@ -414,7 +412,6 @@ public class PersonServer implements IHREServer {
 	 */
 	public List<List<String>> getPersonEventList(int key) throws Exception {
 		Events event;
-		EventNames eventName;
 		List<String> ls;
 		final List<List<String>> eventList = new ArrayList<>();
 		final Hdates date = new Hdates();
@@ -428,13 +425,13 @@ public class PersonServer implements IHREServer {
 				.getFKPersonPid(key)) {
 			event = new Events();
 			event.get(personEvent.getEventPid());
-			eventName = new EventNames();
-			eventName.get(event.getEventNamePid());
+//			eventName = new EventNames();
+//			eventName.get(event.getEventNamePid());
 
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(event.getEventPid()));
-			ls.add(eventName.getLabel());
-			ls.add(personEvent.getRole());
+//			ls.add(eventName.getLabel());
+//			ls.add(Integer.toString(personEvent.getRolePid()));
 			datePid = event.getFromDatePid();
 			if (datePid == 0) {
 				ls.add("");

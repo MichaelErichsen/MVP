@@ -292,6 +292,8 @@ public class EventTypeView {
 
 			provider.get(eventTypePid);
 			provider.setAbbreviation(textAbbreviation.getText());
+			// FIXME SEVERE: Invalid value "3" for parameter "parameterIndex"
+			// [90008-168]
 			provider.update();
 			LOGGER.info("Event pid " + eventTypePid + " has been updated");
 

@@ -14,39 +14,48 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_EVENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 20. mar. 2019
+ * @version 24. mar. 2019
  *
  */
 
 public class PersonEvents {
 	private static final String SELECT = "SELECT PERSON_EVENT_PID, "
-			+ "EVENT_PID, PERSON_PID, ROLE, PRIMARY_PERSON, "
-			+ "PRIMARY_EVENT, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "EVENT_PID, EVENT_ROLE_PID, PERSON_PID, "
+			+ "PRIMARY_PERSON, PRIMARY_EVENT, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_EVENT_PID = ?";
 	private static final String SELECT_EVENT_PID = "SELECT "
-			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
-			+ "PRIMARY_PERSON, PRIMARY_EVENT, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, "
+			+ "PERSON_EVENT_PID, EVENT_PID, EVENT_ROLE_PID, "
+			+ "PERSON_PID, PRIMARY_PERSON, PRIMARY_EVENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE EVENT_PID = ? ORDER BY PERSON_EVENT_PID";
+	private static final String SELECT_EVENT_ROLE_PID = "SELECT "
+			+ "PERSON_EVENT_PID, EVENT_PID, EVENT_ROLE_PID, "
+			+ "PERSON_PID, PRIMARY_PERSON, PRIMARY_EVENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE EVENT_ROLE_PID = ? ORDER BY PERSON_EVENT_PID";
 	private static final String SELECT_PERSON_PID = "SELECT "
-			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
-			+ "PRIMARY_PERSON, PRIMARY_EVENT, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, "
+			+ "PERSON_EVENT_PID, EVENT_PID, EVENT_ROLE_PID, "
+			+ "PERSON_PID, PRIMARY_PERSON, PRIMARY_EVENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS WHERE PERSON_PID = ? ORDER BY PERSON_EVENT_PID";
 	private static final String SELECTALL = "SELECT PERSON_EVENT_PID, "
-			+ "EVENT_PID, PERSON_PID, ROLE, PRIMARY_PERSON, "
-			+ "PRIMARY_EVENT, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "EVENT_PID, EVENT_ROLE_PID, PERSON_PID, "
+			+ "PRIMARY_PERSON, PRIMARY_EVENT, INSERT_TSTMP, "
+			+ "UPDATE_TSTMP, TABLE_ID, "
 			+ "LANGUAGE_PID FROM PUBLIC.PERSON_EVENTS ORDER BY PERSON_EVENT_PID";
+
 	private static final String SELECTMAX = "SELECT MAX(PERSON_EVENT_PID) FROM PUBLIC.PERSON_EVENTS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PERSON_EVENTS( "
-			+ "PERSON_EVENT_PID, EVENT_PID, PERSON_PID, ROLE, "
-			+ "PRIMARY_PERSON, PRIMARY_EVENT, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID) VALUES (?, "
-			+ "?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, ?)";
+			+ "PERSON_EVENT_PID, EVENT_PID, EVENT_ROLE_PID, "
+			+ "PERSON_PID, PRIMARY_PERSON, PRIMARY_EVENT, "
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
+			+ "LANGUAGE_PID) VALUES (?, ?, ?, ?, ?, "
+			+ "?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_EVENTS SET "
-			+ "EVENT_PID = ?, PERSON_PID = ?, ROLE = ?"
+			+ "EVENT_PID = ?, EVENT_ROLE_PID = ?, PERSON_PID = ?"
 			+ ", PRIMARY_PERSON = ?, PRIMARY_EVENT = ?"
 			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP"
 			+ " WHERE PERSON_EVENT_PID = ?";
@@ -65,8 +74,8 @@ public class PersonEvents {
 
 	private int PersonEventPid;
 	private int EventPid;
+	private int EventRolePid;
 	private int PersonPid;
-	private String Role;
 	private boolean PrimaryPerson;
 	private boolean PrimaryEvent;
 	private Timestamp InsertTstmp;
@@ -102,8 +111,8 @@ public class PersonEvents {
 			model = new PersonEvents();
 			model.setPersonEventPid(rs.getInt("PERSON_EVENT_PID"));
 			model.setEventPid(rs.getInt("EVENT_PID"));
+			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
-			model.setRole(rs.getString("ROLE"));
 			model.setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
@@ -124,8 +133,8 @@ public class PersonEvents {
 		if (rs.next()) {
 			setPersonEventPid(rs.getInt("PERSON_EVENT_PID"));
 			setEventPid(rs.getInt("EVENT_PID"));
+			setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
 			setPersonPid(rs.getInt("PERSON_PID"));
-			setRole(rs.getString("ROLE"));
 			setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
@@ -147,6 +156,15 @@ public class PersonEvents {
 		return EventPid;
 	}
 
+	/**
+	 * Get the EventRolePid field.
+	 *
+	 * @return Contents of the EVENT_ROLE_PID column
+	 */
+	public int getEventRolePid() {
+		return EventRolePid;
+	}
+
 	public List<PersonEvents> getFKEventPid(int key) throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_EVENT_PID);
@@ -157,8 +175,32 @@ public class PersonEvents {
 			model = new PersonEvents();
 			model.setPersonEventPid(rs.getInt("PERSON_EVENT_PID"));
 			model.setEventPid(rs.getInt("EVENT_PID"));
+			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
-			model.setRole(rs.getString("ROLE"));
+			model.setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
+			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			modelList.add(model);
+		}
+		conn.close();
+		return modelList;
+	}
+
+	public List<PersonEvents> getFKEventRolePid(int key) throws Exception {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECT_EVENT_ROLE_PID);
+		ps.setInt(1, key);
+		rs = ps.executeQuery();
+		modelList = new ArrayList<>();
+		while (rs.next()) {
+			model = new PersonEvents();
+			model.setPersonEventPid(rs.getInt("PERSON_EVENT_PID"));
+			model.setEventPid(rs.getInt("EVENT_PID"));
+			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
+			model.setPersonPid(rs.getInt("PERSON_PID"));
 			model.setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
@@ -181,8 +223,8 @@ public class PersonEvents {
 			model = new PersonEvents();
 			model.setPersonEventPid(rs.getInt("PERSON_EVENT_PID"));
 			model.setEventPid(rs.getInt("EVENT_PID"));
+			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
 			model.setPersonPid(rs.getInt("PERSON_PID"));
-			model.setRole(rs.getString("ROLE"));
 			model.setPrimaryPerson(rs.getBoolean("PRIMARY_PERSON"));
 			model.setPrimaryEvent(rs.getBoolean("PRIMARY_EVENT"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
@@ -232,15 +274,6 @@ public class PersonEvents {
 	}
 
 	/**
-	 * Get the Role field.
-	 *
-	 * @return Contents of the ROLE column
-	 */
-	public String getRole() {
-		return Role;
-	}
-
-	/**
 	 * Get the TableId field.
 	 *
 	 * @return Contents of the TABLE_ID column
@@ -271,8 +304,8 @@ public class PersonEvents {
 		ps = conn.prepareStatement(INSERT);
 		ps.setInt(1, maxPid);
 		ps.setInt(2, getEventPid());
-		ps.setInt(3, getPersonPid());
-		ps.setString(4, getRole());
+		ps.setInt(3, getEventRolePid());
+		ps.setInt(4, getPersonPid());
 		ps.setBoolean(5, isPrimaryPerson());
 		ps.setBoolean(6, isPrimaryEvent());
 		ps.setInt(7, getLanguagePid());
@@ -306,6 +339,15 @@ public class PersonEvents {
 	 */
 	public void setEventPid(int EventPid) {
 		this.EventPid = EventPid;
+	}
+
+	/**
+	 * Set the EventRolePid field
+	 *
+	 * @param EventRolePid Contents of the EVENT_ROLE_PID column
+	 */
+	public void setEventRolePid(int EventRolePid) {
+		this.EventRolePid = EventRolePid;
 	}
 
 	/**
@@ -363,15 +405,6 @@ public class PersonEvents {
 	}
 
 	/**
-	 * Set the Role field
-	 *
-	 * @param Role Contents of the ROLE column
-	 */
-	public void setRole(String Role) {
-		this.Role = Role;
-	}
-
-	/**
 	 * Set the TableId field
 	 *
 	 * @param TableId Contents of the TABLE_ID column
@@ -393,8 +426,8 @@ public class PersonEvents {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getEventPid());
-		ps.setInt(2, getPersonPid());
-		ps.setString(3, getRole());
+		ps.setInt(2, getEventRolePid());
+		ps.setInt(3, getPersonPid());
 		ps.setBoolean(4, isPrimaryPerson());
 		ps.setBoolean(5, isPrimaryEvent());
 		ps.setInt(6, getLanguagePid());

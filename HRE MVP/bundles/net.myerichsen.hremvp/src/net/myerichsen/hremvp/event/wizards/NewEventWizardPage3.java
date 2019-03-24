@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.event.wizards;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -16,6 +18,8 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -29,12 +33,14 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
+import net.myerichsen.hremvp.project.providers.EventRoleProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Wizard page to add a person to an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. mar. 2019
+ * @version 24. mar. 2019
  *
  */
 public class NewEventWizardPage3 extends WizardPage {
@@ -43,6 +49,7 @@ public class NewEventWizardPage3 extends WizardPage {
 	private final IEclipseContext context;
 	private NewEventWizard wizard;
 	private Text textPerson;
+	private List<List<String>> stringList;
 
 	/**
 	 * Constructor
@@ -167,6 +174,20 @@ public class NewEventWizardPage3 extends WizardPage {
 		final ComboViewer comboViewerRole = new ComboViewer(compositeRole,
 				SWT.NONE);
 		final Combo comboRole = comboViewerRole.getCombo();
+		comboRole.addSelectionListener(new SelectionAdapter() {
+			/**
+			 * @param e
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboRole.getSelectionIndex();
+				wizard = (NewEventWizard) getWizard();
+				wizard.setEventRolePid(Integer
+						.parseInt(stringList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerRole.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerRole.setLabelProvider(new HREComboLabelProvider(2));
 		comboRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -210,8 +231,15 @@ public class NewEventWizardPage3 extends WizardPage {
 		btnPrimaryPersonEvent.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnPrimaryPersonEvent.setText("Primary Event");
-		
-		// FIXME Role combo not populated
+
+		try {
+			// A list of lists of event role pids, label pids, abbreviations,
+			// generic labels and event type pids
+			stringList = new EventRoleProvider().getStringList();
+			comboViewerRole.setInput(stringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+		}
 	}
 
 	/**

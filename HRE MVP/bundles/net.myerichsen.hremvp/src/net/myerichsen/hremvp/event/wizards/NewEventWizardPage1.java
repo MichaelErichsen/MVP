@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Base location data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. mar. 2019
+ * @version 24. mar. 2019
  *
  */
 public class NewEventWizardPage1 extends WizardPage {
@@ -54,8 +54,7 @@ public class NewEventWizardPage1 extends WizardPage {
 	public NewEventWizardPage1(IEclipseContext context) {
 		super("wizardPage");
 		setTitle("New Event");
-		setDescription(
-				"Create a new event by entering immutable data for it\r\n");
+		setDescription("Create a new event by entering static data for it\r\n");
 		this.context = context;
 	}
 
