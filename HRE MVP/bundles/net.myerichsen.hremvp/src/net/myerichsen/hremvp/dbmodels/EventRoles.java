@@ -27,16 +27,11 @@ public class EventRoles {
 			+ "EVENT_ROLE_PID, EVENT_TYPE_PID, ABBREVIATION, "
 			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES WHERE EVENT_TYPE_PID = ? ORDER BY EVENT_ROLE_PID";
-//	private static final String SELECT_EVENT_TYPE_PID = "SELECT "
-//			+ "EVENT_ROLE_PID, EVENT_TYPE_PID, ABBREVIATION, "
-//			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
-//			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES WHERE EVENT_TYPE_PID = ? ORDER BY EVENT_ROLE_PID";
 	private static final String SELECTALL = "SELECT EVENT_ROLE_PID, "
 			+ "EVENT_TYPE_PID, ABBREVIATION, LABEL_PID, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, "
 			+ "TABLE_ID FROM PUBLIC.EVENT_ROLES ORDER BY EVENT_ROLE_PID";
 	private static final String SELECTMAX = "SELECT MAX(EVENT_ROLE_PID) FROM PUBLIC.EVENT_ROLES";
-
 	private static final String INSERT = "INSERT INTO PUBLIC.EVENT_ROLES( "
 			+ "EVENT_ROLE_PID, EVENT_TYPE_PID, ABBREVIATION, "
 			+ "LABEL_PID, INSERT_TSTMP, UPDATE_TSTMP, "
@@ -173,27 +168,6 @@ public class EventRoles {
 		conn.close();
 		return modelList;
 	}
-
-//	public List<EventRoles> getFKEventTypePid(int key) throws Exception {
-//		conn = HreH2ConnectionPool.getConnection();
-//		ps = conn.prepareStatement(SELECT_EVENT_TYPE_PID);
-//		ps.setInt(1, key);
-//		rs = ps.executeQuery();
-//		modelList = new ArrayList<>();
-//		while (rs.next()) {
-//			model = new EventRoles();
-//			model.setEventRolePid(rs.getInt("EVENT_ROLE_PID"));
-//			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
-//			model.setAbbreviation(rs.getString("ABBREVIATION"));
-//			model.setLabelPid(rs.getInt("LABEL_PID"));
-//			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
-//			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
-//			model.setTableId(rs.getInt("TABLE_ID"));
-//			modelList.add(model);
-//		}
-//		conn.close();
-//		return modelList;
-//	}
 
 	/**
 	 * Get the InsertTstmp field.
