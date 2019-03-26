@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 26. mar. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -208,7 +208,6 @@ public class LocationNamePartServer implements IHREServer {
 		}
 
 		final Dictionary dictionary = new Dictionary();
-
 		final LocationNames ln = new LocationNames();
 		ln.get(key);
 
@@ -216,6 +215,8 @@ public class LocationNamePartServer implements IHREServer {
 				.getFKLocationNameStylePid(ln.getLocationNameStylePid());
 
 		final List<LocationNameParts> lnp = part.getFKLocationNamePid(key);
+		int labelPid;
+		List<Dictionary> fkLabelPid;
 
 		for (int i = 0; i < lnm.size(); i++) {
 			stringList = new ArrayList<>();
@@ -223,9 +224,8 @@ public class LocationNamePartServer implements IHREServer {
 					.add(Integer.toString(lnp.get(i).getLocationNamePartPid()));
 			stringList.add(Integer.toString(lnp.get(i).getPartNo()));
 
-			final int labelPid = lnm.get(i).getLabelPid();
-			final List<Dictionary> fkLabelPid = dictionary
-					.getFKLabelPid(labelPid);
+			labelPid = lnm.get(i).getLabelPid();
+			fkLabelPid = dictionary.getFKLabelPid(labelPid);
 			stringList.add(fkLabelPid.get(0).getLabel());
 			stringList.add(lnp.get(i).getLabel());
 			lls.add(stringList);

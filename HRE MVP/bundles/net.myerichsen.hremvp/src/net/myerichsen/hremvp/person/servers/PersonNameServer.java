@@ -30,7 +30,7 @@ public class PersonNameServer implements IHREServer {
 	private int toDatePid;
 	private boolean primaryName;
 	private int nameStylePid;
-	private List<List<String>> nameList;
+	private List<List<String>> stringList;
 
 	private PersonNames name;
 
@@ -40,7 +40,7 @@ public class PersonNameServer implements IHREServer {
 	 */
 	public PersonNameServer() {
 		name = new PersonNames();
-		nameList = new ArrayList<>();
+		stringList = new ArrayList<>();
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class PersonNameServer implements IHREServer {
 		List<PersonNameParts> partList;
 		List<String> ls;
 
-		nameList.clear();
+		stringList.clear();
 
 		map = new PersonNameMaps();
 		mapList = map.getFKNameStylePid(name.getNameStylePid());
@@ -118,7 +118,7 @@ public class PersonNameServer implements IHREServer {
 			ls.add(Integer.toString(partList.get(i).getNamePartPid()));
 			dictionary.getFKLabelPid(mapList.get(i).getLabelPid());
 			ls.add(dictionary.getLabel());
-			nameList.add(ls);
+			stringList.add(ls);
 		}
 	}
 
@@ -130,10 +130,10 @@ public class PersonNameServer implements IHREServer {
 	}
 
 	/**
-	 * @return the nameList
+	 * @return the stringList
 	 */
 	public List<List<String>> getNameList() {
-		return nameList;
+		return stringList;
 	}
 
 	/**
@@ -316,10 +316,10 @@ public class PersonNameServer implements IHREServer {
 	}
 
 	/**
-	 * @param nameList the nameList to set
+	 * @param stringList the stringList to set
 	 */
 	public void setNameList(List<List<String>> nameList) {
-		this.nameList = nameList;
+		this.stringList = nameList;
 	}
 
 	/**

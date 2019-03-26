@@ -105,7 +105,7 @@ public class PersonNamePartNavigator {
 		new Label(parent, SWT.NONE);
 
 		final Label lblNameStyle = new Label(parent, SWT.NONE);
-		lblNameStyle.setText("Name Style\r\nDblClk to open");
+		lblNameStyle.setText("Name Style");
 
 		textNameStylePid = new Text(parent, SWT.BORDER);
 		textNameStylePid.addMouseListener(new MouseAdapter() {
@@ -162,13 +162,20 @@ public class PersonNamePartNavigator {
 		tblclmnId.setText("ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
+		final TableViewerColumn tableViewerColumnPartNo = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnPartno = tableViewerColumnPartNo.getColumn();
+		tblclmnPartno.setWidth(100);
+		tblclmnPartno.setText("Part no.");
+		tableViewerColumnPartNo.setLabelProvider(new HREColumnLabelProvider(1));
+
 		final TableViewerColumn tableViewerColumnMap = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnLabelFromMap = tableViewerColumnMap
 				.getColumn();
 		tblclmnLabelFromMap.setWidth(100);
 		tblclmnLabelFromMap.setText("Label from Map");
-		tableViewerColumnMap.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnMap.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnPart = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -176,7 +183,15 @@ public class PersonNamePartNavigator {
 				.getColumn();
 		tblclmnValueFromPart.setWidth(100);
 		tblclmnValueFromPart.setText("Value from Part");
-		tableViewerColumnPart.setLabelProvider(new HREColumnLabelProvider(2));
+		tableViewerColumnPart.setLabelProvider(new HREColumnLabelProvider(3));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList(personNamePid));
+		} catch (Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
 
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
@@ -192,13 +207,6 @@ public class PersonNamePartNavigator {
 		});
 		buttonUpdate.setText("Update");
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getStringList(personNamePid));
-		} catch (Exception e1) {
-			LOGGER.severe(e1.getMessage());
-			e1.printStackTrace();
-		}
 	}
 
 	/**

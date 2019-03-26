@@ -229,38 +229,27 @@ public class PersonNamePartServer implements IHREServer {
 			return lls;
 		}
 
-		int partNo = 0;
-		int labelPid = 0;
-		String mapLabel = "";
 		Dictionary dictionary = new Dictionary();
 		PersonNames name = new PersonNames();
 		name.get(key);
 
-		final PersonNameMaps map = new PersonNameMaps();
-		final List<PersonNameMaps> mapList = map
+		int labelPid = 0;
+		List<Dictionary> fkLabelPid;
+
+		final List<PersonNameMaps> lnm = new PersonNameMaps()
 				.getFKNameStylePid(name.getNameStylePid());
 
-		List<PersonNameParts> list = part.getFKNamePid(namePid);
+		List<PersonNameParts> lnp = part.getFKNamePid(key);
 
-		for (int i = 0; i < list.size(); i++) {
-			PersonNameParts pnp = list.get(i);
+		for (int i = 0; i < lnp.size(); i++) {
 			stringList = new ArrayList<>();
-			stringList.add(Integer.toString(pnp.getNamePartPid()));
+			stringList.add(Integer.toString(lnp.get(i).getNamePartPid()));
+			stringList.add(Integer.toString(lnp.get(i).getPartNo()));
 
-			partNo = pnp.getPartNo();
-			mapLabel = "?";
-
-			for (int j = 0; j < mapList.size(); j++) {
-				if (mapList.get(i).getPartNo() == partNo) {
-					labelPid = mapList.get(i).getLabelPid();
-					mapLabel = dictionary.getFKLabelPid(labelPid).get(0)
-							.getLabel();
-					break;
-				}
-			}
-
-			stringList.add(mapLabel);
-			stringList.add(pnp.getLabel());
+			labelPid = lnm.get(i).getLabelPid();
+			fkLabelPid = dictionary.getFKLabelPid(labelPid);
+			stringList.add(fkLabelPid.get(0).getLabel());
+			stringList.add(lnp.get(i).getLabel());
 			lls.add(stringList);
 		}
 
