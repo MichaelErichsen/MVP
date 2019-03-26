@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 26. mar. 2019
  *
  */
 public class EventServer implements IHREServer {
@@ -149,6 +149,7 @@ public class EventServer implements IHREServer {
 //		setEventName(anEventName.getLabel());
 
 		final Languages aLanguage = new Languages();
+		// FIXME: Is 0
 		aLanguage.get(LanguagePid);
 		setIsoCode(aLanguage.getIsocode());
 		setLanguage(aLanguage.getLabel());
@@ -339,7 +340,7 @@ public class EventServer implements IHREServer {
 		event.setTableId(Constants.EVENTS_TABLE_ID);
 		event.setFromDatePid(FromDatePid);
 		event.setToDatePid(ToDatePid);
-//		event.setEventNamePid(EventNamePid);
+		event.setEventTypePid(EventTypePid);
 		return event.insert();
 	}
 

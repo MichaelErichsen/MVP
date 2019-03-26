@@ -12,10 +12,10 @@ import net.myerichsen.hremvp.location.providers.LocationEventProvider;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 
 /**
- * Wizard to add a new Event
+ * Wizard to add a new event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. mar. 2019
+ * @version 26. mar. 2019
  *
  */
 public class NewEventWizard extends Wizard {
@@ -192,14 +192,7 @@ public class NewEventWizard extends Wizard {
 			provider.setFromDatePid(fromDatePid);
 			provider.setToDatePid(toDatePid);
 			provider.setEventName(eventName);
-			// FIXME SEVERE: Referential integrity constraint violation:
-			// "CONSTRAINT_7A9: PUBLIC.EVENTS FOREIGN KEY(EVENT_TYPE_PID)
-			// REFERENCES PUBLIC.EVENT_TYPES(EVENT_TYPE_PID) (0)"; SQL
-			// statement:
-			// INSERT INTO PUBLIC.EVENTS( EVENT_PID, INSERT_TSTMP, UPDATE_TSTMP,
-			// TABLE_ID, FROM_DATE_PID, TO_DATE_PID, EVENT_TYPE_PID) VALUES (?,
-			// CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 12, ?, ?, ?) [23506-168]
-
+			provider.setEventTypePid(eventTypePid);
 			final int eventPid = provider.insert();
 			LOGGER.info("Inserted event pid " + eventPid);
 

@@ -8,10 +8,10 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.event.servers.EventServer;
 
 /**
- * Provides all data about an personEvent
+ * Provides all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. jan. 2019
+ * @version 26. mar. 2019
  *
  */
 public class EventProvider implements IHREProvider {
@@ -255,6 +255,7 @@ public class EventProvider implements IHREProvider {
 		server.setFromDatePid(FromDatePid);
 		server.setToDatePid(ToDatePid);
 		server.setEventNamePid(EventNamePid);
+		server.setEventTypePid(EventTypePid);
 		return server.insert();
 	}
 
