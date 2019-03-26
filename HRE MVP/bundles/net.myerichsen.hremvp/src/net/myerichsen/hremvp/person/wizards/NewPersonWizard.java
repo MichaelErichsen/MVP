@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. mar. 2019
+ * @version 26. mar. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -39,6 +39,9 @@ public class NewPersonWizard extends Wizard {
 	private int personNameStylePid;
 	private int personPid;
 	private int languagePid;
+	private int sexTypePid;
+	private int birthDatePid;
+	private int deathDatePid;
 
 	/**
 	 * Constructor
@@ -76,6 +79,20 @@ public class NewPersonWizard extends Wizard {
 		addPage(page1);
 		page2 = new NewPersonWizardPage2(context);
 		addPage(page2);
+	}
+
+	/**
+	 * @return the birthDatePid
+	 */
+	public int getBirthDatePid() {
+		return birthDatePid;
+	}
+
+	/**
+	 * @return the deathDatePid
+	 */
+	public int getDeathDatePid() {
+		return deathDatePid;
 	}
 
 	/**
@@ -142,6 +159,13 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @return the sexTypePid
+	 */
+	public int getSexTypePid() {
+		return sexTypePid;
+	}
+
+	/**
 	 * /* (non-Javadoc)
 	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
@@ -155,15 +179,15 @@ public class NewPersonWizard extends Wizard {
 			// Birth date, death date and sex
 			// Create a new person
 			final PersonProvider personProvider = new PersonProvider();
-			personProvider.setBirthDatePid(page1.getBirthDatePid());
-			personProvider.setDeathDatePid(page1.getDeathDatePid());
+			personProvider.setBirthDatePid(birthDatePid);
+			personProvider.setDeathDatePid(deathDatePid);
 			personPid = personProvider.insert();
 			LOGGER.info("Inserted person " + personPid);
 
 			// Create a sex for the person
 			final SexProvider sexProvider = new SexProvider();
 			sexProvider.setPersonPid(personPid);
-			sexProvider.setSexTypePid(page1.getSexTypePid());
+			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(true);
 			final int sexPid = sexProvider.insert();
 			LOGGER.info("Inserted sex " + sexPid + " for person " + personPid);
@@ -303,6 +327,20 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @param birthDatePid the birthDatePid to set
+	 */
+	public void setBirthDatePid(int birthDatePid) {
+		this.birthDatePid = birthDatePid;
+	}
+
+	/**
+	 * @param deathDatePid the deathDatePid to set
+	 */
+	public void setDeathDatePid(int deathDatePid) {
+		this.deathDatePid = deathDatePid;
+	}
+
+	/**
 	 * @param languagePid the languagePid to set
 	 */
 	public void setLanguagePid(int languagePid) {
@@ -328,6 +366,13 @@ public class NewPersonWizard extends Wizard {
 	 */
 	public void setPersonPid(int personPid) {
 		this.personPid = personPid;
+	}
+
+	/**
+	 * @param sexTypePid the sexTypePid to set
+	 */
+	public void setSexTypePid(int sexTypePid) {
+		this.sexTypePid = sexTypePid;
 	}
 
 }

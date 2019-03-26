@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +11,7 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -24,15 +24,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.dbmodels.PersonNames;
 import net.myerichsen.hremvp.person.providers.PersonNameListProvider;
-import net.myerichsen.hremvp.person.providers.PersonNameProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. mar. 2019
+ * @version 25. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -49,7 +48,6 @@ public class PersonNameNavigator {
 	PersonNameListProvider provider;
 	private TableViewer tableViewer;
 
-	// FIXME To string now invalid in name column
 	/**
 	 * Constructor
 	 *
@@ -84,14 +82,22 @@ public class PersonNameNavigator {
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnName = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnName = tableViewerColumnName.getColumn();
 		tblclmnName.setWidth(250);
 		tblclmnName.setText("Name");
+		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
-		updateGui();
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList());
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			eventBroker.post("MESSAGE", e1.getMessage());
+		}
 	}
 
 	@PreDestroy
@@ -124,35 +130,6 @@ public class PersonNameNavigator {
 
 	@Focus
 	public void setFocus() {
-	}
-
-	/**
-	 *
-	 */
-	private void updateGui() {
-		try {
-			provider = new PersonNameListProvider();
-			final PersonNameProvider personNameProvider = new PersonNameProvider();
-
-			final List<PersonNames> rowList = provider.getModelList();
-
-			// FIXME Change to JFace
-			tableViewer.getTable().removeAll();
-
-			for (int i = 0; i < rowList.size(); i++) {
-				final TableItem item = new TableItem(tableViewer.getTable(),
-						SWT.NONE);
-				final PersonNames row = rowList.get(i);
-				item.setText(0, Integer.toString(row.getNamePid()));
-				personNameProvider.get(row.getNamePid());
-				item.setText(1, personNameProvider.toString());
-			}
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 }

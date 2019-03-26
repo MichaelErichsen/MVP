@@ -87,27 +87,6 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		final Label lblLanguage = new Label(container, SWT.NONE);
 		lblLanguage.setText("Language");
 
-		try {
-			stringList = provider.getStringList();
-
-			final int llsSize = stringList.size();
-			final String[] stringArray = new String[llsSize];
-			final String g = store.getString("GUILANGUAGE");
-			int index = 0;
-
-			for (int i = 0; i < llsSize; i++) {
-				stringArray[i] = stringList.get(i).get(1);
-				if (g.equals(stringList.get(i).get(1))) {
-					index = i;
-				}
-			}
-			// FIXME Does not set default language
-			comboLanguage.select(index);
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
-		}
-
 		ComboViewer comboViewerLanguage = new ComboViewer(container, SWT.NONE);
 		comboLanguage = comboViewerLanguage.getCombo();
 		comboLanguage.addSelectionListener(new SelectionAdapter() {
@@ -127,6 +106,27 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		comboViewerLanguage
 				.setContentProvider(ArrayContentProvider.getInstance());
 		comboViewerLanguage.setLabelProvider(new HREComboLabelProvider(2));
+		try {
+			stringList = provider.getStringList();
+
+			final int llsSize = stringList.size();
+			final String g = store.getString("GUILANGUAGE");
+
+			for (int i = 0; i < llsSize; i++) {
+				if (g.equals(stringList.get(i).get(1))) {
+					// FIXME Does not select
+					LOGGER.info("Selected language " + i + ", "
+							+ stringList.get(i).get(1));
+					comboLanguage.select(i);
+					break;
+				}
+			}
+			// FIXME Does not set default language
+//			comboLanguage.select(index);
+		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 		comboLanguage.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 

@@ -1,58 +1,50 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.person.dialogs.SexTypeNavigatorDialog;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 26. mar. 2019
  *
  */
-// FIXME
 public class NewPersonWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
+	private NewPersonWizard wizard;
 
 	private Text textBirthDate;
-	private Text textBirthDateSort;
-	private Text textBirthOriginal;
-	private Text textBirthSurety;
-
 	private Text textDeathDate;
-	private Text textDeathDateSort;
-	private Text textDeathOriginal;
-	private Text textDeathSurety;
 
-	private Text textSexTypePid;
-	private Text textSex;
-
-	private int BirthDatePid;
-	private int DeathDatePid;
-	private int sexTypePid;
-	private final IEventBroker eventBroker;
+	private List<List<String>> stringList;
 
 	/**
 	 * Constructor
@@ -66,7 +58,6 @@ public class NewPersonWizardPage1 extends WizardPage {
 		setDescription(
 				"Create a new person by entering static data for it. Dates are optional, but sex is mandatory.");
 		this.context = context;
-		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/**
@@ -81,12 +72,9 @@ public class NewPersonWizardPage1 extends WizardPage {
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hdatePid);
 				textBirthDate.setText(hdp.getDate().toString());
-				textBirthDateSort.setText(hdp.getSortDate().toString());
-				textBirthOriginal.setText(hdp.getOriginalText());
-				textBirthSurety.setText(hdp.getSurety());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
-//				e1.printStackTrace();
+				e1.printStackTrace();
 			}
 		}
 	}
@@ -103,63 +91,10 @@ public class NewPersonWizardPage1 extends WizardPage {
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hdatePid);
 				textDeathDate.setText(hdp.getDate().toString());
-				textDeathDateSort.setText(hdp.getSortDate().toString());
-				textDeathOriginal.setText(hdp.getOriginalText());
-				textDeathSurety.setText(hdp.getSurety());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 *
-	 */
-	protected void browseSexTypes() {
-		try {
-			final SexTypeNavigatorDialog dialog = new SexTypeNavigatorDialog(
-					textSexTypePid.getShell(), context);
-			if (dialog.open() == Window.OK) {
-
-				sexTypePid = dialog.getSexTypePid();
-				textSexTypePid.setText(Integer.toString(sexTypePid));
-
-				final SexTypeProvider provider = new SexTypeProvider();
-				provider.get(sexTypePid);
-			}
-		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 *
-	 */
-	private void clearBirthDate() {
-		textBirthDate.setText("");
-		textBirthDateSort.setText("");
-		textBirthOriginal.setText("");
-		textBirthSurety.setText("");
-	}
-
-	/**
-	 *
-	 */
-	private void clearDeathDate() {
-		textDeathDate.setText("");
-		textDeathDateSort.setText("");
-		textDeathOriginal.setText("");
-		textDeathSurety.setText("");
-	}
-
-	/**
-	 *
-	 */
-	protected void clearSex() {
-		textSexTypePid.setText("");
-		textSex.setText("");
 	}
 
 	/*
@@ -173,40 +108,61 @@ public class NewPersonWizardPage1 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(3, false));
+		container.setLayout(new GridLayout(2, false));
 
-		final Label lblBirthDate = new Label(container, SWT.NONE);
+		final Label lblSex = new Label(container, SWT.NONE);
+		lblSex.setText("Sex");
+
+		ComboViewer comboViewerSex = new ComboViewer(container, SWT.NONE);
+		Combo comboSex = comboViewerSex.getCombo();
+		comboSex.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboSex.getSelectionIndex();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setSexTypePid(Integer
+						.parseInt(stringList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerSex.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerSex.setLabelProvider(new HREComboLabelProvider(2));
+		comboSex.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		Composite compositeBirthDate = new Composite(container, SWT.BORDER);
+		compositeBirthDate.setLayout(new GridLayout(2, false));
+		compositeBirthDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+
+		final Label lblBirthDate = new Label(compositeBirthDate, SWT.NONE);
 		lblBirthDate.setText("Birth Date");
 
-		textBirthDate = new Text(container, SWT.BORDER);
-		textBirthDate.setEditable(false);
+		textBirthDate = new Text(compositeBirthDate, SWT.BORDER);
 		textBirthDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textBirthDate.setEditable(false);
 
-		textBirthDateSort = new Text(container, SWT.BORDER);
-		textBirthDateSort.setEditable(false);
-		textBirthDateSort.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		textBirthOriginal = new Text(container, SWT.BORDER);
-		textBirthOriginal.setEditable(false);
-		textBirthOriginal.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textBirthSurety = new Text(container, SWT.BORDER);
-		textBirthSurety.setEditable(false);
-		textBirthSurety.setLayoutData(
-				new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		final Composite compositeBirth = new Composite(container, SWT.NONE);
-		compositeBirth.setLayoutData(
+		final Composite compositeBirthButtons = new Composite(
+				compositeBirthDate, SWT.NONE);
+		compositeBirthButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeBirth.setLayout(new RowLayout(SWT.HORIZONTAL));
+		compositeBirthButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnNewBirth = new Button(compositeBirth, SWT.NONE);
+		final Button btnNewBirth = new Button(compositeBirthButtons, SWT.NONE);
 		btnNewBirth.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				getNewBirthDate();
@@ -214,8 +170,16 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewBirth.setText("New");
 
-		final Button btnBrowseBirth = new Button(compositeBirth, SWT.NONE);
+		final Button btnBrowseBirth = new Button(compositeBirthButtons,
+				SWT.NONE);
 		btnBrowseBirth.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseBirthDates();
@@ -223,47 +187,51 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseBirth.setText("Browse");
 
-		final Button btnClearBirth = new Button(compositeBirth, SWT.NONE);
+		final Button btnClearBirth = new Button(compositeBirthButtons,
+				SWT.NONE);
 		btnClearBirth.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				clearBirthDate();
+				textBirthDate.setText("");
 			}
 		});
 		btnClearBirth.setText("Clear");
 
-		final Label lblDeathDate = new Label(container, SWT.NONE);
+		Composite compositeDeathDate = new Composite(container, SWT.BORDER);
+		compositeDeathDate.setLayout(new GridLayout(2, false));
+		compositeDeathDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+
+		final Label lblDeathDate = new Label(compositeDeathDate, SWT.NONE);
 		lblDeathDate.setText("Death Date");
 
-		textDeathDate = new Text(container, SWT.BORDER);
-		textDeathDate.setEditable(false);
+		textDeathDate = new Text(compositeDeathDate, SWT.BORDER);
 		textDeathDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textDeathDate.setEditable(false);
 
-		textDeathDateSort = new Text(container, SWT.BORDER);
-		textDeathDateSort.setEditable(false);
-		textDeathDateSort.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		textDeathOriginal = new Text(container, SWT.BORDER);
-		textDeathOriginal.setEditable(false);
-		textDeathOriginal.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		textDeathSurety = new Text(container, SWT.BORDER);
-		textDeathSurety.setEditable(false);
-		textDeathSurety.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		final Composite compositeDeath = new Composite(container, SWT.NONE);
-		compositeDeath.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeDeath.setLayoutData(
+		final Composite compositeDeathButtons = new Composite(
+				compositeDeathDate, SWT.NONE);
+		compositeDeathButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeDeathButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnNewDeath = new Button(compositeDeath, SWT.NONE);
+		final Button btnNewDeath = new Button(compositeDeathButtons, SWT.NONE);
 		btnNewDeath.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				getNewDeathDate();
@@ -271,8 +239,16 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnNewDeath.setText("New");
 
-		final Button btnBrowseDeath = new Button(compositeDeath, SWT.NONE);
+		final Button btnBrowseDeath = new Button(compositeDeathButtons,
+				SWT.NONE);
 		btnBrowseDeath.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseDeathDates();
@@ -280,71 +256,31 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnBrowseDeath.setText("Browse");
 
-		final Button btnClearDeath = new Button(compositeDeath, SWT.NONE);
+		final Button btnClearDeath = new Button(compositeDeathButtons,
+				SWT.NONE);
 		btnClearDeath.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				clearDeathDate();
+				textDeathDate.setText("");
 			}
 		});
 		btnClearDeath.setText("Clear");
 
-		final Label lblSex = new Label(container, SWT.NONE);
-		lblSex.setText("Sex");
-
-		textSexTypePid = new Text(container, SWT.BORDER);
-		textSexTypePid.setToolTipText("More sexes can be added later");
-		textSexTypePid.setEditable(false);
-		textSexTypePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textSexTypePid.setToolTipText("Sex must be selected to continue");
-
-		textSex = new Text(container, SWT.BORDER);
-		textSex.setEditable(false);
-		textSex.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
-
-		final Composite compositeSex = new Composite(container, SWT.NONE);
-		compositeSex.setLayout(new RowLayout(SWT.HORIZONTAL));
-		compositeSex.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-
-		final Button btnBrowseSexes = new Button(compositeSex, SWT.NONE);
-		btnBrowseSexes.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				browseSexTypes();
-				setPageComplete(true);
-			}
-		});
-		btnBrowseSexes.setText("Browse");
-
-		final Button btnClearSex = new Button(compositeSex, SWT.NONE);
-		btnClearSex.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				clearSex();
-				setPageComplete(false);
-			}
-		});
-		btnClearSex.setText("Clear");
+		try {
+			stringList = new SexTypeProvider().getStringList();
+			comboViewerSex.setInput(stringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+		}
 
 		setPageComplete(false);
-	}
-
-	/**
-	 * @return the BirthDatePid
-	 */
-	public int getBirthDatePid() {
-		return BirthDatePid;
-	}
-
-	/**
-	 * @return the DeathDatePid
-	 */
-	public int getDeathDatePid() {
-		return DeathDatePid;
 	}
 
 	/**
@@ -360,13 +296,9 @@ public class NewPersonWizardPage1 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				BirthDatePid = hdp.insert();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setBirthDatePid(hdp.insert());
 				textBirthDate.setText(dialog.getDate().toString());
-				if (textBirthDateSort.getText().length() == 0) {
-					textBirthDateSort.setText(dialog.getSortDate().toString());
-				}
-				textBirthOriginal.setText(dialog.getOriginal());
-				textBirthSurety.setText(dialog.getSurety());
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -386,42 +318,13 @@ public class NewPersonWizardPage1 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				DeathDatePid = hdp.insert();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setDeathDatePid(hdp.insert());
 				textDeathDate.setText(dialog.getDate().toString());
-				textDeathDateSort.setText(dialog.getSortDate().toString());
-				textDeathOriginal.setText(dialog.getOriginal());
-				textDeathSurety.setText(dialog.getSurety());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 			}
 		}
 	}
 
-	/**
-	 * @return the sexTypePid
-	 */
-	public int getSexTypePid() {
-		return sexTypePid;
-	}
-
-	/**
-	 * @param BirthDatePid the BirthDatePid to set
-	 */
-	public void setBirthDatePid(int BirthDatePid) {
-		this.BirthDatePid = BirthDatePid;
-	}
-
-	/**
-	 * @param DeathDatePid the DeathDatePid to set
-	 */
-	public void setDeathDatePid(int DeathDatePid) {
-		this.DeathDatePid = DeathDatePid;
-	}
-
-	/**
-	 * @param sexPid The persistent id of the sex type
-	 */
-	public void setSexTypePid(int sexPid) {
-		sexTypePid = sexPid;
-	}
 }

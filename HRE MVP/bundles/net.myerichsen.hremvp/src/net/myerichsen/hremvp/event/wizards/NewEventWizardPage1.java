@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Base location data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. mar. 2019
+ * @version 26. mar. 2019
  *
  */
 public class NewEventWizardPage1 extends WizardPage {
@@ -41,9 +41,10 @@ public class NewEventWizardPage1 extends WizardPage {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private NewEventWizard wizard;
-//	private Text textEventName;
 	private List<List<String>> languageStringList;
 	private List<List<String>> eventStringList;
+	private ComboViewer comboViewerEventType;
+	private ComboViewer comboViewerLanguage;
 
 	/**
 	 * Constructor
@@ -67,6 +68,18 @@ public class NewEventWizardPage1 extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);
+//		container.addFocusListener(new FocusAdapter() {
+//			@Override
+//			public void focusLost(FocusEvent e) {
+//				if (comboViewerEventType.getSelection() == null) {
+//					setErrorMessage("Please select an event type");
+//				} else if (comboViewerLanguage.getSelection() == null) {
+//					setErrorMessage("Please select a language");
+//				} else {
+//					setErrorMessage(null);
+//				}
+//			}
+//		});
 
 		setControl(container);
 		final GridLayout gl_container = new GridLayout(2, false);
@@ -75,8 +88,7 @@ public class NewEventWizardPage1 extends WizardPage {
 		final Label lblEventType = new Label(container, SWT.NONE);
 		lblEventType.setText("Event Type");
 
-		final ComboViewer comboViewerEventType = new ComboViewer(container,
-				SWT.NONE);
+		comboViewerEventType = new ComboViewer(container, SWT.NONE);
 		final Combo comboEventType = comboViewerEventType.getCombo();
 		comboEventType.addSelectionListener(new SelectionAdapter() {
 			/*
@@ -99,20 +111,18 @@ public class NewEventWizardPage1 extends WizardPage {
 		comboEventType.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		final Label lblEventName = new Label(container, SWT.NONE);
-		lblEventName.setLayoutData(
-				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblEventName.setText("Event Name");
-
-		final Text textEventName = new Text(container, SWT.BORDER);
-		textEventName.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		try {
+			eventStringList = new EventTypeProvider().getStringList();
+			comboViewerEventType.setInput(eventStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
+		}
 
 		final Label lblLanguage = new Label(container, SWT.NONE);
 		lblLanguage.setText("Language");
 
-		final ComboViewer comboViewerLanguage = new ComboViewer(container,
-				SWT.NONE);
+		comboViewerLanguage = new ComboViewer(container, SWT.NONE);
 		final Combo comboLanguage = comboViewerLanguage.getCombo();
 		comboLanguage.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -128,6 +138,14 @@ public class NewEventWizardPage1 extends WizardPage {
 		comboViewerLanguage.setLabelProvider(new HREComboLabelProvider(2));
 		comboLanguage.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		try {
+			languageStringList = new LanguageProvider().getStringList();
+			comboViewerLanguage.setInput(languageStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
+		}
 
 		final Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayoutData(
@@ -171,7 +189,8 @@ public class NewEventWizardPage1 extends WizardPage {
 						wizard.setFromDatePid(hdp.insert());
 						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.severe(e1.getMessage());
+						setErrorMessage(e1.getMessage());
 					}
 				}
 			}
@@ -200,7 +219,8 @@ public class NewEventWizardPage1 extends WizardPage {
 						wizard.setFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.severe(e1.getMessage());
+						setErrorMessage(e1.getMessage());
 					}
 				}
 			}
@@ -287,6 +307,7 @@ public class NewEventWizardPage1 extends WizardPage {
 						textToDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
 						LOGGER.severe(e1.getMessage());
+						setErrorMessage(e1.getMessage());
 					}
 				}
 			}
@@ -315,7 +336,8 @@ public class NewEventWizardPage1 extends WizardPage {
 						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.severe(e1.getMessage());
+						setErrorMessage(e1.getMessage());
 					}
 				}
 			}
@@ -340,14 +362,6 @@ public class NewEventWizardPage1 extends WizardPage {
 		});
 		btnClearTo.setText("Clear");
 
-		// Populate combo boxes
-		try {
-			eventStringList = new EventTypeProvider().getStringList();
-			comboViewerEventType.setInput(eventStringList);
-			languageStringList = new LanguageProvider().getStringList();
-			comboViewerLanguage.setInput(languageStringList);
-		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
-		}
 	}
+
 }
