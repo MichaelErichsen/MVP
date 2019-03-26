@@ -8,6 +8,7 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
@@ -16,7 +17,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the person Name Part navigator
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. feb. 2019
+ * @version 26. mar. 2019
  */
 public class OpenPersonNamePartNavigatorHandler {
 	private final static Logger LOGGER = Logger
@@ -34,7 +35,25 @@ public class OpenPersonNamePartNavigatorHandler {
 			EModelService modelService) {
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
-		final MPart part = MBasicFactory.INSTANCE.createPart();
+		MPart part = MBasicFactory.INSTANCE.createPart();
+
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			for (int i = 0; i < a.size(); i++) {
+				part = (MPart) a.get(i);
+
+				try {
+					if (part.getContributionURI().equals(contributionURI)) {
+						partService.showPart(part, PartState.ACTIVATE);
+						return;
+					}
+				} catch (final Exception e) {
+					LOGGER.severe(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
 
 		part.setLabel("Name Part");
 		part.setContainerData("650");

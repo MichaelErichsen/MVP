@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  * Provides all data for a single name for a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 26. mar. 2019
  *
  */
 public class PersonNameProvider implements IHREProvider {
@@ -24,7 +24,7 @@ public class PersonNameProvider implements IHREProvider {
 	private int toDatePid;
 	private boolean primaryName;
 	private int nameStylePid;
-	List<List<String>> nameList;
+	private List<List<String>> nameList;
 
 	private final PersonNameServer server;
 

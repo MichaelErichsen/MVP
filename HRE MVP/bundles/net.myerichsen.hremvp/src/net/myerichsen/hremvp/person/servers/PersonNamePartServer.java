@@ -1,9 +1,11 @@
 package net.myerichsen.hremvp.person.servers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.dbmodels.PersonNameParts;
 import net.myerichsen.hremvp.dbmodels.PersonNames;
@@ -13,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. feb. 2019
+ * @version 26. mar. 2019
  */
 public class PersonNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -69,6 +71,8 @@ public class PersonNamePartServer implements IHREServer {
 	 */
 	@Override
 	public void get(int key) throws Exception {
+		Dictionary dictionary;
+
 		part.get(key);
 		setLabel(part.getLabel());
 		setNamePartPid(part.getNamePartPid());
@@ -106,7 +110,9 @@ public class PersonNamePartServer implements IHREServer {
 
 		for (int i = 0; i < mapList.size(); i++) {
 			if (mapList.get(i).getPartNo() == partNo) {
-				setMapLabel("mapList.get(i).getLabelPid()");
+				dictionary = new Dictionary();
+				dictionary.getFKLabelPid(mapList.get(i).getLabelPid());
+				setMapLabel(dictionary.getLabel());
 				break;
 			}
 		}
@@ -170,8 +176,43 @@ public class PersonNamePartServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> stringList;
+		List<List<String>> lls = new ArrayList<List<String>>();
+		int partNo = 0;
+		int labelPid = 0;
+		String mapLabel = "";
+		Dictionary dictionary = new Dictionary();
+		PersonNames name = new PersonNames();
+		final PersonNameMaps map = new PersonNameMaps();
+		final List<PersonNameMaps> mapList = map
+				.getFKNameStylePid(name.getNameStylePid());
+
+		List<PersonNameParts> list = part.get();
+		name.get(part.getNamePid());
+
+		for (int i = 0; i < list.size(); i++) {
+			PersonNameParts pnp = list.get(i);
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(pnp.getNamePartPid()));
+
+			partNo = pnp.getPartNo();
+			mapLabel = "?";
+
+			for (int j = 0; j < mapList.size(); j++) {
+				if (mapList.get(i).getPartNo() == partNo) {
+					labelPid = mapList.get(i).getLabelPid();
+					mapLabel = dictionary.getFKLabelPid(labelPid).get(0)
+							.getLabel();
+					break;
+				}
+			}
+
+			stringList.add(mapLabel);
+			stringList.add(pnp.getLabel());
+			lls.add(stringList);
+		}
+
+		return lls;
 	}
 
 	/*
@@ -181,8 +222,50 @@ public class PersonNamePartServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> stringList;
+		List<List<String>> lls = new ArrayList<List<String>>();
+
+		if (key == 0) {
+			return lls;
+		}
+
+		int partNo = 0;
+		int labelPid = 0;
+		String mapLabel = "";
+		Dictionary dictionary = new Dictionary();
+		PersonNames name = new PersonNames();
+		name.get(key);
+
+		final PersonNameMaps map = new PersonNameMaps();
+		final List<PersonNameMaps> mapList = map
+				.getFKNameStylePid(name.getNameStylePid());
+
+		List<PersonNameParts> list = part.getFKNamePid(namePid);
+
+		for (int i = 0; i < list.size(); i++) {
+			PersonNameParts pnp = list.get(i);
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(pnp.getNamePartPid()));
+
+			partNo = pnp.getPartNo();
+			mapLabel = "?";
+
+			for (int j = 0; j < mapList.size(); j++) {
+				if (mapList.get(i).getPartNo() == partNo) {
+					labelPid = mapList.get(i).getLabelPid();
+					mapLabel = dictionary.getFKLabelPid(labelPid).get(0)
+							.getLabel();
+					break;
+				}
+			}
+
+			stringList.add(mapLabel);
+			stringList.add(pnp.getLabel());
+			lls.add(stringList);
+		}
+
+		return lls;
+
 	}
 
 	/**

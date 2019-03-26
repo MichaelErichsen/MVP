@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.dbmodels.PersonNameParts;
 import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
 import net.myerichsen.hremvp.dbmodels.PersonNames;
@@ -14,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 26. mar. 2019
  *
  */
 //Use LocalDate
@@ -28,7 +30,7 @@ public class PersonNameServer implements IHREServer {
 	private int toDatePid;
 	private boolean primaryName;
 	private int nameStylePid;
-	List<List<String>> nameList;
+	private List<List<String>> nameList;
 
 	private PersonNames name;
 
@@ -82,6 +84,8 @@ public class PersonNameServer implements IHREServer {
 	 */
 	@Override
 	public void get(int key) throws Exception {
+		Dictionary dictionary = new Dictionary();
+
 		name.get(key);
 		setNamePid(key);
 		setPersonPid(name.getPersonPid());
@@ -92,18 +96,19 @@ public class PersonNameServer implements IHREServer {
 
 		final PersonNameStyles ns = new PersonNameStyles();
 		ns.get(name.getNameStylePid());
-		setNameTypeLabel("ns.getLabelPid()");
+		dictionary.get(ns.getLabelPid());
+		setNameTypeLabel(dictionary.getLabel());
 
-//		PersonNameMaps map;
+		PersonNameMaps map;
 		PersonNameParts part;
-//		List<PersonNameMaps> mapList;
+		List<PersonNameMaps> mapList;
 		List<PersonNameParts> partList;
 		List<String> ls;
 
 		nameList.clear();
 
-//		map = new PersonNameMaps();
-//		mapList = map.getFKNameStylePid(name.getNameStylePid());
+		map = new PersonNameMaps();
+		mapList = map.getFKNameStylePid(name.getNameStylePid());
 
 		part = new PersonNameParts();
 		partList = part.getFKNamePid(key);
@@ -111,13 +116,8 @@ public class PersonNameServer implements IHREServer {
 		for (int i = 0; i < partList.size(); i++) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(partList.get(i).getNamePartPid()));
-			ls.add("mapList.get(i).getLabelPid()");
-			if (partList.get(i).getLabel() != null) {
-				ls.add(partList.get(i).getLabel());
-			} else {
-				ls.add("");
-			}
-
+			dictionary.getFKLabelPid(mapList.get(i).getLabelPid());
+			ls.add(dictionary.getLabel());
 			nameList.add(ls);
 		}
 	}

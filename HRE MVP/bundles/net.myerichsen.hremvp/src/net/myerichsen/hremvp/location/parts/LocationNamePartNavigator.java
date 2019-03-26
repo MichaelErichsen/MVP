@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Maintain all parts of a location name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. mar. 2019
+ * @version 26. mar. 2019
  */
 public class LocationNamePartNavigator {
 	private final static Logger LOGGER = Logger
@@ -70,6 +70,7 @@ public class LocationNamePartNavigator {
 	 *
 	 */
 	private void addEditingSupport() {
+
 		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
 				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
 		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
@@ -168,6 +169,10 @@ public class LocationNamePartNavigator {
 		tableViewerColumnPart.setLabelProvider(new HREColumnLabelProvider(3));
 		tableViewerColumnPart.setEditingSupport(
 				new HreTypeLabelEditingSupport(tableViewer, 3));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		tableViewer.setInput(provider.getStringList(locationNamePid));
+
 		addEditingSupport();
 
 		final Composite composite = new Composite(parent, SWT.NONE);
@@ -184,8 +189,6 @@ public class LocationNamePartNavigator {
 		});
 		buttonUpdate.setText("Update");
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getStringList(locationNamePid));
 	}
 
 	/**

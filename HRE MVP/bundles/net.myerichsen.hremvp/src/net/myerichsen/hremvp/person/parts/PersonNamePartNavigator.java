@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.parts;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -14,11 +13,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -39,6 +33,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -46,19 +41,13 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 26. mar. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonNamePartNavigator {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
@@ -74,9 +63,10 @@ public class PersonNamePartNavigator {
 	private Text textDateTo;
 	private Button btnPrimaryName;
 
-	private final PersonNameProvider provider;
-
+	private final PersonNamePartProvider provider;
 	private TableViewer tableViewer;
+
+	private int personNamePid = 0;
 
 	/**
 	 * Constructor
@@ -86,31 +76,7 @@ public class PersonNamePartNavigator {
 	 *
 	 */
 	public PersonNamePartNavigator() throws Exception {
-		provider = new PersonNameProvider();
-	}
-
-	/**
-	 *
-	 */
-	protected void clear() {
-		textId.setText("0");
-		textPersonPid.setText("0");
-		textNameStylePid.setText("0");
-		textNameStyleLabel.setText("");
-		textDateFrom.setText("");
-		textDateTo.setText("");
-		tableViewer.getTable().removeAll();
-	}
-
-	/**
-	 *
-	 */
-	protected void close() {
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2)
-				.getSelectedElement();
-		partService.hidePart(part, true);
+		provider = new PersonNamePartProvider();
 	}
 
 	/**
@@ -214,17 +180,8 @@ public class PersonNamePartNavigator {
 
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		final Button buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
-			}
-		});
-		buttonInsert.setText("Insert");
 
 		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
@@ -235,50 +192,12 @@ public class PersonNamePartNavigator {
 		});
 		buttonUpdate.setText("Update");
 
-		final Button buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		final Button buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		final Button buttonClose = new Button(composite, SWT.NONE);
-		buttonClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				close();
-			}
-		});
-		buttonClose.setText("Close");
-
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getNameList());
-	}
-
-	/**
-	 *
-	 */
-	protected void delete() {
 		try {
-			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE",
-					"Name " + textId.getText() + " has been deleted");
-			clear();
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+			tableViewer.setInput(provider.getStringList(personNamePid));
+		} catch (Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
 		}
 	}
 
@@ -287,35 +206,6 @@ public class PersonNamePartNavigator {
 	 */
 	@PreDestroy
 	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	private void insert() {
-		// TODO Insert() missing
-		// try {
-		// provider = new PersonNameProvider();
-		// provider.setNames(new Names());
-		// provider.setNamePid(Integer.parseInt(textId.getText()));
-		// provider.setPersonPid(Integer.parseInt(textPersonPid.getText()));
-		// provider.setNameType(Integer.parseInt(textNameType.getText()));
-		//
-		// provider.setFromdate(dateTimeFrom.getYear() + "-" +
-		// dateTimeFrom.getMonth() +
-		// "-" + dateTimeFrom.getDay());
-		// Calendar calendar = Calendar.getInstance();
-		// dateTimeFrom.setDate(calendar.get(Calendar.YEAR),
-		// calendar.get(Calendar.MONTH),
-		// calendar.get(Calendar.DATE));
-		// dateTimeTo.setDate(calendar.get(Calendar.YEAR),
-		// calendar.get(Calendar.MONTH),
-		// calendar.get(Calendar.DATE));
-		// table.removeAll();
-		// provider.insert();
-		// } catch (final Exception e) {
-		// e.printStackTrace();
-		// }
 	}
 
 	/**
@@ -371,37 +261,38 @@ public class PersonNamePartNavigator {
 	@Inject
 	@Optional
 	private void subscribeNamePidUpdateTopic(
-			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int key) {
-		LOGGER.fine("Received name id " + key);
+			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int personNamePid) {
+		LOGGER.fine("Received name id " + personNamePid);
 
-		if (key == 0) {
+		if (personNamePid == 0) {
 			return;
 		}
 
+		this.personNamePid = personNamePid;
+
 		try {
-			provider.get(key);
-			textId.setText(Integer.toString(provider.getNamePid()));
-			textPersonPid.setText(Integer.toString(provider.getPersonPid()));
-			textNameStylePid
-					.setText(Integer.toString(provider.getNameStylePid()));
-			textNameStyleLabel.setText(provider.getNameTypeLabel());
+			PersonNameProvider pnp = new PersonNameProvider();
+			pnp.get(personNamePid);
+			textId.setText(Integer.toString(pnp.getNamePid()));
+			textPersonPid.setText(Integer.toString(pnp.getPersonPid()));
+			textNameStylePid.setText(Integer.toString(pnp.getNameStylePid()));
+			textNameStyleLabel.setText(pnp.getNameTypeLabel());
 
 			try {
-				textDateFrom
-						.setText(Integer.toString(provider.getFromDatePid()));
+				textDateFrom.setText(Integer.toString(pnp.getFromDatePid()));
 			} catch (final Exception e) {
 				textDateFrom.setText("");
 			}
 
 			try {
-				textDateTo.setText(Integer.toString(provider.getFromDatePid()));
+				textDateTo.setText(Integer.toString(pnp.getFromDatePid()));
 			} catch (final Exception e) {
 				textDateTo.setText("");
 			}
 
-			btnPrimaryName.setSelection(provider.isPrimaryName());
+			btnPrimaryName.setSelection(pnp.isPrimaryName());
 
-			tableViewer.setInput(provider.getNameList());
+			tableViewer.setInput(provider.getStringList(personNamePid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
@@ -413,6 +304,7 @@ public class PersonNamePartNavigator {
 	 *
 	 */
 	private void update() {
+		// FIXME update
 		// try {
 		// provider = new Names();
 		// provider.setNamePid(Integer.parseInt(textId.getText()));

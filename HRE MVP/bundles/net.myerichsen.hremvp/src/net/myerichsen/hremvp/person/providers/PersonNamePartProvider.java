@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.person.servers.PersonNamePartServer;
  * Provides all data for a single name part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. feb. 2019
+ * @version 26. mar. 2019
  *
  */
 public class PersonNamePartProvider implements IHREProvider {
@@ -133,8 +133,7 @@ public class PersonNamePartProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*
@@ -144,8 +143,7 @@ public class PersonNamePartProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList(key);
 	}
 
 	/**
