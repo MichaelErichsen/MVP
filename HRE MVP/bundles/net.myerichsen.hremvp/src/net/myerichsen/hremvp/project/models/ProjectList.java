@@ -180,6 +180,12 @@ public class ProjectList {
 
 		count--;
 		store.setValue("projectcount", count);
+		try {
+			((ScopedPreferenceStore) store).save();
+		} catch (IOException e) {
+			LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**

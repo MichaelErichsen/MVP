@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.Constants;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. jan. 2019
+ * @version 27. mar. 2019
  *
  */
 
@@ -255,6 +255,8 @@ public class H2TableNavigator {
 			final Csv csvFile = new Csv();
 			csvFile.setFieldSeparatorWrite(",");
 
+			// FIXME java.lang.ClassCastException: java.lang.String cannot be
+			// cast to java.sql.Timestamp
 			csvFile.write(fileName, rs, "UTF-8");
 			eventBroker.post("MESSAGE",
 					"Table " + tableName + " has been exported to " + fileName);

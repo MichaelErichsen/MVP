@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENT_TYPES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 24. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 
@@ -240,8 +240,7 @@ public class EventTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getAbbreviation());
-		ps.setInt(2, getLabelPid());
-		ps.setInt(3, getEventTypePid());
+		ps.setInt(2, getEventTypePid());
 		ps.executeUpdate();
 		conn.close();
 	}

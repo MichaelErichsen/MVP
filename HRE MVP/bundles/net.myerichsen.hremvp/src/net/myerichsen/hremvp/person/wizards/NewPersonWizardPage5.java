@@ -83,6 +83,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 		}
 	}
 
+	// FIXME Change to JFace
 	@Override
 	public void createControl(Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);

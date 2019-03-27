@@ -34,6 +34,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 16. mar. 2019
  *
  */
+// FIXME Bordered composites
 public class NewPersonWizardPage4 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);

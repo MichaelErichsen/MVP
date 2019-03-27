@@ -39,6 +39,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 24. mar. 2019
  *
  */
+// FIXME Change type and role to combo boxes
 public class NewEventDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -239,21 +240,6 @@ public class NewEventDialog extends TitleAreaDialog {
 			}
 		});
 		btnClearEventStyle.setText("Clear");
-
-		final Composite compositeEventName = new Composite(container,
-				SWT.BORDER);
-		compositeEventName.setLayout(new GridLayout(3, false));
-		compositeEventName.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-
-		final Label lblEventName = new Label(compositeEventName, SWT.NONE);
-		lblEventName.setText("Event Name");
-
-		Composite compositeEventNameButtons;
-		compositeEventNameButtons = new Composite(compositeEventName, SWT.NONE);
-		compositeEventNameButtons.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
-		compositeEventNameButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Label lblRole = new Label(container, SWT.NONE);
 		lblRole.setText("Role");

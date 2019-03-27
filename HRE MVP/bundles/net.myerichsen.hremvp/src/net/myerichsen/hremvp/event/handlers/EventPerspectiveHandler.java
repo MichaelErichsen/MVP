@@ -6,14 +6,12 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 /**
- * Switch perspective to personEvent perspective
+ * Switch perspective to event perspective
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. nov. 2018
+ * @version 27. mar. 2019
  *
  */
-// TODO !MESSAGE Perspective with ID net.myerichsen.hremvp.perspective.
-// eventperspective not found in the current window.
 public class EventPerspectiveHandler {
 	/**
 	 * @param app          The Eclipse application

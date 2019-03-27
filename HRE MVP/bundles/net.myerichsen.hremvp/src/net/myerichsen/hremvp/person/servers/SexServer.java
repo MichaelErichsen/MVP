@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Sexes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 //Use LocalDate
@@ -26,7 +26,7 @@ public class SexServer implements IHREServer {
 	private String sexTypeLabel;
 	private String abbreviation;
 	private int languagePid;
-	private String languageLabel;
+//	private String languageLabel;
 	private String isocode;
 
 	private final Sexes sex;
@@ -72,9 +72,9 @@ public class SexServer implements IHREServer {
 		setSexesPid(sex.getSexesPid());
 		setPersonPid(sex.getPersonPid());
 		setSexTypePid(sex.getSexTypePid());
+		setPrimarySex(sex.isPrimarySex());
 		setFromDatePid(sex.getFromDatePid());
 		setToDatePid(sex.getToDatePid());
-		setPrimarySex(sex.isPrimarySex());
 
 		sexType.get(sex.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
@@ -108,12 +108,12 @@ public class SexServer implements IHREServer {
 		return isocode;
 	}
 
-	/**
-	 * @return the languageLabel
-	 */
-	public String getLanguageLabel() {
-		return languageLabel;
-	}
+//	/**
+//	 * @return the languageLabel
+//	 */
+//	public String getLanguageLabel() {
+//		return languageLabel;
+//	}
 
 	/**
 	 * @return the languagePid
@@ -226,12 +226,12 @@ public class SexServer implements IHREServer {
 		this.isocode = isocode;
 	}
 
-	/**
-	 * @param languageLabel the languageLabel to set
-	 */
-	public void setLanguageLabel(String languageLabel) {
-		this.languageLabel = languageLabel;
-	}
+//	/**
+//	 * @param languageLabel the languageLabel to set
+//	 */
+//	public void setLanguageLabel(String languageLabel) {
+//		this.languageLabel = languageLabel;
+//	}
 
 	/**
 	 * @param languagePid the languagePid to set

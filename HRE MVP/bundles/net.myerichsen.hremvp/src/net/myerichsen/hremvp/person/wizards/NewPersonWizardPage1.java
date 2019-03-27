@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -72,6 +72,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hdatePid);
 				textBirthDate.setText(hdp.getDate().toString());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setBirthDatePid(hdatePid);
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
 				e1.printStackTrace();
@@ -91,6 +93,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(hdatePid);
 				textDeathDate.setText(hdp.getDate().toString());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setBirthDatePid(hdatePid);
 			} catch (final Exception e1) {
 				e1.printStackTrace();
 			}
@@ -113,8 +117,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 		final Label lblSex = new Label(container, SWT.NONE);
 		lblSex.setText("Sex");
 
-		ComboViewer comboViewerSex = new ComboViewer(container, SWT.NONE);
-		Combo comboSex = comboViewerSex.getCombo();
+		final ComboViewer comboViewerSex = new ComboViewer(container, SWT.NONE);
+		final Combo comboSex = comboViewerSex.getCombo();
 		comboSex.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -128,6 +132,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setSexTypePid(Integer
 						.parseInt(stringList.get(selectionIndex).get(0)));
+				setPageComplete(true);
 			}
 		});
 		comboViewerSex.setContentProvider(ArrayContentProvider.getInstance());
@@ -135,7 +140,15 @@ public class NewPersonWizardPage1 extends WizardPage {
 		comboSex.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Composite compositeBirthDate = new Composite(container, SWT.BORDER);
+		try {
+			stringList = new SexTypeProvider().getStringList();
+			comboViewerSex.setInput(stringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+		}
+
+		final Composite compositeBirthDate = new Composite(container,
+				SWT.BORDER);
 		compositeBirthDate.setLayout(new GridLayout(2, false));
 		compositeBirthDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -158,7 +171,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnNewBirth.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -175,7 +188,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnBrowseBirth.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -192,7 +205,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnClearBirth.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -204,7 +217,8 @@ public class NewPersonWizardPage1 extends WizardPage {
 		});
 		btnClearBirth.setText("Clear");
 
-		Composite compositeDeathDate = new Composite(container, SWT.BORDER);
+		final Composite compositeDeathDate = new Composite(container,
+				SWT.BORDER);
 		compositeDeathDate.setLayout(new GridLayout(2, false));
 		compositeDeathDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -227,7 +241,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnNewDeath.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -244,7 +258,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnBrowseDeath.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -261,7 +275,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 		btnClearDeath.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -272,13 +286,6 @@ public class NewPersonWizardPage1 extends WizardPage {
 			}
 		});
 		btnClearDeath.setText("Clear");
-
-		try {
-			stringList = new SexTypeProvider().getStringList();
-			comboViewerSex.setInput(stringList);
-		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
-		}
 
 		setPageComplete(false);
 	}

@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Display all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -246,7 +246,6 @@ public class PersonSexView {
 	 *
 	 */
 	private void update() {
-		// TODO Clean up update function
 		try {
 			sexesProvider = new SexProvider();
 			sexesProvider.get(sexPid);

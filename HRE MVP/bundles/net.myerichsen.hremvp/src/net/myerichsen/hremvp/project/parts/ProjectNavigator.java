@@ -402,7 +402,6 @@ public class ProjectNavigator {
 	 *
 	 */
 	protected void deleteSelectedProject(Shell shell) {
-		// TODO Gets the wrong project
 		getSelectedProject();
 
 		final ProjectModel model = ProjectList.getModel(selectionIndex);
@@ -422,57 +421,54 @@ public class ProjectNavigator {
 
 		try {
 			closeDbIfActive(dbName);
-
-			final String path = model.getPath().trim();
-			String fullPath = path + ".h2.db";
-			File file = new File(fullPath);
-			boolean result = false;
-
-			try {
-				result = Files.deleteIfExists(file.toPath());
-			} catch (final Exception e) {
-				fullPath = path + ".mv.db";
-				file = new File(fullPath);
-				try {
-					result = Files.deleteIfExists(file.toPath());
-				} catch (final Exception e1) {
-					LOGGER.severe(e1.getMessage());
-				}
-			}
-
-			if (result) {
-				LOGGER.info(
-						"Existing database " + fullPath + " has been deleted");
-			}
-
-			final int projectCount = store.getInt("projectcount");
-
-			String key;
-			int index;
-
-			for (int i = 1; i <= projectCount; i++) {
-				key = "project." + i + ".path";
-				if (store.contains(key)) {
-					LOGGER.info("Path: " + path + ", key : " + key + ", value: "
-							+ store.getString(key));
-
-					if (path.equals(store.getString(key).trim())) {
-						// Delete from preferences
-						index = i;
-						ProjectList.remove(index, dbName);
-						LOGGER.info("Project " + dbName + " has been deleted");
-						eventBroker.post("MESSAGE",
-								"Project " + dbName + " has been deleted");
-						eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC,
-								index);
-						break;
-					}
-				}
-			}
-
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+		}
+
+		String path = model.getPath().trim();
+		String fullPath = path + ".h2.db";
+		File file = new File(fullPath);
+		boolean result = false;
+
+		try {
+			result = Files.deleteIfExists(file.toPath());
+		} catch (final Exception e) {
+			fullPath = path + ".mv.db";
+			file = new File(fullPath);
+			try {
+				result = Files.deleteIfExists(file.toPath());
+			} catch (final Exception e1) {
+				LOGGER.severe(e1.getMessage());
+			}
+		}
+
+		if (result) {
+			LOGGER.info("Existing database " + fullPath + " has been deleted");
+		}
+
+		final int projectCount = store.getInt("projectcount");
+
+		String key;
+		int index;
+
+		for (int i = 1; i <= projectCount; i++) {
+			key = "project." + i + ".path";
+			if (store.contains(key)) {
+				LOGGER.info("Path: " + path + ", key : " + key + ", value: "
+						+ store.getString(key));
+
+				if (path.equals(store.getString(key).trim())) {
+					// Delete from preferences
+					index = i;
+					ProjectList.remove(index, dbName);
+					LOGGER.info("Project " + dbName + " has been deleted");
+					eventBroker.post("MESSAGE",
+							"Project " + dbName + " has been deleted");
+					eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC,
+							index);
+					break;
+				}
+			}
 		}
 
 	}

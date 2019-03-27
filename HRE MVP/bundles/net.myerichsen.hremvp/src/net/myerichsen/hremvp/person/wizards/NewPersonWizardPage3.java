@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
  * @version 19. feb. 2019
  *
  */
-
+// FIXME Change to table
 public class NewPersonWizardPage3 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);

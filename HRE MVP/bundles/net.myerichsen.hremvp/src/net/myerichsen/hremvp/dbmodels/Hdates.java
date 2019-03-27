@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the HDATES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 2. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 
@@ -27,7 +27,7 @@ public class Hdates {
 	private static final String SELECTALL = "SELECT HDATE_PID, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
 			+ "ORIGINAL_TEXT, DATE, SORT_DATE, "
-			+ "SURETY FROM PUBLIC.HDATES ORDER BY HDATE_PID";
+			+ "SURETY FROM PUBLIC.HDATES ORDER BY DATE";
 	private static final String SELECTMAX = "SELECT MAX(HDATE_PID) FROM PUBLIC.HDATES";
 	private static final String INSERT = "INSERT INTO PUBLIC.HDATES( "
 			+ "HDATE_PID, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "

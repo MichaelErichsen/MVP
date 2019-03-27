@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.person.servers.SexServer;
  * Provide all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 public class SexProvider implements IHREProvider {
@@ -23,7 +23,7 @@ public class SexProvider implements IHREProvider {
 	private String sexTypeLabel;
 	private String abbreviation;
 	private int languagePid;
-	private String languageLabel;
+//	private String languageLabel;
 	private String isocode;
 
 	private final SexServer server;
@@ -65,12 +65,13 @@ public class SexProvider implements IHREProvider {
 		setSexesPid(server.getSexesPid());
 		setPersonPid(server.getPersonPid());
 		setSexTypePid(server.getSexTypePid());
+		setPrimarySex(server.isPrimarySex());
 		setFromDatePid(server.getFromDatePid());
 		setToDatePid(server.getToDatePid());
-		setPrimarySex(server.isPrimarySex());
+
 		setAbbreviation(server.getAbbreviation());
 		setSexTypeLabel(server.getSexTypeLabel());
-		setLanguageLabel(server.getLanguageLabel());
+//		setLanguageLabel(server.getLanguageLabel());
 		setIsocode(server.getIsocode());
 	}
 
@@ -95,12 +96,12 @@ public class SexProvider implements IHREProvider {
 		return isocode;
 	}
 
-	/**
-	 * @return the languageLabel
-	 */
-	public String getLanguageLabel() {
-		return languageLabel;
-	}
+//	/**
+//	 * @return the languageLabel
+//	 */
+//	public String getLanguageLabel() {
+//		return languageLabel;
+//	}
 
 	/**
 	 * @return the languagePid
@@ -211,12 +212,12 @@ public class SexProvider implements IHREProvider {
 		this.isocode = isocode;
 	}
 
-	/**
-	 * @param languageLabel the languageLabel to set
-	 */
-	public void setLanguageLabel(String languageLabel) {
-		this.languageLabel = languageLabel;
-	}
+//	/**
+//	 * @param languageLabel the languageLabel to set
+//	 */
+//	public void setLanguageLabel(String languageLabel) {
+//		this.languageLabel = languageLabel;
+//	}
 
 	/**
 	 * @param languagePid the languagePid to set

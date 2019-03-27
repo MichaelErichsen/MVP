@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event type with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 public class EventTypeView {
@@ -225,7 +225,6 @@ public class EventTypeView {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
-			e1.printStackTrace();
 		}
 
 	}

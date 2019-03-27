@@ -1,47 +1,52 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.project.dialogs.PersonNameStyleNavigatorDialog;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. mar. 2019
+ * @version 27. mar. 2019
  *
  */
-// TODO Add primary check button and name type
 public class NewPersonNameWizardPage1 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
-
-	private Text textPersonNameStyle;
 	private Text textFromDate;
 	private Text textToDate;
 
+	private NewPersonNameWizard wizard;
 	private int personNameStylePid;
 	private int fromDatePid;
 	private int toDatePid;
+	private List<List<String>> stringList;
 
 	/**
 	 * Constructor
@@ -77,30 +82,6 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	/**
 	 *
 	 */
-	protected void browseNameStyles() {
-		final PersonNameStyleNavigatorDialog dialog = new PersonNameStyleNavigatorDialog(
-				textPersonNameStyle.getShell(), context);
-		if (dialog.open() == Window.OK) {
-			try {
-				personNameStylePid = dialog.getPersonNameStylePid();
-				final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
-				pnsp.get(personNameStylePid);
-				// FIXME textPersonNameStyle.setText(pnsp.getLabel());
-				final NewPersonNameWizard wizard = (NewPersonNameWizard) getWizard();
-				wizard.setPersonNameStylePid(personNameStylePid);
-				// FIXME wizard.setLanguagePid(pnsp.getLanguagePid());
-				setPageComplete(true);
-				wizard.addPage2();
-				wizard.getContainer().updateButtons();
-			} catch (final Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 *
-	 */
 	private void browseToDates() {
 		final DateNavigatorDialog dialog = new DateNavigatorDialog(
 				textToDate.getShell(), context);
@@ -127,15 +108,6 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 	/**
 	 *
 	 */
-	protected void clearNameStyles() {
-		textPersonNameStyle.setText("");
-		personNameStylePid = 0;
-		setPageComplete(false);
-	}
-
-	/**
-	 *
-	 */
 	private void clearToDate() {
 		textToDate.setText("");
 		toDatePid = 0;
@@ -152,55 +124,72 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(3, false));
+		container.setLayout(new GridLayout(1, false));
 
-		final Label lblPersonNameStyle = new Label(container, SWT.NONE);
-		lblPersonNameStyle.setLayoutData(
-				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		final Composite compositeNameStyle = new Composite(container,
+				SWT.BORDER);
+		compositeNameStyle.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeNameStyle.setLayout(new GridLayout(2, false));
+
+		final Label lblPersonNameStyle = new Label(compositeNameStyle,
+				SWT.NONE);
 		lblPersonNameStyle.setText("Person Name Style");
 
-		textPersonNameStyle = new Text(container, SWT.BORDER);
-		textPersonNameStyle.setEditable(false);
-		textPersonNameStyle.setLayoutData(
+		ComboViewer comboViewerNameStyle = new ComboViewer(compositeNameStyle,
+				SWT.NONE);
+		Combo comboNameStyle = comboViewerNameStyle.getCombo();
+		comboNameStyle.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboNameStyle.getSelectionIndex();
+				wizard = (NewPersonNameWizard) getWizard();
+				wizard.setPersonNameStylePid(Integer
+						.parseInt(stringList.get(selectionIndex).get(0)));
+				setPageComplete(true);
+			}
+		});
+		comboViewerNameStyle
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerNameStyle.setLabelProvider(new HREComboLabelProvider(2));
+
+		comboNameStyle.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textPersonNameStyle
-				.setToolTipText("Person Name Style is mandatory to continue");
 
-		final Composite compositeNameStyle = new Composite(container, SWT.NONE);
-		compositeNameStyle.setLayout(new RowLayout(SWT.HORIZONTAL));
+		try {
+			stringList = new PersonNameStyleProvider().getStringList();
+			comboViewerNameStyle.setInput(stringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
+		}
 
-		final Button btnBrowseNameStyle = new Button(compositeNameStyle,
-				SWT.NONE);
-		btnBrowseNameStyle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				browseNameStyles();
-			}
-		});
-		btnBrowseNameStyle.setText("Browse");
+		Composite compositeFrom = new Composite(container, SWT.BORDER);
+		compositeFrom.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeFrom.setLayout(new GridLayout(2, false));
 
-		final Button btnClearNameStyle = new Button(compositeNameStyle,
-				SWT.NONE);
-		btnClearNameStyle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				clearNameStyles();
-			}
-		});
-		btnClearNameStyle.setText("Clear");
-
-		final Label lblFromDate = new Label(container, SWT.NONE);
+		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
 
-		textFromDate = new Text(container, SWT.BORDER);
-		textFromDate.setEditable(false);
+		textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setEditable(false);
 
-		final Composite compositeFrom = new Composite(container, SWT.NONE);
-		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeFromButtons = new Composite(compositeFrom,
+				SWT.NONE);
+		compositeFromButtons.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -209,7 +198,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		final Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -218,7 +207,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		final Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -227,18 +216,29 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnClearFrom.setText("Clear");
 
-		final Label lblToDate = new Label(container, SWT.NONE);
+		Composite compositeTo = new Composite(container, SWT.BORDER);
+		compositeTo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeTo.setLayout(new GridLayout(2, false));
+
+		final Label lblToDate = new Label(compositeTo, SWT.NONE);
+		lblToDate.setSize(40, 15);
 		lblToDate.setText("To Date");
 
-		textToDate = new Text(container, SWT.BORDER);
-		textToDate.setEditable(false);
+		textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setSize(185, 21);
+		textToDate.setEditable(false);
 
-		final Composite compositeTo = new Composite(container, SWT.NONE);
-		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeToButtons = new Composite(compositeTo,
+				SWT.NONE);
+		compositeToButtons.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeToButtons.setSize(137, 31);
+		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnNewTo = new Button(compositeTo, SWT.NONE);
+		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -247,7 +247,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnNewTo.setText("New");
 
-		final Button btnBrowseTo = new Button(compositeTo, SWT.NONE);
+		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -256,7 +256,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		final Button btnClearTo = new Button(compositeTo, SWT.NONE);
+		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -264,6 +264,9 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 			}
 		});
 		btnClearTo.setText("Clear");
+
+		Button btnPrimaryName = new Button(container, SWT.CHECK);
+		btnPrimaryName.setText("Primary Name");
 
 		setPageComplete(false);
 	}

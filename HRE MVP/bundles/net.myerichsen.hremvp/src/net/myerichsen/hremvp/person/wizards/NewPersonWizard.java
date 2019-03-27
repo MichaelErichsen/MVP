@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -38,10 +38,13 @@ public class NewPersonWizard extends Wizard {
 	private String personName;
 	private int personNameStylePid;
 	private int personPid;
-	private int languagePid;
+//	private int languagePid;
 	private int sexTypePid;
 	private int birthDatePid;
 	private int deathDatePid;
+	private int fromDatePid;
+	private int toDatePid;
+	private Boolean primaryName;
 
 	/**
 	 * Constructor
@@ -96,11 +99,18 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
-	 * @return the languagePid
+	 * @return the fromDatePid
 	 */
-	public int getLanguagePid() {
-		return languagePid;
+	public int getFromDatePid() {
+		return fromDatePid;
 	}
+
+//	/**
+//	 * @return the languagePid
+//	 */
+//	public int getLanguagePid() {
+//		return languagePid;
+//	}
 
 	/**
 	 * @return the page3
@@ -166,6 +176,20 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @return the toDatePid
+	 */
+	public int getToDatePid() {
+		return toDatePid;
+	}
+
+	/**
+	 * @return the primaryName
+	 */
+	public Boolean isPrimaryName() {
+		return primaryName;
+	}
+
+	/**
 	 * /* (non-Javadoc)
 	 *
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
@@ -197,10 +221,10 @@ public class NewPersonWizard extends Wizard {
 			// Create a new name
 			final PersonNameProvider personNameProvider = new PersonNameProvider();
 			personNameProvider.setPersonPid(personPid);
-			personNameProvider.setNameStylePid(page2.getPersonNameStylePid());
-			personNameProvider.setFromDatePid(page2.getFromDatePid());
-			personNameProvider.setToDatePid(page2.getToDatePid());
-			personNameProvider.setPrimaryName(true);
+			personNameProvider.setNameStylePid(personNameStylePid);
+			personNameProvider.setFromDatePid(fromDatePid);
+			personNameProvider.setToDatePid(toDatePid);
+			personNameProvider.setPrimaryName(isPrimaryName());
 			final int namePid = personNameProvider.insert();
 			LOGGER.info(
 					"Inserted name " + namePid + " for person " + personPid);
@@ -239,7 +263,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParent(page4.getFatherPid());
 				parentProvider.setParentRole(page4.getFatherRole());
 				parentProvider.setPrimaryParent(true);
-				parentProvider.setLanguagePid(languagePid);
+//				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
 				LOGGER.info("Inserted father pid " + parentPid);
 			}
@@ -251,7 +275,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParent(page4.getMotherPid());
 				parentProvider.setParentRole(page4.getMotherRole());
 				parentProvider.setPrimaryParent(true);
-				parentProvider.setLanguagePid(languagePid);
+//				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
 				LOGGER.info("Inserted mother pid " + parentPid);
 			}
@@ -263,7 +287,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setChild(page4.getChildPid());
 				parentProvider.setParentRole(page4.getChildRole());
 				parentProvider.setPrimaryParent(true);
-				parentProvider.setLanguagePid(languagePid);
+//				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
 				LOGGER.info("Inserted child pid " + parentPid);
 			}
@@ -341,11 +365,18 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
-	 * @param languagePid the languagePid to set
+	 * @param fromDatePid the fromDatePid to set
 	 */
-	public void setLanguagePid(int languagePid) {
-		this.languagePid = languagePid;
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
 	}
+
+//	/**
+//	 * @param languagePid the languagePid to set
+//	 */
+//	public void setLanguagePid(int languagePid) {
+//		this.languagePid = languagePid;
+//	}
 
 	/**
 	 * @param personName the personName to set
@@ -369,10 +400,24 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @param primaryName the primaryName to set
+	 */
+	public void setPrimaryName(Boolean primaryName) {
+		this.primaryName = primaryName;
+	}
+
+	/**
 	 * @param sexTypePid the sexTypePid to set
 	 */
 	public void setSexTypePid(int sexTypePid) {
 		this.sexTypePid = sexTypePid;
+	}
+
+	/**
+	 * @param toDatePid the toDatePid to set
+	 */
+	public void setToDatePid(int toDatePid) {
+		this.toDatePid = toDatePid;
 	}
 
 }
