@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 27. mar. 2019
  *
  */
 public class PersonNavigator {
@@ -121,6 +121,14 @@ public class PersonNavigator {
 		tblclmnPrimaryName.setText("Primary Name");
 		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getPersonList());
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			e1.printStackTrace();
+		}
+
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
@@ -173,13 +181,6 @@ public class PersonNavigator {
 		textNameFilter.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getPersonList());
-		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
-			e1.printStackTrace();
-		}
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -45,6 +46,7 @@ public class NewPersonWizard extends Wizard {
 	private int fromDatePid;
 	private int toDatePid;
 	private Boolean primaryName;
+	private List<String> personNamePartList = new ArrayList<>();
 
 	/**
 	 * Constructor
@@ -155,6 +157,13 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @return the personNamePartList
+	 */
+	public List<String> getPersonNamePartList() {
+		return personNamePartList;
+	}
+
+	/**
 	 * @return the personNameStylePid
 	 */
 	public int getPersonNameStylePid() {
@@ -231,21 +240,21 @@ public class NewPersonWizard extends Wizard {
 
 			// Page 3
 			// Name parts
-			PersonNamePartProvider personNamePartProvider;
-			final List<String> PersonNameParts = page3.getPersonNameParts();
+			PersonNamePartProvider pnpp;
+//			final List<String> PersonNameParts = page3.getPersonNameParts();
 			String string;
 			int namePartPid;
 
 			// Create each name part
-			for (int i = 0; i < PersonNameParts.size(); i++) {
-				string = PersonNameParts.get(i);
+			for (int i = 0; i < personNamePartList.size(); i++) {
+				string = personNamePartList.get(i);
 
 				if (string != null) {
-					personNamePartProvider = new PersonNamePartProvider();
-					personNamePartProvider.setNamePid(namePid);
-					personNamePartProvider.setLabel(string);
-					personNamePartProvider.setPartNo(i);
-					namePartPid = personNamePartProvider.insert();
+					pnpp = new PersonNamePartProvider();
+					pnpp.setNamePid(namePid);
+					pnpp.setLabel(string);
+					pnpp.setPartNo(i);
+					namePartPid = pnpp.insert();
 					LOGGER.info("Inserted name part " + namePartPid
 							+ " for person " + personPid);
 				}
@@ -364,13 +373,6 @@ public class NewPersonWizard extends Wizard {
 		this.deathDatePid = deathDatePid;
 	}
 
-	/**
-	 * @param fromDatePid the fromDatePid to set
-	 */
-	public void setFromDatePid(int fromDatePid) {
-		this.fromDatePid = fromDatePid;
-	}
-
 //	/**
 //	 * @param languagePid the languagePid to set
 //	 */
@@ -379,10 +381,24 @@ public class NewPersonWizard extends Wizard {
 //	}
 
 	/**
+	 * @param fromDatePid the fromDatePid to set
+	 */
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
+	}
+
+	/**
 	 * @param personName the personName to set
 	 */
 	public void setPersonName(String personName) {
 		this.personName = personName;
+	}
+
+	/**
+	 * @param personNamePartList the personNamePartList to set
+	 */
+	public void setPersonNamePartList(List<String> personNamePartList) {
+		this.personNamePartList = personNamePartList;
 	}
 
 	/**
