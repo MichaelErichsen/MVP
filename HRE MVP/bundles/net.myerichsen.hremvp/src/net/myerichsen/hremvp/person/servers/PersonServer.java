@@ -17,7 +17,9 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
+import net.myerichsen.hremvp.dbmodels.ParentRoles;
 import net.myerichsen.hremvp.dbmodels.Parents;
+import net.myerichsen.hremvp.dbmodels.PartnerRoles;
 import net.myerichsen.hremvp.dbmodels.Partners;
 import net.myerichsen.hremvp.dbmodels.PersonEvents;
 import net.myerichsen.hremvp.dbmodels.PersonNameParts;
@@ -30,7 +32,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. mar. 2019
+ * @version 28. mar. 2019
  */
 public class PersonServer implements IHREServer {
 	private final static Logger LOGGER = Logger
@@ -353,6 +355,8 @@ public class PersonServer implements IHREServer {
 		List<String> ls;
 		int parentPid;
 		final PersonNameServer pns = new PersonNameServer();
+		ParentRoles role = new ParentRoles();
+		Dictionary dictionary = new Dictionary();
 
 		if (key == 0) {
 			return parentList;
@@ -363,7 +367,11 @@ public class PersonServer implements IHREServer {
 			parentPid = parent.getParent();
 			ls.add(Integer.toString(parentPid));
 			ls.add(pns.getPrimaryNameString(parentPid));
-			ls.add(parent.getParentRole());
+
+			role.get(parent.getParentRolePid());
+			dictionary.getFKLabelPid(role.getLabelPid());
+			ls.add(dictionary.getLabel());
+
 			ls.add(Boolean.toString(parent.isPrimaryParent()));
 
 			parentList.add(ls);
@@ -378,7 +386,8 @@ public class PersonServer implements IHREServer {
 	 */
 	public List<List<String>> getPartnerList(int key) throws Exception {
 		List<String> ls;
-
+		PartnerRoles role2 = new PartnerRoles();
+		Dictionary dictionary = new Dictionary();
 		final PersonNameServer pns = new PersonNameServer();
 		final List<List<String>> partnerList = new ArrayList<>();
 		final List<Partners> lpa = new Partners().getFKPartner1(key);
@@ -395,7 +404,10 @@ public class PersonServer implements IHREServer {
 				ls.add(pns.getPrimaryNameString(partner.getPartner1()));
 			}
 
-			ls.add(partner.getRole());
+			role2.get(partner.getPartnerRolePid());
+			dictionary.getFKLabelPid(role2.getLabelPid());
+			ls.add(dictionary.getLabel());
+
 			ls.add(Boolean.toString(partner.isPrimaryPartner()));
 
 			partnerList.add(ls);

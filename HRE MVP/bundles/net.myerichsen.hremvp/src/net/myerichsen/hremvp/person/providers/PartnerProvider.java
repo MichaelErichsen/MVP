@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.person.servers.PartnerServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 28. mar. 2019
  *
  */
 public class PartnerProvider implements IHREProvider {
@@ -15,7 +15,7 @@ public class PartnerProvider implements IHREProvider {
 	private int Partner1;
 	private int Partner2;
 	private boolean PrimaryPartner;
-	private String Role;
+	private int PartnerRolePid;
 	private int FromDatePid;
 	private int ToDatePid;
 
@@ -78,10 +78,10 @@ public class PartnerProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the role
+	 * @return the partnerRolePid
 	 */
-	public String getRole() {
-		return Role;
+	public int getPartnerRolePid() {
+		return PartnerRolePid;
 	}
 
 	/*
@@ -123,7 +123,7 @@ public class PartnerProvider implements IHREProvider {
 		server.setPartner1(Partner1);
 		server.setPartner2(Partner2);
 		server.setPrimaryPartner(PrimaryPartner);
-		server.setRole(Role);
+		server.setPartnerRolePid(PartnerRolePid);
 		server.setFromDatePid(FromDatePid);
 		server.setToDatePid(ToDatePid);
 		return server.insert();
@@ -165,17 +165,17 @@ public class PartnerProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param partnerRolePid the partnerRolePid to set
+	 */
+	public void setPartnerRolePid(int partnerRolePid) {
+		PartnerRolePid = partnerRolePid;
+	}
+
+	/**
 	 * @param primaryPartner the primaryPartner to set
 	 */
 	public void setPrimaryPartner(boolean primaryPartner) {
 		PrimaryPartner = primaryPartner;
-	}
-
-	/**
-	 * @param role the role to set
-	 */
-	public void setRole(String role) {
-		Role = role;
 	}
 
 	/**

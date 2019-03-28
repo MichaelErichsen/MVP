@@ -7,13 +7,13 @@ import net.myerichsen.hremvp.person.servers.ParentServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 25. jan. 2019
+ * @version 28. mar. 2019
  */
 public class ParentProvider implements IHREProvider {
 	private int ParentPid;
 	private int Child;
 	private int Parent;
-	private String ParentRole;
+	private int ParentRolePid;
 	private boolean PrimaryParent;
 	private int LanguagePid;
 
@@ -86,10 +86,10 @@ public class ParentProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the parentRole
+	 * @return the parentRolePid
 	 */
-	public String getParentRole() {
-		return ParentRole;
+	public int getParentRolePid() {
+		return ParentRolePid;
 	}
 
 	/*
@@ -123,7 +123,7 @@ public class ParentProvider implements IHREProvider {
 	public int insert() throws Exception {
 		server.setChild(Child);
 		server.setParent(Parent);
-		server.setParentRole(ParentRole);
+		server.setParentRolePid(getParentRolePid());
 		server.setPrimaryParent(PrimaryParent);
 		server.setLanguagePid(LanguagePid);
 		return server.insert();
@@ -165,10 +165,10 @@ public class ParentProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param parentRole the parentRole to set
+	 * @param parentRolePid the parentRolePid to set
 	 */
-	public void setParentRole(String parentRole) {
-		ParentRole = parentRole;
+	public void setParentRolePid(int parentRolePid) {
+		ParentRolePid = parentRolePid;
 	}
 
 	/**

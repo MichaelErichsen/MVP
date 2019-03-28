@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. mar. 2019
+ * @version 28. mar. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -270,7 +270,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
 				parentProvider.setParent(page4.getFatherPid());
-				parentProvider.setParentRole(page4.getFatherRole());
+//				parentProvider.setParentRole(page4.getFatherRole());
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
@@ -282,7 +282,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
 				parentProvider.setParent(page4.getMotherPid());
-				parentProvider.setParentRole(page4.getMotherRole());
+//				parentProvider.setParentRole(page4.getMotherRole());
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
@@ -294,7 +294,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider = new ParentProvider();
 				parentProvider.setParent(personPid);
 				parentProvider.setChild(page4.getChildPid());
-				parentProvider.setParentRole(page4.getChildRole());
+//				parentProvider.setParentRole(page4.getChildRole());
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
@@ -307,7 +307,7 @@ public class NewPersonWizard extends Wizard {
 				partnerProvider.setPartner1(personPid);
 				partnerProvider.setPartner2(page4.getPartnerPid());
 				partnerProvider.setPrimaryPartner(true);
-				partnerProvider.setRole(page4.getPartnerRole());
+//				partnerProvider.setRole(page4.getPartnerRole());
 				partnerProvider.setFromDatePid(page4.getPartnerFromDatePid());
 				partnerProvider.setToDatePid(page4.getPartnerToDatePid());
 				partnerProvider.insert();

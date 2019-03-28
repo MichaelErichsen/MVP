@@ -14,57 +14,63 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PARTNERS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 3. mar. 2019
+ * @version 28. mar. 2019
  *
  */
 
 public class Partners {
 	private static final String SELECT = "SELECT PARTNER_PID, "
-			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
+			+ "FROM_DATE_PID, TO_DATE_PID, LANGUAGE_PID, "
+			+ "PARTNER_ROLE_PID FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
 	private static final String SELECT_PARTNER1 = "SELECT PARTNER_PID, "
-			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER1 = ? ORDER BY PARTNER_PID";
+			+ "FROM_DATE_PID, TO_DATE_PID, LANGUAGE_PID, "
+			+ "PARTNER_ROLE_PID FROM PUBLIC.PARTNERS WHERE PARTNER1 = ? ORDER BY PARTNER_PID";
 	private static final String SELECT_PARTNER2 = "SELECT PARTNER_PID, "
-			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE PARTNER2 = ? ORDER BY PARTNER_PID";
+			+ "FROM_DATE_PID, TO_DATE_PID, LANGUAGE_PID, "
+			+ "PARTNER_ROLE_PID FROM PUBLIC.PARTNERS WHERE PARTNER2 = ? ORDER BY PARTNER_PID";
 	private static final String SELECT_FROM_DATE_PID = "SELECT "
 			+ "PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
-			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE FROM_DATE_PID = ? ORDER BY PARTNER_PID";
+			+ "PRIMARY_PARTNER, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, LANGUAGE_PID, "
+			+ "PARTNER_ROLE_PID FROM PUBLIC.PARTNERS WHERE FROM_DATE_PID = ? ORDER BY PARTNER_PID";
 	private static final String SELECT_TO_DATE_PID = "SELECT PARTNER_PID, "
-			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS WHERE TO_DATE_PID = ? ORDER BY PARTNER_PID";
+			+ "FROM_DATE_PID, TO_DATE_PID, LANGUAGE_PID, "
+			+ "PARTNER_ROLE_PID FROM PUBLIC.PARTNERS WHERE TO_DATE_PID = ? ORDER BY PARTNER_PID";
+
+	private static final String SELECT_PARTNER_ROLE_PID = "SELECT "
+			+ "PARTNER_PID, PARTNER1, PARTNER2, "
+			+ "PRIMARY_PARTNER, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, LANGUAGE_PID, "
+			+ "PARTNER_ROLE_PID FROM PUBLIC.PARTNERS WHERE PARTNER_ROLE_PID = ? ORDER BY PARTNER_PID";
 
 	private static final String SELECTALL = "SELECT PARTNER_PID, "
-			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, ROLE, "
+			+ "PARTNER1, PARTNER2, PRIMARY_PARTNER, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "FROM_DATE_PID, TO_DATE_PID, "
-			+ "LANGUAGE_PID FROM PUBLIC.PARTNERS ORDER BY PARTNER_PID";
+			+ "FROM_DATE_PID, TO_DATE_PID, LANGUAGE_PID, "
+			+ "PARTNER_ROLE_PID FROM PUBLIC.PARTNERS ORDER BY PARTNER_PID";
 
 	private static final String SELECTMAX = "SELECT MAX(PARTNER_PID) FROM PUBLIC.PARTNERS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PARTNERS( "
 			+ "PARTNER_PID, PARTNER1, PARTNER2, "
-			+ "PRIMARY_PARTNER, ROLE, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, FROM_DATE_PID, "
-			+ "TO_DATE_PID, LANGUAGE_PID) VALUES (?, ?, ?, "
-			+ "?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 5, ?, ?, ?)";
+			+ "PRIMARY_PARTNER, INSERT_TSTMP, UPDATE_TSTMP, "
+			+ "TABLE_ID, FROM_DATE_PID, TO_DATE_PID, "
+			+ "LANGUAGE_PID, PARTNER_ROLE_PID) VALUES (?, ?, "
+			+ "?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 5, ?, ?, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PARTNERS SET "
-			+ "PARTNER1 = ?, PARTNER2 = ?, PRIMARY_PARTNER = ?, "
-			+ "ROLE = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
-			+ "FROM_DATE_PID = ?, TO_DATE_PID = ?, "
-			+ "LANGUAGE_PID = ? WHERE PARTNER_PID = ?";
+			+ "PARTNER1 = ?, PARTNER2 = ?, PRIMARY_PARTNER = ?"
+			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP, FROM_DATE_PID = ?"
+			+ ", TO_DATE_PID = ?, LANGUAGE_PID = ?"
+			+ ", PARTNER_ROLE_PID = ? WHERE PARTNER_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARTNERS WHERE PARTNER_PID = ?";
 
@@ -82,13 +88,13 @@ public class Partners {
 	private int Partner1;
 	private int Partner2;
 	private boolean PrimaryPartner;
-	private String Role;
 	private Timestamp InsertTstmp;
 	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int FromDatePid;
 	private int ToDatePid;
 	private int LanguagePid;
+	private int PartnerRolePid;
 	private Partners model;
 
 	public void delete() throws Exception {
@@ -120,13 +126,13 @@ public class Partners {
 			model.setPartner1(rs.getInt("PARTNER1"));
 			model.setPartner2(rs.getInt("PARTNER2"));
 			model.setPrimaryPartner(rs.getBoolean("PRIMARY_PARTNER"));
-			model.setRole(rs.getString("ROLE"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -143,13 +149,13 @@ public class Partners {
 			setPartner1(rs.getInt("PARTNER1"));
 			setPartner2(rs.getInt("PARTNER2"));
 			setPrimaryPartner(rs.getBoolean("PRIMARY_PARTNER"));
-			setRole(rs.getString("ROLE"));
 			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
 			setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			setToDatePid(rs.getInt("TO_DATE_PID"));
 			setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
@@ -168,13 +174,13 @@ public class Partners {
 			model.setPartner1(rs.getInt("PARTNER1"));
 			model.setPartner2(rs.getInt("PARTNER2"));
 			model.setPrimaryPartner(rs.getBoolean("PRIMARY_PARTNER"));
-			model.setRole(rs.getString("ROLE"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -193,13 +199,13 @@ public class Partners {
 			model.setPartner1(rs.getInt("PARTNER1"));
 			model.setPartner2(rs.getInt("PARTNER2"));
 			model.setPrimaryPartner(rs.getBoolean("PRIMARY_PARTNER"));
-			model.setRole(rs.getString("ROLE"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -218,13 +224,38 @@ public class Partners {
 			model.setPartner1(rs.getInt("PARTNER1"));
 			model.setPartner2(rs.getInt("PARTNER2"));
 			model.setPrimaryPartner(rs.getBoolean("PRIMARY_PARTNER"));
-			model.setRole(rs.getString("ROLE"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
+			modelList.add(model);
+		}
+		conn.close();
+		return modelList;
+	}
+
+	public List<Partners> getFKPartnerRolePid(int key) throws Exception {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(SELECT_PARTNER_ROLE_PID);
+		ps.setInt(1, key);
+		rs = ps.executeQuery();
+		modelList = new ArrayList<>();
+		while (rs.next()) {
+			model = new Partners();
+			model.setPartnerPid(rs.getInt("PARTNER_PID"));
+			model.setPartner1(rs.getInt("PARTNER1"));
+			model.setPartner2(rs.getInt("PARTNER2"));
+			model.setPrimaryPartner(rs.getBoolean("PRIMARY_PARTNER"));
+			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
+			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
+			model.setTableId(rs.getInt("TABLE_ID"));
+			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
+			model.setToDatePid(rs.getInt("TO_DATE_PID"));
+			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -243,13 +274,13 @@ public class Partners {
 			model.setPartner1(rs.getInt("PARTNER1"));
 			model.setPartner2(rs.getInt("PARTNER2"));
 			model.setPrimaryPartner(rs.getBoolean("PRIMARY_PARTNER"));
-			model.setRole(rs.getString("ROLE"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
 			model.setFromDatePid(rs.getInt("FROM_DATE_PID"));
 			model.setToDatePid(rs.getInt("TO_DATE_PID"));
 			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
+			model.setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -311,12 +342,12 @@ public class Partners {
 	}
 
 	/**
-	 * Get the Role field.
+	 * Get the PartnerRolePid field.
 	 *
-	 * @return Contents of the ROLE column
+	 * @return Contents of the PARTNER_ROLE_PID column
 	 */
-	public String getRole() {
-		return Role;
+	public int getPartnerRolePid() {
+		return PartnerRolePid;
 	}
 
 	/**
@@ -361,18 +392,18 @@ public class Partners {
 		ps.setInt(2, getPartner1());
 		ps.setInt(3, getPartner2());
 		ps.setBoolean(4, isPrimaryPartner());
-		ps.setString(5, getRole());
 		if (getFromDatePid() == 0) {
-			ps.setNull(6, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(6, getFromDatePid());
+			ps.setInt(5, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(7, java.sql.Types.INTEGER);
+			ps.setNull(6, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(7, getToDatePid());
+			ps.setInt(6, getToDatePid());
 		}
-		ps.setInt(8, getLanguagePid());
+		ps.setInt(7, getLanguagePid());
+		ps.setInt(8, getPartnerRolePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
@@ -442,21 +473,21 @@ public class Partners {
 	}
 
 	/**
+	 * Set the PartnerRolePid field
+	 *
+	 * @param PartnerRolePid Contents of the PARTNER_ROLE_PID column
+	 */
+	public void setPartnerRolePid(int PartnerRolePid) {
+		this.PartnerRolePid = PartnerRolePid;
+	}
+
+	/**
 	 * Set the PrimaryPartner field
 	 *
 	 * @param PrimaryPartner Contents of the PRIMARY_PARTNER column
 	 */
 	public void setPrimaryPartner(boolean PrimaryPartner) {
 		this.PrimaryPartner = PrimaryPartner;
-	}
-
-	/**
-	 * Set the Role field
-	 *
-	 * @param Role Contents of the ROLE column
-	 */
-	public void setRole(String Role) {
-		this.Role = Role;
 	}
 
 	/**
@@ -492,18 +523,18 @@ public class Partners {
 		ps.setInt(1, getPartner1());
 		ps.setInt(2, getPartner2());
 		ps.setBoolean(3, isPrimaryPartner());
-		ps.setString(4, getRole());
 		if (getFromDatePid() == 0) {
-			ps.setNull(5, java.sql.Types.INTEGER);
+			ps.setNull(4, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(5, getFromDatePid());
+			ps.setInt(4, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(6, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(6, getToDatePid());
+			ps.setInt(5, getToDatePid());
 		}
-		ps.setInt(7, getLanguagePid());
+		ps.setInt(6, getLanguagePid());
+		ps.setInt(7, getPartnerRolePid());
 		ps.setInt(8, getPartnerPid());
 		ps.executeUpdate();
 		conn.close();

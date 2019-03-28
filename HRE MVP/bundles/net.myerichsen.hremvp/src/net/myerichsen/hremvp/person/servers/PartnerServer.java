@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.dbmodels.Partners;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 28. mar. 2019
  *
  */
 public class PartnerServer implements IHREServer {
@@ -15,7 +15,7 @@ public class PartnerServer implements IHREServer {
 	private int Partner1;
 	private int Partner2;
 	private boolean PrimaryPartner;
-	private String Role;
+	private int PartnerRolePid;
 	private int FromDatePid;
 	private int ToDatePid;
 
@@ -77,13 +77,6 @@ public class PartnerServer implements IHREServer {
 		return PartnerPid;
 	}
 
-	/**
-	 * @return the role
-	 */
-	public String getRole() {
-		return Role;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -120,17 +113,11 @@ public class PartnerServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws Exception {
-		// FIXME SEVERE: Referential integrity constraint violation:
-		// "PERSONS_PARTNERS_FK: PUBLIC.PARTNERS FOREIGN KEY(PARTNER1)
-		// REFERENCES PUBLIC.PERSONS(PERSON_PID) (0)"; SQL statement:
-		// INSERT INTO PUBLIC.PARTNERS( PARTNER_PID, PARTNER1, PARTNER2,
-		// PRIMARY_PARTNER, ROLE, TABLE_ID, FROM_DATE_PID, TO_DATE_PID) VALUES
-		// (?, ?, ?, ?, ?, ?, ?, ?) [23506-197]
 
 		partnerRelation.setPartner1(Partner1);
 		partnerRelation.setPartner2(Partner2);
 		partnerRelation.setPrimaryPartner(PrimaryPartner);
-		partnerRelation.setRole(Role);
+		partnerRelation.setPartnerRolePid(PartnerRolePid);
 		partnerRelation.setFromDatePid(FromDatePid);
 		partnerRelation.setToDatePid(ToDatePid);
 		return partnerRelation.insert();
@@ -179,13 +166,6 @@ public class PartnerServer implements IHREServer {
 	}
 
 	/**
-	 * @param role the role to set
-	 */
-	public void setRole(String role) {
-		Role = role;
-	}
-
-	/**
 	 * @param toDatePid the toDatePid to set
 	 */
 	public void setToDatePid(int toDatePid) {
@@ -200,5 +180,19 @@ public class PartnerServer implements IHREServer {
 	@Override
 	public void update() throws Exception {
 
+	}
+
+	/**
+	 * @return the partnerRolePid
+	 */
+	public int getPartnerRolePid() {
+		return PartnerRolePid;
+	}
+
+	/**
+	 * @param partnerRolePid the partnerRolePid to set
+	 */
+	public void setPartnerRolePid(int partnerRolePid) {
+		PartnerRolePid = partnerRolePid;
 	}
 }

@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.providers.ParentProvider;
  * Wizard to add an existing person as a child
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 20. feb. 2019
+ * @version 28. mar. 2019
  *
  */
 public class NewPersonChildWizard extends Wizard {
@@ -63,7 +63,8 @@ public class NewPersonChildWizard extends Wizard {
 			parentProvider.setParent(personPid);
 			final int childPid = page1.getChildPid();
 			parentProvider.setChild(childPid);
-			parentProvider.setParentRole(page1.getChildRole());
+			// FIXME Role
+//			parentProvider.setParentRole(page1.getChildRole());
 			parentProvider.setPrimaryParent(true);
 			// FIXME Language pid
 			parentProvider.setLanguagePid(1);

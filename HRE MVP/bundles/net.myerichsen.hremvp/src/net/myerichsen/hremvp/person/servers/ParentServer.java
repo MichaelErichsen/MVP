@@ -7,14 +7,14 @@ import net.myerichsen.hremvp.dbmodels.Parents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 9. feb. 2019
+ * @version 28. mar. 2019
  *
  */
 public class ParentServer implements IHREServer {
 	private int ParentPid;
 	private int Child;
 	private int Parent;
-	private String ParentRole;
+	private int ParentRolePid;
 	private boolean PrimaryParent;
 	private int LanguagePid;
 
@@ -85,10 +85,10 @@ public class ParentServer implements IHREServer {
 	}
 
 	/**
-	 * @return the parentRole
+	 * @return the parentRolePid
 	 */
-	public String getParentRole() {
-		return ParentRole;
+	public int getParentRolePid() {
+		return ParentRolePid;
 	}
 
 	/*
@@ -122,7 +122,7 @@ public class ParentServer implements IHREServer {
 	public int insert() throws Exception {
 		parentRelation.setChild(Child);
 		parentRelation.setParent(Parent);
-		parentRelation.setParentRole(ParentRole);
+		parentRelation.setParentRolePid(getParentRolePid());
 		parentRelation.setPrimaryParent(PrimaryParent);
 		parentRelation.setLanguagePid(LanguagePid);
 		return parentRelation.insert();
@@ -164,10 +164,10 @@ public class ParentServer implements IHREServer {
 	}
 
 	/**
-	 * @param parentRole the parentRole to set
+	 * @param parentRolePid the parentRolePid to set
 	 */
-	public void setParentRole(String parentRole) {
-		ParentRole = parentRole;
+	public void setParentRolePid(int parentRolePid) {
+		ParentRolePid = parentRolePid;
 	}
 
 	/**

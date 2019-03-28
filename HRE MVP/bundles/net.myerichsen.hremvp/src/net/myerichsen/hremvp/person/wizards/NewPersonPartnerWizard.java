@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.providers.PartnerProvider;
  * Wizard to add an existing person as a Partner
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 17. feb. 2019
+ * @version 28. mar. 2019
  *
  */
 public class NewPersonPartnerWizard extends Wizard {
@@ -63,7 +63,8 @@ public class NewPersonPartnerWizard extends Wizard {
 			final int partnerPid = page1.getPartnerPid();
 			partnerProvider.setPartner2(partnerPid);
 			partnerProvider.setPrimaryPartner(true);
-			partnerProvider.setRole(page1.getPartnerRole());
+			// FIXME Role
+//			partnerProvider.setRole(page1.getPartnerRole());
 			partnerProvider.setFromDatePid(page1.getPartnerFromDatePid());
 			partnerProvider.setToDatePid(page1.getPartnerToDatePid());
 

@@ -4,17 +4,17 @@ import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 28. mar. 2019
  *
  */
-// FIXME Bordered composites
+// FIXME Populate combo boxes
 public class NewPersonWizardPage4 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -47,19 +47,16 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private Text textFatherName;
 	private Text textFatherBirthDate;
 	private Text textFatherDeathDate;
-	private Text textFatherRole;
 
 	private Text textMotherPersonPid;
 	private Text textMotherName;
 	private Text textMotherBirthDate;
 	private Text textMotherDeathDate;
-	private Text textMotherRole;
 
 	private Text textChildPersonPid;
 	private Text textChildName;
 	private Text textChildBirthDate;
 	private Text textChildDeathDate;
-	private Text textChildRole;
 
 	private Text textPartnerPersonPid;
 	private Text textPartnerName;
@@ -340,15 +337,11 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Label lblFatherRole = new Label(compositeFather, SWT.NONE);
 		lblFatherRole.setText("Father role");
 
-		textFatherRole = new Text(compositeFather, SWT.BORDER);
-		textFatherRole.setLayoutData(
+		ComboViewer comboViewerFatherRole = new ComboViewer(compositeFather,
+				SWT.NONE);
+		Combo comboFatherRole = comboViewerFatherRole.getCombo();
+		comboFatherRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		textFatherRole.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				fatherRole = textFatherRole.getText();
-			}
-		});
 
 		Composite compositeMother = new Composite(container, SWT.NONE);
 		compositeMother.setLayoutData(
@@ -411,15 +404,11 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Label lblMotherRole = new Label(compositeMother, SWT.NONE);
 		lblMotherRole.setText("Mother role");
 
-		textMotherRole = new Text(compositeMother, SWT.BORDER);
-		textMotherRole.setLayoutData(
+		ComboViewer comboViewerMotherRole = new ComboViewer(compositeMother,
+				SWT.NONE);
+		Combo comboMotherRole = comboViewerMotherRole.getCombo();
+		comboMotherRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		textMotherRole.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				motherRole = textMotherRole.getText();
-			}
-		});
 
 		Composite compositeChild = new Composite(container, SWT.NONE);
 		compositeChild.setLayoutData(
@@ -482,15 +471,11 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Label lblChildRole = new Label(compositeChild, SWT.NONE);
 		lblChildRole.setText("Child role");
 
-		textChildRole = new Text(compositeChild, SWT.BORDER);
-		textChildRole.setLayoutData(
+		ComboViewer comboViewerChildRole = new ComboViewer(compositeChild,
+				SWT.NONE);
+		Combo comboChildRole = comboViewerChildRole.getCombo();
+		comboChildRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		textChildRole.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				childRole = textChildRole.getText();
-			}
-		});
 
 		Composite compositePartner = new Composite(container, SWT.BORDER);
 		compositePartner.setLayoutData(
@@ -633,6 +618,15 @@ public class NewPersonWizardPage4 extends WizardPage {
 			}
 		});
 		buttonClearBrowserEnd.setText("Clear");
+
+		Label lblPartnerRole = new Label(compositePartner, SWT.NONE);
+		lblPartnerRole.setText("Partner role");
+
+		ComboViewer comboViewerPartnerRole = new ComboViewer(compositePartner,
+				SWT.NONE);
+		Combo comboPartnerRole = comboViewerPartnerRole.getCombo();
+		comboPartnerRole.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 	}
 
