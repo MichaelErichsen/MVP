@@ -4,7 +4,7 @@ package net.myerichsen.hremvp;
  * Constants used by database access and personEvent handling
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. mar. 2019
+ * @version 28. mar. 2019
  *
  */
 public class Constants {
@@ -51,6 +51,8 @@ public class Constants {
 	public static final String LOCATION_NAME_STYLE_PID_UPDATE_TOPIC = "LOCATION_NAME_STYLE_PID_UPDATE_TOPIC";
 	public static final String LOCATION_PID_UPDATE_TOPIC = "LOCATION_PID_UPDATE_TOPIC";
 	public static final String LOG_REFRESH_UPDATE_TOPIC = "LOG_REFRESH_UPDATE_TOPIC";
+	public static final String PARENT_ROLE_PID_UPDATE_TOPIC = "PARENT_ROLE_PID_UPDATE_TOPIC";
+	public static final String PARTNER_ROLE_PID_UPDATE_TOPIC = "PARTNER_ROLE_PID_UPDATE_TOPIC";
 	public static final String PERSON_NAME_MAP_PID_UPDATE_TOPIC = "PERSON_NAME_MAP_PID_UPDATE_TOPIC";
 	public static final String PERSON_NAME_PART_PID_UPDATE_TOPIC = "PERSON_NAME_PART_PID_UPDATE_TOPIC";
 	public static final String PERSON_NAME_PID_UPDATE_TOPIC = "PERSON_NAME_PID_UPDATE_TOPIC";
@@ -64,4 +66,5 @@ public class Constants {
 	public static final String SEX_PID_UPDATE_TOPIC = "SEX_PID_UPDATE_TOPIC";
 	public static final String SEX_TYPE_PID_UPDATE_TOPIC = "SEX_TYPE_PID_UPDATE_TOPIC";
 	public static final String TABLENAME_UPDATE_TOPIC = "TABLENAME_UPDATE_TOPIC";
+
 }
