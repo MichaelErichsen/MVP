@@ -36,7 +36,6 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * @version 27. mar. 2019
  *
  */
-// FIXME Change to table
 public class NewPersonWizardPage3 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);

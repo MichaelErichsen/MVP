@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. mar. 2019
+ * @version 28. mar. 2019
  *
  */
 // FIXME Bordered composites
@@ -65,9 +65,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private Text textPartnerName;
 	private Text textPartnerBirthDate;
 	private Text textPartnerDeathDate;
-	private Text textPartnerRole;
 	private Text textPartnershipStartDate;
-	private Text textPartnershipEndDate;
 
 	private int fatherPid = 0;
 	private int motherPid = 0;
@@ -79,6 +77,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private String partnerRole = "";
 	private int partnerFromDatePid = 0;
 	private int partnerToDatePid = 0;
+	private Text textPartnershipEndDate;
 
 	/**
 	 * Constructor
@@ -278,20 +277,27 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(3, false));
+		container.setLayout(new GridLayout(1, false));
 
-		final Label lblFather = new Label(container, SWT.NONE);
+		Composite compositeFather = new Composite(container, SWT.BORDER);
+		compositeFather.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeFather.setLayout(new GridLayout(3, false));
+
+		final Label lblFather = new Label(compositeFather, SWT.NONE);
 		lblFather.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 		lblFather.setText("Father");
 
-		textFatherPersonPid = new Text(container, SWT.BORDER);
+		textFatherPersonPid = new Text(compositeFather, SWT.BORDER);
 		textFatherPersonPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-		final Composite compositeFather = new Composite(container, SWT.NONE);
-		compositeFather.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeFatherButtons = new Composite(compositeFather,
+				SWT.NONE);
+		compositeFatherButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateFather = new Button(compositeFather, SWT.NONE);
+		final Button btnUpdateFather = new Button(compositeFatherButtons,
+				SWT.NONE);
 		btnUpdateFather.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -300,7 +306,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnUpdateFather.setText("Update");
 
-		final Button btnBrowseFather = new Button(compositeFather, SWT.NONE);
+		final Button btnBrowseFather = new Button(compositeFatherButtons,
+				SWT.NONE);
 		btnBrowseFather.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -309,7 +316,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowseFather.setText("Browse");
 
-		final Button btnClearFather = new Button(compositeFather, SWT.NONE);
+		final Button btnClearFather = new Button(compositeFatherButtons,
+				SWT.NONE);
 		btnClearFather.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -318,47 +326,49 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearFather.setText("Clear");
 
-		textFatherName = new Text(container, SWT.BORDER);
-		textFatherName.setEditable(false);
+		textFatherName = new Text(compositeFather, SWT.BORDER);
 		textFatherName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFatherName.setEditable(false);
 
-		textFatherBirthDate = new Text(container, SWT.BORDER);
+		textFatherBirthDate = new Text(compositeFather, SWT.BORDER);
 		textFatherBirthDate.setEditable(false);
-		textFatherBirthDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textFatherDeathDate = new Text(container, SWT.BORDER);
+		textFatherDeathDate = new Text(compositeFather, SWT.BORDER);
 		textFatherDeathDate.setEditable(false);
-		textFatherDeathDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-		final Label lblFatherRole = new Label(container, SWT.NONE);
+		final Label lblFatherRole = new Label(compositeFather, SWT.NONE);
 		lblFatherRole.setText("Father role");
 
-		textFatherRole = new Text(container, SWT.BORDER);
+		textFatherRole = new Text(compositeFather, SWT.BORDER);
+		textFatherRole.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		textFatherRole.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				fatherRole = textFatherRole.getText();
 			}
 		});
-		textFatherRole.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(container, SWT.NONE);
 
-		final Label lblMother = new Label(container, SWT.NONE);
+		Composite compositeMother = new Composite(container, SWT.NONE);
+		compositeMother.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeMother.setLayout(new GridLayout(3, false));
+
+		final Label lblMother = new Label(compositeMother, SWT.NONE);
 		lblMother.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 		lblMother.setText("Mother");
 
-		textMotherPersonPid = new Text(container, SWT.BORDER);
+		textMotherPersonPid = new Text(compositeMother, SWT.BORDER);
 		textMotherPersonPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-		final Composite compositeMother = new Composite(container, SWT.NONE);
-		compositeMother.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeMotherButtons = new Composite(compositeMother,
+				SWT.NONE);
+		compositeMotherButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateMother = new Button(compositeMother, SWT.NONE);
+		final Button btnUpdateMother = new Button(compositeMotherButtons,
+				SWT.NONE);
 		btnUpdateMother.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -367,7 +377,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnUpdateMother.setText("Update");
 
-		final Button btnBrowseMother = new Button(compositeMother, SWT.NONE);
+		final Button btnBrowseMother = new Button(compositeMotherButtons,
+				SWT.NONE);
 		btnBrowseMother.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -376,7 +387,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowseMother.setText("Browse");
 
-		final Button btnClearMother = new Button(compositeMother, SWT.NONE);
+		final Button btnClearMother = new Button(compositeMotherButtons,
+				SWT.NONE);
 		btnClearMother.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -385,46 +397,49 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearMother.setText("Clear");
 
-		textMotherName = new Text(container, SWT.BORDER);
-		textMotherName.setEditable(false);
+		textMotherName = new Text(compositeMother, SWT.BORDER);
 		textMotherName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textMotherName.setEditable(false);
 
-		textMotherBirthDate = new Text(container, SWT.BORDER);
+		textMotherBirthDate = new Text(compositeMother, SWT.BORDER);
 		textMotherBirthDate.setEditable(false);
-		textMotherBirthDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textMotherDeathDate = new Text(container, SWT.BORDER);
+		textMotherDeathDate = new Text(compositeMother, SWT.BORDER);
 		textMotherDeathDate.setEditable(false);
-		textMotherDeathDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-		final Label lblMotherRole = new Label(container, SWT.NONE);
+		final Label lblMotherRole = new Label(compositeMother, SWT.NONE);
 		lblMotherRole.setText("Mother role");
 
-		textMotherRole = new Text(container, SWT.BORDER);
+		textMotherRole = new Text(compositeMother, SWT.BORDER);
+		textMotherRole.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		textMotherRole.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				motherRole = textMotherRole.getText();
 			}
 		});
-		textMotherRole.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		final Label lblChild = new Label(container, SWT.NONE);
+		Composite compositeChild = new Composite(container, SWT.NONE);
+		compositeChild.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeChild.setLayout(new GridLayout(3, false));
+
+		final Label lblChild = new Label(compositeChild, SWT.NONE);
 		lblChild.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 		lblChild.setText("Child");
 
-		textChildPersonPid = new Text(container, SWT.BORDER);
+		textChildPersonPid = new Text(compositeChild, SWT.BORDER);
 		textChildPersonPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-		final Composite compositeChild = new Composite(container, SWT.NONE);
-		compositeChild.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeChildButtons = new Composite(compositeChild,
+				SWT.NONE);
+		compositeChildButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdateChild = new Button(compositeChild, SWT.NONE);
+		final Button btnUpdateChild = new Button(compositeChildButtons,
+				SWT.NONE);
 		btnUpdateChild.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -433,7 +448,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnUpdateChild.setText("Update");
 
-		final Button btnBrowseChild = new Button(compositeChild, SWT.NONE);
+		final Button btnBrowseChild = new Button(compositeChildButtons,
+				SWT.NONE);
 		btnBrowseChild.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -442,7 +458,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowseChild.setText("Browse");
 
-		final Button btnClearChild = new Button(compositeChild, SWT.NONE);
+		final Button btnClearChild = new Button(compositeChildButtons,
+				SWT.NONE);
 		btnClearChild.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -451,59 +468,58 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearChild.setText("Clear");
 
-		textChildName = new Text(container, SWT.BORDER);
-		textChildName.setEditable(false);
+		textChildName = new Text(compositeChild, SWT.BORDER);
 		textChildName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textChildName.setEditable(false);
 
-		textChildBirthDate = new Text(container, SWT.BORDER);
+		textChildBirthDate = new Text(compositeChild, SWT.BORDER);
 		textChildBirthDate.setEditable(false);
-		textChildBirthDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textChildDeathDate = new Text(container, SWT.BORDER);
+		textChildDeathDate = new Text(compositeChild, SWT.BORDER);
 		textChildDeathDate.setEditable(false);
-		textChildDeathDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		new Label(container, SWT.NONE);
-		new Label(container, SWT.NONE);
-		new Label(container, SWT.NONE);
 
-		final Label lblChildRole = new Label(container, SWT.NONE);
+		final Label lblChildRole = new Label(compositeChild, SWT.NONE);
 		lblChildRole.setText("Child role");
 
-		textChildRole = new Text(container, SWT.BORDER);
+		textChildRole = new Text(compositeChild, SWT.BORDER);
+		textChildRole.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		textChildRole.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				childRole = textChildRole.getText();
 			}
 		});
-		textChildRole.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		final Label lblPartner = new Label(container, SWT.NONE);
+		Composite compositePartner = new Composite(container, SWT.BORDER);
+		compositePartner.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositePartner.setLayout(new GridLayout(3, false));
+
+		final Label lblPartner = new Label(compositePartner, SWT.NONE);
 		lblPartner
 				.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 		lblPartner.setText("Partner");
 
-		textPartnerPersonPid = new Text(container, SWT.BORDER);
-		textPartnerPersonPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPartnerPersonPid = new Text(compositePartner, SWT.BORDER);
 
-		final Composite compositePartner = new Composite(container, SWT.NONE);
-		compositePartner.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositePartnerStartButtons = new Composite(
+				compositePartner, SWT.NONE);
+		compositePartnerStartButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnUpdatePartner = new Button(compositePartner, SWT.NONE);
-		btnUpdatePartner.addMouseListener(new MouseAdapter() {
+		final Button btnUpdatePartnerStart = new Button(
+				compositePartnerStartButtons, SWT.NONE);
+		btnUpdatePartnerStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updatePartner();
 			}
 		});
-		btnUpdatePartner.setText("Update");
+		btnUpdatePartnerStart.setText("Update");
 
-		final Button btnBrowsePartner = new Button(compositePartner, SWT.NONE);
+		final Button btnBrowsePartner = new Button(compositePartnerStartButtons,
+				SWT.NONE);
 		btnBrowsePartner.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -512,7 +528,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnBrowsePartner.setText("Browse");
 
-		final Button btnClearPartner = new Button(compositePartner, SWT.NONE);
+		final Button btnClearPartner = new Button(compositePartnerStartButtons,
+				SWT.NONE);
 		btnClearPartner.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -521,43 +538,27 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		btnClearPartner.setText("Clear");
 
-		textPartnerName = new Text(container, SWT.BORDER);
-		textPartnerName.setEditable(false);
+		textPartnerName = new Text(compositePartner, SWT.BORDER);
 		textPartnerName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textPartnerName.setEditable(false);
 
-		textPartnerBirthDate = new Text(container, SWT.BORDER);
+		textPartnerBirthDate = new Text(compositePartner, SWT.BORDER);
 		textPartnerBirthDate.setEditable(false);
-		textPartnerBirthDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		textPartnerDeathDate = new Text(container, SWT.BORDER);
+		textPartnerDeathDate = new Text(compositePartner, SWT.BORDER);
 		textPartnerDeathDate.setEditable(false);
-		textPartnerDeathDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-		final Label lblPartnerRole = new Label(container, SWT.NONE);
-		lblPartnerRole.setText("Partner role");
-
-		textPartnerRole = new Text(container, SWT.BORDER);
-		textPartnerRole.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				partnerRole = textPartnerRole.getText();
-			}
-		});
-		textPartnerRole.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-
-		final Label lblStartOfPartnership = new Label(container, SWT.NONE);
+		final Label lblStartOfPartnership = new Label(compositePartner,
+				SWT.NONE);
 		lblStartOfPartnership.setText("Start of partnership");
 
-		textPartnershipStartDate = new Text(container, SWT.BORDER);
-		textPartnershipStartDate.setEditable(false);
+		textPartnershipStartDate = new Text(compositePartner, SWT.BORDER);
 		textPartnershipStartDate.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		textPartnershipStartDate.setEditable(false);
 
-		final Composite compositePartnerStart = new Composite(container,
+		final Composite compositePartnerStart = new Composite(compositePartner,
 				SWT.NONE);
 		compositePartnerStart.setLayout(new RowLayout(SWT.HORIZONTAL));
 
@@ -591,18 +592,20 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		buttonClearPartnerStart.setText("Clear");
 
-		final Label lblEndOfPartnership = new Label(container, SWT.NONE);
+		final Label lblEndOfPartnership = new Label(compositePartner, SWT.NONE);
 		lblEndOfPartnership.setText("End of partnership");
 
-		textPartnershipEndDate = new Text(container, SWT.BORDER);
+		textPartnershipEndDate = new Text(compositePartner, SWT.BORDER);
 		textPartnershipEndDate.setEditable(false);
 		textPartnershipEndDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		final Composite composite_1 = new Composite(container, SWT.NONE);
-		composite_1.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositePartnerEndButtons = new Composite(
+				compositePartner, SWT.NONE);
+		compositePartnerEndButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button buttonNewPartnerEnd = new Button(composite_1, SWT.NONE);
+		final Button buttonNewPartnerEnd = new Button(
+				compositePartnerEndButtons, SWT.NONE);
 		buttonNewPartnerEnd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -611,7 +614,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		buttonNewPartnerEnd.setText("New");
 
-		final Button buttonBrowsePartnerEnd = new Button(composite_1, SWT.NONE);
+		final Button buttonBrowsePartnerEnd = new Button(
+				compositePartnerEndButtons, SWT.NONE);
 		buttonBrowsePartnerEnd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -620,7 +624,8 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		buttonBrowsePartnerEnd.setText("Browse");
 
-		final Button buttonClearBrowserEnd = new Button(composite_1, SWT.NONE);
+		final Button buttonClearBrowserEnd = new Button(
+				compositePartnerEndButtons, SWT.NONE);
 		buttonClearBrowserEnd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
