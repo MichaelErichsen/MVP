@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 16. mar. 2019
+ * @version 28. mar. 2019
  *
  */
 public class PersonView {
@@ -43,15 +43,13 @@ public class PersonView {
 
 	@Inject
 	private IEventBroker eventBroker;
-
-	private Text textId;
 	private Text textBirthDatePid;
 	private Text textDeathDatePid;
 	private Text textBirthDate;
 	private Text textDeathDate;
 
 	private final PersonProvider provider;
-	private int personPid;
+	private int personPid = 0;
 	private int birthDatePid;
 	private int deathDatePid;
 
@@ -100,17 +98,6 @@ public class PersonView {
 	/**
 	 *
 	 */
-	protected void clear() {
-		textId.setText("");
-		textBirthDatePid.setText("");
-		textBirthDate.setText("");
-		textDeathDatePid.setText("");
-		textDeathDate.setText("");
-	}
-
-	/**
-	 *
-	 */
 	private void clearBirthDate() {
 		textBirthDatePid.setText("0");
 		textBirthDate.setText("");
@@ -130,15 +117,6 @@ public class PersonView {
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(2, false));
-
-		final Label lblId = new Label(parent, SWT.NONE);
-		lblId.setLayoutData(
-				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblId.setText("ID");
-
-		textId = new Text(parent, SWT.BORDER);
-		textId.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite compositeBirthDate = new Composite(parent, SWT.BORDER);
 		compositeBirthDate.setLayout(new GridLayout(3, false));
@@ -253,24 +231,6 @@ public class PersonView {
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button buttonSelect = new Button(composite, SWT.NONE);
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				get();
-			}
-		});
-		buttonSelect.setText("Select");
-
-		final Button buttonInsert = new Button(composite, SWT.NONE);
-		buttonInsert.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				insert();
-			}
-		});
-		buttonInsert.setText("Insert");
-
 		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -280,44 +240,6 @@ public class PersonView {
 		});
 		buttonUpdate.setText("Update");
 
-		final Button buttonDelete = new Button(composite, SWT.NONE);
-		buttonDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				delete();
-			}
-		});
-		buttonDelete.setText("Delete");
-
-		final Button buttonClear = new Button(composite, SWT.NONE);
-		buttonClear.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clear();
-			}
-		});
-		buttonClear.setText("Clear");
-
-		personPid = 1;
-		get(personPid);
-	}
-
-	/**
-	 *
-	 */
-	protected void delete() {
-		try {
-			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE",
-					"Person" + textId.getText() + " has been deleted");
-			clear();
-			eventBroker.post(
-					net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
-					personPid);
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-		}
 	}
 
 	/**
@@ -328,20 +250,11 @@ public class PersonView {
 	}
 
 	/**
-	 *
-	 */
-	private void get() {
-		get(Integer.parseInt(textId.getText()));
-	}
-
-	/**
 	 * @param personPid
 	 */
 	private void get(int personPid) {
 		try {
 			provider.get(personPid);
-
-			textId.setText(Integer.toString(personPid));
 			try {
 				birthDatePid = provider.getBirthDatePid();
 				textBirthDatePid.setText(Integer.toString(birthDatePid));
@@ -416,29 +329,6 @@ public class PersonView {
 	/**
 	 *
 	 */
-	protected void insert() {
-		try {
-			provider.setBirthDatePid(
-					Integer.parseInt(textBirthDatePid.getText()));
-			provider.setDeathDatePid(
-					Integer.parseInt(textDeathDatePid.getText()));
-			personPid = Integer.parseInt(textId.getText());
-			provider.setPersonPid(personPid);
-			provider.insert();
-			eventBroker.post("MESSAGE",
-					"Person " + textId.getText() + " has been inserted");
-			eventBroker.post(
-					net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
-					personPid);
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
-		}
-	}
-
-	/**
-	 *
-	 */
 	@Focus
 	public void setFocus() {
 	}
@@ -466,11 +356,11 @@ public class PersonView {
 					Integer.parseInt(textBirthDatePid.getText()));
 			provider.setDeathDatePid(
 					Integer.parseInt(textDeathDatePid.getText()));
-			personPid = Integer.parseInt(textId.getText());
+//			personPid = Integer.parseInt(textId.getText());
 			provider.setPersonPid(personPid);
 			provider.update();
 			eventBroker.post("MESSAGE",
-					"Person " + textId.getText() + " has been updated");
+					"Person " + personPid + " has been updated");
 			eventBroker.post(
 					net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 					personPid);
