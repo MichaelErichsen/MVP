@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new Parent Role for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 29. mar. 2019
  *
  */
 public class NewParentRoleWizardPage1 extends WizardPage {
@@ -44,8 +44,6 @@ public class NewParentRoleWizardPage1 extends WizardPage {
 	private ParentRoleProvider provider;
 	private DictionaryProvider dp;
 	private int labelPid = 0;
-//	private NewParentRoleWizard wizard;
-//	private List<List<String>> ParentRoleStringList;
 
 	/**
 	 * Constructor
@@ -133,9 +131,6 @@ public class NewParentRoleWizardPage1 extends WizardPage {
 
 		setControl(container);
 		container.setLayout(new GridLayout(2, false));
-
-		final Label lblParentType = new Label(container, SWT.NONE);
-		lblParentType.setText("Parent type pid");
 
 		final Label lblAbbreviation = new Label(container, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation (Max 8 characters)");

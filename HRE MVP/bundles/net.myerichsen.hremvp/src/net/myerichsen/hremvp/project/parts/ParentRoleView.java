@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Parent Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 29. mar. 2019
  *
  */
 
@@ -55,16 +55,12 @@ public class ParentRoleView {
 
 	@Inject
 	private IEventBroker eventBroker;
-
-	private Text textParentRolePid;
-	private Text textLabelPid;
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final ParentRoleProvider provider;
 	private DictionaryProvider dp;
 	private int ParentRolePid = 0;
 	private int labelPid = 0;
-	private Text textParentTypePid;
 
 	/**
 	 * Constructor
@@ -135,34 +131,6 @@ public class ParentRoleView {
 	@PostConstruct
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(4, false));
-
-		final Label lblParentRoleId = new Label(parent, SWT.NONE);
-		lblParentRoleId.setText("Parent Role id");
-
-		textParentRolePid = new Text(parent, SWT.BORDER);
-		textParentRolePid.setEditable(false);
-		textParentRolePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblLabelPid = new Label(parent, SWT.NONE);
-		lblLabelPid.setText("Label id");
-
-		textLabelPid = new Text(parent, SWT.BORDER);
-		textLabelPid.setEditable(false);
-		textLabelPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblParentTypeId = new Label(parent, SWT.NONE);
-		lblParentTypeId.setLayoutData(
-				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblParentTypeId.setText("Parent Type id");
-
-		textParentTypePid = new Text(parent, SWT.BORDER);
-		textParentTypePid.setEditable(false);
-		textParentTypePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
 
 		final Label lblAbbreviation = new Label(parent, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");
@@ -259,8 +227,8 @@ public class ParentRoleView {
 	}
 
 	/**
-	 * @param ls A list of Parent role pid, Parent type pid, dictionary pid
-	 *           and abbreviation
+	 * @param ls A list of Parent role pid, Parent type pid, dictionary pid and
+	 *           abbreviation
 	 *
 	 */
 	@Inject
@@ -271,11 +239,7 @@ public class ParentRoleView {
 		try {
 			provider.get();
 			final String ParentRolePidString = ls.get(0);
-			textParentRolePid.setText(ParentRolePidString);
-			final String ParentTypePidString = ls.get(1);
-			textParentTypePid.setText(ParentTypePidString);
 			ParentRolePid = Integer.parseInt(ParentRolePidString);
-			textLabelPid.setText(ls.get(2));
 			textAbbreviation.setText(ls.get(3));
 
 			provider.get(ParentRolePid);

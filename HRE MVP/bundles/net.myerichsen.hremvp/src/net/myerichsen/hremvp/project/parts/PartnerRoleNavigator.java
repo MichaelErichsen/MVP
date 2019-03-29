@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Partner roles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 29. mar. 2019
  */
 @SuppressWarnings("restriction")
 public class PartnerRoleNavigator {
@@ -64,7 +64,6 @@ public class PartnerRoleNavigator {
 	private final PartnerRoleProvider provider;
 	private TableViewer tableViewer;
 	private int PartnerRolePid = 0;
-//	private final int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -109,15 +108,6 @@ public class PartnerRoleNavigator {
 		tblclmnId.setWidth(80);
 		tblclmnId.setText("Partner Role ID");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
-
-		final TableViewerColumn tableViewerColumnTypePid = new TableViewerColumn(
-				tableViewer, SWT.NONE);
-		final TableColumn tblclmnPartnerTypePid = tableViewerColumnTypePid
-				.getColumn();
-		tblclmnPartnerTypePid.setWidth(80);
-		tblclmnPartnerTypePid.setText("Partner Type Pid");
-		tableViewerColumnTypePid
-				.setLabelProvider(new HREColumnLabelProvider(4));
 
 		final TableViewerColumn tableViewerColumnLabelId = new TableViewerColumn(
 				tableViewer, SWT.NONE);

@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Partner Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 29. mar. 2019
  *
  */
 
@@ -55,16 +55,12 @@ public class PartnerRoleView {
 
 	@Inject
 	private IEventBroker eventBroker;
-
-	private Text textPartnerRolePid;
-	private Text textLabelPid;
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final PartnerRoleProvider provider;
 	private DictionaryProvider dp;
 	private int PartnerRolePid = 0;
 	private int labelPid = 0;
-	private Text textPartnerTypePid;
 
 	/**
 	 * Constructor
@@ -135,34 +131,6 @@ public class PartnerRoleView {
 	@PostConstruct
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(4, false));
-
-		final Label lblPartnerRoleId = new Label(parent, SWT.NONE);
-		lblPartnerRoleId.setText("Partner Role id");
-
-		textPartnerRolePid = new Text(parent, SWT.BORDER);
-		textPartnerRolePid.setEditable(false);
-		textPartnerRolePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblLabelPid = new Label(parent, SWT.NONE);
-		lblLabelPid.setText("Label id");
-
-		textLabelPid = new Text(parent, SWT.BORDER);
-		textLabelPid.setEditable(false);
-		textLabelPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblPartnerTypeId = new Label(parent, SWT.NONE);
-		lblPartnerTypeId.setLayoutData(
-				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblPartnerTypeId.setText("Partner Type id");
-
-		textPartnerTypePid = new Text(parent, SWT.BORDER);
-		textPartnerTypePid.setEditable(false);
-		textPartnerTypePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
 
 		final Label lblAbbreviation = new Label(parent, SWT.NONE);
 		lblAbbreviation.setText("Abbreviation");
@@ -271,11 +239,7 @@ public class PartnerRoleView {
 		try {
 			provider.get();
 			final String PartnerRolePidString = ls.get(0);
-			textPartnerRolePid.setText(PartnerRolePidString);
-			final String PartnerTypePidString = ls.get(1);
-			textPartnerTypePid.setText(PartnerTypePidString);
 			PartnerRolePid = Integer.parseInt(PartnerRolePidString);
-			textLabelPid.setText(ls.get(2));
 			textAbbreviation.setText(ls.get(3));
 
 			provider.get(PartnerRolePid);
