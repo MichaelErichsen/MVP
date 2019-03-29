@@ -14,16 +14,16 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 /**
- * Handler to open the event role view
+ * Handler to open the partner role view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. mar. 2019
+ * @versi
  *
  */
-public class OpenEventRoleViewHandler {
+public class OpenPartnerRoleViewHandler {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.EventRoleView";
+	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.PartnerRoleView";
 
 	/**
 	 * @param partService  The Eclipse part service
@@ -56,7 +56,7 @@ public class OpenEventRoleViewHandler {
 			}
 		}
 
-		part.setLabel("Event Role");
+		part.setLabel("Partner Role");
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);

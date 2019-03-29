@@ -192,6 +192,8 @@
   <handlers xmi:id="_81Z30CsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handler.42" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenPersonNamePartNavigatorHandler" command="_1hj2wCsCEemcPL7Gvwj8Zw"/>
   <handlers xmi:id="_PUpJMDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.handler.5" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.HreUpdateHandler" command="_KX47UDIoEemFh8IjP8PYwQ"/>
   <handlers xmi:id="_ffd64Eu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.handler.23" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenEventRoleViewHandler" command="_UJqgQEu3EemeNo01Nx-9Hg"/>
+  <handlers xmi:id="_Zb_RAFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.handler.25" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenParentRoleViewHandler" command="_PZf4YFIDEem56rnTmdFCow"/>
+  <handlers xmi:id="_cwRsQFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.handler.27" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenPartnerRoleViewHandler" command="_VffmQFIDEem56rnTmdFCow"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1o" keySequence="M1+O"/>
@@ -238,6 +240,8 @@
   <commands xmi:id="_1hj2wCsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.command.openpersonnamepartnavigator" commandName="openPersonNamePartNavigator" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_KX47UDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.command.updatehre" commandName="updateHre" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_UJqgQEu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.command.openeventroleview" commandName="openEventRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_PZf4YFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.command.openparentroleview" commandName="openParentRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_VffmQFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.command.openpartnerroleview" commandName="openPartnerRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

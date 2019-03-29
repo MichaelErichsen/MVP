@@ -229,7 +229,7 @@ public class ParentRoleNavigator {
 	 */
 	protected void openParentRoleView() {
 		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.openParentroleview", null);
+				"net.myerichsen.hremvp.command.openparentroleview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();

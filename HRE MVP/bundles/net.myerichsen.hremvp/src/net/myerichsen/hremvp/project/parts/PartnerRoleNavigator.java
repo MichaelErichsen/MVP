@@ -229,7 +229,7 @@ public class PartnerRoleNavigator {
 	 */
 	protected void openPartnerRoleView() {
 		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.openPartnerroleview", null);
+				"net.myerichsen.hremvp.command.openpartnerroleview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
