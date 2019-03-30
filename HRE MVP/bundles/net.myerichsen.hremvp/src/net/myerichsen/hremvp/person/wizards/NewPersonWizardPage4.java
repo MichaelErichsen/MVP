@@ -1,15 +1,18 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -25,21 +28,23 @@ import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.project.providers.ParentRoleProvider;
+import net.myerichsen.hremvp.project.providers.PartnerRoleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 28. mar. 2019
+ * @version 30. mar. 2019
  *
  */
-// FIXME Populate combo boxes
 public class NewPersonWizardPage4 extends WizardPage {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
-	private final IEventBroker eventBroker;
+	private NewPersonWizard wizard;
 
 	private Shell parentShell;
 
@@ -63,18 +68,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 	private Text textPartnerBirthDate;
 	private Text textPartnerDeathDate;
 	private Text textPartnershipStartDate;
-
-	private int fatherPid = 0;
-	private int motherPid = 0;
-	private int partnerPid = 0;
-	private int childPid = 0;
-	private String fatherRole = "";
-	private String motherRole = "";
-	private String childRole = "";
-	private String partnerRole = "";
-	private int partnerFromDatePid = 0;
-	private int partnerToDatePid = 0;
 	private Text textPartnershipEndDate;
+
+	private List<List<String>> fatherStringList;
+	private List<List<String>> motherStringList;
+	private List<List<String>> childStringList;
+	private List<List<String>> partnerStringList;
 
 	/**
 	 * Constructor
@@ -87,7 +86,6 @@ public class NewPersonWizardPage4 extends WizardPage {
 		setDescription(
 				"Add primary parents, partner and child for the new person. More parents and partners can be added later.");
 		this.context = context;
-		eventBroker = context.get(IEventBroker.class);
 	}
 
 	/**
@@ -98,14 +96,17 @@ public class NewPersonWizardPage4 extends WizardPage {
 				parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
-				childPid = dialog.getPersonPid();
+				final int childPid = dialog.getPersonPid();
 				textChildPersonPid.setText(Integer.toString(childPid));
 				textChildName.setText(dialog.getPersonName());
 				textChildBirthDate.setText(dialog.getBirthDate());
 				textChildDeathDate.setText(dialog.getDeathDate());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setChildPid(childPid);
+				setErrorMessage(null);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
-				eventBroker.post("MESSAGE", e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}
@@ -118,14 +119,17 @@ public class NewPersonWizardPage4 extends WizardPage {
 				parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
-				fatherPid = dialog.getPersonPid();
+				final int fatherPid = dialog.getPersonPid();
 				textFatherPersonPid.setText(Integer.toString(fatherPid));
 				textFatherName.setText(dialog.getPersonName());
 				textFatherBirthDate.setText(dialog.getBirthDate());
 				textFatherDeathDate.setText(dialog.getDeathDate());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setFatherPid(fatherPid);
+				setErrorMessage(null);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
-				eventBroker.post("MESSAGE", e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}
@@ -138,14 +142,17 @@ public class NewPersonWizardPage4 extends WizardPage {
 				parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
-				motherPid = dialog.getPersonPid();
+				final int motherPid = dialog.getPersonPid();
 				textMotherPersonPid.setText(Integer.toString(motherPid));
 				textMotherName.setText(dialog.getPersonName());
 				textMotherBirthDate.setText(dialog.getBirthDate());
 				textMotherDeathDate.setText(dialog.getDeathDate());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setMotherPid(motherPid);
+				setErrorMessage(null);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
-				eventBroker.post("MESSAGE", e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}
@@ -158,14 +165,17 @@ public class NewPersonWizardPage4 extends WizardPage {
 				parentShell, context);
 		if (dialog.open() == Window.OK) {
 			try {
-				partnerPid = dialog.getPersonPid();
+				final int partnerPid = dialog.getPersonPid();
 				textPartnerPersonPid.setText(Integer.toString(partnerPid));
 				textPartnerName.setText(dialog.getPersonName());
 				textPartnerBirthDate.setText(dialog.getBirthDate());
 				textPartnerDeathDate.setText(dialog.getDeathDate());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setPartnerPid(partnerPid);
+				setErrorMessage(null);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());
-				eventBroker.post("MESSAGE", e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}
@@ -178,12 +188,16 @@ public class NewPersonWizardPage4 extends WizardPage {
 				textPartnershipEndDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				partnerToDatePid = dialog.getHdatePid();
+				final int partnerToDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(partnerToDatePid);
 				textPartnershipEndDate.setText(hdp.getDate().toString());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setPartnerToDatePid(partnerToDatePid);
+				setErrorMessage(null);
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+				setErrorMessage(e1.getMessage());
 			}
 		}
 
@@ -197,12 +211,16 @@ public class NewPersonWizardPage4 extends WizardPage {
 				textPartnershipStartDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				partnerFromDatePid = dialog.getHdatePid();
+				final int partnerFromDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
 				hdp.get(partnerFromDatePid);
 				textPartnershipStartDate.setText(hdp.getDate().toString());
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setPartnerFromDatePid(partnerFromDatePid);
+				setErrorMessage(null);
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+				setErrorMessage(e1.getMessage());
 			}
 		}
 
@@ -212,52 +230,62 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void clearChild() {
-		childPid = 0;
+		wizard = (NewPersonWizard) getWizard();
+		wizard.setChildPid(0);
 		textChildPersonPid.setText("");
 		textChildName.setText("");
 		textChildBirthDate.setText("");
 		textChildDeathDate.setText("");
+		setErrorMessage(null);
 	}
 
 	/**
 	 *
 	 */
 	protected void clearFather() {
-		fatherPid = 0;
+		wizard = (NewPersonWizard) getWizard();
+		wizard.setFatherPid(0);
 		textFatherPersonPid.setText("");
 		textFatherName.setText("");
 		textFatherBirthDate.setText("");
 		textFatherDeathDate.setText("");
+		setErrorMessage(null);
 	}
 
 	/**
 	 *
 	 */
 	protected void clearMother() {
-		motherPid = 0;
+		wizard = (NewPersonWizard) getWizard();
+		wizard.setMotherPid(0);
 		textMotherPersonPid.setText("");
 		textMotherName.setText("");
 		textMotherBirthDate.setText("");
 		textMotherDeathDate.setText("");
+		setErrorMessage(null);
 	}
 
 	/**
 	 *
 	 */
 	protected void clearPartner() {
-		partnerPid = 0;
+		wizard = (NewPersonWizard) getWizard();
+		wizard.setPartnerPid(0);
 		textPartnerPersonPid.setText("");
 		textPartnerName.setText("");
 		textPartnerBirthDate.setText("");
 		textPartnerDeathDate.setText("");
+		setErrorMessage(null);
 	}
 
 	/**
 	 *
 	 */
 	protected void clearPartnerEnd() {
+		wizard = (NewPersonWizard) getWizard();
+		wizard.setPartnerToDatePid(0);
 		textPartnershipEndDate.setText("");
-		partnerToDatePid = 0;
+		setErrorMessage(null);
 	}
 
 	/**
@@ -265,7 +293,9 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 */
 	protected void clearPartnerStart() {
 		textPartnershipStartDate.setText("");
-		partnerFromDatePid = 0;
+		wizard = (NewPersonWizard) getWizard();
+		wizard.setPartnerFromDatePid(0);
+		setErrorMessage(null);
 	}
 
 	@Override
@@ -276,7 +306,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(1, false));
 
-		Composite compositeFather = new Composite(container, SWT.BORDER);
+		final Composite compositeFather = new Composite(container, SWT.BORDER);
 		compositeFather.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeFather.setLayout(new GridLayout(3, false));
@@ -296,6 +326,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnUpdateFather = new Button(compositeFatherButtons,
 				SWT.NONE);
 		btnUpdateFather.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateFather();
@@ -306,6 +343,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnBrowseFather = new Button(compositeFatherButtons,
 				SWT.NONE);
 		btnBrowseFather.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseFather();
@@ -316,6 +360,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnClearFather = new Button(compositeFatherButtons,
 				SWT.NONE);
 		btnClearFather.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearFather();
@@ -337,13 +388,40 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Label lblFatherRole = new Label(compositeFather, SWT.NONE);
 		lblFatherRole.setText("Father role");
 
-		ComboViewer comboViewerFatherRole = new ComboViewer(compositeFather,
-				SWT.NONE);
-		Combo comboFatherRole = comboViewerFatherRole.getCombo();
+		final ComboViewer comboViewerFatherRole = new ComboViewer(
+				compositeFather, SWT.NONE);
+		final Combo comboFatherRole = comboViewerFatherRole.getCombo();
+		comboFatherRole.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboFatherRole.getSelectionIndex();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setFatherRolePid(Integer
+						.parseInt(fatherStringList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerFatherRole
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerFatherRole.setLabelProvider(new HREComboLabelProvider(3));
 		comboFatherRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Composite compositeMother = new Composite(container, SWT.NONE);
+		try {
+			fatherStringList = new ParentRoleProvider().getStringList();
+			comboViewerFatherRole.setInput(fatherStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
+		}
+
+		final Composite compositeMother = new Composite(container, SWT.NONE);
 		compositeMother.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeMother.setLayout(new GridLayout(3, false));
@@ -363,6 +441,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnUpdateMother = new Button(compositeMotherButtons,
 				SWT.NONE);
 		btnUpdateMother.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateMother();
@@ -373,6 +458,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnBrowseMother = new Button(compositeMotherButtons,
 				SWT.NONE);
 		btnBrowseMother.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseMother();
@@ -383,6 +475,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnClearMother = new Button(compositeMotherButtons,
 				SWT.NONE);
 		btnClearMother.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearMother();
@@ -404,13 +503,40 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Label lblMotherRole = new Label(compositeMother, SWT.NONE);
 		lblMotherRole.setText("Mother role");
 
-		ComboViewer comboViewerMotherRole = new ComboViewer(compositeMother,
-				SWT.NONE);
-		Combo comboMotherRole = comboViewerMotherRole.getCombo();
+		final ComboViewer comboViewerMotherRole = new ComboViewer(
+				compositeMother, SWT.NONE);
+		final Combo comboMotherRole = comboViewerMotherRole.getCombo();
+		comboMotherRole.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboMotherRole.getSelectionIndex();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setMotherRolePid(Integer
+						.parseInt(motherStringList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerMotherRole
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerMotherRole.setLabelProvider(new HREComboLabelProvider(3));
+
+		try {
+			motherStringList = new ParentRoleProvider().getStringList();
+			comboViewerMotherRole.setInput(motherStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
+		}
 		comboMotherRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Composite compositeChild = new Composite(container, SWT.NONE);
+		final Composite compositeChild = new Composite(container, SWT.NONE);
 		compositeChild.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeChild.setLayout(new GridLayout(3, false));
@@ -430,6 +556,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnUpdateChild = new Button(compositeChildButtons,
 				SWT.NONE);
 		btnUpdateChild.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateChild();
@@ -440,6 +573,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnBrowseChild = new Button(compositeChildButtons,
 				SWT.NONE);
 		btnBrowseChild.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseChild();
@@ -450,6 +590,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnClearChild = new Button(compositeChildButtons,
 				SWT.NONE);
 		btnClearChild.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearChild();
@@ -471,13 +618,40 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Label lblChildRole = new Label(compositeChild, SWT.NONE);
 		lblChildRole.setText("Child role");
 
-		ComboViewer comboViewerChildRole = new ComboViewer(compositeChild,
+		final ComboViewer comboViewerChildRole = new ComboViewer(compositeChild,
 				SWT.NONE);
-		Combo comboChildRole = comboViewerChildRole.getCombo();
+		final Combo comboChildRole = comboViewerChildRole.getCombo();
+		comboChildRole.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboChildRole.getSelectionIndex();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setChildRolePid(Integer
+						.parseInt(childStringList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerChildRole
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerChildRole.setLabelProvider(new HREComboLabelProvider(3));
+
+		try {
+			childStringList = new ParentRoleProvider().getStringList();
+			comboViewerChildRole.setInput(childStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
+		}
 		comboChildRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Composite compositePartner = new Composite(container, SWT.BORDER);
+		final Composite compositePartner = new Composite(container, SWT.BORDER);
 		compositePartner.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositePartner.setLayout(new GridLayout(3, false));
@@ -496,6 +670,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnUpdatePartnerStart = new Button(
 				compositePartnerStartButtons, SWT.NONE);
 		btnUpdatePartnerStart.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updatePartner();
@@ -506,6 +687,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnBrowsePartner = new Button(compositePartnerStartButtons,
 				SWT.NONE);
 		btnBrowsePartner.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browsePartner();
@@ -516,6 +704,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button btnClearPartner = new Button(compositePartnerStartButtons,
 				SWT.NONE);
 		btnClearPartner.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearPartner();
@@ -550,6 +745,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button buttonNewPartnerStart = new Button(compositePartnerStart,
 				SWT.NONE);
 		buttonNewPartnerStart.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				newPartnerStart();
@@ -560,6 +762,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button buttonBrowsePartnerStart = new Button(
 				compositePartnerStart, SWT.NONE);
 		buttonBrowsePartnerStart.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browsePartnerStart();
@@ -570,6 +779,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button buttonClearPartnerStart = new Button(compositePartnerStart,
 				SWT.NONE);
 		buttonClearPartnerStart.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearPartnerStart();
@@ -592,6 +808,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button buttonNewPartnerEnd = new Button(
 				compositePartnerEndButtons, SWT.NONE);
 		buttonNewPartnerEnd.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				newPartnerEnd();
@@ -602,6 +825,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button buttonBrowsePartnerEnd = new Button(
 				compositePartnerEndButtons, SWT.NONE);
 		buttonBrowsePartnerEnd.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browsePartnerEnd();
@@ -612,6 +842,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 		final Button buttonClearBrowserEnd = new Button(
 				compositePartnerEndButtons, SWT.NONE);
 		buttonClearBrowserEnd.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearPartnerEnd();
@@ -619,85 +856,42 @@ public class NewPersonWizardPage4 extends WizardPage {
 		});
 		buttonClearBrowserEnd.setText("Clear");
 
-		Label lblPartnerRole = new Label(compositePartner, SWT.NONE);
+		final Label lblPartnerRole = new Label(compositePartner, SWT.NONE);
 		lblPartnerRole.setText("Partner role");
 
-		ComboViewer comboViewerPartnerRole = new ComboViewer(compositePartner,
-				SWT.NONE);
-		Combo comboPartnerRole = comboViewerPartnerRole.getCombo();
+		final ComboViewer comboViewerPartnerRole = new ComboViewer(
+				compositePartner, SWT.NONE);
+		final Combo comboPartnerRole = comboViewerPartnerRole.getCombo();
+		comboPartnerRole.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboPartnerRole.getSelectionIndex();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setPartnerRolePid(Integer.parseInt(
+						partnerStringList.get(selectionIndex).get(0)));
+			}
+		});
+		comboViewerPartnerRole
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerPartnerRole.setLabelProvider(new HREComboLabelProvider(3));
+
+		try {
+			partnerStringList = new PartnerRoleProvider().getStringList();
+			comboViewerPartnerRole.setInput(partnerStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
+		}
 		comboPartnerRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-	}
-
-	/**
-	 * @return the childPid
-	 */
-	public int getChildPid() {
-		return childPid;
-	}
-
-	/**
-	 * @return the childRole
-	 */
-	public String getChildRole() {
-		return childRole;
-	}
-
-	/**
-	 * @return the fatherPid
-	 */
-	public int getFatherPid() {
-		return fatherPid;
-	}
-
-	/**
-	 * @return the fatherRole
-	 */
-	public String getFatherRole() {
-		return fatherRole;
-	}
-
-	/**
-	 * @return the motherPid
-	 */
-	public int getMotherPid() {
-		return motherPid;
-	}
-
-	/**
-	 * @return the motherRole
-	 */
-	public String getMotherRole() {
-		return motherRole;
-	}
-
-	/**
-	 * @return the partnerFromDatePid
-	 */
-	public int getPartnerFromDatePid() {
-		return partnerFromDatePid;
-	}
-
-	/**
-	 * @return the partnerPid
-	 */
-	public int getPartnerPid() {
-		return partnerPid;
-	}
-
-	/**
-	 * @return the partnerRole
-	 */
-	public String getPartnerRole() {
-		return partnerRole;
-	}
-
-	/**
-	 * @return the partnerToDatePid
-	 */
-	public int getPartnerToDatePid() {
-		return partnerToDatePid;
 	}
 
 	/**
@@ -713,10 +907,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				partnerToDatePid = hdp.insert();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setPartnerToDatePid(hdp.insert());
 				textPartnershipEndDate.setText(dialog.getDate().toString());
+				setErrorMessage(null);
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
+				setErrorMessage(e1.getMessage());
 			}
 		}
 
@@ -735,10 +932,13 @@ public class NewPersonWizardPage4 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				partnerFromDatePid = hdp.insert();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setPartnerFromDatePid(hdp.insert());
 				textPartnershipStartDate.setText(dialog.getDate().toString());
+				setErrorMessage(null);
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
+				setErrorMessage(e1.getMessage());
 			}
 		}
 
@@ -748,7 +948,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void updateChild() {
-		childPid = Integer.parseInt(textChildPersonPid.getText());
+		final int childPid = Integer.parseInt(textChildPersonPid.getText());
 		PersonProvider provider;
 
 		try {
@@ -760,10 +960,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textChildBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textChildDeathDate.setText(dateProvider.getDate().toString());
+			wizard = (NewPersonWizard) getWizard();
+			wizard.setChildPid(childPid);
+			setErrorMessage(null);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
+			setErrorMessage(e.getMessage());
 		}
 	}
 
@@ -771,7 +973,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void updateFather() {
-		fatherPid = Integer.parseInt(textFatherPersonPid.getText());
+		final int fatherPid = Integer.parseInt(textFatherPersonPid.getText());
 		PersonProvider provider;
 
 		try {
@@ -783,10 +985,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textFatherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textFatherDeathDate.setText(dateProvider.getDate().toString());
+			wizard = (NewPersonWizard) getWizard();
+			wizard.setFatherPid(fatherPid);
+			setErrorMessage(null);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
+			setErrorMessage(e.getMessage());
 		}
 	}
 
@@ -794,7 +998,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void updateMother() {
-		motherPid = Integer.parseInt(textMotherPersonPid.getText());
+		final int motherPid = Integer.parseInt(textMotherPersonPid.getText());
 		PersonProvider provider;
 
 		try {
@@ -806,10 +1010,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textMotherBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textMotherDeathDate.setText(dateProvider.getDate().toString());
+			wizard = (NewPersonWizard) getWizard();
+			wizard.setMotherPid(motherPid);
+			setErrorMessage(null);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
+			setErrorMessage(e.getMessage());
 		}
 	}
 
@@ -817,7 +1023,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 	 *
 	 */
 	protected void updatePartner() {
-		partnerPid = Integer.parseInt(textPartnerPersonPid.getText());
+		final int partnerPid = Integer.parseInt(textPartnerPersonPid.getText());
 		PersonProvider provider;
 
 		try {
@@ -829,10 +1035,12 @@ public class NewPersonWizardPage4 extends WizardPage {
 			textPartnerBirthDate.setText(dateProvider.getDate().toString());
 			dateProvider.get(provider.getDeathDatePid());
 			textPartnerDeathDate.setText(dateProvider.getDate().toString());
+			wizard = (NewPersonWizard) getWizard();
+			wizard.setPartnerPid(partnerPid);
+			setErrorMessage(null);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getMessage());
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
+			setErrorMessage(e.getMessage());
 		}
 	}
 }

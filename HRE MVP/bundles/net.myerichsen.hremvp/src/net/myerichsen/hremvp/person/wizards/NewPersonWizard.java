@@ -21,9 +21,10 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 30. mar. 2019
  *
  */
+// FIXME Make pages set variables in this class
 public class NewPersonWizard extends Wizard {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -37,14 +38,27 @@ public class NewPersonWizard extends Wizard {
 	private NewPersonWizardPage5 page5;
 
 	private String personName;
-	private int personNameStylePid;
-	private int personPid;
-//	private int languagePid;
-	private int sexTypePid;
-	private int birthDatePid;
-	private int deathDatePid;
-	private int fromDatePid;
-	private int toDatePid;
+	private int personNameStylePid = 0;
+	private int personPid = 0;
+//	private int languagePid = 0;
+	private int sexTypePid = 0;
+	private int birthDatePid = 0;
+	private int deathDatePid = 0;
+	private int fromDatePid = 0;
+	private int toDatePid = 0;
+
+	// Page 4
+	private int fatherPid = 0;
+	private int motherPid = 0;
+	private int partnerPid = 0;
+	private int childPid = 0;
+	private int partnerFromDatePid = 0;
+	private int partnerToDatePid = 0;
+	private int fatherRolePid;
+	private int motherRolePid;
+	private int childRolePid;
+	private int partnerRolePid;
+
 	private Boolean primaryName;
 	private List<String> personNamePartList = new ArrayList<>();
 
@@ -94,10 +108,45 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @return the childPid
+	 */
+	public int getChildPid() {
+		return childPid;
+	}
+
+	/**
+	 * @return the childRolePid
+	 */
+	public int getChildRolePid() {
+		return childRolePid;
+	}
+
+//	/**
+//	 * @return the languagePid
+//	 */
+//	public int getLanguagePid() {
+//		return languagePid;
+//	}
+
+	/**
 	 * @return the deathDatePid
 	 */
 	public int getDeathDatePid() {
 		return deathDatePid;
+	}
+
+	/**
+	 * @return the fatherPid
+	 */
+	public int getFatherPid() {
+		return fatherPid;
+	}
+
+	/**
+	 * @return the fatherRolePid
+	 */
+	public int getFatherRolePid() {
+		return fatherRolePid;
 	}
 
 	/**
@@ -107,12 +156,19 @@ public class NewPersonWizard extends Wizard {
 		return fromDatePid;
 	}
 
-//	/**
-//	 * @return the languagePid
-//	 */
-//	public int getLanguagePid() {
-//		return languagePid;
-//	}
+	/**
+	 * @return the motherPid
+	 */
+	public int getMotherPid() {
+		return motherPid;
+	}
+
+	/**
+	 * @return the motherRolePid
+	 */
+	public int getMotherRolePid() {
+		return motherRolePid;
+	}
 
 	/**
 	 * @return the page3
@@ -150,6 +206,41 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @return the partnerFromDatePid
+	 */
+	public int getPartnerFromDatePid() {
+		return partnerFromDatePid;
+	}
+
+	/**
+	 * @return the partnerPid
+	 */
+	public int getPartnerPid() {
+		return partnerPid;
+	}
+
+	/**
+	 * @return the partnerRolePid
+	 */
+	public int getPartnerRolePid() {
+		return partnerRolePid;
+	}
+
+	/**
+	 * @return the partnerToDatePid
+	 */
+	public int getPartnerToDatePid() {
+		return partnerToDatePid;
+	}
+
+//	/**
+//	 * @param languagePid the languagePid to set
+//	 */
+//	public void setLanguagePid(int languagePid) {
+//		this.languagePid = languagePid;
+//	}
+
+	/**
 	 * @return the personName
 	 */
 	public String getPersonName() {
@@ -175,6 +266,13 @@ public class NewPersonWizard extends Wizard {
 	 */
 	public int getPersonPid() {
 		return personPid;
+	}
+
+	/**
+	 * @return the primaryName
+	 */
+	public Boolean getPrimaryName() {
+		return primaryName;
 	}
 
 	/**
@@ -266,11 +364,11 @@ public class NewPersonWizard extends Wizard {
 			int parentPid;
 
 			// Create father
-			if (page4.getFatherPid() != 0) {
+			if (fatherPid != 0) {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
-				parentProvider.setParent(page4.getFatherPid());
-//				parentProvider.setParentRole(page4.getFatherRole());
+				parentProvider.setParent(fatherPid);
+				parentProvider.setParentRolePid(fatherRolePid);
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
@@ -278,11 +376,11 @@ public class NewPersonWizard extends Wizard {
 			}
 
 			// Create mother
-			if (page4.getMotherPid() != 0) {
+			if (motherPid != 0) {
 				parentProvider = new ParentProvider();
 				parentProvider.setChild(personPid);
-				parentProvider.setParent(page4.getMotherPid());
-//				parentProvider.setParentRole(page4.getMotherRole());
+				parentProvider.setParent(motherPid);
+				parentProvider.setParentRolePid(motherRolePid);
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
@@ -290,11 +388,11 @@ public class NewPersonWizard extends Wizard {
 			}
 
 			// Create child
-			if (page4.getChildPid() != 0) {
+			if (childPid != 0) {
 				parentProvider = new ParentProvider();
 				parentProvider.setParent(personPid);
-				parentProvider.setChild(page4.getChildPid());
-//				parentProvider.setParentRole(page4.getChildRole());
+				parentProvider.setChild(childPid);
+				parentProvider.setParentRolePid(childRolePid);
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
@@ -302,16 +400,16 @@ public class NewPersonWizard extends Wizard {
 			}
 
 			// Create partner
-			if (page4.getPartnerPid() != 0) {
+			if (partnerPid != 0) {
 				final PartnerProvider partnerProvider = new PartnerProvider();
 				partnerProvider.setPartner1(personPid);
-				partnerProvider.setPartner2(page4.getPartnerPid());
+				partnerProvider.setPartner2(partnerPid);
 				partnerProvider.setPrimaryPartner(true);
-//				partnerProvider.setRole(page4.getPartnerRole());
-				partnerProvider.setFromDatePid(page4.getPartnerFromDatePid());
-				partnerProvider.setToDatePid(page4.getPartnerToDatePid());
+				partnerProvider.setPartnerRolePid(partnerRolePid);
+				partnerProvider.setFromDatePid(partnerFromDatePid);
+				partnerProvider.setToDatePid(partnerToDatePid);
 				partnerProvider.insert();
-				LOGGER.info("Inserted partner pid " + page4.getPartnerPid());
+				LOGGER.info("Inserted partner pid " + partnerPid);
 			}
 
 			// Page 5
@@ -367,24 +465,87 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
+	 * @param childPid the childPid to set
+	 */
+	public void setChildPid(int childPid) {
+		this.childPid = childPid;
+	}
+
+	/**
+	 * @param childRolePid the childRolePid to set
+	 */
+	public void setChildRolePid(int childRolePid) {
+		this.childRolePid = childRolePid;
+	}
+
+	/**
 	 * @param deathDatePid the deathDatePid to set
 	 */
 	public void setDeathDatePid(int deathDatePid) {
 		this.deathDatePid = deathDatePid;
 	}
 
-//	/**
-//	 * @param languagePid the languagePid to set
-//	 */
-//	public void setLanguagePid(int languagePid) {
-//		this.languagePid = languagePid;
-//	}
+	/**
+	 * @param fatherPid the fatherPid to set
+	 */
+	public void setFatherPid(int fatherPid) {
+		this.fatherPid = fatherPid;
+	}
+
+	/**
+	 * @param fatherRolePid the fatherRolePid to set
+	 */
+	public void setFatherRolePid(int fatherRolePid) {
+		this.fatherRolePid = fatherRolePid;
+	}
 
 	/**
 	 * @param fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int fromDatePid) {
 		this.fromDatePid = fromDatePid;
+	}
+
+	/**
+	 * @param motherPid the motherPid to set
+	 */
+	public void setMotherPid(int motherPid) {
+		this.motherPid = motherPid;
+	}
+
+	/**
+	 * @param motherRolePid the motherRolePid to set
+	 */
+	public void setMotherRolePid(int motherRolePid) {
+		this.motherRolePid = motherRolePid;
+	}
+
+	/**
+	 * @param partnerFromDatePid the partnerFromDatePid to set
+	 */
+	public void setPartnerFromDatePid(int partnerFromDatePid) {
+		this.partnerFromDatePid = partnerFromDatePid;
+	}
+
+	/**
+	 * @param partnerPid the partnerPid to set
+	 */
+	public void setPartnerPid(int partnerPid) {
+		this.partnerPid = partnerPid;
+	}
+
+	/**
+	 * @param partnerRolePid the partnerRolePid to set
+	 */
+	public void setPartnerRolePid(int partnerRolePid) {
+		this.partnerRolePid = partnerRolePid;
+	}
+
+	/**
+	 * @param partnerToDatePid the partnerToDatePid to set
+	 */
+	public void setPartnerToDatePid(int partnerToDatePid) {
+		this.partnerToDatePid = partnerToDatePid;
 	}
 
 	/**

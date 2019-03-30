@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.ParentRoleServer;
  * Provides all data for an personEvent Role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 30. mar. 2019
  *
  */
 public class ParentRoleProvider implements IHREProvider {
@@ -98,7 +98,7 @@ public class ParentRoleProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return stringList A list of lists of event Role pids, label pids,
+	 * @return stringList A list of lists of parent Role pids, label pids,
 	 *         abbreviations, generic labels and type pids
 	 * @throws Exception
 	 */

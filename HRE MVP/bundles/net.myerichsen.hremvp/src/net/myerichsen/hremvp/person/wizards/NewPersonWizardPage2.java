@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 27. mar. 2019
+ * @version 30. mar. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
@@ -73,8 +73,10 @@ public class NewPersonWizardPage2 extends WizardPage {
 				textFromDate.setText(hdp.getDate().toString());
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setFromDatePid(hdatePid);
-			} catch (final Exception e1) {
-				e1.printStackTrace();
+				setErrorMessage(null);
+			} catch (final Exception e) {
+				LOGGER.severe(e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}
@@ -93,8 +95,10 @@ public class NewPersonWizardPage2 extends WizardPage {
 				textToDate.setText(hdp.getDate().toString());
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setToDatePid(hdatePid);
-			} catch (final Exception e1) {
-				e1.printStackTrace();
+				setErrorMessage(null);
+			} catch (final Exception e) {
+				LOGGER.severe(e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}
@@ -106,6 +110,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		textFromDate.setText("");
 		wizard = (NewPersonWizard) getWizard();
 		wizard.setFromDatePid(0);
+		setErrorMessage(null);
 	}
 
 	/**
@@ -115,6 +120,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 		textToDate.setText("");
 		wizard = (NewPersonWizard) getWizard();
 		wizard.setToDatePid(0);
+		setErrorMessage(null);
 	}
 
 	/*
@@ -132,7 +138,8 @@ public class NewPersonWizardPage2 extends WizardPage {
 
 		final Composite compositeNameStyle = new Composite(container,
 				SWT.BORDER);
-		compositeNameStyle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeNameStyle.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeNameStyle.setLayout(new GridLayout(2, false));
 
 		final Label lblPersonNameStyle = new Label(compositeNameStyle,
@@ -180,19 +187,22 @@ public class NewPersonWizardPage2 extends WizardPage {
 		// FIXME int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
 
 		final Composite compositeFrom = new Composite(container, SWT.BORDER);
-		compositeFrom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeFrom.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeFrom.setLayout(new GridLayout(2, false));
 
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
-		
-				textFromDate = new Text(compositeFrom, SWT.BORDER);
-				textFromDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-				textFromDate.setEditable(false);
+
+		textFromDate = new Text(compositeFrom, SWT.BORDER);
+		textFromDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setEditable(false);
 
 		final Composite compositeButtonsFrom = new Composite(compositeFrom,
 				SWT.NONE);
-		compositeButtonsFrom.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeButtonsFrom.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeButtonsFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewFrom = new Button(compositeButtonsFrom, SWT.NONE);
@@ -223,19 +233,22 @@ public class NewPersonWizardPage2 extends WizardPage {
 		btnClearFrom.setText("Clear");
 
 		final Composite compositeTo = new Composite(container, SWT.BORDER);
-		compositeTo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeTo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeTo.setLayout(new GridLayout(2, false));
 
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
 		lblToDate.setText("To Date");
-		
-				textToDate = new Text(compositeTo, SWT.BORDER);
-				textToDate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-				textToDate.setEditable(false);
+
+		textToDate = new Text(compositeTo, SWT.BORDER);
+		textToDate.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setEditable(false);
 
 		final Composite compositeButtonsTo = new Composite(compositeTo,
 				SWT.NONE);
-		compositeButtonsTo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeButtonsTo.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		compositeButtonsTo.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewTo = new Button(compositeButtonsTo, SWT.NONE);
@@ -284,8 +297,10 @@ public class NewPersonWizardPage2 extends WizardPage {
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setFromDatePid(hdp.insert());
 				textFromDate.setText(dialog.getDate().toString());
-			} catch (final Exception e1) {
-				e1.printStackTrace();
+				setErrorMessage(null);
+			} catch (final Exception e) {
+				LOGGER.severe(e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}
@@ -305,9 +320,10 @@ public class NewPersonWizardPage2 extends WizardPage {
 				hdp.setSurety(dialog.getSurety());
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setToDatePid(hdp.insert());
-				textToDate.setText(dialog.getDate().toString());
-			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				setErrorMessage(null);
+			} catch (final Exception e) {
+				LOGGER.severe(e.getMessage());
+				setErrorMessage(e.getMessage());
 			}
 		}
 	}

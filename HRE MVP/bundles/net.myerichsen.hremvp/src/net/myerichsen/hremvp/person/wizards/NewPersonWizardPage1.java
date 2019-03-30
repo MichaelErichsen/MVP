@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. mar. 2019
+ * @version 30. mar. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -74,9 +74,10 @@ public class NewPersonWizardPage1 extends WizardPage {
 				textBirthDate.setText(hdp.getDate().toString());
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setBirthDatePid(hdatePid);
+				setErrorMessage(null);
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
-				e1.printStackTrace();
+				setErrorMessage(e1.getMessage());
 			}
 		}
 	}
@@ -95,8 +96,10 @@ public class NewPersonWizardPage1 extends WizardPage {
 				textDeathDate.setText(hdp.getDate().toString());
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setBirthDatePid(hdatePid);
+				setErrorMessage(null);
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+				setErrorMessage(e1.getMessage());
 			}
 		}
 	}
@@ -143,8 +146,10 @@ public class NewPersonWizardPage1 extends WizardPage {
 		try {
 			stringList = new SexTypeProvider().getStringList();
 			comboViewerSex.setInput(stringList);
+			setErrorMessage(null);
 		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
+			setErrorMessage(e1.getMessage());
 		}
 
 		final Composite compositeBirthDate = new Composite(container,
@@ -306,8 +311,10 @@ public class NewPersonWizardPage1 extends WizardPage {
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setBirthDatePid(hdp.insert());
 				textBirthDate.setText(dialog.getDate().toString());
+				setErrorMessage(null);
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+				setErrorMessage(e1.getMessage());
 			}
 		}
 	}
@@ -328,8 +335,10 @@ public class NewPersonWizardPage1 extends WizardPage {
 				wizard = (NewPersonWizard) getWizard();
 				wizard.setDeathDatePid(hdp.insert());
 				textDeathDate.setText(dialog.getDate().toString());
+				setErrorMessage(null);
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
+				setErrorMessage(e1.getMessage());
 			}
 		}
 	}

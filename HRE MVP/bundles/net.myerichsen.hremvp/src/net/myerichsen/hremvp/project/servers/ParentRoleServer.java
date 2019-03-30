@@ -126,7 +126,7 @@ public class ParentRoleServer implements IHREServer {
 	}
 
 	/**
-	 * @return stringList A list of lists of event Role pids, label pids,
+	 * @return stringList A list of lists of parent Role pids, label pids,
 	 *         abbreviations, and generic labels
 	 * @throws Exception
 	 */

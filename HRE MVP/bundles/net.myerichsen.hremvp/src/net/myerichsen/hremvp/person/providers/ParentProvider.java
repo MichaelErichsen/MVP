@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.person.servers.ParentServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 28. mar. 2019
+ * @version 30. mar. 2019
  */
 public class ParentProvider implements IHREProvider {
 	private int ParentPid;
@@ -99,8 +99,7 @@ public class ParentProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*

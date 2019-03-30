@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 27. mar. 2019
+ * @version 30. mar. 2019
  *
  */
 public class NewPersonWizardPage3 extends WizardPage {
@@ -196,9 +196,10 @@ public class NewPersonWizardPage3 extends WizardPage {
 			final int personNameStylePid = wizard.getPersonNameStylePid();
 			lls = provider.getStringList(personNameStylePid);
 			tableViewer.setInput(lls);
+			setErrorMessage(null);
 		} catch (final Exception e1) {
 			LOGGER.severe(e1.getMessage());
-			e1.printStackTrace();
+			setErrorMessage(e1.getMessage());
 		}
 	}
 }
