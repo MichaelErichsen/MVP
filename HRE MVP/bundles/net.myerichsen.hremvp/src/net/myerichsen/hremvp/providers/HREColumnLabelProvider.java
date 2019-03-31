@@ -38,21 +38,8 @@ public class HREColumnLabelProvider extends ColumnLabelProvider {
 		this.column = column;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
-	 */
-	@Override
-	public String getText(Object element) {
-		@SuppressWarnings("unchecked")
-		final List<String> list = (List<String>) element;
-		return list.get(column);
-	}
-
 	/**
-	 * 
+	 *
 	 */
 	public static void addEditingSupport(TableViewer tableViewer) {
 		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
@@ -95,15 +82,25 @@ public class HREColumnLabelProvider extends ColumnLabelProvider {
 							.getSelectionIndex();
 					if (selectionIndex < (itemCount - 1)) {
 						e.doit = false;
-
 					} else {
 						e.doit = true;
 					}
-
 				}
 			}
-
 		});
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+	 */
+	@Override
+	public String getText(Object element) {
+		@SuppressWarnings("unchecked")
+		final List<String> list = (List<String>) element;
+		return list.get(column);
 	}
 
 }
