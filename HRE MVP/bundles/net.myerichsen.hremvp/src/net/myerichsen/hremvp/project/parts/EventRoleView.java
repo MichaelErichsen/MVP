@@ -12,19 +12,11 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnViewerEditor;
-import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
-import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
-import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TableViewerEditor;
-import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -45,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. mar. 2019
+ * @version 31. mar. 2019
  *
  */
 
@@ -72,61 +64,6 @@ public class EventRoleView {
 	 */
 	public EventRoleView() {
 		provider = new EventRoleProvider();
-	}
-
-	/**
-	 *
-	 */
-	private void addEditingSupport() {
-		final TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(
-				tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
-		final ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(
-				tableViewer) {
-			@Override
-			protected boolean isEditorActivationEvent(
-					ColumnViewerEditorActivationEvent event) {
-				return (event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL)
-						|| (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION)
-						|| ((event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED)
-								&& (event.keyCode == SWT.CR))
-						|| (event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC);
-			}
-		};
-
-		TableViewerEditor.create(tableViewer, focusCellManager,
-				editorActivationStrategy,
-				ColumnViewerEditor.TABBING_HORIZONTAL
-						| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
-						| ColumnViewerEditor.TABBING_VERTICAL
-						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
-
-		tableViewer.getTable().addTraverseListener(new TraverseListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
-			 * swt.events.TraverseEvent)
-			 */
-			@Override
-			public void keyTraversed(TraverseEvent e) {
-				if (e.keyCode == SWT.TAB) {
-					LOGGER.fine("Traversed " + e.keyCode);
-
-					final int itemCount = tableViewer.getTable().getItemCount();
-					final int selectionIndex = tableViewer.getTable()
-							.getSelectionIndex();
-					if (selectionIndex < (itemCount - 1)) {
-						e.doit = false;
-
-					} else {
-						e.doit = true;
-					}
-
-				}
-			}
-
-		});
 	}
 
 	/**
@@ -210,7 +147,7 @@ public class EventRoleView {
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
-		addEditingSupport();
+		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));

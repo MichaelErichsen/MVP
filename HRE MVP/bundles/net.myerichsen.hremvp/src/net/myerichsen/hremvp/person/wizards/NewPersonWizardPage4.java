@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person parents, partner and child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 30. mar. 2019
+ * @version 31. mar. 2019
  *
  */
 public class NewPersonWizardPage4 extends WizardPage {

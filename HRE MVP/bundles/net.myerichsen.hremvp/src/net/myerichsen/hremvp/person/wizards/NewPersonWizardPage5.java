@@ -23,12 +23,13 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.event.dialogs.NewEventDialog;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Person events wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. jan. 2019
+ * @version 31. mar. 2019
  *
  */
 public class NewPersonWizardPage5 extends WizardPage {
@@ -123,6 +124,8 @@ public class NewPersonWizardPage5 extends WizardPage {
 		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
+
+		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);

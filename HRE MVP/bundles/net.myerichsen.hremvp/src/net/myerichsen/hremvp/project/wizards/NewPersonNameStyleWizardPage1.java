@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Add a person name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 25. mar. 2019
+ * @version 31. mar. 2019
  *
  */
 public class NewPersonNameStyleWizardPage1 extends WizardPage {
@@ -114,7 +114,6 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 
 			for (int i = 0; i < llsSize; i++) {
 				if (g.equals(stringList.get(i).get(1))) {
-					// FIXME Does not select
 					LOGGER.info("Selected language " + i + ", "
 							+ stringList.get(i).get(1));
 					comboLanguage.select(i);
