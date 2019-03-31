@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -18,19 +19,19 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. mar. 2019
+ * @version 31. mar. 2019
  *
  */
 public class EventRoleServer implements IHREServer {
-	// private final static Logger LOGGER =
-	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int EventRolePid;
 	private int EventTypePid;
 	private String abbreviation;
-	private int TableId = 17;
 
 	private final EventRoles eventRole;
+	private Dictionary dictionary;
 
 	/**
 	 * Constructor
@@ -152,7 +153,7 @@ public class EventRoleServer implements IHREServer {
 		final Dictionary dictionary = new Dictionary();
 
 		final List<EventRoles> list = eventRole.get();
-//
+
 		for (final EventRoles st : list) {
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(st.getEventRolePid()));
@@ -256,13 +257,6 @@ public class EventRoleServer implements IHREServer {
 	}
 
 	/**
-	 * @return the tableId
-	 */
-	public int getTableId() {
-		return TableId;
-	}
-
-	/**
 	 * Insert a row
 	 *
 	 * @return int The persistent ID of the inserted row
@@ -277,7 +271,6 @@ public class EventRoleServer implements IHREServer {
 		final Dictionary dictionary = new Dictionary();
 		eventRole.setLabelPid(dictionary.getNextLabelPid());
 		eventRole.setEventTypePid(EventTypePid);
-		eventRole.setTableId(TableId);
 		return eventRole.insert();
 	}
 
@@ -309,13 +302,6 @@ public class EventRoleServer implements IHREServer {
 	}
 
 	/**
-	 * @param tableId the tableId to set
-	 */
-	public void setTableId(int tableId) {
-		TableId = tableId;
-	}
-
-	/**
 	 * Update a row
 	 *
 	 * @throws Exception    An exception that provides information on a database
@@ -325,8 +311,33 @@ public class EventRoleServer implements IHREServer {
 	@Override
 	public void update() throws Exception {
 		eventRole.setEventRolePid(EventRolePid);
-		eventRole.setTableId(TableId);
 		eventRole.update();
 	}
 
+	/**
+	 * @param eventTypePid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<List<String>> getEventTypeStringList(int eventTypePid)
+			throws Exception {
+		List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+		int labelPid;
+
+		List<EventRoles> fkEventTypePid = eventRole
+				.getFKEventTypePid(eventTypePid);
+
+		for (EventRoles eventRoles : fkEventTypePid) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(eventRoles.getEventRolePid()));
+
+			labelPid = eventRoles.getLabelPid();
+			stringList.add(Integer.toString(labelPid));
+			stringList.add(eventRoles.getAbbreviation());
+
+			lls.add(stringList);
+		}
+		return lls;
+	}
 }

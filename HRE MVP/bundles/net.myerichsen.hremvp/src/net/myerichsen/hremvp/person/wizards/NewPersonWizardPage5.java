@@ -73,9 +73,9 @@ public class NewPersonWizardPage5 extends WizardPage {
 				final TableItem item = new TableItem(tableViewer.getTable(),
 						SWT.NONE);
 				item.setText(0, eventStringList.get(1));
-				item.setText(1, eventStringList.get(2));
-				item.setText(2, eventStringList.get(4));
-				item.setText(3, eventStringList.get(6));
+				item.setText(1, eventStringList.get(3));
+				item.setText(2, eventStringList.get(5));
+				item.setText(3, eventStringList.get(7));
 				setErrorMessage(null);
 			} catch (final Exception e) {
 				LOGGER.severe(e.getMessage());

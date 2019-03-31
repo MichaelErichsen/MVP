@@ -10,11 +10,14 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,7 +32,10 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
+import net.myerichsen.hremvp.project.providers.EventRoleProvider;
+import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Dialog to create a new person event
@@ -38,7 +44,6 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 31. mar. 2019
  *
  */
-// FIXME Change type and role to combo boxes
 public class NewEventDialog extends TitleAreaDialog {
 	private final static Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -49,12 +54,23 @@ public class NewEventDialog extends TitleAreaDialog {
 	private Text textFromDate;
 	private Text textToDate;
 
-	private final List<String> eventStringList;
-	private String nameLabel;
-	private int eventNamePid;
+	private int eventNamePid = 0;
 	private String role = "";
-	private int fromDatePid;
-	private int toDatePid;
+	private int fromDatePid = 0;
+	private int toDatePid = 0;
+	private int eventTypePid = 0;
+	private String eventTypeLabel = "";
+	private int eventRolePid = 0;
+	private String eventRoleLabel = "";
+
+	private List<List<String>> eventTypeStringList;
+	private List<List<String>> eventRoleStringList;
+
+	private Combo comboEventRole;
+	private ComboViewer comboViewerEventRole;
+	private final EventRoleProvider eventRoleProvider;
+
+	private List<String> eventStringList;
 
 	/**
 	 * Create the dialog.
@@ -65,7 +81,7 @@ public class NewEventDialog extends TitleAreaDialog {
 		super(parentShell);
 		setHelpAvailable(false);
 		this.context = context;
-		eventStringList = new ArrayList<>();
+		eventRoleProvider = new EventRoleProvider();
 	}
 
 	/**
@@ -81,7 +97,8 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdp.get(fromDatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
 	}
@@ -99,7 +116,8 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdp.get(toDatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
 	}
@@ -149,64 +167,132 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setMessage("Select an provider Style and create the new provider.");
+		setMessage("Select an event type and create the new event.");
 		setTitle("New Event");
 		final Composite area = (Composite) super.createDialogArea(parent);
 		final Composite container = new Composite(area, SWT.NONE);
 		container.setLayout(new GridLayout(1, false));
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final Composite compositeEventStyle = new Composite(container,
+		final Composite compositeEventType = new Composite(container,
 				SWT.BORDER);
-		compositeEventStyle.setLayout(new GridLayout(2, false));
-		compositeEventStyle.setLayoutData(
+		compositeEventType.setLayout(new GridLayout(2, false));
+		compositeEventType.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		final Label lblEventStyle = new Label(compositeEventStyle, SWT.NONE);
-		lblEventStyle.setLayoutData(
+		final Label lblEventType = new Label(compositeEventType, SWT.NONE);
+		lblEventType.setLayoutData(
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblEventStyle.setText("Event Style");
+		lblEventType.setText("Event Type");
 
-		ComboViewer comboViewer = new ComboViewer(compositeEventStyle,
-				SWT.NONE);
-		Combo comboEventStyle = comboViewer.getCombo();
-		comboEventStyle.setLayoutData(
+		final ComboViewer comboViewerEventType = new ComboViewer(
+				compositeEventType, SWT.NONE);
+		final Combo comboEventType = comboViewerEventType.getCombo();
+		comboEventType.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Composite compositeRole = new Composite(container, SWT.BORDER);
+		comboEventType.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboEventType.getSelectionIndex();
+				eventTypePid = Integer.parseInt(
+						eventTypeStringList.get(selectionIndex).get(0));
+				eventTypeLabel = eventTypeStringList.get(selectionIndex).get(2);
+
+				try {
+					eventRoleStringList = eventRoleProvider
+							.getEventTypeStringList(eventTypePid);
+
+					comboViewerEventRole.setInput(eventRoleStringList);
+				} catch (final Exception e1) {
+					LOGGER.severe(e1.getMessage());
+					eventBroker.post("MESSAGE", e1.getMessage());
+				}
+			}
+		});
+		comboViewerEventType
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerEventType.setLabelProvider(new HREComboLabelProvider(2));
+
+		try {
+			eventTypeStringList = new EventTypeProvider().getStringList();
+			comboViewerEventType.setInput(eventTypeStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			eventBroker.post("MESSAGE", e1.getMessage());
+		}
+
+		final Composite compositeRole = new Composite(container, SWT.BORDER);
 		compositeRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeRole.setLayout(new GridLayout(2, false));
 
 		final Label lblRole = new Label(compositeRole, SWT.NONE);
-		lblRole.setSize(23, 15);
 		lblRole.setText("Role");
 
-		ComboViewer comboViewer_1 = new ComboViewer(compositeRole, SWT.NONE);
-		Combo comboEventRole = comboViewer_1.getCombo();
+		comboViewerEventRole = new ComboViewer(compositeRole, SWT.NONE);
+		comboEventRole = comboViewerEventRole.getCombo();
 		comboEventRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		comboEventRole.setSize(297, 23);
+
+		comboEventRole.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboEventRole.getSelectionIndex();
+				eventRolePid = Integer.parseInt(
+						eventRoleStringList.get(selectionIndex).get(0));
+				eventRoleLabel = eventRoleStringList.get(selectionIndex).get(2);
+			}
+		});
+		comboViewerEventRole
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerEventRole.setLabelProvider(new HREComboLabelProvider(2));
+
+		try {
+			eventRoleStringList = new EventRoleProvider().getStringList();
+			comboViewerEventRole.setInput(eventRoleStringList);
+		} catch (final Exception e1) {
+			LOGGER.severe(e1.getMessage());
+			eventBroker.post("MESSAGE", e1.getMessage());
+		}
 
 		final Label lblFromDate = new Label(compositeRole, SWT.NONE);
-		lblFromDate.setSize(55, 15);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(compositeRole, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textFromDate.setSize(297, 21);
 		textFromDate.setEditable(false);
 
 		final Composite compositeFromButtons = new Composite(compositeRole,
 				SWT.NONE);
 		compositeFromButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeFromButtons.setSize(137, 31);
 		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				getNewFromDate();
@@ -216,6 +302,13 @@ public class NewEventDialog extends TitleAreaDialog {
 
 		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseFromDates();
@@ -225,6 +318,13 @@ public class NewEventDialog extends TitleAreaDialog {
 
 		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearFromDate();
@@ -233,24 +333,28 @@ public class NewEventDialog extends TitleAreaDialog {
 		btnClearFrom.setText("Clear");
 
 		final Label lblToDate = new Label(compositeRole, SWT.NONE);
-		lblToDate.setSize(40, 15);
 		lblToDate.setText("To Date");
 
 		textToDate = new Text(compositeRole, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textToDate.setSize(297, 21);
 		textToDate.setEditable(false);
 
 		final Composite compositeToButtons = new Composite(compositeRole,
 				SWT.NONE);
 		compositeToButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeToButtons.setSize(238, 31);
 		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnCopyDates = new Button(compositeToButtons, SWT.NONE);
 		btnCopyDates.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				copyFromDateToNewToDate();
@@ -260,6 +364,13 @@ public class NewEventDialog extends TitleAreaDialog {
 
 		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				getNewToDate();
@@ -269,6 +380,20 @@ public class NewEventDialog extends TitleAreaDialog {
 
 		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				browseToDates();
@@ -278,6 +403,13 @@ public class NewEventDialog extends TitleAreaDialog {
 
 		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				clearToDate();
@@ -297,16 +429,25 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @return the eventRolePid
+	 */
+	public int getEventRolePid() {
+		return eventRolePid;
+	}
+
+	/**
 	 * @return The eventStringList with eventNamePid, nameLabel, role,
 	 *         fromDatePid, FromDate, toDatePid, toDate
 	 */
 	public List<String> getEventStringList() {
 		HDateProvider hdateProvider;
 
-		eventStringList.clear();
+		eventStringList = new ArrayList<String>();
+
 		eventStringList.add(Integer.toString(eventNamePid));
-		eventStringList.add(nameLabel);
-		eventStringList.add(role);
+		eventStringList.add(eventTypeLabel);
+		eventStringList.add(Integer.toString(eventRolePid));
+		eventStringList.add(eventRoleLabel);
 
 		if (fromDatePid != 0) {
 			try {
@@ -344,6 +485,13 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @return the eventTypePid
+	 */
+	public int getEventTypePid() {
+		return eventTypePid;
+	}
+
+	/**
 	 * @return the fromDatePid
 	 */
 	public int getFromDatePid() {
@@ -356,13 +504,6 @@ public class NewEventDialog extends TitleAreaDialog {
 	@Override
 	protected Point getInitialSize() {
 		return new Point(373, 455);
-	}
-
-	/**
-	 * @return the nameLabel
-	 */
-	public String getNameLabel() {
-		return nameLabel;
 	}
 
 	/**
@@ -381,7 +522,8 @@ public class NewEventDialog extends TitleAreaDialog {
 				fromDatePid = hdp.insert();
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.severe(e1.getMessage());
+				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
 	}
@@ -403,6 +545,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.severe(e1.getMessage());
+				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
 	}
@@ -429,17 +572,24 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @param eventRolePid the eventRolePid to set
+	 */
+	public void setEventRolePid(int eventRolePid) {
+		this.eventRolePid = eventRolePid;
+	}
+
+	/**
+	 * @param eventTypePid the eventTypePid to set
+	 */
+	public void setEventTypePid(int eventTypePid) {
+		this.eventTypePid = eventTypePid;
+	}
+
+	/**
 	 * @param fromDatePid the fromDatePid to set
 	 */
 	public void setFromDatePid(int fromDatePid) {
 		this.fromDatePid = fromDatePid;
-	}
-
-	/**
-	 * @param nameLabel the nameLabel to set
-	 */
-	public void setNameLabel(String nameLabel) {
-		this.nameLabel = nameLabel;
 	}
 
 	/**

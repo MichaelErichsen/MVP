@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.EventRoleServer;
  * Provides all data for an personEvent Role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. mar. 2019
+ * @version 31. mar. 2019
  *
  */
 public class EventRoleProvider implements IHREProvider {
@@ -110,6 +110,11 @@ public class EventRoleProvider implements IHREProvider {
 //		return server.getNameList(key);
 //	}
 
+	public List<List<String>> getEventTypeStringList(int eventTypePid)
+			throws Exception {
+		return server.getEventTypeStringList(eventTypePid);
+	}
+
 	/**
 	 * @return
 	 */
@@ -208,5 +213,4 @@ public class EventRoleProvider implements IHREProvider {
 		server.setAbbreviation(Abbreviation);
 		server.update();
 	}
-
 }
