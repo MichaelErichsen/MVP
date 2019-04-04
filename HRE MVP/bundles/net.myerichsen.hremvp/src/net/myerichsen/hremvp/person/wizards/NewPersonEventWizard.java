@@ -71,7 +71,7 @@ public class NewPersonEventWizard extends Wizard {
 				ep.setToDatePid(Integer.parseInt(list.get(5)));
 				final int eventPid = ep.insert();
 
-				LOGGER.info("Inserted event pid " + eventPid);
+				LOGGER.log(Level.INFO, "Inserted event pid " + eventPid);
 
 				// Create a person-personEvent to link them together
 				final PersonEventProvider pep = new PersonEventProvider();
@@ -81,7 +81,8 @@ public class NewPersonEventWizard extends Wizard {
 				pep.setPrimaryPerson(true);
 				pep.setRolePid(Integer.parseInt(list.get(2)));
 				final int personEventPid = pep.insert();
-				LOGGER.info("Inserted person-event pid " + personEventPid);
+				LOGGER.log(Level.INFO,
+						"Inserted person-event pid " + personEventPid);
 				eventBroker.post(
 						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 						personPid);

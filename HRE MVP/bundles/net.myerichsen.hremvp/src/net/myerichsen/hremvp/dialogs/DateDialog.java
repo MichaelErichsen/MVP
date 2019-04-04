@@ -43,8 +43,6 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  *
  */
 public class DateDialog extends TitleAreaDialog {
-	private static final Logger LOGGER = Logger
-			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
 	 * @author Michael Erichsen, &copy; History Research Environment Ltd.,
@@ -53,12 +51,17 @@ public class DateDialog extends TitleAreaDialog {
 	 *
 	 */
 	private class ArabicFocusListener extends FocusAdapter {
+
+		/**
+		 *
+		 */
+
 		@Override
 		public void focusLost(FocusEvent e) {
 			int negative = 1;
 			String s = textArabic.getText().trim();
 
-			if (s.matches("[+-]?\\d{1,4}\\-\\d{1,2}\\-\\d{1,2}")) {
+			if (s.matches(regExpMask)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -89,7 +92,7 @@ public class DateDialog extends TitleAreaDialog {
 				textIndian.setText("");
 			} else {
 				textArabic.setFocus();
-				eventBroker.post("MESSAGE", "Invalid date format");
+				eventBroker.post(MESSAGE, "Invalid date format");
 			}
 		}
 	}
@@ -101,12 +104,16 @@ public class DateDialog extends TitleAreaDialog {
 	 *
 	 */
 	private class IndianFocusListener extends FocusAdapter {
+		/**
+		 *
+		 */
+
 		@Override
 		public void focusLost(FocusEvent e) {
 			int negative = 1;
 			String s = textIndian.getText().trim();
 
-			if (s.matches("[+-]?\\d{1,4}\\-\\d{1,2}\\-\\d{1,2}")) {
+			if (s.matches(regExpMask)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -137,7 +144,7 @@ public class DateDialog extends TitleAreaDialog {
 				textJewish.setText("");
 			} else {
 				textIndian.setFocus();
-				eventBroker.post("MESSAGE", "Invalid date format");
+				eventBroker.post(MESSAGE, "Invalid date format");
 			}
 		}
 	}
@@ -154,7 +161,7 @@ public class DateDialog extends TitleAreaDialog {
 			int negative = 1;
 			String s = textJewish.getText().trim();
 
-			if (s.matches("[+-]?\\d{1,4}\\-\\d{1,2}\\-\\d{1,2}")) {
+			if (s.matches(regExpMask)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -185,7 +192,7 @@ public class DateDialog extends TitleAreaDialog {
 				textIndian.setText("");
 			} else {
 				textJewish.setFocus();
-				eventBroker.post("MESSAGE", "Invalid date format");
+				eventBroker.post(MESSAGE, "Invalid date format");
 			}
 		}
 	}
@@ -202,7 +209,7 @@ public class DateDialog extends TitleAreaDialog {
 			int negative = 1;
 			String s = textJulian.getText().trim();
 
-			if (s.matches("[+-]?\\d{1,4}\\-\\d{1,2}\\-\\d{1,2}")) {
+			if (s.matches(regExpMask)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -233,7 +240,7 @@ public class DateDialog extends TitleAreaDialog {
 				textIndian.setText("");
 			} else {
 				textJewish.setFocus();
-				eventBroker.post("MESSAGE", "Invalid date format");
+				eventBroker.post(MESSAGE, "Invalid date format");
 			}
 		}
 	}
@@ -273,13 +280,16 @@ public class DateDialog extends TitleAreaDialog {
 				setDate(java.sql.Date.valueOf(year + "-" + month + "-" + day));
 			} else {
 				textStoredFormat.setFocus();
-				eventBroker.post("MESSAGE", "Invalid date format");
+				eventBroker.post(MESSAGE, "Invalid date format");
 			}
 		}
 	}
 
-	// private static final Logger LOGGER =
-	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final String regExpMask = "[+-]?\\d{1,4}\\-\\d{1,2}\\-\\d{1,2}";
+	private static final String MESSAGE = "MESSAGE";
+
 	private final IEventBroker eventBroker;
 	private Text textStoredFormat;
 	private Text textJulian;
@@ -404,7 +414,7 @@ public class DateDialog extends TitleAreaDialog {
 							.valueOf(year + "-" + month + "-" + day);
 				} else {
 					textSortDate.setFocus();
-					eventBroker.post("MESSAGE", "Invalid date format");
+					eventBroker.post(MESSAGE, "Invalid date format");
 				}
 			}
 
@@ -430,7 +440,7 @@ public class DateDialog extends TitleAreaDialog {
 				final Text text = (Text) e.getSource();
 				if (text.getText().length() > 10) {
 					e.doit = false;
-					eventBroker.post("MESSAGE", "Surety max length 10");
+					eventBroker.post(MESSAGE, "Surety max length 10");
 				} else {
 					e.doit = true;
 				}
@@ -620,11 +630,11 @@ public class DateDialog extends TitleAreaDialog {
 	protected void setArabic(int year, int month, int day) {
 		final IslamicCalendar calendar = AlmanacConverter
 				.toIslamicCalendar(new GregorianCalendar(year, month, day));
-		final String date = calendar.getDate();
-		textArabicOutput.setText(date);
+		final String sdate = calendar.getDate();
+		textArabicOutput.setText(sdate);
 		if (textOriginal.getText().length() == 0) {
-			textOriginal.setText(date);
-			setOriginal(date);
+			textOriginal.setText(sdate);
+			setOriginal(sdate);
 		}
 	}
 
@@ -632,7 +642,7 @@ public class DateDialog extends TitleAreaDialog {
 	 * @param date the date to set
 	 */
 	protected void setDate(Date Date) {
-		this.date = Date;
+		date = Date;
 	}
 
 	/**
@@ -661,11 +671,11 @@ public class DateDialog extends TitleAreaDialog {
 		if (year > 1600) {
 			final GregorianCalendar calendar = new GregorianCalendar(year,
 					month, day);
-			final String date = calendar.getDate();
-			textGregorianOutput.setText(date);
+			final String sdate = calendar.getDate();
+			textGregorianOutput.setText(sdate);
 //			if (textOriginal.getText().length() == 0) {
-			textOriginal.setText(date);
-			setOriginal(date);
+			textOriginal.setText(sdate);
+			setOriginal(sdate);
 //			}
 		} else {
 			textGregorianOutput.setText("");
@@ -687,11 +697,11 @@ public class DateDialog extends TitleAreaDialog {
 	protected void setHebrew(int year, int month, int day) {
 		final HebrewCalendar calendar = AlmanacConverter
 				.toHebrewCalendar(new GregorianCalendar(year, month, day));
-		final String date = calendar.getDate();
-		textJewishOutput.setText(date);
+		final String sdate = calendar.getDate();
+		textJewishOutput.setText(sdate);
 		if (textOriginal.getText().length() == 0) {
-			textOriginal.setText(date);
-			setOriginal(date);
+			textOriginal.setText(sdate);
+			setOriginal(sdate);
 		}
 	}
 
@@ -703,11 +713,11 @@ public class DateDialog extends TitleAreaDialog {
 	protected void setIndian(int year, int month, int day) {
 		final IndianCivilCalendar calendar = AlmanacConverter
 				.toIndianCivilCalendar(new GregorianCalendar(year, month, day));
-		final String date = calendar.getDate();
-		textIndianOutput.setText(date);
+		final String sdate = calendar.getDate();
+		textIndianOutput.setText(sdate);
 		if (textOriginal.getText().length() == 0) {
-			textOriginal.setText(date);
-			setOriginal(date);
+			textOriginal.setText(sdate);
+			setOriginal(sdate);
 		}
 	}
 
@@ -720,11 +730,11 @@ public class DateDialog extends TitleAreaDialog {
 	protected void setJulian(int year, int month, int day) {
 		final JulianCalendar calendar = AlmanacConverter
 				.toJulianCalendar(new GregorianCalendar(year, month, day));
-		final String date = calendar.getDate();
-		textJulianOutput.setText(date);
+		final String sdate = calendar.getDate();
+		textJulianOutput.setText(sdate);
 		if (textOriginal.getText().length() == 0) {
-			textOriginal.setText(date);
-			setOriginal(date);
+			textOriginal.setText(sdate);
+			setOriginal(sdate);
 		}
 	}
 

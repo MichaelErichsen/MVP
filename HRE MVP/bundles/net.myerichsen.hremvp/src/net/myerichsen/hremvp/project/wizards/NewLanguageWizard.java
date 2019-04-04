@@ -65,7 +65,7 @@ public class NewLanguageWizard extends Wizard {
 			provider.setLabel(label);
 			try {
 				final int languagePid = provider.insert();
-				LOGGER.info(
+				LOGGER.log(Level.INFO,
 						"Inserted language pid " + languagePid + ", " + label);
 				eventBroker.post("MESSAGE",
 						"Inserted language pid " + languagePid + ", " + label);

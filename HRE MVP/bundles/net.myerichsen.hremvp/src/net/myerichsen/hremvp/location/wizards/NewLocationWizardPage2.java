@@ -76,7 +76,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	public NewLocationWizardPage2(IEclipseContext context) {
 		super("wizardPage");
-		LOGGER.info("Wizard page 2");
+		LOGGER.log(Level.INFO, "Wizard page 2");
 		this.context = context;
 		setTitle("Location Name Parts");
 		setDescription(
@@ -92,7 +92,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		LOGGER.info("Create controls");
+		LOGGER.log(Level.INFO, "Create controls");
 		final Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 
@@ -287,7 +287,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 			final JSONObject jsonObject = new JSONObject(sb.toString());
 
-			LOGGER.fine(jsonObject.toString(2));
+			LOGGER.log(Level.FINE, jsonObject.toString(2));
 
 			final String status = jsonObject.getString("status");
 
@@ -302,7 +302,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 			final JSONObject location = geometry.getJSONObject("location");
 			lat = location.getDouble("lat");
 			lng = location.getDouble("lng");
-			LOGGER.fine("Lat " + lat + ", lng " + lng);
+			LOGGER.log(Level.FINE, "Lat " + lat + ", lng " + lng);
 			textCoordinates.setText("Lat " + lat + ", lng " + lng);
 
 			wizard.setxCoordinate(lat);

@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.location.servers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -210,7 +211,7 @@ public class LocationServer implements IHREServer {
 				}
 			}
 
-			LOGGER.fine(sb.toString());
+			LOGGER.log(Level.FINE, sb.toString());
 			stringList.add(sb.toString());
 			lls.add(stringList);
 		}

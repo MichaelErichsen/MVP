@@ -41,6 +41,10 @@ import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
  *
  */
 public class PersonNameMapView {
+	/**
+	 *
+	 */
+	private static final String MESSAGE = "MESSAGE";
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
@@ -57,13 +61,6 @@ public class PersonNameMapView {
 	private Text textStyle;
 	private Text textPartNo;
 	private Text textLabel;
-	private Composite composite;
-	private Button buttonSelect;
-	private Button buttonInsert;
-	private Button buttonUpdate;
-	private Button buttonDelete;
-	private Button buttonClear;
-	private Button buttonClose;
 
 	private final PersonNameMapProvider provider;
 
@@ -73,7 +70,7 @@ public class PersonNameMapView {
 	 * @throws Exception An exception that provides information on a database
 	 *                   access error or other errors.
 	 */
-	public PersonNameMapView() throws Exception {
+	public PersonNameMapView() {
 		provider = new PersonNameMapProvider();
 	}
 
@@ -150,12 +147,12 @@ public class PersonNameMapView {
 		textLabel.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		composite = new Composite(parent, SWT.NONE);
+		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonSelect = new Button(composite, SWT.NONE);
+		final Button buttonSelect = new Button(composite, SWT.NONE);
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -164,7 +161,7 @@ public class PersonNameMapView {
 		});
 		buttonSelect.setText("Select");
 
-		buttonInsert = new Button(composite, SWT.NONE);
+		final Button buttonInsert = new Button(composite, SWT.NONE);
 		buttonInsert.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -173,7 +170,7 @@ public class PersonNameMapView {
 		});
 		buttonInsert.setText("Insert");
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -182,7 +179,7 @@ public class PersonNameMapView {
 		});
 		buttonUpdate.setText("Update");
 
-		buttonDelete = new Button(composite, SWT.NONE);
+		final Button buttonDelete = new Button(composite, SWT.NONE);
 		buttonDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -191,7 +188,7 @@ public class PersonNameMapView {
 		});
 		buttonDelete.setText("Delete");
 
-		buttonClear = new Button(composite, SWT.NONE);
+		final Button buttonClear = new Button(composite, SWT.NONE);
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -200,7 +197,7 @@ public class PersonNameMapView {
 		});
 		buttonClear.setText("Clear");
 
-		buttonClose = new Button(composite, SWT.NONE);
+		final Button buttonClose = new Button(composite, SWT.NONE);
 		buttonClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -218,13 +215,13 @@ public class PersonNameMapView {
 	protected void delete() {
 		try {
 			provider.delete(Integer.parseInt(textId.getText()));
-			eventBroker.post("MESSAGE",
+			eventBroker.post(MESSAGE,
 					"Name Map " + textId.getText() + " has been deleted");
 			clear();
 		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 		}
 	}
 
@@ -254,13 +251,13 @@ public class PersonNameMapView {
 			textStyle.setText(provider.getStyleLabel());
 			textPartNo.setText(Integer.toString(provider.getPartNo()));
 			textLabel.setText(provider.getLabel());
-			eventBroker.post("MESSAGE",
+			eventBroker.post(MESSAGE,
 					"Name Map " + textId.getText() + " has been fetched");
 		} catch (final Exception e) {
 			clear();
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 		}
 	}
 
@@ -274,12 +271,12 @@ public class PersonNameMapView {
 			provider.setNameStylePid(Integer.parseInt(textStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.insert();
-			eventBroker.post("MESSAGE",
+			eventBroker.post(MESSAGE,
 					"Name Map " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 		}
 	}
 
@@ -297,8 +294,7 @@ public class PersonNameMapView {
 	@Inject
 	@Optional
 	private void subscribeNameMapUpdateTopic(
-			@UIEventTopic(Constants.PERSON_NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid)
-			throws Exception {
+			@UIEventTopic(Constants.PERSON_NAME_MAP_PID_UPDATE_TOPIC) int nameMapPid) {
 		get(nameMapPid);
 	}
 
@@ -312,12 +308,12 @@ public class PersonNameMapView {
 			provider.setNameStylePid(Integer.parseInt(textStyleId.getText()));
 			provider.setPartNo(Integer.parseInt(textPartNo.getText()));
 			provider.update();
-			eventBroker.post("MESSAGE",
+			eventBroker.post(MESSAGE,
 					"Name Map " + textId.getText() + " has been updated");
 		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 		}
 	}
 }

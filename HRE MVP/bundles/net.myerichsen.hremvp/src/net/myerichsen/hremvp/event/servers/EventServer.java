@@ -2,6 +2,8 @@ package net.myerichsen.hremvp.event.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.IHREServer;
@@ -20,7 +22,8 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  *
  */
 public class EventServer implements IHREServer {
-//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int EventPid;
 	private int TableId;
 	private int FromDatePid;
@@ -81,7 +84,7 @@ public class EventServer implements IHREServer {
 //		int eventTypePid;
 		int eventPid;
 
-		final Events event = new Events();
+//		final Events event = new Events();
 //		final EventTypes type = new EventTypes();
 		final Languages language = new Languages();
 
@@ -266,7 +269,7 @@ public class EventServer implements IHREServer {
 				locationStringList.add(ls.getPrimaryName());
 			}
 		} catch (final MvpException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
 		return locationStringList;

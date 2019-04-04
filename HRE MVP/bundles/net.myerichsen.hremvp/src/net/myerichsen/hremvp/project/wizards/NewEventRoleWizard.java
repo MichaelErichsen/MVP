@@ -79,7 +79,7 @@ public class NewEventRoleWizard extends Wizard {
 				provider.setEventTypePid(eventTypePid);
 
 				final int eventRolePid = provider.insert();
-				LOGGER.info("Inserted event role " + eventRolePid);
+				LOGGER.log(Level.INFO, "Inserted event role {0}", eventRolePid);
 				eventBroker.post("MESSAGE",
 						"Inserted event role " + eventRolePid);
 
@@ -95,9 +95,10 @@ public class NewEventRoleWizard extends Wizard {
 					dp.setLabelPid(labelPid);
 					dp.setLabelType("EVENTROLE");
 					final int dictionaryPid = dp.insert();
-					LOGGER.info("Inserted dictionary element " + dictionaryPid
-							+ ", " + input.get(i).get(2) + ", "
-							+ input.get(i).get(3));
+					LOGGER.log(Level.INFO,
+							"Inserted dictionary element " + dictionaryPid
+									+ ", " + input.get(i).get(2) + ", "
+									+ input.get(i).get(3));
 				}
 
 				eventBroker.post(

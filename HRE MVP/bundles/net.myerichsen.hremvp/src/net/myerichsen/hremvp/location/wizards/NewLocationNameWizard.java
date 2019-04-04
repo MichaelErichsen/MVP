@@ -157,7 +157,7 @@ public class NewLocationNameWizard extends Wizard {
 			lnp.setPreposition(preposition);
 			lnp.setPrimaryLocationName(isPrimaryLocationName);
 			final int locationNamePid = lnp.insert();
-			LOGGER.info("Inserted location name " + locationNamePid);
+			LOGGER.log(Level.INFO, "Inserted location name " + locationNamePid);
 
 			LocationNamePartProvider lnpp;
 
@@ -169,8 +169,8 @@ public class NewLocationNameWizard extends Wizard {
 				lnpp.setLabel(label);
 
 				final int locationNamePartPid = lnpp.insert();
-				LOGGER.info("Inserted location name part " + locationNamePartPid
-						+ ": " + label);
+				LOGGER.log(Level.INFO, "Inserted location name part "
+						+ locationNamePartPid + ": " + label);
 			}
 
 			eventBroker.post("MESSAGE", locationName

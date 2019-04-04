@@ -240,9 +240,10 @@ public class H2TableNavigator {
 			for (int i = 0; i < rows.size(); i++) {
 				oa = new Object[provider.getCount()];
 				for (int j = 0; j < oa.length; j++) {
-					LOGGER.info("Column " + i + ", column " + j + ", type "
-							+ modelList.get(j).getType() + ", value "
-							+ rows.get(i).get(j));
+					LOGGER.log(Level.INFO,
+							"Column " + i + ", column " + j + ", type "
+									+ modelList.get(j).getType() + ", value "
+									+ rows.get(i).get(j));
 					if (modelList.get(j).getType().equals("CLOB")) {
 						oa[j] = rows.get(i).get(j);
 					} else {
@@ -326,10 +327,10 @@ public class H2TableNavigator {
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.tableeditoropen", null);
 		handlerService.executeHandler(command);
-		LOGGER.info("Navigator opened editor");
+		LOGGER.log(Level.INFO, "Navigator opened editor");
 
 		eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
-		LOGGER.info("Navigator posted tablename " + tableName);
+		LOGGER.log(Level.INFO, "Navigator posted tablename " + tableName);
 
 		final TableItem[] selectedRows = table.getSelection();
 
@@ -339,7 +340,7 @@ public class H2TableNavigator {
 		}
 
 		eventBroker.post(Constants.RECORDNUM_UPDATE_TOPIC, recordNum);
-		LOGGER.info("Navigator posted record number " + recordNum);
+		LOGGER.log(Level.INFO, "Navigator posted record number " + recordNum);
 		eventBroker.post("MESSAGE", tableName + " editor has been opened");
 	}
 

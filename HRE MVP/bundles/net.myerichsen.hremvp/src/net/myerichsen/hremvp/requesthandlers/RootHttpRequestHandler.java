@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.requesthandlers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -77,7 +78,7 @@ public class RootHttpRequestHandler implements Handler {
 		out.println("}");
 		baseRequest.setHandled(true);
 
-		LOGGER.info("{\r\n\"Method\": " + request.getMethod()
+		LOGGER.log(Level.INFO, "{\r\n\"Method\": " + request.getMethod()
 				+ ",\r\n\"Target\": " + target.substring(1) + "\r\n})");
 	}
 

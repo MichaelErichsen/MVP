@@ -39,8 +39,9 @@ public class HreLogger {
 		handler.setFormatter(new SimpleFormatter());
 		LOGGER.addHandler(handler);
 
-		LOGGER.info("--------------------------------------------------------");
-		LOGGER.info("Log file path: " + logFilePath);
+		LOGGER.log(Level.INFO,
+				"--------------------------------------------------------");
+		LOGGER.log(Level.INFO, "Log file path: {0}", logFilePath);
 
 		// Used by org.apache.http.client.methods.HttpGet
 		System.setProperty("org.apache.commons.logging.Log",

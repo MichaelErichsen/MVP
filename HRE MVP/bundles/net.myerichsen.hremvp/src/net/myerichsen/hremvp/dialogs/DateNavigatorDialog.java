@@ -66,7 +66,6 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 			provider = new HDateProvider();
 			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
-			e.printStackTrace();
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
@@ -158,7 +157,8 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textDateFilter.getText());
-				LOGGER.fine("Filter string: " + textDateFilter.getText());
+				LOGGER.log(Level.FINE,
+						"Filter string: " + textDateFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -171,7 +171,6 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 			tableViewer.setInput(provider.get());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		return area;

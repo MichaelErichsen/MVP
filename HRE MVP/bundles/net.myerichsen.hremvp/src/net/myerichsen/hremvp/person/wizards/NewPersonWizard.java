@@ -314,7 +314,7 @@ public class NewPersonWizard extends Wizard {
 			personProvider.setBirthDatePid(birthDatePid);
 			personProvider.setDeathDatePid(deathDatePid);
 			personPid = personProvider.insert();
-			LOGGER.info("Inserted person " + personPid);
+			LOGGER.log(Level.INFO, "Inserted person " + personPid);
 
 			// Create a sex for the person
 			final SexProvider sexProvider = new SexProvider();
@@ -322,7 +322,8 @@ public class NewPersonWizard extends Wizard {
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(true);
 			final int sexPid = sexProvider.insert();
-			LOGGER.info("Inserted sex " + sexPid + " for person " + personPid);
+			LOGGER.log(Level.INFO,
+					"Inserted sex " + sexPid + " for person " + personPid);
 
 			// Page 2
 			// Name validity dates
@@ -334,7 +335,7 @@ public class NewPersonWizard extends Wizard {
 			personNameProvider.setToDatePid(toDatePid);
 			personNameProvider.setPrimaryName(isPrimaryName());
 			final int namePid = personNameProvider.insert();
-			LOGGER.info(
+			LOGGER.log(Level.INFO,
 					"Inserted name " + namePid + " for person " + personPid);
 
 			// Page 3
@@ -354,7 +355,7 @@ public class NewPersonWizard extends Wizard {
 					pnpp.setLabel(string);
 					pnpp.setPartNo(i);
 					namePartPid = pnpp.insert();
-					LOGGER.info("Inserted name part " + namePartPid
+					LOGGER.log(Level.INFO, "Inserted name part " + namePartPid
 							+ " for person " + personPid);
 				}
 			}
@@ -373,7 +374,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
-				LOGGER.info("Inserted father pid " + parentPid);
+				LOGGER.log(Level.INFO, "Inserted father pid " + parentPid);
 			}
 
 			// Create mother
@@ -385,7 +386,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
-				LOGGER.info("Inserted mother pid " + parentPid);
+				LOGGER.log(Level.INFO, "Inserted mother pid " + parentPid);
 			}
 
 			// Create child
@@ -397,7 +398,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setPrimaryParent(true);
 //				parentProvider.setLanguagePid(languagePid);
 				parentPid = parentProvider.insert();
-				LOGGER.info("Inserted child pid " + parentPid);
+				LOGGER.log(Level.INFO, "Inserted child pid " + parentPid);
 			}
 
 			// Create partner
@@ -410,7 +411,7 @@ public class NewPersonWizard extends Wizard {
 				partnerProvider.setFromDatePid(partnerFromDatePid);
 				partnerProvider.setToDatePid(partnerToDatePid);
 				partnerProvider.insert();
-				LOGGER.info("Inserted partner pid " + partnerPid);
+				LOGGER.log(Level.INFO, "Inserted partner pid " + partnerPid);
 			}
 
 			// Page 5
@@ -425,7 +426,7 @@ public class NewPersonWizard extends Wizard {
 				ep.setFromDatePid(Integer.parseInt(list.get(3)));
 				ep.setToDatePid(Integer.parseInt(list.get(5)));
 				final int eventPid = ep.insert();
-				LOGGER.info("Inserted event pid " + eventPid);
+				LOGGER.log(Level.INFO, "Inserted event pid " + eventPid);
 
 				// Create a person-personEvent to link them together
 				final PersonEventProvider pep = new PersonEventProvider();
@@ -435,7 +436,8 @@ public class NewPersonWizard extends Wizard {
 				pep.setPrimaryPerson(true);
 				pep.setRolePid(Integer.parseInt(list.get(2)));
 				final int personEventPid = pep.insert();
-				LOGGER.info("Inserted person-event pid " + personEventPid);
+				LOGGER.log(Level.INFO,
+						"Inserted person-event pid " + personEventPid);
 
 			}
 

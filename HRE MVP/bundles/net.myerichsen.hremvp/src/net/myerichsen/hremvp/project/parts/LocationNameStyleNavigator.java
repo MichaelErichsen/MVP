@@ -198,7 +198,7 @@ public class LocationNameStyleNavigator {
 		try {
 			final LocationNameMapProvider lnmp = new LocationNameMapProvider();
 			lnmp.deleteLocationNameStylePid(locationNameStylePid);
-			LOGGER.info("Location name map(s) has been deleted");
+			LOGGER.log(Level.INFO, "Location name map(s) has been deleted");
 
 			final LocationNameStyleProvider provider = new LocationNameStyleProvider();
 			provider.delete(locationNameStylePid);
@@ -239,9 +239,10 @@ public class LocationNameStyleNavigator {
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
 
-			LOGGER.info("Posting style id " + selectedRow.getText(0)
-					+ ", iso code " + selectedRow.getText(1) + ", label "
-					+ selectedRow.getText(2));
+			LOGGER.log(Level.INFO,
+					"Posting style id " + selectedRow.getText(0) + ", iso code "
+							+ selectedRow.getText(1) + ", label "
+							+ selectedRow.getText(2));
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 
@@ -262,7 +263,8 @@ public class LocationNameStyleNavigator {
 	@Optional
 	private void subscribelocationNameStylePidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC) int locationNameStylePid) {
-		LOGGER.fine("Received location name style id " + locationNameStylePid);
+		LOGGER.log(Level.FINE,
+				"Received location name style id {0}", locationNameStylePid);
 		this.locationNameStylePid = locationNameStylePid;
 
 		if (locationNameStylePid > 0) {

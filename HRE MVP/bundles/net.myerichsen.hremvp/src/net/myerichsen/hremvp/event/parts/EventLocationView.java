@@ -54,7 +54,6 @@ public class EventLocationView {
 	@Inject
 	private IEventBroker eventBroker;
 	private Table table;
-	private TableViewer tableViewer;
 
 	private final EventProvider provider;
 
@@ -78,7 +77,8 @@ public class EventLocationView {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		TableViewer tableViewer = new TableViewer(parent,
+				SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -131,7 +131,6 @@ public class EventLocationView {
 			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -179,7 +178,7 @@ public class EventLocationView {
 			LocationPid = selectedRow.getText(0);
 		}
 
-		LOGGER.info("Setting Location pid: " + LocationPid);
+		LOGGER.log(Level.INFO, "Setting Location pid: {0}", LocationPid);
 		eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC,
 				Integer.parseInt(LocationPid));
 
@@ -199,8 +198,7 @@ public class EventLocationView {
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
-			throws Exception {
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key) {
 		get(key);
 	}
 

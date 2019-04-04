@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +42,6 @@ public class SexTypeServer implements IHREServer {
 	private String label;
 	private int languagePid;
 	private String languageLabel;
-	private final int TableId = 23;
-
 	private final SexTypes sexType;
 
 	/**
@@ -69,13 +68,11 @@ public class SexTypeServer implements IHREServer {
 
 	/**
 	 * @param target The request target
-	 * @throws NumberFormatException A Number Format Exception
-	 * @throws Exception             An exception that provides information on a
-	 *                               database access error or other errors
-	 * @throws MvpException          Application specific exception
+	 * @throws Exception    An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
 	 */
-	public void deleteRemote(String target)
-			throws NumberFormatException, Exception {
+	public void deleteRemote(String target) throws Exception {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 		delete(Integer.parseInt(targetParts[targetSize - 1]));
@@ -298,7 +295,6 @@ public class SexTypeServer implements IHREServer {
 		sexType.setAbbreviation(abbreviation);
 		final Dictionary dictionary = new Dictionary();
 		sexType.setLabelPid(dictionary.getNextLabelPid());
-		sexType.setTableId(TableId);
 		return sexType.insert();
 	}
 
@@ -324,7 +320,7 @@ public class SexTypeServer implements IHREServer {
 
 		final JSONObject jsonObject = new JSONObject(sb.toString());
 
-		LOGGER.info(jsonObject.toString(2));
+		LOGGER.log(Level.INFO, jsonObject.toString(2));
 
 		setSexTypePid(jsonObject.getInt("sexTypePid"));
 		setAbbreviation(jsonObject.getString("abbreviation"));
@@ -379,7 +375,6 @@ public class SexTypeServer implements IHREServer {
 	public void update() throws Exception {
 		sexType.setSexTypePid(sexTypePid);
 		sexType.setAbbreviation(abbreviation);
-		sexType.setTableId(TableId);
 		sexType.update();
 	}
 
@@ -407,7 +402,7 @@ public class SexTypeServer implements IHREServer {
 
 		final JSONObject jsonObject = new JSONObject(sb.toString());
 
-		LOGGER.info(jsonObject.toString(2));
+		LOGGER.log(Level.INFO, jsonObject.toString(2));
 
 		setSexTypePid(jsonObject.getInt("sexTypePid"));
 		setAbbreviation(jsonObject.getString("abbreviation"));

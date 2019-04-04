@@ -244,10 +244,11 @@ public class PartnerRoleNavigator {
 			ls.add(selectedRow.getText(2));
 			ls.add(selectedRow.getText(3));
 
-			LOGGER.info("Posting role id " + selectedRow.getText(0)
-					+ ", dictionary id " + selectedRow.getText(1)
-					+ ", abbreviation " + selectedRow.getText(2) + ", label "
-					+ selectedRow.getText(3));
+			LOGGER.log(Level.INFO,
+					"Posting role id " + selectedRow.getText(0)
+							+ ", dictionary id " + selectedRow.getText(1)
+							+ ", abbreviation " + selectedRow.getText(2)
+							+ ", label " + selectedRow.getText(3));
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 
@@ -268,7 +269,7 @@ public class PartnerRoleNavigator {
 	@Optional
 	private void subscribePartnerRolePidUpdateTopic(
 			@UIEventTopic(Constants.PARTNER_ROLE_PID_UPDATE_TOPIC) int PartnerRolePid) {
-		LOGGER.fine("Received Partner Role id " + PartnerRolePid);
+		LOGGER.log(Level.FINE, "Received Partner Role id " + PartnerRolePid);
 		this.PartnerRolePid = PartnerRolePid;
 
 		if (PartnerRolePid > 0) {

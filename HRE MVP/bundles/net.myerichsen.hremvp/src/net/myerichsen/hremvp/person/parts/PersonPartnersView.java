@@ -186,7 +186,7 @@ public class PersonPartnersView {
 			personPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		LOGGER.info("Setting person pid: " + personPid);
+		LOGGER.log(Level.INFO, "Setting person pid: " + personPid);
 		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 
 	}
@@ -244,7 +244,7 @@ public class PersonPartnersView {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.fine("Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id " + personPid);
 		this.personPid = personPid;
 
 		try {

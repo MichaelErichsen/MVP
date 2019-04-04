@@ -225,7 +225,8 @@ public class SexTypeView {
 			provider.get(sexTypePid);
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
-			LOGGER.info("Sex pid " + sexTypePid + " has been updated");
+			LOGGER.log(Level.INFO,
+					"Sex pid " + sexTypePid + " has been updated");
 
 			dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
@@ -235,10 +236,11 @@ public class SexTypeView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.fine(input.get(i).get(2) + ", " + input.get(i).get(3)
-							+ " - " + existingElement.get(0) + ", "
-							+ existingElement.get(1) + ", "
-							+ existingElement.get(2));
+					LOGGER.log(Level.FINE,
+							input.get(i).get(2) + ", " + input.get(i).get(3)
+									+ " - " + existingElement.get(0) + ", "
+									+ existingElement.get(1) + ", "
+									+ existingElement.get(2));
 
 					if (input.get(i).get(2).equals(existingElement.get(0))) {
 						if ((input.get(i).get(3)
@@ -251,11 +253,12 @@ public class SexTypeView {
 							dp.setLabelPid(provider.getLabelPid());
 							dp.setLabelType("SEX");
 							dp.update();
-							LOGGER.fine("Updated dictionary element "
-									+ input.get(i).get(0) + ", "
-									+ input.get(i).get(1) + ", "
-									+ input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							LOGGER.log(Level.FINE,
+									"Updated dictionary element "
+											+ input.get(i).get(0) + ", "
+											+ input.get(i).get(1) + ", "
+											+ input.get(i).get(2) + ", "
+											+ input.get(i).get(3));
 						}
 						break;
 					}

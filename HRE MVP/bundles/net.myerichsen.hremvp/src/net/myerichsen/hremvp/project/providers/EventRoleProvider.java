@@ -54,14 +54,6 @@ public class EventRoleProvider implements IHREProvider {
 //		return server.get();
 //	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return server.get();
-	}
 
 	/**
 	 * Get a row
@@ -212,5 +204,13 @@ public class EventRoleProvider implements IHREProvider {
 		server.setEventRolePid(EventRolePid);
 		server.setAbbreviation(Abbreviation);
 		server.update();
+	}
+
+	/**
+	 * 
+	 */
+	public void get() {
+		// TODO Auto-generated method stub
+		
 	}
 }

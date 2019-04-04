@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.location.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -107,9 +108,9 @@ public class LocationNameServer implements IHREServer {
 		style.get(locationNameStylePid);
 		setLocationNameStyleLabel("style.getLabelPid()");
 
-		LOGGER.fine("Location PID: " + name.getLocationPid());
-		LOGGER.fine("Location name PID: " + key);
-		LOGGER.fine(
+		LOGGER.log(Level.FINE, "Location PID: " + name.getLocationPid());
+		LOGGER.log(Level.FINE, "Location name PID: " + key);
+		LOGGER.log(Level.FINE,
 				"Location name style PID: " + name.getLocationNameStylePid());
 //		mapList = new LocationNameMaps()
 //				.getFKLocationNameStylePid(name.getLocationNameStylePid());
@@ -269,7 +270,7 @@ public class LocationNameServer implements IHREServer {
 
 			pid = locationNames.getLocationNamePid();
 			stringList.add(Integer.toString(pid));
-			LOGGER.fine("Pid: " + pid);
+			LOGGER.log(Level.FINE, "Pid: " + pid);
 
 			sb = new StringBuilder();
 			// Concatenate non-null name parts
@@ -282,7 +283,7 @@ public class LocationNameServer implements IHREServer {
 				}
 			}
 			stringList.add(sb.toString());
-			LOGGER.fine(sb.toString());
+			LOGGER.log(Level.FINE, sb.toString());
 
 			stringList.add(
 					Boolean.toString(locationNames.isPrimaryLocationName()));

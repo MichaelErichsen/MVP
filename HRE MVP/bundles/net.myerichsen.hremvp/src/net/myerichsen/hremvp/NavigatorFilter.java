@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jface.viewers.Viewer;
@@ -31,7 +32,7 @@ public class NavigatorFilter extends ViewerFilter {
 		@SuppressWarnings("unchecked")
 		final List<String> ls = (List<String>) element;
 
-		LOGGER.fine(
+		LOGGER.log(Level.FINE,
 				"Filter string: " + searchString + ", Element: " + ls.get(1));
 
 		if (ls.get(1).toLowerCase().matches(searchString)) {

@@ -263,7 +263,7 @@ public class PersonView {
 				birthDate.get(birthDatePid);
 				textBirthDate.setText(birthDate.getDate().toString());
 			} catch (final Exception e) {
-				LOGGER.info(e.getMessage());
+				LOGGER.log(Level.INFO, e.getMessage());
 				textBirthDate.setText("");
 			}
 
@@ -274,7 +274,7 @@ public class PersonView {
 				deathDate.get(deathDatePid);
 				textDeathDate.setText(deathDate.getDate().toString());
 			} catch (final Exception e) {
-				LOGGER.info(e.getMessage());
+				LOGGER.log(Level.INFO, e.getMessage());
 				textDeathDate.setText("");
 			}
 		} catch (final Exception e) {
@@ -343,7 +343,7 @@ public class PersonView {
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid)
 			throws Exception {
-		LOGGER.info("Receiving person pid " + personPid);
+		LOGGER.log(Level.INFO, "Receiving person pid " + personPid);
 		this.personPid = personPid;
 		get(personPid);
 	}

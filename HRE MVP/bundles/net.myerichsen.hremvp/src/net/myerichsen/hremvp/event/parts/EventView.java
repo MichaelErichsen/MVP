@@ -185,7 +185,6 @@ public class EventView {
 						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
 						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -212,7 +211,6 @@ public class EventView {
 						hdp.get(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -289,7 +287,6 @@ public class EventView {
 						textToDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
 						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-						e1.printStackTrace();
 					}
 				}
 			}
@@ -316,7 +313,7 @@ public class EventView {
 						hdp.get(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
@@ -395,7 +392,6 @@ public class EventView {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

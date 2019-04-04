@@ -72,7 +72,6 @@ public class PersonChildrenView {
 			provider = new PersonProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -153,7 +152,6 @@ public class PersonChildrenView {
 			tableViewer.setInput(provider.getChildrenList(0));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -167,7 +165,7 @@ public class PersonChildrenView {
 	/**
 	 * @throws NumberFormatException
 	 */
-	private void getSelectedPerson() throws NumberFormatException {
+	private void getSelectedPerson() {
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
@@ -186,7 +184,7 @@ public class PersonChildrenView {
 
 		getSelectedPerson();
 
-		LOGGER.info("Setting person pid: " + personPid);
+		LOGGER.log(Level.INFO, "Setting person pid: {0}", personPid);
 		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}
 
@@ -218,13 +216,12 @@ public class PersonChildrenView {
 		}
 
 		try {
-			final PersonProvider provider = new PersonProvider();
-			provider.removeChild(personPid, childPid);
+			final PersonProvider pp = new PersonProvider();
+			pp.removeChild(personPid, childPid);
 			eventBroker.post("MESSAGE",
 					"Child " + primaryName + " has been removed");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -243,7 +240,7 @@ public class PersonChildrenView {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.fine("Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 		this.personPid = personPid;
 
 		try {
@@ -251,7 +248,6 @@ public class PersonChildrenView {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

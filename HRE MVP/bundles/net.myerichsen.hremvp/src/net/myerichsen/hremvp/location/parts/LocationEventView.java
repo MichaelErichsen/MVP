@@ -185,7 +185,7 @@ public class LocationEventView {
 			eventPid = selectedRow.getText(0);
 		}
 
-		LOGGER.info("Setting personEvent pid: " + eventPid);
+		LOGGER.log(Level.INFO, "Setting personEvent pid: {0}", eventPid);
 		eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC,
 				Integer.parseInt(eventPid));
 	}

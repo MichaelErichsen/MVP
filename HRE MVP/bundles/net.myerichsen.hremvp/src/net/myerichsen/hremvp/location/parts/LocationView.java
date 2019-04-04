@@ -424,7 +424,7 @@ public class LocationView {
 						break;
 					}
 				} catch (final Exception e) {
-					LOGGER.info(e.getMessage());
+					LOGGER.log(Level.INFO, e.getMessage());
 				}
 			}
 		}

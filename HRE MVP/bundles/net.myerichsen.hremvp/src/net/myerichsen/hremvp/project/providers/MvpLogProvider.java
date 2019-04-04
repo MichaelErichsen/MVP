@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -28,7 +29,7 @@ public class MvpLogProvider implements IStructuredContentProvider {
 	 */
 	@Override
 	public Object[] getElements(Object inputElement) {
-		LOGGER.fine("MvpLogProvider invoked");
+		LOGGER.log(Level.FINE, "MvpLogProvider invoked");
 		final List<String> lines = new ArrayList<>();
 
 		try {

@@ -36,11 +36,9 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	IEclipseContext context;
-//	private final IEventBroker eventBroker;
 
 	private final SexTypeProvider provider;
 	private int sexTypePid;
-	private TableViewer tableViewer;
 
 	/**
 	 * Create the dialog.
@@ -49,11 +47,9 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 	 * @param context
 	 * @throws Exception
 	 */
-	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context)
-			throws Exception {
+	public SexTypeNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
 		this.context = context;
-//		eventBroker = context.get(IEventBroker.class);
 		provider = new SexTypeProvider();
 	}
 
@@ -86,7 +82,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 		gd_container.grabExcessHorizontalSpace = false;
 		container.setLayoutData(gd_container);
 
-		tableViewer = new TableViewer(container,
+		final TableViewer tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addSelectionListener(new SelectionAdapter() {
@@ -133,7 +129,6 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		return area;

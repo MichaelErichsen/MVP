@@ -54,7 +54,6 @@ public class EventRoleView {
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final EventRoleProvider provider;
-	private DictionaryProvider dp;
 	private int eventRolePid = 0;
 	private int labelPid = 0;
 	private Text textEventTypePid;
@@ -177,7 +176,6 @@ public class EventRoleView {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 	}
@@ -222,7 +220,6 @@ public class EventRoleView {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -247,9 +244,10 @@ public class EventRoleView {
 			provider.get(eventRolePid);
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
-			LOGGER.info("Event pid " + eventRolePid + " has been updated");
+			LOGGER.log(Level.INFO, "Event pid {0} has been updated",
+					eventRolePid);
 
-			dp = new DictionaryProvider();
+			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
 
 			final List<List<String>> input = (List<List<String>>) tableViewer
@@ -257,10 +255,11 @@ public class EventRoleView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
-							+ " - " + existingElement.get(0) + ", "
-							+ existingElement.get(1) + ", "
-							+ existingElement.get(2));
+					LOGGER.log(Level.INFO,
+							input.get(i).get(2) + ", " + input.get(i).get(3)
+									+ " - " + existingElement.get(0) + ", "
+									+ existingElement.get(1) + ", "
+									+ existingElement.get(2));
 
 					if (input.get(i).get(2).equals(existingElement.get(0))) {
 						if ((input.get(i).get(3)
@@ -273,11 +272,12 @@ public class EventRoleView {
 							dp.setLabelPid(provider.getLabelPid());
 							dp.setLabelType("EVENTROLE");
 							dp.update();
-							LOGGER.info("Updated dictionary element "
-									+ input.get(i).get(0) + ", "
-									+ input.get(i).get(1) + ", "
-									+ input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							LOGGER.log(Level.INFO,
+									"Updated dictionary element "
+											+ input.get(i).get(0) + ", "
+											+ input.get(i).get(1) + ", "
+											+ input.get(i).get(2) + ", "
+											+ input.get(i).get(3));
 						}
 						break;
 					}
@@ -287,7 +287,6 @@ public class EventRoleView {
 					"Event Role " + eventRolePid + " has been updated");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

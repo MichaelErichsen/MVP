@@ -198,7 +198,7 @@ public class PersonNameStyleNavigator {
 		try {
 			final PersonNameMapProvider pnmp = new PersonNameMapProvider();
 			pnmp.deletePersonNameStylePid(personNameStylePid);
-			LOGGER.info("Person name map(s) has been deleted");
+			LOGGER.log(Level.INFO, "Person name map(s) has been deleted");
 
 			final PersonNameStyleProvider provider = new PersonNameStyleProvider();
 			provider.delete(personNameStylePid);
@@ -238,9 +238,10 @@ public class PersonNameStyleNavigator {
 			ls.add(selectedRow.getText(1));
 			ls.add(selectedRow.getText(2));
 
-			LOGGER.info("Posting style id " + selectedRow.getText(0)
-					+ ", iso code " + selectedRow.getText(1) + ", label "
-					+ selectedRow.getText(2));
+			LOGGER.log(Level.INFO,
+					"Posting style id " + selectedRow.getText(0) + ", iso code "
+							+ selectedRow.getText(1) + ", label "
+							+ selectedRow.getText(2));
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 
@@ -261,7 +262,8 @@ public class PersonNameStyleNavigator {
 	@Optional
 	private void subscribePersonNameStylePidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC) int personNameStylePid) {
-		LOGGER.fine("Received person name style id " + personNameStylePid);
+		LOGGER.log(Level.FINE,
+				"Received person name style id " + personNameStylePid);
 		this.personNameStylePid = personNameStylePid;
 
 		if (personNameStylePid > 0) {

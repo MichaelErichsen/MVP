@@ -116,7 +116,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 
 			for (int i = 0; i < llsSize; i++) {
 				if (g.equals(stringList.get(i).get(1))) {
-					LOGGER.info("Selected language " + i + ", "
+					LOGGER.log(Level.INFO, "Selected language " + i + ", "
 							+ stringList.get(i).get(1));
 					comboLanguage.select(i);
 					break;

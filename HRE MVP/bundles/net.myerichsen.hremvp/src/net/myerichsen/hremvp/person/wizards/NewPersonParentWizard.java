@@ -72,8 +72,8 @@ public class NewPersonParentWizard extends Wizard {
 			parentProvider.setLanguagePid(1);
 			try {
 				parentPid = parentProvider.insert();
-				LOGGER.info("Inserted Parent pid " + parentPid + " for child "
-						+ childPid);
+				LOGGER.log(Level.INFO, "Inserted Parent pid " + parentPid
+						+ " for child " + childPid);
 
 				eventBroker.post("MESSAGE", "Inserted Parent pid " + parentPid
 						+ " for parent " + childPid);

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.help.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -43,7 +44,7 @@ public class HelpSystemBrowser {
 		browser.setToolTipText("HRE Help");
 		browser.setUrl("http://127.0.0.1:" + store.getInt("HELPSYSTEMPORT")
 				+ "/help/index.jsp");
-		LOGGER.info("Browser pointing at " + browser.getUrl());
+		LOGGER.log(Level.INFO, "Browser pointing at " + browser.getUrl());
 		browser.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 	}

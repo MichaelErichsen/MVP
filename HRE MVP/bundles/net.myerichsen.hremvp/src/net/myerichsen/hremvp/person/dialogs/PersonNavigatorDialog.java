@@ -71,7 +71,6 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -178,7 +177,8 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
-				LOGGER.fine("Filter string: " + textNameFilter.getText());
+				LOGGER.log(Level.FINE,
+						"Filter string: " + textNameFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -191,7 +191,6 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 			tableViewer.setInput(provider.getPersonList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		return area;

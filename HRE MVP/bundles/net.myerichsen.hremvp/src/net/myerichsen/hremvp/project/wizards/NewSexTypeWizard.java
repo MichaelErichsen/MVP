@@ -68,7 +68,7 @@ public class NewSexTypeWizard extends Wizard {
 				provider.setAbbreviation(abbreviation);
 
 				final int sexTypePid = provider.insert();
-				LOGGER.info("Inserted sex type " + sexTypePid);
+				LOGGER.log(Level.INFO, "Inserted sex type " + sexTypePid);
 				eventBroker.post("MESSAGE", "Inserted sex type " + sexTypePid);
 
 				final int labelPid = provider.getLabelPid();
@@ -83,9 +83,10 @@ public class NewSexTypeWizard extends Wizard {
 					dp.setLabelPid(labelPid);
 					dp.setLabelType("SEX");
 					final int dictionaryPid = dp.insert();
-					LOGGER.info("Inserted dictionary element " + dictionaryPid
-							+ ", " + input.get(i).get(2) + ", "
-							+ input.get(i).get(3));
+					LOGGER.log(Level.INFO,
+							"Inserted dictionary element " + dictionaryPid
+									+ ", " + input.get(i).get(2) + ", "
+									+ input.get(i).get(3));
 				}
 
 				eventBroker.post(

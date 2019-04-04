@@ -195,7 +195,7 @@ public class NewEventWizard extends Wizard {
 			provider.setEventName(eventName);
 			provider.setEventTypePid(eventTypePid);
 			final int eventPid = provider.insert();
-			LOGGER.info("Inserted event pid " + eventPid);
+			LOGGER.log(Level.INFO, "Inserted event pid " + eventPid);
 
 			if (locationPid != 0) {
 				final LocationEventProvider lep = new LocationEventProvider();
@@ -204,7 +204,8 @@ public class NewEventWizard extends Wizard {
 				lep.setPrimaryLocation(primaryLocation);
 				lep.setPrimaryEvent(primaryLocationEvent);
 				final int locationEventsPid = lep.insert();
-				LOGGER.info("Inserted location event " + locationEventsPid);
+				LOGGER.log(Level.INFO,
+						"Inserted location event " + locationEventsPid);
 			}
 
 			if (personPid != 0) {
@@ -215,7 +216,8 @@ public class NewEventWizard extends Wizard {
 				pep.setPrimaryPerson(primaryPerson);
 				pep.setPrimaryEvent(primaryPersonEvent);
 				final int personEventPid = pep.insert();
-				LOGGER.info("Inserted person event pid " + personEventPid);
+				LOGGER.log(Level.INFO,
+						"Inserted person event pid " + personEventPid);
 			}
 
 			eventBroker.post("MESSAGE",

@@ -1,6 +1,7 @@
 
 package net.myerichsen.hremvp.help.handlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -35,7 +36,7 @@ public class HelpContentsHandler {
 					+ store.getInt("HELPSYSTEMPORT") + "/help/index.jsp";
 
 			BaseHelpSystem.getHelpBrowser(true).displayURL(helpURL);
-			LOGGER.info("Browser pointing at " + helpURL);
+			LOGGER.log(Level.INFO, "Browser pointing at {0}", helpURL);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage());
 		}

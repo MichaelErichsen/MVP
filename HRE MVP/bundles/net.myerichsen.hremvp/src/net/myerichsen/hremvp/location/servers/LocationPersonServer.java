@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.location.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -87,7 +88,7 @@ public class LocationPersonServer implements IHREServer {
 				ns = new PersonNameServer();
 				string = Integer.toString(personPid) + ","
 						+ ns.getPrimaryNameString(personPid);
-				LOGGER.info(string);
+				LOGGER.log(Level.INFO, string);
 				stringList.add(string);
 			}
 		}

@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -71,7 +72,6 @@ public class H2TableEditor {
 	private List<H2TableModel> columns;
 	private final List<Object> lineList = new ArrayList<>();
 	private Composite compositeButtons;
-	private int count;
 	private ScrolledComposite scrolledComposite;
 
 	/**
@@ -141,7 +141,8 @@ public class H2TableEditor {
 									calendar.get(Calendar.MINUTE),
 									calendar.get(Calendar.SECOND));
 						} else {
-							LOGGER.info("Unimplemented type: " + type);
+							LOGGER.log(Level.INFO,
+									"Unimplemented type: " + type);
 							System.exit(16);
 						}
 					}
@@ -199,7 +200,7 @@ public class H2TableEditor {
 								time.getMinutes(), time.getSeconds(), 0);
 						columns.get(i).setValue(timeStamp);
 					} else {
-						LOGGER.info("Unimplemented type: " + type);
+						LOGGER.log(Level.INFO, "Unimplemented type: " + type);
 						System.exit(16);
 					}
 				}
@@ -261,7 +262,7 @@ public class H2TableEditor {
 								time.getMinutes(), time.getSeconds(), 0);
 						columns.get(i).setValue(timeStamp);
 					} else {
-						LOGGER.info("Unimplemented type: " + type);
+						LOGGER.log(Level.INFO, "Unimplemented type: " + type);
 						System.exit(16);
 					}
 				}
@@ -324,7 +325,7 @@ public class H2TableEditor {
 						final DateTime time = (DateTime) children[1];
 						time.setTime(0, 0, 0);
 					} else {
-						LOGGER.info("Unimplemented type: " + type);
+						LOGGER.log(Level.INFO, "Unimplemented type: " + type);
 						System.exit(16);
 					}
 				}
@@ -415,7 +416,7 @@ public class H2TableEditor {
 		}
 
 		provider = new H2TableProvider(tableName);
-		count = provider.getCount();
+		int count = provider.getCount();
 		columns = provider.getModelList();
 		row = provider.select(recordNum);
 
@@ -587,7 +588,8 @@ public class H2TableEditor {
 				lineList.add(text);
 				break;
 			default:
-				LOGGER.info("Unimplemented type: " + columns.get(i).getType());
+				LOGGER.log(Level.INFO,
+						"Unimplemented type: " + columns.get(i).getType());
 				System.exit(16);
 				break;
 			}
@@ -600,7 +602,7 @@ public class H2TableEditor {
 	/**
 	 * @throws NumberFormatException Number is not valid
 	 */
-	public void delete() throws NumberFormatException {
+	public void delete() {
 		final Text text = (Text) lineList.get(0);
 		recordNum = Integer.parseInt(text.getText());
 		try {

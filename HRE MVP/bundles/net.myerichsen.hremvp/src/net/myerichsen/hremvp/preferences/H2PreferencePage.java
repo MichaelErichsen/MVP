@@ -89,7 +89,7 @@ public class H2PreferencePage extends FieldEditorPreferencePage
 		super.propertyChange(event);
 
 		if (event.getSource() == comboFieldEditorH2TraceLevel) {
-			int h2TraceLevel = 2;
+			int h2TraceLevel;
 
 			h2TraceLevel = Integer.parseInt(event.getNewValue().toString());
 
@@ -109,13 +109,13 @@ public class H2PreferencePage extends FieldEditorPreferencePage
 						+ e.getSQLState());
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
-			LOGGER.info("Changed property "
-					+ comboFieldEditorH2TraceLevel.getPreferenceName()
-					+ " from " + event.getOldValue() + " to "
-					+ event.getNewValue());
+			LOGGER.log(Level.INFO,
+					"Changed property "
+							+ comboFieldEditorH2TraceLevel.getPreferenceName()
+							+ " from " + event.getOldValue() + " to "
+							+ event.getNewValue());
 		}
 	}
 }

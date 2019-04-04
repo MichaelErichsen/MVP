@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.preferences;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -102,7 +103,7 @@ public class WebSearchPreferencePage extends FieldEditorPreferencePage
 
 		super.propertyChange(event);
 
-		LOGGER.info("Changed property: " + event.getProperty() + ", "
+		LOGGER.log(Level.INFO, "Changed property: " + event.getProperty() + ", "
 				+ event.getOldValue() + " to " + event.getNewValue());
 	}
 }

@@ -59,7 +59,6 @@ public class DescendantNavigator {
 			treePersonList = createTreePersonList(2);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -158,14 +157,13 @@ public class DescendantNavigator {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.fine("Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 		try {
 			treePersonList = createTreePersonList(personPid);
 			treeViewer.setInput(treePersonList);
 			treeViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

@@ -114,7 +114,7 @@ public class ProjectProperties {
 	@Optional
 	private void subscribeProjectPropertiesUpdateTopic(
 			@UIEventTopic(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC) int index) {
-		LOGGER.info("Received index " + index);
+		LOGGER.log(Level.INFO, "Received index " + index);
 		this.index = index;
 		tableViewer.setInput(provider.getProperties(index));
 		tableViewer.refresh();

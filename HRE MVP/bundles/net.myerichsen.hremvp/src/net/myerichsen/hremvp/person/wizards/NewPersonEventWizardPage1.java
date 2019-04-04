@@ -196,7 +196,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				final int selectionIndex = comboLanguage.getSelectionIndex();
 				languagePid = Integer
 						.parseInt(languageList.get(selectionIndex).get(0));
-				LOGGER.info("Selection: " + languagePid);
+				LOGGER.log(Level.INFO, "Selection: " + languagePid);
 			}
 		});
 		comboLanguage.setLayoutData(
@@ -223,7 +223,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				final int selectionIndex = comboEventType.getSelectionIndex();
 				eventTypePid = Integer
 						.parseInt(eventTypeList.get(selectionIndex).get(0));
-				LOGGER.info("Selection: " + eventTypePid);
+				LOGGER.log(Level.INFO, "Selection: " + eventTypePid);
 			}
 		});
 		comboEventType.setLayoutData(

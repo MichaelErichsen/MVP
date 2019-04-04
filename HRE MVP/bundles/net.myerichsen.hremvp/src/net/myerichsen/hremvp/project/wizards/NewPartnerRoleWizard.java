@@ -70,7 +70,8 @@ public class NewPartnerRoleWizard extends Wizard {
 				provider.setAbbreviation(abbreviation);
 
 				final int PartnerRolePid = provider.insert();
-				LOGGER.info("Inserted Partner role " + PartnerRolePid);
+				LOGGER.log(Level.INFO,
+						"Inserted Partner role " + PartnerRolePid);
 				eventBroker.post("MESSAGE",
 						"Inserted Partner role " + PartnerRolePid);
 
@@ -86,9 +87,10 @@ public class NewPartnerRoleWizard extends Wizard {
 					dp.setLabelPid(labelPid);
 					dp.setLabelType("PartnerROLE");
 					final int dictionaryPid = dp.insert();
-					LOGGER.info("Inserted dictionary element " + dictionaryPid
-							+ ", " + input.get(i).get(2) + ", "
-							+ input.get(i).get(3));
+					LOGGER.log(Level.INFO,
+							"Inserted dictionary element " + dictionaryPid
+									+ ", " + input.get(i).get(2) + ", "
+									+ input.get(i).get(3));
 				}
 
 				eventBroker.post(

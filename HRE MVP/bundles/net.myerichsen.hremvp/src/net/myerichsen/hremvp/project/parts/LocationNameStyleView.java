@@ -232,8 +232,8 @@ public class LocationNameStyleView {
 
 			for (final List<String> list : locationNameStyleList) {
 				if (list.get(0).equals(locationNameStylePidString)) {
-					LOGGER.info("Received " + list.get(0) + ", " + list.get(1)
-							+ ", " + list.get(2));
+					LOGGER.log(Level.INFO, "Received " + list.get(0) + ", "
+							+ list.get(1) + ", " + list.get(2));
 
 					textId.setText(locationNameStyleList.get(0).get(0));
 					textLabelId
@@ -281,8 +281,9 @@ public class LocationNameStyleView {
 				dp.setLabel(text);
 				dp.update();
 			}
-			LOGGER.info("location name style pid " + locationNameStylePid
-					+ " has been updated to \"" + text + "\"");
+			LOGGER.log(Level.INFO,
+					"Location name style pid {0}" + locationNameStylePid
+							+ " has been updated to \"" + text + "\"");
 
 			final List<List<String>> stringList = lnmp
 					.getStringList(locationNameStylePid);
@@ -291,9 +292,10 @@ public class LocationNameStyleView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.fine(input.get(i).get(1) + ", " + input.get(i).get(3)
-							+ " - " + existingElement.get(1) + ", "
-							+ existingElement.get(3));
+					LOGGER.log(Level.FINE,
+							input.get(i).get(1) + ", " + input.get(i).get(3)
+									+ " - " + existingElement.get(1) + ", "
+									+ existingElement.get(3));
 
 					if (input.get(i).get(1).equals(existingElement.get(1))) {
 						if ((input.get(i).get(3)
@@ -305,9 +307,10 @@ public class LocationNameStyleView {
 							dp.setLabel(input.get(i).get(3));
 							dp.update();
 
-							LOGGER.info("Updated dictionary element "
-									+ input.get(i).get(1) + " to \""
-									+ input.get(i).get(3) + "\"");
+							LOGGER.log(Level.INFO,
+									"Updated dictionary element "
+											+ input.get(i).get(1) + " to \""
+											+ input.get(i).get(3) + "\"");
 						}
 						break;
 					}

@@ -57,7 +57,6 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -130,7 +129,6 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 				item.setText(1, type.get(1));
 			}
 		} catch (final Exception e1) {
-			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}

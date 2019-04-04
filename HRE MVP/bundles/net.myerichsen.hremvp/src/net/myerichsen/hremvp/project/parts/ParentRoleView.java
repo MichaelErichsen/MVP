@@ -211,7 +211,8 @@ public class ParentRoleView {
 			provider.get(ParentRolePid);
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
-			LOGGER.info("Parent pid " + ParentRolePid + " has been updated");
+			LOGGER.log(Level.INFO,
+					"Parent pid " + ParentRolePid + " has been updated");
 
 			dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
@@ -221,10 +222,11 @@ public class ParentRoleView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
-							+ " - " + existingElement.get(0) + ", "
-							+ existingElement.get(1) + ", "
-							+ existingElement.get(2));
+					LOGGER.log(Level.INFO,
+							input.get(i).get(2) + ", " + input.get(i).get(3)
+									+ " - " + existingElement.get(0) + ", "
+									+ existingElement.get(1) + ", "
+									+ existingElement.get(2));
 
 					if (input.get(i).get(2).equals(existingElement.get(0))) {
 						if ((input.get(i).get(3)
@@ -237,11 +239,12 @@ public class ParentRoleView {
 							dp.setLabelPid(provider.getLabelPid());
 							dp.setLabelType("ParentROLE");
 							dp.update();
-							LOGGER.info("Updated dictionary element "
-									+ input.get(i).get(0) + ", "
-									+ input.get(i).get(1) + ", "
-									+ input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							LOGGER.log(Level.INFO,
+									"Updated dictionary element "
+											+ input.get(i).get(0) + ", "
+											+ input.get(i).get(1) + ", "
+											+ input.get(i).get(2) + ", "
+											+ input.get(i).get(3));
 						}
 						break;
 					}

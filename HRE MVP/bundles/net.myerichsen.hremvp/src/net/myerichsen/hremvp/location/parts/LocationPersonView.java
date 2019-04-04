@@ -179,7 +179,7 @@ public class LocationPersonView {
 			personPid = selectedRow.getText(0);
 		}
 
-		LOGGER.info("Setting person pid: " + personPid);
+		LOGGER.log(Level.INFO, "Setting person pid: {0}", personPid);
 		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC,
 				Integer.parseInt(personPid));
 

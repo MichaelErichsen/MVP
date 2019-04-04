@@ -211,13 +211,13 @@ public class LanguageNavigator {
 			final LanguageProvider provider = new LanguageProvider();
 			provider.delete(languagePid);
 
-			LOGGER.info("Language " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Language {0} has been deleted",
+					primaryName);
 			eventBroker.post("MESSAGE",
 					"Language " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LANGUAGE_PID_UPDATE_TOPIC, 0);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -243,7 +243,7 @@ public class LanguageNavigator {
 	@Optional
 	private void subscribeLanguagePidUpdateTopic(
 			@UIEventTopic(Constants.LANGUAGE_PID_UPDATE_TOPIC) int languagePid) {
-		LOGGER.fine("Received language id " + languagePid);
+		LOGGER.log(Level.FINE, "Received language id " + languagePid);
 		try {
 			tableViewer.setInput(provider.getStringList());
 			tableViewer.refresh();

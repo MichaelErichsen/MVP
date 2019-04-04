@@ -72,8 +72,8 @@ public class NewPersonChildWizard extends Wizard {
 
 			try {
 				parentProvider.insert();
-				LOGGER.info("Inserted child pid " + childPid + " for parent "
-						+ personPid);
+				LOGGER.log(Level.INFO, "Inserted child pid " + childPid
+						+ " for parent " + personPid);
 				eventBroker.post("MESSAGE", "Inserted child pid " + childPid
 						+ " for parent " + personPid);
 				eventBroker.post(

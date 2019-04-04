@@ -244,10 +244,11 @@ public class ParentRoleNavigator {
 			ls.add(selectedRow.getText(2));
 			ls.add(selectedRow.getText(3));
 
-			LOGGER.info("Posting role id " + selectedRow.getText(0)
-					+ ", dictionary id " + selectedRow.getText(1)
-					+ ", abbreviation " + selectedRow.getText(2) + ", label "
-					+ selectedRow.getText(3));
+			LOGGER.log(Level.INFO,
+					"Posting role id " + selectedRow.getText(0)
+							+ ", dictionary id " + selectedRow.getText(1)
+							+ ", abbreviation " + selectedRow.getText(2)
+							+ ", label " + selectedRow.getText(3));
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 
@@ -268,7 +269,7 @@ public class ParentRoleNavigator {
 	@Optional
 	private void subscribeParentRolePidUpdateTopic(
 			@UIEventTopic(Constants.PARENT_ROLE_PID_UPDATE_TOPIC) int ParentRolePid) {
-		LOGGER.fine("Received Parent Role id " + ParentRolePid);
+		LOGGER.log(Level.FINE, "Received Parent Role id " + ParentRolePid);
 		this.ParentRolePid = ParentRolePid;
 
 		if (ParentRolePid > 0) {

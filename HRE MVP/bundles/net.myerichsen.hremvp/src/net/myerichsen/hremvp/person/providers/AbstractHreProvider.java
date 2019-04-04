@@ -153,7 +153,7 @@ public abstract class AbstractHreProvider {
 //					}
 //				}
 //				 else if (modelType.contains("Vector")) {
-//					 LOGGER.fine("Not handling type " + modelType);
+//					 LOGGER.log( Level.FINE, "Not handling type " + modelType);
 //				} else {
 //					 getObjectsFromJson(modelClass, modelType, model, jsonObject, modelField);
 //				}
@@ -179,7 +179,7 @@ public abstract class AbstractHreProvider {
 	public String writeJson(String classname) {
 		final StringWriter sw = new StringWriter();
 
-		LOGGER.fine("Class name: " + classname);
+		LOGGER.log(Level.FINE, "Class name: {0}", classname);
 		try {
 			final Class<?> c = Class.forName(classname);
 			final Field[] fa = c.getDeclaredFields();
@@ -187,7 +187,7 @@ public abstract class AbstractHreProvider {
 			final JSONWriter jw = new JSONWriter(sw);
 			jw.object();
 
-			Field[] arrayOfField1 = fa;
+			final Field[] arrayOfField1 = fa;
 			final int j = arrayOfField1.length;
 			for (int i = 0; i < j; i++) {
 				final Field element = arrayOfField1[i];
@@ -224,7 +224,7 @@ public abstract class AbstractHreProvider {
 						final String[] valueArray = (String[]) field.get(this);
 
 						for (int j1 = 0; j1 < valueArray.length; j1++) {
-							LOGGER.info(valueArray[j1]);
+							LOGGER.log(Level.INFO, valueArray[j1]);
 							jw.object();
 							jw.key(fieldName + "[" + j1 + "]");
 							jw.value(valueArray[j1]);
@@ -247,8 +247,7 @@ public abstract class AbstractHreProvider {
 						final AbstractHreModel item = (AbstractHreModel) name;
 						final Class<?> c1 = item.getClass();
 						final Field[] fa1 = c1.getDeclaredFields();
-						Field[] arrayOfField2 = fa1;
-						;
+						final Field[] arrayOfField2 = fa1;
 						final int m = arrayOfField2.length;
 						for (int k = 0; k < m; k++) {
 							final Field element2 = arrayOfField2[k];
@@ -289,7 +288,7 @@ public abstract class AbstractHreProvider {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line "
 					+ e.getStackTrace()[0].getLineNumber());
 		}
-		LOGGER.info(sw.toString());
+		LOGGER.log(Level.INFO, sw.toString());
 		return sw.toString();
 	}
 }

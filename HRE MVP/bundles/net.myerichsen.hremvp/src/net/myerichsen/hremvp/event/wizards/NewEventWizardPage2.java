@@ -198,7 +198,7 @@ public class NewEventWizardPage2 extends WizardPage {
 	@Optional
 	private void subscribeLocationPidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
-		LOGGER.fine("Received location id " + locationPid);
+		LOGGER.log(Level.FINE, "Received location id {0}", locationPid);
 
 		if (locationPid > 0) {
 			try {

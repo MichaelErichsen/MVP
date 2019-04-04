@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.person.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -162,25 +163,27 @@ public class PersonNameServer implements IHREServer {
 		for (int i = 0; i < nameList.size(); i++) {
 			sb = new StringBuilder();
 			name = nameList.get(i);
-			LOGGER.fine("Name " + name.getNamePid() + ", person "
+			LOGGER.log(Level.FINE, "Name " + name.getNamePid() + ", person "
 					+ name.getPersonPid());
 			final List<PersonNameParts> npl = new PersonNameParts()
 					.getFKNamePid(name.getNamePid());
 
-			LOGGER.fine("List size " + npl.size());
+			LOGGER.log(Level.FINE, "List size " + npl.size());
 			// Concatenate non-null name parts
 			for (final PersonNameParts PersonNameParts : npl) {
-				LOGGER.fine("Name part " + PersonNameParts.getNamePartPid()
-						+ ", name " + PersonNameParts.getNamePid());
+				LOGGER.log(Level.FINE,
+						"Name part " + PersonNameParts.getNamePartPid()
+								+ ", name " + PersonNameParts.getNamePid());
 				if (PersonNameParts.getNamePid() == name.getNamePid()) {
 					if (PersonNameParts.getLabel() != null) {
 						sb.append(PersonNameParts.getLabel().trim() + " ");
-						LOGGER.fine("Part " + PersonNameParts.getLabel());
+						LOGGER.log(Level.FINE,
+								"Part " + PersonNameParts.getLabel());
 					}
 				}
 			}
 			sa[i] = sb.toString();
-			LOGGER.fine("SB " + sb.toString());
+			LOGGER.log(Level.FINE, "SB " + sb.toString());
 		}
 
 		return sa;

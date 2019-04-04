@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.ParseException;
@@ -168,7 +169,7 @@ public class SexTypeProvider implements IHREProvider {
 
 		final JSONObject jsonObject = new JSONObject(sb.toString());
 
-		LOGGER.info(jsonObject.toString(2));
+		LOGGER.log(Level.INFO, jsonObject.toString(2));
 
 		setSexTypePid(jsonObject.getInt("sexTypePid"));
 		setAbbreviation(jsonObject.getString("abbreviation"));

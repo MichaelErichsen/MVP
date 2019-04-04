@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.location.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -84,7 +85,7 @@ public class LocationGoogleMapBrowser {
 		final LocationNameProvider lnp = new LocationNameProvider();
 		textLocationName
 				.setText(lnp.getPrimaryNameString(provider.getLocationPid()));
-		LOGGER.fine("Lat Long: " + provider.getxCoordinate() + ", "
+		LOGGER.log(Level.FINE, "Lat Long: " + provider.getxCoordinate() + ", "
 				+ provider.getyCoordinate());
 		browser.setUrl(
 				"http://www.google.com/maps/@?api=1&map_action=map&center="

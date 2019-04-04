@@ -111,7 +111,8 @@ public class NewPersonNameStyleWizard extends Wizard {
 			provider.setIsoCode(isoCode);
 			provider.setLabelPid(labelPid);
 			final int personNameStylePid = provider.insert();
-			LOGGER.info("Inserted person name style " + personNameStylePid);
+			LOGGER.log(Level.INFO,
+					"Inserted person name style " + personNameStylePid);
 			eventBroker.post("MESSAGE",
 					"Inserted person name style " + personNameStylePid);
 
@@ -122,7 +123,7 @@ public class NewPersonNameStyleWizard extends Wizard {
 			dp.setLabelPid(labelPid);
 			dp.setLabelType("PERSONNAME");
 			dp.insert();
-			LOGGER.info("Inserted person name style \"" + styleName
+			LOGGER.log(Level.INFO, "Inserted person name style \"" + styleName
 					+ "\" in dictionary");
 
 			// Handle each table row in wizard page 2
@@ -140,9 +141,10 @@ public class NewPersonNameStyleWizard extends Wizard {
 				dp.setLabelPid(labelPid);
 				dp.setLabelType("PERSONNAMEMAP");
 				final int dictionaryPid = dp.insert();
-				LOGGER.info("Inserted dictionary element " + dictionaryPid
-						+ ", " + isoCode + ", \"" + input.get(i).get(1)
-						+ "\", label pid " + labelPid);
+				LOGGER.log(Level.INFO,
+						"Inserted dictionary element " + dictionaryPid + ", "
+								+ isoCode + ", \"" + input.get(i).get(1)
+								+ "\", label pid " + labelPid);
 
 				// Create a map row
 				map = new PersonNameMaps();
@@ -150,8 +152,10 @@ public class NewPersonNameStyleWizard extends Wizard {
 				map.setNameStylePid(personNameStylePid);
 				map.setPartNo(Integer.parseInt(input.get(i).get(0)));
 				final int nameMapPid = map.insert();
-				LOGGER.info("Inserted map element " + nameMapPid + ", Part no. "
-						+ input.get(i).get(0) + ", label pid " + labelPid);
+				LOGGER.log(Level.INFO,
+						"Inserted map element " + nameMapPid + ", Part no. "
+								+ input.get(i).get(0) + ", label pid "
+								+ labelPid);
 			}
 
 			eventBroker.post(

@@ -137,8 +137,9 @@ public class ProjectNavigator {
 					"zip" };
 			Script.main(bkp);
 
-			LOGGER.info("Project database " + dbName + " has been backed up to "
-					+ path + "\\" + dbName + ".zip");
+			LOGGER.log(Level.INFO,
+					"Project database " + dbName + " has been backed up to "
+							+ path + "\\" + dbName + ".zip");
 			eventBroker.post("MESSAGE",
 					"Project database " + dbName + " has been backed up to "
 							+ path + "\\" + dbName + ".zip");
@@ -163,12 +164,13 @@ public class ProjectNavigator {
 			if (conn != null) {
 				conn.createStatement().execute("SHUTDOWN");
 				conn.close();
-				LOGGER.info("Existing database " + dbName + " has been closed");
+				LOGGER.log(Level.INFO,
+						"Existing database " + dbName + " has been closed");
 
 				try {
 					HreH2ConnectionPool.dispose();
 				} catch (final Exception e) {
-					LOGGER.info("No connection pool to dispose");
+					LOGGER.log(Level.INFO, "No connection pool to dispose");
 				}
 			}
 		}
@@ -444,7 +446,8 @@ public class ProjectNavigator {
 		}
 
 		if (result) {
-			LOGGER.info("Existing database " + fullPath + " has been deleted");
+			LOGGER.log(Level.INFO,
+					"Existing database " + fullPath + " has been deleted");
 		}
 
 		final int projectCount = store.getInt("projectcount");
@@ -455,14 +458,15 @@ public class ProjectNavigator {
 		for (int i = 1; i <= projectCount; i++) {
 			key = "project." + i + ".path";
 			if (store.contains(key)) {
-				LOGGER.info("Path: " + path + ", key : " + key + ", value: "
-						+ store.getString(key));
+				LOGGER.log(Level.INFO, "Path: " + path + ", key : " + key
+						+ ", value: " + store.getString(key));
 
 				if (path.equals(store.getString(key).trim())) {
 					// Delete from preferences
 					index = i;
 					ProjectList.remove(index, dbName);
-					LOGGER.info("Project " + dbName + " has been deleted");
+					LOGGER.log(Level.INFO,
+							"Project " + dbName + " has been deleted");
 					eventBroker.post("MESSAGE",
 							"Project " + dbName + " has been deleted");
 					eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC,
@@ -515,7 +519,8 @@ public class ProjectNavigator {
 
 		try {
 			// Create the new database
-			LOGGER.fine("New database name: " + path + "\\" + dbName);
+			LOGGER.log(Level.FINE,
+					"New database name: " + path + "\\" + dbName);
 
 			store.setValue("DBPATH", path);
 			store.setValue("DBNAME", dbName);
@@ -530,7 +535,7 @@ public class ProjectNavigator {
 			final Connection conn = HreH2ConnectionPool.getConnection(dbName);
 
 			final String h2Version = store.getString("H2VERSION");
-			LOGGER.fine("Retrieved H2 version from preferences: "
+			LOGGER.log(Level.FINE, "Retrieved H2 version from preferences: "
 					+ h2Version.substring(0, 3));
 			PreparedStatement ps;
 
@@ -561,9 +566,9 @@ public class ProjectNavigator {
 					pnsDialog.getProjectSummary(), "LOCAL",
 					path + "\\" + dbName);
 
-			LOGGER.fine("New properties " + pnsDialog.getProjectName() + " "
-					+ timestamp.toString() + " " + pnsDialog.getProjectSummary()
-					+ " LOCAL " + dbName);
+			LOGGER.log(Level.FINE, "New properties "
+					+ pnsDialog.getProjectName() + " " + timestamp.toString()
+					+ " " + pnsDialog.getProjectSummary() + " LOCAL " + dbName);
 
 			final int index = ProjectList.add(model);
 
@@ -631,7 +636,7 @@ public class ProjectNavigator {
 
 			if (conn != null) {
 				final String h2Version = store.getString("H2VERSION");
-				LOGGER.info("Retrieved H2 version from preferences: "
+				LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: "
 						+ h2Version.substring(0, 3));
 				PreparedStatement ps;
 
@@ -658,7 +663,7 @@ public class ProjectNavigator {
 				if (store.contains(key)) {
 					if (dbName.equals(store.getString(key))) {
 						alreadyRegistered = true;
-						LOGGER.info(
+						LOGGER.log(Level.INFO,
 								"Project " + dbName + " already registered");
 						break;
 					}
@@ -741,7 +746,7 @@ public class ProjectNavigator {
 
 			if (conn != null) {
 				final String h2Version = store.getString("H2VERSION");
-				LOGGER.info("Retrieved H2 version from preferences: "
+				LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: "
 						+ h2Version.substring(0, 3));
 				PreparedStatement ps;
 
@@ -793,7 +798,8 @@ public class ProjectNavigator {
 		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, projectPid);
 		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC,
 				store.getString("DBNAME"));
-		LOGGER.fine("Project Navigator posted selection index " + projectPid);
+		LOGGER.log(Level.FINE,
+				"Project Navigator posted selection index " + projectPid);
 	}
 
 	/**
@@ -842,7 +848,7 @@ public class ProjectNavigator {
 			}
 
 			if (result) {
-				LOGGER.info(
+				LOGGER.log(Level.INFO,
 						"Existing database " + dbName + " has been deleted");
 			}
 
@@ -861,7 +867,7 @@ public class ProjectNavigator {
 				if (store.contains(key)) {
 					if (dbName.equals(store.getString(key))) {
 						alreadyRegistered = true;
-						LOGGER.info(
+						LOGGER.log(Level.INFO,
 								"Project " + dbName + " already registered");
 						break;
 					}
@@ -901,7 +907,8 @@ public class ProjectNavigator {
 						index);
 			}
 
-			LOGGER.info("Project database has been restored from " + shortName);
+			LOGGER.log(Level.INFO,
+					"Project database has been restored from " + shortName);
 			eventBroker.post("MESSAGE",
 					"Project database has been restored from " + shortName);
 		} catch (final Exception e) {
@@ -925,7 +932,7 @@ public class ProjectNavigator {
 	@Optional
 	private void subscribeProjectListUpdateTopic(
 			@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
-		LOGGER.fine("Received project index " + key);
+		LOGGER.log(Level.FINE, "Received project index " + key);
 		try {
 			tableViewer.setInput(provider.get());
 			tableViewer.refresh();

@@ -76,7 +76,7 @@ public class PersonNamePartNavigator {
 	 *                   access error or other errors
 	 *
 	 */
-	public PersonNamePartNavigator() throws Exception {
+	public PersonNamePartNavigator() {
 		provider = new PersonNamePartProvider();
 	}
 
@@ -191,7 +191,6 @@ public class PersonNamePartNavigator {
 			tableViewer.setInput(provider.getStringList(personNamePid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		final Composite composite = new Composite(parent, SWT.NONE);
@@ -224,7 +223,7 @@ public class PersonNamePartNavigator {
 		String namePartPid = "0";
 
 		// Open an editor
-		LOGGER.fine("Opening Name Part View");
+		LOGGER.log(Level.FINE, "Opening Name Part View");
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.opennamepartview", null);
 		handlerService.executeHandler(command);
@@ -236,7 +235,7 @@ public class PersonNamePartNavigator {
 			namePartPid = selectedRow.getText(0);
 		}
 
-		LOGGER.info("Setting name part pid: " + namePartPid);
+		LOGGER.log(Level.INFO, "Setting name part pid: {0}", namePartPid);
 		eventBroker.post(Constants.PERSON_NAME_PART_PID_UPDATE_TOPIC,
 				Integer.parseInt(namePartPid));
 	}
@@ -246,13 +245,13 @@ public class PersonNamePartNavigator {
 	 */
 	protected void openNameStyleView() {
 		// Open an editor
-		LOGGER.fine("Opening Name Style View");
+		LOGGER.log(Level.FINE, "Opening Name Style View");
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.opennamestyleview", null);
 		handlerService.executeHandler(command);
 
 		final int nameStylePid = Integer.parseInt(textNameStylePid.getText());
-		LOGGER.info("Setting name style pid: " + nameStylePid);
+		LOGGER.log(Level.INFO, "Setting name style pid: {0}", nameStylePid);
 		eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
 				nameStylePid);
 	}
@@ -271,7 +270,7 @@ public class PersonNamePartNavigator {
 	@Optional
 	private void subscribeNamePidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int personNamePid) {
-		LOGGER.fine("Received name id " + personNamePid);
+		LOGGER.log(Level.FINE, "Received name id " + personNamePid);
 
 		if (personNamePid == 0) {
 			return;
@@ -305,7 +304,6 @@ public class PersonNamePartNavigator {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

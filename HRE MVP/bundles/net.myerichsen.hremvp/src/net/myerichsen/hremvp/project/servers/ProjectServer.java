@@ -21,6 +21,8 @@ import net.myerichsen.hremvp.MvpException;
  *
  */
 public class ProjectServer implements IHREServer {
+	private static final String NAME = ".name";
+	private static final String PROJECT = "project.";
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static final Logger LOGGER = Logger
@@ -53,12 +55,12 @@ public class ProjectServer implements IHREServer {
 		for (int i = 1; i <= projectCount; i++) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(i));
-			key = "project." + i + ".name";
+			key = PROJECT + i + NAME;
 			ls.add(store.getString(key));
-			key = "project." + i + ".localserver";
+			key = PROJECT + i + ".localserver";
 			ls.add(store.getString(key));
 
-			LOGGER.fine("Found Name: " + store.getString(key));
+			LOGGER.log(Level.FINE, "Found Name: " + store.getString(key));
 			lls.add(ls);
 		}
 
@@ -73,7 +75,7 @@ public class ProjectServer implements IHREServer {
 	@Override
 	public void get(int key) throws Exception {
 		projectId = key;
-		final String propKey = "project." + key + ".name";
+		final String propKey = PROJECT + key + NAME;
 		projectName = store.getString(propKey);
 	}
 
@@ -110,23 +112,23 @@ public class ProjectServer implements IHREServer {
 
 			switch (i) {
 			case 0:
-				key = "project." + projectId + ".name";
+				key = PROJECT + projectId + NAME;
 				ls.add(store.getString(key));
 				break;
 			case 1:
-				key = "project." + projectId + ".lastupdated";
+				key = PROJECT + projectId + ".lastupdated";
 				ls.add(store.getString(key));
 				break;
 			case 2:
-				key = "project." + projectId + ".summary";
+				key = PROJECT + projectId + ".summary";
 				ls.add(store.getString(key));
 				break;
 			case 3:
-				key = "project." + projectId + ".localserver";
+				key = PROJECT + projectId + ".localserver";
 				ls.add(store.getString(key));
 				break;
 			case 4:
-				key = "project." + projectId + ".path";
+				key = PROJECT + projectId + ".path";
 				ls.add(store.getString(key));
 				break;
 			default:
@@ -146,7 +148,7 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<List<String>>();
+		return new ArrayList<>();
 	}
 
 	/*
@@ -156,7 +158,7 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return new ArrayList<List<String>>();
+		return new ArrayList<>();
 	}
 
 	/*

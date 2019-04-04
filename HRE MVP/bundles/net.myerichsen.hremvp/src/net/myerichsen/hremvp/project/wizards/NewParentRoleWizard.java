@@ -70,7 +70,7 @@ public class NewParentRoleWizard extends Wizard {
 				provider.setAbbreviation(abbreviation);
 
 				final int ParentRolePid = provider.insert();
-				LOGGER.info("Inserted Parent role " + ParentRolePid);
+				LOGGER.log(Level.INFO, "Inserted Parent role " + ParentRolePid);
 				eventBroker.post("MESSAGE",
 						"Inserted Parent role " + ParentRolePid);
 
@@ -86,9 +86,10 @@ public class NewParentRoleWizard extends Wizard {
 					dp.setLabelPid(labelPid);
 					dp.setLabelType("ParentROLE");
 					final int dictionaryPid = dp.insert();
-					LOGGER.info("Inserted dictionary element " + dictionaryPid
-							+ ", " + input.get(i).get(2) + ", "
-							+ input.get(i).get(3));
+					LOGGER.log(Level.INFO,
+							"Inserted dictionary element " + dictionaryPid
+									+ ", " + input.get(i).get(2) + ", "
+									+ input.get(i).get(3));
 				}
 
 				eventBroker.post(

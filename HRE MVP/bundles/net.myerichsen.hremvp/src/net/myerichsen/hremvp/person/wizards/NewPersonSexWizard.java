@@ -80,7 +80,7 @@ public class NewPersonSexWizard extends Wizard {
 
 				final int sexPid = sexProvider.insert();
 
-				LOGGER.info(
+				LOGGER.log(Level.INFO,
 						"Inserted sex " + sexPid + " for person " + personPid);
 
 				eventBroker.post("MESSAGE",

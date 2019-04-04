@@ -127,7 +127,7 @@ public class NewPersonNameWizard extends Wizard {
 			personNameProvider.setToDatePid(page1.getToDatePid());
 			personNameProvider.setPrimaryName(true);
 			final int namePid = personNameProvider.insert();
-			LOGGER.info(
+			LOGGER.log(Level.INFO,
 					"Inserted name " + namePid + " for person " + personPid);
 
 			// Page 2
@@ -147,7 +147,7 @@ public class NewPersonNameWizard extends Wizard {
 					personNamePartProvider.setLabel(string);
 					personNamePartProvider.setPartNo(i);
 					namePartPid = personNamePartProvider.insert();
-					LOGGER.info("Inserted name part " + namePartPid
+					LOGGER.log(Level.INFO, "Inserted name part " + namePartPid
 							+ " for person " + personPid);
 				}
 			}

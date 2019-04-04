@@ -2,6 +2,7 @@
 package net.myerichsen.hremvp.location.handlers;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -44,7 +45,7 @@ public class OpenLocationGoogleMapHandler {
 		part.setContributionURI(contributionURI);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
-		LOGGER.fine("Opening new window");
+		LOGGER.log(Level.FINE, "Opening new window");
 	}
 
 }

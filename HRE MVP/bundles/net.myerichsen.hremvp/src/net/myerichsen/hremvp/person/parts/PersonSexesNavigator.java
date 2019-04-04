@@ -192,7 +192,7 @@ public class PersonSexesNavigator {
 			sexPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		LOGGER.info("Setting sex pid: " + sexPid);
+		LOGGER.log(Level.INFO, "Setting sex pid: " + sexPid);
 		eventBroker.post(Constants.SEX_PID_UPDATE_TOPIC, sexPid);
 	}
 
@@ -249,7 +249,7 @@ public class PersonSexesNavigator {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.info("Received person id " + personPid);
+		LOGGER.log(Level.INFO, "Received person id " + personPid);
 		this.personPid = personPid;
 
 		try {

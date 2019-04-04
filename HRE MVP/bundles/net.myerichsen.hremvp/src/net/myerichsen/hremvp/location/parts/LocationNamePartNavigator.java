@@ -149,7 +149,7 @@ public class LocationNamePartNavigator {
 	@Optional
 	private void subscribeLocationNamePidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_NAME_PID_UPDATE_TOPIC) int locationNamePid) {
-		LOGGER.info("Received location name id " + locationNamePid);
+		LOGGER.log(Level.INFO, "Received location name id " + locationNamePid);
 
 		if (locationNamePid == 0) {
 			return;

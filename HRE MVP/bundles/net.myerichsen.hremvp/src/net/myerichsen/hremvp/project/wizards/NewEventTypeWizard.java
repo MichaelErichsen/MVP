@@ -70,7 +70,7 @@ public class NewEventTypeWizard extends Wizard {
 				provider.setAbbreviation(abbreviation);
 
 				final int eventTypePid = provider.insert();
-				LOGGER.info("Inserted event type " + eventTypePid);
+				LOGGER.log(Level.INFO, "Inserted event type " + eventTypePid);
 				eventBroker.post("MESSAGE",
 						"Inserted event type " + eventTypePid);
 
@@ -86,9 +86,10 @@ public class NewEventTypeWizard extends Wizard {
 					dp.setLabelPid(labelPid);
 					dp.setLabelType("EVENT");
 					final int dictionaryPid = dp.insert();
-					LOGGER.info("Inserted dictionary element " + dictionaryPid
-							+ ", " + input.get(i).get(2) + ", "
-							+ input.get(i).get(3));
+					LOGGER.log(Level.INFO,
+							"Inserted dictionary element " + dictionaryPid
+									+ ", " + input.get(i).get(2) + ", "
+									+ input.get(i).get(3));
 				}
 
 				eventBroker.post(

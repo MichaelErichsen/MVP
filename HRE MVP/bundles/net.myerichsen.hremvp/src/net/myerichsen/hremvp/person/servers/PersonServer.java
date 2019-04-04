@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -645,7 +646,7 @@ public class PersonServer implements IHREServer {
 //		js.endArray();
 //		js.endObject();
 //
-//		LOGGER.fine(js.toString());
+//		LOGGER.log( Level.FINE, js.toString());
 
 		return js.toString();
 	}
@@ -724,13 +725,13 @@ public class PersonServer implements IHREServer {
 		final List<Parents> fkParent = new Parents().getFKChild(personPid);
 
 		for (final Parents parents : fkParent) {
-			LOGGER.info("Parent id: " + parents.getParentPid());
+			LOGGER.log(Level.INFO, "Parent id: " + parents.getParentPid());
 			final List<Parents> fkChild = new Parents()
 					.getFKParent(parents.getParentPid());
 			final TreeSet<Integer> childList = new TreeSet<>();
 
 			for (final Parents parents4 : fkChild) {
-				LOGGER.info("Child id: " + parents4.getChild());
+				LOGGER.log(Level.INFO, "Child id: " + parents4.getChild());
 				childList.add(parents4.getChild());
 				childList.remove(personPid);
 			}

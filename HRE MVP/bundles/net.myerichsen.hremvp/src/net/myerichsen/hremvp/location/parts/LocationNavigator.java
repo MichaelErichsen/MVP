@@ -163,7 +163,8 @@ public class LocationNavigator {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
-				LOGGER.fine("Filter string: " + textNameFilter.getText());
+				LOGGER.log(Level.FINE, "Filter string: {0}",
+						textNameFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -230,13 +231,13 @@ public class LocationNavigator {
 			final LocationProvider provider = new LocationProvider();
 			provider.delete(locationPid);
 
-			LOGGER.info("Location " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Location {0} has been deleted",
+					primaryName);
 			eventBroker.post("MESSAGE",
 					"Location " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -268,7 +269,7 @@ public class LocationNavigator {
 						break;
 					}
 				} catch (final Exception e) {
-					LOGGER.info(e.getMessage());
+					LOGGER.log(Level.INFO, e.getMessage());
 				}
 			}
 		}
@@ -295,7 +296,7 @@ public class LocationNavigator {
 		eventBroker.post(
 				net.myerichsen.hremvp.Constants.LOCATION_PID_UPDATE_TOPIC,
 				locationPid);
-		LOGGER.info("Location Pid: " + locationPid);
+		LOGGER.log(Level.INFO, "Location Pid: " + locationPid);
 	}
 
 	/**
@@ -305,7 +306,7 @@ public class LocationNavigator {
 	@Optional
 	private void subscribeLocationPidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
-		LOGGER.fine("Received person id " + locationPid);
+		LOGGER.log(Level.FINE, "Received person id {0}", locationPid);
 
 		if (locationPid > 0) {
 			try {

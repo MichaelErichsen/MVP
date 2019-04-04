@@ -174,7 +174,8 @@ public class PersonNavigator {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
-				LOGGER.fine("Filter string: " + textNameFilter.getText());
+				LOGGER.log(Level.FINE,
+						"Filter string: " + textNameFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -215,7 +216,8 @@ public class PersonNavigator {
 			final PersonProvider provider = new PersonProvider();
 			provider.delete(personPid);
 
-			LOGGER.info("Person " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO,
+					"Person " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Person " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
@@ -238,7 +240,7 @@ public class PersonNavigator {
 	private void postPersonPid() {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int personPid = Integer.parseInt(selection[0].getText(0));
-		LOGGER.info("Posting person pid " + personPid);
+		LOGGER.log(Level.INFO, "Posting person pid " + personPid);
 		eventBroker.post(
 				net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 				personPid);
@@ -255,7 +257,7 @@ public class PersonNavigator {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.fine("Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id " + personPid);
 
 		if (personPid > 0) {
 			try {

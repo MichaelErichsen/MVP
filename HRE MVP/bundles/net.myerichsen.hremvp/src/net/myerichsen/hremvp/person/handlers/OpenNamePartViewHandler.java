@@ -51,7 +51,6 @@ public class OpenNamePartViewHandler {
 					}
 				} catch (final Exception e) {
 					LOGGER.log(Level.SEVERE, e.toString(), e);
-					e.printStackTrace();
 				}
 			}
 		}
@@ -63,7 +62,7 @@ public class OpenNamePartViewHandler {
 		part.setContributionURI(contributionURI);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
-		LOGGER.fine("Opening new window");
+		LOGGER.log(Level.FINE, "Opening new window");
 	}
 
 }

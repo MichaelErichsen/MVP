@@ -67,7 +67,7 @@ public class SexTypeHttpRequestHandler implements Handler {
 	@Override
 	public void handle(String target, Request baseRequest,
 			HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.fine("Target: " + target + "\r\nRequest" + baseRequest
+		LOGGER.log(Level.FINE, "Target: " + target + "\r\nRequest" + baseRequest
 				+ "\r\nHttpServletRequest" + request);
 
 		final SexTypeServer server = new SexTypeServer();

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
@@ -29,7 +30,7 @@ public class HreContextHandlerCollection {
 	public static ContextHandlerCollection getContexts() {
 		if (contexts == null) {
 			contexts = new ContextHandlerCollection();
-			LOGGER.info("HreContextHandlerCollection created");
+			LOGGER.log(Level.INFO, "HreContextHandlerCollection created");
 		}
 		return contexts;
 	}

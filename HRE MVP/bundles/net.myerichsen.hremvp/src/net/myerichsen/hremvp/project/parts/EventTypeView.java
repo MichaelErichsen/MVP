@@ -53,7 +53,7 @@ public class EventTypeView {
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final EventTypeProvider provider;
-	private DictionaryProvider dp;
+//	private DictionaryProvider dp;
 	private int eventTypePid = 0;
 	private int labelPid = 0;
 
@@ -205,7 +205,6 @@ public class EventTypeView {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -232,9 +231,10 @@ public class EventTypeView {
 			// FIXME SEVERE: Invalid value "3" for parameter "parameterIndex"
 			// [90008-168]
 			provider.update();
-			LOGGER.info("Event pid " + eventTypePid + " has been updated");
+			LOGGER.log(Level.INFO, "Event pid {0} has been updated",
+					eventTypePid);
 
-			dp = new DictionaryProvider();
+			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
 
 			final List<List<String>> input = (List<List<String>>) tableViewer
@@ -242,10 +242,11 @@ public class EventTypeView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.info(input.get(i).get(2) + ", " + input.get(i).get(3)
-							+ " - " + existingElement.get(0) + ", "
-							+ existingElement.get(1) + ", "
-							+ existingElement.get(2));
+					LOGGER.log(Level.INFO,
+							input.get(i).get(2) + ", " + input.get(i).get(3)
+									+ " - " + existingElement.get(0) + ", "
+									+ existingElement.get(1) + ", "
+									+ existingElement.get(2));
 
 					if (input.get(i).get(2).equals(existingElement.get(0))) {
 						if ((input.get(i).get(3)
@@ -258,11 +259,12 @@ public class EventTypeView {
 							dp.setLabelPid(provider.getLabelPid());
 							dp.setLabelType("EVENT");
 							dp.update();
-							LOGGER.info("Updated dictionary element "
-									+ input.get(i).get(0) + ", "
-									+ input.get(i).get(1) + ", "
-									+ input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							LOGGER.log(Level.INFO,
+									"Updated dictionary element "
+											+ input.get(i).get(0) + ", "
+											+ input.get(i).get(1) + ", "
+											+ input.get(i).get(2) + ", "
+											+ input.get(i).get(3));
 						}
 						break;
 					}
@@ -272,7 +274,6 @@ public class EventTypeView {
 					"Event type " + eventTypePid + " has been updated");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

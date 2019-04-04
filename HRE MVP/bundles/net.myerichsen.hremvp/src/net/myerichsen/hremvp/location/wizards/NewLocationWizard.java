@@ -224,7 +224,7 @@ public class NewLocationWizard extends Wizard {
 			lp.setPrimaryLocation(isPrimaryLocation);
 
 			final int locationPid = lp.insert();
-			LOGGER.info("Inserted location " + locationPid);
+			LOGGER.log(Level.INFO, "Inserted location " + locationPid);
 
 			final LocationNameProvider lnp = new LocationNameProvider();
 			lnp.setLocationPid(locationPid);
@@ -236,7 +236,7 @@ public class NewLocationWizard extends Wizard {
 			lnp.setPreposition(preposition);
 
 			final int locationNamePid = lnp.insert();
-			LOGGER.info("Inserted location name " + locationNamePid);
+			LOGGER.log(Level.INFO, "Inserted location name " + locationNamePid);
 
 			LocationNamePartProvider lnpp;
 
@@ -247,7 +247,7 @@ public class NewLocationWizard extends Wizard {
 				lnpp.setLabel(locationNamePartList.get(i));
 
 				final int locationNamePartPid = lnpp.insert();
-				LOGGER.info(
+				LOGGER.log(Level.INFO,
 						"Inserted location name part " + locationNamePartPid);
 			}
 

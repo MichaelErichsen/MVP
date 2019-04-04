@@ -81,7 +81,7 @@ public class PersonProvider implements IHREProvider {
 //
 //		JSONObject jsonObject = new JSONObject(sb.toString());
 //
-//		LOGGER.info(jsonObject.toString(2));
+//		LOGGER.log( Level.INFO, jsonObject.toString(2));
 //
 //		setPersonPid(jsonObject.getInt("personPid"));
 //		setBirthDatePid(jsonObject.getString("birthDatePid"));

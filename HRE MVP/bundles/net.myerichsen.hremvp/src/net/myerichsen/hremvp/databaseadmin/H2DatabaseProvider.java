@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -46,12 +47,12 @@ public class H2DatabaseProvider implements IContentProvider {
 		conn = HreH2ConnectionPool.getConnection();
 		final String dbName = store.getString("DBNAME");
 
-		LOGGER.info("Database name: " + dbName);
+		LOGGER.log(Level.INFO, "Database name: " + dbName);
 
 		conn = HreH2ConnectionPool.getConnection(dbName);
 		PreparedStatement ps;
 		final String h2Version = store.getString("H2VERSION");
-		LOGGER.info("Retrieved H2 version from preferences: "
+		LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: "
 				+ h2Version.substring(0, 3));
 
 		if (h2Version.substring(0, 3).equals("1.3")) {

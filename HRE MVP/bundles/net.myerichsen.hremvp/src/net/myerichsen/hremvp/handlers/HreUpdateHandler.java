@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.handlers;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -46,7 +47,7 @@ public class HreUpdateHandler {
 	private void configureProvisioningJob(ProvisioningJob provisioningJob,
 			final Shell shell, final UISynchronize sync,
 			final IWorkbench workbench, IProgressMonitor monitor) {
-		LOGGER.info("Configure Provisioning job");
+		LOGGER.log(Level.INFO, "Configure Provisioning job");
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
 		subMonitor.beginTask("Configure Provisioning Job", 25);
 
@@ -110,7 +111,7 @@ public class HreUpdateHandler {
 			IProgressMonitor monitor) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
 		subMonitor.beginTask("Configure Update", 25);
-		LOGGER.info("Configure Update");
+		LOGGER.log(Level.INFO, "Configure Update");
 
 		URI uri = null;
 		try {
@@ -138,7 +139,8 @@ public class HreUpdateHandler {
 	@Execute
 	public void execute(final IProvisioningAgent agent, final Shell shell,
 			final UISynchronize sync, final IWorkbench workbench) {
-		LOGGER.info("Repository location: " + store.getString("UPDATESITE"));
+		LOGGER.log(Level.INFO,
+				"Repository location: " + store.getString("UPDATESITE"));
 		try {
 			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(
 					shell);
@@ -157,7 +159,7 @@ public class HreUpdateHandler {
 					final SubMonitor subMonitor = SubMonitor.convert(monitor,
 							100);
 
-					LOGGER.info("Check for updates");
+					LOGGER.log(Level.INFO, "Check for updates");
 
 					final ProvisioningSession session = new ProvisioningSession(
 							agent);
@@ -204,7 +206,7 @@ public class HreUpdateHandler {
 			UpdateOperation operation, IProgressMonitor monitor2) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
 		subMonitor.beginTask("Get Provisioning Job", 25);
-		LOGGER.info("Get Provisioning Job");
+		LOGGER.log(Level.INFO, "Get Provisioning Job");
 		final ProvisioningJob provisioningJob = operation
 				.getProvisioningJob(monitor);
 		subMonitor.worked(25);
@@ -221,7 +223,7 @@ public class HreUpdateHandler {
 			UpdateOperation operation, IProgressMonitor monitor2) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
 		subMonitor.beginTask("Resolve Modal Operation", 25);
-		LOGGER.info("Resolve Modal Operation");
+		LOGGER.log(Level.INFO, "Resolve Modal Operation");
 		final IStatus status = operation.resolveModal(monitor);
 		subMonitor.worked(25);
 		return status;
@@ -232,7 +234,7 @@ public class HreUpdateHandler {
 	 * @param sync
 	 */
 	private void showMessage(final Shell parent, UISynchronize sync) {
-		LOGGER.info("Show message");
+		LOGGER.log(Level.INFO, "Show message");
 		sync.syncExec(new Runnable() {
 
 			/*

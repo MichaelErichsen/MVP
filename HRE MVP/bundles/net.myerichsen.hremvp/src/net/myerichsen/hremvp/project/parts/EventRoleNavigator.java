@@ -183,7 +183,6 @@ public class EventRoleNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -193,7 +192,7 @@ public class EventRoleNavigator {
 	protected void deleteEventRole(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int eventRolePid = 0;
+//		int eventRolePid = 0;
 		String eventRoleName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
@@ -215,15 +214,14 @@ public class EventRoleNavigator {
 		}
 
 		try {
-			final EventRoleProvider provider = new EventRoleProvider();
-			provider.delete(eventRolePid);
+			final EventRoleProvider erp = new EventRoleProvider();
+			erp.delete(eventRolePid);
 			eventBroker.post("MESSAGE",
 					"Event role " + eventRoleName + " has been deleted");
 			eventBroker.post(Constants.EVENT_ROLE_PID_UPDATE_TOPIC,
 					eventRolePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -254,10 +252,11 @@ public class EventRoleNavigator {
 			ls.add(selectedRow.getText(2));
 			ls.add(selectedRow.getText(3));
 
-			LOGGER.info("Posting role id " + selectedRow.getText(0)
-					+ ", dictionary id " + selectedRow.getText(1)
-					+ ", abbreviation " + selectedRow.getText(2) + ", label "
-					+ selectedRow.getText(3));
+			LOGGER.log(Level.INFO,
+					"Posting role id " + selectedRow.getText(0)
+							+ ", dictionary id " + selectedRow.getText(1)
+							+ ", abbreviation " + selectedRow.getText(2)
+							+ ", label " + selectedRow.getText(3));
 			eventBroker.post(Constants.LABEL_PID_UPDATE_TOPIC, ls);
 		}
 
@@ -278,7 +277,7 @@ public class EventRoleNavigator {
 	@Optional
 	private void subscribeEventRolePidUpdateTopic(
 			@UIEventTopic(Constants.EVENT_ROLE_PID_UPDATE_TOPIC) int eventRolePid) {
-		LOGGER.fine("Received event Role id " + eventRolePid);
+		LOGGER.log(Level.FINE, "Received event Role id {0}", eventRolePid);
 		this.eventRolePid = eventRolePid;
 
 		if (eventRolePid > 0) {
@@ -297,7 +296,6 @@ public class EventRoleNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

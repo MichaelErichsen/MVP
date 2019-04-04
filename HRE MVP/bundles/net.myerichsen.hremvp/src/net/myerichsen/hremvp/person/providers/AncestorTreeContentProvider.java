@@ -84,8 +84,8 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		if (element instanceof TreePerson
-				&& ((TreePerson) element).getAncestorList().size() > 0) {
+		if ((element instanceof TreePerson)
+				&& !((TreePerson) element).getAncestorList().isEmpty()) {
 			return true;
 		}
 		return false;

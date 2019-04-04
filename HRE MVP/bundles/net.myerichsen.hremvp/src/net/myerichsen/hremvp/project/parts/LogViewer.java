@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -99,7 +100,7 @@ public class LogViewer {
 	@Optional
 	private void subscribeLogRefreshUpdateTopic(
 			@UIEventTopic(Constants.LOG_REFRESH_UPDATE_TOPIC) int i) {
-		LOGGER.fine("Update topic received");
+		LOGGER.log(Level.FINE, "Update topic received");
 		tableViewer.setInput(LOG_ADDRESS);
 		tableViewer.refresh();
 		table.setTopIndex(table.getItemCount() - 1);

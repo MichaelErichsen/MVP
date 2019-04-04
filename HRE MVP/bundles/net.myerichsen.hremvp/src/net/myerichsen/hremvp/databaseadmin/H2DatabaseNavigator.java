@@ -70,7 +70,7 @@ public class H2DatabaseNavigator {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
-		LOGGER.info("Creating controls");
+		LOGGER.log(Level.INFO, "Creating controls");
 		parent.setLayout(new GridLayout(1, false));
 
 		final TableViewer tableViewer = new TableViewer(parent,
@@ -133,7 +133,7 @@ public class H2DatabaseNavigator {
 	private void subscribeDatabaseNameUpdateTopic(
 			@UIEventTopic(Constants.DATABASE_UPDATE_TOPIC) String dbName2) {
 		dbName = dbName2;
-		LOGGER.info(dbName2);
+		LOGGER.log(Level.INFO, dbName2);
 		updateGui();
 	}
 

@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -663,7 +664,7 @@ public class H2ModelGenerator {
 
 			if (pks.next()) {
 				primaryKey = pks.getString(4);
-				LOGGER.fine("Primary key: " + pks.getString(4));
+				LOGGER.log(Level.FINE, "Primary key: {0}", pks.getString(4));
 			}
 
 			final PreparedStatement ps = conn.prepareStatement(COLUMNS);
@@ -683,7 +684,7 @@ public class H2ModelGenerator {
 					primaryKeyType = type;
 				} else if (field.equals("TABLE_ID")) {
 					tableId = rs.getInt(3);
-					LOGGER.fine("Field: " + field + ", type: " + type
+					LOGGER.log(Level.FINE, "Field: " + field + ", type: " + type
 							+ ", default: " + tableId);
 				}
 			}

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.handlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -78,7 +79,7 @@ public class ProjectStartEmbeddedServerHandler {
 					final Handler[] handlerList = contexts.getHandlers();
 
 					for (final Handler handler : handlerList) {
-						LOGGER.info("Server handler: "
+						LOGGER.log(Level.INFO, "Server handler: "
 								+ ((ContextHandler) handler).getContextPath());
 					}
 
@@ -86,7 +87,8 @@ public class ProjectStartEmbeddedServerHandler {
 					server.setStopAtShutdown(true);
 					server.start();
 
-					LOGGER.info("The server is running at " + server.getURI());
+					LOGGER.log(Level.INFO,
+							"The server is running at " + server.getURI());
 					eventBroker.post("MESSAGE",
 							"The server is running at " + server.getURI());
 

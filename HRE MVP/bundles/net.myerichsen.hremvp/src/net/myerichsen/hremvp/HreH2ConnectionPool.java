@@ -46,19 +46,19 @@ public class HreH2ConnectionPool {
 		try {
 			connectionPool.dispose();
 		} catch (final Exception e) {
-			LOGGER.info("No connection pool to dispose");
+			LOGGER.log(Level.INFO, "No connection pool to dispose");
 		}
 		dbPath = store.getString("DBPATH");
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
 		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName
 				+ ";TRACE_LEVEL_FILE=" + h2TraceLevel
 				+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
-		LOGGER.info("JDBC URL: " + jdbcUrl);
+		LOGGER.log(Level.INFO, "JDBC URL: {0}", jdbcUrl);
 		connectionPool = JdbcConnectionPool.create(jdbcUrl, "sa", "");
-		LOGGER.info("Connection pool has been created");
+		LOGGER.log(Level.INFO, "Connection pool has been created");
 		connectionPool.setMaxConnections(500);
 		store.setValue("DBNAME", dbName);
-		LOGGER.info("Preferences dbname set to " + dbName);
+		LOGGER.log(Level.INFO, "Preferences dbname set to {0}", dbName);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class HreH2ConnectionPool {
 			final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName
 					+ ";IFEXISTS=TRUE;TRACE_LEVEL_FILE=" + h2TraceLevel
 					+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
-			LOGGER.info("JDBC URL: " + jdbcUrl);
+			LOGGER.log(Level.INFO, "JDBC URL: {0}", jdbcUrl);
 			connectionPool = JdbcConnectionPool.create(jdbcUrl,
 					store.getString("USERID"), store.getString("PASSWORD"));
 			connectionPool.setMaxConnections(500);
@@ -109,19 +109,20 @@ public class HreH2ConnectionPool {
 					h2Version = rs.getString(1);
 					store.setValue("H2VERSION", h2Version);
 
-					LOGGER.info("H2 Version is " + h2Version);
+					LOGGER.log(Level.INFO, "H2 Version is {0}", h2Version);
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 				store.setValue("H2VERSION", h2Version);
 
-				LOGGER.info("H2 Version defaults to " + h2Version);
+				LOGGER.log(Level.INFO, "H2 Version defaults to {0}", h2Version);
 			}
 		}
 
-		LOGGER.fine("Reusing connection pool, Max: "
-				+ connectionPool.getMaxConnections() + ", Active: "
-				+ connectionPool.getActiveConnections());
+		LOGGER.log(Level.FINE,
+				"Reusing connection pool, Max: "
+						+ connectionPool.getMaxConnections() + ", Active: "
+						+ connectionPool.getActiveConnections());
 
 		return connectionPool.getConnection();
 	}
@@ -140,10 +141,10 @@ public class HreH2ConnectionPool {
 		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName
 				+ ";IFEXISTS=TRUE;TRACE_LEVEL_FILE=" + h2TraceLevel
 				+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
-		LOGGER.info("JDBC URL: " + jdbcUrl);
+		LOGGER.log(Level.INFO, "JDBC URL: " + jdbcUrl);
 		connectionPool = JdbcConnectionPool.create(jdbcUrl, "sa", "");
 		connectionPool.setMaxConnections(500);
-		LOGGER.info("Connection pool has been created");
+		LOGGER.log(Level.INFO, "Connection pool has been created");
 
 		return connectionPool.getConnection();
 	}

@@ -55,31 +55,34 @@ public class Activator implements BundleActivator {
 
 		HreLogger.setup();
 
-		LOGGER.fine("HRE MVP v0.2 has been started");
-		LOGGER.fine("Command line arguments:");
+		LOGGER.log(Level.FINE, "HRE MVP v0.2 has been started");
+		LOGGER.log(Level.FINE, "Command line arguments:");
 
 		final ServiceReference<EnvironmentInfo> envRef = context
 				.getServiceReference(EnvironmentInfo.class);
 		final EnvironmentInfo envInfo = context.getService(envRef);
 		final String[] args = envInfo.getCommandLineArgs();
 		for (int i = 0; i < args.length; i++) {
-			LOGGER.fine("CLI " + i + ": " + args[i]);
+			LOGGER.log(Level.FINE, "CLI " + i + ": " + args[i]);
 		}
 
 		// List properties to LOGGER
-		LOGGER.fine("--------------------------------------");
-		LOGGER.fine("Project preferences:");
-		LOGGER.fine("Project count: " + store.getString("projectcount"));
+		LOGGER.log(Level.FINE, "--------------------------------------");
+		LOGGER.log(Level.FINE, "Project preferences:");
+		LOGGER.log(Level.FINE,
+				"Project count: " + store.getString("projectcount"));
 		final int i = Integer.parseInt(store.getString("projectcount"));
 
 		for (int j = 1; j < (i + 1); j++) {
-			LOGGER.fine(store.getString(PROJECT + j + ".name"));
-			LOGGER.fine(store.getString(PROJECT + j + ".lastupdated"));
-			LOGGER.fine(store.getString(PROJECT + j + ".summary"));
-			LOGGER.fine(store.getString(PROJECT + j + ".localserver"));
-			LOGGER.fine(store.getString(PROJECT + j + ".path"));
+			LOGGER.log(Level.FINE, store.getString(PROJECT + j + ".name"));
+			LOGGER.log(Level.FINE,
+					store.getString(PROJECT + j + ".lastupdated"));
+			LOGGER.log(Level.FINE, store.getString(PROJECT + j + ".summary"));
+			LOGGER.log(Level.FINE,
+					store.getString(PROJECT + j + ".localserver"));
+			LOGGER.log(Level.FINE, store.getString(PROJECT + j + ".path"));
 		}
-		LOGGER.fine("--------------------------------------");
+		LOGGER.log(Level.FINE, "--------------------------------------");
 
 		final String csMode = store.getString("CSMODE");
 		LOGGER.log(Level.FINE, "Client/server mode {0}", csMode);
@@ -126,7 +129,7 @@ public class Activator implements BundleActivator {
 
 		try {
 			Runtime.getRuntime().exec(command);
-			LOGGER.fine("Help System is being stopped");
+			LOGGER.log(Level.FINE, "Help System is being stopped");
 		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage());
 		}

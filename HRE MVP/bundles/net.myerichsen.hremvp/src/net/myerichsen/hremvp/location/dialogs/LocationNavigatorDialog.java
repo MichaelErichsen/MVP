@@ -145,7 +145,8 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textFilter.getText());
-				LOGGER.fine("Filter string: " + textFilter.getText());
+				LOGGER.log(Level.FINE,
+						"Filter string: " + textFilter.getText());
 				tableViewer.refresh();
 			}
 		});

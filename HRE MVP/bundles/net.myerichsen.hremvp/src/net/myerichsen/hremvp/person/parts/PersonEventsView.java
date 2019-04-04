@@ -54,6 +54,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  */
 @SuppressWarnings("restriction")
 public class PersonEventsView {
+	private static final String MESSAGE = "MESSAGE";
+
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -78,8 +80,7 @@ public class PersonEventsView {
 			provider = new PersonProvider();
 			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
-			e.printStackTrace();
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
@@ -168,7 +169,8 @@ public class PersonEventsView {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textFilter.getText());
-				LOGGER.fine("Filter string: " + textFilter.getText());
+				LOGGER.log(Level.FINE,
+						"Filter string: " + textFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -210,7 +212,6 @@ public class PersonEventsView {
 			tableViewer.setInput(provider.getPersonEventList(0));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -238,7 +239,7 @@ public class PersonEventsView {
 			eventPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		LOGGER.info("Setting personEvent pid: " + eventPid);
+		LOGGER.log(Level.INFO, "Setting personEvent pid: {0}", eventPid);
 		eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
 	}
 
@@ -248,35 +249,34 @@ public class PersonEventsView {
 	protected void removeEvent(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int EventPid = 0;
+		int eventPid = 0;
 		String primaryName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
-			EventPid = Integer.parseInt(item.getText(0));
+			eventPid = Integer.parseInt(item.getText(0));
 			primaryName = item.getText(1);
 		}
 
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
 				"Remove Event " + primaryName, null,
-				"Are you sure that you will remove event " + EventPid + ", "
+				"Are you sure that you will remove event " + eventPid + ", "
 						+ primaryName + "?",
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
 
 		if (dialog.open() == Window.CANCEL) {
-			eventBroker.post("MESSAGE",
+			eventBroker.post(MESSAGE,
 					"Removal of Event " + primaryName + " has been canceled");
 			return;
 		}
 
 		try {
-			final PersonProvider provider = new PersonProvider();
-			provider.removeEvent(EventPid);
-			eventBroker.post("MESSAGE",
+			final PersonProvider pp = new PersonProvider();
+			pp.removeEvent(eventPid);
+			eventBroker.post(MESSAGE,
 					"Event " + primaryName + " has been removed");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -295,14 +295,13 @@ public class PersonEventsView {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.fine("Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 		this.personPid = personPid;
 		try {
 			tableViewer.setInput(provider.getPersonEventList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

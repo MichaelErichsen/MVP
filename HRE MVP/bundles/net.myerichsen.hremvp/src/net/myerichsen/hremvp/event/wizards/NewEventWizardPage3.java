@@ -250,7 +250,7 @@ public class NewEventWizardPage3 extends WizardPage {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.fine("Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id " + personPid);
 
 		if (personPid > 0) {
 			try {

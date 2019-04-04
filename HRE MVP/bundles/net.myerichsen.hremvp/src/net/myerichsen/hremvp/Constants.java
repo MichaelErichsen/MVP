@@ -9,17 +9,10 @@ package net.myerichsen.hremvp;
  */
 public class Constants {
 	/**
-	 * Constructor
-	 *
-	 */
-	private Constants() {
-		super();
-	}
-
-	/**
 	 * H2 Data types
 	 */
 	public static final int BIGINT = -5;
+
 	public static final int BLOB = 2004;
 	public static final int BOOLEAN = 16;
 	public static final int CHAR = 1;
@@ -32,7 +25,6 @@ public class Constants {
 	public static final int TIMESTAMP = 93;
 	public static final int VARBINARY = -3;
 	public static final int VARCHAR = 12;
-
 	/**
 	 * H2 Database table ids
 	 */
@@ -45,6 +37,7 @@ public class Constants {
 	 * Eclipse events
 	 */
 	public static final String DATABASE_UPDATE_TOPIC = "DATABASE_UPDATE_TOPIC";
+
 	public static final String EVENT_PID_UPDATE_TOPIC = "EVENT_PID_UPDATE_TOPIC";
 	public static final String EVENT_ROLE_PID_UPDATE_TOPIC = "EVENT_ROLE_PID_UPDATE_TOPIC";
 	public static final String EVENT_TYPE_PID_UPDATE_TOPIC = "EVENT_TYPE_PID_UPDATE_TOPIC";
@@ -74,5 +67,13 @@ public class Constants {
 	public static final String SEX_PID_UPDATE_TOPIC = "SEX_PID_UPDATE_TOPIC";
 	public static final String SEX_TYPE_PID_UPDATE_TOPIC = "SEX_TYPE_PID_UPDATE_TOPIC";
 	public static final String TABLENAME_UPDATE_TOPIC = "TABLENAME_UPDATE_TOPIC";
+
+	/**
+	 * Constructor
+	 *
+	 */
+	private Constants() {
+		super();
+	}
 
 }

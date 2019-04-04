@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.providers;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -75,7 +76,7 @@ public class HREColumnLabelProvider extends ColumnLabelProvider {
 			@Override
 			public void keyTraversed(TraverseEvent e) {
 				if (e.keyCode == SWT.TAB) {
-					LOGGER.fine("Traversed " + e.keyCode);
+					LOGGER.log(Level.FINE, "Traversed " + e.keyCode);
 
 					final int itemCount = tableViewer.getTable().getItemCount();
 					final int selectionIndex = tableViewer.getTable()

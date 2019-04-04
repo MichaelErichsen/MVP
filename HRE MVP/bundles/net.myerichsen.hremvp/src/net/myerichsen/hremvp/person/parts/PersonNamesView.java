@@ -223,7 +223,7 @@ public class PersonNamesView {
 			final PersonNameProvider provider = new PersonNameProvider();
 			provider.delete(namePid);
 
-			LOGGER.info("Name " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Name " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Name " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, 0);
@@ -255,7 +255,7 @@ public class PersonNamesView {
 
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int namePid = Integer.parseInt(selection[0].getText(0));
-		LOGGER.info("Setting name pid: " + namePid);
+		LOGGER.log(Level.INFO, "Setting name pid: " + namePid);
 		eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, namePid);
 	}
 
@@ -270,7 +270,7 @@ public class PersonNamesView {
 	@Optional
 	private void subscribeNamePidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int namePid) {
-		LOGGER.fine("Received name id " + namePid);
+		LOGGER.log(Level.FINE, "Received name id " + namePid);
 		try {
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
@@ -287,7 +287,7 @@ public class PersonNamesView {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.fine("Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id " + personPid);
 		this.personPid = personPid;
 		try {
 			textId.setText(Integer.toString(personPid));

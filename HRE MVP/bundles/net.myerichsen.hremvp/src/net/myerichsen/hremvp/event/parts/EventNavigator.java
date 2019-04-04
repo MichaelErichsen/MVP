@@ -60,6 +60,10 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class EventNavigator {
+	/**
+	 * 
+	 */
+	private static final String MESSAGE = "MESSAGE";
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
@@ -84,8 +88,7 @@ public class EventNavigator {
 			provider = new EventProvider();
 			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
-			e.printStackTrace();
-			eventBroker.post("MESSAGE", e.getMessage());
+			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
@@ -197,7 +200,8 @@ public class EventNavigator {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
-				LOGGER.fine("Filter string: " + textNameFilter.getText());
+				LOGGER.log(Level.FINE, "Filter string: {0}",
+						textNameFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -210,7 +214,6 @@ public class EventNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -236,22 +239,22 @@ public class EventNavigator {
 				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
 
 		if (dialog.open() == Window.CANCEL) {
-			eventBroker.post("MESSAGE",
+			eventBroker.post(MESSAGE,
 					"Deletion of event " + primaryName + " has been canceled");
 			return;
 		}
 
 		try {
-			final EventProvider provider = new EventProvider();
-			provider.delete(eventPid);
+			final EventProvider ep = new EventProvider();
+			ep.delete(eventPid);
 
-			LOGGER.info("event " + primaryName + " has been deleted");
-			eventBroker.post("MESSAGE",
+			LOGGER.log(Level.INFO, "event {0}",
+					primaryName + " has been deleted");
+			eventBroker.post(MESSAGE,
 					"event " + primaryName + " has been deleted");
 			eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -286,7 +289,7 @@ public class EventNavigator {
 					}
 				}
 			} catch (final Exception e) {
-				LOGGER.info(e.getMessage());
+				LOGGER.log(Level.INFO, e.getMessage());
 			}
 		}
 
@@ -310,7 +313,7 @@ public class EventNavigator {
 
 		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
 				eventPid);
-		LOGGER.info("Event Pid: " + eventPid);
+		LOGGER.log(Level.INFO, "Event Pid: {0}", eventPid);
 	}
 
 	/**
@@ -327,7 +330,7 @@ public class EventNavigator {
 	@Optional
 	private void subscribeEventPidUpdateTopic(
 			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
-		LOGGER.fine("Received event id " + eventPid);
+		LOGGER.log(Level.FINE, "Received event id {0}", eventPid);
 
 		if (eventPid > 0) {
 			try {
@@ -345,7 +348,6 @@ public class EventNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

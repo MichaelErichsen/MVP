@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.providers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -38,15 +39,6 @@ public class DictionaryProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws Exception {
 		server.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return server.get();
 	}
 
 	/*
@@ -113,8 +105,7 @@ public class DictionaryProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<List<String>>();
 	}
 
 	/**

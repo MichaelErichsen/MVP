@@ -71,7 +71,7 @@ public class NewPersonPartnerWizard extends Wizard {
 
 			try {
 				partnerProvider.insert();
-				LOGGER.info("Inserted partner pid " + partnerPid
+				LOGGER.log(Level.INFO, "Inserted partner pid " + partnerPid
 						+ " for person " + personPid);
 				eventBroker.post("MESSAGE", "Inserted partner pid " + partnerPid
 						+ " for person " + personPid);

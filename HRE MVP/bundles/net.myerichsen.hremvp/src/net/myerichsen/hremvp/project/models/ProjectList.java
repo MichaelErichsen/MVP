@@ -63,7 +63,8 @@ public class ProjectList {
 		store.setValue("project." + count + ".path", model.getPath());
 		store.setValue("projectcount", count);
 		((ScopedPreferenceStore) store).save();
-		LOGGER.info("Added " + model.getName() + " as project " + count);
+		LOGGER.log(Level.INFO,
+				"Added " + model.getName() + " as project " + count);
 		return count;
 	}
 

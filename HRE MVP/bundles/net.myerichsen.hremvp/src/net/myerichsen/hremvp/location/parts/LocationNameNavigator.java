@@ -233,14 +233,14 @@ public class LocationNameNavigator {
 			final LocationNameProvider lnp = new LocationNameProvider();
 			lnp.delete(locationNamePid);
 
-			LOGGER.info("Location name " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Location name {0} has been deleted",
+					primaryName);
 			eventBroker.post("MESSAGE",
 					"Location name " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC,
 					locationNamePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -276,7 +276,7 @@ public class LocationNameNavigator {
 					}
 				}
 			} catch (final Exception e) {
-				LOGGER.info(e.getMessage());
+				LOGGER.log(Level.INFO, e.getMessage());
 			}
 		}
 
@@ -298,7 +298,7 @@ public class LocationNameNavigator {
 			locationNamePid = selectedRow.getText(0);
 		}
 
-		LOGGER.info("Setting location name pid: " + locationNamePid);
+		LOGGER.log(Level.INFO, "Setting location name pid: " + locationNamePid);
 		eventBroker.post(Constants.LOCATION_NAME_PID_UPDATE_TOPIC,
 				Integer.parseInt(locationNamePid));
 	}
@@ -318,7 +318,7 @@ public class LocationNameNavigator {
 	private void subscribeLocationPidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
 		this.locationPid = locationPid;
-		LOGGER.info("Received " + locationPid);
+		LOGGER.log(Level.INFO, "Received " + locationPid);
 
 		try {
 			tableViewer.setInput(provider.getStringList(locationPid));

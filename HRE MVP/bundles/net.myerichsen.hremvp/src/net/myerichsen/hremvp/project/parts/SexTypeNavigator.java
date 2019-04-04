@@ -211,7 +211,8 @@ public class SexTypeNavigator {
 		try {
 			final SexTypeProvider provider = new SexTypeProvider();
 			provider.delete(sexTypePid);
-			LOGGER.info("Sex type " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO,
+					"Sex type " + primaryName + " has been deleted");
 			eventBroker.post("MESSAGE",
 					"Sex type " + primaryName + " has been deleted");
 			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
@@ -265,7 +266,7 @@ public class SexTypeNavigator {
 	@Optional
 	private void subscribeSexTypePidUpdateTopic(
 			@UIEventTopic(Constants.SEX_TYPE_PID_UPDATE_TOPIC) int sexTypePid) {
-		LOGGER.fine("Received sex type id " + sexTypePid);
+		LOGGER.log(Level.FINE, "Received sex type id " + sexTypePid);
 		this.sexTypePid = sexTypePid;
 
 		if (sexTypePid > 0) {

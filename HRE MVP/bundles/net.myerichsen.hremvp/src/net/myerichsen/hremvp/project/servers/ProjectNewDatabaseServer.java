@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 
@@ -18,11 +19,7 @@ import net.myerichsen.hremvp.project.providers.CsvFileImporter;
 public class ProjectNewDatabaseServer {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Connection conn = null;
-
-	private Statement stmt;
-
-	private final String[] statementArray = {
+	private static final String[] statementArray = {
 			"CREATE TABLE PERSONS ( PERSON_PID INTEGER NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 15 NOT NULL, BIRTH_DATE_PID INTEGER, DEATH_DATE_PID INTEGER );",
 			"CREATE TABLE PARENT_ROLES ( PARENT_ROLE_PID INTEGER NOT NULL, ABBREVIATION CHAR(8) NOT NULL, LABEL_PID INTEGER NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 26 NOT NULL );",
 			"CREATE TABLE EVENT_TYPES ( EVENT_TYPE_PID INTEGER NOT NULL, ABBREVIATION CHAR(8) NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 23 NOT NULL, LABEL_PID INTEGER NOT NULL );",
@@ -381,6 +378,10 @@ public class ProjectNewDatabaseServer {
 			"ALTER TABLE PERSONS ADD CONSTRAINT CONSTRAINT_25B FOREIGN KEY (DEATH_DATE_PID) REFERENCES HDATES (HDATE_PID) ON DELETE RESTRICT ON UPDATE RESTRICT;",
 			"ALTER TABLE LOCATION_NAMES ADD CONSTRAINT CONSTRAINT_B FOREIGN KEY (FROM_DATE_PID) REFERENCES HDATES (HDATE_PID) ON DELETE RESTRICT ON UPDATE RESTRICT;" };
 
+	private Connection conn = null;
+
+	private Statement stmt;
+
 	/**
 	 * Constructor
 	 *
@@ -399,7 +400,7 @@ public class ProjectNewDatabaseServer {
 	 * @throws BackingStoreException
 	 */
 	public void provide(String dbName) throws Exception, BackingStoreException {
-		LOGGER.info("Provide the data");
+		LOGGER.log(Level.INFO, "Provide the data");
 		HreH2ConnectionPool.createNew(dbName);
 		conn = HreH2ConnectionPool.getConnection();
 		stmt = conn.createStatement();

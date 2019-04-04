@@ -220,7 +220,7 @@ public class PersonSexView {
 
 		final int sexTypePid = Integer.parseInt(textSexTypePid.getText());
 
-		LOGGER.info("Setting sex type pid: " + sexTypePid);
+		LOGGER.log(Level.INFO, "Setting sex type pid: " + sexTypePid);
 		eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
 	}
 
