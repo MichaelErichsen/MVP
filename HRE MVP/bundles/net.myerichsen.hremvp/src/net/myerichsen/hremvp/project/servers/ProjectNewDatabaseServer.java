@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.project.providers.CsvFileImporter;
  *
  */
 public class ProjectNewDatabaseServer {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Connection conn = null;
 

@@ -21,7 +21,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  *
  */
 public class OpenPersonViewHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonView";
+	private static final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonView";
 
 	/**
 	 * @param partService  The Eclipse part service

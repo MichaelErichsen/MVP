@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  *
  */
 public class SexTypeServer implements IHREServer {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");

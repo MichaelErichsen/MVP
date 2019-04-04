@@ -87,10 +87,10 @@ public DBF database;
 
 public String stringKey;
 
-public final static int findFirstMatchingKey = -1;
-public final static int findAnyKey = -2;
-public final static int keyNotFound = -3;
-public final static int foundMatchingKeyButNotRecord = -4;
+public static final int findFirstMatchingKey = -1;
+public static final int findAnyKey = -2;
+public static final int keyNotFound = -3;
+public static final int foundMatchingKeyButNotRecord = -4;
 
 public  boolean foundExact = false;
 

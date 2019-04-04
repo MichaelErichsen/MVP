@@ -11,7 +11,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * @version 2. feb. 2019
  */
 public class NavigatorFilter extends ViewerFilter {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String searchString;
 

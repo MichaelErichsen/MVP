@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
  *
  */
 public class NewPersonNameStyleWizard extends Wizard {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;

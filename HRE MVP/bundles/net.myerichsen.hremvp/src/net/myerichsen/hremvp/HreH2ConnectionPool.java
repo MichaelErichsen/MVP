@@ -22,12 +22,12 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 public class HreH2ConnectionPool {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static JdbcConnectionPool connectionPool = null;
 	private static int h2TraceLevel = 1;
 	private static String dbPath = null;
-	private final static String GETH2VERSION = "SELECT H2VERSION() FROM DUAL";
+	private static final String GETH2VERSION = "SELECT H2VERSION() FROM DUAL";
 
 	/**
 	 * Exists only to defeat instantiation

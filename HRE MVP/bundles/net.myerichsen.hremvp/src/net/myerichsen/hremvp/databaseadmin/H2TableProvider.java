@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  *
  */
 public class H2TableProvider implements IContentProvider {
-	// private final static Logger LOGGER =
+	// private static final Logger LOGGER =
 	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Connection conn = null;
 

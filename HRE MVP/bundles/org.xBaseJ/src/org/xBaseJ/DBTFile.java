@@ -43,8 +43,8 @@ public abstract class DBTFile extends Object
  public int memoBlockSize = 512;
  public int nextBlock;
  public DBF database;
- public final static byte BYTEZERO = (byte) '0';
- public final static byte BYTESPACE = (byte) ' ';
+ public static final byte BYTEZERO = (byte) '0';
+ public static final byte BYTESPACE = (byte) ' ';
 
  public String extension = "dbt";
 

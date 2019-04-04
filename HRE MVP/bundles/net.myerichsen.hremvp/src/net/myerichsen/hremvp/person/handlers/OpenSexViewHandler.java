@@ -19,7 +19,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  *
  */
 public class OpenSexViewHandler {
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonSexView";
+	private static final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.parts.PersonSexView";
 
 	/**
 	 * @param partService  The Eclipse part service

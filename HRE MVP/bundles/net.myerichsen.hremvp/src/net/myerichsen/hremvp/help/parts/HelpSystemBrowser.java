@@ -24,7 +24,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  *
  */
 public class HelpSystemBrowser {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");

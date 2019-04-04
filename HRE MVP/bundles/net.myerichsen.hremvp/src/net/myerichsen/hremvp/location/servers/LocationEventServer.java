@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  *
  */
 public class LocationEventServer implements IHREServer {
-//	private final static Logger LOGGER = Logger
+//	private static final Logger LOGGER = Logger
 //			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int LocationEventsPid;
 	private int EventPid;

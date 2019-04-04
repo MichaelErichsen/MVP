@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.location.providers.LocationEventProvider;
  */
 
 public class LocationEventView {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;

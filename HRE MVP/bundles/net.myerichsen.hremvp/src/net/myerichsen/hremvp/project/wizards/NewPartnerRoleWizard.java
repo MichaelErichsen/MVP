@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.project.providers.PartnerRoleProvider;
  *
  */
 public class NewPartnerRoleWizard extends Wizard {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;

@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class NewPersonWizardPage3 extends WizardPage {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private NewPersonWizard wizard;
 

@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
  *
  */
 public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject

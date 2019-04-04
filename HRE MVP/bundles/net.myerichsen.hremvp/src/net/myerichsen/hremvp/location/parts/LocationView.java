@@ -49,7 +49,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @version 16. mar. 2019
  */
 public class LocationView {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;

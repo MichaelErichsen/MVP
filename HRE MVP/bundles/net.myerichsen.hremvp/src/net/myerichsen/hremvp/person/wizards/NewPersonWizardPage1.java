@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private NewPersonWizard wizard;

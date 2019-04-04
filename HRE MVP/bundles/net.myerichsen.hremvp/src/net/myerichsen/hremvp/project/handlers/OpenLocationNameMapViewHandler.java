@@ -19,9 +19,9 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * @version 2. mar. 2019
  */
 public class OpenLocationNameMapViewHandler {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final static String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LocationNameMapView";
+	private static final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LocationNameMapView";
 
 	/**
 	 * @param partService  The Eclipse part service

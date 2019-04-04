@@ -41,7 +41,7 @@ import net.myerichsen.hremvp.location.providers.LocationPersonProvider;
  * @version 25. jan. 2019
  */
 public class LocationPersonView {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject

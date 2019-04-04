@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  *
  */
 public class EventServer implements IHREServer {
-//	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int EventPid;
 	private int TableId;
 	private int FromDatePid;

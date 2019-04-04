@@ -44,8 +44,8 @@ public class LogicalField extends Field{
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-public final static byte BYTETRUE = (byte) 'T';
-public final static byte BYTEFALSE = (byte) 'F';
+public static final byte BYTETRUE = (byte) 'T';
+public static final byte BYTEFALSE = (byte) 'F';
 public static final char type = 'L';
 
 public Object clone() throws  CloneNotSupportedException

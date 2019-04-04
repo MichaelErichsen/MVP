@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject

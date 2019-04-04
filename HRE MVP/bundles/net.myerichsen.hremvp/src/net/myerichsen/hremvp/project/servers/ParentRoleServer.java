@@ -22,7 +22,7 @@ import net.myerichsen.hremvp.dbmodels.ParentRoles;
  *
  */
 public class ParentRoleServer implements IHREServer {
-	// private final static Logger LOGGER =
+	// private static final Logger LOGGER =
 	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int ParentRolePid;

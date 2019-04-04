@@ -22,7 +22,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  *
  */
 public class EventRoleServer implements IHREServer {
-//	private final static Logger LOGGER = Logger
+//	private static final Logger LOGGER = Logger
 //			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int EventRolePid;

@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  *
  */
 public class LocationNameServer implements IHREServer {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int locationNamePid;
 	private int locationPid;

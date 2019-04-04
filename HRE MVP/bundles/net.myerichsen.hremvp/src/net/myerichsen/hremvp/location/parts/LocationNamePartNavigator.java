@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * @version 31. mar. 2019
  */
 public class LocationNamePartNavigator {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private LocationNamePartProvider provider;

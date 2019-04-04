@@ -41,7 +41,7 @@ import net.myerichsen.hremvp.event.providers.EventProvider;
  * @version 10. jan. 2019
  */
 public class EventLocationView {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject

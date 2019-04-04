@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  */
 @SuppressWarnings("restriction")
 public class PersonSexView {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject

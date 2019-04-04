@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * @version 28. mar. 2019
  */
 public class PersonServer implements IHREServer {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int personPid;

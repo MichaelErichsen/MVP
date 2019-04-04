@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 public class H2DatabaseProvider implements IContentProvider {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String SELECT13 = "SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
 			+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME";

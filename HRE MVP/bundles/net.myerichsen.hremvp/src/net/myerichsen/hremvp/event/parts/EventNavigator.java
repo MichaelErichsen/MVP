@@ -59,7 +59,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class EventNavigator {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;

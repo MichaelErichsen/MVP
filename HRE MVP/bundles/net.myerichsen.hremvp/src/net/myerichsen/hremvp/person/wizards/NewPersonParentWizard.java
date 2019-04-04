@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.person.providers.ParentProvider;
  *
  */
 public class NewPersonParentWizard extends Wizard {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;

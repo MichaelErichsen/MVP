@@ -40,7 +40,7 @@ import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
  *
  */
 public class PersonNamePartView {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;

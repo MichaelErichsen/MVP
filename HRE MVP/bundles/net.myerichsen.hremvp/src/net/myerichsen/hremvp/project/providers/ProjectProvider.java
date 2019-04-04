@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.project.servers.ProjectServer;
  *
  */
 public class ProjectProvider implements IHREProvider {
-//	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	ProjectServer server;
 
 	/**

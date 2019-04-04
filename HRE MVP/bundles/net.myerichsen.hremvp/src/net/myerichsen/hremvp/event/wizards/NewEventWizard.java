@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.person.providers.PersonEventProvider;
  *
  */
 public class NewEventWizard extends Wizard {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 

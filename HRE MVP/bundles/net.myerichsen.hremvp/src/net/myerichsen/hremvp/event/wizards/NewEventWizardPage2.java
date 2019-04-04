@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
  *
  */
 public class NewEventWizardPage2 extends WizardPage {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private NewEventWizard wizard;

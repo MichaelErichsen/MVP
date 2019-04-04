@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  *
  */
 public class LocationPersonServer implements IHREServer {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final ArrayList<String> stringList;
 	private final LocationEvents leLink;

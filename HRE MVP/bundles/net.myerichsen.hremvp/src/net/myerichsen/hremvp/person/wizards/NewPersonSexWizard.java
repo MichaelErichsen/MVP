@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  */
 // FIXME Add from and to dates to insert and update
 public class NewPersonSexWizard extends Wizard {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;

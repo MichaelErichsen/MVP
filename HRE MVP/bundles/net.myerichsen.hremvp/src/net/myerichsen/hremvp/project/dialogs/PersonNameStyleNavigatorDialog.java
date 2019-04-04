@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject

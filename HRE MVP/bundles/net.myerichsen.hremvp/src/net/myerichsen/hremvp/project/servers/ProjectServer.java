@@ -22,7 +22,7 @@ import net.myerichsen.hremvp.MvpException;
 public class ProjectServer implements IHREServer {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int projectId = 0;

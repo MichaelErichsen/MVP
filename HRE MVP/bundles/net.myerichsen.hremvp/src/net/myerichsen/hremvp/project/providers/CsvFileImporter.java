@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
  *
  */
 public class CsvFileImporter {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String[] csvFileNames = { "languages.csv",
 			"sextypes.csv", "eventtypes.csv", "eventroles.csv",

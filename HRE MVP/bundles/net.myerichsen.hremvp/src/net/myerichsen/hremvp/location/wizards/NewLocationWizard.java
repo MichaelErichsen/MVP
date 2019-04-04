@@ -22,7 +22,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  *
  */
 public class NewLocationWizard extends Wizard {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private final IEclipseContext context;

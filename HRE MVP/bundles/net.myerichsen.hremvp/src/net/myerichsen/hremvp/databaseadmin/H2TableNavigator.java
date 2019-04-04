@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.Constants;
 @SuppressWarnings("restriction")
 public class H2TableNavigator {
 	private static TableViewer tableViewer;
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;

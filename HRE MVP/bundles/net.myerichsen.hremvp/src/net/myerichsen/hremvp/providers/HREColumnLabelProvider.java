@@ -23,7 +23,7 @@ import org.eclipse.swt.events.TraverseListener;
  *
  */
 public class HREColumnLabelProvider extends ColumnLabelProvider {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private final int column;

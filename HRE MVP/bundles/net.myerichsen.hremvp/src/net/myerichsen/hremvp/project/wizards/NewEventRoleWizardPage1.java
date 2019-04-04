@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class NewEventRoleWizardPage1 extends WizardPage {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Text textAbbreviation;
 	private TableViewer tableViewer;

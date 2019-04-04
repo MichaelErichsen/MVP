@@ -26,7 +26,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  */
 // FIXME Make pages set variables in this class
 public class NewPersonWizard extends Wizard {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;

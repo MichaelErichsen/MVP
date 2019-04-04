@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp;
 
 import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -17,16 +18,20 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. mar. 2019
+ * @version 4. apr. 2019
  *
  */
 public class Activator implements BundleActivator {
+	/**
+	 * 
+	 */
+	private static final String PROJECT = "project.";
 	private static BundleContext context;
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private final static String HELPCLASSPATH = "plugins\\\\org.eclipse.help.base_4.2.400.v20181206-0815.jar";
+	private static final String HELPCLASSPATH = "plugins\\\\org.eclipse.help.base_4.2.400.v20181206-0815.jar";
 // "plugins\\\\org.eclipse.help.base_4.2.153.v20180330-0640.jar";
 	// "plugins\\\\org.eclipse.help.base_4.2.200.v20180611-0500.jar";
 
@@ -67,11 +72,11 @@ public class Activator implements BundleActivator {
 		final int i = Integer.parseInt(store.getString("projectcount"));
 
 		for (int j = 1; j < (i + 1); j++) {
-			LOGGER.fine(store.getString("project." + j + ".name"));
-			LOGGER.fine(store.getString("project." + j + ".lastupdated"));
-			LOGGER.fine(store.getString("project." + j + ".summary"));
-			LOGGER.fine(store.getString("project." + j + ".localserver"));
-			LOGGER.fine(store.getString("project." + j + ".path"));
+			LOGGER.fine(store.getString(PROJECT + j + ".name"));
+			LOGGER.fine(store.getString(PROJECT + j + ".lastupdated"));
+			LOGGER.fine(store.getString(PROJECT + j + ".summary"));
+			LOGGER.fine(store.getString(PROJECT + j + ".localserver"));
+			LOGGER.fine(store.getString(PROJECT + j + ".path"));
 		}
 		LOGGER.fine("--------------------------------------");
 
@@ -86,7 +91,8 @@ public class Activator implements BundleActivator {
 				+ port + " -product net.myerichsen.hremvp.helpsystem -clean";
 
 		try {
-			LOGGER.fine("Help System is being started at port " + port);
+			LOGGER.log(Level.SEVERE, "Help System is being started at port {0}",
+					port);
 			final Process helpProcess = Runtime.getRuntime().exec(command);
 			if (helpProcess.isAlive()) {
 				LOGGER.fine("Help system start command: " + command);

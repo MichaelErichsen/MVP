@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * @versi
  */
 public class EventView {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private IEventBroker eventBroker;

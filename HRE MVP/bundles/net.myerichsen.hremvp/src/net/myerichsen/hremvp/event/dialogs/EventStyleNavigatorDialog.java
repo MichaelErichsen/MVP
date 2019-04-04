@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.project.providers.EventTypeProvider;
  *
  */
 public class EventStyleNavigatorDialog extends TitleAreaDialog {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEventBroker eventBroker;
 

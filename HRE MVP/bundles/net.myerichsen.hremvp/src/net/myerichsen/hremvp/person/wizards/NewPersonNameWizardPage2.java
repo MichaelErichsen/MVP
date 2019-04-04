@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
  */
 
 public class NewPersonNameWizardPage2 extends WizardPage {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int personNameStylePid;

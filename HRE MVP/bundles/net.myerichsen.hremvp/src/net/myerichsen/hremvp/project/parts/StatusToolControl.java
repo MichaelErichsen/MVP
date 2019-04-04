@@ -21,7 +21,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
  *
  */
 public class StatusToolControl {
-//	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	IEventBroker eventBroker;

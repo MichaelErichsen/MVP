@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 
 public class H2ModelGenerator {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, COLUMN_DEFAULT FROM INFORMATION_SCHEMA.COLUMNS "
 			+ "WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";

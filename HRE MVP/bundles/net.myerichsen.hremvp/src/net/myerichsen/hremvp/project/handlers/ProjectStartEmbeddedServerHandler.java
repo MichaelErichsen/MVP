@@ -30,7 +30,7 @@ import net.myerichsen.hremvp.requesthandlers.SexTypeHttpRequestHandler;
  *
  */
 public class ProjectStartEmbeddedServerHandler {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
 			"net.myerichsen.hremvp");

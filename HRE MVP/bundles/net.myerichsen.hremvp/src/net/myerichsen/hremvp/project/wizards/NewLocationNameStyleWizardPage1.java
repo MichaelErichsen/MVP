@@ -30,7 +30,7 @@ import net.myerichsen.hremvp.project.providers.LanguageProvider;
  *
  */
 public class NewLocationNameStyleWizardPage1 extends WizardPage {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");

@@ -55,7 +55,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * @version 18. mar. 2019
  */
 public class LocationNameNavigator {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
 	private EPartService partService;
