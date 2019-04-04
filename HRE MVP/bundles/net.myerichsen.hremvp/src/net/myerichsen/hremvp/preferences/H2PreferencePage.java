@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.preferences;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -107,7 +108,7 @@ public class H2PreferencePage extends FieldEditorPreferencePage
 				LOGGER.severe(e.getMessage() + ", " + e.getErrorCode() + ", "
 						+ e.getSQLState());
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 

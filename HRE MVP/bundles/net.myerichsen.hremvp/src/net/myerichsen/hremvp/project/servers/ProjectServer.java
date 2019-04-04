@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -43,7 +44,7 @@ public class ProjectServer implements IHREServer {
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get()
 	 */
-	public List<List<String>> get() throws Exception {
+	public List<List<String>> get() {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> ls;
 		final int projectCount = store.getInt("projectcount");
@@ -52,9 +53,9 @@ public class ProjectServer implements IHREServer {
 		for (int i = 1; i <= projectCount; i++) {
 			ls = new ArrayList<>();
 			ls.add(Integer.toString(i));
-			key = new String("project." + i + ".name");
+			key = "project." + i + ".name";
 			ls.add(store.getString(key));
-			key = new String("project." + i + ".localserver");
+			key = "project." + i + ".localserver";
 			ls.add(store.getString(key));
 
 			LOGGER.fine("Found Name: " + store.getString(key));
@@ -72,7 +73,7 @@ public class ProjectServer implements IHREServer {
 	@Override
 	public void get(int key) throws Exception {
 		projectId = key;
-		final String propKey = new String("project." + key + ".name");
+		final String propKey = "project." + key + ".name";
 		projectName = store.getString(propKey);
 	}
 
@@ -109,27 +110,27 @@ public class ProjectServer implements IHREServer {
 
 			switch (i) {
 			case 0:
-				key = new String("project." + projectId + ".name");
+				key = "project." + projectId + ".name";
 				ls.add(store.getString(key));
 				break;
 			case 1:
-				key = new String("project." + projectId + ".lastupdated");
+				key = "project." + projectId + ".lastupdated";
 				ls.add(store.getString(key));
 				break;
 			case 2:
-				key = new String("project." + projectId + ".summary");
+				key = "project." + projectId + ".summary";
 				ls.add(store.getString(key));
 				break;
 			case 3:
-				key = new String("project." + projectId + ".localserver");
+				key = "project." + projectId + ".localserver";
 				ls.add(store.getString(key));
 				break;
 			case 4:
-				key = new String("project." + projectId + ".path");
+				key = "project." + projectId + ".path";
 				ls.add(store.getString(key));
 				break;
 			default:
-				LOGGER.severe("Invalid index: " + i);
+				LOGGER.log(Level.SEVERE, "Invalid index: %d", i);
 				break;
 			}
 
@@ -145,8 +146,7 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<List<String>>();
 	}
 
 	/*
@@ -156,7 +156,7 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return null;
+		return new ArrayList<List<String>>();
 	}
 
 	/*

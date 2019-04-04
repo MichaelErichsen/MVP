@@ -84,7 +84,7 @@ public class PersonNameServer implements IHREServer {
 	 */
 	@Override
 	public void get(int key) throws Exception {
-		Dictionary dictionary = new Dictionary();
+		final Dictionary dictionary = new Dictionary();
 
 		name.get(key);
 		setNamePid(key);
@@ -319,7 +319,7 @@ public class PersonNameServer implements IHREServer {
 	 * @param stringList the stringList to set
 	 */
 	public void setNameList(List<List<String>> nameList) {
-		this.stringList = nameList;
+		stringList = nameList;
 	}
 
 	/**

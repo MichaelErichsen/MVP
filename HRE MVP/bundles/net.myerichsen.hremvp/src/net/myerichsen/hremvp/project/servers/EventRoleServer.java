@@ -128,11 +128,67 @@ public class EventRoleServer implements IHREServer {
 	}
 
 	/**
+	 * @param eventTypePid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<List<String>> getEventTypeStringList(int eventTypePid)
+			throws Exception {
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+		int labelPid;
+
+		final List<EventRoles> fkEventTypePid = eventRole
+				.getFKEventTypePid(eventTypePid);
+
+		for (final EventRoles eventRoles : fkEventTypePid) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(eventRoles.getEventRolePid()));
+
+			labelPid = eventRoles.getLabelPid();
+			stringList.add(Integer.toString(labelPid));
+			stringList.add(eventRoles.getAbbreviation());
+
+			lls.add(stringList);
+		}
+		return lls;
+	}
+
+	/**
 	 * @return
 	 */
 	public int getLabelPid() {
 		return eventRole.getLabelPid();
 	}
+
+//	/**
+//	 * @param key
+//	 * @return
+//	 * @throws Exception
+//	 * @throws MvpException
+//	 */
+//	public List<List<String>> getNameList(int key)
+//			throws Exception {
+//		List<String> stringList;
+//
+//		final List<List<String>> lls = new ArrayList<>();
+//		final EventNames names = new EventNames();
+//		final List<EventNames> eventNameList = names.getFKEventRolePid(key);
+//		new Languages();
+//
+//		for (final EventNames eventNames : eventNameList) {
+//			stringList = new ArrayList<>();
+//			stringList.add(Integer.toString(eventNames.getEventRolePid()));
+//			stringList.add(eventNames.getLabel());
+//
+////			language.get(eventNames.getLanguagePid());
+////			stringList.add(language.getLabel());
+////			stringList.add(language.getIsocode());
+//			lls.add(stringList);
+//		}
+//
+//		return lls;
+//	}
 
 	/**
 	 * @return stringList A list of lists of event Role pids, label pids,
@@ -173,35 +229,6 @@ public class EventRoleServer implements IHREServer {
 		}
 		return lls;
 	}
-
-//	/**
-//	 * @param key
-//	 * @return
-//	 * @throws Exception
-//	 * @throws MvpException
-//	 */
-//	public List<List<String>> getNameList(int key)
-//			throws Exception {
-//		List<String> stringList;
-//
-//		final List<List<String>> lls = new ArrayList<>();
-//		final EventNames names = new EventNames();
-//		final List<EventNames> eventNameList = names.getFKEventRolePid(key);
-//		new Languages();
-//
-//		for (final EventNames eventNames : eventNameList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(eventNames.getEventRolePid()));
-//			stringList.add(eventNames.getLabel());
-//
-////			language.get(eventNames.getLanguagePid());
-////			stringList.add(language.getLabel());
-////			stringList.add(language.getIsocode());
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
 
 	/**
 	 * @param labelPid
@@ -311,32 +338,5 @@ public class EventRoleServer implements IHREServer {
 	public void update() throws Exception {
 		eventRole.setEventRolePid(EventRolePid);
 		eventRole.update();
-	}
-
-	/**
-	 * @param eventTypePid
-	 * @return
-	 * @throws Exception
-	 */
-	public List<List<String>> getEventTypeStringList(int eventTypePid)
-			throws Exception {
-		List<List<String>> lls = new ArrayList<>();
-		List<String> stringList;
-		int labelPid;
-
-		List<EventRoles> fkEventTypePid = eventRole
-				.getFKEventTypePid(eventTypePid);
-
-		for (EventRoles eventRoles : fkEventTypePid) {
-			stringList = new ArrayList<>();
-			stringList.add(Integer.toString(eventRoles.getEventRolePid()));
-
-			labelPid = eventRoles.getLabelPid();
-			stringList.add(Integer.toString(labelPid));
-			stringList.add(eventRoles.getAbbreviation());
-
-			lls.add(stringList);
-		}
-		return lls;
 	}
 }

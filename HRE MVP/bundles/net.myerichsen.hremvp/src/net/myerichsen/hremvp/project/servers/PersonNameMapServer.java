@@ -66,15 +66,6 @@ public class PersonNameMapServer implements IHREServer {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	public List<?> get() throws Exception {
-		return null;
-	}
-
 	/**
 	 * Get a row
 	 *

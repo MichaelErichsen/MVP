@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.event.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -238,7 +239,7 @@ public class NewEventWizardPage3 extends WizardPage {
 			stringList = new EventRoleProvider().getStringList();
 			comboViewerRole.setInput(stringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 	}
 
@@ -259,7 +260,7 @@ public class NewEventWizardPage3 extends WizardPage {
 				provider.get(personPid);
 				textPerson.setText(provider.getPrimaryName());
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 		}

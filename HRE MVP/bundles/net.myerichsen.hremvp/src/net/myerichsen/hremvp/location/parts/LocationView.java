@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.location.parts;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -180,7 +181,7 @@ public class LocationView {
 						textFromDate.setText(dialog.getDate().toString());
 						textFromOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 						e1.printStackTrace();
 					}
 				}
@@ -270,7 +271,7 @@ public class LocationView {
 						textToDate.setText(dialog.getDate().toString());
 						textToOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 						e1.printStackTrace();
 					}
 				}
@@ -394,7 +395,7 @@ public class LocationView {
 
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -516,7 +517,7 @@ public class LocationView {
 					"Location Name " + textId.getText() + " has been updated");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

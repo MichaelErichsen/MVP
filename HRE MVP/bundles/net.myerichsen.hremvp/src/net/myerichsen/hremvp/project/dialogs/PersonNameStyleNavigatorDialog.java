@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.dialogs;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -61,7 +62,7 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		try {
 			provider = new PersonNameStyleProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
@@ -140,7 +141,7 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 

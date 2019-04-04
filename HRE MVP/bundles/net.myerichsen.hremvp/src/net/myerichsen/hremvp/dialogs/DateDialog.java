@@ -1,6 +1,8 @@
 package net.myerichsen.hremvp.dialogs;
 
 import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -37,10 +39,13 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a date in several formats
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 4. apr. 2019
  *
  */
 public class DateDialog extends TitleAreaDialog {
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	/**
 	 * @author Michael Erichsen, &copy; History Research Environment Ltd.,
 	 *         2018-2019
@@ -288,7 +293,7 @@ public class DateDialog extends TitleAreaDialog {
 	private Text textJewishOutput;
 	private Text textArabicOutput;
 	private Text textIndianOutput;
-	private Date Date;
+	private Date date;
 	private Text textSortDate;
 	private Text textSurety;
 	private String surety = "";
@@ -344,7 +349,7 @@ public class DateDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		setMessage(
 				"Historical Dates. Use the calendar or the \"Stored Format\" field in the YYYY-MM-DD format for a Gregorian date");
-		setTitle("Date");
+		setTitle("date");
 		final Composite area = (Composite) super.createDialogArea(parent);
 		final Composite container = new Composite(area, SWT.NONE);
 		container.setLayout(new GridLayout(3, false));
@@ -376,7 +381,7 @@ public class DateDialog extends TitleAreaDialog {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblSortDate = new Label(container, SWT.NONE);
-		lblSortDate.setText("Sort Date");
+		lblSortDate.setText("Sort date");
 
 		textSortDate = new Text(container, SWT.BORDER);
 		textSortDate.addFocusListener(new FocusAdapter() {
@@ -526,7 +531,7 @@ public class DateDialog extends TitleAreaDialog {
 				getTextOriginal().setText(hdp.getOriginalText());
 				getTextSurety().setText(hdp.getSurety());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 
@@ -534,10 +539,10 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @return the Date
+	 * @return the date
 	 */
 	public Date getDate() {
-		return Date;
+		return date;
 	}
 
 	/**
@@ -567,7 +572,7 @@ public class DateDialog extends TitleAreaDialog {
 	 */
 	public Date getSortDate() {
 		if (sortDate == null) {
-			sortDate = Date;
+			sortDate = date;
 		}
 		return sortDate;
 	}
@@ -624,10 +629,10 @@ public class DateDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @param Date the Date to set
+	 * @param date the date to set
 	 */
 	protected void setDate(Date Date) {
-		this.Date = Date;
+		this.date = Date;
 	}
 
 	/**

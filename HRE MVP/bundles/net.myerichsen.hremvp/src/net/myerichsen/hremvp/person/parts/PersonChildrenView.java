@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -70,7 +71,7 @@ public class PersonChildrenView {
 		try {
 			provider = new PersonProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -151,7 +152,7 @@ public class PersonChildrenView {
 		try {
 			tableViewer.setInput(provider.getChildrenList(0));
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -222,7 +223,7 @@ public class PersonChildrenView {
 			eventBroker.post("MESSAGE",
 					"Child " + primaryName + " has been removed");
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -249,7 +250,7 @@ public class PersonChildrenView {
 			tableViewer.setInput(provider.getChildrenList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

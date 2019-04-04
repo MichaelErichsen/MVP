@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -77,7 +78,7 @@ public class PersonNamesView {
 			provider = new PersonProvider();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -186,7 +187,7 @@ public class PersonNamesView {
 		try {
 			tableViewer.setInput(provider.getStringList(personPid));
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -227,7 +228,7 @@ public class PersonNamesView {
 					"Name " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, 0);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -274,7 +275,7 @@ public class PersonNamesView {
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -293,7 +294,7 @@ public class PersonNamesView {
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

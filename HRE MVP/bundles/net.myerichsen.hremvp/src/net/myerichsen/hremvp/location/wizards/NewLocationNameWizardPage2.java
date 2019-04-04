@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.location.wizards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -162,7 +163,7 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 			lls = provider.getStringList(locationNameStylePid);
 			tableViewer.setInput(lls);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.event.wizards;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -222,7 +223,7 @@ public class NewEventWizard extends Wizard {
 			eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
 			return true;
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 		return false;

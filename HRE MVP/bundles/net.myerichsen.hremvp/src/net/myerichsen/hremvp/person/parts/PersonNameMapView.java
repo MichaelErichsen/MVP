@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -222,7 +223,7 @@ public class PersonNameMapView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
@@ -258,7 +259,7 @@ public class PersonNameMapView {
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
@@ -277,7 +278,7 @@ public class PersonNameMapView {
 					"Name Map " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
@@ -315,7 +316,7 @@ public class PersonNameMapView {
 					"Name Map " + textId.getText() + " has been updated");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}

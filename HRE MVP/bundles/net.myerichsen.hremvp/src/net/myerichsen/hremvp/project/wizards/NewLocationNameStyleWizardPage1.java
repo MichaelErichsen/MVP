@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.project.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -104,7 +105,7 @@ public class NewLocationNameStyleWizardPage1 extends WizardPage {
 			comboIsoCode.setItems(singleArray);
 			comboIsoCode.select(index);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 

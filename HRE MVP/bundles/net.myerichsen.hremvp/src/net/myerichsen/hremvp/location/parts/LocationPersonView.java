@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.location.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -129,7 +130,7 @@ public class LocationPersonView {
 				item.setText(1, sa[1]);
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 

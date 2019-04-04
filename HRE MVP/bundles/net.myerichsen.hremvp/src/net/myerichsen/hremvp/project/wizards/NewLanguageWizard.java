@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.wizards;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -73,7 +74,7 @@ public class NewLanguageWizard extends Wizard {
 						languagePid);
 				return true;
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 

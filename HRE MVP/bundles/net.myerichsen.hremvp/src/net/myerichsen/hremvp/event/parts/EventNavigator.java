@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.event.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -85,7 +86,7 @@ public class EventNavigator {
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -208,7 +209,7 @@ public class EventNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -249,7 +250,7 @@ public class EventNavigator {
 					"event " + primaryName + " has been deleted");
 			eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -343,7 +344,7 @@ public class EventNavigator {
 					}
 				}
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 		}

@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -217,7 +218,7 @@ public class PersonNamePartView {
 			clear();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -252,7 +253,7 @@ public class PersonNamePartView {
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -271,7 +272,7 @@ public class PersonNamePartView {
 					" Name Part " + textId.getText() + " has been inserted");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -311,7 +312,7 @@ public class PersonNamePartView {
 					" Name Part " + textId.getText() + " has been updated");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 }

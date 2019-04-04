@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.databaseadmin;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -164,7 +165,7 @@ public class H2DatabaseNavigator {
 			}
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 }

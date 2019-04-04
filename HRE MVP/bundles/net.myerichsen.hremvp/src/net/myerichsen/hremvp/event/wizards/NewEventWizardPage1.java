@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.event.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -115,7 +116,7 @@ public class NewEventWizardPage1 extends WizardPage {
 			eventStringList = new EventTypeProvider().getStringList();
 			comboViewerEventType.setInput(eventStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 
@@ -143,7 +144,7 @@ public class NewEventWizardPage1 extends WizardPage {
 			languageStringList = new LanguageProvider().getStringList();
 			comboViewerLanguage.setInput(languageStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 
@@ -189,7 +190,7 @@ public class NewEventWizardPage1 extends WizardPage {
 						wizard.setFromDatePid(hdp.insert());
 						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 						setErrorMessage(e1.getMessage());
 					}
 				}
@@ -219,7 +220,7 @@ public class NewEventWizardPage1 extends WizardPage {
 						wizard.setFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 						setErrorMessage(e1.getMessage());
 					}
 				}
@@ -306,7 +307,7 @@ public class NewEventWizardPage1 extends WizardPage {
 						wizard.setToDatePid(hdp.insert());
 						textToDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 						setErrorMessage(e1.getMessage());
 					}
 				}
@@ -336,7 +337,7 @@ public class NewEventWizardPage1 extends WizardPage {
 						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 						setErrorMessage(e1.getMessage());
 					}
 				}

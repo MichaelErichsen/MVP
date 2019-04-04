@@ -116,11 +116,11 @@ public class LocationNameStyleServer implements IHREServer {
 
 		final List<LocationNameStyles> list = get();
 
-		for (final LocationNameStyles style : list) {
+		for (final LocationNameStyles lns : list) {
 			stringList = new ArrayList<>();
-			stringList.add(Integer.toString(style.getLocationNameStylePid()));
-			stringList.add(style.getIsoCode());
-			LabelPid = style.getLabelPid();
+			stringList.add(Integer.toString(lns.getLocationNameStylePid()));
+			stringList.add(lns.getIsoCode());
+			LabelPid = lns.getLabelPid();
 			final List<Dictionary> fkLabelPid = dictionary
 					.getFKLabelPid(LabelPid);
 			stringList.add(fkLabelPid.get(0).getLabel());

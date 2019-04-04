@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -82,7 +83,7 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 				textPartnerBirthDate.setText(dialog.getBirthDate());
 				textPartnerDeathDate.setText(dialog.getDeathDate());
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				eventBroker.post("MESSAGE", e.getMessage());
 			}
 		}
@@ -366,7 +367,7 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 				partnerToDatePid = hdp.insert();
 				textPartnershipEndDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 
@@ -388,7 +389,7 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 				partnerFromDatePid = hdp.insert();
 				textPartnershipStartDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 
@@ -421,7 +422,7 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 				textPartnerDeathDate.setText("");
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}

@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -105,7 +106,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				wizard.setChildPid(childPid);
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
@@ -128,7 +129,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				wizard.setFatherPid(fatherPid);
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
@@ -151,7 +152,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				wizard.setMotherPid(motherPid);
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
@@ -174,7 +175,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				wizard.setPartnerPid(partnerPid);
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
@@ -196,7 +197,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				wizard.setPartnerToDatePid(partnerToDatePid);
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}
@@ -219,7 +220,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				wizard.setPartnerFromDatePid(partnerFromDatePid);
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}
@@ -417,7 +418,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			fatherStringList = new ParentRoleProvider().getStringList();
 			comboViewerFatherRole.setInput(fatherStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 
@@ -530,7 +531,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			motherStringList = new ParentRoleProvider().getStringList();
 			comboViewerMotherRole.setInput(motherStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 		comboMotherRole.setLayoutData(
@@ -645,7 +646,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			childStringList = new ParentRoleProvider().getStringList();
 			comboViewerChildRole.setInput(childStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 		comboChildRole.setLayoutData(
@@ -886,7 +887,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			partnerStringList = new PartnerRoleProvider().getStringList();
 			comboViewerPartnerRole.setInput(partnerStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 		comboPartnerRole.setLayoutData(
@@ -912,7 +913,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				textPartnershipEndDate.setText(dialog.getDate().toString());
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}
@@ -937,7 +938,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 				textPartnershipStartDate.setText(dialog.getDate().toString());
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}
@@ -964,7 +965,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			wizard.setChildPid(childPid);
 			setErrorMessage(null);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			setErrorMessage(e.getMessage());
 		}
 	}
@@ -989,7 +990,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			wizard.setFatherPid(fatherPid);
 			setErrorMessage(null);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			setErrorMessage(e.getMessage());
 		}
 	}
@@ -1014,7 +1015,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			wizard.setMotherPid(motherPid);
 			setErrorMessage(null);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			setErrorMessage(e.getMessage());
 		}
 	}
@@ -1039,7 +1040,7 @@ public class NewPersonWizardPage4 extends WizardPage {
 			wizard.setPartnerPid(partnerPid);
 			setErrorMessage(null);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			setErrorMessage(e.getMessage());
 		}
 	}

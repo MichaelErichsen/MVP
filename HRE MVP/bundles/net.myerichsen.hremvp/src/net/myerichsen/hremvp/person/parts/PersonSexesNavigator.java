@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -70,7 +71,7 @@ public class PersonSexesNavigator {
 		try {
 			provider = new PersonProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -162,7 +163,7 @@ public class PersonSexesNavigator {
 
 			tableViewer.setInput(provider.getSexesList(personPid));
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -228,7 +229,7 @@ public class PersonSexesNavigator {
 			eventBroker.post("MESSAGE",
 					"Sex " + primaryName + " has been removed");
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -255,7 +256,7 @@ public class PersonSexesNavigator {
 			tableViewer.setInput(provider.getSexesList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

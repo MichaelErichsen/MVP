@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -20,7 +21,7 @@ import net.myerichsen.hremvp.MvpException;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 3. apr. 2019
+ * @version 4. apr. 2019
  *
  */
 public abstract class AbstractHreProvider {
@@ -35,19 +36,28 @@ public abstract class AbstractHreProvider {
 
 	protected String key;
 
+	/**
+	 * Constructor
+	 *
+	 */
 	public AbstractHreProvider() {
 		try {
 			conn = HreH2ConnectionPool.getConnection();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
+	/**
+	 * @return
+	 */
 	public String getKey() {
 		return key;
 	}
 
+	/**
+	 * @param paramInt
+	 */
 	public abstract void readFromH2(int paramInt);
 
 //	public void readJson(String jsonstring) {
@@ -155,10 +165,17 @@ public abstract class AbstractHreProvider {
 //		}
 //	}
 
+	/**
+	 * @param key
+	 */
 	public void setKey(String key) {
 		this.key = key;
 	}
 
+	/**
+	 * @param classname
+	 * @return
+	 */
 	public String writeJson(String classname) {
 		final StringWriter sw = new StringWriter();
 
@@ -170,8 +187,8 @@ public abstract class AbstractHreProvider {
 			final JSONWriter jw = new JSONWriter(sw);
 			jw.object();
 
-			Field[] arrayOfField1;
-			final int j = (arrayOfField1 = fa).length;
+			Field[] arrayOfField1 = fa;
+			final int j = arrayOfField1.length;
 			for (int i = 0; i < j; i++) {
 				final Field element = arrayOfField1[i];
 				final Field field = element;
@@ -179,7 +196,7 @@ public abstract class AbstractHreProvider {
 				final String type = field.getType().toString();
 
 				if (type.contains("[[[")) {
-					throw new Exception(
+					throw new MvpException(
 							"Too many array levels for this implementation");
 				}
 
@@ -189,8 +206,8 @@ public abstract class AbstractHreProvider {
 				}
 
 				if (type.contains("[")) {
-					final String key = field.getName();
-					jw.key(key);
+					final String fieldName = field.getName();
+					jw.key(fieldName);
 
 					jw.array();
 
@@ -199,7 +216,7 @@ public abstract class AbstractHreProvider {
 
 						for (int j1 = 0; j1 < valueArray.length; j1++) {
 							jw.object();
-							jw.key(key + "[" + j1 + "]");
+							jw.key(fieldName + "[" + j1 + "]");
 							jw.value(Integer.toString(valueArray[j1]));
 							jw.endObject();
 						}
@@ -209,7 +226,7 @@ public abstract class AbstractHreProvider {
 						for (int j1 = 0; j1 < valueArray.length; j1++) {
 							LOGGER.info(valueArray[j1]);
 							jw.object();
-							jw.key(key + "[" + j1 + "]");
+							jw.key(fieldName + "[" + j1 + "]");
 							jw.value(valueArray[j1]);
 							jw.endObject();
 						}
@@ -230,8 +247,9 @@ public abstract class AbstractHreProvider {
 						final AbstractHreModel item = (AbstractHreModel) name;
 						final Class<?> c1 = item.getClass();
 						final Field[] fa1 = c1.getDeclaredFields();
-						Field[] arrayOfField2;
-						final int m = (arrayOfField2 = fa1).length;
+						Field[] arrayOfField2 = fa1;
+						;
+						final int m = arrayOfField2.length;
 						for (int k = 0; k < m; k++) {
 							final Field element2 = arrayOfField2[k];
 							final Field field1 = element2;
@@ -253,8 +271,8 @@ public abstract class AbstractHreProvider {
 
 				} else if (!type.contains("Vector")) {
 
-					final String key = field.getName();
-					jw.key(key);
+					final String fieldName = field.getName();
+					jw.key(fieldName);
 					String value1;
 					if (type.equals("int")) {
 						value1 = Integer.toString(

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -52,7 +53,7 @@ public class ProjectProperties {
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 

@@ -77,6 +77,13 @@ public class PartnerServer implements IHREServer {
 		return PartnerPid;
 	}
 
+	/**
+	 * @return the partnerRolePid
+	 */
+	public int getPartnerRolePid() {
+		return PartnerRolePid;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -159,6 +166,13 @@ public class PartnerServer implements IHREServer {
 	}
 
 	/**
+	 * @param partnerRolePid the partnerRolePid to set
+	 */
+	public void setPartnerRolePid(int partnerRolePid) {
+		PartnerRolePid = partnerRolePid;
+	}
+
+	/**
 	 * @param primaryPartner the primaryPartner to set
 	 */
 	public void setPrimaryPartner(boolean primaryPartner) {
@@ -180,19 +194,5 @@ public class PartnerServer implements IHREServer {
 	@Override
 	public void update() throws Exception {
 
-	}
-
-	/**
-	 * @return the partnerRolePid
-	 */
-	public int getPartnerRolePid() {
-		return PartnerRolePid;
-	}
-
-	/**
-	 * @param partnerRolePid the partnerRolePid to set
-	 */
-	public void setPartnerRolePid(int partnerRolePid) {
-		PartnerRolePid = partnerRolePid;
 	}
 }

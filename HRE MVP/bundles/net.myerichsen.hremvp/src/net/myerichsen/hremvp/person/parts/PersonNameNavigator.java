@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -95,13 +96,13 @@ public class PersonNameNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@PreDestroy
 	public void dispose() {

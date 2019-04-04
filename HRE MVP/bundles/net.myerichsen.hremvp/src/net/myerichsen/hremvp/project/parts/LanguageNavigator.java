@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -69,7 +70,7 @@ public class LanguageNavigator {
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -173,7 +174,7 @@ public class LanguageNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 
@@ -215,7 +216,7 @@ public class LanguageNavigator {
 					"Language " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LANGUAGE_PID_UPDATE_TOPIC, 0);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -259,7 +260,7 @@ public class LanguageNavigator {
 				}
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

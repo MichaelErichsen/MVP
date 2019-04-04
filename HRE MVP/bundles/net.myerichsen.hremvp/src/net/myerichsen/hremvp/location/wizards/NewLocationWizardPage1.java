@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.location.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -159,7 +160,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 						wizard.setNameFromDatePid(hdp.insert());
 						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
@@ -275,7 +276,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 						wizard.setNameToDatePid(hdp.insert());
 						textToDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
@@ -392,7 +393,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 			comboLocationNameStyles.select(index);
 
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
 		setPageComplete(false);

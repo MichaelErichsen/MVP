@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.requesthandlers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,7 +94,7 @@ public class SexTypeHttpRequestHandler implements Handler {
 			try {
 				response.sendError(500, e.getClass() + " " + e.getMessage());
 			} catch (final IOException e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 

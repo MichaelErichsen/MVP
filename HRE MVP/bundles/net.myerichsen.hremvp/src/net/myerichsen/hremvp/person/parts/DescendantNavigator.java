@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.person.parts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -57,7 +58,7 @@ public class DescendantNavigator {
 			provider = new PersonProvider();
 			treePersonList = createTreePersonList(2);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -163,7 +164,7 @@ public class DescendantNavigator {
 			treeViewer.setInput(treePersonList);
 			treeViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

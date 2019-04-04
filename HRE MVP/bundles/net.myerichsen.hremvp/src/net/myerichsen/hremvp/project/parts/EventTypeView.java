@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.project.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -161,7 +162,7 @@ public class EventTypeView {
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
 	}
@@ -203,7 +204,7 @@ public class EventTypeView {
 			tableViewer.setInput(provider.getStringList(labelPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -270,7 +271,7 @@ public class EventTypeView {
 			eventBroker.post("MESSAGE",
 					"Event type " + eventTypePid + " has been updated");
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

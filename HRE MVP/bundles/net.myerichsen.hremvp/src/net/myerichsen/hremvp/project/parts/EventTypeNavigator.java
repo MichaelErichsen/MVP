@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.project.parts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -173,7 +174,7 @@ public class EventTypeNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -213,7 +214,7 @@ public class EventTypeNavigator {
 			eventBroker.post(Constants.EVENT_TYPE_PID_UPDATE_TOPIC,
 					eventTypePid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -287,7 +288,7 @@ public class EventTypeNavigator {
 					}
 				}
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 		}

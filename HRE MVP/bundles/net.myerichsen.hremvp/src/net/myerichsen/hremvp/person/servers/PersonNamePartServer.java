@@ -177,21 +177,21 @@ public class PersonNamePartServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList() throws Exception {
 		List<String> stringList;
-		List<List<String>> lls = new ArrayList<List<String>>();
+		final List<List<String>> lls = new ArrayList<>();
 		int partNo = 0;
 		int labelPid = 0;
 		String mapLabel = "";
-		Dictionary dictionary = new Dictionary();
-		PersonNames name = new PersonNames();
+		final Dictionary dictionary = new Dictionary();
+		final PersonNames name = new PersonNames();
 		final PersonNameMaps map = new PersonNameMaps();
 		final List<PersonNameMaps> mapList = map
 				.getFKNameStylePid(name.getNameStylePid());
 
-		List<PersonNameParts> list = part.get();
+		final List<PersonNameParts> list = part.get();
 		name.get(part.getNamePid());
 
 		for (int i = 0; i < list.size(); i++) {
-			PersonNameParts pnp = list.get(i);
+			final PersonNameParts pnp = list.get(i);
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(pnp.getNamePartPid()));
 
@@ -223,14 +223,14 @@ public class PersonNamePartServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		List<String> stringList;
-		List<List<String>> lls = new ArrayList<List<String>>();
+		final List<List<String>> lls = new ArrayList<>();
 
 		if (key == 0) {
 			return lls;
 		}
 
-		Dictionary dictionary = new Dictionary();
-		PersonNames name = new PersonNames();
+		final Dictionary dictionary = new Dictionary();
+		final PersonNames name = new PersonNames();
 		name.get(key);
 
 		int labelPid = 0;
@@ -239,7 +239,7 @@ public class PersonNamePartServer implements IHREServer {
 		final List<PersonNameMaps> lnm = new PersonNameMaps()
 				.getFKNameStylePid(name.getNameStylePid());
 
-		List<PersonNameParts> lnp = part.getFKNamePid(key);
+		final List<PersonNameParts> lnp = part.getFKNamePid(key);
 
 		for (int i = 0; i < lnp.size(); i++) {
 			stringList = new ArrayList<>();

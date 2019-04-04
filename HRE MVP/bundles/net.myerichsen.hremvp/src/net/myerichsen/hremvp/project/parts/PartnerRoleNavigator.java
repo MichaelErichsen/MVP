@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.project.parts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -171,7 +172,7 @@ public class PartnerRoleNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -211,7 +212,7 @@ public class PartnerRoleNavigator {
 			eventBroker.post(Constants.PARTNER_ROLE_PID_UPDATE_TOPIC,
 					PartnerRolePid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -285,7 +286,7 @@ public class PartnerRoleNavigator {
 					}
 				}
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 		}

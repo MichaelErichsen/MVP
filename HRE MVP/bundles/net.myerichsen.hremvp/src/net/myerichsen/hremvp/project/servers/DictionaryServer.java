@@ -20,8 +20,7 @@ public class DictionaryServer implements IHREServer {
 	private int LabelPid;
 	private String IsoCode;
 	private String Label;
-	private final int TableId = 6;
-	private String LabelType;;
+	private String LabelType;
 
 	private final Dictionary dictionary;
 
@@ -41,15 +40,6 @@ public class DictionaryServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 		dictionary.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	public List<?> get() throws Exception {
-		return null;
 	}
 
 	/*
@@ -116,8 +106,7 @@ public class DictionaryServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<List<String>>();
 	}
 
 	/**
@@ -156,7 +145,6 @@ public class DictionaryServer implements IHREServer {
 		dictionary.setIsoCode(IsoCode);
 		dictionary.setLabel(Label);
 		dictionary.setLabelPid(LabelPid);
-		dictionary.setTableId(TableId);
 		dictionary.setLabelType(LabelType);
 		return dictionary.insert();
 	}

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -103,7 +104,7 @@ public class PersonSiblingsView {
 		try {
 			tableViewer.setInput(provider.getSiblingList(0));
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -154,7 +155,7 @@ public class PersonSiblingsView {
 		try {
 			tableViewer.setInput(provider.getSiblingList(personPid));
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 		tableViewer.refresh();

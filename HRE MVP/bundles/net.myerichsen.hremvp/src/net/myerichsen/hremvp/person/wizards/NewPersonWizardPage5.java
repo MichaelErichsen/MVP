@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.person.wizards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -78,7 +79,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 				item.setText(3, eventStringList.get(7));
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 
@@ -87,7 +88,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.
 	 * widgets.Composite)
 	 */
@@ -100,7 +101,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 
 		tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addFocusListener(new FocusAdapter() {
 
 			/*
@@ -182,7 +183,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 //			tableViewer.setInput(lls);
 			setErrorMessage(null);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 
@@ -193,7 +194,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 		mntmNewEvent.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -209,7 +210,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 		mntmDeleteSelectedEvent.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -242,6 +243,6 @@ public class NewPersonWizardPage5 extends WizardPage {
 	 * @param lls the lls to set
 	 */
 	public void setListOfLists(List<List<String>> listOfLists) {
-		this.lls = listOfLists;
+		lls = listOfLists;
 	}
 }

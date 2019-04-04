@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.project.parts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -175,7 +176,7 @@ public class SexTypeNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -215,7 +216,7 @@ public class SexTypeNavigator {
 					"Sex type " + primaryName + " has been deleted");
 			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -282,7 +283,7 @@ public class SexTypeNavigator {
 					}
 				}
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 		}

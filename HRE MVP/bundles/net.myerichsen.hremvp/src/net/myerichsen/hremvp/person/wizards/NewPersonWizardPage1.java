@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -76,7 +77,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				wizard.setBirthDatePid(hdatePid);
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}
@@ -98,7 +99,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				wizard.setBirthDatePid(hdatePid);
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}
@@ -148,7 +149,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 			comboViewerSex.setInput(stringList);
 			setErrorMessage(null);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 
@@ -313,7 +314,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				textBirthDate.setText(dialog.getDate().toString());
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}
@@ -337,7 +338,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				textDeathDate.setText(dialog.getDate().toString());
 				setErrorMessage(null);
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				setErrorMessage(e1.getMessage());
 			}
 		}

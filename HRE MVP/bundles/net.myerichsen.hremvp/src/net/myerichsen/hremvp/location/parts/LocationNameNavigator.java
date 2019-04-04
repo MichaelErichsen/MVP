@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.location.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -188,7 +189,7 @@ public class LocationNameNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList(locationPid));
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 	}
@@ -238,7 +239,7 @@ public class LocationNameNavigator {
 			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC,
 					locationNamePid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -322,7 +323,7 @@ public class LocationNameNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList(locationPid));
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 		tableViewer.refresh();

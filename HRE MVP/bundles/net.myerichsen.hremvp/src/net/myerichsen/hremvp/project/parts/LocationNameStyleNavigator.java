@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.project.parts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -72,7 +73,7 @@ public class LocationNameStyleNavigator {
 		try {
 			provider = new LocationNameStyleProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -162,7 +163,7 @@ public class LocationNameStyleNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -206,7 +207,7 @@ public class LocationNameStyleNavigator {
 			eventBroker.post(Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC,
 					locationNameStylePid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -280,7 +281,7 @@ public class LocationNameStyleNavigator {
 				}
 
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 

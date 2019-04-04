@@ -355,8 +355,8 @@ public class PersonServer implements IHREServer {
 		List<String> ls;
 		int parentPid;
 		final PersonNameServer pns = new PersonNameServer();
-		ParentRoles role = new ParentRoles();
-		Dictionary dictionary = new Dictionary();
+		final ParentRoles role = new ParentRoles();
+		final Dictionary dictionary = new Dictionary();
 
 		if (key == 0) {
 			return parentList;
@@ -386,8 +386,8 @@ public class PersonServer implements IHREServer {
 	 */
 	public List<List<String>> getPartnerList(int key) throws Exception {
 		List<String> ls;
-		PartnerRoles role2 = new PartnerRoles();
-		Dictionary dictionary = new Dictionary();
+		final PartnerRoles role2 = new PartnerRoles();
+		final Dictionary dictionary = new Dictionary();
 		final PersonNameServer pns = new PersonNameServer();
 		final List<List<String>> partnerList = new ArrayList<>();
 		final List<Partners> lpa = new Partners().getFKPartner1(key);

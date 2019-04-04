@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +24,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  */
 public class Activator implements BundleActivator {
 	/**
-	 * 
+	 *
 	 */
 	private static final String PROJECT = "project.";
 	private static BundleContext context;
@@ -49,7 +50,7 @@ public class Activator implements BundleActivator {
 	 * BundleContext)
 	 */
 	@Override
-	public void start(BundleContext bundleContext) throws Exception {
+	public void start(BundleContext bundleContext) throws IOException {
 		Activator.context = bundleContext;
 
 		HreLogger.setup();
@@ -81,9 +82,10 @@ public class Activator implements BundleActivator {
 		LOGGER.fine("--------------------------------------");
 
 		final String csMode = store.getString("CSMODE");
-		LOGGER.fine("Client/server mode " + csMode);
-		LOGGER.fine("HRE Absolute path: " + new File(".").getAbsolutePath());
-		LOGGER.fine("HRE Font: " + store.getString("HREFONT"));
+		LOGGER.log(Level.FINE, "Client/server mode {0}", csMode);
+		LOGGER.log(Level.FINE, "HRE Absolute path: {0}",
+				new File(".").getAbsolutePath());
+		LOGGER.log(Level.FINE, "HRE Font: {0}", store.getString("HREFONT"));
 
 		final int port = store.getInt("HELPSYSTEMPORT");
 		final String command = "java -classpath " + HELPCLASSPATH
@@ -91,11 +93,12 @@ public class Activator implements BundleActivator {
 				+ port + " -product net.myerichsen.hremvp.helpsystem -clean";
 
 		try {
-			LOGGER.log(Level.SEVERE, "Help System is being started at port {0}",
+			LOGGER.log(Level.INFO, "Help System is being started at port {0}",
 					port);
 			final Process helpProcess = Runtime.getRuntime().exec(command);
 			if (helpProcess.isAlive()) {
-				LOGGER.fine("Help system start command: " + command);
+				LOGGER.log(Level.INFO, "Help system start command: {0}",
+						command);
 			} else {
 				throw new MvpException("Could not start help system process");
 			}
@@ -115,7 +118,7 @@ public class Activator implements BundleActivator {
 		try {
 			HreH2ConnectionPool.dispose();
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
 		final String command = "java -classpath " + HELPCLASSPATH

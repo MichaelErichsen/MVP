@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.event.dialogs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -97,7 +98,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdp.get(fromDatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
@@ -116,7 +117,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdp.get(toDatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
@@ -212,7 +213,7 @@ public class NewEventDialog extends TitleAreaDialog {
 
 					comboViewerEventRole.setInput(eventRoleStringList);
 				} catch (final Exception e1) {
-					LOGGER.severe(e1.getMessage());
+					LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					eventBroker.post("MESSAGE", e1.getMessage());
 				}
 			}
@@ -225,7 +226,7 @@ public class NewEventDialog extends TitleAreaDialog {
 			eventTypeStringList = new EventTypeProvider().getStringList();
 			comboViewerEventType.setInput(eventTypeStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 
@@ -266,7 +267,7 @@ public class NewEventDialog extends TitleAreaDialog {
 			eventRoleStringList = new EventRoleProvider().getStringList();
 			comboViewerEventRole.setInput(eventRoleStringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 
@@ -442,7 +443,7 @@ public class NewEventDialog extends TitleAreaDialog {
 	public List<String> getEventStringList() {
 		HDateProvider hdateProvider;
 
-		eventStringList = new ArrayList<String>();
+		eventStringList = new ArrayList<>();
 
 		eventStringList.add(Integer.toString(eventNamePid));
 		eventStringList.add(eventTypeLabel);
@@ -456,7 +457,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				eventStringList.add(Integer.toString(fromDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("");
 			}
@@ -472,7 +473,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				eventStringList.add(Integer.toString(toDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				eventBroker.post("MESSAGE", e.getMessage());
 				eventStringList.add("0");
 				eventStringList.add("");
@@ -522,7 +523,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				fromDatePid = hdp.insert();
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
@@ -544,7 +545,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				toDatePid = hdp.insert();
 				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}

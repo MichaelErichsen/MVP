@@ -3,6 +3,7 @@ package net.myerichsen.hremvp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 
@@ -111,7 +112,7 @@ public class HreH2ConnectionPool {
 					LOGGER.info("H2 Version is " + h2Version);
 				}
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				store.setValue("H2VERSION", h2Version);
 
 				LOGGER.info("H2 Version defaults to " + h2Version);

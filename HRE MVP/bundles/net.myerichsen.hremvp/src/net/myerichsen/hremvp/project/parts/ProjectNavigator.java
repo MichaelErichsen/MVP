@@ -9,6 +9,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -107,7 +108,7 @@ public class ProjectNavigator {
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -142,7 +143,7 @@ public class ProjectNavigator {
 					"Project database " + dbName + " has been backed up to "
 							+ path + "\\" + dbName + ".zip");
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -393,7 +394,7 @@ public class ProjectNavigator {
 		try {
 			tableViewer.setInput(provider.get());
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -422,10 +423,10 @@ public class ProjectNavigator {
 		try {
 			closeDbIfActive(dbName);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
-		String path = model.getPath().trim();
+		final String path = model.getPath().trim();
 		String fullPath = path + ".h2.db";
 		File file = new File(fullPath);
 		boolean result = false;
@@ -438,7 +439,7 @@ public class ProjectNavigator {
 			try {
 				result = Files.deleteIfExists(file.toPath());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 
@@ -580,7 +581,7 @@ public class ProjectNavigator {
 					"Project database " + dbName + " has been created");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -702,7 +703,7 @@ public class ProjectNavigator {
 					"Project database " + dbName + " has been opened");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 
@@ -778,7 +779,7 @@ public class ProjectNavigator {
 					"Project database " + dbName + " has been opened");
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 
@@ -904,7 +905,7 @@ public class ProjectNavigator {
 			eventBroker.post("MESSAGE",
 					"Project database has been restored from " + shortName);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -929,7 +930,7 @@ public class ProjectNavigator {
 			tableViewer.setInput(provider.get());
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

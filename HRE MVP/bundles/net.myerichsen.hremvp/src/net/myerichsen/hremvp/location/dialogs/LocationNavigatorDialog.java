@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.location.dialogs;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -57,7 +58,7 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 		try {
 			provider = new LocationProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -155,7 +156,7 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 		try {
 			tableViewer.setInput(provider.getNameList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 

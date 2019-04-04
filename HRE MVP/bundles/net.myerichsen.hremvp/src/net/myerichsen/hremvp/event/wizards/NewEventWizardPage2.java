@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.event.wizards;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -127,7 +128,7 @@ public class NewEventWizardPage2 extends WizardPage {
 						wizard.setLocationPid(locationPid);
 						textLocation.setText(dialog.getLocationName());
 					} catch (final Exception e1) {
-						LOGGER.severe(e1.getMessage());
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 						e1.printStackTrace();
 					}
 				}
@@ -207,7 +208,7 @@ public class NewEventWizardPage2 extends WizardPage {
 				provider.get(locationPid);
 				textLocation.setText(provider.getPrimaryName());
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 

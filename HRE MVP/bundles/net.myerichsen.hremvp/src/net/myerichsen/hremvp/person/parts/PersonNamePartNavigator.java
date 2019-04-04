@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -188,8 +189,8 @@ public class PersonNamePartNavigator {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList(personNamePid));
-		} catch (Exception e1) {
-			LOGGER.severe(e1.getMessage());
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 
@@ -279,7 +280,7 @@ public class PersonNamePartNavigator {
 		this.personNamePid = personNamePid;
 
 		try {
-			PersonNameProvider pnp = new PersonNameProvider();
+			final PersonNameProvider pnp = new PersonNameProvider();
 			pnp.get(personNamePid);
 			textId.setText(Integer.toString(pnp.getNamePid()));
 			textPersonPid.setText(Integer.toString(pnp.getPersonPid()));
@@ -303,7 +304,7 @@ public class PersonNamePartNavigator {
 			tableViewer.setInput(provider.getStringList(personNamePid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

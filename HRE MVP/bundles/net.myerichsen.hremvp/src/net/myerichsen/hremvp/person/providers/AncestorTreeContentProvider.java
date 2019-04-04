@@ -7,7 +7,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 13. feb. 2019
+ * @version 4. apr. 2019
  *
  */
 public class AncestorTreeContentProvider implements ITreeContentProvider {
@@ -84,10 +84,9 @@ public class AncestorTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		if (element instanceof TreePerson) {
-			if (((TreePerson) element).getAncestorList().size() > 0) {
-				return true;
-			}
+		if (element instanceof TreePerson
+				&& ((TreePerson) element).getAncestorList().size() > 0) {
+			return true;
 		}
 		return false;
 	}

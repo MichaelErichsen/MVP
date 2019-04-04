@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -277,7 +278,7 @@ public class PersonView {
 				textDeathDate.setText("");
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
@@ -321,7 +322,7 @@ public class PersonView {
 				textDeathDatePid.setText(Integer.toString(deathDatePid));
 				textDeathDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -366,7 +367,7 @@ public class PersonView {
 					personPid);
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 }

@@ -28,21 +28,16 @@ import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
  * Preference page for HRE MVP client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 4. apr. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
+	private static final String STANDALONE = "STANDALONE";
+	private static final String SERVER = "SERVER";
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private ComboFieldEditor comboFieldEditorLogLevel;
 	private ComboFieldEditor comboFieldEditorCsMode;
-	private FontFieldEditor fontFieldEditor;
-	private StringFieldEditor updateSiteFieldEditor;
-	private IntegerFieldEditor helpportIntegerFieldEditor;
-	private IntegerFieldEditor serverportIntegerFieldEditor;
-	private ComboFieldEditor comboGuiLanguage;
-	private ComboFieldEditor comboPersonNameStyle;
-	private ComboFieldEditor comboLocationNameStyle;
+	private ComboFieldEditor comboFieldEditorLogLevel;
 
 	/**
 	 * Constructor
@@ -65,8 +60,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 
 		comboFieldEditorCsMode = new ComboFieldEditor("CSMODE",
 				"Client/Server Mode",
-				new String[][] { { "STANDALONE", "STANDALONE" },
-						{ "CLIENT", "CLIENT" }, { "SERVER", "SERVER" } },
+				new String[][] { { STANDALONE, STANDALONE },
+						{ "CLIENT", "CLIENT" }, { SERVER, SERVER } },
 				composite);
 		addField(comboFieldEditorCsMode);
 
@@ -82,21 +77,24 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				composite);
 		addField(comboFieldEditorLogLevel);
 
-		fontFieldEditor = new FontFieldEditor("HREFONT", "Font Selection", null,
-				getFieldEditorParent());
+		FontFieldEditor fontFieldEditor = new FontFieldEditor("HREFONT",
+				"Font Selection", null, getFieldEditorParent());
 		addField(fontFieldEditor);
 
-		updateSiteFieldEditor = new StringFieldEditor("UPDATESITE",
-				"HRE Update Site", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE,
+		StringFieldEditor updateSiteFieldEditor = new StringFieldEditor(
+				"UPDATESITE", "HRE Update Site", -1,
+				StringFieldEditor.VALIDATE_ON_KEY_STROKE,
 				getFieldEditorParent());
 		addField(updateSiteFieldEditor);
 
-		helpportIntegerFieldEditor = new IntegerFieldEditor("HELPSYSTEMPORT",
-				"Port number for Help System", getFieldEditorParent());
+		IntegerFieldEditor helpportIntegerFieldEditor = new IntegerFieldEditor(
+				"HELPSYSTEMPORT", "Port number for Help System",
+				getFieldEditorParent());
 		addField(helpportIntegerFieldEditor);
 
-		serverportIntegerFieldEditor = new IntegerFieldEditor("SERVERPORT",
-				"Port Number for local HRE Server", getFieldEditorParent());
+		IntegerFieldEditor serverportIntegerFieldEditor = new IntegerFieldEditor(
+				"SERVERPORT", "Port Number for local HRE Server",
+				getFieldEditorParent());
 		addField(serverportIntegerFieldEditor);
 
 		final String[][] entryNamesAndValues = {
@@ -114,8 +112,9 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				doubleArray[i][1] = languageList.get(i).get(1);
 			}
 
-			comboGuiLanguage = new ComboFieldEditor("GUILANGUAGE",
-					"GUI Language", doubleArray, getFieldEditorParent());
+			ComboFieldEditor comboGuiLanguage = new ComboFieldEditor(
+					"GUILANGUAGE", "GUI Language", doubleArray,
+					getFieldEditorParent());
 			addField(comboGuiLanguage);
 		} catch (final Exception e) {
 			addField(new ComboFieldEditor("", "GUI Language",
@@ -134,7 +133,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				doubleArray[i][1] = personNameStyleList.get(i).get(1);
 			}
 
-			comboPersonNameStyle = new ComboFieldEditor(
+			ComboFieldEditor comboPersonNameStyle = new ComboFieldEditor(
 					"DEFAULTPERSONNAMESTYLE", "Default Person Name Style",
 					doubleArray, getFieldEditorParent());
 			addField(comboPersonNameStyle);
@@ -145,18 +144,17 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 
 		try {
 			final LocationNameStyleProvider lnsp = new LocationNameStyleProvider();
-			final List<List<String>> LocationNameStyleList = lnsp
-					.getStringList();
+			List<List<String>> locationNameStyleList = lnsp.getStringList();
 
-			final int llsSize = LocationNameStyleList.size();
+			final int llsSize = locationNameStyleList.size();
 			final String[][] doubleArray = new String[llsSize][2];
 
 			for (int i = 0; i < llsSize; i++) {
-				doubleArray[i][0] = LocationNameStyleList.get(i).get(2);
-				doubleArray[i][1] = LocationNameStyleList.get(i).get(1);
+				doubleArray[i][0] = locationNameStyleList.get(i).get(2);
+				doubleArray[i][1] = locationNameStyleList.get(i).get(1);
 			}
 
-			comboLocationNameStyle = new ComboFieldEditor(
+			ComboFieldEditor comboLocationNameStyle = new ComboFieldEditor(
 					"DEFAULTLOCATIONNAMESTYLE", "Default Location Name Style",
 					doubleArray, getFieldEditorParent());
 			addField(comboLocationNameStyle);
@@ -198,8 +196,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 		if (event.getSource() == comboFieldEditorCsMode) {
 			final String newValue = event.getNewValue().toString();
 
-			if ((newValue.equals("STANDALONE"))
-					|| (newValue.equals("SERVER"))) {
+			if ((newValue.equals(STANDALONE)) || (newValue.equals(SERVER))) {
 				final String dbName = store.getString("DBNAME");
 				final String userId = store.getString("USERID");
 				final String passWord = store.getString("PASSWORD");
@@ -214,7 +211,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 				LOGGER.info("Changed property "
 						+ comboFieldEditorCsMode.getPreferenceName() + " from "
 						+ event.getOldValue() + " to " + event.getNewValue());
-				LOGGER.info("Database connection " + conn);
+				LOGGER.log(Level.INFO, "Database connection {0}", conn);
 			}
 		} else if (event.getSource() == comboFieldEditorLogLevel) {
 			LOGGER.setLevel(Level.parse(event.getNewValue().toString()));

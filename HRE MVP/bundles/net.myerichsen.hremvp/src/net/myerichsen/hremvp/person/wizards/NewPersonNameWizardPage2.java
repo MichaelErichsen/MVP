@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.person.wizards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -78,7 +79,7 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 				textFieldList.add(text);
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}

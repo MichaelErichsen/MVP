@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.project.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -43,7 +44,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 	private Text textStyleName;
 	private Text textNamePartCount;
 	private List<List<String>> stringList;
-	private LanguageProvider provider;
+	private final LanguageProvider provider;
 	private Combo comboLanguage;
 
 	/**
@@ -87,7 +88,8 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		final Label lblLanguage = new Label(container, SWT.NONE);
 		lblLanguage.setText("Language");
 
-		ComboViewer comboViewerLanguage = new ComboViewer(container, SWT.NONE);
+		final ComboViewer comboViewerLanguage = new ComboViewer(container,
+				SWT.NONE);
 		comboLanguage = comboViewerLanguage.getCombo();
 		comboLanguage.addSelectionListener(new SelectionAdapter() {
 			/*
@@ -123,7 +125,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 			// FIXME Does not set default language
 //			comboLanguage.select(index);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 		comboLanguage.setLayoutData(
@@ -174,7 +176,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 			stringList = provider.getStringList();
 			comboViewerLanguage.setInput(stringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
 		setPageComplete(false);

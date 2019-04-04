@@ -4,10 +4,18 @@ package net.myerichsen.hremvp;
  * Constants used by database access and personEvent handling
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 4. apr. 2019
  *
  */
 public class Constants {
+	/**
+	 * Constructor
+	 *
+	 */
+	private Constants() {
+		super();
+	}
+
 	/**
 	 * H2 Data types
 	 */

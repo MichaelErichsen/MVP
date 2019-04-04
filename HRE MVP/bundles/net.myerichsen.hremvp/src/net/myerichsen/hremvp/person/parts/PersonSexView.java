@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -204,7 +205,7 @@ public class PersonSexView {
 					"Name " + textId.getText() + " has been fetched");
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -256,7 +257,7 @@ public class PersonSexView {
 					.setSexTypePid(Integer.parseInt(textSexTypePid.getText()));
 			sexesProvider.update();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 		sexesProvider.setFromDatePid(0);

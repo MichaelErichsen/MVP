@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.project.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -70,7 +71,7 @@ public class PersonNameStyleView {
 			provider = new PersonNameStyleProvider();
 			pnmp = new PersonNameMapProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -198,7 +199,7 @@ public class PersonNameStyleView {
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 			tableViewer.setInput(pnmp.getStringList(personNameStylePid));
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -250,7 +251,7 @@ public class PersonNameStyleView {
 			}
 
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 
@@ -318,7 +319,7 @@ public class PersonNameStyleView {
 			eventBroker.post(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC,
 					personNameStylePid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

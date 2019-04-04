@@ -1,11 +1,11 @@
 package net.myerichsen.hremvp.project.dialogs;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
  * Display all location name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 1. mar. 2019
+ * @version 4. apr. 2019
  *
  */
 public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
@@ -54,15 +54,13 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 	 * @param parentShell
 	 * @param context
 	 */
-	public LocationNameStyleNavigatorDialog(Shell parentShell,
-			IEclipseContext context) {
+	public LocationNameStyleNavigatorDialog(Shell parentShell) {
 		super(parentShell);
 		try {
 			provider = new LocationNameStyleProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -109,27 +107,29 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnNameStyle = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnNameStyle = tableViewerColumn_1.getColumn();
+		final TableColumn tblclmnNameStyle = tableViewerColumnNameStyle
+				.getColumn();
 		tblclmnNameStyle.setWidth(100);
 		tblclmnNameStyle.setText("Name Style");
 
-		final TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnLanguage = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnLanguage = tableViewerColumn_2.getColumn();
+		final TableColumn tblclmnLanguage = tableViewerColumnLanguage
+				.getColumn();
 		tblclmnLanguage.setWidth(100);
 		tblclmnLanguage.setText("Language");
 
-		final TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnIsoCode = tableViewerColumn_3.getColumn();
+		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
 
@@ -158,7 +158,7 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 //				}
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 

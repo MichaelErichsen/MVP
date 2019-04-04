@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.databaseadmin;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -93,7 +94,7 @@ public class H2TableNavigator {
 		} catch (final Exception e1) {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 	}
 
@@ -264,7 +265,7 @@ public class H2TableNavigator {
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -413,7 +414,7 @@ public class H2TableNavigator {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 }

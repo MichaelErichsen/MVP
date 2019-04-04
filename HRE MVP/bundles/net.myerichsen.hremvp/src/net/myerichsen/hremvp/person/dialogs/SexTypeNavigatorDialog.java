@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.dialogs;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -131,7 +132,7 @@ public class SexTypeNavigatorDialog extends TitleAreaDialog {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 

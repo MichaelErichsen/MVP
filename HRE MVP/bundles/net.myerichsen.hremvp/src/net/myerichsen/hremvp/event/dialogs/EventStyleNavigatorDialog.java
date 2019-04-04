@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.event.dialogs;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -54,7 +55,7 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 		try {
 			provider = new EventTypeProvider();
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 			e.printStackTrace();
 		}
@@ -131,7 +132,7 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 		} catch (final Exception e1) {
 			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
 		return area;

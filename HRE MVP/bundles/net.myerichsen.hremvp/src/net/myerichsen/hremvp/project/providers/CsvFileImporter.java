@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.providers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
@@ -8,7 +9,7 @@ import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
  * Lists csv files to be imported into HRE tables when cerating a new project
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. mar. 2019
+ * @version 4. apr. 2019
  *
  */
 public class CsvFileImporter {
@@ -25,6 +26,15 @@ public class CsvFileImporter {
 			"DICTIONARY" };
 
 	/**
+	 * Constructor
+	 *
+	 */
+	private CsvFileImporter() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
 	 * Import all csv files.
 	 */
 	public static void importCsv() {
@@ -39,8 +49,7 @@ public class CsvFileImporter {
 						+ csvFileNames[i]);
 
 			} catch (final Exception e1) {
-				e1.printStackTrace();
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.StatusLine;
@@ -210,7 +211,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 			stringList = provider.getStringList(locationNameStylePid);
 			tableViewer.setInput(stringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 

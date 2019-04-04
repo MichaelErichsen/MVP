@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.location.parts;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -87,7 +88,7 @@ public class LocationNavigator {
 		} catch (final Exception e) {
 			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -174,7 +175,7 @@ public class LocationNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 	}
@@ -234,7 +235,7 @@ public class LocationNavigator {
 					"Location " + primaryName + " has been deleted");
 			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}
@@ -321,7 +322,7 @@ public class LocationNavigator {
 					}
 				}
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 		}

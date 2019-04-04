@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -136,9 +137,9 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 				SWT.NONE);
 		lblPersonNameStyle.setText("Person Name Style");
 
-		ComboViewer comboViewerNameStyle = new ComboViewer(compositeNameStyle,
-				SWT.NONE);
-		Combo comboNameStyle = comboViewerNameStyle.getCombo();
+		final ComboViewer comboViewerNameStyle = new ComboViewer(
+				compositeNameStyle, SWT.NONE);
+		final Combo comboNameStyle = comboViewerNameStyle.getCombo();
 		comboNameStyle.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -166,11 +167,11 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 			stringList = new PersonNameStyleProvider().getStringList();
 			comboViewerNameStyle.setInput(stringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
 
-		Composite compositeFrom = new Composite(container, SWT.BORDER);
+		final Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeFrom.setLayout(new GridLayout(2, false));
@@ -216,7 +217,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnClearFrom.setText("Clear");
 
-		Composite compositeTo = new Composite(container, SWT.BORDER);
+		final Composite compositeTo = new Composite(container, SWT.BORDER);
 		compositeTo.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		compositeTo.setLayout(new GridLayout(2, false));
@@ -265,7 +266,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 		});
 		btnClearTo.setText("Clear");
 
-		Button btnPrimaryName = new Button(container, SWT.CHECK);
+		final Button btnPrimaryName = new Button(container, SWT.CHECK);
 		btnPrimaryName.setText("Primary Name");
 
 		setPageComplete(false);
@@ -315,7 +316,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 				toDatePid = hdp.insert();
 				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}

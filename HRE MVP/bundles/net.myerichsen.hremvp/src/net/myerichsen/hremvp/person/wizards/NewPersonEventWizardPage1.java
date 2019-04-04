@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -93,7 +94,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				hdp.get(hdatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				e1.printStackTrace();
 			}
 		}
@@ -130,7 +131,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				hdp.get(hdatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				e.printStackTrace();
 			}
 
@@ -420,7 +421,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 			}
 			comboLanguage.select(index);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 
@@ -429,7 +430,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 			eventTypeList = new EventTypeProvider().getStringList();
 			comboViewerEventType.setInput(eventTypeList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			e1.printStackTrace();
 		}
 	}
@@ -537,7 +538,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				toDatePid = hdp.insert();
 				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				LOGGER.severe(e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}

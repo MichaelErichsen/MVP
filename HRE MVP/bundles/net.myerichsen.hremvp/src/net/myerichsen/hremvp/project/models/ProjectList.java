@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -142,7 +143,7 @@ public class ProjectList {
 				models.add(model);
 			}
 		} catch (final ParseException e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
@@ -182,8 +183,8 @@ public class ProjectList {
 		store.setValue("projectcount", count);
 		try {
 			((ScopedPreferenceStore) store).save();
-		} catch (IOException e) {
-			LOGGER.severe(e.getMessage());
+		} catch (final IOException e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}
 	}

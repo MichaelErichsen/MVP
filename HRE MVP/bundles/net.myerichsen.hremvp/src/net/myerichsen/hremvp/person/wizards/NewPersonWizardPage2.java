@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.wizards;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -75,7 +76,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 				wizard.setFromDatePid(hdatePid);
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
@@ -97,7 +98,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 				wizard.setToDatePid(hdatePid);
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
@@ -181,7 +182,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 			stringList = new PersonNameStyleProvider().getStringList();
 			comboViewerNameStyle.setInput(stringList);
 		} catch (final Exception e1) {
-			LOGGER.severe(e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
 		// FIXME int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
@@ -299,7 +300,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 				textFromDate.setText(dialog.getDate().toString());
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
@@ -322,7 +323,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 				wizard.setToDatePid(hdp.insert());
 				setErrorMessage(null);
 			} catch (final Exception e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
 		}
