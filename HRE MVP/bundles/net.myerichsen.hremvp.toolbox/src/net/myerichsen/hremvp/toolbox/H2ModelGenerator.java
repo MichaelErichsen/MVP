@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,8 +102,7 @@ public class H2ModelGenerator {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	private static void createDatabaseOperations()
-			throws IOException, Exception {
+	private static void createDatabaseOperations() throws Exception {
 		// delete()
 		writer.println("public void delete() throws Exception {");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
@@ -243,11 +243,9 @@ public class H2ModelGenerator {
 			if (field.equals(primaryKey)) {
 				writer.println("ps.setInt(" + (index++) + ", maxPid);");
 				continue;
-			} else if (field.equals("INSERT_TSTMP")) {
-				continue;
-			} else if (field.equals("UPDATE_TSTMP")) {
-				continue;
-			} else if (field.equals("TABLE_ID")) {
+			} else if ((field.equals("INSERT_TSTMP"))
+					|| (field.equals("UPDATE_TSTMP"))
+					|| (field.equals("TABLE_ID"))) {
 				continue;
 			}
 
@@ -284,13 +282,9 @@ public class H2ModelGenerator {
 
 		for (int i = 0; i < fields.size(); i++) {
 			field = fields.get(i);
-			if (field.equals(primaryKey)) {
-				continue;
-			} else if (field.equals("INSERT_TSTMP")) {
-				continue;
-			} else if (field.equals("UPDATE_TSTMP")) {
-				continue;
-			} else if (field.equals("TABLE_ID")) {
+			if ((field.equals(primaryKey)) || (field.equals("INSERT_TSTMP"))
+					|| (field.equals("UPDATE_TSTMP"))
+					|| (field.equals("TABLE_ID"))) {
 				continue;
 			}
 
@@ -326,7 +320,7 @@ public class H2ModelGenerator {
 	 * @throws IOException
 	 *
 	 */
-	private static void createFields() throws IOException {
+	private static void createFields() {
 		for (int i = 0; i < fields.size(); i++) {
 			writer.println("private " + types.get(i) + " "
 					+ toCamelCase(fields.get(i)) + ";");
@@ -338,7 +332,7 @@ public class H2ModelGenerator {
 	 * @throws IOException
 	 *
 	 */
-	private static void createGetters() throws IOException {
+	private static void createGetters() {
 		String field;
 		String type;
 
@@ -367,7 +361,7 @@ public class H2ModelGenerator {
 	 * @throws IOException
 	 *
 	 */
-	private static void createHeader() throws IOException {
+	private static void createHeader() {
 		writer.println("package net.myerichsen.hremvp.dbmodels;\r\n");
 		writer.println("import java.math.BigDecimal;");
 		writer.println("import java.sql.Connection;");
@@ -408,7 +402,7 @@ public class H2ModelGenerator {
 	 * @throws IOException
 	 *
 	 */
-	private static void createSetters() throws IOException {
+	private static void createSetters() {
 		String field;
 		String type;
 
@@ -431,11 +425,10 @@ public class H2ModelGenerator {
 	}
 
 	/**
-	 * @throws IOException
-	 * @throws Exception
+	 * @throws SQLException
 	 *
 	 */
-	private static void createSql() throws IOException, Exception {
+	private static void createSql() throws SQLException {
 		// SELECT
 		writer.println("private static final String SELECT = \"SELECT \" +");
 
@@ -540,19 +533,20 @@ public class H2ModelGenerator {
 		// Middle columns
 		for (int i = 1; i < (fields.size() - 1); i++) {
 			field = fields.get(i);
-			if (field.equals(primaryKey)) {
-				continue;
-			} else if (field.equals("INSERT_TSTMP")) {
-				continue;
-			} else if (field.equals("UPDATE_TSTMP")) {
+//			if (field.equals(primaryKey)) {
+//				continue;
+//			} else if (field.equals("INSERT_TSTMP")) {
+//				continue;
+//			} else
+			if (field.equals("UPDATE_TSTMP")) {
 				if (comma) {
 					writer.println("\", UPDATE_TSTMP = CURRENT_TIMESTAMP\" +");
 				} else {
 					writer.println("\"UPDATE_TSTMP = CURRENT_TIMESTAMP\" +");
 					comma = true;
 				}
-			} else if (field.equals("TABLE_ID")) {
-				continue;
+//			} else if (field.equals("TABLE_ID")) {
+//				continue;
 			} else {
 				if (comma) {
 					writer.println("\", " + field + " = ?\" +");
@@ -599,7 +593,7 @@ public class H2ModelGenerator {
 	 * @param args Usage: H2ModelGenerator h2database tablename outputfile
 	 * @throws IOException File is not available
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		if (args.length < 3) {
 			System.out.println(
 					"Usage: H2ModelGenerator <h2database> <tablename> <outputfile>");
@@ -625,7 +619,7 @@ public class H2ModelGenerator {
 			return null;
 		}
 
-		if (init == "byte[]") {
+		if (init.equals("byte[]")) {
 			return "Bytes";
 		}
 
@@ -714,21 +708,21 @@ public class H2ModelGenerator {
 	/**
 	 * @param databaseName the databaseName to set
 	 */
-	public void setDatabaseName(String databaseName) {
+	public static void setDatabaseName(String databaseName) {
 		H2ModelGenerator.databaseName = databaseName;
 	}
 
 	/**
 	 * @param outputDirectory the outputDirectory to set
 	 */
-	public void setOutputDirectory(String outputDirectory) {
+	public static void setOutputDirectory(String outputDirectory) {
 		H2ModelGenerator.outputDirectory = outputDirectory;
 	}
 
 	/**
 	 * @param tableName the tableName to set
 	 */
-	public void setTableName(String tableName) {
+	public static void setTableName(String tableName) {
 		H2ModelGenerator.tableName = tableName;
 	}
 }

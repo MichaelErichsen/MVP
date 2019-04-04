@@ -66,7 +66,6 @@ public class H2ModelBatchjob {
 
 			H2ModelGenerator generator;
 			try {
-				generator = null;
 				generator = new H2ModelGenerator();
 				generator.setDatabaseName(databaseName);
 				generator.setTableName(tableName);
