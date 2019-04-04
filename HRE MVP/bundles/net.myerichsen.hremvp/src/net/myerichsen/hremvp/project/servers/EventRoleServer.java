@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -23,15 +22,15 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  *
  */
 public class EventRoleServer implements IHREServer {
-	private final static Logger LOGGER = Logger
-			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private final static Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int EventRolePid;
 	private int EventTypePid;
 	private String abbreviation;
 
 	private final EventRoles eventRole;
-	private Dictionary dictionary;
+//	private Dictionary dictionary;
 
 	/**
 	 * Constructor

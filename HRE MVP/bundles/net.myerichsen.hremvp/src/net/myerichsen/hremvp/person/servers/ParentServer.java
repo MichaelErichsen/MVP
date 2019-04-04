@@ -34,7 +34,7 @@ public class ParentServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws Exception {
+	public void delete(int key) throws UnsupportedOperationException {
 
 	}
 

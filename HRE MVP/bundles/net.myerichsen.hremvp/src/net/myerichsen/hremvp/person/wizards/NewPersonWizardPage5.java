@@ -31,15 +31,15 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Person events wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 31. mar. 2019
+ * @version 3. apr. 2019
  *
  */
 public class NewPersonWizardPage5 extends WizardPage {
-	private final static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
-	private NewPersonWizard wizard;
+//	private NewPersonWizard wizard;
 	private List<List<String>> lls;
 	private TableViewer tableViewer;
 
@@ -127,7 +127,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 				}
 
 				if (found) {
-					wizard = (NewPersonWizard) getWizard();
+//					wizard = (NewPersonWizard) getWizard();
 					// FIXME Set something in wizard
 //					wizard.setPersonNamePartList(stringList);
 					setPageComplete(true);
@@ -175,7 +175,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			wizard = (NewPersonWizard) getWizard();
+//			wizard = (NewPersonWizard) getWizard();
 //			final int personNameStylePid = wizard.getPersonNameStylePid();
 			// FIXME Get something?
 //			lls = provider.getStringList(personNameStylePid);

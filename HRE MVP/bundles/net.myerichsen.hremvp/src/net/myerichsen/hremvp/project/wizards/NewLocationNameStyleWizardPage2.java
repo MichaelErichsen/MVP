@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.project.wizards;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -29,8 +28,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  *
  */
 public class NewLocationNameStyleWizardPage2 extends WizardPage {
-	private final static Logger LOGGER = Logger
-			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private final static Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Text textIsoCode;
 	private Text textStyleName;
 	private TableViewer tableViewer;

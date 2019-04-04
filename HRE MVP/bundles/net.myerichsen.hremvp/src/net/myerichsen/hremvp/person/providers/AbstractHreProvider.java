@@ -16,7 +16,13 @@ import org.json.JSONWriter;
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.HreH2ConnectionPool;
+import net.myerichsen.hremvp.MvpException;
 
+/**
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 3. apr. 2019
+ *
+ */
 public abstract class AbstractHreProvider {
 	@Inject
 	protected static IEventBroker eventBroker;
@@ -33,6 +39,7 @@ public abstract class AbstractHreProvider {
 		try {
 			conn = HreH2ConnectionPool.getConnection();
 		} catch (final Exception e) {
+			LOGGER.severe(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -177,7 +184,7 @@ public abstract class AbstractHreProvider {
 				}
 
 				if (type.contains("[[")) {
-					throw new Exception(
+					throw new MvpException(
 							"Too many array levels for this implementation, so far");
 				}
 
@@ -213,8 +220,8 @@ public abstract class AbstractHreProvider {
 				} else if (type.contains("java.util.Vector")) {
 					final Vector<?> v = (Vector<?>) field.get(this);
 
-					final String key = field.getName();
-					jw.key(key);
+					final String fieldName = field.getName();
+					jw.key(fieldName);
 
 					jw.array();
 
