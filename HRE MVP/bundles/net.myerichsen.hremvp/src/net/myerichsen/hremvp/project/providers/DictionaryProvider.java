@@ -105,7 +105,7 @@ public class DictionaryProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<List<String>>();
+		return new ArrayList<>();
 	}
 
 	/**

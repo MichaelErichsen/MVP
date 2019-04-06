@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,14 +85,14 @@ public class PersonEvents {
 	private int LanguagePid;
 	private PersonEvents model;
 
-	public void delete() throws Exception {
+	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws Exception {
+	public void delete(int key) throws SQLException, MvpException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -102,7 +103,7 @@ public class PersonEvents {
 		conn.close();
 	}
 
-	public List<PersonEvents> get() throws Exception {
+	public List<PersonEvents> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
@@ -125,7 +126,7 @@ public class PersonEvents {
 		return modelList;
 	}
 
-	public void get(int key) throws Exception {
+	public void get(int key) throws SQLException, MvpException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -165,7 +166,7 @@ public class PersonEvents {
 		return EventRolePid;
 	}
 
-	public List<PersonEvents> getFKEventPid(int key) throws Exception {
+	public List<PersonEvents> getFKEventPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_EVENT_PID);
 		ps.setInt(1, key);
@@ -189,7 +190,7 @@ public class PersonEvents {
 		return modelList;
 	}
 
-	public List<PersonEvents> getFKEventRolePid(int key) throws Exception {
+	public List<PersonEvents> getFKEventRolePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_EVENT_ROLE_PID);
 		ps.setInt(1, key);
@@ -213,7 +214,7 @@ public class PersonEvents {
 		return modelList;
 	}
 
-	public List<PersonEvents> getFKPersonPid(int key) throws Exception {
+	public List<PersonEvents> getFKPersonPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PERSON_PID);
 		ps.setInt(1, key);
@@ -291,7 +292,7 @@ public class PersonEvents {
 		return UpdateTstmp;
 	}
 
-	public int insert() throws Exception {
+	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -422,7 +423,7 @@ public class PersonEvents {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws Exception {
+	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getEventPid());
@@ -430,8 +431,7 @@ public class PersonEvents {
 		ps.setInt(3, getPersonPid());
 		ps.setBoolean(4, isPrimaryPerson());
 		ps.setBoolean(5, isPrimaryEvent());
-		ps.setInt(6, getLanguagePid());
-		ps.setInt(7, getPersonEventPid());
+		ps.setInt(6, getPersonEventPid());
 		ps.executeUpdate();
 		conn.close();
 	}

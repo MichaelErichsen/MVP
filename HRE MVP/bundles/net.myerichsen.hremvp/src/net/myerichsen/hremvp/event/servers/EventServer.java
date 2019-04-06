@@ -8,17 +8,20 @@ import java.util.logging.Logger;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.EventRoles;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
+import net.myerichsen.hremvp.dbmodels.PersonEvents;
 import net.myerichsen.hremvp.location.servers.LocationServer;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 5. apr. 2019
  *
  */
 public class EventServer implements IHREServer {
@@ -284,11 +287,11 @@ public class EventServer implements IHREServer {
 
 	/**
 	 * @return
+	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<List<String>> getStringList() throws Exception {
+		return new ArrayList<>();
 	}
 
 	/*
@@ -298,8 +301,49 @@ public class EventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		PersonEvents pe = new PersonEvents();
+		List<PersonEvents> fkPersonPid = pe.getFKPersonPid(key);
+
+		for (PersonEvents personEvents : fkPersonPid) {
+			Events ev = new Events();
+			ev.get(personEvents.getEventPid());
+
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(ev.getEventPid()));
+
+			stringList.add("Label, but we have eventtypepid");
+
+			int eventRolePid = personEvents.getEventRolePid();
+			EventRoles er = new EventRoles();
+			er.get(eventRolePid);
+			int labelPid = er.getLabelPid();
+			Dictionary dictionary = new Dictionary();
+			List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+			stringList.add(fkLabelPid.get(0).getLabel());
+
+			if (FromDatePid > 0) {
+				Hdates date = new Hdates();
+				date.get(FromDatePid);
+				stringList.add(date.toString());
+			} else {
+				stringList.add("");
+			}
+
+			if (ToDatePid > 0) {
+				Hdates date = new Hdates();
+				date.get(ToDatePid);
+				stringList.add(date.toString());
+			} else {
+				stringList.add("");
+			}
+
+			lls.add(stringList);
+		}
+
+		return lls;
 	}
 
 	/**

@@ -47,8 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. mar. 2019
- *
+ * @version 5. apr. 2019
  */
 public class PersonNavigator {
 	private static final Logger LOGGER = Logger
@@ -70,7 +69,6 @@ public class PersonNavigator {
 			provider = new PersonProvider();
 			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
-			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -127,7 +125,6 @@ public class PersonNavigator {
 			tableViewer.setInput(provider.getPersonList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		final Menu menu = new Menu(table);
@@ -175,7 +172,7 @@ public class PersonNavigator {
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
 				LOGGER.log(Level.FINE,
-						"Filter string: " + textNameFilter.getText());
+						"Filter string: {0}", textNameFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -213,17 +210,16 @@ public class PersonNavigator {
 		}
 
 		try {
-			final PersonProvider provider = new PersonProvider();
-			provider.delete(personPid);
+			final PersonProvider pp = new PersonProvider();
+			pp.delete(personPid);
 
 			LOGGER.log(Level.INFO,
-					"Person " + primaryName + " has been deleted");
+					"Person {0} has been deleted", primaryName);
 			eventBroker.post("MESSAGE",
 					"Person " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -240,7 +236,7 @@ public class PersonNavigator {
 	private void postPersonPid() {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int personPid = Integer.parseInt(selection[0].getText(0));
-		LOGGER.log(Level.INFO, "Posting person pid " + personPid);
+		LOGGER.log(Level.INFO, "Posting person pid {0}", personPid);
 		eventBroker.post(
 				net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 				personPid);
@@ -257,7 +253,7 @@ public class PersonNavigator {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.log(Level.FINE, "Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 
 		if (personPid > 0) {
 			try {
@@ -275,7 +271,6 @@ public class PersonNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

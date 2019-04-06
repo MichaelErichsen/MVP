@@ -149,7 +149,7 @@ public class H2TableEditor {
 					eventBroker.post("MESSAGE",
 							"Record " + recordNum + " has been selected");
 				} catch (final Exception e2) {
-					e2.printStackTrace();
+					LOGGER.log(Level.SEVERE, e2.toString(), e2);
 					eventBroker.post("MESSAGE", e2.getMessage());
 				}
 
@@ -411,7 +411,7 @@ public class H2TableEditor {
 		Text text;
 		Label label2;
 
-		if ((tableName == null) || (tableName == "")) {
+		if ((tableName == null) || (tableName.equals(""))) {
 			return;
 		}
 
@@ -463,18 +463,18 @@ public class H2TableEditor {
 						SWT.CHECK);
 				checkButton.setText(columns.get(i).getName());
 
-				if (columns.get(i).getValue() == null) {
+				if (columns.get(i).getValue() == null)
 					checkButton.setSelection(false);
-				} else if (columns.get(i).getValue().equals("TRUE")) {
+				else if (columns.get(i).getValue().equals("TRUE"))
 					checkButton.setSelection(true);
-				} else {
+				else
 					checkButton.setSelection(false);
-				}
 
 				columns.get(i).setValue(checkButton.getSelection());
 				lineList.add(checkButton);
 				break;
 			case Constants.CHAR:
+			case Constants.VARCHAR:
 				text = createFieldLine(compositeFields, i);
 				text.addFocusListener(
 						new LengthFocusListener(columns.get(i).getScale()));
@@ -497,13 +497,6 @@ public class H2TableEditor {
 				lineList.add(text);
 				break;
 			case Constants.DATE:
-				text = createFieldLine(compositeFields, i);
-				columns.get(i).setValue(row.get(i));
-				if (row.get(i) != null) {
-					text.setText((String) row.get(i));
-				}
-				lineList.add(text);
-				break;
 			case Constants.DECIMAL:
 				text = createFieldLine(compositeFields, i);
 				columns.get(i).setValue(row.get(i));
@@ -577,16 +570,7 @@ public class H2TableEditor {
 						DatatypeConverter.printHexBinary((byte[]) row.get(i))));
 				lineList.add(text);
 				break;
-			case Constants.VARCHAR:
-				text = createFieldLine(compositeFields, i);
-				text.addFocusListener(
-						new LengthFocusListener(columns.get(i).getScale()));
-				text.setToolTipText("Input longer than "
-						+ columns.get(i).getScale() + " will be truncated");
-				columns.get(i).setValue(row.get(i));
-				text.setText((String) row.get(i));
-				lineList.add(text);
-				break;
+
 			default:
 				LOGGER.log(Level.INFO,
 						"Unimplemented type: " + columns.get(i).getType());
@@ -613,7 +597,7 @@ public class H2TableEditor {
 					"Record " + recordNum + " has been deleted");
 
 		} catch (final Exception e1) {
-			e1.printStackTrace();
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 	}

@@ -222,8 +222,7 @@ public class PersonNameServer implements IHREServer {
 	 *
 	 * @param personPid The persistent PID of the person
 	 * @return s The name
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws Exception
 	 */
 	public String getPrimaryNameString(int personPid) throws Exception {
 		final StringBuilder sb = new StringBuilder();

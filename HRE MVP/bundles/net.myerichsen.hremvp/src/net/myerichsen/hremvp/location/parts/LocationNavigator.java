@@ -86,7 +86,6 @@ public class LocationNavigator {
 			provider = new LocationProvider();
 			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
-			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -296,7 +295,7 @@ public class LocationNavigator {
 		eventBroker.post(
 				net.myerichsen.hremvp.Constants.LOCATION_PID_UPDATE_TOPIC,
 				locationPid);
-		LOGGER.log(Level.INFO, "Location Pid: " + locationPid);
+		LOGGER.log(Level.INFO, "Location Pid: {0}", locationPid);
 	}
 
 	/**

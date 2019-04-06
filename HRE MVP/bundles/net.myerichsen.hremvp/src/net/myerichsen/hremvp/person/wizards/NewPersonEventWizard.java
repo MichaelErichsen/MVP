@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.person.providers.PersonEventProvider;
  * Wizard to add an event for a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 24. mar. 2019
+ * @version 5. apr. 2019
  *
  */
 public class NewPersonEventWizard extends Wizard {
@@ -71,7 +71,7 @@ public class NewPersonEventWizard extends Wizard {
 				ep.setToDatePid(Integer.parseInt(list.get(5)));
 				final int eventPid = ep.insert();
 
-				LOGGER.log(Level.INFO, "Inserted event pid " + eventPid);
+				LOGGER.log(Level.INFO, "Inserted event pid {0}", eventPid);
 
 				// Create a person-personEvent to link them together
 				final PersonEventProvider pep = new PersonEventProvider();
@@ -79,10 +79,10 @@ public class NewPersonEventWizard extends Wizard {
 				pep.setPersonPid(personPid);
 				pep.setPrimaryEvent(true);
 				pep.setPrimaryPerson(true);
-				pep.setRolePid(Integer.parseInt(list.get(2)));
+				pep.setEventRolePid(Integer.parseInt(list.get(2)));
 				final int personEventPid = pep.insert();
 				LOGGER.log(Level.INFO,
-						"Inserted person-event pid " + personEventPid);
+						"Inserted person-event pid {0}", personEventPid);
 				eventBroker.post(
 						net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 						personPid);
@@ -90,7 +90,6 @@ public class NewPersonEventWizard extends Wizard {
 			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 		return false;
 	}

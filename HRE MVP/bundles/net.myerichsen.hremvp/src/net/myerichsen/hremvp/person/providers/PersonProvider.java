@@ -192,7 +192,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getPersonList() throws Exception {
+	public List<List<String>> getPersonList() throws Exception  {
 		return server.getPersonList();
 	}
 

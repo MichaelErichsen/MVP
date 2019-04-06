@@ -131,7 +131,6 @@ public class LocationPersonView {
 			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}

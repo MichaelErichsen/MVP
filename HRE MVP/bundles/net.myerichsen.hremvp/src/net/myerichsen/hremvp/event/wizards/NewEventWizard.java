@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.person.providers.PersonEventProvider;
  * Wizard to add a new event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 5. apr. 2019
  *
  */
 public class NewEventWizard extends Wizard {
@@ -195,7 +195,7 @@ public class NewEventWizard extends Wizard {
 			provider.setEventName(eventName);
 			provider.setEventTypePid(eventTypePid);
 			final int eventPid = provider.insert();
-			LOGGER.log(Level.INFO, "Inserted event pid " + eventPid);
+			LOGGER.log(Level.INFO, "Inserted event pid {0}", eventPid);
 
 			if (locationPid != 0) {
 				final LocationEventProvider lep = new LocationEventProvider();
@@ -205,19 +205,19 @@ public class NewEventWizard extends Wizard {
 				lep.setPrimaryEvent(primaryLocationEvent);
 				final int locationEventsPid = lep.insert();
 				LOGGER.log(Level.INFO,
-						"Inserted location event " + locationEventsPid);
+						"Inserted location event {0}", locationEventsPid);
 			}
 
 			if (personPid != 0) {
 				final PersonEventProvider pep = new PersonEventProvider();
 				pep.setEventPid(eventPid);
 				pep.setPersonPid(personPid);
-				pep.setRolePid(eventRolePid);
+				pep.setEventRolePid(eventRolePid);
 				pep.setPrimaryPerson(primaryPerson);
 				pep.setPrimaryEvent(primaryPersonEvent);
 				final int personEventPid = pep.insert();
 				LOGGER.log(Level.INFO,
-						"Inserted person event pid " + personEventPid);
+						"Inserted person event pid {0}", personEventPid);
 			}
 
 			eventBroker.post("MESSAGE",
@@ -226,7 +226,6 @@ public class NewEventWizard extends Wizard {
 			return true;
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 		return false;
 	}

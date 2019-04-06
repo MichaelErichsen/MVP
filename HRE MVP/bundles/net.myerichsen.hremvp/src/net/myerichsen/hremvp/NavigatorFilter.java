@@ -35,9 +35,8 @@ public class NavigatorFilter extends ViewerFilter {
 		LOGGER.log(Level.FINE,
 				"Filter string: " + searchString + ", Element: " + ls.get(1));
 
-		if (ls.get(1).toLowerCase().matches(searchString)) {
+		if (ls.get(1).toLowerCase().matches(searchString))
 			return true;
-		}
 
 		return false;
 	}

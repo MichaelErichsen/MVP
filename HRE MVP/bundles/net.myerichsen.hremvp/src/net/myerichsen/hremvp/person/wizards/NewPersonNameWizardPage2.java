@@ -30,7 +30,6 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int personNameStylePid;
-	private PersonNameMapProvider provider;
 	private List<Text> textFieldList;
 	private final IEventBroker eventBroker;
 
@@ -64,7 +63,7 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 			final NewPersonNameWizard wizard = (NewPersonNameWizard) getWizard();
 			personNameStylePid = wizard.getPersonNameStylePid();
 
-			provider = new PersonNameMapProvider();
+			PersonNameMapProvider provider = new PersonNameMapProvider();
 			final List<PersonNameMaps> mapList = provider
 					.getFKNameStylePid(personNameStylePid);
 			textFieldList = new ArrayList<>();
@@ -81,7 +80,6 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 
 	}

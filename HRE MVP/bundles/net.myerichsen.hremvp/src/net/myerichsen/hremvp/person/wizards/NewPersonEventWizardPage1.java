@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,7 +96,6 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
-				e1.printStackTrace();
 			}
 		}
 	}
@@ -132,7 +132,6 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}
@@ -422,7 +421,6 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 			comboLanguage.select(index);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		try {
@@ -431,7 +429,6 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 			comboViewerEventType.setInput(eventTypeList);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -474,8 +471,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 	 * @return
 	 */
 	public List<List<String>> getListOfLists() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -508,7 +504,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 				fromDatePid = hdp.insert();
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}

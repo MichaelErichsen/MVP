@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.event.servers.EventServer;
  * Provides all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 5. apr. 2019
  *
  */
 public class EventProvider implements IHREProvider {
@@ -42,7 +42,7 @@ public class EventProvider implements IHREProvider {
 	 *                   access error or other errors
 	 *
 	 */
-	public EventProvider() throws Exception {
+	public EventProvider() {
 		server = new EventServer();
 		personList = new ArrayList<>();
 		locationList = new ArrayList<>();
@@ -207,8 +207,7 @@ public class EventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList();
 	}
 
 	/*
@@ -218,7 +217,7 @@ public class EventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return server.getStringList();
+		return server.getStringList(key);
 	}
 
 	/**

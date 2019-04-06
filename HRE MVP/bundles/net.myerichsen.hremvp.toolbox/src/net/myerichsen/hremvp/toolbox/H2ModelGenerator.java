@@ -708,21 +708,21 @@ public class H2ModelGenerator {
 	/**
 	 * @param databaseName the databaseName to set
 	 */
-	public static void setDatabaseName(String databaseName) {
+	public void setDatabaseName(String databaseName) {
 		H2ModelGenerator.databaseName = databaseName;
 	}
 
 	/**
 	 * @param outputDirectory the outputDirectory to set
 	 */
-	public static void setOutputDirectory(String outputDirectory) {
+	public void setOutputDirectory(String outputDirectory) {
 		H2ModelGenerator.outputDirectory = outputDirectory;
 	}
 
 	/**
 	 * @param tableName the tableName to set
 	 */
-	public static void setTableName(String tableName) {
+	public void setTableName(String tableName) {
 		H2ModelGenerator.tableName = tableName;
 	}
 }

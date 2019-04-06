@@ -72,7 +72,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				hdp.get(hdatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -95,7 +95,6 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -112,7 +111,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				hdp.get(hdatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -293,7 +292,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				setFromDatePid(hdp.insert());
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}

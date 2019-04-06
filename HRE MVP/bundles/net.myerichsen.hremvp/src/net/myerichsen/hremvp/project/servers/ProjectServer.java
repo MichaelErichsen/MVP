@@ -132,7 +132,7 @@ public class ProjectServer implements IHREServer {
 				ls.add(store.getString(key));
 				break;
 			default:
-				LOGGER.log(Level.SEVERE, "Invalid index: %d", i);
+				LOGGER.log(Level.SEVERE, "Invalid index: {0}", i);
 				break;
 			}
 

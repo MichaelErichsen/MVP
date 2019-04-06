@@ -166,7 +166,6 @@ public class NewPersonNameWizard extends Wizard {
 		final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 		return false;
 	}

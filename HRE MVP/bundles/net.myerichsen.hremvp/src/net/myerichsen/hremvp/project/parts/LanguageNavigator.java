@@ -68,7 +68,6 @@ public class LanguageNavigator {
 			provider = new LanguageProvider();
 			navigatorFilter = new NavigatorFilter();
 		} catch (final Exception e) {
-			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -175,7 +174,6 @@ public class LanguageNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 	}
@@ -261,7 +259,6 @@ public class LanguageNavigator {
 			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

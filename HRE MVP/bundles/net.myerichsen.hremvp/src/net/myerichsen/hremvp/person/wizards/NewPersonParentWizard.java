@@ -23,7 +23,6 @@ public class NewPersonParentWizard extends Wizard {
 	private final IEventBroker eventBroker;
 
 	private NewPersonParentWizardPage1 page1;
-	private ParentProvider parentProvider;
 	private final int childPid;
 
 	/**
@@ -61,7 +60,7 @@ public class NewPersonParentWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		if (page1.getParentPid() != 0) {
-			parentProvider = new ParentProvider();
+			ParentProvider parentProvider = new ParentProvider();
 			parentProvider.setChild(childPid);
 			int parentPid = page1.getParentPid();
 			parentProvider.setParent(parentPid);
@@ -83,7 +82,6 @@ public class NewPersonParentWizard extends Wizard {
 				return true;
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}

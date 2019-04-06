@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -188,7 +189,7 @@ public class PersonNames {
 		return modelList;
 	}
 
-	public List<PersonNames> getFKPersonPid(int key) throws Exception {
+	public List<PersonNames> getFKPersonPid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PERSON_PID);
 		ps.setInt(1, key);

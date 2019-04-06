@@ -3,6 +3,7 @@ package net.myerichsen.hremvp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -80,10 +81,10 @@ public class HreH2ConnectionPool {
 
 	/**
 	 * @return A JDBC connection
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public static Connection getConnection() throws Exception {
+	public static Connection getConnection() throws SQLException {
 		final String dbName = store.getString("DBNAME");
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
 		dbPath = store.getString("DBPATH");
@@ -112,7 +113,7 @@ public class HreH2ConnectionPool {
 					LOGGER.log(Level.INFO, "H2 Version is {0}", h2Version);
 				}
 			} catch (final Exception e) {
-				LOGGER.log(Level.SEVERE, e.toString(), e);
+				LOGGER.log(Level.INFO, e.getMessage());
 				store.setValue("H2VERSION", h2Version);
 
 				LOGGER.log(Level.INFO, "H2 Version defaults to {0}", h2Version);

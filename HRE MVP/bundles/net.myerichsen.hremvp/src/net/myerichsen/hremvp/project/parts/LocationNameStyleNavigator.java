@@ -74,7 +74,6 @@ public class LocationNameStyleNavigator {
 			provider = new LocationNameStyleProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -164,7 +163,6 @@ public class LocationNameStyleNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -208,7 +206,6 @@ public class LocationNameStyleNavigator {
 					locationNameStylePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -263,8 +260,8 @@ public class LocationNameStyleNavigator {
 	@Optional
 	private void subscribelocationNameStylePidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_NAME_STYLE_PID_UPDATE_TOPIC) int locationNameStylePid) {
-		LOGGER.log(Level.FINE,
-				"Received location name style id {0}", locationNameStylePid);
+		LOGGER.log(Level.FINE, "Received location name style id {0}",
+				locationNameStylePid);
 		this.locationNameStylePid = locationNameStylePid;
 
 		if (locationNameStylePid > 0) {

@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.person.servers;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
@@ -146,11 +147,12 @@ public class PersonServer implements IHREServer {
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
+	 * @throws SQLException
 	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public List<Persons> get() throws Exception {
+	public List<Persons> get() throws SQLException {
 		return person.get();
 	}
 
@@ -470,7 +472,6 @@ public class PersonServer implements IHREServer {
 	 *
 	 * @return List of lists of pid, primary name string, birth date and death
 	 *         date
-	 * @throws MvpException
 	 * @throws Exception
 	 */
 	public List<List<String>> getPersonList() throws Exception {

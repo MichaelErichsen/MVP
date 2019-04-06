@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
+import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.project.providers.EventRoleProvider;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
@@ -42,7 +43,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 31. mar. 2019
+ * @version 5. apr. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -63,6 +64,7 @@ public class NewEventDialog extends TitleAreaDialog {
 	private String eventTypeLabel = "";
 	private int eventRolePid = 0;
 	private String eventRoleLabel = "";
+	private int eventPid;
 
 	private List<List<String>> eventTypeStringList;
 	private List<List<String>> eventRoleStringList;
@@ -70,8 +72,6 @@ public class NewEventDialog extends TitleAreaDialog {
 	private Combo comboEventRole;
 	private ComboViewer comboViewerEventRole;
 	private final EventRoleProvider eventRoleProvider;
-
-	private List<String> eventStringList;
 
 	/**
 	 * Create the dialog.
@@ -145,7 +145,6 @@ public class NewEventDialog extends TitleAreaDialog {
 	protected void copyFromDateToNewToDate() {
 		textToDate.setText(textFromDate.getText());
 		toDatePid = fromDatePid;
-
 	}
 
 	/**
@@ -155,8 +154,14 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
-				true);
+		final Button button = createButton(parent, IDialogConstants.OK_ID,
+				IDialogConstants.OK_LABEL, true);
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				createEvent();
+			}
+		});
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
 	}
@@ -423,10 +428,36 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 *
+	 */
+	protected void createEvent() {
+		try {
+
+			final EventProvider provider = new EventProvider();
+			provider.setFromDatePid(fromDatePid);
+			provider.setToDatePid(toDatePid);
+			provider.setEventTypePid(eventTypePid);
+
+			setEventPid(provider.insert());
+			LOGGER.log(Level.INFO, "Created event {0}", eventPid);
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
+	}
+
+	/**
 	 * @return the eventNamePid
 	 */
 	public int getEventNamePid() {
 		return eventNamePid;
+	}
+
+	/**
+	 * @return the eventPid
+	 */
+	public int getEventPid() {
+		return eventPid;
 	}
 
 	/**
@@ -443,18 +474,19 @@ public class NewEventDialog extends TitleAreaDialog {
 	public List<String> getEventStringList() {
 		HDateProvider hdateProvider;
 
-		eventStringList = new ArrayList<>();
+		final List<String> eventStringList = new ArrayList<>();
 
+		eventStringList.add(Integer.toString(eventPid));
 		eventStringList.add(Integer.toString(eventNamePid));
 		eventStringList.add(eventTypeLabel);
 		eventStringList.add(Integer.toString(eventRolePid));
 		eventStringList.add(eventRoleLabel);
 
 		if (fromDatePid != 0) {
+			eventStringList.add(Integer.toString(fromDatePid));
 			try {
 				hdateProvider = new HDateProvider();
 				hdateProvider.get(fromDatePid);
-				eventStringList.add(Integer.toString(fromDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -467,18 +499,18 @@ public class NewEventDialog extends TitleAreaDialog {
 		}
 
 		if (toDatePid != 0) {
+			eventStringList.add(Integer.toString(toDatePid));
 			try {
 				hdateProvider = new HDateProvider();
 				hdateProvider.get(toDatePid);
-				eventStringList.add(Integer.toString(toDatePid));
 				eventStringList.add(hdateProvider.getDate().toString());
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 				eventBroker.post("MESSAGE", e.getMessage());
-				eventStringList.add("0");
 				eventStringList.add("");
 			}
 		} else {
+			eventStringList.add("0");
 			eventStringList.add("");
 		}
 
@@ -570,6 +602,13 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	public void setEventNamePid(int eventNamePid) {
 		this.eventNamePid = eventNamePid;
+	}
+
+	/**
+	 * @param eventPid the eventPid to set
+	 */
+	public void setEventPid(int eventPid) {
+		this.eventPid = eventPid;
 	}
 
 	/**

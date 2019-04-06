@@ -8,8 +8,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -45,7 +43,6 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 	private Text textChildName;
 	private Text textChildBirthDate;
 	private Text textChildDeathDate;
-	private Text textChildRole;
 
 	private int childPid = 0;
 
@@ -162,13 +159,9 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 		final Label lblChildRole = new Label(container, SWT.NONE);
 		lblChildRole.setText("Child role");
 
-		textChildRole = new Text(container, SWT.BORDER);
-		textChildRole.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				childRole = textChildRole.getText();
-			}
-		});
+		Text textChildRole = new Text(container, SWT.BORDER);
+		textChildRole
+				.addModifyListener(e -> childRole = textChildRole.getText());
 		textChildRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
@@ -217,7 +210,6 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 }

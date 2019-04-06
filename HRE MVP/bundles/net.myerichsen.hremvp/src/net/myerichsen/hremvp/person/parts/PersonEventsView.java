@@ -298,6 +298,7 @@ public class PersonEventsView {
 		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 		this.personPid = personPid;
 		try {
+			// FIXME java.lang.IndexOutOfBoundsException: Index: 3, Size: 3
 			tableViewer.setInput(provider.getPersonEventList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {

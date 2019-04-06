@@ -75,7 +75,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 				hdp.get(fromDatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 				hdp.get(toDatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -295,7 +295,7 @@ public class NewPersonNameWizardPage1 extends WizardPage {
 				fromDatePid = hdp.insert();
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}

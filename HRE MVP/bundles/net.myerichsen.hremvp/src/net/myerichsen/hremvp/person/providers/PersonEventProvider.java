@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.providers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -8,13 +9,13 @@ import net.myerichsen.hremvp.person.servers.PersonEventServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. mar. 2019
+ * @version 5. apr. 2019
  */
 public class PersonEventProvider implements IHREProvider {
 	private int PersonEventPid;
 	private int EventPid;
 	private int PersonPid;
-	private int RolePid;
+	private int EventRolePid;
 	private boolean PrimaryPerson;
 	private boolean PrimaryEvent;
 
@@ -28,15 +29,6 @@ public class PersonEventProvider implements IHREProvider {
 		server = new PersonEventServer();
 	}
 
-	/**
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 *
-	 */
-	public boolean areMoreEvents(int key) throws Exception {
-		return server.areMoreEvents(key);
-	}
 
 	/**
 	 * @param personEventPid2
@@ -67,6 +59,13 @@ public class PersonEventProvider implements IHREProvider {
 	}
 
 	/**
+	 * @return the eventRolePid
+	 */
+	public int getEventRolePid() {
+		return EventRolePid;
+	}
+
+	/**
 	 * @return the personEventPid
 	 */
 	public int getPersonEventPid() {
@@ -80,13 +79,6 @@ public class PersonEventProvider implements IHREProvider {
 		return PersonPid;
 	}
 
-	/**
-	 * @return the rolePid
-	 */
-	public int getRolePid() {
-		return RolePid;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -94,9 +86,7 @@ public class PersonEventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		return new ArrayList<>();	}
 
 	/*
 	 * (non-Javadoc)
@@ -118,7 +108,7 @@ public class PersonEventProvider implements IHREProvider {
 		server.setPersonPid(PersonPid);
 		server.setPrimaryEvent(isPrimaryEvent());
 		server.setPrimaryPerson(isPrimaryPerson());
-		server.setRolePid(RolePid);
+		server.setEventRolePid(EventRolePid);
 		return server.insert();
 	}
 
@@ -141,6 +131,13 @@ public class PersonEventProvider implements IHREProvider {
 	 */
 	public void setEventPid(int eventPid) {
 		EventPid = eventPid;
+	}
+
+	/**
+	 * @param eventRolePid the eventRolePid to set
+	 */
+	public void setEventRolePid(int eventRolePid) {
+		EventRolePid = eventRolePid;
 	}
 
 	/**
@@ -169,13 +166,6 @@ public class PersonEventProvider implements IHREProvider {
 	 */
 	public void setPrimaryPerson(boolean primaryPerson) {
 		PrimaryPerson = primaryPerson;
-	}
-
-	/**
-	 * @param rolePid the rolePid to set
-	 */
-	public void setRolePid(int rolePid) {
-		RolePid = rolePid;
 	}
 
 	/*

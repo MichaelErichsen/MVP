@@ -26,13 +26,18 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.event.dialogs.NewEventDialog;
+import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Person events wizard page
+ * Person events wizard page.
+ * <p>
+ * It calls class NewEventDialog to create one or more events for the new
+ * person. When focus is lost from the table, it returns a list of events to the
+ * wizard, which then creates a Person Event for each event.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 3. apr. 2019
+ * @version 5. apr. 2019
  *
  */
 public class NewPersonWizardPage5 extends WizardPage {
@@ -40,9 +45,10 @@ public class NewPersonWizardPage5 extends WizardPage {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEclipseContext context;
 
-//	private NewPersonWizard wizard;
+	private NewPersonWizard wizard;
 	private List<List<String>> lls;
 	private TableViewer tableViewer;
+	private EventProvider provider;
 
 	/**
 	 * Constructor
@@ -56,12 +62,18 @@ public class NewPersonWizardPage5 extends WizardPage {
 				"Add events for the new person. More events can be added later.");
 		this.context = context;
 		lls = new ArrayList<>();
+		try {
+			provider = new EventProvider();
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
 	}
 
 	/**
 	 *
 	 */
-	protected void addEvent(int personPid) {
+	protected void addEvent() {
 		final NewEventDialog dialog = new NewEventDialog(getShell(), context);
 
 		if (dialog.open() == Window.OK) {
@@ -69,14 +81,17 @@ public class NewPersonWizardPage5 extends WizardPage {
 				final List<String> eventStringList = dialog
 						.getEventStringList();
 				lls.add(eventStringList);
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setEventList(lls);
 
 				// Display in view
 				final TableItem item = new TableItem(tableViewer.getTable(),
 						SWT.NONE);
-				item.setText(0, eventStringList.get(1));
-				item.setText(1, eventStringList.get(3));
-				item.setText(2, eventStringList.get(5));
-				item.setText(3, eventStringList.get(7));
+				item.setText(0, eventStringList.get(0));
+				item.setText(1, eventStringList.get(2));
+				item.setText(2, eventStringList.get(4));
+				item.setText(3, eventStringList.get(6));
+				item.setText(4, eventStringList.get(8));
 				setErrorMessage(null);
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -128,9 +143,8 @@ public class NewPersonWizardPage5 extends WizardPage {
 				}
 
 				if (found) {
-//					wizard = (NewPersonWizard) getWizard();
-					// FIXME Set something in wizard
-//					wizard.setPersonNamePartList(stringList);
+					wizard = (NewPersonWizard) getWizard();
+					wizard.setPersonNamePartList(stringList);
 					setPageComplete(true);
 				}
 
@@ -141,20 +155,27 @@ public class NewPersonWizardPage5 extends WizardPage {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
+		TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnEventId = tableViewerColumnId.getColumn();
+		tblclmnEventId.setWidth(100);
+		tblclmnEventId.setText("Event Id");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
+
 		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnEventLabel = tableViewerColumnLabel
 				.getColumn();
 		tblclmnEventLabel.setWidth(100);
 		tblclmnEventLabel.setText("Event label");
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(0));
+		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnEventRole = tableViewerColumnRole.getColumn();
 		tblclmnEventRole.setWidth(100);
 		tblclmnEventRole.setText("Role in personEvent");
-		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(1));
+		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -163,24 +184,22 @@ public class NewPersonWizardPage5 extends WizardPage {
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
 		tableViewerColumnFromDate
-				.setLabelProvider(new HREColumnLabelProvider(2));
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
 		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
-		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(3));
+		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(4));
 
 		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-//			wizard = (NewPersonWizard) getWizard();
-//			final int personNameStylePid = wizard.getPersonNameStylePid();
-			// FIXME Get something?
-//			lls = provider.getStringList(personNameStylePid);
-//			tableViewer.setInput(lls);
+			wizard = (NewPersonWizard) getWizard();
+			lls = provider.getStringList(wizard.getPersonPid());
+			tableViewer.setInput(lls);
 			setErrorMessage(null);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -200,8 +219,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final NewPersonWizard wizard = (NewPersonWizard) getWizard();
-				addEvent(wizard.getPersonPid());
+				addEvent();
 			}
 		});
 		mntmNewEvent.setText("New Event...");
@@ -230,19 +248,8 @@ public class NewPersonWizardPage5 extends WizardPage {
 		final int selectionIndex = tableViewer.getTable().getSelectionIndex();
 		tableViewer.getTable().remove(selectionIndex);
 		lls.remove(selectionIndex);
+		wizard = (NewPersonWizard) getWizard();
+		wizard.setEventList(lls);
 	}
 
-	/**
-	 * @return the lls
-	 */
-	public List<List<String>> getListOfLists() {
-		return lls;
-	}
-
-	/**
-	 * @param lls the lls to set
-	 */
-	public void setListOfLists(List<List<String>> listOfLists) {
-		lls = listOfLists;
-	}
 }

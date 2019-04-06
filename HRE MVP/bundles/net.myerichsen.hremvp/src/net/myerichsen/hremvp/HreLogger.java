@@ -22,12 +22,12 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 public class HreLogger {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	static private FileHandler handler;
+	private static FileHandler handler;
 
 	/**
 	 * @throws IOException When log file access fails
 	 */
-	static public void setup() throws IOException {
+	public static void setup() throws IOException {
 		final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 		LOGGER.setLevel(Level.parse(store.getString("LOGLEVEL")));

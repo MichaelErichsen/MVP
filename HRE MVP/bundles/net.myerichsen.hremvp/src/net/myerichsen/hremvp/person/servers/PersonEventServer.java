@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.servers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -8,7 +9,7 @@ import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. mar. 2019
+ * @version 5. apr. 2019
  *
  */
 public class PersonEventServer implements IHREServer {
@@ -27,19 +28,6 @@ public class PersonEventServer implements IHREServer {
 	 */
 	public PersonEventServer() {
 		personEvent = new PersonEvents();
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean areMoreEvents(int key) throws Exception {
-		final List<PersonEvents> peList = personEvent.getFKEventPid(key);
-		if (peList.size() > 0) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -70,6 +58,13 @@ public class PersonEventServer implements IHREServer {
 	}
 
 	/**
+	 * @return the eventRolePid
+	 */
+	public int getEventRolePid() {
+		return EventRolePid;
+	}
+
+	/**
 	 * @return the personEventPid
 	 */
 	public int getPersonEventPid() {
@@ -81,13 +76,6 @@ public class PersonEventServer implements IHREServer {
 	 */
 	public int getPersonPid() {
 		return PersonPid;
-	}
-
-	/**
-	 * @return the rolePid
-	 */
-	public int getRolePid() {
-		return EventRolePid;
 	}
 
 	/*
@@ -108,8 +96,7 @@ public class PersonEventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -148,6 +135,13 @@ public class PersonEventServer implements IHREServer {
 	}
 
 	/**
+	 * @param eventRolePid the eventRolePid to set
+	 */
+	public void setEventRolePid(int eventRolePid) {
+		EventRolePid = eventRolePid;
+	}
+
+	/**
 	 * @param personEventPid the personEventPid to set
 	 */
 	public void setPersonEventPid(int personEventPid) {
@@ -173,13 +167,6 @@ public class PersonEventServer implements IHREServer {
 	 */
 	public void setPrimaryPerson(boolean primaryPerson) {
 		PrimaryPerson = primaryPerson;
-	}
-
-	/**
-	 * @param rolePid the rolePid to set
-	 */
-	public void setRolePid(int rolePid) {
-		EventRolePid = rolePid;
 	}
 
 	/*

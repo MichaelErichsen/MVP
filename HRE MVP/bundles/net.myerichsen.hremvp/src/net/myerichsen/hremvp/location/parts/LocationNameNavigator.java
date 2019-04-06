@@ -324,7 +324,6 @@ public class LocationNameNavigator {
 			tableViewer.setInput(provider.getStringList(locationPid));
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 		tableViewer.refresh();
 	}

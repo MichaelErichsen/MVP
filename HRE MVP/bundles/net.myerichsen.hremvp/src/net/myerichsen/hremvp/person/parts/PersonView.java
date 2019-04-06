@@ -278,7 +278,7 @@ public class PersonView {
 				textDeathDate.setText("");
 			}
 		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
+			LOGGER.log(Level.INFO, e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 	}
@@ -341,9 +341,8 @@ public class PersonView {
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid)
-			throws Exception {
-		LOGGER.log(Level.INFO, "Receiving person pid " + personPid);
+			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
+		LOGGER.log(Level.INFO, "Receiving person pid {0]", personPid);
 		this.personPid = personPid;
 		get(personPid);
 	}

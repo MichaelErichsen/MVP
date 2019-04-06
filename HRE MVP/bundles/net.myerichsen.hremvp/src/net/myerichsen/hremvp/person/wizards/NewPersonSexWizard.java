@@ -91,7 +91,6 @@ public class NewPersonSexWizard extends Wizard {
 				return true;
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}

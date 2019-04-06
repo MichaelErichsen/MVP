@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class Persons {
 		conn.close();
 	}
 
-	public List<Persons> get() throws Exception {
+	public List<Persons> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();

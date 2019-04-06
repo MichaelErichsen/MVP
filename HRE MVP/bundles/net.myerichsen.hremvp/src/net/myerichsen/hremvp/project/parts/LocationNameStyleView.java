@@ -71,7 +71,6 @@ public class LocationNameStyleView {
 			lnmp = new LocationNameMapProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -199,7 +198,6 @@ public class LocationNameStyleView {
 			tableViewer.setInput(lnmp.getStringList(locationNameStylePid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -251,7 +249,6 @@ public class LocationNameStyleView {
 
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -322,7 +319,6 @@ public class LocationNameStyleView {
 					locationNameStylePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

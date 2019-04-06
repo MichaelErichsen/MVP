@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -35,16 +34,13 @@ public class NewPersonWizardPage3 extends WizardPage {
 	private NewPersonWizard wizard;
 
 	private final PersonNameMapProvider provider;
-	private TableViewer tableViewer;
 	private List<List<String>> lls;
 
 	/**
-	 *
 	 * Constructor
 	 *
-	 * @param context
 	 */
-	public NewPersonWizardPage3(IEclipseContext context) {
+	public NewPersonWizardPage3() {
 		super("wizardPage");
 		setTitle("Person Name Parts");
 		setDescription("Enter each part of the name");
@@ -64,7 +60,7 @@ public class NewPersonWizardPage3 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(1, false));
 
-		tableViewer = new TableViewer(container,
+		TableViewer tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addFocusListener(new FocusAdapter() {
