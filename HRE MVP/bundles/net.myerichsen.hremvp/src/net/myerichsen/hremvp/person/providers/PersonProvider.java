@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.providers;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -11,7 +12,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 6. apr. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -29,7 +30,7 @@ public class PersonProvider implements IHREProvider {
 	 *                   access error or other errors
 	 *
 	 */
-	public PersonProvider() throws Exception {
+	public PersonProvider() {
 		server = new PersonServer();
 	}
 
@@ -43,7 +44,7 @@ public class PersonProvider implements IHREProvider {
 		server.delete(key);
 	}
 
-	public List<Persons> get() throws Exception {
+	public List<Persons> get() throws SQLException {
 		return server.get();
 	}
 
@@ -192,7 +193,7 @@ public class PersonProvider implements IHREProvider {
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public List<List<String>> getPersonList() throws Exception  {
+	public List<List<String>> getPersonList() throws Exception {
 		return server.getPersonList();
 	}
 
@@ -285,13 +286,12 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param personPid
 	 * @param parentPid
 	 * @throws MvpException
 	 * @throws Exception
 	 */
-	public void removeParent(int personPid, int parentPid) throws Exception {
-		server.removeParent(personPid, parentPid);
+	public void removeParent(int parentPid) throws Exception {
+		server.removeParent(parentPid);
 	}
 
 	/**

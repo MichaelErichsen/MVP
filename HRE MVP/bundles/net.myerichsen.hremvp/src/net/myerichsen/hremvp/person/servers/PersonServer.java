@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 6. apr. 2019
  */
 public class PersonServer implements IHREServer {
 	private static final Logger LOGGER = Logger
@@ -212,9 +212,9 @@ public class PersonServer implements IHREServer {
 		List<PersonNames> ln;
 		PersonNames name;
 		final PersonNameServer ns = new PersonNameServer();
-		for (final Persons person : lnsl) {
+		for (final Persons p : lnsl) {
 			// Get all names of each person
-			ln = new PersonNames().getFKPersonPid(person.getPersonPid());
+			ln = new PersonNames().getFKPersonPid(p.getPersonPid());
 
 			nameList = new ArrayList<>();
 
@@ -359,7 +359,7 @@ public class PersonServer implements IHREServer {
 		int parentPid;
 		final PersonNameServer pns = new PersonNameServer();
 		final ParentRoles role = new ParentRoles();
-		final Dictionary dictionary = new Dictionary();
+		dictionary = new Dictionary();
 
 		if (key == 0) {
 			return parentList;
@@ -390,7 +390,7 @@ public class PersonServer implements IHREServer {
 	public List<List<String>> getPartnerList(int key) throws Exception {
 		List<String> ls;
 		final PartnerRoles role2 = new PartnerRoles();
-		final Dictionary dictionary = new Dictionary();
+		dictionary = new Dictionary();
 		final PersonNameServer pns = new PersonNameServer();
 		final List<List<String>> partnerList = new ArrayList<>();
 		final List<Partners> lpa = new Partners().getFKPartner1(key);
@@ -483,20 +483,20 @@ public class PersonServer implements IHREServer {
 		String s;
 		int personPid2;
 
-		for (final Persons person : get()) {
+		for (final Persons p : get()) {
 			ls = new ArrayList<>();
-			personPid2 = person.getPersonPid();
+			personPid2 = p.getPersonPid();
 			ls.add(Integer.toString(personPid2));
 			ls.add(pns.getPrimaryNameString(personPid2));
 			s = "";
-			if (person.getBirthDatePid() > 0) {
-				hdates.get(person.getBirthDatePid());
+			if (p.getBirthDatePid() > 0) {
+				hdates.get(p.getBirthDatePid());
 				s = hdates.getDate().toString();
 			}
 			ls.add(s);
 			s = "";
-			if (person.getDeathDatePid() > 0) {
-				hdates.get(person.getDeathDatePid());
+			if (p.getDeathDatePid() > 0) {
+				hdates.get(p.getDeathDatePid());
 				s = hdates.getDate().toString();
 			}
 			ls.add(s);
@@ -543,7 +543,7 @@ public class PersonServer implements IHREServer {
 	 *                               classes when things are amiss
 	 */
 	public String getRemote(HttpServletResponse response, String target)
-			throws Exception {
+			 {
 //		final String[] targetParts = target.split("/");
 //		final int targetSize = targetParts.length;
 //
@@ -755,8 +755,7 @@ public class PersonServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -891,7 +890,7 @@ public class PersonServer implements IHREServer {
 	 * @throws Exception
 	 * @throws MvpException
 	 */
-	public void removeParent(int personPid, int parentPid) throws Exception {
+	public void removeParent(int parentPid) throws Exception {
 		final Parents parent = new Parents();
 
 		for (final Parents p : parent.getFKChild(parentPid)) {

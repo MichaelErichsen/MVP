@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all parents for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. feb. 2019
+ * @version 6. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonParentsView {
@@ -76,7 +76,6 @@ public class PersonParentsView {
 			provider = new PersonProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -160,7 +159,6 @@ public class PersonParentsView {
 			tableViewer.setInput(provider.getParentList(0));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -176,7 +174,7 @@ public class PersonParentsView {
 	 */
 	protected void openParentView() {
 		// FIXME Doubleclick does not work any more
-		int personPid = 0;
+//		int personPid = 0;
 
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.openpersonview", null);
@@ -221,13 +219,12 @@ public class PersonParentsView {
 		}
 
 		try {
-			final PersonProvider provider = new PersonProvider();
-			provider.removeParent(personPid, ParentPid);
+			provider = new PersonProvider();
+			provider.removeParent(ParentPid);
 			eventBroker.post("MESSAGE",
 					"Parent " + primaryName + " has been removed");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -254,7 +251,6 @@ public class PersonParentsView {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }
