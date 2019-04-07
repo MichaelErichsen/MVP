@@ -272,7 +272,7 @@ public class PersonServer implements IHREServer {
 	 * @return the birthDatePid
 	 */
 	public int getBirthDatePid() {
-		return birthDatePid;
+		return person.getBirthDatePid();
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class PersonServer implements IHREServer {
 	 * @return the deathDatePid
 	 */
 	public int getDeathDatePid() {
-		return deathDatePid;
+		return person.getDeathDatePid();
 	}
 
 	/**

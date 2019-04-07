@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -13,7 +12,6 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -38,7 +36,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Display all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. mar. 2019
+ * @version 7. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -64,7 +62,6 @@ public class PersonSexView {
 	private Text textIsoCode;
 
 	private SexProvider sexesProvider;
-	private PersonProvider provider;
 	private int sexPid;
 
 	/**
@@ -173,13 +170,6 @@ public class PersonSexView {
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 * @param key
 	 */
 	private void get(int key) {
@@ -187,7 +177,7 @@ public class PersonSexView {
 
 		try {
 			sexesProvider.get(key);
-			provider = new PersonProvider();
+			PersonProvider provider = new PersonProvider();
 			final List<String> sexesList = provider.getSexesList(key).get(0);
 
 			textId.setText(sexesList.get(0));
@@ -206,7 +196,6 @@ public class PersonSexView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -220,15 +209,9 @@ public class PersonSexView {
 
 		final int sexTypePid = Integer.parseInt(textSexTypePid.getText());
 
-		LOGGER.log(Level.INFO, "Setting sex type pid: " + sexTypePid);
+		LOGGER.log(Level.INFO, "Setting sex type pid: {0}",
+				Integer.toString(sexTypePid));
 		eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**
@@ -238,8 +221,7 @@ public class PersonSexView {
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.SEX_PID_UPDATE_TOPIC) int key)
-			throws MvpException {
+			@UIEventTopic(Constants.SEX_PID_UPDATE_TOPIC) int key) {
 		get(key);
 	}
 
@@ -258,7 +240,6 @@ public class PersonSexView {
 			sexesProvider.update();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 		sexesProvider.setFromDatePid(0);
 	}

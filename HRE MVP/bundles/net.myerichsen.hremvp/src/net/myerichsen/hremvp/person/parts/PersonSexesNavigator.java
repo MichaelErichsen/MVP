@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sexes for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 7. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonSexesNavigator {
@@ -72,7 +72,6 @@ public class PersonSexesNavigator {
 			provider = new PersonProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -135,6 +134,14 @@ public class PersonSexesNavigator {
 		tblclmnTo.setText("To");
 		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(6));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+
+			tableViewer.setInput(provider.getSexesList(personPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
@@ -158,14 +165,6 @@ public class PersonSexesNavigator {
 		});
 		mntmRemoveSelectedSex.setText("Remove selected sex...");
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-
-			tableViewer.setInput(provider.getSexesList(personPid));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
-		}
 	}
 
 	/**
@@ -192,7 +191,8 @@ public class PersonSexesNavigator {
 			sexPid = Integer.parseInt(selectedRow.getText(0));
 		}
 
-		LOGGER.log(Level.INFO, "Setting sex pid: " + sexPid);
+		LOGGER.log(Level.INFO, "Setting sex pid: {0}",
+				Integer.toString(sexPid));
 		eventBroker.post(Constants.SEX_PID_UPDATE_TOPIC, sexPid);
 	}
 
@@ -215,7 +215,7 @@ public class PersonSexesNavigator {
 				"Remove sex " + primaryName, null,
 				"Are you sure that you will remove sex " + sexPid + ", "
 						+ primaryName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",
@@ -224,13 +224,12 @@ public class PersonSexesNavigator {
 		}
 
 		try {
-			final PersonProvider provider = new PersonProvider();
+			provider = new PersonProvider();
 			provider.removeSex(sexPid);
 			eventBroker.post("MESSAGE",
 					"Sex " + primaryName + " has been removed");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -249,7 +248,8 @@ public class PersonSexesNavigator {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.log(Level.INFO, "Received person id " + personPid);
+		LOGGER.log(Level.INFO, "Received person id {0}",
+				Integer.toString(personPid));
 		this.personPid = personPid;
 
 		try {
@@ -257,7 +257,6 @@ public class PersonSexesNavigator {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

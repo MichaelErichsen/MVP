@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person static data wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. mar. 2019
+ * @version 7. apr. 2019
  *
  */
 public class NewPersonWizardPage1 extends WizardPage {
@@ -96,7 +96,7 @@ public class NewPersonWizardPage1 extends WizardPage {
 				hdp.get(hdatePid);
 				textDeathDate.setText(hdp.getDate().toString());
 				wizard = (NewPersonWizard) getWizard();
-				wizard.setBirthDatePid(hdatePid);
+				wizard.setDeathDatePid(hdatePid);
 				setErrorMessage(null);
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);

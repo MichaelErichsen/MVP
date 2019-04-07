@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. apr. 2019
+ * @version 7. apr. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -121,7 +121,7 @@ public class PersonProvider implements IHREProvider {
 	 * @return the birthDatePid
 	 */
 	public int getBirthDatePid() {
-		return birthDatePid;
+		return server.getBirthDatePid();
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class PersonProvider implements IHREProvider {
 	 * @return the deathDatePid
 	 */
 	public int getDeathDatePid() {
-		return deathDatePid;
+		return server.getDeathDatePid();
 	}
 
 	/**

@@ -4,13 +4,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -35,7 +33,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 7. apr. 2019
  *
  */
 public class PersonView {
@@ -54,7 +52,7 @@ public class PersonView {
 	private int birthDatePid;
 	private int deathDatePid;
 
-	public PersonView() throws Exception {
+	public PersonView() {
 		provider = new PersonProvider();
 	}
 
@@ -72,7 +70,7 @@ public class PersonView {
 				textBirthDatePid.setText(Integer.toString(hdp.getHdatePid()));
 				textBirthDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -91,7 +89,7 @@ public class PersonView {
 				textDeathDatePid.setText(Integer.toString(hdp.getHdatePid()));
 				textDeathDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -244,39 +242,13 @@ public class PersonView {
 	}
 
 	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 * @param personPid
 	 */
 	private void get(int personPid) {
 		try {
 			provider.get(personPid);
-			try {
-				birthDatePid = provider.getBirthDatePid();
-				textBirthDatePid.setText(Integer.toString(birthDatePid));
-				final Hdates birthDate = new Hdates();
-				birthDate.get(birthDatePid);
-				textBirthDate.setText(birthDate.getDate().toString());
-			} catch (final Exception e) {
-				LOGGER.log(Level.INFO, e.getMessage());
-				textBirthDate.setText("");
-			}
-
-			try {
-				deathDatePid = provider.getDeathDatePid();
-				textDeathDatePid.setText(Integer.toString(deathDatePid));
-				final Hdates deathDate = new Hdates();
-				deathDate.get(deathDatePid);
-				textDeathDate.setText(deathDate.getDate().toString());
-			} catch (final Exception e) {
-				LOGGER.log(Level.INFO, e.getMessage());
-				textDeathDate.setText("");
-			}
+			setBirthDate();
+			setDeathDate();
 		} catch (final Exception e) {
 			LOGGER.log(Level.INFO, e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
@@ -300,7 +272,7 @@ public class PersonView {
 				textBirthDatePid.setText(Integer.toString(birthDatePid));
 				textBirthDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-				e1.printStackTrace();
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -330,8 +302,33 @@ public class PersonView {
 	/**
 	 *
 	 */
-	@Focus
-	public void setFocus() {
+	private void setBirthDate() {
+		try {
+			birthDatePid = provider.getBirthDatePid();
+			textBirthDatePid.setText(Integer.toString(birthDatePid));
+			final Hdates birthDate = new Hdates();
+			birthDate.get(birthDatePid);
+			textBirthDate.setText(birthDate.getDate().toString());
+		} catch (final Exception e) {
+			LOGGER.log(Level.INFO, e.getMessage());
+			textBirthDate.setText("");
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void setDeathDate() {
+		try {
+			deathDatePid = provider.getDeathDatePid();
+			textDeathDatePid.setText(Integer.toString(deathDatePid));
+			final Hdates deathDate = new Hdates();
+			deathDate.get(deathDatePid);
+			textDeathDate.setText(deathDate.getDate().toString());
+		} catch (final Exception e) {
+			LOGGER.log(Level.INFO, e.getMessage());
+			textDeathDate.setText("");
+		}
 	}
 
 	/**
@@ -342,7 +339,8 @@ public class PersonView {
 	@Optional
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.log(Level.INFO, "Receiving person pid {0]", personPid);
+		LOGGER.log(Level.INFO, "Receiving person pid {0}",
+				Integer.toString(personPid));
 		this.personPid = personPid;
 		get(personPid);
 	}

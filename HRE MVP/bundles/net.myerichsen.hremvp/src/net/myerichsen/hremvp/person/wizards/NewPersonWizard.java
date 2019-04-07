@@ -303,7 +303,8 @@ public class NewPersonWizard extends Wizard {
 			personProvider.setBirthDatePid(birthDatePid);
 			personProvider.setDeathDatePid(deathDatePid);
 			personPid = personProvider.insert();
-			LOGGER.log(Level.INFO, "Inserted person {0}", personPid);
+			LOGGER.log(Level.INFO, "Inserted person {0}",
+					Integer.toString(personPid));
 
 			// Create a sex for the person
 			final SexProvider sexProvider = new SexProvider();
@@ -311,8 +312,8 @@ public class NewPersonWizard extends Wizard {
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(true);
 			final int sexPid = sexProvider.insert();
-			LOGGER.logp(Level.INFO, "Inserted sex {0} for person {1}",
-					Integer.toString(sexPid), Integer.toString(personPid));
+			LOGGER.log(Level.INFO, "Inserted sex {0}",
+					Integer.toString(sexPid));
 
 			// Page 2
 			// Create a new name
@@ -323,8 +324,8 @@ public class NewPersonWizard extends Wizard {
 			personNameProvider.setToDatePid(toDatePid);
 			personNameProvider.setPrimaryName(true);
 			final int namePid = personNameProvider.insert();
-			LOGGER.logp(Level.INFO, "Inserted name {0} for person {1}",
-					Integer.toString(namePid), Integer.toString(personPid));
+			LOGGER.log(Level.INFO, "Inserted name {0}",
+					Integer.toString(namePid));
 
 			// Page 3
 			// Create name parts
@@ -342,10 +343,8 @@ public class NewPersonWizard extends Wizard {
 					pnpp.setLabel(string);
 					pnpp.setPartNo(i);
 					namePartPid = pnpp.insert();
-					LOGGER.logp(Level.INFO,
-							"Inserted name part {0} for person {1}",
-							Integer.toString(namePartPid),
-							Integer.toString(personPid));
+					LOGGER.log(Level.INFO, "Inserted name part {0}",
+							Integer.toString(namePartPid));
 				}
 			}
 
@@ -361,7 +360,8 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRolePid(fatherRolePid);
 				parentProvider.setPrimaryParent(true);
 				parentPid = parentProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted father pid {0}", parentPid);
+				LOGGER.log(Level.INFO, "Inserted father pid {0}",
+						Integer.toString(parentPid));
 			}
 
 			// Create mother
@@ -372,7 +372,8 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRolePid(motherRolePid);
 				parentProvider.setPrimaryParent(true);
 				parentPid = parentProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted mother pid {0}", parentPid);
+				LOGGER.log(Level.INFO, "Inserted mother pid {0}",
+						Integer.toString(parentPid));
 			}
 
 			// Create child
@@ -383,7 +384,8 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRolePid(childRolePid);
 				parentProvider.setPrimaryParent(true);
 				parentPid = parentProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted child pid {0}", parentPid);
+				LOGGER.log(Level.INFO, "Inserted child pid {0}",
+						Integer.toString(parentPid));
 			}
 
 			// Create partner
@@ -396,14 +398,13 @@ public class NewPersonWizard extends Wizard {
 				partnerProvider.setFromDatePid(partnerFromDatePid);
 				partnerProvider.setToDatePid(partnerToDatePid);
 				partnerProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted partner pid {0}", partnerPid);
+				LOGGER.log(Level.INFO, "Inserted partner pid {0}",
+						Integer.toString(partnerPid));
 			}
 
 			// Page 5
-			// Create events
+			// Create a personEvent to link events to person
 			for (final List<String> list : eventList) {
-
-				// Create a personEvent to link events to person
 				final PersonEventProvider pep = new PersonEventProvider();
 				pep.setEventPid(Integer.parseInt(list.get(0)));
 				pep.setPersonPid(personPid);
@@ -412,9 +413,9 @@ public class NewPersonWizard extends Wizard {
 				pep.setEventRolePid(Integer.parseInt(list.get(3)));
 				final int personEventPid = pep.insert();
 				LOGGER.log(Level.INFO, "Inserted person-event pid {0}",
-						personEventPid);
+						Integer.toString(personEventPid));
 			}
-
+			personProvider.get(personPid);
 			eventBroker.post("MESSAGE", personProvider.getPrimaryName()
 					+ " inserted in the database as no. " + personPid);
 			eventBroker.post(
