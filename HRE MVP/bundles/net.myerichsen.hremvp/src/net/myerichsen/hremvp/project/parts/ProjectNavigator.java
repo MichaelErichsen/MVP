@@ -73,7 +73,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. feb. 2019
+ * @version 7. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -864,13 +864,12 @@ public class ProjectNavigator {
 
 			for (int i = 0; i < projectCount; i++) {
 				key = "project." + i + ".path";
-				if (store.contains(key)) {
-					if (dbName.equals(store.getString(key))) {
-						alreadyRegistered = true;
-						LOGGER.log(Level.INFO,
-								"Project " + dbName + " already registered");
-						break;
-					}
+				if ((store.contains(key))
+						|| (dbName.equals(store.getString(key)))) {
+					alreadyRegistered = true;
+					LOGGER.log(Level.INFO, "Project {0} already registered",
+							dbName);
+					break;
 				}
 			}
 
@@ -911,7 +910,9 @@ public class ProjectNavigator {
 					"Project database has been restored from " + shortName);
 			eventBroker.post("MESSAGE",
 					"Project database has been restored from " + shortName);
-		} catch (final Exception e) {
+		} catch (
+
+		final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			e.printStackTrace();
 		}

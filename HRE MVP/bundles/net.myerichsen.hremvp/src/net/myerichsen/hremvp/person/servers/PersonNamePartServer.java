@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 7. apr. 2019
  */
 public class PersonNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -49,15 +49,6 @@ public class PersonNamePartServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 		part.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	public List<?> get() throws Exception {
-		return null;
 	}
 
 	/**
@@ -180,7 +171,7 @@ public class PersonNamePartServer implements IHREServer {
 		final List<List<String>> lls = new ArrayList<>();
 		int partNo = 0;
 		int labelPid = 0;
-		String mapLabel = "";
+//		String mapLabel = "";
 		final Dictionary dictionary = new Dictionary();
 		final PersonNames name = new PersonNames();
 		final PersonNameMaps map = new PersonNameMaps();
