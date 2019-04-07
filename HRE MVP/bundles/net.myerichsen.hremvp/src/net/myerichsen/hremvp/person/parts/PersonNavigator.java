@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. apr. 2019
+ * @version 7. apr. 2019
  */
 public class PersonNavigator {
 	private static final Logger LOGGER = Logger
@@ -171,8 +171,8 @@ public class PersonNavigator {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textNameFilter.getText());
-				LOGGER.log(Level.FINE,
-						"Filter string: {0}", textNameFilter.getText());
+				LOGGER.log(Level.FINE, "Filter string: {0}",
+						textNameFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -201,7 +201,7 @@ public class PersonNavigator {
 				"Delete Person " + primaryName, null,
 				"Are you sure that you will delete person " + personPid + ", "
 						+ primaryName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",
@@ -213,8 +213,7 @@ public class PersonNavigator {
 			final PersonProvider pp = new PersonProvider();
 			pp.delete(personPid);
 
-			LOGGER.log(Level.INFO,
-					"Person {0} has been deleted", primaryName);
+			LOGGER.log(Level.INFO, "Person {0} has been deleted", primaryName);
 			eventBroker.post("MESSAGE",
 					"Person " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);

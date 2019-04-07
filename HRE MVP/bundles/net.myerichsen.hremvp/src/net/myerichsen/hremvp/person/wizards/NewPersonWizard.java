@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. apr. 2019
+ * @version 7. apr. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -65,7 +65,7 @@ public class NewPersonWizard extends Wizard {
 	private int partnerRolePid;
 
 	// Page 5
-	private List<List<String>> eventList;
+	private List<List<String>> eventList = new ArrayList<>();
 
 	/**
 	 * Constructor
@@ -176,13 +176,6 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
-	 * @return the page3
-	 */
-	public NewPersonWizardPage3 getPage() {
-		return page3;
-	}
-
-	/**
 	 * @return the page1
 	 */
 	public NewPersonWizardPage1 getPage1() {
@@ -194,6 +187,13 @@ public class NewPersonWizard extends Wizard {
 	 */
 	public NewPersonWizardPage2 getPage2() {
 		return page2;
+	}
+
+	/**
+	 * @return the page3
+	 */
+	public NewPersonWizardPage3 getPage3() {
+		return page3;
 	}
 
 	/**
@@ -311,8 +311,8 @@ public class NewPersonWizard extends Wizard {
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(true);
 			final int sexPid = sexProvider.insert();
-			LOGGER.log(Level.INFO,
-					"Inserted sex " + sexPid + " for person " + personPid);
+			LOGGER.logp(Level.INFO, "Inserted sex {0} for person {1}",
+					Integer.toString(sexPid), Integer.toString(personPid));
 
 			// Page 2
 			// Create a new name
@@ -323,11 +323,11 @@ public class NewPersonWizard extends Wizard {
 			personNameProvider.setToDatePid(toDatePid);
 			personNameProvider.setPrimaryName(true);
 			final int namePid = personNameProvider.insert();
-			LOGGER.log(Level.INFO,
-					"Inserted name " + namePid + " for person " + personPid);
+			LOGGER.logp(Level.INFO, "Inserted name {0} for person {1}",
+					Integer.toString(namePid), Integer.toString(personPid));
 
 			// Page 3
-			// Name parts
+			// Create name parts
 			PersonNamePartProvider pnpp;
 			String string;
 			int namePartPid;
@@ -342,8 +342,10 @@ public class NewPersonWizard extends Wizard {
 					pnpp.setLabel(string);
 					pnpp.setPartNo(i);
 					namePartPid = pnpp.insert();
-					LOGGER.log(Level.INFO, "Inserted name part " + namePartPid
-							+ " for person " + personPid);
+					LOGGER.logp(Level.INFO,
+							"Inserted name part {0} for person {1}",
+							Integer.toString(namePartPid),
+							Integer.toString(personPid));
 				}
 			}
 
@@ -398,37 +400,16 @@ public class NewPersonWizard extends Wizard {
 			}
 
 			// Page 5
-			// Events
+			// Create events
 			for (final List<String> list : eventList) {
 
-				// Create an Event
-//				final EventProvider ep = new EventProvider();
-//				ep.setEventNamePid(Integer.parseInt(list.get(0)));
-//				ep.setFromDatePid(Integer.parseInt(list.get(3)));
-//				ep.setToDatePid(Integer.parseInt(list.get(5)));
-//				final int eventPid = ep.insert();
-//				LOGGER.log(Level.INFO, "Inserted event pid {0}", eventPid);
-
-				// Create a person-personEvent to link them together
+				// Create a personEvent to link events to person
 				final PersonEventProvider pep = new PersonEventProvider();
 				pep.setEventPid(Integer.parseInt(list.get(0)));
 				pep.setPersonPid(personPid);
 				pep.setPrimaryEvent(true);
 				pep.setPrimaryPerson(true);
 				pep.setEventRolePid(Integer.parseInt(list.get(3)));
-				for (int i = 0; i < list.size(); i++)
-					LOGGER.log(Level.INFO, "Item " + i + ": " + list.get(i));
-
-//				SEVERE: org.h2.jdbc.JdbcSQLException: 
-//				Referential integrity constraint violation: 
-//					"CONSTRAINT_4A94: PUBLIC.PERSON_EVENTS FOREIGN KEY(EVENT_ROLE_PID) "
-//					+ "REFERENCES PUBLIC.EVENT_ROLES(EVENT_ROLE_PID) (0)"; 
-//				SQL statement:
-//					INSERT INTO PUBLIC.PERSON_EVENTS( PERSON_EVENT_PID, EVENT_PID, 
-//					EVENT_ROLE_PID, PERSON_PID, PRIMARY_PERSON, PRIMARY_EVENT, 
-//					INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID) 
-//VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, ?) [23506-168]
-
 				final int personEventPid = pep.insert();
 				LOGGER.log(Level.INFO, "Inserted person-event pid {0}",
 						personEventPid);

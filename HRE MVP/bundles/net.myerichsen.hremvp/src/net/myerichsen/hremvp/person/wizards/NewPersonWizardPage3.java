@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 31. mar. 2019
+ * @version 7. apr. 2019
  *
  */
 public class NewPersonWizardPage3 extends WizardPage {
@@ -78,7 +78,7 @@ public class NewPersonWizardPage3 extends WizardPage {
 				final List<String> stringList = new ArrayList<>();
 
 				for (int i = 0; i < tableItems.length; i++) {
-					final String text = tableItems[i].getText(4);
+					final String text = tableItems[i].getText(2);
 					stringList.add(text);
 
 					if (text.length() > 0) {
@@ -135,5 +135,6 @@ public class NewPersonWizardPage3 extends WizardPage {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			setErrorMessage(e1.getMessage());
 		}
+		setPageComplete(false);
 	}
 }

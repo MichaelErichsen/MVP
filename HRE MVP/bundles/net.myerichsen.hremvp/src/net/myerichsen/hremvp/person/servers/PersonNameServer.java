@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 7. apr. 2019
  *
  */
 //Use LocalDate
@@ -63,15 +63,6 @@ public class PersonNameServer implements IHREServer {
 		}
 
 		name.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.servers.IHREServer#get()
-	 */
-	public List<?> get() throws Exception {
-		return null;
 	}
 
 	/**
@@ -154,9 +145,9 @@ public class PersonNameServer implements IHREServer {
 	public String[] getNameStrings() throws Exception {
 		StringBuilder sb;
 
-		final int personPid = name.getPersonPid();
-		List<PersonNames> nameList = new ArrayList<>();
-		nameList = new PersonNames().getFKPersonPid(personPid);
+		personPid = name.getPersonPid();
+		List<PersonNames> nameList = new PersonNames()
+				.getFKPersonPid(personPid);
 
 		final String[] sa = new String[nameList.size()];
 
@@ -168,25 +159,26 @@ public class PersonNameServer implements IHREServer {
 			final List<PersonNameParts> npl = new PersonNameParts()
 					.getFKNamePid(name.getNamePid());
 
-			LOGGER.log(Level.FINE, "List size " + npl.size());
+			LOGGER.log(Level.FINE, "List size {0}",
+					Integer.toString(npl.size()));
 			// Concatenate non-null name parts
 			for (final PersonNameParts PersonNameParts : npl) {
 				LOGGER.log(Level.FINE,
 						"Name part " + PersonNameParts.getNamePartPid()
 								+ ", name " + PersonNameParts.getNamePid());
-				if (PersonNameParts.getNamePid() == name.getNamePid()) {
-					if (PersonNameParts.getLabel() != null) {
-						sb.append(PersonNameParts.getLabel().trim() + " ");
-						LOGGER.log(Level.FINE,
-								"Part " + PersonNameParts.getLabel());
-					}
+				if ((PersonNameParts.getNamePid() == name.getNamePid())
+						|| (PersonNameParts.getLabel() != null)) {
+					sb.append(PersonNameParts.getLabel().trim() + " ");
+					LOGGER.log(Level.FINE,
+							"Part " + PersonNameParts.getLabel());
 				}
 			}
 			sa[i] = sb.toString();
-			LOGGER.log(Level.FINE, "SB " + sb.toString());
+			LOGGER.log(Level.FINE, "SB {0}", sb);
 		}
 
 		return sa;
+
 	}
 
 	/**
@@ -226,10 +218,9 @@ public class PersonNameServer implements IHREServer {
 	 */
 	public String getPrimaryNameString(int personPid) throws Exception {
 		final StringBuilder sb = new StringBuilder();
-		PersonNames name;
 
-		List<PersonNames> nameList = new ArrayList<>();
-		nameList = new PersonNames().getFKPersonPid(personPid);
+		List<PersonNames> nameList = new PersonNames()
+				.getFKPersonPid(personPid);
 
 		for (int i = 0; i < nameList.size(); i++) {
 			name = nameList.get(i);
@@ -240,18 +231,17 @@ public class PersonNameServer implements IHREServer {
 
 				// Concatenate non-null name parts
 				for (final PersonNameParts PersonNameParts : npl) {
-					if (PersonNameParts.getNamePid() == name.getNamePid()) {
-						if (PersonNameParts.getLabel() != null) {
-							sb.append(PersonNameParts.getLabel() + " ");
-						}
+					if ((PersonNameParts.getNamePid() == name.getNamePid())
+							|| (PersonNameParts.getLabel() != null)) {
+						sb.append(PersonNameParts.getLabel() + " ");
 					}
 				}
 				break;
 			}
 		}
 
-		final String s = sb.toString().trim();
-		return s;
+		return sb.toString().trim();
+
 	}
 
 	/*
@@ -261,8 +251,7 @@ public class PersonNameServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/*
@@ -272,8 +261,7 @@ public class PersonNameServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -294,7 +282,6 @@ public class PersonNameServer implements IHREServer {
 	 */
 	@Override
 	public int insert() throws Exception {
-		name.setNamePid(namePid);
 		name.setPersonPid(personPid);
 		name.setFromDatePid(fromDatePid);
 		name.setToDatePid(toDatePid);

@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  * Provides all data for a single name for a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 7. apr. 2019
  *
  */
 public class PersonNameProvider implements IHREProvider {
@@ -35,7 +35,7 @@ public class PersonNameProvider implements IHREProvider {
 	 *                   access error or other errors
 	 *
 	 */
-	public PersonNameProvider() throws Exception {
+	public PersonNameProvider() {
 		server = new PersonNameServer();
 		nameList = new ArrayList<>();
 	}
@@ -51,15 +51,6 @@ public class PersonNameProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws Exception {
 		server.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return null;
 	}
 
 	/**
@@ -194,7 +185,6 @@ public class PersonNameProvider implements IHREProvider {
 	 */
 	@Override
 	public int insert() throws Exception {
-		server.setNamePid(namePid);
 		server.setPersonPid(personPid);
 		server.setNameType(nameType);
 		server.setFromDatePid(fromDatePid);

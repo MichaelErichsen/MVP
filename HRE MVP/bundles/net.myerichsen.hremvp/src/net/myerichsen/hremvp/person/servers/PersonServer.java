@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. apr. 2019
+ * @version 7. apr. 2019
  */
 public class PersonServer implements IHREServer {
 	private static final Logger LOGGER = Logger
@@ -99,8 +99,7 @@ public class PersonServer implements IHREServer {
 		final PersonEvents event = new PersonEvents();
 
 		for (final PersonEvents events : event.getFKPersonPid(key)) {
-			events.delete(events.getEventPid());
-			event.delete(events.getPersonEventPid());
+			events.delete(events.getPersonEventPid());
 		}
 
 		// Delete all partner links
@@ -542,8 +541,7 @@ public class PersonServer implements IHREServer {
 	 * @throws JSONException         The JSONException is thrown by the JSON.org
 	 *                               classes when things are amiss
 	 */
-	public String getRemote(HttpServletResponse response, String target)
-			 {
+	public String getRemote(HttpServletResponse response, String target) {
 //		final String[] targetParts = target.split("/");
 //		final int targetSize = targetParts.length;
 //
