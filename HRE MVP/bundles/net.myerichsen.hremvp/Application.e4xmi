@@ -171,7 +171,6 @@
   <handlers xmi:id="_nRlyoL2JEeiJftxS8UK0pA" elementId="net.myerichsen.hremvp.handler.11" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.handlers.OpenEventViewHandler" command="_fftKsL2JEeiJftxS8UK0pA"/>
   <handlers xmi:id="_6vwNsMMqEeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.handler.12" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenSexViewHandler" command="_-JoJAMMpEeiYFOBp3zYx8Q"/>
   <handlers xmi:id="_G0gGEMM4EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.handler.13" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenPersonNameStyleViewHandler" command="_4mJJ8MM3EeiYFOBp3zYx8Q"/>
-  <handlers xmi:id="_Q5dHYMM5EeiYFOBp3zYx8Q" elementId="net.myerichsen.hremvp.handler.14" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNamePartViewHandler" command="_NbDt4MM5EeiYFOBp3zYx8Q"/>
   <handlers xmi:id="_AXSqoMP_EeiKp_Oike47LA" elementId="net.myerichsen.hremvp.handler.15" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNameMapViewHandler" command="_5jsP4MP-EeiKp_Oike47LA"/>
   <handlers xmi:id="_GI09cMSZEei7d_hxBvJGpw" elementId="net.myerichsen.hremvp.handler.16" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenSexTypeViewHandler" command="_DxX94MSZEei7d_hxBvJGpw"/>
   <handlers xmi:id="_mH1I0M-eEeiCtsQHb45mZQ" elementId="net.myerichsen.hremvp.handler.18" contributionURI="bundleclass://net.myerichsen.hremvp/com.opcoach.e4.preferences.handlers.E4PreferencesHandler" command="_Z6qoYM-eEeiCtsQHb45mZQ"/>
@@ -189,7 +188,7 @@
   <handlers xmi:id="_5OkmUA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.handler.32" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.help.handlers.HelpContentsHandler" command="_Az1kAA3-Eemn86hhplJLfQ"/>
   <handlers xmi:id="_68QQIA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.handler.33" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.help.handlers.HelpHreWebsiteHandler" command="_C1cPYA3-Eemn86hhplJLfQ"/>
   <handlers xmi:id="_VDQvcBNIEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.handler.29" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.PersonPerspectiveHandler" command="_0GArQBNHEemEvqVth7AYPg"/>
-  <handlers xmi:id="_81Z30CsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handler.42" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenPersonNamePartNavigatorHandler" command="_1hj2wCsCEemcPL7Gvwj8Zw"/>
+  <handlers xmi:id="_81Z30CsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.handler.openpersonnamepartview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenPersonNamePartViewHandler" command="_1hj2wCsCEemcPL7Gvwj8Zw"/>
   <handlers xmi:id="_PUpJMDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.handler.5" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.HreUpdateHandler" command="_KX47UDIoEemFh8IjP8PYwQ"/>
   <handlers xmi:id="_ffd64Eu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.handler.23" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenEventRoleViewHandler" command="_UJqgQEu3EemeNo01Nx-9Hg"/>
   <handlers xmi:id="_Zb_RAFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.handler.25" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenParentRoleViewHandler" command="_PZf4YFIDEem56rnTmdFCow"/>
@@ -237,7 +236,7 @@
   <commands xmi:id="_C1cPYA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.command.helphrewebsite" commandName="HelpHREWebSite" category="_BE5M4BymEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_0GArQBNHEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.command.switchtopersonperspective" commandName="switchToPersonPerspective" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_gN7cECF1EemFFvBAzJM4-w" elementId="net.myerichsen.hremvp.command.personwebsearch" commandName="personWebSearch" category="_oxYVUBNHEemEvqVth7AYPg"/>
-  <commands xmi:id="_1hj2wCsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.command.openpersonnamepartnavigator" commandName="openPersonNamePartNavigator" category="_oxYVUBNHEemEvqVth7AYPg"/>
+  <commands xmi:id="_1hj2wCsCEemcPL7Gvwj8Zw" elementId="net.myerichsen.hremvp.command.openpersonnamepartview" commandName="openPersonNamePartView" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_KX47UDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.command.updatehre" commandName="updateHre" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_UJqgQEu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.command.openeventroleview" commandName="openEventRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_PZf4YFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.command.openparentroleview" commandName="openParentRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>

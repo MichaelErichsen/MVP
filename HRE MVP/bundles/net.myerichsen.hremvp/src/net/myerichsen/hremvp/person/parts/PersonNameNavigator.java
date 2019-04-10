@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 9. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -115,9 +115,8 @@ public class PersonNameNavigator {
 		int NamePid = 0;
 
 		// Open an editor
-		// FIXME Only open once
 		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.opennameview", null);
+				"net.myerichsen.hremvp.command.openpersonnamepartview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();

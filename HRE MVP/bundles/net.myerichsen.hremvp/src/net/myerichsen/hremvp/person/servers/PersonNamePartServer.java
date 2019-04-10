@@ -2,6 +2,8 @@ package net.myerichsen.hremvp.person.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
@@ -15,11 +17,10 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @version 9. apr. 2019
  */
 public class PersonNamePartServer implements IHREServer {
-	// private static Logger LOGGER =
-	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int namePartPid;
 	private int namePid;
 	private String name;
@@ -76,10 +77,9 @@ public class PersonNamePartServer implements IHREServer {
 				.getFKNamePid(namePid);
 
 		for (final PersonNameParts PersonNameParts : partList) {
-			if (PersonNameParts.getNamePid() == namePid) {
-				if (PersonNameParts.getLabel() != null) {
-					sb.append(PersonNameParts.getLabel() + " ");
-				}
+			if ((PersonNameParts.getNamePid() == namePid)
+					|| (PersonNameParts.getLabel() != null)) {
+				sb.append(PersonNameParts.getLabel() + " ");
 			}
 		}
 
@@ -87,12 +87,12 @@ public class PersonNamePartServer implements IHREServer {
 
 		// Get map label
 		setMapLabel("Label");
-		final PersonNames name = new PersonNames();
-		name.get(namePid);
+		final PersonNames pn = new PersonNames();
+		pn.get(namePid);
 
 		final PersonNameMaps map = new PersonNameMaps();
 		final List<PersonNameMaps> mapList = map
-				.getFKNameStylePid(name.getNameStylePid());
+				.getFKNameStylePid(pn.getNameStylePid());
 
 		if (mapList.size() != partList.size()) {
 			throw new MvpException("Map list size: " + mapList.size()
@@ -169,22 +169,23 @@ public class PersonNamePartServer implements IHREServer {
 	public List<List<String>> getStringList() throws Exception {
 		List<String> stringList;
 		final List<List<String>> lls = new ArrayList<>();
-		int partNo = 0;
+//		int partNo = 0;
 		int labelPid = 0;
 //		String mapLabel = "";
 		final Dictionary dictionary = new Dictionary();
-		final PersonNames name = new PersonNames();
+		final PersonNames pn = new PersonNames();
 		final PersonNameMaps map = new PersonNameMaps();
 		final List<PersonNameMaps> mapList = map
-				.getFKNameStylePid(name.getNameStylePid());
+				.getFKNameStylePid(pn.getNameStylePid());
 
 		final List<PersonNameParts> list = part.get();
-		name.get(part.getNamePid());
+//		pn.get(part.getNamePid());
 
 		for (int i = 0; i < list.size(); i++) {
 			final PersonNameParts pnp = list.get(i);
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(pnp.getNamePartPid()));
+			LOGGER.log(Level.INFO, "0: {0}", stringList.get(0));
 
 			partNo = pnp.getPartNo();
 			mapLabel = "?";
@@ -199,7 +200,9 @@ public class PersonNamePartServer implements IHREServer {
 			}
 
 			stringList.add(mapLabel);
+			LOGGER.log(Level.INFO, "1: {0}", stringList.get(1));
 			stringList.add(pnp.getLabel());
+			LOGGER.log(Level.INFO, "2: {0}", stringList.get(2));
 			lls.add(stringList);
 		}
 
@@ -221,14 +224,14 @@ public class PersonNamePartServer implements IHREServer {
 		}
 
 		final Dictionary dictionary = new Dictionary();
-		final PersonNames name = new PersonNames();
-		name.get(key);
+		final PersonNames pn = new PersonNames();
+		pn.get(key);
 
 		int labelPid = 0;
 		List<Dictionary> fkLabelPid;
 
 		final List<PersonNameMaps> lnm = new PersonNameMaps()
-				.getFKNameStylePid(name.getNameStylePid());
+				.getFKNameStylePid(pn.getNameStylePid());
 
 		final List<PersonNameParts> lnp = part.getFKNamePid(key);
 
@@ -266,8 +269,8 @@ public class PersonNamePartServer implements IHREServer {
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		final PersonNames name = new PersonNames();
-		name.get(namePid);
+		final PersonNames pn = new PersonNames();
+		pn.get(namePid);
 
 //		final PersonNameMaps map = new PersonNameMaps();
 //		final List<PersonNameMaps> mapList = map.getFKNameStylePid(name.getNameStylePid());
@@ -345,12 +348,12 @@ public class PersonNamePartServer implements IHREServer {
 		part.setPartNo(partNo);
 
 		// Check if matching map part no exists
-		final PersonNames name = new PersonNames();
-		name.get(namePid);
+		final PersonNames pn = new PersonNames();
+		pn.get(namePid);
 
 		final PersonNameMaps map = new PersonNameMaps();
 		final List<PersonNameMaps> mapList = map
-				.getFKNameStylePid(name.getNameStylePid());
+				.getFKNameStylePid(pn.getNameStylePid());
 		Boolean found = false;
 
 		for (int i = 0; i < mapList.size(); i++) {

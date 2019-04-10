@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -48,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * View and maintain all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 15. feb. 2019
+ * @version 9. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -79,7 +78,6 @@ public class PersonNamesView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -119,7 +117,7 @@ public class PersonNamesView {
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				openNamePartNavigator();
+				openNamePartView();
 			}
 		});
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -188,7 +186,6 @@ public class PersonNamesView {
 			tableViewer.setInput(provider.getStringList(personPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -211,7 +208,7 @@ public class PersonNamesView {
 				"Delete Name " + primaryName, null,
 				"Are you sure that you will delete name " + namePid + ", "
 						+ primaryName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",
@@ -220,21 +217,16 @@ public class PersonNamesView {
 		}
 
 		try {
-			final PersonNameProvider provider = new PersonNameProvider();
-			provider.delete(namePid);
+			final PersonNameProvider pnp = new PersonNameProvider();
+			pnp.delete(namePid);
 
-			LOGGER.log(Level.INFO, "Name " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Name {0} has been deleted", primaryName);
 			eventBroker.post("MESSAGE",
 					"Name " + primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, 0);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
-	}
-
-	@PreDestroy
-	public void dispose() {
 	}
 
 	/**
@@ -247,15 +239,14 @@ public class PersonNamesView {
 	/**
 	 *
 	 */
-	protected void openNamePartNavigator() {
+	protected void openNamePartView() {
 		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.openpersonnamepartnavigator",
-				null);
+				"net.myerichsen.hremvp.command.openpersonnamepartview", null);
 		handlerService.executeHandler(command);
 
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int namePid = Integer.parseInt(selection[0].getText(0));
-		LOGGER.log(Level.INFO, "Setting name pid: " + namePid);
+		LOGGER.log(Level.INFO, "Setting name pid: {0}", namePid);
 		eventBroker.post(Constants.PERSON_NAME_PID_UPDATE_TOPIC, namePid);
 	}
 
@@ -270,13 +261,12 @@ public class PersonNamesView {
 	@Optional
 	private void subscribeNamePidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_NAME_PID_UPDATE_TOPIC) int namePid) {
-		LOGGER.log(Level.FINE, "Received name id " + namePid);
+		LOGGER.log(Level.FINE, "Received name id {0}", namePid);
 		try {
 			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -287,7 +277,7 @@ public class PersonNamesView {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.log(Level.FINE, "Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 		this.personPid = personPid;
 		try {
 			textId.setText(Integer.toString(personPid));
@@ -295,7 +285,6 @@ public class PersonNamesView {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

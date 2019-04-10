@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 7. apr. 2019
+ * @version 9. apr. 2019
  *
  */
 public class PersonView {
@@ -225,12 +225,12 @@ public class PersonView {
 		});
 		deathDateClearButton.setText("Clear");
 
-		final Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeButton = new Composite(parent, SWT.NONE);
+		compositeButton.setLayoutData(
+				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
+		compositeButton.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button buttonUpdate = new Button(composite, SWT.NONE);
+		final Button buttonUpdate = new Button(compositeButton, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.person.parts;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,10 +31,12 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreTypeLabelEditingSupport;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonNamePartProvider;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
+import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -41,15 +44,15 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 8. apr. 2019
+ * @version 9. apr. 2019
  */
-public class PersonNamePartNavigator {
+public class PersonNamePartView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	private Text textPersonNameStyle;
 	private Text textFromDate;
 	private Text textToDate;
-
 	private Button btnPrimaryName;
 	private TableViewer tableViewer;
 
@@ -57,14 +60,15 @@ public class PersonNamePartNavigator {
 	private int fromDatePid;
 	private int toDatePid;
 
-	private PersonNamePartProvider provider;
-//	private List<List<String>> stringList;
+	private final PersonNamePartProvider provider;
+
+	private List<List<String>> lls;
 
 	/**
 	 * Constructor
 	 *
 	 */
-	public PersonNamePartNavigator() {
+	public PersonNamePartView() {
 		provider = new PersonNamePartProvider();
 	}
 
@@ -133,7 +137,7 @@ public class PersonNamePartNavigator {
 		final Label lblPersonNameStyle = new Label(parent, SWT.NONE);
 		lblPersonNameStyle.setText("Person Name Style");
 
-		Text textPersonNameStyle = new Text(parent, SWT.BORDER);
+		textPersonNameStyle = new Text(parent, SWT.BORDER);
 		textPersonNameStyle.setEditable(false);
 		textPersonNameStyle.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -277,7 +281,8 @@ public class PersonNamePartNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getStringList(personNamePid));
+			lls = provider.getStringList(personNamePid);
+			tableViewer.setInput(lls);
 		} catch (final Exception e2) {
 			LOGGER.log(Level.SEVERE, e2.toString(), e2);
 		}
@@ -291,6 +296,7 @@ public class PersonNamePartNavigator {
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				LOGGER.log(Level.INFO, "Update");
 				update();
 			}
 		});
@@ -360,24 +366,38 @@ public class PersonNamePartNavigator {
 		try {
 			final PersonNameProvider pnp = new PersonNameProvider();
 			pnp.get(personNamePid);
-//			textNameStylePid.setText(Integer.toString(pnp.getNameStylePid()));
-//			textNameStyleLabel.setText(pnp.getNameTypeLabel());
-//
-//			try {
-//				textDateFrom.setText(Integer.toString(pnp.getFromDatePid()));
-//			} catch (final Exception e) {
-//				textDateFrom.setText("");
-//			}
-//
-//			try {
-//				textDateTo.setText(Integer.toString(pnp.getFromDatePid()));
-//			} catch (final Exception e) {
-//				textDateTo.setText("");
-//			}
+
+			final PersonNameStyleProvider pnsp = new PersonNameStyleProvider();
+			pnsp.get(pnp.getNameStylePid());
+
+			final Dictionary dictionary = new Dictionary();
+			final List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(pnsp.getLabelPid());
+			textPersonNameStyle.setText(fkLabelPid.get(0).getLabel());
+
+			final int fromDatePid2 = pnp.getFromDatePid();
+
+			if (fromDatePid2 > 0) {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get();
+				textFromDate.setText(hdp.getDate().toString());
+			} else {
+				textFromDate.setText("");
+			}
+
+			final int toDatePid2 = pnp.getToDatePid();
+
+			if (toDatePid2 > 0) {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get();
+				textToDate.setText(hdp.getDate().toString());
+			} else {
+				textToDate.setText("");
+			}
 
 			btnPrimaryName.setSelection(pnp.isPrimaryName());
-
-			tableViewer.setInput(provider.getStringList(personNamePid));
+			lls = provider.getStringList(personNamePid);
+			tableViewer.setInput(lls);
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -389,41 +409,25 @@ public class PersonNamePartNavigator {
 	 */
 	private void update() {
 		try {
-//			// Page 2
-//			// Create a new name
-//			final PersonNameProvider personNameProvider = new PersonNameProvider();
-//			personNameProvider.setPersonPid(personPid);
-//			personNameProvider.setNameStylePid(personNameStylePid);
-//			personNameProvider.setFromDatePid(fromDatePid);
-//			personNameProvider.setToDatePid(toDatePid);
-//			personNameProvider.setPrimaryName(true);
-//			final int namePid = personNameProvider.insert();
-//			LOGGER.log(Level.INFO, "Inserted name {0}",
-//					Integer.toString(namePid));
-//
-//			// Page 3
-//			// Create name parts
-//			PersonNamePartProvider pnpp;
-//			String string;
-//			int namePartPid;
-//
-//			// Create each name part
-//			for (int i = 0; i < personNamePartList.size(); i++) {
-//				string = personNamePartList.get(i);
-//
-//				if (string != null) {
-//					pnpp = new PersonNamePartProvider();
-//					pnpp.setNamePid(namePid);
-//					pnpp.setLabel(string);
-//					pnpp.setPartNo(i);
-//					namePartPid = pnpp.insert();
-//					LOGGER.log(Level.INFO, "Inserted name part {0}",
-//							Integer.toString(namePartPid));
-//				}
-//			}
+			final List<List<String>> stringList = provider.getStringList();
+			final Table table = tableViewer.getTable();
 
-			provider = new PersonNamePartProvider();
-			provider.update();
+			for (int i = 0; i < stringList.size(); i++) {
+				LOGGER.log(Level.INFO, "Stringlist 2 {0}",
+						stringList.get(i).get(2));
+				LOGGER.log(Level.INFO, "Item 2 {0}",
+						table.getItem(i).getText());
+				if (stringList.get(i).get(2)
+						.equals(table.getItem(i).getText())) {
+					final int namePartPid = Integer
+							.parseInt(stringList.get(i).get(0));
+					provider.get(namePartPid);
+					provider.setLabel(table.getItem(i).getText());
+					provider.update();
+					LOGGER.log(Level.INFO, "Updated name part {0}",
+							Integer.toString(namePartPid));
+				}
+			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
