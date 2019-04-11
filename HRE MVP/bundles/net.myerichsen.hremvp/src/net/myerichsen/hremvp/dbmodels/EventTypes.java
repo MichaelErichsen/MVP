@@ -73,7 +73,7 @@ public class EventTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		ArrayList modelList = new ArrayList<>();
+		List<EventTypes> modelList = new ArrayList<>();
 		while (rs.next()) {
 			EventTypes model = new EventTypes();
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));

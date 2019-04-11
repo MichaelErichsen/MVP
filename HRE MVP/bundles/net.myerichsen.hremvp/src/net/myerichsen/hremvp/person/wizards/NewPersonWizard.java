@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @version 11. apr. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -341,10 +341,10 @@ public class NewPersonWizard extends Wizard {
 					pnpp = new PersonNamePartProvider();
 					pnpp.setNamePid(namePid);
 					pnpp.setLabel(string);
-					pnpp.setPartNo(i);
+					pnpp.setPartNo(i + 1);
 					namePartPid = pnpp.insert();
-					LOGGER.log(Level.INFO, "Inserted name part {0}",
-							Integer.toString(namePartPid));
+					LOGGER.log(Level.INFO, "Inserted name part {0}: {1}",
+							new Object[] { namePartPid, string });
 				}
 			}
 

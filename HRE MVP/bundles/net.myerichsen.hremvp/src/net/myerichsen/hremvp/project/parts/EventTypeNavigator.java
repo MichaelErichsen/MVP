@@ -267,7 +267,8 @@ public class EventTypeNavigator {
 	@Optional
 	private void subscribeEventTypePidUpdateTopic(
 			@UIEventTopic(Constants.EVENT_TYPE_PID_UPDATE_TOPIC) int eventTypePid) {
-		LOGGER.fine("Received event type id " + eventTypePid);
+		LOGGER.log(Level.FINE, "Received event type id {0}",
+				Integer.toString(eventTypePid));
 		this.eventTypePid = eventTypePid;
 
 		if (eventTypePid > 0) {

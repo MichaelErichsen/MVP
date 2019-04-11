@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. apr. 2019
+ * @version 11. apr. 2019
  */
 public class PersonNamePartServer implements IHREServer {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -162,7 +162,7 @@ public class PersonNamePartServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
 	 */
 	@Override
@@ -175,8 +175,7 @@ public class PersonNamePartServer implements IHREServer {
 		final Dictionary dictionary = new Dictionary();
 		final PersonNames pn = new PersonNames();
 		final PersonNameMaps map = new PersonNameMaps();
-		final List<PersonNameMaps> mapList = map
-				.getFKNameStylePid(pn.getNameStylePid());
+		List<PersonNameMaps> mapList;
 
 		final List<PersonNameParts> list = part.get();
 //		pn.get(part.getNamePid());
@@ -185,10 +184,16 @@ public class PersonNamePartServer implements IHREServer {
 			final PersonNameParts pnp = list.get(i);
 			stringList = new ArrayList<>();
 			stringList.add(Integer.toString(pnp.getNamePartPid()));
-			LOGGER.log(Level.INFO, "0: {0}", stringList.get(0));
+			LOGGER.log(Level.INFO, "Name part pid: {0}", stringList.get(0));
 
 			partNo = pnp.getPartNo();
-			mapLabel = "?";
+			LOGGER.log(Level.INFO, "Part no: {0}", Integer.toString(partNo));
+
+//			mapLabel = "?";
+			pn.get(pnp.getNamePid());
+			LOGGER.log(Level.INFO, "Name pid: {0}",
+					Integer.toString(pnp.getNamePid()));
+			mapList = map.getFKNameStylePid(pn.getNameStylePid());
 
 			for (int j = 0; j < mapList.size(); j++) {
 				if (mapList.get(i).getPartNo() == partNo) {
@@ -200,9 +205,9 @@ public class PersonNamePartServer implements IHREServer {
 			}
 
 			stringList.add(mapLabel);
-			LOGGER.log(Level.INFO, "1: {0}", stringList.get(1));
+			LOGGER.log(Level.INFO, "Map label: {0}", stringList.get(1));
 			stringList.add(pnp.getLabel());
-			LOGGER.log(Level.INFO, "2: {0}", stringList.get(2));
+			LOGGER.log(Level.INFO, "Name part label: {0}", stringList.get(2));
 			lls.add(stringList);
 		}
 

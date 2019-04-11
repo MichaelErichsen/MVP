@@ -44,7 +44,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. apr. 2019
+ * @version 11. apr. 2019
  */
 public class PersonNamePartView {
 	private static final Logger LOGGER = Logger
@@ -379,7 +379,7 @@ public class PersonNamePartView {
 
 			if (fromDatePid2 > 0) {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get();
+				hdp.get(fromDatePid2);
 				textFromDate.setText(hdp.getDate().toString());
 			} else {
 				textFromDate.setText("");
@@ -389,7 +389,7 @@ public class PersonNamePartView {
 
 			if (toDatePid2 > 0) {
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get();
+				hdp.get(toDatePid2);
 				textToDate.setText(hdp.getDate().toString());
 			} else {
 				textToDate.setText("");
@@ -416,12 +416,14 @@ public class PersonNamePartView {
 				LOGGER.log(Level.INFO, "Stringlist 2 {0}",
 						stringList.get(i).get(2));
 				LOGGER.log(Level.INFO, "Item 2 {0}",
-						table.getItem(i).getText());
-				if (stringList.get(i).get(2)
-						.equals(table.getItem(i).getText())) {
+						table.getItem(i).getText(3));
+				if (!stringList.get(i).get(2)
+						.equals(table.getItem(i).getText(3))) {
 					final int namePartPid = Integer
 							.parseInt(stringList.get(i).get(0));
-					provider.get(namePartPid);
+					LOGGER.log(Level.INFO, "Name Part pid {0}",
+							Integer.toString(namePartPid));
+					provider.getStringList(namePartPid);			
 					provider.setLabel(table.getItem(i).getText());
 					provider.update();
 					LOGGER.log(Level.INFO, "Updated name part {0}",

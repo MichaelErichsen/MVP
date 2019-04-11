@@ -47,15 +47,6 @@ public class PersonNamePartProvider implements IHREProvider {
 		server.delete(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return null;
-	}
-
 	/**
 	 * Get a row
 	 *

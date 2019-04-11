@@ -63,8 +63,7 @@ public class Activator implements BundleActivator {
 		final EnvironmentInfo envInfo = context.getService(envRef);
 		final String[] args = envInfo.getCommandLineArgs();
 		for (int i = 0; i < args.length; i++) {
-			LOGGER.logp(Level.FINE, "CLI {0}: {1}", Integer.toString(i),
-					args[i]);
+			LOGGER.log(Level.FINE, "CLI {0}: {1}", new Object[] { i, args[i] });
 		}
 
 		// List properties to LOGGER
