@@ -200,7 +200,7 @@ public class SexTypeNavigator {
 				"Delete sex type " + primaryName, null,
 				"Are you sure that you will delete sex type " + sexTypePid
 						+ ", " + primaryName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Deletion of sex type " + primaryName

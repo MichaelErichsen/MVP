@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.MvpException;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 4. apr. 2019
+ * @version 11. apr. 2019
  *
  */
 public abstract class AbstractHreProvider {
@@ -256,6 +256,7 @@ public abstract class AbstractHreProvider {
 							jw.key(key1);
 							String value11;
 							if (field1.getType().getName().equals("int")) {
+//							if (field1 instanceof int) {
 								value11 = Integer.toString(field1.getInt(item));
 							} else {
 								value11 = (String) field1.get(item);
@@ -284,11 +285,12 @@ public abstract class AbstractHreProvider {
 				}
 			}
 			jw.endObject();
+			LOGGER.log(Level.INFO, sw.toString());
 		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line "
 					+ e.getStackTrace()[0].getLineNumber());
 		}
-		LOGGER.log(Level.INFO, sw.toString());
+
 		return sw.toString();
 	}
 }

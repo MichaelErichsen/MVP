@@ -20,7 +20,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * Provides H2 data to the database navigator
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. okt. 2018
+ * @version 11. apr. 2019
  *
  */
 public class H2DatabaseProvider implements IContentProvider {
@@ -47,13 +47,13 @@ public class H2DatabaseProvider implements IContentProvider {
 		conn = HreH2ConnectionPool.getConnection();
 		final String dbName = store.getString("DBNAME");
 
-		LOGGER.log(Level.INFO, "Database name: " + dbName);
+		LOGGER.log(Level.INFO, "Database name: {0}", dbName);
 
 		conn = HreH2ConnectionPool.getConnection(dbName);
 		PreparedStatement ps;
 		final String h2Version = store.getString("H2VERSION");
-		LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: "
-				+ h2Version.substring(0, 3));
+		LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: {0}",
+				h2Version.substring(0, 3));
 
 		if (h2Version.substring(0, 3).equals("1.3")) {
 			ps = conn.prepareStatement(SELECT13);

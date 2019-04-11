@@ -196,7 +196,7 @@ public class ParentRoleNavigator {
 				"Delete Parent role " + ParentRoleName, null,
 				"Are you sure that you will delete " + ParentRolePid + ", "
 						+ ParentRoleName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of Parent role "

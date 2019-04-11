@@ -5,10 +5,13 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.viewers.IContentProvider;
 
@@ -19,16 +22,16 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * Provide H2 data to the table navigator and the table editor
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. mar. 2019
+ * @version 11. apr. 2019
  *
  */
 public class H2TableProvider implements IContentProvider {
-	// private static final Logger LOGGER =
-	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private Connection conn = null;
 
-	private final String COUNT = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
-	private final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, DATA_TYPE, NUMERIC_PRECISION, NUMERIC_SCALE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
+	private static final String COUNT_STATEMENT = "SELECT COUNT_STATEMENT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
+	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, DATA_TYPE, NUMERIC_PRECISION, NUMERIC_SCALE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
 
 	private int count;
 	private final List<H2TableModel> modelList;
@@ -37,17 +40,16 @@ public class H2TableProvider implements IContentProvider {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	private List<Object> row;
-	private List<List<Object>> rowList;
 
 	/**
 	 * Constructor
 	 *
 	 * @param tableName Name of H2 table
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 *
 	 */
-	public H2TableProvider(String tableName) throws Exception {
+	public H2TableProvider(String tableName) throws SQLException {
 		String type;
 
 		conn = HreH2ConnectionPool.getConnection();
@@ -55,7 +57,7 @@ public class H2TableProvider implements IContentProvider {
 		modelList = new ArrayList<>();
 
 		// Get number of columns in H2 table
-		ps = conn.prepareStatement(COUNT);
+		ps = conn.prepareStatement(COUNT_STATEMENT);
 		ps.setString(1, tableName);
 
 		rs = ps.executeQuery();
@@ -100,10 +102,10 @@ public class H2TableProvider implements IContentProvider {
 	 * Delete a row in the H2 table
 	 *
 	 * @param recordNum Key field
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public void delete(int recordNum) throws Exception {
+	public void delete(int recordNum) throws SQLException {
 		String s = tableName.substring(0, tableName.length() - 1);
 		if (tableName.equals("SEXES")) {
 			s = "SEXES";
@@ -118,11 +120,11 @@ public class H2TableProvider implements IContentProvider {
 
 	/**
 	 * Delete all rows in the H2 table
-	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * 
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public void deleteAll() throws Exception {
+	public void deleteAll() throws SQLException {
 		final String DELETEALL = "DELETE FROM PUBLIC." + tableName;
 
 		ps = conn.prepareStatement(DELETEALL);
@@ -152,10 +154,10 @@ public class H2TableProvider implements IContentProvider {
 	 *
 	 * @param fileName Name of the CSV file
 	 * @return Number of rows imported
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public int importCsv(String fileName) throws Exception {
+	public int importCsv(String fileName) throws SQLException {
 		String IMPORTCSV;
 		int rowCount = 0;
 
@@ -177,11 +179,10 @@ public class H2TableProvider implements IContentProvider {
 	 * Insert a row into the H2 table
 	 *
 	 * @param columns Number of columns in the row
-	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public void insert(List<H2TableModel> columns) throws Exception {
+	public void insert(List<H2TableModel> columns) throws SQLException {
 		H2TableModel h2TableModel;
 
 		final StringBuilder sb = new StringBuilder();
@@ -224,11 +225,10 @@ public class H2TableProvider implements IContentProvider {
 	 * Insert multiple rows into the H2 table
 	 *
 	 * @param rows Number of rows inserted
-	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public void insertSet(List<List<H2TableModel>> rows) throws Exception {
+	public void insertSet(List<List<H2TableModel>> rows) throws SQLException {
 		for (int i = 0; i < rows.size(); i++) {
 			insert(rows.get(i));
 		}
@@ -239,10 +239,10 @@ public class H2TableProvider implements IContentProvider {
 	 *
 	 * @param recordNum Key field
 	 * @return List of rows
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public List<Object> select(int recordNum) throws Exception {
+	public List<Object> select(int recordNum) throws SQLException {
 		row = new ArrayList<>();
 		String field = "";
 
@@ -259,7 +259,7 @@ public class H2TableProvider implements IContentProvider {
 						blob = conn.createBlob();
 						blob.setBytes(1, ba);
 					} catch (final Exception e) {
-						e.printStackTrace();
+						LOGGER.log(Level.SEVERE, e.toString(), e);
 					}
 					row.add(blob);
 					break;
@@ -272,7 +272,7 @@ public class H2TableProvider implements IContentProvider {
 						clob = conn.createClob();
 						clob.setString(1, "");
 					} catch (final Exception e) {
-						e.printStackTrace();
+						LOGGER.log(Level.SEVERE, e.toString(), e);
 					}
 					row.add(clob);
 					break;
@@ -367,11 +367,11 @@ public class H2TableProvider implements IContentProvider {
 	 * Select all rows from the H2 table
 	 *
 	 * @return A list of rows
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public List<List<Object>> selectAll() throws Exception {
-		rowList = new ArrayList<>();
+	public List<List<Object>> selectAll() throws SQLException {
+		List<List<Object>> rowList = new ArrayList<>();
 		String field = "";
 
 		String s = tableName.substring(0, tableName.length() - 1);
@@ -406,10 +406,10 @@ public class H2TableProvider implements IContentProvider {
 	 *
 	 * @param columns A list of field values
 	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public void update(List<H2TableModel> columns) throws Exception {
+	public void update(List<H2TableModel> columns) throws SQLException {
 		H2TableModel h2TableModel;
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE PUBLIC." + tableName + " SET ");

@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all event roles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. mar. 2019
+ * @version 11. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class EventRoleNavigator {
@@ -205,7 +205,7 @@ public class EventRoleNavigator {
 				"Delete event role " + eventRoleName, null,
 				"Are you sure that you will delete " + eventRolePid + ", "
 						+ eventRoleName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of event role " + eventRoleName

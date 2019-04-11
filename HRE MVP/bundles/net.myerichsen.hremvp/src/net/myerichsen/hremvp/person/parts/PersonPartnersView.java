@@ -210,7 +210,7 @@ public class PersonPartnersView {
 				"Remove partner " + primaryName, null,
 				"Are you sure that you will remove " + PartnerPid + ", "
 						+ primaryName + " as partner?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",

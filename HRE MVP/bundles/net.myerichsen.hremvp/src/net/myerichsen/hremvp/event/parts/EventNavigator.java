@@ -236,7 +236,7 @@ public class EventNavigator {
 				"Delete event " + primaryName, null,
 				"Are you sure that you will delete event " + eventPid + ", "
 						+ primaryName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post(MESSAGE,

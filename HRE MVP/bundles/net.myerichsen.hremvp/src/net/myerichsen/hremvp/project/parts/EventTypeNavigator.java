@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all event types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 11. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -63,10 +63,9 @@ public class EventTypeNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private final EventTypeProvider provider;
+	private EventTypeProvider provider;
 	private TableViewer tableViewer;
 	private int eventTypePid = 0;
-//	private final int labelPid = 0;
 
 	/**
 	 * Constructor
@@ -184,7 +183,7 @@ public class EventTypeNavigator {
 	protected void deleteEventType(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int eventTypePid = 0;
+//		int eventTypePid = 0;
 		String eventTypeName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
@@ -197,7 +196,7 @@ public class EventTypeNavigator {
 				"Delete event type " + eventTypeName, null,
 				"Are you sure that you will delete " + eventTypePid + ", "
 						+ eventTypeName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of event type " + eventTypeName
@@ -206,7 +205,7 @@ public class EventTypeNavigator {
 		}
 
 		try {
-			final EventTypeProvider provider = new EventTypeProvider();
+			provider = new EventTypeProvider();
 			provider.delete(eventTypePid);
 			eventBroker.post("MESSAGE",
 					"Event type " + eventTypeName + " has been deleted");

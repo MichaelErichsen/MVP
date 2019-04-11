@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a date in several formats
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. apr. 2019
+ * @version 11. apr. 2019
  *
  */
 public class DateDialog extends TitleAreaDialog {
@@ -61,7 +61,7 @@ public class DateDialog extends TitleAreaDialog {
 			int negative = 1;
 			String s = textArabic.getText().trim();
 
-			if (s.matches(regExpMask)) {
+			if (s.matches(REG_EXP_MASK)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -113,7 +113,7 @@ public class DateDialog extends TitleAreaDialog {
 			int negative = 1;
 			String s = textIndian.getText().trim();
 
-			if (s.matches(regExpMask)) {
+			if (s.matches(REG_EXP_MASK)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -161,7 +161,7 @@ public class DateDialog extends TitleAreaDialog {
 			int negative = 1;
 			String s = textJewish.getText().trim();
 
-			if (s.matches(regExpMask)) {
+			if (s.matches(REG_EXP_MASK)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -209,7 +209,7 @@ public class DateDialog extends TitleAreaDialog {
 			int negative = 1;
 			String s = textJulian.getText().trim();
 
-			if (s.matches(regExpMask)) {
+			if (s.matches(REG_EXP_MASK)) {
 				if (s.startsWith("-")) {
 					s = s.substring(1);
 					negative = -1;
@@ -287,7 +287,7 @@ public class DateDialog extends TitleAreaDialog {
 
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String regExpMask = "[+-]?\\d{1,4}\\-\\d{1,2}\\-\\d{1,2}";
+	private static final String REG_EXP_MASK = "[+-]?\\d{1,4}\\-\\d{1,2}\\-\\d{1,2}";
 	private static final String MESSAGE = "MESSAGE";
 
 	private final IEventBroker eventBroker;

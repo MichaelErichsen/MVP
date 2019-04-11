@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.Constants;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. mar. 2019
+ * @version 11. apr. 2019
  *
  */
 
@@ -92,7 +92,6 @@ public class H2TableNavigator {
 					"All rows have been deleted from " + tableName);
 			updateGui();
 		} catch (final Exception e1) {
-			e1.printStackTrace();
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -244,11 +243,11 @@ public class H2TableNavigator {
 							"Column " + i + ", column " + j + ", type "
 									+ modelList.get(j).getType() + ", value "
 									+ rows.get(i).get(j));
-					if (modelList.get(j).getType().equals("CLOB")) {
+//					if (modelList.get(j).getType().equals("CLOB")) {
 						oa[j] = rows.get(i).get(j);
-					} else {
-						oa[j] = rows.get(i).get(j);
-					}
+//					} else {
+//						oa[j] = rows.get(i).get(j);
+//					}
 				}
 
 				rs.addRow(oa);
@@ -263,8 +262,6 @@ public class H2TableNavigator {
 			eventBroker.post("MESSAGE",
 					"Table " + tableName + " has been exported to " + fileName);
 		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -283,9 +280,7 @@ public class H2TableNavigator {
 		final String shortName = dialog.getFileName();
 		final String fileName = dialog.getFilterPath() + "\\" + shortName;
 
-		if (fileName != null) {
-			exportCsv(fileName);
-		}
+		exportCsv(fileName);
 	}
 
 	/**
@@ -301,19 +296,17 @@ public class H2TableNavigator {
 		final String shortName = dialog.getFileName();
 		final String fileName = dialog.getFilterPath() + "\\" + shortName;
 
-		if (fileName != null) {
-			int rowCount = 0;
-			try {
-				final H2TableProvider provider = new H2TableProvider(tableName);
-				rowCount = provider.importCsv(fileName);
-				eventBroker.post("MESSAGE",
-						rowCount + " rows has been imported from " + fileName);
-				eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
-				updateGui();
-			} catch (final Exception e1) {
-				e1.printStackTrace();
-				eventBroker.post("MESSAGE", e1.getMessage());
-			}
+		int rowCount = 0;
+		try {
+			final H2TableProvider provider = new H2TableProvider(tableName);
+			rowCount = provider.importCsv(fileName);
+			eventBroker.post("MESSAGE",
+					rowCount + " rows has been imported from " + fileName);
+			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
+			updateGui();
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			eventBroker.post("MESSAGE", e1.getMessage());
 		}
 	}
 
@@ -330,7 +323,7 @@ public class H2TableNavigator {
 		LOGGER.log(Level.INFO, "Navigator opened editor");
 
 		eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
-		LOGGER.log(Level.INFO, "Navigator posted tablename " + tableName);
+		LOGGER.log(Level.INFO, "Navigator posted tablename {0}", tableName);
 
 		final TableItem[] selectedRows = table.getSelection();
 
@@ -372,7 +365,7 @@ public class H2TableNavigator {
 	 *
 	 */
 	private void updateGui() {
-		if ((tableName == null) || (tableName == "")) {
+		if ((tableName == null) || (tableName.equals(""))) {
 			return;
 		}
 
@@ -412,8 +405,6 @@ public class H2TableNavigator {
 				}
 			}
 		} catch (final Exception e) {
-			e.printStackTrace();
-			eventBroker.post("MESSAGE", e.getMessage());
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}

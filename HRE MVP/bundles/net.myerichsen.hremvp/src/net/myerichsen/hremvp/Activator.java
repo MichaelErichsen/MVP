@@ -19,7 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. apr. 2019
+ * @version 11. apr. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -63,7 +63,8 @@ public class Activator implements BundleActivator {
 		final EnvironmentInfo envInfo = context.getService(envRef);
 		final String[] args = envInfo.getCommandLineArgs();
 		for (int i = 0; i < args.length; i++) {
-			LOGGER.log(Level.FINE, "CLI " + i + ": " + args[i]);
+			LOGGER.logp(Level.FINE, "CLI {0}: {1}", Integer.toString(i),
+					args[i]);
 		}
 
 		// List properties to LOGGER

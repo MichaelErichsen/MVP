@@ -197,7 +197,7 @@ public class LanguageNavigator {
 				"Delete Language " + primaryName, null,
 				"Are you sure that you will delete language " + languagePid
 						+ ", " + primaryName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Deletion of language " + primaryName

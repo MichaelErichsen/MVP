@@ -187,7 +187,7 @@ public class PersonNameStyleNavigator {
 				"Delete person name style " + personNameStyleName, null,
 				"Are you sure that you will delete " + personNameStylePid + ", "
 						+ personNameStyleName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of person name style "

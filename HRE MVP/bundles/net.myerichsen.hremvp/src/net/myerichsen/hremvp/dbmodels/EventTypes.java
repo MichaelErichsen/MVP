@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the EVENT_TYPES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 27. mar. 2019
+ * @version 11. apr. 2019
  *
  */
 
@@ -38,8 +38,6 @@ public class EventTypes {
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.EVENT_TYPES";
 
-	private List<EventTypes> modelList;
-
 	private PreparedStatement ps;
 
 	private ResultSet rs;
@@ -52,7 +50,6 @@ public class EventTypes {
 	private Timestamp UpdateTstmp;
 	private int TableId;
 	private int LabelPid;
-	private EventTypes model;
 
 	public void delete() throws Exception {
 		conn = HreH2ConnectionPool.getConnection();
@@ -76,9 +73,9 @@ public class EventTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		ArrayList modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new EventTypes();
+			EventTypes model = new EventTypes();
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));

@@ -414,7 +414,7 @@ public class ProjectNavigator {
 		final MessageDialog dialog = new MessageDialog(shell,
 				"Delete Project " + dbName, null,
 				"Are you sure that you will delete project " + dbName + "?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",

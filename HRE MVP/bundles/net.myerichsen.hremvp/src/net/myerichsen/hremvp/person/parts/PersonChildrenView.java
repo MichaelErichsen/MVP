@@ -207,7 +207,7 @@ public class PersonChildrenView {
 				"Remove Person " + primaryName, null,
 				"Are you sure that you will remove " + childPid + ", "
 						+ primaryName + " as child?",
-				MessageDialog.CONFIRM, 0, new String[] { "OK", "Cancel" });
+				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",

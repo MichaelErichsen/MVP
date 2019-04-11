@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * Preference page for H2 databse
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 11. apr. 2019
  *
  */
 public class H2PreferencePage extends FieldEditorPreferencePage

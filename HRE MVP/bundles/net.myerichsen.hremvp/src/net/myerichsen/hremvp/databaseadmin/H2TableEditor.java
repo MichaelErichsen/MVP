@@ -49,7 +49,7 @@ import net.myerichsen.hremvp.listeners.SmallIntListener;
  * Dynamically create an editor with the fields in the database catalog
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. jan. 2019
+ * @version 11. apr. 2019
  *
  */
 
@@ -106,7 +106,7 @@ public class H2TableEditor {
 				try {
 					row = provider.select(recordNum);
 
-					if (row.size() == 0) {
+					if (!row.isEmpty()) {
 						eventBroker.post("MESSAGE",
 								"Record " + recordNum + " does not exist");
 						return;
@@ -213,7 +213,7 @@ public class H2TableEditor {
 					eventBroker.post("MESSAGE",
 							"Record " + insertRecordNum + " has been inserted");
 				} catch (final Exception e1) {
-					e1.printStackTrace();
+					LOGGER.log(Level.SEVERE, e.toString(), e);
 					eventBroker.post("MESSAGE", e1.getMessage());
 				}
 			}
@@ -275,7 +275,7 @@ public class H2TableEditor {
 					eventBroker.post("MESSAGE",
 							"Record " + updateRecordNum + " has been updated");
 				} catch (final Exception e1) {
-					e1.printStackTrace();
+					LOGGER.log(Level.SEVERE, e.toString(), e);
 					eventBroker.post("MESSAGE", e1.getMessage());
 				}
 			}
@@ -368,7 +368,7 @@ public class H2TableEditor {
 		try {
 			createLines();
 		} catch (final Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
 		}
 		createButtons(parent);
@@ -444,8 +444,7 @@ public class H2TableEditor {
 
 				try {
 					final byte[] ba = blob.getBytes(1L, (int) blob.length());
-					final String s = new String(
-							DatatypeConverter.printHexBinary(ba));
+					final String s = DatatypeConverter.printHexBinary(ba);
 					text.setText(s);
 				} catch (final Exception e) {
 					eventBroker.post("MESSAGE", e.getMessage());
@@ -489,8 +488,8 @@ public class H2TableEditor {
 				columns.get(i).setValue(row.get(i));
 				final Clob clob = (Clob) row.get(i);
 				try {
-					text.setText(new String(
-							clob.getSubString(1L, (int) clob.length())));
+					text.setText(
+							clob.getSubString(1L, (int) clob.length()));
 				} catch (final Exception e) {
 					eventBroker.post("MESSAGE", e.getMessage());
 				}
@@ -566,8 +565,8 @@ public class H2TableEditor {
 						+ (columns.get(i).getScale() * 2)
 						+ " will be truncated");
 				columns.get(i).setValue(row.get(i));
-				text.setText(new String(
-						DatatypeConverter.printHexBinary((byte[]) row.get(i))));
+				text.setText(
+						DatatypeConverter.printHexBinary((byte[]) row.get(i)));
 				lineList.add(text);
 				break;
 
