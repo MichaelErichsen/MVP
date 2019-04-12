@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.Constants;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 12. apr. 2019
  *
  */
 
@@ -240,11 +240,11 @@ public class H2TableNavigator {
 				oa = new Object[provider.getCount()];
 				for (int j = 0; j < oa.length; j++) {
 					LOGGER.log(Level.INFO,
-							"Column " + i + ", column " + j + ", type "
-									+ modelList.get(j).getType() + ", value "
-									+ rows.get(i).get(j));
+							"Column {0}, column {1}, type {2}, value {3}",
+							new Object[] { i, j, modelList.get(j).getType(),
+									rows.get(i).get(j) });
 //					if (modelList.get(j).getType().equals("CLOB")) {
-						oa[j] = rows.get(i).get(j);
+					oa[j] = rows.get(i).get(j);
 //					} else {
 //						oa[j] = rows.get(i).get(j);
 //					}
@@ -333,7 +333,7 @@ public class H2TableNavigator {
 		}
 
 		eventBroker.post(Constants.RECORDNUM_UPDATE_TOPIC, recordNum);
-		LOGGER.log(Level.INFO, "Navigator posted record number " + recordNum);
+		LOGGER.log(Level.INFO, "Navigator posted record number {0}", recordNum);
 		eventBroker.post("MESSAGE", tableName + " editor has been opened");
 	}
 

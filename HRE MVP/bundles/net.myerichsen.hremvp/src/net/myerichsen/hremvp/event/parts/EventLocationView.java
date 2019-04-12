@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.event.parts;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +40,7 @@ import net.myerichsen.hremvp.event.providers.EventProvider;
  * Display all Locations for a single location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jan. 2019
+ * @version 12. apr. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
@@ -60,11 +61,11 @@ public class EventLocationView {
 	/**
 	 * Constructor
 	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 *
 	 */
-	public EventLocationView() throws Exception {
+	public EventLocationView() throws SQLException {
 		provider = new EventProvider();
 	}
 

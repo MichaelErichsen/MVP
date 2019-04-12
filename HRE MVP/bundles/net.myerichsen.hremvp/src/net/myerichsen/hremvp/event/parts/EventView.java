@@ -205,13 +205,16 @@ public class EventView {
 				final DateNavigatorDialog dialog = new DateNavigatorDialog(
 						textFromDate.getShell(), context);
 				if (dialog.open() == Window.OK) {
+					final int hdatePid = dialog.getHdatePid();
+					HDateProvider hdp;
 					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
+						hdp = new HDateProvider();
 						hdp.get(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
+					} catch (Exception e1) {
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
+
 				}
 			}
 		});

@@ -2,6 +2,7 @@ package net.myerichsen.hremvp.databaseadmin;
 
 import java.sql.Blob;
 import java.sql.Clob;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,7 +50,7 @@ import net.myerichsen.hremvp.listeners.SmallIntListener;
  * Dynamically create an editor with the fields in the database catalog
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 12. apr. 2019
  *
  */
 
@@ -405,9 +406,10 @@ public class H2TableEditor {
 
 	/**
 	 * @param scrolledComposite
-	 * @throws Exception When failing
+	 * @throws SQLException
+	 * @throws Exception    When failing
 	 */
-	private void createLines() throws Exception {
+	private void createLines() throws SQLException {
 		Text text;
 		Label label2;
 
@@ -488,8 +490,7 @@ public class H2TableEditor {
 				columns.get(i).setValue(row.get(i));
 				final Clob clob = (Clob) row.get(i);
 				try {
-					text.setText(
-							clob.getSubString(1L, (int) clob.length()));
+					text.setText(clob.getSubString(1L, (int) clob.length()));
 				} catch (final Exception e) {
 					eventBroker.post("MESSAGE", e.getMessage());
 				}
