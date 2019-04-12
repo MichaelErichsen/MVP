@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PERSON_NAME_PARTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 03. mar. 2019
+ * @version 12. apr. 2019
  *
  */
 
@@ -35,7 +35,7 @@ public class PersonNameParts {
 			+ "?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 24)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PERSON_NAME_PARTS SET "
-			+ "NAME_PID = ?, LABEL = ?, PART_NO = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP, "
+			+ "NAME_PID = ?, LABEL = ?, PART_NO = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP "
 			+ "WHERE NAME_PART_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PERSON_NAME_PARTS WHERE NAME_PART_PID = ?";

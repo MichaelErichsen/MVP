@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * Utility to generate a Java model class representing an HRE H2 Table
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 12. apr. 2019
  *
  */
 
@@ -533,11 +533,7 @@ public class H2ModelGenerator {
 		// Middle columns
 		for (int i = 1; i < (fields.size() - 1); i++) {
 			field = fields.get(i);
-//			if (field.equals(primaryKey)) {
-//				continue;
-//			} else if (field.equals("INSERT_TSTMP")) {
-//				continue;
-//			} else
+
 			if (field.equals("UPDATE_TSTMP")) {
 				if (comma) {
 					writer.println("\", UPDATE_TSTMP = CURRENT_TIMESTAMP\" +");
@@ -545,8 +541,6 @@ public class H2ModelGenerator {
 					writer.println("\"UPDATE_TSTMP = CURRENT_TIMESTAMP\" +");
 					comma = true;
 				}
-//			} else if (field.equals("TABLE_ID")) {
-//				continue;
 			} else {
 				if (comma) {
 					writer.println("\", " + field + " = ?\" +");

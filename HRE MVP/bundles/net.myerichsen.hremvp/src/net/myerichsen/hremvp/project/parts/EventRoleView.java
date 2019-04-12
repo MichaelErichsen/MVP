@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -38,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 11. apr. 2019
+ * @version 12. apr. 2019
  *
  */
 
@@ -52,11 +50,13 @@ public class EventRoleView {
 	private Text textEventRolePid;
 	private Text textLabelPid;
 	private Text textAbbreviation;
+	private Text textEventTypePid;
+
 	private TableViewer tableViewer;
+
 	private final EventRoleProvider provider;
 	private int eventRolePid = 0;
 	private int labelPid = 0;
-	private Text textEventTypePid;
 
 	/**
 	 * Constructor
@@ -181,20 +181,6 @@ public class EventRoleView {
 	}
 
 	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
 	 * @param ls A list of event role pid, event type pid, dictionary pid and
 	 *           abbreviation
 	 *
@@ -245,7 +231,7 @@ public class EventRoleView {
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
 			LOGGER.log(Level.INFO, "Event pid {0} has been updated",
-					eventRolePid);
+					Integer.toString(eventRolePid));
 
 			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
@@ -255,7 +241,7 @@ public class EventRoleView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.log(Level.INFO,
+					LOGGER.log(Level.FINE,
 							input.get(i).get(2) + ", " + input.get(i).get(3)
 									+ " - " + existingElement.get(0) + ", "
 									+ existingElement.get(1) + ", "
@@ -272,7 +258,7 @@ public class EventRoleView {
 							dp.setLabelPid(provider.getLabelPid());
 							dp.setLabelType("EVENTROLE");
 							dp.update();
-							LOGGER.log(Level.INFO,
+							LOGGER.log(Level.FINE,
 									"Updated dictionary element "
 											+ input.get(i).get(0) + ", "
 											+ input.get(i).get(1) + ", "

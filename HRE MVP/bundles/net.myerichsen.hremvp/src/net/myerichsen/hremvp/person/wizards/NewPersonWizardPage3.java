@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 7. apr. 2019
+ * @version 12. apr. 2019
  *
  */
 public class NewPersonWizardPage3 extends WizardPage {
@@ -73,18 +73,31 @@ public class NewPersonWizardPage3 extends WizardPage {
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
+				LOGGER.log(Level.INFO, "Focus lost");
 				final TableItem[] tableItems = table.getItems();
 				Boolean found = false;
 				final List<String> stringList = new ArrayList<>();
 
 				for (int i = 0; i < tableItems.length; i++) {
 					final String text = tableItems[i].getText(2);
+					LOGGER.log(Level.INFO, "Table item {0}: {1}, {2}, {3}",
+							new Object[] { i, tableItems[i].getText(0),
+									tableItems[i].getText(1),
+									tableItems[i].getText(2) });
 					stringList.add(text);
+
+					LOGGER.log(Level.INFO, "Stringlist {0}: {1}",
+							new Object[] { i, text });
 
 					if (text.length() > 0) {
 						lls.get(i).set(4, text);
 						found = true;
 					}
+
+					LOGGER.log(Level.INFO, "LLS {0}: {1}, {2}, {3}, {4}, {5}",
+							new Object[] { i, lls.get(i).get(0),
+									lls.get(i).get(1), lls.get(i).get(2),
+									lls.get(i).get(3), lls.get(i).get(4) });
 				}
 
 				if (found) {

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -44,16 +45,20 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 12. apr. 2019
  */
 public class PersonNamePartView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	@Inject
+	private IEventBroker eventBroker;
+
 	private Text textPersonNameStyle;
 	private Text textFromDate;
 	private Text textToDate;
 	private Button btnPrimaryName;
+
 	private TableViewer tableViewer;
 
 	private int personNamePid = 0;
@@ -407,28 +412,30 @@ public class PersonNamePartView {
 	/**
 	 *
 	 */
+	@SuppressWarnings("unchecked")
 	private void update() {
 		try {
-			final List<List<String>> stringList = provider.getStringList();
-			final Table table = tableViewer.getTable();
+			final List<List<String>> input = (List<List<String>>) tableViewer
+					.getInput();
 
-			for (int i = 0; i < stringList.size(); i++) {
-				LOGGER.log(Level.INFO, "Stringlist 2 {0}",
-						stringList.get(i).get(2));
-				LOGGER.log(Level.INFO, "Item 2 {0}",
-						table.getItem(i).getText(3));
-				if (!stringList.get(i).get(2)
-						.equals(table.getItem(i).getText(3))) {
-					final int namePartPid = Integer
-							.parseInt(stringList.get(i).get(0));
-					LOGGER.log(Level.INFO, "Name Part pid {0}",
-							Integer.toString(namePartPid));
-					provider.getStringList(namePartPid);			
-					provider.setLabel(table.getItem(i).getText());
+			for (int i = 0; i < input.size(); i++) {
+				provider.get(Integer.parseInt(input.get(i).get(0)));
+
+				LOGGER.log(Level.FINE,
+						"Input item {0}: Name part pid {1}, part no {2}, {3}, {4}, {5}",
+						new Object[] { i, input.get(i).get(0),
+								input.get(i).get(1), input.get(i).get(2),
+								input.get(i).get(3), provider.getLabel() });
+
+				String string = input.get(i).get(3);
+				if (!string.equals(provider.getLabel())) {
+					provider.setLabel(string);
 					provider.update();
-					LOGGER.log(Level.INFO, "Updated name part {0}",
-							Integer.toString(namePartPid));
 				}
+
+				LOGGER.log(Level.INFO, "Updated name part {0}: {1}",
+						new Object[] { input.get(i).get(0), string });
+				eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, 1);
 			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
