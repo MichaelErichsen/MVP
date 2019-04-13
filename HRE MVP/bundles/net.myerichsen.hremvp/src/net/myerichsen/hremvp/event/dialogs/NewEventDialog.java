@@ -34,6 +34,8 @@ import org.eclipse.swt.widgets.Text;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.event.providers.EventProvider;
+import net.myerichsen.hremvp.location.dialogs.LocationNavigatorDialog;
+import net.myerichsen.hremvp.location.dialogs.NewLocationDialog;
 import net.myerichsen.hremvp.project.providers.EventRoleProvider;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
@@ -43,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 5. apr. 2019
+ * @version 13. apr. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -53,8 +55,12 @@ public class NewEventDialog extends TitleAreaDialog {
 	@Inject
 	private IEventBroker eventBroker;
 	private final IEclipseContext context;
+
+	private Combo comboEventRole;
+	private ComboViewer comboViewerEventRole;
 	private Text textFromDate;
 	private Text textToDate;
+	private Text textLocation;
 
 	private int eventNamePid = 0;
 	private String role = "";
@@ -64,13 +70,13 @@ public class NewEventDialog extends TitleAreaDialog {
 	private String eventTypeLabel = "";
 	private int eventRolePid = 0;
 	private String eventRoleLabel = "";
-	private int eventPid;
+	private int eventPid = 0;
+	private String locationLabel = "";
+	private int locationPid = 0;
 
 	private List<List<String>> eventTypeStringList;
 	private List<List<String>> eventRoleStringList;
 
-	private Combo comboEventRole;
-	private ComboViewer comboViewerEventRole;
 	private final EventRoleProvider eventRoleProvider;
 
 	/**
@@ -107,6 +113,23 @@ public class NewEventDialog extends TitleAreaDialog {
 	/**
 	 *
 	 */
+	private void browseLocations() {
+		final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
+				textLocation.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				locationPid = dialog.getLocationPid();
+				textLocation.setText(dialog.getLocationName());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+				eventBroker.post("MESSAGE", e1.getMessage());
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
 	private void browseToDates() {
 		final DateNavigatorDialog dialog = new DateNavigatorDialog(
 				textToDate.getShell(), context);
@@ -129,6 +152,14 @@ public class NewEventDialog extends TitleAreaDialog {
 	private void clearFromDate() {
 		textFromDate.setText("");
 		fromDatePid = 0;
+	}
+
+	/**
+	 * 
+	 */
+	private void clearLocation() {
+		textLocation.setText("");
+		locationPid = 0;
 	}
 
 	/**
@@ -422,7 +453,79 @@ public class NewEventDialog extends TitleAreaDialog {
 			}
 		});
 		btnClearTo.setText("Clear");
-		new Label(container, SWT.NONE);
+
+		final Composite compositeLocation = new Composite(container,
+				SWT.BORDER);
+		compositeLocation.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		compositeLocation.setLayout(new GridLayout(2, false));
+
+		final Label lblLocation = new Label(compositeLocation, SWT.NONE);
+		lblLocation.setBounds(0, 0, 55, 15);
+		lblLocation.setText("Location");
+
+		textLocation = new Text(compositeLocation, SWT.BORDER);
+		textLocation.setEditable(false);
+		textLocation.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		final Composite compositeLocationButtons = new Composite(
+				compositeLocation, SWT.NONE);
+		compositeLocationButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeLocationButtons.setBounds(0, 0, 64, 64);
+		compositeLocationButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button btnNewLocation = new Button(compositeLocationButtons,
+				SWT.NONE);
+		btnNewLocation.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+				getNewLocation();
+			}
+		});
+		btnNewLocation.setText("New");
+
+		final Button btnBrowseLocation = new Button(compositeLocationButtons,
+				SWT.NONE);
+		btnBrowseLocation.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseLocations();
+			}
+		});
+		btnBrowseLocation.setText("Browse");
+
+		final Button btnClearLocation = new Button(compositeLocationButtons,
+				SWT.NONE);
+		btnClearLocation.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
+			 * events.MouseEvent)
+			 */
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearLocation();
+			}
+		});
+		btnClearLocation.setText("Clear");
 
 		return area;
 	}
@@ -432,18 +535,17 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	protected void createEvent() {
 		try {
-
 			final EventProvider provider = new EventProvider();
 			provider.setFromDatePid(fromDatePid);
 			provider.setToDatePid(toDatePid);
 			provider.setEventTypePid(eventTypePid);
-
 			setEventPid(provider.insert());
+
+			// FIXME If a location exists, then create a locationevent
 			LOGGER.log(Level.INFO, "Created event {0}", eventPid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
-
 	}
 
 	/**
@@ -540,6 +642,20 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @return the locationLabel
+	 */
+	public String getLocationLabel() {
+		return locationLabel;
+	}
+
+	/**
+	 * @return the locationPid
+	 */
+	public int getLocationPid() {
+		return locationPid;
+	}
+
+	/**
 	 *
 	 */
 	private void getNewFromDate() {
@@ -554,6 +670,23 @@ public class NewEventDialog extends TitleAreaDialog {
 				hdp.setSurety(dialog.getSurety());
 				fromDatePid = hdp.insert();
 				textFromDate.setText(dialog.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+				eventBroker.post("MESSAGE", e1.getMessage());
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void getNewLocation() {
+		final NewLocationDialog dialog = new NewLocationDialog(
+				textLocation.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				locationPid = dialog.getLocationPid();
+				textFromDate.setText(dialog.getLocationName());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				eventBroker.post("MESSAGE", e1.getMessage());
@@ -630,6 +763,20 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	public void setFromDatePid(int fromDatePid) {
 		this.fromDatePid = fromDatePid;
+	}
+
+	/**
+	 * @param locationLabel the locationLabel to set
+	 */
+	public void setLocationLabel(String locationLabel) {
+		this.locationLabel = locationLabel;
+	}
+
+	/**
+	 * @param locationPid the locationPid to set
+	 */
+	public void setLocationPid(int locationPid) {
+		this.locationPid = locationPid;
 	}
 
 	/**
