@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 31. mar. 2019
+ * @version 13. apr. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
@@ -46,6 +46,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 	private Text textToDate;
 
 	private List<List<String>> stringList;
+	private Combo comboNameStyle;
 
 	/**
 	 * Constructor
@@ -151,7 +152,7 @@ public class NewPersonWizardPage2 extends WizardPage {
 
 		final ComboViewer comboViewerNameStyle = new ComboViewer(
 				compositeNameStyle, SWT.NONE);
-		final Combo comboNameStyle = comboViewerNameStyle.getCombo();
+		comboNameStyle = comboViewerNameStyle.getCombo();
 
 		comboNameStyle.addSelectionListener(new SelectionAdapter() {
 			/*
@@ -326,6 +327,20 @@ public class NewPersonWizardPage2 extends WizardPage {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 				setErrorMessage(e.getMessage());
 			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
+	 */
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+
+		if (visible) {
+			comboNameStyle.setFocus();
 		}
 	}
 }

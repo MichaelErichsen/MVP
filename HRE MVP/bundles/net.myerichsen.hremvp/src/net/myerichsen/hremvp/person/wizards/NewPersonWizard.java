@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 13. apr. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -48,9 +48,6 @@ public class NewPersonWizard extends Wizard {
 	private int fromDatePid = 0;
 	private int toDatePid = 0;
 	private Boolean primaryName;
-
-	// Page 3
-	private List<String> personNamePartList = new ArrayList<>();
 
 	// Page 4
 	private int fatherPid = 0;
@@ -246,13 +243,6 @@ public class NewPersonWizard extends Wizard {
 	}
 
 	/**
-	 * @return the personNamePartList
-	 */
-	public List<String> getPersonNamePartList() {
-		return personNamePartList;
-	}
-
-	/**
 	 * @return the personNameStylePid
 	 */
 	public int getPersonNameStylePid() {
@@ -303,7 +293,7 @@ public class NewPersonWizard extends Wizard {
 			personProvider.setBirthDatePid(birthDatePid);
 			personProvider.setDeathDatePid(deathDatePid);
 			personPid = personProvider.insert();
-			LOGGER.log(Level.INFO, "Inserted person {0}",
+			LOGGER.log(Level.FINE, "Inserted person {0}",
 					Integer.toString(personPid));
 
 			// Create a sex for the person
@@ -312,7 +302,7 @@ public class NewPersonWizard extends Wizard {
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(true);
 			final int sexPid = sexProvider.insert();
-			LOGGER.log(Level.INFO, "Inserted sex {0}",
+			LOGGER.log(Level.FINE, "Inserted sex {0}",
 					Integer.toString(sexPid));
 
 			// Page 2
@@ -324,7 +314,7 @@ public class NewPersonWizard extends Wizard {
 			personNameProvider.setToDatePid(toDatePid);
 			personNameProvider.setPrimaryName(true);
 			final int namePid = personNameProvider.insert();
-			LOGGER.log(Level.INFO, "Inserted name {0}",
+			LOGGER.log(Level.FINE, "Inserted name {0}",
 					Integer.toString(namePid));
 
 			// Page 3
@@ -332,10 +322,11 @@ public class NewPersonWizard extends Wizard {
 			PersonNamePartProvider pnpp;
 			String string;
 			int namePartPid;
+			List<List<String>> lls = page3.getLls();
 
 			// Create each name part
-			for (int i = 0; i < personNamePartList.size(); i++) {
-				string = personNamePartList.get(i);
+			for (int i = 0; i < lls.size(); i++) {
+				string = lls.get(i).get(5);
 
 				if (string != null) {
 					pnpp = new PersonNamePartProvider();
@@ -343,7 +334,7 @@ public class NewPersonWizard extends Wizard {
 					pnpp.setLabel(string);
 					pnpp.setPartNo(i + 1);
 					namePartPid = pnpp.insert();
-					LOGGER.log(Level.INFO, "Inserted name part {0}: {1}",
+					LOGGER.log(Level.FINE, "Inserted name part {0}: {1}",
 							new Object[] { namePartPid, string });
 				}
 			}
@@ -360,7 +351,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRolePid(fatherRolePid);
 				parentProvider.setPrimaryParent(true);
 				parentPid = parentProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted father pid {0}",
+				LOGGER.log(Level.FINE, "Inserted father pid {0}",
 						Integer.toString(parentPid));
 			}
 
@@ -372,7 +363,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRolePid(motherRolePid);
 				parentProvider.setPrimaryParent(true);
 				parentPid = parentProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted mother pid {0}",
+				LOGGER.log(Level.FINE, "Inserted mother pid {0}",
 						Integer.toString(parentPid));
 			}
 
@@ -384,7 +375,7 @@ public class NewPersonWizard extends Wizard {
 				parentProvider.setParentRolePid(childRolePid);
 				parentProvider.setPrimaryParent(true);
 				parentPid = parentProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted child pid {0}",
+				LOGGER.log(Level.FINE, "Inserted child pid {0}",
 						Integer.toString(parentPid));
 			}
 
@@ -398,7 +389,7 @@ public class NewPersonWizard extends Wizard {
 				partnerProvider.setFromDatePid(partnerFromDatePid);
 				partnerProvider.setToDatePid(partnerToDatePid);
 				partnerProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted partner pid {0}",
+				LOGGER.log(Level.FINE, "Inserted partner pid {0}",
 						Integer.toString(partnerPid));
 			}
 
@@ -412,7 +403,7 @@ public class NewPersonWizard extends Wizard {
 				pep.setPrimaryPerson(true);
 				pep.setEventRolePid(Integer.parseInt(list.get(3)));
 				final int personEventPid = pep.insert();
-				LOGGER.log(Level.INFO, "Inserted person-event pid {0}",
+				LOGGER.log(Level.FINE, "Inserted person-event pid {0}",
 						Integer.toString(personEventPid));
 			}
 			personProvider.get(personPid);
@@ -535,13 +526,6 @@ public class NewPersonWizard extends Wizard {
 	 */
 	public void setPersonName(String personName) {
 		this.personName = personName;
-	}
-
-	/**
-	 * @param personNamePartList the personNamePartList to set
-	 */
-	public void setPersonNamePartList(List<String> personNamePartList) {
-		this.personNamePartList = personNamePartList;
 	}
 
 	/**

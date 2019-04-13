@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * wizard, which then creates a Person Event for each event.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 5. apr. 2019
+ * @version 13. apr. 2019
  *
  */
 public class NewPersonWizardPage5 extends WizardPage {
@@ -144,7 +144,8 @@ public class NewPersonWizardPage5 extends WizardPage {
 
 				if (found) {
 					wizard = (NewPersonWizard) getWizard();
-					wizard.setPersonNamePartList(stringList);
+//					wizard.setPersonNamePartList(stringList);
+					wizard.setEventList(lls);
 					setPageComplete(true);
 				}
 

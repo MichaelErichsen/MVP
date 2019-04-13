@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.providers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -11,7 +12,7 @@ import net.myerichsen.hremvp.project.servers.PersonNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 13. apr. 2019
  *
  */
 public class PersonNameMapProvider implements IHREProvider {
@@ -119,8 +120,7 @@ public class PersonNameMapProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
