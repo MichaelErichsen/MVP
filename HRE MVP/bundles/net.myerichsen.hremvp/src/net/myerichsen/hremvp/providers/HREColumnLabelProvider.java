@@ -13,14 +13,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 
 /**
  * Default JFace table label provider
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 31. mar. 2019
+ * @version 14. apr. 2019
  *
  */
 public class HREColumnLabelProvider extends ColumnLabelProvider {
@@ -65,27 +63,17 @@ public class HREColumnLabelProvider extends ColumnLabelProvider {
 						| ColumnViewerEditor.TABBING_VERTICAL
 						| ColumnViewerEditor.KEYBOARD_ACTIVATION);
 
-		tableViewer.getTable().addTraverseListener(new TraverseListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.TraverseListener#keyTraversed(org.eclipse.
-			 * swt.events.TraverseEvent)
-			 */
-			@Override
-			public void keyTraversed(TraverseEvent e) {
-				if (e.keyCode == SWT.TAB) {
-					LOGGER.log(Level.FINE, "Traversed " + e.keyCode);
+		tableViewer.getTable().addTraverseListener(e -> {
+			if (e.keyCode == SWT.TAB) {
+				LOGGER.log(Level.FINE, "Traversed " + e.keyCode);
 
-					final int itemCount = tableViewer.getTable().getItemCount();
-					final int selectionIndex = tableViewer.getTable()
-							.getSelectionIndex();
-					if (selectionIndex < (itemCount - 1)) {
-						e.doit = false;
-					} else {
-						e.doit = true;
-					}
+				final int itemCount = tableViewer.getTable().getItemCount();
+				final int selectionIndex = tableViewer.getTable()
+						.getSelectionIndex();
+				if (selectionIndex < (itemCount - 1)) {
+					e.doit = false;
+				} else {
+					e.doit = true;
 				}
 			}
 		});

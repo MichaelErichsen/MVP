@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. apr. 2019
+ * @version 14. apr. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -241,8 +241,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 			wizard.addBackPages();
 			wizard.getContainer().updateButtons();
 		}
-		if ((textGoogleApiKey == null)
-				|| (textGoogleApiKey.getText().length() == 0)) {
+		if (textGoogleApiKey.getText().length() == 0) {
 			textGoogleApiKey.setFocus();
 			eventBroker.post("MESSAGE", "Please insert Google Map Key");
 			return;

@@ -1,19 +1,25 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -23,6 +29,7 @@ import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.SexTypeNavigatorDialog;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Person sex wizard page
@@ -40,11 +47,13 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	private Text textSexTypePid;
 	private Text textSex;
 	private int sexTypePid;
-	private Button btnCheckButtonPrimary;
 	private Text textFromDate;
 	private Text textToDate;
 	private int fromDatePid;
 	private int toDatePid;
+	private List<List<String>> stringList;
+	protected NewPersonWizard wizard;
+	private Button btnCheckButtonPrimary;
 
 	/**
 	 * Constructor
@@ -54,7 +63,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	public NewPersonSexWizardPage1(IEclipseContext context) {
 		super("New Person Sex Wizard Page 1");
 		setTitle("Sex");
-		setDescription("Add a sex for the person.");
+		setDescription("Add a sex for the person");
 		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
@@ -143,58 +152,52 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(2, false));
+		container.setLayout(new GridLayout(1, false));
 
 		Composite compositeSex = new Composite(container, SWT.BORDER);
 		compositeSex.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		compositeSex.setLayout(new GridLayout(3, false));
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		compositeSex.setLayout(new GridLayout(2, false));
+
 		final Label lblSex = new Label(compositeSex, SWT.NONE);
 		lblSex.setText("Sex");
 
-		textSexTypePid = new Text(compositeSex, SWT.BORDER);
-		textSexTypePid.setToolTipText("More sexes can be added later");
-		textSexTypePid.setEditable(false);
-		textSexTypePid.setToolTipText("Sex must be selected to continue");
-
-		textSex = new Text(compositeSex, SWT.BORDER);
-		textSex.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textSex.setEditable(false);
-
-		final Composite compositeSexButtons = new Composite(compositeSex,
+		final ComboViewer comboViewerSex = new ComboViewer(compositeSex,
 				SWT.NONE);
-		compositeSexButtons.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
-		compositeSexButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		final Button btnBrowseSexes = new Button(compositeSexButtons, SWT.NONE);
-		btnBrowseSexes.addMouseListener(new MouseAdapter() {
+		final Combo comboSex = comboViewerSex.getCombo();
+		comboSex.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
 			@Override
-			public void mouseDown(MouseEvent e) {
-				browseSexTypes();
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboSex.getSelectionIndex();
+				wizard = (NewPersonWizard) getWizard();
+				wizard.setSexTypePid(Integer
+						.parseInt(stringList.get(selectionIndex).get(0)));
 				setPageComplete(true);
 			}
 		});
-		btnBrowseSexes.setText("Browse");
+		comboViewerSex.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerSex.setLabelProvider(new HREComboLabelProvider(2));
+		comboSex.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		final Button btnClearSex = new Button(compositeSexButtons, SWT.NONE);
-		btnClearSex.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				clearSex();
-				setPageComplete(false);
-			}
-		});
-		btnClearSex.setText("Clear");
-		new Label(container, SWT.NONE);
-
-		btnCheckButtonPrimary = new Button(container, SWT.CHECK);
-		btnCheckButtonPrimary.setText("Primary");
+		try {
+			stringList = new SexTypeProvider().getStringList();
+			comboViewerSex.setInput(stringList);
+			setErrorMessage(null);
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			setErrorMessage(e1.getMessage());
+		}
 
 		Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		compositeFrom.setLayout(new GridLayout(2, false));
 
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
@@ -243,7 +246,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 
 		Composite compositeTo = new Composite(container, SWT.BORDER);
 		compositeTo.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		compositeTo.setLayout(new GridLayout(2, false));
 
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
@@ -289,6 +292,11 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 			}
 		});
 		btnClearTo.setText("Clear");
+
+		btnCheckButtonPrimary = new Button(container, SWT.CHECK);
+		btnCheckButtonPrimary.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		btnCheckButtonPrimary.setText("Primary sex");
 
 		setPageComplete(false);
 	}

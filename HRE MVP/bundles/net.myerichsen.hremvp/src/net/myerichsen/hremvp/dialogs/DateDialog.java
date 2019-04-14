@@ -13,8 +13,6 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,7 +37,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Dialog to create a date in several formats
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 14. apr. 2019
  *
  */
 public class DateDialog extends TitleAreaDialog {
@@ -434,16 +432,13 @@ public class DateDialog extends TitleAreaDialog {
 				setSurety(textSurety.getText());
 			}
 		});
-		textSurety.addVerifyListener(new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent e) {
-				final Text text = (Text) e.getSource();
-				if (text.getText().length() > 10) {
-					e.doit = false;
-					eventBroker.post(MESSAGE, "Surety max length 10");
-				} else {
-					e.doit = true;
-				}
+		textSurety.addVerifyListener(e -> {
+			final Text text = (Text) e.getSource();
+			if (text.getText().length() > 10) {
+				e.doit = false;
+				eventBroker.post(MESSAGE, "Surety max length 10");
+			} else {
+				e.doit = true;
 			}
 		});
 		textSurety.setLayoutData(

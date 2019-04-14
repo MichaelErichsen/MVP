@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.handlers;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -40,7 +41,7 @@ public class HreUpdateHandler {
 	private void configureProvisioningJob(ProvisioningJob provisioningJob,
 			Shell shell, UISynchronize sync, IWorkbench workbench,
 			IProgressMonitor monitor) {
-		LOGGER.fine("Configure Provisioning job");
+		LOGGER.log(Level.INFO, "Configure Provisioning job");
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
 		subMonitor.beginTask("Configure Provisioning Job", 25);
 
@@ -76,14 +77,14 @@ public class HreUpdateHandler {
 			IProgressMonitor monitor) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
 		subMonitor.beginTask("Configure Update", 25);
-		LOGGER.fine("Configure Update");
+		LOGGER.log(Level.INFO, "Configure Update");
 
 		URI uri = null;
 		try {
 			uri = new URI(store.getString("UPDATESITE"));
+			LOGGER.log(Level.INFO, "URI: {0}", uri);
 		} catch (final URISyntaxException e) {
-			LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line "
-					+ e.getStackTrace()[0].getLineNumber());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			return null;
 		}
 
@@ -98,7 +99,8 @@ public class HreUpdateHandler {
 	@Execute
 	public void execute(IProvisioningAgent agent, Shell shell,
 			UISynchronize sync, IWorkbench workbench) {
-		LOGGER.fine("Repository location: " + store.getString("UPDATESITE"));
+		LOGGER.log(Level.INFO, "Repository location: {0}",
+				store.getString("UPDATESITE"));
 		try {
 			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(
 					shell);
@@ -106,7 +108,7 @@ public class HreUpdateHandler {
 
 				final SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
 
-				LOGGER.fine("Check for updates");
+				LOGGER.log(Level.INFO, "Check for updates");
 
 				final ProvisioningSession session = new ProvisioningSession(
 						agent);
@@ -125,7 +127,7 @@ public class HreUpdateHandler {
 						monitor, operation, subMonitor.split(25, 0));
 
 				if (provisioningJob == null) {
-					LOGGER.severe(
+					LOGGER.log(Level.SEVERE,
 							"Trying to update from the Eclipse IDE? won't work!");
 					return;
 				}
@@ -134,10 +136,8 @@ public class HreUpdateHandler {
 
 				provisioningJob.schedule();
 			});
-		} catch (final InvocationTargetException e) {
-			LOGGER.severe(e.getClass() + ": " + e.getMessage());
-		} catch (final InterruptedException e) {
-			LOGGER.severe(e.getClass() + ": " + e.getMessage());
+		} catch (final InvocationTargetException | InterruptedException e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class HreUpdateHandler {
 			UpdateOperation operation, IProgressMonitor monitor2) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
 		subMonitor.beginTask("Get Provisioning Job", 25);
-		LOGGER.info("Get Provisioning Job");
+		LOGGER.log(Level.INFO, "Get Provisioning Job");
 		final ProvisioningJob provisioningJob = operation
 				.getProvisioningJob(monitor);
 		subMonitor.worked(25);
@@ -156,14 +156,14 @@ public class HreUpdateHandler {
 			UpdateOperation operation, IProgressMonitor monitor2) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
 		subMonitor.beginTask("Resolve Modal Operation", 25);
-		LOGGER.info("Resolve Modal Operation");
+		LOGGER.log(Level.INFO, "Resolve Modal Operation");
 		final IStatus status = operation.resolveModal(monitor);
 		subMonitor.worked(25);
 		return status;
 	}
 
 	private void showMessage(Shell parent, UISynchronize sync) {
-		LOGGER.fine("Show message");
+		LOGGER.log(Level.INFO, "Show message");
 		sync.syncExec(() -> MessageDialog.openWarning(parent, "No update",
 				"No updates for HRE have been found at "
 						+ store.getString("UPDATESITE")));

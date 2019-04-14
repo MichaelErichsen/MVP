@@ -2,7 +2,7 @@
 <feature
       id="net.myerichsen.hremvp.feature"
       label="HRE MVP Base Feature"
-      version="0.2.1.qualifier"
+      version="0.2.2.qualifier"
       provider-name="History Research Environment Ltd.">
 
    <description url="http://www.example.com/description">

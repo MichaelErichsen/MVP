@@ -101,7 +101,7 @@ public class HelpAboutDialog extends Dialog {
 		styledText_2.setEditable(false);
 		styledText_2
 				.setFont(SWTResourceManager.getFont("Calibri", 10, SWT.BOLD));
-		styledText_2.setText("Release V0.2.1\r\nBuild Date 2019-01-06");
+		styledText_2.setText("Release V0.2.2\r\nBuild Date 2019-01-06");
 		styledText_2.setLayoutData(
 				new GridData(SWT.CENTER, SWT.FILL, true, false, 1, 1));
 

@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.myerichsen.hremvp</groupId>
 	<artifactId>net.myerichsen.hremvp.root</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<parent>
 		<groupId>net.myerichsen.hremvp</groupId>
 		<artifactId>net.myerichsen.hremvp.configuration</artifactId>
-		<version>0.2.1-SNAPSHOT</version>
+		<version>0.2.2-SNAPSHOT</version>
 		<relativePath>./releng/net.myerichsen.hremvp.configuration</relativePath>
 	</parent>
 

@@ -11,6 +11,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -21,6 +23,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -29,10 +32,12 @@ import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.listeners.NumericVerifyListener;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
+import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
+import net.myerichsen.hremvp.project.providers.SexTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Display all data for a sex
@@ -53,17 +58,17 @@ public class PersonSexView {
 	private Text textFromDate;
 	private Text textToDate;
 	private Button btnPrimarySex;
-	private Text textSexTypePid;
-	private Text textAbbreviation;
 
 	private SexProvider sexesProvider;
 	private int sexPid;
 	private int fromDatePid;
 	private int toDatePid;
+	protected NewPersonWizard wizard;
+	private List<List<String>> stringList;
+	private Combo comboSex;
 
 	/**
 	 * Constructor
-	 *
 	 */
 	public PersonSexView() {
 		sexesProvider = new SexProvider();
@@ -77,9 +82,9 @@ public class PersonSexView {
 				textFromDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				final int hdatePid = dialog.getHdatePid();
+				fromDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get(hdatePid);
+				hdp.get(fromDatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -95,9 +100,9 @@ public class PersonSexView {
 				textToDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				final int hdatePid = dialog.getHdatePid();
+				toDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get(hdatePid);
+				hdp.get(toDatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -110,6 +115,7 @@ public class PersonSexView {
 	 */
 	private void clearFromDate() {
 		textFromDate.setText("");
+		fromDatePid = 0;
 	}
 
 	/**
@@ -117,6 +123,7 @@ public class PersonSexView {
 	 */
 	private void clearToDate() {
 		textToDate.setText("");
+		toDatePid = 0;
 	}
 
 	/**
@@ -127,16 +134,32 @@ public class PersonSexView {
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
 		this.context = context;
-
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label lblId = new Label(parent, SWT.NONE);
-		lblId.setText("ID");
+		lblId.setText("Id");
 
 		textId = new Text(parent, SWT.BORDER);
 		textId.setEditable(false);
 		textId.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		final Label lblSex = new Label(parent, SWT.NONE);
+		lblSex.setText("Sex");
+
+		final ComboViewer comboViewerSex = new ComboViewer(parent, SWT.NONE);
+		comboSex = comboViewerSex.getCombo();
+		comboViewerSex.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerSex.setLabelProvider(new HREComboLabelProvider(2));
+		comboSex.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		try {
+			stringList = new SexTypeProvider().getStringList();
+			comboViewerSex.setInput(stringList);
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
 
 		final Composite compositeFrom = new Composite(parent, SWT.BORDER);
 		compositeFrom.setLayoutData(
@@ -236,22 +259,6 @@ public class PersonSexView {
 		btnPrimarySex.setSelection(true);
 		btnPrimarySex.setText("Primary Sex");
 
-		final Label lblSexType = new Label(parent, SWT.NONE);
-		lblSexType.setText("Sex type");
-
-		textSexTypePid = new Text(parent, SWT.BORDER);
-		textSexTypePid.addVerifyListener(new NumericVerifyListener());
-		textSexTypePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblAbbreviation = new Label(parent, SWT.NONE);
-		lblAbbreviation.setText("Abbreviation");
-
-		textAbbreviation = new Text(parent, SWT.BORDER);
-		textAbbreviation.setEditable(false);
-		textAbbreviation.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 3, 1));
@@ -283,8 +290,18 @@ public class PersonSexView {
 			textToDate.setText(sexesList.get(6));
 			btnPrimarySex.setSelection(
 					sexesList.get(4).equals("true") ? true : false);
-			textSexTypePid.setText(sexesList.get(2));
-			textAbbreviation.setText(sexesProvider.getAbbreviation());
+
+			List<List<String>> stringList2 = new SexTypeProvider()
+					.getStringList();
+			int index = 0;
+
+			for (int i = 0; i < stringList2.size(); i++) {
+				// FIXME Unrealted types
+				if (stringList2.get(1).equals(sexesList.get(2))) {
+					index = i;
+				}
+			}
+			comboSex.select(index);
 
 			eventBroker.post("MESSAGE",
 					"Name " + textId.getText() + " has been fetched");
@@ -382,16 +399,15 @@ public class PersonSexView {
 		try {
 			sexesProvider = new SexProvider();
 			sexesProvider.get(sexPid);
-			sexesProvider.setFromDatePid(0);
-			sexesProvider.setToDatePid(0);
+			sexesProvider.setFromDatePid(fromDatePid);
+			sexesProvider.setToDatePid(toDatePid);
 			sexesProvider.setPrimarySex(btnPrimarySex.getSelection());
-			sexesProvider
-					.setSexTypePid(Integer.parseInt(textSexTypePid.getText()));
+			sexesProvider.setSexTypePid(Integer.parseInt(
+					stringList.get(comboSex.getSelectionIndex()).get(0)));
 			sexesProvider.update();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 		sexesProvider.setFromDatePid(0);
 	}
-
 }

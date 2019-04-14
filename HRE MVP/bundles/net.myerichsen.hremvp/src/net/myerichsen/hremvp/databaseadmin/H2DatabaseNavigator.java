@@ -17,8 +17,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -37,7 +35,7 @@ import net.myerichsen.hremvp.Constants;
  * Create a view part with all tables in the database
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 14. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -75,21 +73,18 @@ public class H2DatabaseNavigator {
 
 		final TableViewer tableViewer = new TableViewer(parent,
 				SWT.BORDER | SWT.FULL_SELECTION);
-		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				final TableItem[] selectedRows = table.getSelection();
-				final TableItem selectedRow = selectedRows[0];
-				final String tableName = selectedRow.getText(0);
+		tableViewer.addDoubleClickListener(event -> {
+			final TableItem[] selectedRows = table.getSelection();
+			final TableItem selectedRow = selectedRows[0];
+			final String tableName = selectedRow.getText(0);
 
-				final ParameterizedCommand command = commandService
-						.createCommand(
-								"net.myerichsen.hremvp.command.tablenavigatoropen",
-								null);
-				handlerService.executeHandler(command);
-				eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
-				eventBroker.post("MESSAGE", tableName + " has been opened");
-			}
+			final ParameterizedCommand command = commandService
+					.createCommand(
+							"net.myerichsen.hremvp.command.tablenavigatoropen",
+							null);
+			handlerService.executeHandler(command);
+			eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
+			eventBroker.post("MESSAGE", tableName + " has been opened");
 		});
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);

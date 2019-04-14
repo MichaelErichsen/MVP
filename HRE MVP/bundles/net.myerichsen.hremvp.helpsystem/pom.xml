@@ -17,6 +17,6 @@
   <parent>
   	<artifactId>net.myerichsen.hremvp.bundles</artifactId>
   	<groupId>net.myerichsen.hremvp</groupId>
-  	<version>0.2.1-SNAPSHOT</version>
+  	<version>0.2.2-SNAPSHOT</version>
   </parent>
 </project>

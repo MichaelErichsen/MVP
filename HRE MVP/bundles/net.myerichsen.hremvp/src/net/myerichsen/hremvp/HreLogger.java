@@ -16,10 +16,18 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * "mvp-log.%u.%g.txt".
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. mar. 2019
+ * @version 14. apr. 2019
  *
  */
 public class HreLogger {
+	/**
+	 * Constructor
+	 *
+	 */
+	private HreLogger() {
+		super();
+	}
+
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static FileHandler handler;

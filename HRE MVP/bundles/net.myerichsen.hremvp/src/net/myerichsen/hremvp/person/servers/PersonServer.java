@@ -809,7 +809,6 @@ public class PersonServer implements IHREServer {
 			sb = new StringBuilder();
 			final PersonNameParts part = new PersonNameParts();
 
-			// FIXME java.lang.NullPointerException
 			for (final PersonNameParts namePart : part.getFKNamePid(namePid)) {
 				sb.append(namePart.getLabel() + " ");
 			}

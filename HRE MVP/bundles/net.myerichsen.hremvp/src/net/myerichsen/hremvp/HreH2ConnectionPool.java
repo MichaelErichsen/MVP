@@ -19,7 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. mar. 2019
+ * @version 14. apr. 2019
  */
 public class HreH2ConnectionPool {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
@@ -43,7 +43,7 @@ public class HreH2ConnectionPool {
 	 * @param dbName Name of the database
 	 * @throws BackingStoreException Error in preferences file access
 	 */
-	public static void createNew(String dbName) throws BackingStoreException {
+	public static void createNew(String dbName) {
 		try {
 			connectionPool.dispose();
 		} catch (final Exception e) {
@@ -64,11 +64,11 @@ public class HreH2ConnectionPool {
 
 	/**
 	 * Dispose the connection pool.
-	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * 
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public static void dispose() throws Exception {
+	public static void dispose() throws SQLException {
 		final Connection conn = HreH2ConnectionPool.getConnection();
 		final PreparedStatement ps = conn.prepareStatement("SHUTDOWN");
 		ps.executeUpdate();
@@ -133,16 +133,16 @@ public class HreH2ConnectionPool {
 	 *
 	 * @param dbName Name of database
 	 * @return A JDBC Connection
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
+	 * @throws SQLException An exception that provides information on a database
+	 *                      access error or other errors
 	 */
-	public static Connection getConnection(String dbName) throws Exception {
+	public static Connection getConnection(String dbName) throws SQLException {
 		h2TraceLevel = store.getInt("H2TRACELEVEL");
 		dbPath = store.getString("DBPATH");
 		final String jdbcUrl = "jdbc:h2:" + dbPath + "/" + dbName
 				+ ";IFEXISTS=TRUE;TRACE_LEVEL_FILE=" + h2TraceLevel
 				+ ";TRACE_LEVEL_SYSTEM_OUT=" + h2TraceLevel;
-		LOGGER.log(Level.INFO, "JDBC URL: " + jdbcUrl);
+		LOGGER.log(Level.INFO, "JDBC URL: {0}", jdbcUrl);
 		connectionPool = JdbcConnectionPool.create(jdbcUrl, "sa", "");
 		connectionPool.setMaxConnections(500);
 		LOGGER.log(Level.INFO, "Connection pool has been created");

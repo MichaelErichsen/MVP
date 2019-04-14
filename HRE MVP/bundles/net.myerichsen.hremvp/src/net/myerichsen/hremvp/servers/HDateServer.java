@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.dbmodels.Hdates;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.HDates}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 14. apr. 2019
  *
  */
 public class HDateServer {
@@ -22,14 +22,14 @@ public class HDateServer {
 	private Date SortDate;
 	private String Surety;
 
-	private final Hdates date;
+	private final Hdates hDate;
 
 	/**
 	 * Constructor
 	 *
 	 */
 	public HDateServer() {
-		date = new Hdates();
+		hDate = new Hdates();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class HDateServer {
 	 *
 	 */
 	public void delete(int key) throws Exception {
-		date.delete(key);
+		hDate.delete(key);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class HDateServer {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
-		final List<Hdates> hdateList = date.get();
+		final List<Hdates> hdateList = hDate.get();
 
 		for (final Hdates hdate : hdateList) {
 			stringList = new ArrayList<>();
@@ -80,12 +80,12 @@ public class HDateServer {
 	 *
 	 */
 	public void get(int key) throws Exception {
-		date.get(key);
-		setTableId(date.getTableId());
-		setOriginalText(date.getOriginalText());
-		setDate(date.getDate());
-		setSortDate(date.getSortDate());
-		setSurety(date.getSurety());
+		hDate.get(key);
+		setTableId(hDate.getTableId());
+		setOriginalText(hDate.getOriginalText());
+		setDate(hDate.getDate());
+		setSortDate(hDate.getSortDate());
+		setSurety(hDate.getSurety());
 	}
 
 	/**
@@ -140,12 +140,12 @@ public class HDateServer {
 	 * @throws MvpException Application specific exception
 	 */
 	public int insert() throws Exception {
-		date.setOriginalText(getOriginalText());
-		date.setDate(getDate());
-		date.setSortDate(getSortDate());
-		date.setSurety(getSurety());
+		hDate.setOriginalText(getOriginalText());
+		hDate.setDate(getDate());
+		hDate.setSortDate(getSortDate());
+		hDate.setSurety(getSurety());
 
-		return date.insert();
+		return hDate.insert();
 	}
 
 	/**
@@ -198,11 +198,11 @@ public class HDateServer {
 	 * @throws MvpException Application specific exception
 	 */
 	public void update() throws Exception {
-		date.setTableId(getTableId());
-		date.setOriginalText(getOriginalText());
-		date.setDate(getDate());
-		date.setSortDate(getSortDate());
-		date.setSurety(getSurety());
-		date.update();
+		hDate.setTableId(getTableId());
+		hDate.setOriginalText(getOriginalText());
+		hDate.setDate(getDate());
+		hDate.setSortDate(getSortDate());
+		hDate.setSurety(getSurety());
+		hDate.update();
 	}
 }
