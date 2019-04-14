@@ -20,7 +20,6 @@ import org.eclipse.equinox.p2.operations.ProvisioningSession;
 import org.eclipse.equinox.p2.operations.UpdateOperation;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -29,7 +28,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 13. apr. 2019
+ * @version 14. apr. 2019
  *
  */
 public class HreUpdateHandler {
@@ -49,30 +48,23 @@ public class HreUpdateHandler {
 			@Override
 			public void done(IJobChangeEvent event) {
 				if (event.getResult().isOK()) {
-					sync.syncExec(new Runnable() {
-						@Override
-						public void run() {
-							final boolean restart = MessageDialog.openQuestion(
-									shell, "Updates installed, restart?",
-									"Updates for HRE have been installed from "
-											+ store.getString("UPDATESITE")
-											+ ". Do you want to restart?");
-							if (restart) {
-								PlatformUI.getWorkbench().restart();
-							}
-
+					sync.syncExec(() -> {
+						final boolean restart = MessageDialog.openQuestion(
+								shell, "Updates installed, restart?",
+								"Updates for HRE have been installed from "
+										+ store.getString("UPDATESITE")
+										+ ". Do you want to restart?");
+						if (restart) {
+							PlatformUI.getWorkbench().restart();
 						}
+
 					});
 				} else {
-					sync.syncExec(new Runnable() {
-						@Override
-						public void run() {
-							MessageDialog.openWarning(shell, "Update failed",
-									"Update of HRE from "
-											+ store.getString("UPDATESITE")
-											+ " have failed");
-						}
-					});
+					sync.syncExec(() -> MessageDialog.openWarning(shell,
+							"Update failed",
+							"Update of HRE from "
+									+ store.getString("UPDATESITE")
+									+ " have failed"));
 				}
 				super.done(event);
 			}
@@ -110,43 +102,37 @@ public class HreUpdateHandler {
 		try {
 			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(
 					shell);
-			dialog.run(true, true, new IRunnableWithProgress() {
+			dialog.run(true, true, monitor -> {
 
-				@Override
-				public void run(IProgressMonitor monitor) {
+				final SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
 
-					final SubMonitor subMonitor = SubMonitor.convert(monitor,
-							100);
+				LOGGER.fine("Check for updates");
 
-					LOGGER.fine("Check for updates");
+				final ProvisioningSession session = new ProvisioningSession(
+						agent);
+				final UpdateOperation operation = new UpdateOperation(session);
+				configureUpdate(operation, subMonitor.split(25, 0));
 
-					final ProvisioningSession session = new ProvisioningSession(
-							agent);
-					final UpdateOperation operation = new UpdateOperation(
-							session);
-					configureUpdate(operation, subMonitor.split(25, 0));
+				final IStatus status = resolveModal(monitor, operation,
+						subMonitor.split(25, 0));
 
-					final IStatus status = resolveModal(monitor, operation,
-							subMonitor.split(25, 0));
-
-					if (status.getCode() == 10000) {
-						showMessage(shell, sync);
-						return;
-					}
-
-					final ProvisioningJob provisioningJob = getProvisioningJob(
-							monitor, operation, subMonitor.split(25, 0));
-
-					if (provisioningJob == null) {
-						LOGGER.severe(
-								"Trying to update from the Eclipse IDE? won't work!");
-						return;
-					}
-					configureProvisioningJob(provisioningJob, shell, sync,
-							workbench, subMonitor.split(25, 0));
-
-					provisioningJob.schedule();
+				if (status.getCode() == 10000) {
+					showMessage(shell, sync);
+					return;
 				}
+
+				final ProvisioningJob provisioningJob = getProvisioningJob(
+						monitor, operation, subMonitor.split(25, 0));
+
+				if (provisioningJob == null) {
+					LOGGER.severe(
+							"Trying to update from the Eclipse IDE? won't work!");
+					return;
+				}
+				configureProvisioningJob(provisioningJob, shell, sync,
+						workbench, subMonitor.split(25, 0));
+
+				provisioningJob.schedule();
 			});
 		} catch (final InvocationTargetException e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage());
@@ -178,15 +164,8 @@ public class HreUpdateHandler {
 
 	private void showMessage(Shell parent, UISynchronize sync) {
 		LOGGER.fine("Show message");
-		sync.syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-
-				MessageDialog.openWarning(parent, "No update",
-						"No updates for HRE have been found at "
-								+ store.getString("UPDATESITE"));
-			}
-		});
+		sync.syncExec(() -> MessageDialog.openWarning(parent, "No update",
+				"No updates for HRE have been found at "
+						+ store.getString("UPDATESITE")));
 	}
 }

@@ -4,13 +4,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -47,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @version 13. apr. 2019
  */
 public class PersonNavigator {
 	private static final Logger LOGGER = Logger
@@ -225,13 +223,6 @@ public class PersonNavigator {
 	/**
 	 *
 	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
 	private void postPersonPid() {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int personPid = Integer.parseInt(selection[0].getText(0));
@@ -239,10 +230,6 @@ public class PersonNavigator {
 		eventBroker.post(
 				net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
 				personPid);
-	}
-
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

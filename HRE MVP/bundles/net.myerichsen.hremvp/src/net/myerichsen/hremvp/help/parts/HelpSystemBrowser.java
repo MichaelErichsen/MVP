@@ -4,10 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -21,7 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Embedded browser for HRE Help System
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. jan. 2019
+ * @version 14. apr. 2019
  *
  */
 public class HelpSystemBrowser {
@@ -47,14 +45,6 @@ public class HelpSystemBrowser {
 		LOGGER.log(Level.INFO, "Browser pointing at " + browser.getUrl());
 		browser.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-	}
-
-	@PreDestroy
-	public void dispose() {
-	}
-
-	@Focus
-	public void setFocus() {
 	}
 
 }

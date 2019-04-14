@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * HTTP request handler for Persons
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. okt. 2018
+ * @version 14. apr. 2019
  *
  */
 public class PersonHttpRequestHandler implements Handler {
@@ -67,8 +67,9 @@ public class PersonHttpRequestHandler implements Handler {
 	@Override
 	public void handle(String target, Request baseRequest,
 			HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.log(Level.FINE, "Target: " + target + "\r\nRequest" + baseRequest
-				+ "\r\nHttpServletRequest" + request);
+		LOGGER.log(Level.FINE,
+				"Target: {0}\r\nRequest {1}\r\nHttpServletRequest {2}",
+				new Object[] { target, baseRequest, request });
 
 		// TODO Generalize request handler. Use class.forname() for server class
 		final PersonServer server = new PersonServer();
@@ -100,8 +101,6 @@ public class PersonHttpRequestHandler implements Handler {
 		}
 
 		baseRequest.setHandled(true);
-		return;
-
 	}
 
 	/*

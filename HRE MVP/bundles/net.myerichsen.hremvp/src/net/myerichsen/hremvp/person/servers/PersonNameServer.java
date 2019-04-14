@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @version 13. apr. 2019
  *
  */
 //Use LocalDate
@@ -233,7 +233,7 @@ public class PersonNameServer implements IHREServer {
 				for (final PersonNameParts PersonNameParts : npl) {
 					if ((PersonNameParts.getNamePid() == name.getNamePid())
 							|| (PersonNameParts.getLabel() != null)) {
-						sb.append(PersonNameParts.getLabel() + " ");
+						sb.append(PersonNameParts.getLabel().trim() + " ");
 					}
 				}
 				break;

@@ -1,9 +1,7 @@
 package net.myerichsen.hremvp.help.parts;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
@@ -13,8 +11,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Embedded browser for HRE Web Site.
  *
- * @version 2018-06-22
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 14. apr. 2019
  *
  */
 public class HelpHreWebsite {
@@ -34,14 +32,6 @@ public class HelpHreWebsite {
 		browser.setUrl("https://historyresearchenvironment.org/");
 		browser.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-	}
-
-	@PreDestroy
-	public void dispose() {
-	}
-
-	@Focus
-	public void setFocus() {
 	}
 
 }

@@ -58,7 +58,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 14. apr. 2019
  *
  */
 public class LocationNavigator {
@@ -199,7 +199,7 @@ public class LocationNavigator {
 				"Delete location " + primaryName, null,
 				"Are you sure that you will delete location " + locationPid
 						+ ", " + primaryName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",
@@ -227,7 +227,7 @@ public class LocationNavigator {
 			lnp.deleteAllNamesForLocation(locationPid);
 
 			// Delete location
-			final LocationProvider provider = new LocationProvider();
+			provider = new LocationProvider();
 			provider.delete(locationPid);
 
 			LOGGER.log(Level.INFO, "Location {0} has been deleted",
@@ -323,7 +323,6 @@ public class LocationNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

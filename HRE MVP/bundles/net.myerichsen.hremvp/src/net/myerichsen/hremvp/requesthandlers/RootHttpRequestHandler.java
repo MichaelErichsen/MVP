@@ -17,7 +17,7 @@ import org.eclipse.jetty.server.Server;
  * HTTP root request handler
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. okt. 2018
+ * @version 14. apr. 2019
  *
  */
 public class RootHttpRequestHandler implements Handler {
@@ -78,8 +78,8 @@ public class RootHttpRequestHandler implements Handler {
 		out.println("}");
 		baseRequest.setHandled(true);
 
-		LOGGER.log(Level.INFO, "{\r\n\"Method\": " + request.getMethod()
-				+ ",\r\n\"Target\": " + target.substring(1) + "\r\n})");
+		LOGGER.log(Level.INFO, "Method: {0},\r\nTarget: {1}",
+				new Object[] { request.getMethod(), target.substring(1) });
 	}
 
 	/*
