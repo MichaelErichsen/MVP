@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the SEXES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 3. mar. 2019
+ * @version 14. apr. 2019
  *
  */
 
@@ -349,16 +349,16 @@ public class Sexes {
 		ps.setInt(2, getSexTypePid());
 		ps.setBoolean(3, isPrimarySex());
 		if (getFromDatePid() == 0) {
-			ps.setNull(7, java.sql.Types.INTEGER);
+			ps.setNull(4, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(7, getFromDatePid());
+			ps.setInt(4, getFromDatePid());
 		}
 		if (getToDatePid() == 0) {
-			ps.setNull(8, java.sql.Types.INTEGER);
+			ps.setNull(5, java.sql.Types.INTEGER);
 		} else {
-			ps.setInt(8, getToDatePid());
+			ps.setInt(5, getToDatePid());
 		}
-		ps.setInt(9, getSexesPid());
+		ps.setInt(6, getSexesPid());
 		ps.executeUpdate();
 		conn.close();
 	}

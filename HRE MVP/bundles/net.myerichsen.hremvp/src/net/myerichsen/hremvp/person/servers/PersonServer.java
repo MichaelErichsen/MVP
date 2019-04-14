@@ -11,8 +11,12 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.json.JSONException;
 import org.json.JSONStringer;
+
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
@@ -39,6 +43,8 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
 public class PersonServer implements IHREServer {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	private int personPid;
 	private int birthDatePid;
@@ -682,7 +688,17 @@ public class PersonServer implements IHREServer {
 			final List<Dictionary> fkLabelPid = dictionary
 					.getFKLabelPid(st.getLabelPid());
 
-			ls.add(fkLabelPid.get(0).getLabel());
+			String isoCode = store.getString("GUILANGUAGE");
+			String label = "";
+
+			for (Dictionary d : fkLabelPid) {
+				if (isoCode.equals(d.getIsoCode())) {
+					label = d.getLabel();
+					break;
+				}
+			}
+
+			ls.add(label);
 
 			ls.add(Boolean.toString(sex.isPrimarySex()));
 			s = "";

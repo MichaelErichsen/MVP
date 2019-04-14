@@ -37,7 +37,6 @@ public class Constants {
 	 * Eclipse events
 	 */
 	public static final String DATABASE_UPDATE_TOPIC = "DATABASE_UPDATE_TOPIC";
-
 	public static final String EVENT_PID_UPDATE_TOPIC = "EVENT_PID_UPDATE_TOPIC";
 	public static final String EVENT_ROLE_PID_UPDATE_TOPIC = "EVENT_ROLE_PID_UPDATE_TOPIC";
 	public static final String EVENT_TYPE_PID_UPDATE_TOPIC = "EVENT_TYPE_PID_UPDATE_TOPIC";

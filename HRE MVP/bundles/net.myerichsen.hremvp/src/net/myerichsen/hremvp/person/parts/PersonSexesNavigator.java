@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -13,7 +12,6 @@ import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -45,7 +43,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sexes for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @version 14. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonSexesNavigator {
@@ -168,13 +166,6 @@ public class PersonSexesNavigator {
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 *
 	 */
 	protected void openSexView() {
@@ -232,13 +223,6 @@ public class PersonSexesNavigator {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

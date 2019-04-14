@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Person sex wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. mar. 2019
+ * @version 14. apr. 2019
  *
  */
 public class NewPersonSexWizardPage1 extends WizardPage {
@@ -72,7 +72,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				hdp.get(hdatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -111,7 +111,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				hdp.get(hdatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}
@@ -143,29 +143,32 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(new GridLayout(3, false));
-		final Label lblSex = new Label(container, SWT.NONE);
+		container.setLayout(new GridLayout(2, false));
+
+		Composite compositeSex = new Composite(container, SWT.BORDER);
+		compositeSex.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeSex.setLayout(new GridLayout(3, false));
+		final Label lblSex = new Label(compositeSex, SWT.NONE);
 		lblSex.setText("Sex");
 
-		textSexTypePid = new Text(container, SWT.BORDER);
-		textSexTypePid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textSexTypePid = new Text(compositeSex, SWT.BORDER);
 		textSexTypePid.setToolTipText("More sexes can be added later");
 		textSexTypePid.setEditable(false);
 		textSexTypePid.setToolTipText("Sex must be selected to continue");
 
-		textSex = new Text(container, SWT.BORDER);
+		textSex = new Text(compositeSex, SWT.BORDER);
 		textSex.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textSex.setEditable(false);
-		new Label(container, SWT.NONE);
 
-		final Composite compositeSex = new Composite(container, SWT.NONE);
-		compositeSex.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeSex.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeSexButtons = new Composite(compositeSex,
+				SWT.NONE);
+		compositeSexButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		compositeSexButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnBrowseSexes = new Button(compositeSex, SWT.NONE);
+		final Button btnBrowseSexes = new Button(compositeSexButtons, SWT.NONE);
 		btnBrowseSexes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -175,7 +178,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		});
 		btnBrowseSexes.setText("Browse");
 
-		final Button btnClearSex = new Button(compositeSex, SWT.NONE);
+		final Button btnClearSex = new Button(compositeSexButtons, SWT.NONE);
 		btnClearSex.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -188,20 +191,30 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 
 		btnCheckButtonPrimary = new Button(container, SWT.CHECK);
 		btnCheckButtonPrimary.setText("Primary");
-		new Label(container, SWT.NONE);
 
-		final Label lblFromDate = new Label(container, SWT.NONE);
+		Composite compositeFrom = new Composite(container, SWT.BORDER);
+		compositeFrom.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeFrom.setLayout(new GridLayout(2, false));
+
+		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
+		lblFromDate.setSize(55, 15);
 		lblFromDate.setText("From Date");
 
-		textFromDate = new Text(container, SWT.BORDER);
-		textFromDate.setEditable(false);
+		textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setSize(226, 21);
+		textFromDate.setEditable(false);
 
-		final Composite compositeFrom = new Composite(container, SWT.NONE);
-		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeFromButtons = new Composite(compositeFrom,
+				SWT.NONE);
+		compositeFromButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeFromButtons.setSize(137, 31);
+		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -210,7 +223,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		});
 		btnNewFrom.setText("New");
 
-		final Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -219,7 +232,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		});
 		btnBrowseFrom.setText("Browse");
 
-		final Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -228,18 +241,29 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		});
 		btnClearFrom.setText("Clear");
 
-		final Label lblToDate = new Label(container, SWT.NONE);
+		Composite compositeTo = new Composite(container, SWT.BORDER);
+		compositeTo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeTo.setLayout(new GridLayout(2, false));
+
+		final Label lblToDate = new Label(compositeTo, SWT.NONE);
+		lblToDate.setSize(40, 15);
 		lblToDate.setText("To Date");
 
-		textToDate = new Text(container, SWT.BORDER);
-		textToDate.setEditable(false);
+		textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textToDate.setSize(264, 21);
+		textToDate.setEditable(false);
 
-		final Composite compositeTo = new Composite(container, SWT.NONE);
-		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
+		final Composite compositeToButtons = new Composite(compositeTo,
+				SWT.NONE);
+		compositeToButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeToButtons.setSize(137, 31);
+		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnNewTo = new Button(compositeTo, SWT.NONE);
+		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -248,7 +272,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		});
 		btnNewTo.setText("New");
 
-		final Button btnBrowseTo = new Button(compositeTo, SWT.NONE);
+		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -257,7 +281,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		});
 		btnBrowseTo.setText("Browse");
 
-		final Button btnClearTo = new Button(compositeTo, SWT.NONE);
+		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -292,7 +316,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				setFromDatePid(hdp.insert());
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
 	}

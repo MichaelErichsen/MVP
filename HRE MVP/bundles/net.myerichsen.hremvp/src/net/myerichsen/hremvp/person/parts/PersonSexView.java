@@ -7,12 +7,11 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.core.commands.EHandlerService;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -28,41 +27,39 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dialogs.DateDialog;
+import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.listeners.NumericVerifyListener;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
+import net.myerichsen.hremvp.providers.HDateProvider;
 
 /**
  * Display all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @version 14. apr. 2019
  *
  */
-@SuppressWarnings("restriction")
 public class PersonSexView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private IEclipseContext context;
 
 	@Inject
 	private IEventBroker eventBroker;
-	@Inject
-	private ECommandService commandService;
-	@Inject
-	private EHandlerService handlerService;
 
 	private Text textId;
-	private Text textPersonPid;
 	private Text textFromDate;
 	private Text textToDate;
 	private Button btnPrimarySex;
 	private Text textSexTypePid;
 	private Text textAbbreviation;
-	private Text textLabel;
-	private Text textIsoCode;
 
 	private SexProvider sexesProvider;
 	private int sexPid;
+	private int fromDatePid;
+	private int toDatePid;
 
 	/**
 	 * Constructor
@@ -73,12 +70,64 @@ public class PersonSexView {
 	}
 
 	/**
+	 *
+	 */
+	private void browseFromDates() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textFromDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textFromDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void browseToDates() {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textToDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				textToDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void clearFromDate() {
+		textFromDate.setText("");
+	}
+
+	/**
+	 *
+	 */
+	private void clearToDate() {
+		textToDate.setText("");
+	}
+
+	/**
 	 * Create contents of the view part
 	 *
 	 * @param parent The parent composite
 	 */
 	@PostConstruct
-	public void createControls(Composite parent) {
+	public void createControls(Composite parent, IEclipseContext context) {
+		this.context = context;
+
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label lblId = new Label(parent, SWT.NONE);
@@ -89,43 +138,108 @@ public class PersonSexView {
 		textId.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		final Label lblPerson = new Label(parent, SWT.NONE);
-		lblPerson.setText("Person");
+		final Composite compositeFrom = new Composite(parent, SWT.BORDER);
+		compositeFrom.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeFrom.setLayout(new GridLayout(2, false));
 
-		textPersonPid = new Text(parent, SWT.BORDER);
-		textPersonPid.setEditable(false);
-		textPersonPid.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblFromDate = new Label(parent, SWT.NONE);
+		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
 		lblFromDate.setText("From Date");
 
-		textFromDate = new Text(parent, SWT.BORDER);
+		textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		textFromDate.setEditable(false);
 
-		final Label lblToDate = new Label(parent, SWT.NONE);
+		final Composite compositeFromButtons = new Composite(compositeFrom,
+				SWT.NONE);
+		compositeFromButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
+		btnNewFrom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				getNewFromDate();
+			}
+		});
+		btnNewFrom.setText("New");
+
+		final Button btnBrowseFrom = new Button(compositeFromButtons, SWT.NONE);
+		btnBrowseFrom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseFromDates();
+			}
+		});
+		btnBrowseFrom.setText("Browse");
+
+		final Button btnClearFrom = new Button(compositeFromButtons, SWT.NONE);
+		btnClearFrom.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearFromDate();
+			}
+		});
+		btnClearFrom.setText("Clear");
+
+		final Composite compositeTo = new Composite(parent, SWT.BORDER);
+		compositeTo.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		compositeTo.setLayout(new GridLayout(2, false));
+
+		final Label lblToDate = new Label(compositeTo, SWT.NONE);
 		lblToDate.setText("To Date");
 
-		textToDate = new Text(parent, SWT.BORDER);
+		textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(parent, SWT.NONE);
+		textToDate.setEditable(false);
+
+		final Composite compositeToButtons = new Composite(compositeTo,
+				SWT.NONE);
+		compositeToButtons.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
+		btnNewTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				getNewToDate();
+			}
+		});
+		btnNewTo.setText("New");
+
+		final Button btnBrowseTo = new Button(compositeToButtons, SWT.NONE);
+		btnBrowseTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				browseToDates();
+			}
+		});
+		btnBrowseTo.setText("Browse");
+
+		final Button btnClearTo = new Button(compositeToButtons, SWT.NONE);
+		btnClearTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				clearToDate();
+			}
+		});
+		btnClearTo.setText("Clear");
 
 		btnPrimarySex = new Button(parent, SWT.CHECK);
+		btnPrimarySex.setLayoutData(
+				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnPrimarySex.setSelection(true);
 		btnPrimarySex.setText("Primary Sex");
 
 		final Label lblSexType = new Label(parent, SWT.NONE);
-		lblSexType.setText("Sex type id\r\nDblClk to open");
+		lblSexType.setText("Sex type");
 
 		textSexTypePid = new Text(parent, SWT.BORDER);
-		textSexTypePid.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				openSexTypeView();
-			}
-		});
 		textSexTypePid.addVerifyListener(new NumericVerifyListener());
 		textSexTypePid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -136,22 +250,6 @@ public class PersonSexView {
 		textAbbreviation = new Text(parent, SWT.BORDER);
 		textAbbreviation.setEditable(false);
 		textAbbreviation.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblLabel = new Label(parent, SWT.NONE);
-		lblLabel.setText("Label");
-
-		textLabel = new Text(parent, SWT.BORDER);
-		textLabel.setEditable(false);
-		textLabel.setLayoutData(
-				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		final Label lblIsoCode = new Label(parent, SWT.NONE);
-		lblIsoCode.setText("ISO Code");
-
-		textIsoCode = new Text(parent, SWT.BORDER);
-		textIsoCode.setEditable(false);
-		textIsoCode.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Composite composite = new Composite(parent, SWT.NONE);
@@ -177,19 +275,16 @@ public class PersonSexView {
 
 		try {
 			sexesProvider.get(key);
-			PersonProvider provider = new PersonProvider();
+			final PersonProvider provider = new PersonProvider();
 			final List<String> sexesList = provider.getSexesList(key).get(0);
 
 			textId.setText(sexesList.get(0));
-			textPersonPid.setText(sexesList.get(1));
 			textFromDate.setText(sexesList.get(5));
 			textToDate.setText(sexesList.get(6));
 			btnPrimarySex.setSelection(
 					sexesList.get(4).equals("true") ? true : false);
 			textSexTypePid.setText(sexesList.get(2));
 			textAbbreviation.setText(sexesProvider.getAbbreviation());
-			textLabel.setText(sexesList.get(3));
-			textIsoCode.setText(sexesProvider.getIsocode());
 
 			eventBroker.post("MESSAGE",
 					"Name " + textId.getText() + " has been fetched");
@@ -200,18 +295,73 @@ public class PersonSexView {
 	}
 
 	/**
+	 * @return the fromDatePid
+	 */
+	public int getFromDatePid() {
+		return fromDatePid;
+	}
+
+	/**
 	 *
 	 */
-	protected void openSexTypeView() {
-		final ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.opensextypeview", null);
-		handlerService.executeHandler(command);
+	private void getNewFromDate() {
+		final DateDialog dialog = new DateDialog(textFromDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				setFromDatePid(hdp.insert());
+				textFromDate.setText(dialog.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
 
-		final int sexTypePid = Integer.parseInt(textSexTypePid.getText());
+	/**
+	 *
+	 */
+	private void getNewToDate() {
+		final DateDialog dialog = new DateDialog(textToDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				setToDatePid(hdp.insert());
+				textToDate.setText(dialog.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
 
-		LOGGER.log(Level.INFO, "Setting sex type pid: {0}",
-				Integer.toString(sexTypePid));
-		eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
+	/**
+	 * @return the toDatePid
+	 */
+	public int getToDatePid() {
+		return toDatePid;
+	}
+
+	/**
+	 * @param fromDatePid the fromDatePid to set
+	 */
+	public void setFromDatePid(int fromDatePid) {
+		this.fromDatePid = fromDatePid;
+	}
+
+	/**
+	 * @param toDatePid the toDatePid to set
+	 */
+	public void setToDatePid(int toDatePid) {
+		this.toDatePid = toDatePid;
 	}
 
 	/**

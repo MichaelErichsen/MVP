@@ -19,7 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 14. apr. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -33,8 +33,6 @@ public class Activator implements BundleActivator {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private static final String HELPCLASSPATH = "plugins\\\\org.eclipse.help.base_4.2.400.v20181206-0815.jar";
-// "plugins\\\\org.eclipse.help.base_4.2.153.v20180330-0640.jar";
-	// "plugins\\\\org.eclipse.help.base_4.2.200.v20180611-0500.jar";
 
 	/**
 	 * @return The bundle context
