@@ -10,6 +10,7 @@ import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.EventRoles;
+import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Languages;
@@ -21,7 +22,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. apr. 2019
+ * @version 15. apr. 2019
  *
  */
 public class EventServer implements IHREServer {
@@ -70,47 +71,6 @@ public class EventServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 		event.delete(key);
-	}
-
-	/**
-	 * Get all rows
-	 *
-	 * @return A list of strings of pids and labels
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	public List<List<String>> get() throws Exception {
-		final List<List<String>> lls = new ArrayList<>();
-		List<String> stringList;
-//		final int namePid;
-//		int eventTypePid;
-		int eventPid;
-
-//		final Events event = new Events();
-//		final EventTypes type = new EventTypes();
-		final Languages language = new Languages();
-
-		final List<Events> eventList = event.get();
-
-		for (final Events thisEvent : eventList) {
-			stringList = new ArrayList<>();
-			eventPid = thisEvent.getEventPid();
-			stringList.add(Integer.toString(eventPid));
-
-//			stringList.add(name.getLabel());
-//
-//			eventTypePid = name.getEventTypePid();
-//			type.get(eventTypePid);
-			// FIXME Labels
-			stringList.add("type.getLabel()");
-
-			stringList.add(language.getLabel());
-
-			lls.add(stringList);
-		}
-
-		return lls;
 	}
 
 	/**
@@ -286,12 +246,49 @@ public class EventServer implements IHREServer {
 	}
 
 	/**
-	 * @return
-	 * @throws Exception
+	 * Get all rows
+	 *
+	 * @return A list of strings of pids and labels
+	 * @throws Exception    An exception that provides information on a database
+	 *                      access error or other errors
+	 * @throws MvpException Application specific exception
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		// Event pid, from date, to date, event type pid, event type label
+		for (final Events thisEvent : event.get()) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(thisEvent.getEventPid()));
+
+			final Hdates hdate = new Hdates();
+
+			FromDatePid = thisEvent.getToDatePid();
+			if (FromDatePid > 0) {
+				hdate.get(FromDatePid);
+				stringList.add(hdate.getDate().toString());
+			} else {
+				stringList.add("");
+			}
+
+			ToDatePid = thisEvent.getToDatePid();
+			if (ToDatePid > 0) {
+				hdate.get(ToDatePid);
+				stringList.add(hdate.getDate().toString());
+			} else {
+				stringList.add("");
+			}
+
+			final EventTypes eventType = new EventTypes();
+			eventType.get(thisEvent.getEventTypePid());
+			stringList.add(eventType.getAbbreviation());
+
+			lls.add(stringList);
+		}
+
+		return lls;
 	}
 
 	/*
@@ -301,14 +298,14 @@ public class EventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
-		PersonEvents pe = new PersonEvents();
-		List<PersonEvents> fkPersonPid = pe.getFKPersonPid(key);
+		final PersonEvents pe = new PersonEvents();
+		final List<PersonEvents> fkPersonPid = pe.getFKPersonPid(key);
 
-		for (PersonEvents personEvents : fkPersonPid) {
-			Events ev = new Events();
+		for (final PersonEvents personEvents : fkPersonPid) {
+			final Events ev = new Events();
 			ev.get(personEvents.getEventPid());
 
 			stringList = new ArrayList<>();
@@ -316,16 +313,17 @@ public class EventServer implements IHREServer {
 
 			stringList.add("Label, but we have eventtypepid");
 
-			int eventRolePid = personEvents.getEventRolePid();
-			EventRoles er = new EventRoles();
+			final int eventRolePid = personEvents.getEventRolePid();
+			final EventRoles er = new EventRoles();
 			er.get(eventRolePid);
-			int labelPid = er.getLabelPid();
-			Dictionary dictionary = new Dictionary();
-			List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+			final int labelPid = er.getLabelPid();
+			final Dictionary dictionary = new Dictionary();
+			final List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(labelPid);
 			stringList.add(fkLabelPid.get(0).getLabel());
 
 			if (FromDatePid > 0) {
-				Hdates date = new Hdates();
+				final Hdates date = new Hdates();
 				date.get(FromDatePid);
 				stringList.add(date.toString());
 			} else {
@@ -333,7 +331,7 @@ public class EventServer implements IHREServer {
 			}
 
 			if (ToDatePid > 0) {
-				Hdates date = new Hdates();
+				final Hdates date = new Hdates();
 				date.get(ToDatePid);
 				stringList.add(date.toString());
 			} else {

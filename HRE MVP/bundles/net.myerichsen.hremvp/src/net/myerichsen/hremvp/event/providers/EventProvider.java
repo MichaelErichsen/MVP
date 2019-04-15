@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.event.servers.EventServer;
  * Provides all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. apr. 2019
+ * @version 15. apr. 2019
  *
  */
 public class EventProvider implements IHREProvider {
@@ -59,18 +59,6 @@ public class EventProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws Exception {
 		server.delete(key);
-	}
-
-	/**
-	 * Get all rows
-	 *
-	 * @return A list of lists of strings with pids and labels
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	public List<List<String>> get() throws Exception {
-		return server.get();
 	}
 
 	/**

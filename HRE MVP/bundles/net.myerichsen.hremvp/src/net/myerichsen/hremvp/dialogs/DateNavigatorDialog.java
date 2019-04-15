@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all historical dates
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 15. apr. 2019
  *
  */
 public class DateNavigatorDialog extends TitleAreaDialog {
@@ -64,7 +64,7 @@ public class DateNavigatorDialog extends TitleAreaDialog {
 		eventBroker = context.get(IEventBroker.class);
 		try {
 			provider = new HDateProvider();
-			navigatorFilter = new NavigatorFilter();
+			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());

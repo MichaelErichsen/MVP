@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about languages used in HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 20. feb. 2019
+ * @version 15. apr. 2019
  *
  */
 public class LanguageNavigator {
@@ -66,7 +66,7 @@ public class LanguageNavigator {
 	public LanguageNavigator() {
 		try {
 			provider = new LanguageProvider();
-			navigatorFilter = new NavigatorFilter();
+			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -197,7 +197,7 @@ public class LanguageNavigator {
 				"Delete Language " + primaryName, null,
 				"Are you sure that you will delete language " + languagePid
 						+ ", " + primaryName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Deletion of language " + primaryName
@@ -206,7 +206,7 @@ public class LanguageNavigator {
 		}
 
 		try {
-			final LanguageProvider provider = new LanguageProvider();
+			provider = new LanguageProvider();
 			provider.delete(languagePid);
 
 			LOGGER.log(Level.INFO, "Language {0} has been deleted",
@@ -241,7 +241,8 @@ public class LanguageNavigator {
 	@Optional
 	private void subscribeLanguagePidUpdateTopic(
 			@UIEventTopic(Constants.LANGUAGE_PID_UPDATE_TOPIC) int languagePid) {
-		LOGGER.log(Level.FINE, "Received language id " + languagePid);
+		LOGGER.log(Level.FINE, "Received language id {0}",
+				Integer.toString(languagePid));
 		try {
 			tableViewer.setInput(provider.getStringList());
 			tableViewer.refresh();

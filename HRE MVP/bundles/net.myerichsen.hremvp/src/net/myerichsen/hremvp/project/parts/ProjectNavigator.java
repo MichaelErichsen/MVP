@@ -4,6 +4,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -73,7 +75,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @version 15. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -104,9 +106,8 @@ public class ProjectNavigator {
 	public ProjectNavigator() {
 		try {
 			provider = new ProjectProvider();
-			navigatorFilter = new NavigatorFilter();
+			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
-			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -115,7 +116,7 @@ public class ProjectNavigator {
 	/**
 	 * @param shell
 	 */
-	protected void backUpSelectedProject(Shell shell) {
+	protected void backUpSelectedProject() {
 		getSelectedProject();
 
 		final ProjectModel model = ProjectList.getModel(selectionIndex);
@@ -126,7 +127,7 @@ public class ProjectNavigator {
 
 			String path = model.getPath();
 			File file = new File(path + ".h2.db");
-			if (file.exists() == false) {
+			if (!file.exists()) {
 				file = new File(path + ".mv.db");
 			}
 			path = file.getParent();
@@ -138,22 +139,21 @@ public class ProjectNavigator {
 			Script.main(bkp);
 
 			LOGGER.log(Level.INFO,
-					"Project database " + dbName + " has been backed up to "
-							+ path + "\\" + dbName + ".zip");
+					"Project database {0} has been backed up to {1}\\{2}.zip",
+					new Object[] { dbName, path, dbName });
 			eventBroker.post("MESSAGE",
 					"Project database " + dbName + " has been backed up to "
 							+ path + "\\" + dbName + ".zip");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * @param dbName
-	 * @throws Exception
+	 * @throws SQLException
 	 */
-	private void closeDbIfActive(final String dbName) throws Exception {
+	private void closeDbIfActive(final String dbName) throws SQLException {
 		final String activeName = store.getString("DBNAME");
 
 		if (activeName.equals(dbName)) {
@@ -164,8 +164,8 @@ public class ProjectNavigator {
 			if (conn != null) {
 				conn.createStatement().execute("SHUTDOWN");
 				conn.close();
-				LOGGER.log(Level.INFO,
-						"Existing database " + dbName + " has been closed");
+				LOGGER.log(Level.INFO, "Existing database {0} has been closed",
+						dbName);
 
 				try {
 					HreH2ConnectionPool.dispose();
@@ -181,8 +181,7 @@ public class ProjectNavigator {
 	 */
 	protected void copyProject(Shell shell) {
 		final MessageDialog dialog = new MessageDialog(shell, "Copy As", null,
-				"Not yet implemented", MessageDialog.INFORMATION, 0,
-				new String[] { "OK" });
+				"Not yet implemented", MessageDialog.INFORMATION, 0, "OK");
 		dialog.open();
 	}
 
@@ -274,7 +273,7 @@ public class ProjectNavigator {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				openSelectedProject(parent.getShell());
+				openSelectedProject();
 			}
 		});
 		mntmOpenSelectedProject.setText("Open selected project");
@@ -304,7 +303,7 @@ public class ProjectNavigator {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				backUpSelectedProject(parent.getShell());
+				backUpSelectedProject();
 			}
 		});
 		mntmBackUpSelected.setText("Back up selected project...");
@@ -397,7 +396,6 @@ public class ProjectNavigator {
 			tableViewer.setInput(provider.get());
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -414,7 +412,7 @@ public class ProjectNavigator {
 		final MessageDialog dialog = new MessageDialog(shell,
 				"Delete Project " + dbName, null,
 				"Are you sure that you will delete project " + dbName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE",
@@ -446,8 +444,8 @@ public class ProjectNavigator {
 		}
 
 		if (result) {
-			LOGGER.log(Level.INFO,
-					"Existing database " + fullPath + " has been deleted");
+			LOGGER.log(Level.INFO, "Existing database {0} has been deleted",
+					fullPath);
 		}
 
 		final int projectCount = store.getInt("projectcount");
@@ -458,15 +456,15 @@ public class ProjectNavigator {
 		for (int i = 1; i <= projectCount; i++) {
 			key = "project." + i + ".path";
 			if (store.contains(key)) {
-				LOGGER.log(Level.INFO, "Path: " + path + ", key : " + key
-						+ ", value: " + store.getString(key));
+				LOGGER.log(Level.INFO, "Path: {0}, key: {1}, value: {2}",
+						new Object[] { path, key, store.getString(key) });
 
 				if (path.equals(store.getString(key).trim())) {
 					// Delete from preferences
 					index = i;
 					ProjectList.remove(index, dbName);
-					LOGGER.log(Level.INFO,
-							"Project " + dbName + " has been deleted");
+					LOGGER.log(Level.INFO, "Project {0} has been deleted",
+							dbName);
 					eventBroker.post("MESSAGE",
 							"Project " + dbName + " has been deleted");
 					eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC,
@@ -488,14 +486,14 @@ public class ProjectNavigator {
 	/**
 	 * @throws NumberFormatException
 	 */
-	private void getSelectedProject() throws NumberFormatException {
+	private void getSelectedProject() {
 		selectionIndex = tableViewer.getTable().getSelectionIndex();
 
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
-			Integer.parseInt(item.getText(0));
+//			Integer.parseInt(item.getText(0));
 			item.getText(1);
 		}
 	}
@@ -519,8 +517,8 @@ public class ProjectNavigator {
 
 		try {
 			// Create the new database
-			LOGGER.log(Level.FINE,
-					"New database name: " + path + "\\" + dbName);
+			LOGGER.log(Level.FINE, "New database name: {0}\\{1}",
+					new Object[] { path, dbName });
 
 			store.setValue("DBPATH", path);
 			store.setValue("DBNAME", dbName);
@@ -535,8 +533,8 @@ public class ProjectNavigator {
 			final Connection conn = HreH2ConnectionPool.getConnection(dbName);
 
 			final String h2Version = store.getString("H2VERSION");
-			LOGGER.log(Level.FINE, "Retrieved H2 version from preferences: "
-					+ h2Version.substring(0, 3));
+			LOGGER.log(Level.FINE, "Retrieved H2 version from preferences: {0}",
+					h2Version.substring(0, 3));
 			PreparedStatement ps;
 
 			if (h2Version.substring(0, 3).equals("1.3")) {
@@ -566,9 +564,9 @@ public class ProjectNavigator {
 					pnsDialog.getProjectSummary(), "LOCAL",
 					path + "\\" + dbName);
 
-			LOGGER.log(Level.FINE, "New properties "
-					+ pnsDialog.getProjectName() + " " + timestamp.toString()
-					+ " " + pnsDialog.getProjectSummary() + " LOCAL " + dbName);
+			LOGGER.log(Level.FINE, "New properties {0}, {1}, {2}, LOCAL {3}",
+					new Object[] { pnsDialog.getProjectName(), timestamp,
+							pnsDialog.getProjectSummary(), dbName });
 
 			final int index = ProjectList.add(model);
 
@@ -587,7 +585,6 @@ public class ProjectNavigator {
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -636,8 +633,9 @@ public class ProjectNavigator {
 
 			if (conn != null) {
 				final String h2Version = store.getString("H2VERSION");
-				LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: "
-						+ h2Version.substring(0, 3));
+				LOGGER.log(Level.INFO,
+						"Retrieved H2 version from preferences: {0}",
+						h2Version.substring(0, 3));
 				PreparedStatement ps;
 
 				if (h2Version.substring(0, 3).equals("1.3")) {
@@ -660,13 +658,12 @@ public class ProjectNavigator {
 
 			for (int i = 0; i < projectCount; i++) {
 				key = "project." + i + ".path";
-				if (store.contains(key)) {
-					if (dbName.equals(store.getString(key))) {
-						alreadyRegistered = true;
-						LOGGER.log(Level.INFO,
-								"Project " + dbName + " already registered");
-						break;
-					}
+				if ((store.contains(key))
+						&& (dbName.equals(store.getString(key)))) {
+					alreadyRegistered = true;
+					LOGGER.log(Level.INFO, "Project {0} already registered",
+							dbName);
+					break;
 				}
 			}
 
@@ -678,7 +675,7 @@ public class ProjectNavigator {
 
 				// Update the HRE properties
 				File file = new File(dbName + ".h2.db");
-				if (file.exists() == false) {
+				if (!file.exists()) {
 					file = new File(dbName + ".mv.db");
 				}
 				final Date timestamp = new Date(file.lastModified());
@@ -706,10 +703,11 @@ public class ProjectNavigator {
 
 			eventBroker.post("MESSAGE",
 					"Project database " + dbName + " has been opened");
-		} catch (final Exception e1) {
+		} catch (
+
+		final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 	}
@@ -717,7 +715,7 @@ public class ProjectNavigator {
 	/**
 	 * @param shell
 	 */
-	protected void openSelectedProject(Shell shell) {
+	protected void openSelectedProject() {
 		Connection conn = null;
 
 		try {
@@ -746,8 +744,9 @@ public class ProjectNavigator {
 
 			if (conn != null) {
 				final String h2Version = store.getString("H2VERSION");
-				LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: "
-						+ h2Version.substring(0, 3));
+				LOGGER.log(Level.INFO,
+						"Retrieved H2 version from preferences: {0} ",
+						h2Version.substring(0, 3));
 				PreparedStatement ps;
 
 				if (h2Version.substring(0, 3).equals("1.3")) {
@@ -785,7 +784,6 @@ public class ProjectNavigator {
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 	}
@@ -798,8 +796,8 @@ public class ProjectNavigator {
 		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, projectPid);
 		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC,
 				store.getString("DBNAME"));
-		LOGGER.log(Level.FINE,
-				"Project Navigator posted selection index " + projectPid);
+		LOGGER.log(Level.FINE, "Project Navigator posted selection index {0}",
+				projectPid);
 	}
 
 	/**
@@ -807,8 +805,7 @@ public class ProjectNavigator {
 	 */
 	protected void renameSelectedProject(Shell shell) {
 		final MessageDialog dialog = new MessageDialog(shell, "Rename", null,
-				"Not yet implemented", MessageDialog.INFORMATION, 0,
-				new String[] { "OK" });
+				"Not yet implemented", MessageDialog.INFORMATION, 0, "OK");
 		dialog.open();
 	}
 
@@ -834,7 +831,8 @@ public class ProjectNavigator {
 		try {
 			closeDbIfActive(dbName);
 
-			String fullPath = path + "\\" + dbName + ".h2.db";
+			String fullPath = MessageFormat.format("{0}\\{1}.h2.db", path,
+					dbName);
 			File file = new File(fullPath);
 
 			boolean result = false;
@@ -842,14 +840,14 @@ public class ProjectNavigator {
 			result = Files.deleteIfExists(file.toPath());
 
 			if (!result) {
-				fullPath = path + "\\" + dbName + ".mv.db";
+				fullPath = MessageFormat.format("{0}\\{1}.mv.db", path, dbName);
 				file = new File(fullPath);
 				result = Files.deleteIfExists(file.toPath());
 			}
 
 			if (result) {
-				LOGGER.log(Level.INFO,
-						"Existing database " + dbName + " has been deleted");
+				LOGGER.log(Level.INFO, "Existing database {0} has been deleted",
+						dbName);
 			}
 
 			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
@@ -880,7 +878,7 @@ public class ProjectNavigator {
 				pnsDialog.open();
 
 				// Update the HRE properties
-				if (file.exists() == false) {
+				if (!file.exists()) {
 					file = new File(dbName + ".mv.db");
 				}
 				final Date timestamp = new Date(file.lastModified());
@@ -907,14 +905,13 @@ public class ProjectNavigator {
 			}
 
 			LOGGER.log(Level.INFO,
-					"Project database has been restored from " + shortName);
+					"Project database has been restored from {0}", shortName);
 			eventBroker.post("MESSAGE",
 					"Project database has been restored from " + shortName);
 		} catch (
 
 		final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -933,13 +930,12 @@ public class ProjectNavigator {
 	@Optional
 	private void subscribeProjectListUpdateTopic(
 			@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
-		LOGGER.log(Level.FINE, "Received project index " + key);
+		LOGGER.log(Level.FINE, "Received project index {0}", key);
 		try {
 			tableViewer.setInput(provider.get());
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

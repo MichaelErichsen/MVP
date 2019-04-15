@@ -58,7 +58,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 15. apr. 2019
  *
  */
 public class LocationNavigator {
@@ -84,7 +84,7 @@ public class LocationNavigator {
 	public LocationNavigator() {
 		try {
 			provider = new LocationProvider();
-			navigatorFilter = new NavigatorFilter();
+			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);

@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. apr. 2019
+ * @version 15. apr. 2019
  */
 public class PersonNavigator {
 	private static final Logger LOGGER = Logger
@@ -65,7 +65,7 @@ public class PersonNavigator {
 	public PersonNavigator() {
 		try {
 			provider = new PersonProvider();
-			navigatorFilter = new NavigatorFilter();
+			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);

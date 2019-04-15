@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 13. apr. 2019
+ * @version 15. apr. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -115,7 +115,7 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	private void browseLocations() {
 		final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
-				textLocation.getShell(), context);
+				textLocation.getShell());
 		if (dialog.open() == Window.OK) {
 			try {
 				locationPid = dialog.getLocationPid();

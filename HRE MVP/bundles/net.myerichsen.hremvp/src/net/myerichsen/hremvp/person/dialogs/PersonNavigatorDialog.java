@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Dialog to select a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 23. mar. 2019
+ * @version 15. apr. 2019
  *
  */
 public class PersonNavigatorDialog extends TitleAreaDialog {
@@ -63,7 +63,7 @@ public class PersonNavigatorDialog extends TitleAreaDialog {
 	public PersonNavigatorDialog(Shell parentShell, IEclipseContext context) {
 		super(parentShell);
 		eventBroker = context.get(IEventBroker.class);
-		navigatorFilter = new NavigatorFilter();
+		navigatorFilter = new NavigatorFilter(1);
 
 		try {
 			provider = new PersonProvider();

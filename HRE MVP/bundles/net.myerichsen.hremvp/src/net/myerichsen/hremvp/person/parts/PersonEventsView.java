@@ -50,7 +50,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 15. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonEventsView {
@@ -78,7 +78,7 @@ public class PersonEventsView {
 	public PersonEventsView() {
 		try {
 			provider = new PersonProvider();
-			navigatorFilter = new NavigatorFilter();
+			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -262,7 +262,7 @@ public class PersonEventsView {
 				"Remove Event " + primaryName, null,
 				"Are you sure that you will remove event " + eventPid + ", "
 						+ primaryName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post(MESSAGE,

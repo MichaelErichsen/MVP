@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.location.dialogs;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -34,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Dialog to select a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. mar. 2019
+ * @version 15. apr. 2019
  *
  */
 public class LocationNavigatorDialog extends TitleAreaDialog {
@@ -51,15 +50,14 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 	 *
 	 * @param parentShell
 	 */
-	public LocationNavigatorDialog(Shell parentShell, IEclipseContext context) {
+	public LocationNavigatorDialog(Shell parentShell) {
 		super(parentShell);
 		setHelpAvailable(false);
-		navigatorFilter = new NavigatorFilter();
+		navigatorFilter = new NavigatorFilter(1);
 		try {
 			provider = new LocationProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -158,7 +156,6 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 			tableViewer.setInput(provider.getNameList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		return area;

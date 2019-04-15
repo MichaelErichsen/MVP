@@ -8,13 +8,25 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 /**
+ * Filter for navigator parts
+ * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. feb. 2019
+ * @version 15. apr. 2019
  */
 public class NavigatorFilter extends ViewerFilter {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String searchString;
+	private int stringPos;
+
+	/**
+	 * Constructor
+	 *
+	 * @param i
+	 */
+	public NavigatorFilter(int i) {
+		stringPos = i;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -32,13 +44,10 @@ public class NavigatorFilter extends ViewerFilter {
 		@SuppressWarnings("unchecked")
 		final List<String> ls = (List<String>) element;
 
-		LOGGER.log(Level.FINE,
-				"Filter string: " + searchString + ", Element: " + ls.get(1));
+		LOGGER.log(Level.FINE, "Filter string: {0}, Element: {1}",
+				new Object[] { searchString, ls.get(1) });
 
-		if (ls.get(1).toLowerCase().matches(searchString))
-			return true;
-
-		return false;
+		return (ls.get(stringPos).toLowerCase().matches(searchString));
 	}
 
 	/**

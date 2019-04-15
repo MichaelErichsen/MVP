@@ -5,13 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -56,16 +54,14 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. mar. 2019
+ * @version 15. apr. 2019
  *
  */
 public class EventNavigator {
-	/**
-	 * 
-	 */
 	private static final String MESSAGE = "MESSAGE";
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -76,7 +72,8 @@ public class EventNavigator {
 	private IEventBroker eventBroker;
 
 	private EventProvider provider;
-	private NavigatorFilter navigatorFilter;
+	private NavigatorFilter nameFilter;
+	private NavigatorFilter fromDateFilter;
 	private TableViewer tableViewer;
 
 	/**
@@ -86,7 +83,8 @@ public class EventNavigator {
 	public EventNavigator() {
 		try {
 			provider = new EventProvider();
-			navigatorFilter = new NavigatorFilter();
+			nameFilter = new NavigatorFilter(3);
+			fromDateFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post(MESSAGE, e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -104,6 +102,9 @@ public class EventNavigator {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer.addFilter(nameFilter);
+		tableViewer.addFilter(fromDateFilter);
+
 		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			/*
@@ -131,30 +132,37 @@ public class EventNavigator {
 
 		final TableViewerColumn tableViewerColumnEventName = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnPrimaryEventName = tableViewerColumnEventName
+		final TableColumn tblclmnFromDate = tableViewerColumnEventName
 				.getColumn();
-		tblclmnPrimaryEventName.setWidth(100);
-		tblclmnPrimaryEventName.setText(" Event Name");
+		tblclmnFromDate.setWidth(100);
+		tblclmnFromDate.setText("From Date");
 		tableViewerColumnEventName
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnEventType = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnEventType = tableViewerColumnEventType
+		final TableColumn tblclmnToDate = tableViewerColumnEventType
 				.getColumn();
-		tblclmnEventType.setWidth(100);
-		tblclmnEventType.setText("Event Type");
+		tblclmnToDate.setWidth(100);
+		tblclmnToDate.setText("To Date");
 		tableViewerColumnEventType
 				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnLanguage = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnLanguage = tableViewerColumnLanguage
+		final TableColumn tblclmnAbbreviation = tableViewerColumnLanguage
 				.getColumn();
-		tblclmnLanguage.setWidth(100);
-		tblclmnLanguage.setText("Language");
+		tblclmnAbbreviation.setWidth(100);
+		tblclmnAbbreviation.setText("Abbreviation");
 		tableViewerColumnLanguage
 				.setLabelProvider(new HREColumnLabelProvider(3));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList());
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
 
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
@@ -192,15 +200,22 @@ public class EventNavigator {
 		mntmDeleteSelectedevent.setText("Delete selected event...");
 
 		final Label lblNameFilter = new Label(parent, SWT.NONE);
-		lblNameFilter.setText("Name Filter");
+		lblNameFilter.setText("Abbreviation Filter");
 
 		final Text textNameFilter = new Text(parent, SWT.BORDER);
 		textNameFilter.addKeyListener(new KeyAdapter() {
 
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
+			 * events.KeyEvent)
+			 */
 			@Override
 			public void keyReleased(KeyEvent e) {
-				navigatorFilter.setSearchText(textNameFilter.getText());
-				LOGGER.log(Level.FINE, "Filter string: {0}",
+				nameFilter.setSearchText(textNameFilter.getText());
+				LOGGER.log(Level.FINE, "Name filter string: {0}",
 						textNameFilter.getText());
 				tableViewer.refresh();
 			}
@@ -209,12 +224,30 @@ public class EventNavigator {
 		textNameFilter.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getStringList());
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
+		Label lblFromDateFilter = new Label(parent, SWT.NONE);
+		lblFromDateFilter.setText("From Date Filter");
+
+		Text textFromDateFilter = new Text(parent, SWT.BORDER);
+		textFromDateFilter.addKeyListener(new KeyAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
+			 * events.KeyEvent)
+			 */
+			@Override
+			public void keyReleased(KeyEvent e) {
+				fromDateFilter.setSearchText(textFromDateFilter.getText());
+				LOGGER.log(Level.FINE, "Date filter string: {0}",
+						textFromDateFilter.getText());
+				tableViewer.refresh();
+			}
+		});
+		textFromDateFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 	}
 
 	/**
@@ -236,7 +269,7 @@ public class EventNavigator {
 				"Delete event " + primaryName, null,
 				"Are you sure that you will delete event " + eventPid + ", "
 						+ primaryName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post(MESSAGE,
@@ -248,8 +281,7 @@ public class EventNavigator {
 			final EventProvider ep = new EventProvider();
 			ep.delete(eventPid);
 
-			LOGGER.log(Level.INFO, "event {0}",
-					primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Event {0} has been deleted", primaryName);
 			eventBroker.post(MESSAGE,
 					"event " + primaryName + " has been deleted");
 			eventBroker.post(Constants.EVENT_PID_UPDATE_TOPIC, eventPid);
@@ -261,15 +293,8 @@ public class EventNavigator {
 	/**
 	 *
 	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
 	protected void openEventView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
+		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
@@ -282,7 +307,7 @@ public class EventNavigator {
 			try {
 				for (int i = 0; i < a.size(); i++) {
 					part = (MPart) a.get(i);
-					if (part.getContributionURI().equals(contributionURI)) {
+					if (CONTRIBUTION_URI.equals(part.getContributionURI())) {
 						partService.showPart(part, PartState.ACTIVATE);
 						found = true;
 						break;
@@ -297,7 +322,7 @@ public class EventNavigator {
 			part.setLabel("Event View");
 			part.setCloseable(true);
 			part.setVisible(true);
-			part.setContributionURI(contributionURI);
+			part.setContributionURI(CONTRIBUTION_URI);
 			stacks.get(stacks.size() - 5).getChildren().add(part);
 			partService.showPart(part, PartState.ACTIVATE);
 		}
@@ -314,13 +339,6 @@ public class EventNavigator {
 		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
 				eventPid);
 		LOGGER.log(Level.INFO, "Event Pid: {0}", eventPid);
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person events wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. mar. 2019
+ * @version 15. apr. 2019
  *
  */
 public class NewPersonEventWizardPage1 extends WizardPage {
@@ -105,7 +105,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 	 */
 	protected void browseLocations() {
 		final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
-				textLocation.getShell(), context);
+				textLocation.getShell());
 
 		if (dialog.open() == Window.OK) {
 			try {
