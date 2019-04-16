@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
@@ -18,32 +19,41 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.location.providers.LocationEventProvider;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all Locations for a single location
+ * Display all Locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 16. apr. 2019
  */
+// FIXME Also browse locations
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	// FIXME Change to Jface
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -52,9 +62,13 @@ public class EventLocationView {
 	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
-	private Table table;
 
 	private LocationEventProvider provider;
+
+	private TableViewer tableViewer;
+
+	// FIXME Populate event pid
+	private final int eventPid = 0;
 
 	/**
 	 * Constructor
@@ -64,7 +78,7 @@ public class EventLocationView {
 	public EventLocationView() {
 		try {
 			provider = new LocationEventProvider();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
@@ -74,13 +88,16 @@ public class EventLocationView {
 	 *
 	 * @param parent The parent composite
 	 */
+	/**
+	 * @param parent
+	 * @param context
+	 */
 	@PostConstruct
-	public void createControls(Composite parent) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
-		TableViewer tableViewer = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -96,6 +113,8 @@ public class EventLocationView {
 		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnEventId
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -103,27 +122,58 @@ public class EventLocationView {
 				.getColumn();
 		tblclmnLocation.setWidth(300);
 		tblclmnLocation.setText("Location");
+		tableViewerColumnEventLabel
+				.setLabelProvider(new HREColumnLabelProvider(1));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList(eventPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		final MenuItem mntmAddLocation = new MenuItem(menu, SWT.NONE);
+		mntmAddLocation.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewLocationWizard(context));
+				dialog.open();
+			}
+		});
+		mntmAddLocation.setText("Add location...");
+
+		final MenuItem mntmDeleteSelectedLocation = new MenuItem(menu,
+				SWT.NONE);
+		mntmDeleteSelectedLocation.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deleteLocation(parent.getShell());
+			}
+		});
+		mntmDeleteSelectedLocation.setText("Delete selected location...");
 	}
 
 	/**
-	 * @param key
+	 * @param shell
 	 */
-	private void get(int key) {
-		try {
-			TableItem item;
-
-			table.removeAll();
-
-			List<String> stringList = provider.getStringList(key).get(0);
-
-			for (int i = 0; i < stringList.size(); i++) {
-				item = new TableItem(table, SWT.NONE);
-				item.setText(0, stringList.get(0));
-				item.setText(1, stringList.get(1));
-			}
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
-		}
+	protected void deleteLocation(Shell shell) {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -163,7 +213,7 @@ public class EventLocationView {
 
 		String LocationPid = "0";
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -183,8 +233,13 @@ public class EventLocationView {
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key) {
-		get(key);
-	}
+			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
+		try {
+			tableViewer.setInput(provider.getStringList(eventPid));
+			tableViewer.refresh();
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
 
+	}
 }

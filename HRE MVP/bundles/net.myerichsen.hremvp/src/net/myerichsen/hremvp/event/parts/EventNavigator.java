@@ -116,24 +116,7 @@ public class EventNavigator {
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				openEventView();
-				openEventLocationView();
-				openEventPersonView();
-
-				int eventPid = 0;
-
-				final TableItem[] selectedRows = tableViewer.getTable()
-						.getSelection();
-
-				if (selectedRows.length > 0) {
-					final TableItem selectedRow = selectedRows[0];
-					eventPid = Integer.parseInt(selectedRow.getText(0));
-				}
-
-				eventBroker.post(
-						net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
-						eventPid);
-				LOGGER.log(Level.INFO, "Event Pid: {0}", eventPid);
+				openOtherViews();
 			}
 		});
 		table.setHeaderVisible(true);
@@ -200,36 +183,6 @@ public class EventNavigator {
 			}
 		});
 		mntmAddevent.setText("Add event...");
-
-		final MenuItem mntmAddPersonTo = new MenuItem(menu, SWT.NONE);
-		mntmAddPersonTo.addSelectionListener(new SelectionAdapter() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
-			 * eclipse.swt.events.SelectionEvent)
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// FIXME Add location to event
-			}
-		});
-		mntmAddPersonTo.setText("Add person to event...");
-
-		final MenuItem mntmAddLocationTo = new MenuItem(menu, SWT.NONE);
-		mntmAddLocationTo.addSelectionListener(new SelectionAdapter() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
-			 * eclipse.swt.events.SelectionEvent)
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// FIXME Add location to event
-			}
-		});
-		mntmAddLocationTo.setText("Add location to event...");
 
 		final MenuItem mntmDeleteSelectedevent = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedevent.addSelectionListener(new SelectionAdapter() {
@@ -449,6 +402,28 @@ public class EventNavigator {
 			partService.showPart(part, PartState.ACTIVATE);
 		}
 
+	}
+
+	/**
+	 * @throws NumberFormatException
+	 */
+	private void openOtherViews() throws NumberFormatException {
+		openEventView();
+		openEventLocationView();
+		openEventPersonView();
+
+		int eventPid = 0;
+
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
+
+		if (selectedRows.length > 0) {
+			final TableItem selectedRow = selectedRows[0];
+			eventPid = Integer.parseInt(selectedRow.getText(0));
+		}
+
+		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
+				eventPid);
+		LOGGER.log(Level.INFO, "Event Pid: {0}", eventPid);
 	}
 
 	/**

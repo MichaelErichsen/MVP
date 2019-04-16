@@ -156,8 +156,9 @@ public class LocationEventServer implements IHREServer {
 		try {
 			for (final LocationEvents le : leList) {
 				ls = new LocationServer();
-				ls.get(le.getLocationPid());
-
+				LocationPid = le.getLocationPid();
+				ls.get(LocationPid);
+				locationStringList.add(Integer.toString(LocationPid));
 				locationStringList.add(ls.getPrimaryName());
 			}
 		} catch (final MvpException e) {

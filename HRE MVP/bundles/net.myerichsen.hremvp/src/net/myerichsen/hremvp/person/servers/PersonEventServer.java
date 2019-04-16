@@ -112,8 +112,9 @@ public class PersonEventServer implements IHREServer {
 		try {
 			for (final PersonEvents pe : peList) {
 				ls = new PersonServer();
-				ls.get(pe.getPersonPid());
-
+				PersonPid = pe.getPersonPid();
+				ls.get(PersonPid);
+				personStringList.add(Integer.toString(PersonPid));
 				personStringList.add(ls.getPrimaryName());
 			}
 		} catch (final MvpException e) {

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
@@ -18,20 +19,29 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
+import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all persons for a single event
@@ -39,11 +49,10 @@ import net.myerichsen.hremvp.person.providers.PersonEventProvider;
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 16. apr. 2019
  */
+// FIXME Also browse persons
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-	// FIXME Change to Jface
 
 	@Inject
 	private EPartService partService;
@@ -53,18 +62,19 @@ public class EventPersonView {
 	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
-	private Table table;
 
 	private final PersonEventProvider provider;
+
+	// FIXME Populate event pid
+	private final int eventPid = 0;
+
+	private TableViewer tableViewer;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
-	 *
 	 */
-	public EventPersonView()  {
+	public EventPersonView() {
 		provider = new PersonEventProvider();
 	}
 
@@ -74,13 +84,15 @@ public class EventPersonView {
 	 * @param parent The parent composite
 	 */
 	@PostConstruct
-	public void createControls(Composite parent) {
+	public void createControls(Composite parent, IEclipseContext context) {
 		parent.setLayout(new GridLayout(1, false));
 
-		TableViewer tableViewer = new TableViewer(parent,
-				SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
+			/* (non-Javadoc)
+			 * @see org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openPersonView();
@@ -95,6 +107,8 @@ public class EventPersonView {
 		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnEventId
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -102,27 +116,51 @@ public class EventPersonView {
 				.getColumn();
 		tblclmnPerson.setWidth(300);
 		tblclmnPerson.setText("Person");
+		tableViewerColumnEventLabel
+				.setLabelProvider(new HREColumnLabelProvider(1));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList(eventPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
+		final Menu menu = new Menu(table);
+		table.setMenu(menu);
+
+		final MenuItem mntmAddPerson = new MenuItem(menu, SWT.NONE);
+		mntmAddPerson.addSelectionListener(new SelectionAdapter() {
+			/* (non-Javadoc)
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final WizardDialog dialog = new WizardDialog(parent.getShell(),
+						new NewPersonWizard(context));
+				dialog.open();
+			}
+		});
+		mntmAddPerson.setText("Add person...");
+
+		final MenuItem mntmDeleteSelectedPerson = new MenuItem(menu, SWT.NONE);
+		mntmDeleteSelectedPerson.addSelectionListener(new SelectionAdapter() {
+			/* (non-Javadoc)
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				deletePerson(parent.getShell());
+			}
+		});
+		mntmDeleteSelectedPerson.setText("Delete selected person...");
 	}
 
 	/**
-	 * @param key
+	 * @param shell
 	 */
-	private void get(int key) {
-		try {
-			TableItem item;
-
-			table.removeAll();
-
-			List<String> stringList = provider.getStringList(key).get(0);
-
-			for (int i = 0; i < stringList.size(); i++) {
-				item = new TableItem(table, SWT.NONE);
-				item.setText(0, stringList.get(0));
-				item.setText(1, stringList.get(1));
-			}
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
-		}
+	protected void deletePerson(Shell shell) {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -162,7 +200,7 @@ public class EventPersonView {
 
 		String personPid = "0";
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -182,8 +220,12 @@ public class EventPersonView {
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key) {
-		get(key);
+			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
+		try {
+			tableViewer.setInput(provider.getStringList(eventPid));
+			tableViewer.refresh();
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
 	}
-
 }
