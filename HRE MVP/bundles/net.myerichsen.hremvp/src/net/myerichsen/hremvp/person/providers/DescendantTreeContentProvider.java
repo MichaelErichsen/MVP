@@ -109,9 +109,7 @@ public class DescendantTreeContentProvider implements ITreeContentProvider {
 	 */
 	@Override
 	public boolean hasChildren(Object element) {
-		if (element instanceof TreePerson
-				&& ((TreePerson) element).getDescendantList().isEmpty())
-			return true;
-		return false;
+		return (element instanceof TreePerson
+				&& ((TreePerson) element).getDescendantList().isEmpty());
 	}
 }

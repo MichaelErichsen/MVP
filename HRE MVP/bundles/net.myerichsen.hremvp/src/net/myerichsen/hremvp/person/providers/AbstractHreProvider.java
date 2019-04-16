@@ -285,7 +285,7 @@ public abstract class AbstractHreProvider {
 				}
 			}
 			jw.endObject();
-			LOGGER.log(Level.INFO, sw.toString());
+			LOGGER.log(Level.INFO, "{0}", sw);
 		} catch (final Exception e) {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line "
 					+ e.getStackTrace()[0].getLineNumber());

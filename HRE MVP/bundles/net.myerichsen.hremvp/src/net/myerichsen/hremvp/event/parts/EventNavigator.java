@@ -407,7 +407,7 @@ public class EventNavigator {
 	/**
 	 * @throws NumberFormatException
 	 */
-	private void openOtherViews() throws NumberFormatException {
+	private void openOtherViews() {
 		openEventView();
 		openEventLocationView();
 		openEventPersonView();

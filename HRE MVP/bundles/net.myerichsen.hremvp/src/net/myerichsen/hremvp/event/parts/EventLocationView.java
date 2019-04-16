@@ -68,7 +68,7 @@ public class EventLocationView {
 	private TableViewer tableViewer;
 
 	// FIXME Populate event pid
-	private final int eventPid = 0;
+	private final static int eventPid = 0;
 
 	/**
 	 * Constructor

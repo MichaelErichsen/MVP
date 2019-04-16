@@ -633,13 +633,14 @@ public class H2TableEditor {
 
 	/**
 	 * @param recordNumString
-	 * @throws Exception When failing
+	 * @throws SQLException
+	 * @throws Exception    When failing
 	 */
 	@Inject
 	@Optional
 	private void subscribeRecordNumUpdateTopic(
 			@UIEventTopic(Constants.RECORDNUM_UPDATE_TOPIC) String recordNumString)
-			throws Exception {
+			throws SQLException {
 		recordNum = Integer.parseInt(recordNumString);
 		createLines();
 	}
