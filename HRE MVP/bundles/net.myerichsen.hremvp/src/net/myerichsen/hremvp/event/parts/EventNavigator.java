@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. apr. 2019
+ * @version 16. apr. 2019
  *
  */
 public class EventNavigator {
@@ -83,7 +83,7 @@ public class EventNavigator {
 	public EventNavigator() {
 		try {
 			provider = new EventProvider();
-			nameFilter = new NavigatorFilter(3);
+			nameFilter = new NavigatorFilter(4);
 			fromDateFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post(MESSAGE, e.getMessage());
@@ -155,7 +155,7 @@ public class EventNavigator {
 		tblclmnAbbreviation.setWidth(100);
 		tblclmnAbbreviation.setText("Abbreviation");
 		tableViewerColumnLanguage
-				.setLabelProvider(new HREColumnLabelProvider(3));
+				.setLabelProvider(new HREColumnLabelProvider(4));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

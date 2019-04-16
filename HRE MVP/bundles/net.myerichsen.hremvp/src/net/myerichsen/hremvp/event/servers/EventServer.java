@@ -8,21 +8,18 @@ import java.util.logging.Logger;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Dictionary;
-import net.myerichsen.hremvp.dbmodels.EventRoles;
 import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
-import net.myerichsen.hremvp.dbmodels.PersonEvents;
 import net.myerichsen.hremvp.location.servers.LocationServer;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. apr. 2019
+ * @version 16. apr. 2019
  *
  */
 public class EventServer implements IHREServer {
@@ -283,7 +280,10 @@ public class EventServer implements IHREServer {
 
 			final EventTypes eventType = new EventTypes();
 			eventType.get(thisEvent.getEventTypePid());
+			stringList.add(Integer.toString(EventTypePid));
 			stringList.add(eventType.getAbbreviation());
+			stringList.add(Integer.toString(FromDatePid));
+			stringList.add(Integer.toString(ToDatePid));
 
 			lls.add(stringList);
 		}
@@ -301,45 +301,37 @@ public class EventServer implements IHREServer {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
-		final PersonEvents pe = new PersonEvents();
-		final List<PersonEvents> fkPersonPid = pe.getFKPersonPid(key);
+		event.get(key);
 
-		for (final PersonEvents personEvents : fkPersonPid) {
-			final Events ev = new Events();
-			ev.get(personEvents.getEventPid());
+		stringList = new ArrayList<>();
+		stringList.add(Integer.toString(key));
 
-			stringList = new ArrayList<>();
-			stringList.add(Integer.toString(ev.getEventPid()));
+		final Hdates hdate = new Hdates();
 
-			stringList.add("Label, but we have eventtypepid");
-
-			final int eventRolePid = personEvents.getEventRolePid();
-			final EventRoles er = new EventRoles();
-			er.get(eventRolePid);
-			final int labelPid = er.getLabelPid();
-			final Dictionary dictionary = new Dictionary();
-			final List<Dictionary> fkLabelPid = dictionary
-					.getFKLabelPid(labelPid);
-			stringList.add(fkLabelPid.get(0).getLabel());
-
-			if (FromDatePid > 0) {
-				final Hdates date = new Hdates();
-				date.get(FromDatePid);
-				stringList.add(date.toString());
-			} else {
-				stringList.add("");
-			}
-
-			if (ToDatePid > 0) {
-				final Hdates date = new Hdates();
-				date.get(ToDatePid);
-				stringList.add(date.toString());
-			} else {
-				stringList.add("");
-			}
-
-			lls.add(stringList);
+		FromDatePid = event.getToDatePid();
+		if (FromDatePid > 0) {
+			hdate.get(FromDatePid);
+			stringList.add(hdate.getDate().toString());
+		} else {
+			stringList.add("");
 		}
+
+		ToDatePid = event.getToDatePid();
+		if (ToDatePid > 0) {
+			hdate.get(ToDatePid);
+			stringList.add(hdate.getDate().toString());
+		} else {
+			stringList.add("");
+		}
+
+		final EventTypes eventType = new EventTypes();
+		eventType.get(event.getEventTypePid());
+		stringList.add(Integer.toString(EventTypePid));
+		stringList.add(eventType.getAbbreviation());
+		stringList.add(Integer.toString(FromDatePid));
+		stringList.add(Integer.toString(ToDatePid));
+
+		lls.add(stringList);
 
 		return lls;
 	}
