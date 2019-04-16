@@ -112,7 +112,6 @@ public class EventServer implements IHREServer {
 //		setEventName(anEventName.getLabel());
 
 		final Languages aLanguage = new Languages();
-		// FIXME: Is 0
 		aLanguage.get(LanguagePid);
 		setIsoCode(aLanguage.getIsocode());
 		setLanguage(aLanguage.getLabel());
@@ -120,7 +119,6 @@ public class EventServer implements IHREServer {
 //		final EventTypes anEventType = new EventTypes();
 //		setEventTypePid(anEventName.getEventTypePid());
 //		anEventType.get(EventTypePid);
-		// FIXME Labels
 //		setEventType(anEventType.getLabel());
 	}
 
@@ -325,8 +323,9 @@ public class EventServer implements IHREServer {
 		}
 
 		final EventTypes eventType = new EventTypes();
+		int eventTypePid2 = event.getEventTypePid();
 		eventType.get(event.getEventTypePid());
-		stringList.add(Integer.toString(EventTypePid));
+		stringList.add(Integer.toString(eventTypePid2));
 		stringList.add(eventType.getAbbreviation());
 		stringList.add(Integer.toString(FromDatePid));
 		stringList.add(Integer.toString(ToDatePid));

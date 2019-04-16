@@ -296,7 +296,7 @@ public class PersonSexView {
 			int index = 0;
 
 			for (int i = 0; i < stringList2.size(); i++) {
-				// FIXME Unrealted types
+				// FIXME Unrelated types
 				if (stringList2.get(1).equals(sexesList.get(2))) {
 					index = i;
 				}

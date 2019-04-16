@@ -50,18 +50,53 @@ public class EventView {
 
 	private final EventProvider provider;
 	private int eventPid = 0;
-	private int toDatePid = 0;
 	private int fromDatePid = 0;
+	private int toDatePid = 0;
+	private int eventTypePid;
 
 	/**
 	 * Constructor
-	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
-	 *
 	 */
 	public EventView() {
 		provider = new EventProvider();
+	}
+
+	/**
+	 * @param context
+	 */
+	private void browseFromDate(IEclipseContext context) {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textFromDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			fromDatePid = dialog.getHdatePid();
+			HDateProvider hdp;
+			try {
+				hdp = new HDateProvider();
+				hdp.get(fromDatePid);
+				textFromDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+
+		}
+	}
+
+	/**
+	 * @param context
+	 */
+	private void browseToDate(IEclipseContext context) {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textToDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				toDatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(toDatePid);
+				textToDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
 	}
 
 	/**
@@ -106,7 +141,7 @@ public class EventView {
 		textEventType.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Composite compositeFromDate = new Composite(compositeFields,
+		final Composite compositeFromDate = new Composite(compositeFields,
 				SWT.BORDER);
 		compositeFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -137,22 +172,7 @@ public class EventView {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(
-						textFromDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						hdp.insert();
-						fromDatePid = dialog.gethDatePid();
-						textFromDate.setText(dialog.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				newFromDate(context);
 			}
 		});
 		btnNewFrom.setText("New");
@@ -168,20 +188,7 @@ public class EventView {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(
-						textFromDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					fromDatePid = dialog.getHdatePid();
-					HDateProvider hdp;
-					try {
-						hdp = new HDateProvider();
-						hdp.get(fromDatePid);
-						textFromDate.setText(hdp.getDate().toString());
-					} catch (Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-
-				}
+				browseFromDate(context);
 			}
 		});
 		btnBrowseFrom.setText("Browse");
@@ -203,7 +210,8 @@ public class EventView {
 		});
 		btnClearFrom.setText("Clear");
 
-		Composite compositeToDate = new Composite(compositeFields, SWT.BORDER);
+		final Composite compositeToDate = new Composite(compositeFields,
+				SWT.BORDER);
 		compositeToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		compositeToDate.setLayout(new GridLayout(2, false));
@@ -251,22 +259,7 @@ public class EventView {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textToDate.getShell(),
-						context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						hdp.insert();
-						toDatePid = dialog.gethDatePid();
-						textToDate.setText(dialog.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				newToDate(context);
 			}
 		});
 		btnNewTo.setText("New");
@@ -282,18 +275,7 @@ public class EventView {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(
-						textToDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						toDatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(toDatePid);
-						textToDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				browseToDate(context);
 			}
 		});
 		btnBrowseTo.setText("Browse");
@@ -341,22 +323,67 @@ public class EventView {
 	 */
 	private void get(int key) {
 		try {
-			List<String> eventStringList = provider.getStringList(key).get(0);
+			final List<String> eventStringList = provider.getStringList(key)
+					.get(0);
 			eventPid = Integer.parseInt(eventStringList.get(0));
 			textId.setText(eventStringList.get(0));
 			textFromDate.setText(eventStringList.get(1));
 			textToDate.setText(eventStringList.get(2));
+			eventTypePid = Integer.parseInt(eventStringList.get(3));
 			textEventType.setText(eventStringList.get(4));
 			fromDatePid = Integer.parseInt(eventStringList.get(5));
 			toDatePid = Integer.parseInt(eventStringList.get(6));
 
 			eventBroker.post("MESSAGE",
 					"Event " + eventStringList.get(0) + " has been fetched");
-
 		} catch (final Exception e) {
 			clear();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+	}
+
+	/**
+	 * @param context
+	 */
+	private void newFromDate(IEclipseContext context) {
+		final DateDialog dialog = new DateDialog(textFromDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				hdp.insert();
+				fromDatePid = dialog.gethDatePid();
+				textFromDate.setText(dialog.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
+
+	/**
+	 * @param context
+	 */
+	private void newToDate(IEclipseContext context) {
+		final DateDialog dialog = new DateDialog(textToDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				hdp.insert();
+				toDatePid = dialog.gethDatePid();
+				textToDate.setText(dialog.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
 		}
 	}
 
@@ -379,10 +406,11 @@ public class EventView {
 	 *
 	 */
 	protected void update() {
-		// FIXME Does not work
 		try {
-			provider.setFromDatePid(fromDatePid);
+			// FIXME Not working properly
 			provider.setEventPid(eventPid);
+			provider.setEventTypePid(eventTypePid);
+			provider.setFromDatePid(fromDatePid);
 			provider.setToDatePid(toDatePid);
 			provider.update();
 			eventBroker.post("MESSAGE",

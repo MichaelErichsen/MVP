@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -33,17 +31,19 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.location.providers.LocationPersonProvider;
+import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 
 /**
- * Display all persons for a single location
+ * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. jan. 2019
+ * @version 16. apr. 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	// FIXME Change to Jface
 
 	@Inject
 	private EPartService partService;
@@ -55,7 +55,7 @@ public class EventPersonView {
 	private IEventBroker eventBroker;
 	private Table table;
 
-	private final LocationPersonProvider provider;
+	private final PersonEventProvider provider;
 
 	/**
 	 * Constructor
@@ -64,8 +64,8 @@ public class EventPersonView {
 	 *                   access error or other errors
 	 *
 	 */
-	public EventPersonView() throws Exception {
-		provider = new LocationPersonProvider();
+	public EventPersonView()  {
+		provider = new PersonEventProvider();
 	}
 
 	/**
@@ -105,29 +105,20 @@ public class EventPersonView {
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 * @param key
 	 */
 	private void get(int key) {
 		try {
-			String[] sa;
 			TableItem item;
 
 			table.removeAll();
 
-			final List<String> nameList = provider.getPersonList(key);
+			List<String> stringList = provider.getStringList(key).get(0);
 
-			for (int i = 0; i < nameList.size(); i++) {
-				sa = nameList.get(i).split(",");
+			for (int i = 0; i < stringList.size(); i++) {
 				item = new TableItem(table, SWT.NONE);
-				item.setText(0, sa[0]);
-				item.setText(1, sa[1]);
+				item.setText(0, stringList.get(0));
+				item.setText(1, stringList.get(1));
 			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -182,13 +173,6 @@ public class EventPersonView {
 		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC,
 				Integer.parseInt(personPid));
 
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

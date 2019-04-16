@@ -1,17 +1,14 @@
 package net.myerichsen.hremvp.event.parts;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -34,18 +31,19 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.event.providers.EventProvider;
+import net.myerichsen.hremvp.location.providers.LocationEventProvider;
 
 /**
  * Display all Locations for a single location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. apr. 2019
+ * @version 16. apr. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	// FIXME Change to Jface
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -56,17 +54,19 @@ public class EventLocationView {
 	private IEventBroker eventBroker;
 	private Table table;
 
-	private final EventProvider provider;
+	private LocationEventProvider provider;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws SQLException An exception that provides information on a database
-	 *                      access error or other errors
 	 *
 	 */
-	public EventLocationView() throws SQLException {
-		provider = new EventProvider();
+	public EventLocationView() {
+		try {
+			provider = new LocationEventProvider();
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
 	}
 
 	/**
@@ -106,29 +106,20 @@ public class EventLocationView {
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 * @param key
 	 */
 	private void get(int key) {
 		try {
-			String[] sa;
 			TableItem item;
 
 			table.removeAll();
 
-			final List<String> nameList = provider.getLocationList(key);
+			List<String> stringList = provider.getStringList(key).get(0);
 
-			for (int i = 0; i < nameList.size(); i++) {
-				sa = nameList.get(i).split(",");
+			for (int i = 0; i < stringList.size(); i++) {
 				item = new TableItem(table, SWT.NONE);
-				item.setText(0, sa[0]);
-				item.setText(1, sa[1]);
+				item.setText(0, stringList.get(0));
+				item.setText(1, stringList.get(1));
 			}
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -183,13 +174,6 @@ public class EventLocationView {
 		eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC,
 				Integer.parseInt(LocationPid));
 
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

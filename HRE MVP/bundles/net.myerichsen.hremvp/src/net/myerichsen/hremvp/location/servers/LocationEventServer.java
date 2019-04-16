@@ -2,8 +2,11 @@ package net.myerichsen.hremvp.location.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
+import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
 
@@ -12,12 +15,12 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. mar. 2019
+ * @version 16. apr. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
-//	private static final Logger LOGGER = Logger
-//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int LocationEventsPid;
 	private int EventPid;
 	private int LocationPid;
@@ -58,16 +61,6 @@ public class LocationEventServer implements IHREServer {
 		for (final LocationEvents event : fkLocationPid) {
 			locationEvent.delete(event.getLocationEventsPid());
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	public List<?> get() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/*
@@ -142,7 +135,7 @@ public class LocationEventServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList() throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/*
@@ -152,8 +145,27 @@ public class LocationEventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<List<String>> lls = new ArrayList<>();
+		LocationServer ls;
+
+		final List<String> locationStringList = new ArrayList<>();
+
+		final LocationEvents locationEvents = new LocationEvents();
+		final List<LocationEvents> leList = locationEvents.getFKEventPid(key);
+
+		try {
+			for (final LocationEvents le : leList) {
+				ls = new LocationServer();
+				ls.get(le.getLocationPid());
+
+				locationStringList.add(ls.getPrimaryName());
+			}
+		} catch (final MvpException e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
+		lls.add(locationStringList);
+		return lls;
 	}
 
 	/*

@@ -117,6 +117,23 @@ public class EventNavigator {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openEventView();
+				openEventLocationView();
+				openEventPersonView();
+
+				int eventPid = 0;
+
+				final TableItem[] selectedRows = tableViewer.getTable()
+						.getSelection();
+
+				if (selectedRows.length > 0) {
+					final TableItem selectedRow = selectedRows[0];
+					eventPid = Integer.parseInt(selectedRow.getText(0));
+				}
+
+				eventBroker.post(
+						net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
+						eventPid);
+				LOGGER.log(Level.INFO, "Event Pid: {0}", eventPid);
 			}
 		});
 		table.setHeaderVisible(true);
@@ -184,6 +201,36 @@ public class EventNavigator {
 		});
 		mntmAddevent.setText("Add event...");
 
+		final MenuItem mntmAddPersonTo = new MenuItem(menu, SWT.NONE);
+		mntmAddPersonTo.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// FIXME Add location to event
+			}
+		});
+		mntmAddPersonTo.setText("Add person to event...");
+
+		final MenuItem mntmAddLocationTo = new MenuItem(menu, SWT.NONE);
+		mntmAddLocationTo.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// FIXME Add location to event
+			}
+		});
+		mntmAddLocationTo.setText("Add location to event...");
+
 		final MenuItem mntmDeleteSelectedevent = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedevent.addSelectionListener(new SelectionAdapter() {
 			/*
@@ -207,7 +254,7 @@ public class EventNavigator {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
 			 * events.KeyEvent)
@@ -224,15 +271,15 @@ public class EventNavigator {
 		textNameFilter.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Label lblFromDateFilter = new Label(parent, SWT.NONE);
+		final Label lblFromDateFilter = new Label(parent, SWT.NONE);
 		lblFromDateFilter.setText("From Date Filter");
 
-		Text textFromDateFilter = new Text(parent, SWT.BORDER);
+		final Text textFromDateFilter = new Text(parent, SWT.BORDER);
 		textFromDateFilter.addKeyListener(new KeyAdapter() {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.
 			 * events.KeyEvent)
@@ -290,6 +337,81 @@ public class EventNavigator {
 		}
 	}
 
+	protected void openEventLocationView() {
+		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventLocationView";
+
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		MPart part = MBasicFactory.INSTANCE.createPart();
+
+		boolean found = false;
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			try {
+				for (int i = 0; i < a.size(); i++) {
+					part = (MPart) a.get(i);
+					if (CONTRIBUTION_URI.equals(part.getContributionURI())) {
+						partService.showPart(part, PartState.ACTIVATE);
+						found = true;
+						break;
+					}
+				}
+			} catch (final Exception e) {
+				LOGGER.log(Level.INFO, e.getMessage());
+			}
+		}
+
+		if (!found) {
+			part.setLabel("Locations in Event");
+			part.setCloseable(true);
+			part.setVisible(true);
+			part.setContributionURI(CONTRIBUTION_URI);
+			stacks.get(stacks.size() - 5).getChildren().add(part);
+			partService.showPart(part, PartState.ACTIVATE);
+		}
+
+	}
+
+	/**
+	 *
+	 */
+	protected void openEventPersonView() {
+		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventPersonView";
+
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		MPart part = MBasicFactory.INSTANCE.createPart();
+
+		boolean found = false;
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			try {
+				for (int i = 0; i < a.size(); i++) {
+					part = (MPart) a.get(i);
+					if (CONTRIBUTION_URI.equals(part.getContributionURI())) {
+						partService.showPart(part, PartState.ACTIVATE);
+						found = true;
+						break;
+					}
+				}
+			} catch (final Exception e) {
+				LOGGER.log(Level.INFO, e.getMessage());
+			}
+		}
+
+		if (!found) {
+			part.setLabel("Persons in Event");
+			part.setCloseable(true);
+			part.setVisible(true);
+			part.setContributionURI(CONTRIBUTION_URI);
+			stacks.get(stacks.size() - 5).getChildren().add(part);
+			partService.showPart(part, PartState.ACTIVATE);
+		}
+
+	}
+
 	/**
 	 *
 	 */
@@ -327,18 +449,6 @@ public class EventNavigator {
 			partService.showPart(part, PartState.ACTIVATE);
 		}
 
-		int eventPid = 0;
-
-		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
-
-		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
-			eventPid = Integer.parseInt(selectedRow.getText(0));
-		}
-
-		eventBroker.post(net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
-				eventPid);
-		LOGGER.log(Level.INFO, "Event Pid: {0}", eventPid);
 	}
 
 	/**

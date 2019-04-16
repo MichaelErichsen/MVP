@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.location.servers.LocationEventServer;
  * Provides all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. mar. 2019
+ * @version 16. apr. 2019
  *
  */
 public class LocationEventProvider implements IHREProvider {
@@ -28,7 +28,7 @@ public class LocationEventProvider implements IHREProvider {
 	 *                   access error or other errors
 	 *
 	 */
-	public LocationEventProvider() throws Exception {
+	public LocationEventProvider() {
 		server = new LocationEventServer();
 	}
 
@@ -49,15 +49,6 @@ public class LocationEventProvider implements IHREProvider {
 	public void deleteAllEventLinksForLocation(int locationPid)
 			throws Exception {
 		server.deleteAllEventLinksForLocation(locationPid);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return server.get();
 	}
 
 	/*

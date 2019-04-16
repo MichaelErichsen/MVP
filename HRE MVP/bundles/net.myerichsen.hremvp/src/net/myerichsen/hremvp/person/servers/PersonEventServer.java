@@ -2,6 +2,8 @@ package net.myerichsen.hremvp.person.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
@@ -9,10 +11,13 @@ import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 5. apr. 2019
+ * @version 16. apr. 2019
  *
  */
 public class PersonEventServer implements IHREServer {
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	private int PersonEventPid;
 	private int EventPid;
 	private int PersonPid;
@@ -86,7 +91,7 @@ public class PersonEventServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList() throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/*
@@ -96,7 +101,27 @@ public class PersonEventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return new ArrayList<>();
+		List<List<String>> lls = new ArrayList<>();
+		PersonServer ls;
+
+		final List<String> personStringList = new ArrayList<>();
+
+		final PersonEvents personEvents = new PersonEvents();
+		final List<PersonEvents> peList = personEvents.getFKEventPid(key);
+
+		try {
+			for (final PersonEvents pe : peList) {
+				ls = new PersonServer();
+				ls.get(pe.getPersonPid());
+
+				personStringList.add(ls.getPrimaryName());
+			}
+		} catch (final MvpException e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
+		lls.add(personStringList);
+		return lls;
 	}
 
 	/**
