@@ -19,9 +19,11 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -40,6 +42,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
+import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -47,9 +50,8 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. apr. 2019
+ * @version 17. apr. 2019
  */
-// FIXME Also browse persons
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -66,7 +68,7 @@ public class EventPersonView {
 	private final PersonEventProvider provider;
 
 	// FIXME Populate event pid
-	private final int eventPid = 0;
+	private final static int eventPid = 0;
 
 	private TableViewer tableViewer;
 
@@ -90,8 +92,12 @@ public class EventPersonView {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events.MouseEvent)
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -129,24 +135,47 @@ public class EventPersonView {
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		final MenuItem mntmAddPerson = new MenuItem(menu, SWT.NONE);
-		mntmAddPerson.addSelectionListener(new SelectionAdapter() {
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+		final MenuItem mntmAddNewPerson = new MenuItem(menu, SWT.NONE);
+		mntmAddNewPerson.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
 						new NewPersonWizard(context));
 				dialog.open();
+				// FIXME Add personevent
 			}
 		});
-		mntmAddPerson.setText("Add person...");
+		mntmAddNewPerson.setText("Add new person...");
+
+		final MenuItem mntmAddExistingPerson = new MenuItem(menu, SWT.NONE);
+		mntmAddExistingPerson.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				openPersonNavigator();
+
+			}
+		});
+		mntmAddExistingPerson.setText("Add existing person...");
 
 		final MenuItem mntmDeleteSelectedPerson = new MenuItem(menu, SWT.NONE);
 		mntmDeleteSelectedPerson.addSelectionListener(new SelectionAdapter() {
-			/* (non-Javadoc)
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -160,7 +189,66 @@ public class EventPersonView {
 	 * @param shell
 	 */
 	protected void deletePerson(Shell shell) {
-		// TODO Auto-generated method stub
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int personPid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			personPid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete Person " + primaryName, null,
+				"Are you sure that you will delete person " + personPid + ", "
+						+ primaryName + "?",
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Deletion of person " + primaryName + " has been canceled");
+			return;
+		}
+
+		// FIXME Delete personevent
+
+		try {
+			final PersonProvider pp = new PersonProvider();
+			pp.delete(personPid);
+
+			LOGGER.log(Level.INFO, "Person {0} has been deleted", primaryName);
+			eventBroker.post("MESSAGE",
+					"Person " + primaryName + " has been deleted");
+			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
+	}
+
+	/**
+	 *
+	 */
+	protected void openPersonNavigator() {
+		// FIXME Populate openPersonNavigator()
+		// FIXME Add personevent
+
+//		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
+//				parentShell, context);
+//		if (dialog.open() == Window.OK) {
+//			try {
+//				final int fatherPid = dialog.getPersonPid();
+//				textFatherPersonPid.setText(Integer.toString(fatherPid));
+//				textFatherName.setText(dialog.getPersonName());
+//				textFatherBirthDate.setText(dialog.getBirthDate());
+//				textFatherDeathDate.setText(dialog.getDeathDate());
+//				wizard.setFatherPid(fatherPid);
+//			} catch (final Exception e) {
+//				LOGGER.log(Level.SEVERE, e.toString(), e);
+//			}
+//		}
 
 	}
 

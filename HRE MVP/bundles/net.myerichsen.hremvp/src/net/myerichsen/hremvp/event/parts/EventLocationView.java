@@ -19,9 +19,11 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -40,6 +42,9 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.location.providers.LocationEventProvider;
+import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
+import net.myerichsen.hremvp.location.providers.LocationNameProvider;
+import net.myerichsen.hremvp.location.providers.LocationProvider;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -47,28 +52,27 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. apr. 2019
+ * @version 17. apr. 2019
  */
-// FIXME Also browse locations
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	// FIXME Populate event pid
+	private static final int eventPid = 0;
 	@Inject
 	private EPartService partService;
 	@Inject
 	private EModelService modelService;
 	@Inject
 	private MApplication application;
+
 	@Inject
 	private IEventBroker eventBroker;
 
 	private LocationEventProvider provider;
 
 	private TableViewer tableViewer;
-
-	// FIXME Populate event pid
-	private final static int eventPid = 0;
 
 	/**
 	 * Constructor
@@ -135,11 +139,11 @@ public class EventLocationView {
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
-		final MenuItem mntmAddLocation = new MenuItem(menu, SWT.NONE);
-		mntmAddLocation.addSelectionListener(new SelectionAdapter() {
+		final MenuItem mntmAddNewLocation = new MenuItem(menu, SWT.NONE);
+		mntmAddNewLocation.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -148,16 +152,32 @@ public class EventLocationView {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
 						new NewLocationWizard(context));
 				dialog.open();
+				// FIXME Add eventlocation
 			}
 		});
-		mntmAddLocation.setText("Add location...");
+		mntmAddNewLocation.setText("Add new location...");
+
+		final MenuItem mntmAddExistingLocation = new MenuItem(menu, SWT.NONE);
+		mntmAddExistingLocation.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				openLocationNavigator();
+			}
+		});
+		mntmAddExistingLocation.setText("Add existing location...");
 
 		final MenuItem mntmDeleteSelectedLocation = new MenuItem(menu,
 				SWT.NONE);
 		mntmDeleteSelectedLocation.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
 			 * eclipse.swt.events.SelectionEvent)
 			 */
@@ -173,7 +193,84 @@ public class EventLocationView {
 	 * @param shell
 	 */
 	protected void deleteLocation(Shell shell) {
-		// TODO Auto-generated method stub
+		final TableItem[] selection = tableViewer.getTable().getSelection();
+
+		int locationPid = 0;
+		String primaryName = null;
+		if (selection.length > 0) {
+			final TableItem item = selection[0];
+			locationPid = Integer.parseInt(item.getText(0));
+			primaryName = item.getText(1);
+		}
+
+		// Last chance to regret
+		final MessageDialog dialog = new MessageDialog(shell,
+				"Delete location " + primaryName, null,
+				"Are you sure that you will delete location " + locationPid
+						+ ", " + primaryName + "?",
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
+
+		if (dialog.open() == Window.CANCEL) {
+			eventBroker.post("MESSAGE",
+					"Delete of location " + primaryName + " has been canceled");
+			return;
+		}
+
+		try {
+			// Delete all location events for location
+			final LocationEventProvider lep = new LocationEventProvider();
+			lep.deleteAllEventLinksForLocation(locationPid);
+
+			// Delete all location name parts
+			final LocationNameProvider lnp = new LocationNameProvider();
+			final List<Integer> locationNamePidList = lnp
+					.getFKLocationPid(locationPid);
+
+			final LocationNamePartProvider lnpp = new LocationNamePartProvider();
+			for (int i = 0; i < locationNamePidList.size(); i++) {
+				lnpp.deleteAllNamePartsForLocationName(
+						locationNamePidList.get(i));
+			}
+
+			// FIXME Delete event location
+
+			// Delete all location names for location
+			lnp.deleteAllNamesForLocation(locationPid);
+
+			// Delete location
+			LocationProvider lp = new LocationProvider();
+			lp.delete(locationPid);
+
+			LOGGER.log(Level.INFO, "Location {0} has been deleted",
+					primaryName);
+			eventBroker.post("MESSAGE",
+					"Location " + primaryName + " has been deleted");
+			eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC, locationPid);
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+	}
+
+	/**
+	 *
+	 */
+	protected void openLocationNavigator() {
+		// FIXME Populate openLocationNavigator()
+		// FIXME Add eventlocation
+//		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
+//				parentShell, context);
+//		if (dialog.open() == Window.OK) {
+//			try {
+//				final int fatherPid = dialog.getPersonPid();
+//				textFatherPersonPid.setText(Integer.toString(fatherPid));
+//				textFatherName.setText(dialog.getPersonName());
+//				textFatherBirthDate.setText(dialog.getBirthDate());
+//				textFatherDeathDate.setText(dialog.getDeathDate());
+//				wizard.setFatherPid(fatherPid);
+//			} catch (final Exception e) {
+//				LOGGER.log(Level.SEVERE, e.toString(), e);
+//			}
+//		}
 
 	}
 

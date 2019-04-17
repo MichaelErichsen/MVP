@@ -29,15 +29,21 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 14. apr. 2019
+ * @version 16. apr. 2019
  *
  */
 public class HreUpdateHandler {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
+	/**
+	 * @param provisioningJob
+	 * @param shell
+	 * @param sync
+	 * @param workbench
+	 * @param monitor
+	 */
 	private void configureProvisioningJob(ProvisioningJob provisioningJob,
 			Shell shell, UISynchronize sync, IWorkbench workbench,
 			IProgressMonitor monitor) {
@@ -46,6 +52,13 @@ public class HreUpdateHandler {
 		subMonitor.beginTask("Configure Provisioning Job", 25);
 
 		provisioningJob.addJobChangeListener(new JobChangeAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.core.runtime.jobs.JobChangeAdapter#done(org.eclipse.
+			 * core.runtime.jobs.IJobChangeEvent)
+			 */
 			@Override
 			public void done(IJobChangeEvent event) {
 				if (event.getResult().isOK()) {
@@ -65,7 +78,7 @@ public class HreUpdateHandler {
 							"Update failed",
 							"Update of HRE from "
 									+ store.getString("UPDATESITE")
-									+ " have failed"));
+									+ " has failed"));
 				}
 				super.done(event);
 			}
@@ -73,6 +86,11 @@ public class HreUpdateHandler {
 		subMonitor.worked(25);
 	}
 
+	/**
+	 * @param operation
+	 * @param monitor
+	 * @return
+	 */
 	private UpdateOperation configureUpdate(UpdateOperation operation,
 			IProgressMonitor monitor) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 25);
@@ -96,10 +114,16 @@ public class HreUpdateHandler {
 		return operation;
 	}
 
+	/**
+	 * @param agent
+	 * @param shell
+	 * @param sync
+	 * @param workbench
+	 */
 	@Execute
 	public void execute(IProvisioningAgent agent, Shell shell,
 			UISynchronize sync, IWorkbench workbench) {
-		LOGGER.log(Level.INFO, "Repository location: {0}",
+		LOGGER.log(Level.INFO, "Expected repository location: {0}",
 				store.getString("UPDATESITE"));
 		try {
 			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(
@@ -118,7 +142,8 @@ public class HreUpdateHandler {
 				final IStatus status = resolveModal(monitor, operation,
 						subMonitor.split(25, 0));
 
-				if (status.getCode() == 10000) {
+				if (status
+						.getCode() == UpdateOperation.STATUS_NOTHING_TO_UPDATE) {
 					showMessage(shell, sync);
 					return;
 				}
@@ -128,7 +153,7 @@ public class HreUpdateHandler {
 
 				if (provisioningJob == null) {
 					LOGGER.log(Level.SEVERE,
-							"Trying to update from the Eclipse IDE? won't work!");
+							"Trying to update from the Eclipse IDE? Won't work!");
 					return;
 				}
 				configureProvisioningJob(provisioningJob, shell, sync,
@@ -141,6 +166,12 @@ public class HreUpdateHandler {
 		}
 	}
 
+	/**
+	 * @param monitor
+	 * @param operation
+	 * @param monitor2
+	 * @return
+	 */
 	private ProvisioningJob getProvisioningJob(IProgressMonitor monitor,
 			UpdateOperation operation, IProgressMonitor monitor2) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
@@ -152,6 +183,12 @@ public class HreUpdateHandler {
 		return provisioningJob;
 	}
 
+	/**
+	 * @param monitor
+	 * @param operation
+	 * @param monitor2
+	 * @return
+	 */
 	private IStatus resolveModal(IProgressMonitor monitor,
 			UpdateOperation operation, IProgressMonitor monitor2) {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor2, 25);
@@ -162,8 +199,12 @@ public class HreUpdateHandler {
 		return status;
 	}
 
+	/**
+	 * @param parent
+	 * @param sync
+	 */
 	private void showMessage(Shell parent, UISynchronize sync) {
-		LOGGER.log(Level.INFO, "Show message");
+		LOGGER.log(Level.INFO, "Show message: No updates found");
 		sync.syncExec(() -> MessageDialog.openWarning(parent, "No update",
 				"No updates for HRE have been found at "
 						+ store.getString("UPDATESITE")));

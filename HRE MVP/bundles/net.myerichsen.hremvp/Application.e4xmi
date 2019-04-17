@@ -139,7 +139,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_GfUOMA4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.handledmenuitem.hrewebsite" label="HRE Website" tooltip="HRE Website" command="_C1cPYA3-Eemn86hhplJLfQ"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_HSrk0A4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.menuseparator.1"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_ICyzIA4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.handleditem.about" label="About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_lKHAoDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.handledmenuitem.updatehreovertheinternet" label="Update HRE over the Internet" command="_KX47UDIoEemFh8IjP8PYwQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_lKHAoDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.handledmenuitem.updatehreovertheinternet" label="Check for updates" command="_KX47UDIoEemFh8IjP8PYwQ"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_6wlLlcgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.trimbar.top">
