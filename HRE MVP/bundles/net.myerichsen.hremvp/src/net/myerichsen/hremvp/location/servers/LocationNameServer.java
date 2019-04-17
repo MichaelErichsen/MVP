@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNames}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class LocationNameServer implements IHREServer {
@@ -78,14 +78,6 @@ public class LocationNameServer implements IHREServer {
 	}
 
 	/**
-	 * @return
-	 */
-	public List<?> get() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
@@ -97,7 +89,7 @@ public class LocationNameServer implements IHREServer {
 	@Override
 	public void get(int key) throws Exception {
 		name.get(key);
-		setFromDatePid1(name.getFromDatePid());
+		setFromDatePid(name.getFromDatePid());
 		setLocationNamePid(key);
 		setLocationNameStylePid(name.getLocationNameStylePid());
 		setPrimaryLocationName(name.isPrimaryLocationName());
@@ -108,10 +100,10 @@ public class LocationNameServer implements IHREServer {
 		style.get(locationNameStylePid);
 		setLocationNameStyleLabel("style.getLabelPid()");
 
-		LOGGER.log(Level.FINE, "Location PID: " + name.getLocationPid());
-		LOGGER.log(Level.FINE, "Location name PID: " + key);
-		LOGGER.log(Level.FINE,
-				"Location name style PID: " + name.getLocationNameStylePid());
+		LOGGER.log(Level.FINE, "Location PID: {0}", name.getLocationPid());
+		LOGGER.log(Level.FINE, "Location name PID: {0}", key);
+		LOGGER.log(Level.FINE, "Location name style PID: {0}",
+				name.getLocationNameStylePid());
 //		mapList = new LocationNameMaps()
 //				.getFKLocationNameStylePid(name.getLocationNameStylePid());
 //		partList = new LocationNameParts().getFKLocationNamePid(key);
@@ -218,20 +210,18 @@ public class LocationNameServer implements IHREServer {
 
 				// Concatenate non-null name parts
 				for (final LocationNameParts PersonNameParts : lnp) {
-					if (PersonNameParts.getLocationNamePid() == aName
-							.getLocationNamePid()) {
-						if ((PersonNameParts.getLabel() != null)
-								&& !(PersonNameParts.getLabel().equals(""))) {
-							sb.append(PersonNameParts.getLabel() + " ");
-						}
+					if ((PersonNameParts.getLocationNamePid() == aName
+							.getLocationNamePid())
+							&& ((PersonNameParts.getLabel() != null))
+							&& !(PersonNameParts.getLabel().equals(""))) {
+						sb.append(PersonNameParts.getLabel() + " ");
 					}
 				}
 				break;
 			}
 		}
 
-		final String s = sb.toString().trim();
-		return s;
+		return sb.toString().trim();
 	}
 
 	/*
@@ -270,7 +260,7 @@ public class LocationNameServer implements IHREServer {
 
 			pid = locationNames.getLocationNamePid();
 			stringList.add(Integer.toString(pid));
-			LOGGER.log(Level.FINE, "Pid: " + pid);
+			LOGGER.log(Level.FINE, "Pid: {0}", pid);
 
 			sb = new StringBuilder();
 			// Concatenate non-null name parts
@@ -350,17 +340,11 @@ public class LocationNameServer implements IHREServer {
 	}
 
 	/**
-	 * @param fromDatePid the fromDate to set
-	 */
-	public void setFromDatePid1(int fromDatePid) {
-		this.fromDatePid = fromDatePid;
-	}
-
-	/**
-	 * @param locationNamePid the locationNamePid to set
+	 * @param key
 	 */
 	public void setLocationNamePid(int locationNamePid) {
 		this.locationNamePid = locationNamePid;
+
 	}
 
 	/**

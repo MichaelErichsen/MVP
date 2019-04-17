@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewLocationWizard extends Wizard {
@@ -224,7 +224,7 @@ public class NewLocationWizard extends Wizard {
 			lp.setPrimaryLocation(isPrimaryLocation);
 
 			final int locationPid = lp.insert();
-			LOGGER.log(Level.INFO, "Inserted location " + locationPid);
+			LOGGER.log(Level.INFO, "Inserted location {0}", locationPid);
 
 			final LocationNameProvider lnp = new LocationNameProvider();
 			lnp.setLocationPid(locationPid);
@@ -236,7 +236,8 @@ public class NewLocationWizard extends Wizard {
 			lnp.setPreposition(preposition);
 
 			final int locationNamePid = lnp.insert();
-			LOGGER.log(Level.INFO, "Inserted location name " + locationNamePid);
+			LOGGER.log(Level.INFO, "Inserted location name {0}",
+					locationNamePid);
 
 			LocationNamePartProvider lnpp;
 
@@ -247,8 +248,8 @@ public class NewLocationWizard extends Wizard {
 				lnpp.setLabel(locationNamePartList.get(i));
 
 				final int locationNamePartPid = lnpp.insert();
-				LOGGER.log(Level.INFO,
-						"Inserted location name part " + locationNamePartPid);
+				LOGGER.log(Level.INFO, "Inserted location name part {0}",
+						locationNamePartPid);
 			}
 
 			eventBroker.post("MESSAGE", locationName
@@ -260,7 +261,6 @@ public class NewLocationWizard extends Wizard {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 		return false;
 	}

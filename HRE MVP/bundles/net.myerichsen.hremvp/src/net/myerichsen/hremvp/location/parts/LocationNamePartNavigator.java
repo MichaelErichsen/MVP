@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Maintain all parts of a location name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. mar. 2019
+ * @version 17. apr. 2019
  */
 public class LocationNamePartNavigator {
 	private static final Logger LOGGER = Logger
@@ -55,7 +55,7 @@ public class LocationNamePartNavigator {
 	 *                   access error or other errors
 	 *
 	 */
-	public LocationNamePartNavigator() throws Exception {
+	public LocationNamePartNavigator() {
 		provider = new LocationNamePartProvider();
 	}
 
@@ -66,7 +66,7 @@ public class LocationNamePartNavigator {
 	 * @throws Exception
 	 */
 	@PostConstruct
-	public void createControls(Composite parent) throws Exception {
+	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -108,7 +108,11 @@ public class LocationNamePartNavigator {
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getStringList(locationNamePid));
+		try {
+			tableViewer.setInput(provider.getStringList(locationNamePid));
+		} catch (Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
 
 		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
@@ -149,7 +153,8 @@ public class LocationNamePartNavigator {
 	@Optional
 	private void subscribeLocationNamePidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_NAME_PID_UPDATE_TOPIC) int locationNamePid) {
-		LOGGER.log(Level.INFO, "Received location name id " + locationNamePid);
+		LOGGER.log(Level.INFO, "Received location name id {0}",
+				locationNamePid);
 
 		if (locationNamePid == 0) {
 			return;
@@ -162,7 +167,6 @@ public class LocationNamePartNavigator {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -181,22 +185,22 @@ public class LocationNamePartNavigator {
 
 			for (int i = 0; i < input.size(); i++) {
 				string = input.get(i).get(0);
-				if (string.equals(locationNamePartList.get(i).get(0))) {
-					if (input.get(i).get(3).equals(
-							locationNamePartList.get(i).get(3)) == false) {
-						provider = new LocationNamePartProvider();
-						provider.get(Integer.parseInt(string));
-						provider.setLabel(input.get(i).get(3));
-						provider.update();
-					}
+				if ((string.equals(locationNamePartList.get(i).get(0)))
+						&& (!input.get(i).get(3)
+								.equals(locationNamePartList.get(i).get(3)))) {
+					provider = new LocationNamePartProvider();
+					provider.get(Integer.parseInt(string));
+					provider.setLabel(input.get(i).get(3));
+					provider.update();
 				}
 
 				eventBroker.post("MESSAGE", "Location name " + locationNamePid
 						+ " has been updated");
 			}
-		} catch (final Exception e) {
+		} catch (
+
+		final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

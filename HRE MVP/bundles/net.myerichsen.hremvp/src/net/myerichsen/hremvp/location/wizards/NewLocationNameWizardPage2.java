@@ -32,7 +32,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * New location name wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewLocationNameWizardPage2 extends WizardPage {
@@ -43,7 +43,6 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 	private NewLocationNameWizard wizard;
 
 	private final LocationNameMapProvider provider;
-	private TableViewer tableViewer;
 	private List<List<String>> lls;
 
 	/**
@@ -71,7 +70,7 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 
-		tableViewer = new TableViewer(container,
+		TableViewer tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addFocusListener(new FocusAdapter() {
@@ -164,7 +163,6 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 			tableViewer.setInput(lls);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		setPageComplete(true);

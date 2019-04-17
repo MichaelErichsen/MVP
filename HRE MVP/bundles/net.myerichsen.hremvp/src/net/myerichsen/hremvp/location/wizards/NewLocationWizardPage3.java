@@ -9,8 +9,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -109,8 +107,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 						wizard.setFromDatePid(hdp.insert());
 						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
+LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
 				}
 			}
 		});
@@ -138,8 +135,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 						wizard.setFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
+LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
 				}
 			}
 		});
@@ -253,8 +249,7 @@ public class NewLocationWizardPage3 extends WizardPage {
 						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
-					}
+LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
 				}
 			}
 		});
@@ -284,20 +279,10 @@ public class NewLocationWizardPage3 extends WizardPage {
 		wizard = (NewLocationWizard) getWizard();
 
 		final Text textXCoordinate = new Text(container, SWT.BORDER);
-		textXCoordinate.addModifyListener(new ModifyListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
-			 * events.ModifyEvent)
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				wizard = (NewLocationWizard) getWizard();
-				wizard.setxCoordinate(
-						Double.valueOf(textXCoordinate.getText()));
-			}
+		textXCoordinate.addModifyListener(e -> {
+			wizard = (NewLocationWizard) getWizard();
+			wizard.setxCoordinate(
+					Double.valueOf(textXCoordinate.getText()));
 		});
 		textXCoordinate.setText(Double.toString(wizard.getxCoordinate()));
 		textXCoordinate.setToolTipText("Latitude (-180 to 180)");
@@ -310,20 +295,9 @@ public class NewLocationWizardPage3 extends WizardPage {
 		lblYCoordinate.setText("Y Coordinate");
 
 		final Text textYCoordinate = new Text(container, SWT.BORDER);
-		textYCoordinate.addModifyListener(new ModifyListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
-			 * events.ModifyEvent)
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				wizard = (NewLocationWizard) getWizard();
-				wizard.setyCoordinate(
-						Double.valueOf(textYCoordinate.getText()));
-			}
+		textYCoordinate.addModifyListener(e -> {
+			wizard = (NewLocationWizard) getWizard();
+			wizard.setyCoordinate(Double.valueOf(textYCoordinate.getText()));
 		});
 		textYCoordinate.setText(Double.toString(wizard.getyCoordinate()));
 		textYCoordinate.setToolTipText("Longitude (-90 to 90)");
@@ -336,20 +310,10 @@ public class NewLocationWizardPage3 extends WizardPage {
 		lblZCoordinate.setText("Z Coordinate");
 
 		final Text textZCoordinate = new Text(container, SWT.BORDER);
-		textZCoordinate.addModifyListener(new ModifyListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
-			 * events.ModifyEvent)
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				wizard = (NewLocationWizard) getWizard();
-				wizard.setzCoordinate(
-						Double.valueOf(textZCoordinate.getText()));
-			}
+		textZCoordinate.addModifyListener(e -> {
+			wizard = (NewLocationWizard) getWizard();
+			wizard.setzCoordinate(
+					Double.valueOf(textZCoordinate.getText()));
 		});
 		textZCoordinate.setText(Double.toString(wizard.getzCoordinate()));
 		textZCoordinate.setToolTipText("Elevation above sea level in meters");

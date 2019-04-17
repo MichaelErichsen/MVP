@@ -145,13 +145,15 @@ public class LocationEventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
+		LocationPid = key;
 		final List<List<String>> lls = new ArrayList<>();
 		LocationServer ls;
 
 		final List<String> locationStringList = new ArrayList<>();
 
 		final LocationEvents locationEvents = new LocationEvents();
-		final List<LocationEvents> leList = locationEvents.getFKEventPid(key);
+		final List<LocationEvents> leList = locationEvents
+				.getFKLocationPid(key);
 
 		try {
 			for (final LocationEvents le : leList) {

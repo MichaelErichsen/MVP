@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewLocationWizardPage2 extends WizardPage {
@@ -63,10 +63,6 @@ public class NewLocationWizardPage2 extends WizardPage {
 	private final LocationNameMapProvider provider;
 	private TableViewer tableViewer;
 	private Text textCoordinates;
-	private double lat;
-	private double lng;
-	private List<List<String>> stringList;
-	private int locationNameStylePid = 0;
 
 	/**
 	 * Constructor
@@ -207,12 +203,12 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			wizard = (NewLocationWizard) getWizard();
-			locationNameStylePid = wizard.getLocationNameStylePid();
-			stringList = provider.getStringList(locationNameStylePid);
+			int locationNameStylePid = wizard.getLocationNameStylePid();
+			List<List<String>> stringList = provider
+					.getStringList(locationNameStylePid);
 			tableViewer.setInput(stringList);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		setPageComplete(true);
@@ -247,7 +243,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 			return;
 		}
 
-		if (valid == false) {
+		if (!valid) {
 			tableViewer.getTable().select(0);
 			eventBroker.post("MESSAGE", "Please enter a location name");
 			return;
@@ -286,7 +282,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 
 			final JSONObject jsonObject = new JSONObject(sb.toString());
 
-			LOGGER.log(Level.FINE, jsonObject.toString(2));
+			LOGGER.log(Level.FINE, "{0}", jsonObject.toString(2));
 
 			final String status = jsonObject.getString("status");
 
@@ -299,9 +295,10 @@ public class NewLocationWizardPage2 extends WizardPage {
 			final JSONObject result0 = results.getJSONObject(0);
 			final JSONObject geometry = result0.getJSONObject("geometry");
 			final JSONObject location = geometry.getJSONObject("location");
-			lat = location.getDouble("lat");
-			lng = location.getDouble("lng");
-			LOGGER.log(Level.FINE, "Lat " + lat + ", lng " + lng);
+			double lat = location.getDouble("lat");
+			double lng = location.getDouble("lng");
+			LOGGER.log(Level.FINE, "Lat {0}, lng {1}",
+					new Object[] { lat, lng });
 			textCoordinates.setText("Lat " + lat + ", lng " + lng);
 
 			wizard.setxCoordinate(lat);

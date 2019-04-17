@@ -12,7 +12,7 @@ import net.myerichsen.hremvp.location.servers.LocationNameServer;
  * Provides all data for a single name for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class LocationNameProvider implements IHREProvider {
@@ -61,14 +61,6 @@ public class LocationNameProvider implements IHREProvider {
 		server.deleteAllNamesForLocation(locationPid);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return server.get();
-	}
 
 	/**
 	 * Get a row
@@ -179,8 +171,7 @@ public class LocationNameProvider implements IHREProvider {
 	 *                   access error or other errors
 	 */
 	public String getPrimaryNameString(int locationPid) throws Exception {
-		final String s = server.getPrimaryNameString(locationPid);
-		return s;
+		return server.getPrimaryNameString(locationPid);
 	}
 
 	/*

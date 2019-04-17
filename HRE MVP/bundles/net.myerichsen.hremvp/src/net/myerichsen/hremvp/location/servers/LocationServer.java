@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Locations}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class LocationServer implements IHREServer {
@@ -163,8 +163,7 @@ public class LocationServer implements IHREServer {
 				break;
 			}
 		}
-		final String primaryName = sb.toString();
-		return primaryName;
+		return sb.toString();
 	}
 
 	/**
@@ -187,10 +186,10 @@ public class LocationServer implements IHREServer {
 		List<LocationNameParts> partList;
 		int lp;
 
-		for (final Locations location : lnsl) {
+		for (final Locations loc : lnsl) {
 			stringList = new ArrayList<>();
 			sb = new StringBuilder();
-			lp = location.getLocationPid();
+			lp = loc.getLocationPid();
 			stringList.add(Integer.toString(lp));
 
 			final List<LocationNames> lnl = new LocationNames()
@@ -211,7 +210,7 @@ public class LocationServer implements IHREServer {
 				}
 			}
 
-			LOGGER.log(Level.FINE, sb.toString());
+			LOGGER.log(Level.FINE, "{0}", sb);
 			stringList.add(sb.toString());
 			lls.add(stringList);
 		}

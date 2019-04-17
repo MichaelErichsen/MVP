@@ -40,7 +40,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * New location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewLocationNameWizardPage1 extends WizardPage {
@@ -190,7 +190,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 						wizard.setFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
@@ -304,7 +304,7 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
@@ -393,7 +393,6 @@ public class NewLocationNameWizardPage1 extends WizardPage {
 
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		setPageComplete(false);

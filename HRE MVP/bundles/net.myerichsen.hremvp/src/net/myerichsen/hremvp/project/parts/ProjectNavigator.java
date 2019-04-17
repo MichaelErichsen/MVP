@@ -75,7 +75,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. apr. 2019
+ * @version 17. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -245,6 +245,13 @@ public class ProjectNavigator {
 		tableViewerColumnLocation
 				.setLabelProvider(new HREColumnLabelProvider(2));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.get());
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
@@ -391,12 +398,6 @@ public class ProjectNavigator {
 		textNameFilter.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.get());
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
-		}
 	}
 
 	/**

@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display static data about a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. mar. 2019
+ * @version 17. apr. 2019
  */
 public class LocationView {
 	private static final Logger LOGGER = Logger
@@ -63,9 +63,6 @@ public class LocationView {
 	@Inject
 	private IEclipseContext context;
 
-	private ScrolledComposite scrolledComposite;
-	private Composite composite_1;
-
 	private Text textId;
 	private Text textXCoordinate;
 	private Text textYCoordinate;
@@ -75,20 +72,10 @@ public class LocationView {
 	private Text textFromDatePid;
 	private Text textFromDate;
 	private Text textFromOriginal;
-	private Button btnNewFrom;
-	private Button btnBrowseFrom;
-	private Button btnClearFrom;
 
 	private Text textToDatePid;
 	private Text textToDate;
 	private Text textToOriginal;
-	private Button btnCopyFromTo;
-	private Button btnNewTo;
-	private Button btnBrowseTo;
-	private Button btnClearTo;
-
-	private Composite composite;
-	private Button buttonUpdate;
 
 	private final LocationProvider provider;
 
@@ -112,14 +99,14 @@ public class LocationView {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		scrolledComposite = new ScrolledComposite(parent,
+		ScrolledComposite scrolledComposite = new ScrolledComposite(parent,
 				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		scrolledComposite.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 
-		composite_1 = new Composite(scrolledComposite, SWT.NONE);
+		Composite composite_1 = new Composite(scrolledComposite, SWT.NONE);
 		composite_1.setLayout(new GridLayout(3, false));
 
 		final Label lblId = new Label(composite_1, SWT.NONE);
@@ -163,7 +150,7 @@ public class LocationView {
 		final Composite compositeFrom = new Composite(composite_1, SWT.NONE);
 		compositeFrom.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnNewFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnNewFrom = new Button(compositeFrom, SWT.NONE);
 		btnNewFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -182,14 +169,13 @@ public class LocationView {
 						textFromOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
 						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-						e1.printStackTrace();
 					}
 				}
 			}
 		});
 		btnNewFrom.setText("New");
 
-		btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnBrowseFrom = new Button(compositeFrom, SWT.NONE);
 		btnBrowseFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -204,14 +190,14 @@ public class LocationView {
 						textFromDate.setText(hdp.getDate().toString());
 						textFromOriginal.setText(hdp.getOriginalText());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
 		});
 		btnBrowseFrom.setText("Browse");
 
-		btnClearFrom = new Button(compositeFrom, SWT.NONE);
+		Button btnClearFrom = new Button(compositeFrom, SWT.NONE);
 		btnClearFrom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -242,7 +228,7 @@ public class LocationView {
 		final Composite compositeTo = new Composite(composite_1, SWT.NONE);
 		compositeTo.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		btnCopyFromTo = new Button(compositeTo, SWT.NONE);
+		Button btnCopyFromTo = new Button(compositeTo, SWT.NONE);
 		btnCopyFromTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -253,7 +239,7 @@ public class LocationView {
 		});
 		btnCopyFromTo.setText("Copy From");
 
-		btnNewTo = new Button(compositeTo, SWT.NONE);
+		Button btnNewTo = new Button(compositeTo, SWT.NONE);
 		btnNewTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -272,14 +258,13 @@ public class LocationView {
 						textToOriginal.setText(dialog.getOriginal());
 					} catch (final Exception e1) {
 						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-						e1.printStackTrace();
 					}
 				}
 			}
 		});
 		btnNewTo.setText("New");
 
-		btnBrowseTo = new Button(compositeTo, SWT.NONE);
+		Button btnBrowseTo = new Button(compositeTo, SWT.NONE);
 		btnBrowseTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -294,14 +279,14 @@ public class LocationView {
 						textToDate.setText(hdp.getDate().toString());
 						textToOriginal.setText(hdp.getOriginalText());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
 		});
 		btnBrowseTo.setText("Browse");
 
-		btnClearTo = new Button(compositeTo, SWT.NONE);
+		Button btnClearTo = new Button(compositeTo, SWT.NONE);
 		btnClearTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -326,12 +311,12 @@ public class LocationView {
 		scrolledComposite
 				.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		buttonUpdate = new Button(composite, SWT.NONE);
+		Button buttonUpdate = new Button(composite, SWT.NONE);
 		buttonUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -396,7 +381,6 @@ public class LocationView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -518,7 +502,6 @@ public class LocationView {
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

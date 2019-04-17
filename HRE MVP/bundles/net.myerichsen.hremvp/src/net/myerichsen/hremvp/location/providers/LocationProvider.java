@@ -1,6 +1,7 @@
 package net.myerichsen.hremvp.location.providers;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -11,7 +12,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Provides all data for a single location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class LocationProvider implements IHREProvider {
@@ -123,7 +124,7 @@ public class LocationProvider implements IHREProvider {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<List<String>>();
 	}
 
 	/**

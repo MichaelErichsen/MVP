@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.location.servers.LocationNamePartServer;
  * Provides all data for a single part view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class LocationNamePartProvider implements IHREProvider {

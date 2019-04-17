@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. mar. 2019
+ * @version 17. apr. 2019
  */
 public class NewLocationWizardPage1 extends WizardPage {
 	private static final Logger LOGGER = Logger
@@ -49,7 +49,6 @@ public class NewLocationWizardPage1 extends WizardPage {
 	private final IEclipseContext context;
 	private NewLocationWizard wizard;
 
-	private ComboViewer comboViewerLocationNameStyles;
 	private List<List<String>> styleList;
 
 	/**
@@ -85,7 +84,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblLocationNameStyle.setText("Location Name Style");
 
-		comboViewerLocationNameStyles = new ComboViewer(container, SWT.NONE);
+		ComboViewer comboViewerLocationNameStyles = new ComboViewer(container,
+				SWT.NONE);
 		final Combo comboLocationNameStyles = comboViewerLocationNameStyles
 				.getCombo();
 		comboLocationNameStyles.addSelectionListener(new SelectionAdapter() {
@@ -189,7 +189,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 						wizard.setNameFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}
@@ -305,7 +305,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
 			}

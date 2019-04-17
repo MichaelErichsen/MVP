@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.location.servers.LocationPersonServer;
  * Provides all Persons for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class LocationPersonProvider implements IHREProvider {
@@ -41,7 +41,7 @@ public class LocationPersonProvider implements IHREProvider {
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
-	public List<?> get() throws Exception {
+	public List<?> get() {
 		return server.get();
 	}
 

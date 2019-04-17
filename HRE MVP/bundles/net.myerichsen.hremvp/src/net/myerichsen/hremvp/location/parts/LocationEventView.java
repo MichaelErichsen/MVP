@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -20,6 +18,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -34,12 +33,13 @@ import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.location.providers.LocationEventProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. nov. 2018
+ * @version 17. apr. 2019
  */
 
 public class LocationEventView {
@@ -54,19 +54,15 @@ public class LocationEventView {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private Table table;
 	private TableViewer tableViewer;
-
 	private final LocationEventProvider provider;
+	private int locationKey = 0;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
-	 *
 	 */
-	public LocationEventView() throws Exception {
+	public LocationEventView() {
 		provider = new LocationEventProvider();
 	}
 
@@ -80,7 +76,7 @@ public class LocationEventView {
 		parent.setLayout(new GridLayout(4, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -96,6 +92,8 @@ public class LocationEventView {
 		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnEventId
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -103,40 +101,13 @@ public class LocationEventView {
 				.getColumn();
 		tblclmnEvent.setWidth(300);
 		tblclmnEvent.setText("Event");
-	}
+		tableViewerColumnEventLabel
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
-	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 * @param key
-	 */
-	private void get(int key) {
-		List<List<String>> lls;
-		List<String> stringList;
-		TableItem item;
-
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			table.removeAll();
-
-			lls = provider.getEventList(key);
-
-			for (int i = 0; i < lls.size(); i++) {
-				stringList = lls.get(i);
-
-				item = new TableItem(table, SWT.NONE);
-
-				for (int j = 0; j < stringList.size(); j++) {
-					item.setText(j, stringList.get(j).trim());
-				}
-			}
-
+			tableViewer.setInput(provider.getStringList(locationKey));
 		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
@@ -177,7 +148,7 @@ public class LocationEventView {
 
 		String eventPid = "0";
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -190,22 +161,20 @@ public class LocationEventView {
 	}
 
 	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
-	 * @param key
+	 * @param locationPid
 	 * @throws Exception
 	 */
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
-			throws Exception {
-		get(key);
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
+		this.locationKey = locationPid;
+		try {
+			tableViewer.setInput(provider.getStringList(locationPid));
+			tableViewer.refresh();
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
 	}
 
 }

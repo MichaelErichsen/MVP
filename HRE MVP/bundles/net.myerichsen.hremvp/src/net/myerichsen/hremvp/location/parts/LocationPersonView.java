@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -39,7 +37,7 @@ import net.myerichsen.hremvp.location.providers.LocationPersonProvider;
  * Display all persons for a single location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. jan. 2019
+ * @version 17. apr. 2019
  */
 public class LocationPersonView {
 	private static final Logger LOGGER = Logger
@@ -53,7 +51,6 @@ public class LocationPersonView {
 	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
-	private Table table;
 	private TableViewer tableViewer;
 
 	private final LocationPersonProvider provider;
@@ -78,8 +75,9 @@ public class LocationPersonView {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
+		// FIXME Change to Jface
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -105,13 +103,6 @@ public class LocationPersonView {
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 * @param key
 	 */
 	private void get(int key) {
@@ -119,6 +110,7 @@ public class LocationPersonView {
 			String[] sa;
 			TableItem item;
 
+			Table table = tableViewer.getTable();
 			table.removeAll();
 
 			final List<String> nameList = provider.getPersonList(key);
@@ -171,7 +163,7 @@ public class LocationPersonView {
 
 		String personPid = "0";
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -185,21 +177,13 @@ public class LocationPersonView {
 	}
 
 	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
 	 * @param key
 	 * @throws Exception
 	 */
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key)
-			throws Exception {
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key) {
 		get(key);
 	}
 

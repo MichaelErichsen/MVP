@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.location.providers.LocationNameProvider;
  * Wizard to add a new location name
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewLocationNameWizard extends Wizard {
@@ -157,7 +157,8 @@ public class NewLocationNameWizard extends Wizard {
 			lnp.setPreposition(preposition);
 			lnp.setPrimaryLocationName(isPrimaryLocationName);
 			final int locationNamePid = lnp.insert();
-			LOGGER.log(Level.INFO, "Inserted location name " + locationNamePid);
+			LOGGER.log(Level.INFO, "Inserted location name {0}",
+					locationNamePid);
 
 			LocationNamePartProvider lnpp;
 
@@ -169,8 +170,8 @@ public class NewLocationNameWizard extends Wizard {
 				lnpp.setLabel(label);
 
 				final int locationNamePartPid = lnpp.insert();
-				LOGGER.log(Level.INFO, "Inserted location name part "
-						+ locationNamePartPid + ": " + label);
+				LOGGER.log(Level.INFO, "Inserted location name part {0}: {1}",
+						new Object[] { locationNamePartPid, label });
 			}
 
 			eventBroker.post("MESSAGE", locationName
@@ -182,7 +183,6 @@ public class NewLocationNameWizard extends Wizard {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 		return false;
 	}
