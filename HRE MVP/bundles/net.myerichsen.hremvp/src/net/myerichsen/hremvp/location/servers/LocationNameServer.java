@@ -198,8 +198,7 @@ public class LocationNameServer implements IHREServer {
 		final StringBuilder sb = new StringBuilder();
 		LocationNames aName;
 
-		List<LocationNames> nameList = new ArrayList<>();
-		nameList = new LocationNames().getFKLocationPid(locationPid);
+		List<LocationNames> nameList = new LocationNames().getFKLocationPid(locationPid);
 
 		for (int i = 0; i < nameList.size(); i++) {
 			aName = nameList.get(i);
@@ -212,7 +211,7 @@ public class LocationNameServer implements IHREServer {
 				for (final LocationNameParts PersonNameParts : lnp) {
 					if ((PersonNameParts.getLocationNamePid() == aName
 							.getLocationNamePid())
-							&& ((PersonNameParts.getLabel() != null))
+							&& (PersonNameParts.getLabel() != null)
 							&& !(PersonNameParts.getLabel().equals(""))) {
 						sb.append(PersonNameParts.getLabel() + " ");
 					}
@@ -266,14 +265,13 @@ public class LocationNameServer implements IHREServer {
 			// Concatenate non-null name parts
 			for (final LocationNameParts PersonNameParts : new LocationNameParts()
 					.getFKLocationNamePid(pid)) {
-				if (PersonNameParts.getLocationNamePid() == pid) {
-					if (PersonNameParts.getLabel() != null) {
-						sb.append(PersonNameParts.getLabel() + " ");
-					}
+				if ((PersonNameParts.getLocationNamePid() == pid)
+						&& (PersonNameParts.getLabel() != null)) {
+					sb.append(PersonNameParts.getLabel() + " ");
 				}
 			}
 			stringList.add(sb.toString());
-			LOGGER.log(Level.FINE, sb.toString());
+			LOGGER.log(Level.FINE, "{0}", sb);
 
 			stringList.add(
 					Boolean.toString(locationNames.isPrimaryLocationName()));
