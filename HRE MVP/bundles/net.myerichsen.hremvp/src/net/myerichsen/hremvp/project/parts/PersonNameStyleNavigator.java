@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -15,7 +14,6 @@ import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -49,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -74,7 +72,6 @@ public class PersonNameStyleNavigator {
 			provider = new PersonNameStyleProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -164,7 +161,6 @@ public class PersonNameStyleNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -174,7 +170,6 @@ public class PersonNameStyleNavigator {
 	protected void deletePersonNameStyle(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int personNameStylePid = 0;
 		String personNameStyleName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
@@ -187,7 +182,7 @@ public class PersonNameStyleNavigator {
 				"Delete person name style " + personNameStyleName, null,
 				"Are you sure that you will delete " + personNameStylePid + ", "
 						+ personNameStyleName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of person name style "
@@ -200,7 +195,7 @@ public class PersonNameStyleNavigator {
 			pnmp.deletePersonNameStylePid(personNameStylePid);
 			LOGGER.log(Level.INFO, "Person name map(s) has been deleted");
 
-			final PersonNameStyleProvider provider = new PersonNameStyleProvider();
+			provider = new PersonNameStyleProvider();
 			provider.delete(personNameStylePid);
 			eventBroker.post("MESSAGE", "Person name style "
 					+ personNameStyleName + " has been deleted");
@@ -208,16 +203,8 @@ public class PersonNameStyleNavigator {
 					personNameStylePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
 	}
 
 	/**
@@ -248,13 +235,6 @@ public class PersonNameStyleNavigator {
 	}
 
 	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
 	 * @param key
 	 * @throws MvpException
 	 */
@@ -263,7 +243,7 @@ public class PersonNameStyleNavigator {
 	private void subscribePersonNameStylePidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC) int personNameStylePid) {
 		LOGGER.log(Level.FINE,
-				"Received person name style id " + personNameStylePid);
+				"Received person name style id {0}", personNameStylePid);
 		this.personNameStylePid = personNameStylePid;
 
 		if (personNameStylePid > 0) {
@@ -282,7 +262,6 @@ public class PersonNameStyleNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}

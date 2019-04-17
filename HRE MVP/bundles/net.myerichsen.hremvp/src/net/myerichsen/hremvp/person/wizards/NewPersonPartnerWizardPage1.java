@@ -228,7 +228,7 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 		final Label lblPartnerRole = new Label(container, SWT.NONE);
 		lblPartnerRole.setText("Partner role");
 
-		Text textPartnerRole = new Text(container, SWT.BORDER);
+		final Text textPartnerRole = new Text(container, SWT.BORDER);
 		textPartnerRole.addModifyListener(
 				e -> partnerRole = textPartnerRole.getText());
 		textPartnerRole.setLayoutData(

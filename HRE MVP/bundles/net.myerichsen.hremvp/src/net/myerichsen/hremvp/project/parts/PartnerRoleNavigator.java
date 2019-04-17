@@ -48,7 +48,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Partner roles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. mar. 2019
+ * @version 17. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PartnerRoleNavigator {
@@ -62,7 +62,7 @@ public class PartnerRoleNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private final PartnerRoleProvider provider;
+	private PartnerRoleProvider provider;
 	private TableViewer tableViewer;
 	private int PartnerRolePid = 0;
 
@@ -173,7 +173,6 @@ public class PartnerRoleNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -183,7 +182,6 @@ public class PartnerRoleNavigator {
 	protected void deletePartnerRole(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int PartnerRolePid = 0;
 		String PartnerRoleName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
@@ -196,7 +194,7 @@ public class PartnerRoleNavigator {
 				"Delete Partner role " + PartnerRoleName, null,
 				"Are you sure that you will delete " + PartnerRolePid + ", "
 						+ PartnerRoleName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of Partner role "
@@ -205,7 +203,7 @@ public class PartnerRoleNavigator {
 		}
 
 		try {
-			final PartnerRoleProvider provider = new PartnerRoleProvider();
+			provider = new PartnerRoleProvider();
 			provider.delete(PartnerRolePid);
 			eventBroker.post("MESSAGE",
 					"Partner role " + PartnerRoleName + " has been deleted");
@@ -213,7 +211,6 @@ public class PartnerRoleNavigator {
 					PartnerRolePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -269,7 +266,7 @@ public class PartnerRoleNavigator {
 	@Optional
 	private void subscribePartnerRolePidUpdateTopic(
 			@UIEventTopic(Constants.PARTNER_ROLE_PID_UPDATE_TOPIC) int PartnerRolePid) {
-		LOGGER.log(Level.FINE, "Received Partner Role id " + PartnerRolePid);
+		LOGGER.log(Level.FINE, "Received Partner Role id {0}", PartnerRolePid);
 		this.PartnerRolePid = PartnerRolePid;
 
 		if (PartnerRolePid > 0) {
@@ -288,7 +285,6 @@ public class PartnerRoleNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

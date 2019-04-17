@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 /**
  * Filter for navigator parts
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
  * @version 15. apr. 2019
  */
@@ -17,7 +17,7 @@ public class NavigatorFilter extends ViewerFilter {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String searchString;
-	private int stringPos;
+	private final int stringPos;
 
 	/**
 	 * Constructor

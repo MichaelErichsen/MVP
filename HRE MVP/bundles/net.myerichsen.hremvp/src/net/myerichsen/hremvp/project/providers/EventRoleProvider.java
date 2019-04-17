@@ -54,6 +54,13 @@ public class EventRoleProvider implements IHREProvider {
 //		return server.get();
 //	}
 
+	/**
+	 *
+	 */
+	public void get() {
+		// TODO Auto-generated method stub
+
+	}
 
 	/**
 	 * Get a row
@@ -84,13 +91,6 @@ public class EventRoleProvider implements IHREProvider {
 		return EventRolePid;
 	}
 
-	/**
-	 * @return the eventTypePid
-	 */
-	public int getEventTypePid() {
-		return EventTypePid;
-	}
-
 //	/**
 //	 * @param key
 //	 * @return
@@ -101,6 +101,13 @@ public class EventRoleProvider implements IHREProvider {
 //			throws Exception {
 //		return server.getNameList(key);
 //	}
+
+	/**
+	 * @return the eventTypePid
+	 */
+	public int getEventTypePid() {
+		return EventTypePid;
+	}
 
 	public List<List<String>> getEventTypeStringList(int eventTypePid)
 			throws Exception {
@@ -204,13 +211,5 @@ public class EventRoleProvider implements IHREProvider {
 		server.setEventRolePid(EventRolePid);
 		server.setAbbreviation(Abbreviation);
 		server.update();
-	}
-
-	/**
-	 * 
-	 */
-	public void get() {
-		// TODO Auto-generated method stub
-		
 	}
 }

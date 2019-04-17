@@ -29,12 +29,13 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 16. apr. 2019
+ * @version 17. apr. 2019
  *
  */
 public class HreUpdateHandler {
-	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	/**
@@ -54,7 +55,7 @@ public class HreUpdateHandler {
 		provisioningJob.addJobChangeListener(new JobChangeAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.core.runtime.jobs.JobChangeAdapter#done(org.eclipse.
 			 * core.runtime.jobs.IJobChangeEvent)

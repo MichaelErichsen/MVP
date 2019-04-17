@@ -63,7 +63,7 @@ public class NewPersonNameWizardPage2 extends WizardPage {
 			final NewPersonNameWizard wizard = (NewPersonNameWizard) getWizard();
 			personNameStylePid = wizard.getPersonNameStylePid();
 
-			PersonNameMapProvider provider = new PersonNameMapProvider();
+			final PersonNameMapProvider provider = new PersonNameMapProvider();
 			final List<PersonNameMaps> mapList = provider
 					.getFKNameStylePid(personNameStylePid);
 			textFieldList = new ArrayList<>();

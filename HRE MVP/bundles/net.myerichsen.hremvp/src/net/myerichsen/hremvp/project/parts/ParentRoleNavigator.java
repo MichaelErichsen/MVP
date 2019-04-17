@@ -45,10 +45,10 @@ import net.myerichsen.hremvp.project.wizards.NewParentRoleWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all Parent roles
+ * Display all parent roles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. mar. 2019
+ * @version 17. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class ParentRoleNavigator {
@@ -62,7 +62,7 @@ public class ParentRoleNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private final ParentRoleProvider provider;
+	private ParentRoleProvider provider;
 	private TableViewer tableViewer;
 	private int ParentRolePid = 0;
 
@@ -173,7 +173,6 @@ public class ParentRoleNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -183,7 +182,6 @@ public class ParentRoleNavigator {
 	protected void deleteParentRole(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int ParentRolePid = 0;
 		String ParentRoleName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
@@ -196,7 +194,7 @@ public class ParentRoleNavigator {
 				"Delete Parent role " + ParentRoleName, null,
 				"Are you sure that you will delete " + ParentRolePid + ", "
 						+ ParentRoleName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of Parent role "
@@ -205,7 +203,7 @@ public class ParentRoleNavigator {
 		}
 
 		try {
-			final ParentRoleProvider provider = new ParentRoleProvider();
+			provider = new ParentRoleProvider();
 			provider.delete(ParentRolePid);
 			eventBroker.post("MESSAGE",
 					"Parent role " + ParentRoleName + " has been deleted");
@@ -213,7 +211,6 @@ public class ParentRoleNavigator {
 					ParentRolePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -269,7 +266,7 @@ public class ParentRoleNavigator {
 	@Optional
 	private void subscribeParentRolePidUpdateTopic(
 			@UIEventTopic(Constants.PARENT_ROLE_PID_UPDATE_TOPIC) int ParentRolePid) {
-		LOGGER.log(Level.FINE, "Received Parent Role id " + ParentRolePid);
+		LOGGER.log(Level.FINE, "Received Parent Role id {0}", ParentRolePid);
 		this.ParentRolePid = ParentRolePid;
 
 		if (ParentRolePid > 0) {
@@ -288,7 +285,6 @@ public class ParentRoleNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

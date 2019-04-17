@@ -159,7 +159,7 @@ public class NewPersonParentWizardPage1 extends WizardPage {
 		final Label lblParentRole = new Label(container, SWT.NONE);
 		lblParentRole.setText("Parent role");
 
-		Text textParentRole = new Text(container, SWT.BORDER);
+		final Text textParentRole = new Text(container, SWT.BORDER);
 		textParentRole
 				.addModifyListener(e -> parentRole = textParentRole.getText());
 		textParentRole.setLayoutData(

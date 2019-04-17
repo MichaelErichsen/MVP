@@ -146,7 +146,7 @@ public class PersonNameServer implements IHREServer {
 		StringBuilder sb;
 
 		personPid = name.getPersonPid();
-		List<PersonNames> nameList = new PersonNames()
+		final List<PersonNames> nameList = new PersonNames()
 				.getFKPersonPid(personPid);
 
 		final String[] sa = new String[nameList.size()];
@@ -219,7 +219,7 @@ public class PersonNameServer implements IHREServer {
 	public String getPrimaryNameString(int personPid) throws Exception {
 		final StringBuilder sb = new StringBuilder();
 
-		List<PersonNames> nameList = new PersonNames()
+		final List<PersonNames> nameList = new PersonNames()
 				.getFKPersonPid(personPid);
 
 		for (int i = 0; i < nameList.size(); i++) {

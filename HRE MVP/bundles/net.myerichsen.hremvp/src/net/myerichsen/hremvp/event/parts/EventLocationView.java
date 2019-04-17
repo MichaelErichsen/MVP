@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.event.parts;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +42,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.location.dialogs.LocationNavigatorDialog;
 import net.myerichsen.hremvp.location.providers.LocationEventProvider;
 import net.myerichsen.hremvp.location.providers.LocationNamePartProvider;
 import net.myerichsen.hremvp.location.providers.LocationNameProvider;
@@ -58,21 +60,19 @@ public class EventLocationView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	// FIXME Populate event pid
-	private static final int eventPid = 0;
 	@Inject
 	private EPartService partService;
 	@Inject
 	private EModelService modelService;
 	@Inject
 	private MApplication application;
-
 	@Inject
 	private IEventBroker eventBroker;
 
-	private LocationEventProvider provider;
-
 	private TableViewer tableViewer;
+	private LocationEventProvider provider;
+	private List<List<String>> lls;
+	private int eventPid = 0;
 
 	/**
 	 * Constructor
@@ -85,6 +85,34 @@ public class EventLocationView {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
+	}
+
+	/**
+	 * @param shell
+	 */
+	protected void browseLocation(Shell shell) {
+		final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
+				shell);
+		if (dialog.open() == Window.OK) {
+			try {
+				final List<String> stringList = new ArrayList<>();
+				final int locationPid = dialog.getLocationPid();
+				stringList.add(Integer.toString(locationPid));
+				stringList.add(dialog.getLocationName());
+				lls.add(stringList);
+
+				final LocationEventProvider lep = new LocationEventProvider();
+				lep.setEventPid(eventPid);
+				lep.setLocationPid(locationPid);
+				lep.setPrimaryEvent(false);
+				lep.setPrimaryLocation(false);
+				lep.insert();
+
+			} catch (final Exception e) {
+				LOGGER.log(Level.SEVERE, e.toString(), e);
+			}
+		}
+
 	}
 
 	/**
@@ -131,7 +159,8 @@ public class EventLocationView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getStringList(eventPid));
+			lls = provider.getStringList(eventPid);
+			tableViewer.setInput(lls);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -167,7 +196,7 @@ public class EventLocationView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				openLocationNavigator();
+				browseLocation(null);
 			}
 		});
 		mntmAddExistingLocation.setText("Add existing location...");
@@ -238,7 +267,7 @@ public class EventLocationView {
 			lnp.deleteAllNamesForLocation(locationPid);
 
 			// Delete location
-			LocationProvider lp = new LocationProvider();
+			final LocationProvider lp = new LocationProvider();
 			lp.delete(locationPid);
 
 			LOGGER.log(Level.INFO, "Location {0} has been deleted",
@@ -249,29 +278,6 @@ public class EventLocationView {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
-	}
-
-	/**
-	 *
-	 */
-	protected void openLocationNavigator() {
-		// FIXME Populate openLocationNavigator()
-		// FIXME Add eventlocation
-//		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
-//				parentShell, context);
-//		if (dialog.open() == Window.OK) {
-//			try {
-//				final int fatherPid = dialog.getPersonPid();
-//				textFatherPersonPid.setText(Integer.toString(fatherPid));
-//				textFatherName.setText(dialog.getPersonName());
-//				textFatherBirthDate.setText(dialog.getBirthDate());
-//				textFatherDeathDate.setText(dialog.getDeathDate());
-//				wizard.setFatherPid(fatherPid);
-//			} catch (final Exception e) {
-//				LOGGER.log(Level.SEVERE, e.toString(), e);
-//			}
-//		}
-
 	}
 
 	/**
@@ -331,8 +337,10 @@ public class EventLocationView {
 	@Optional
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
+		this.eventPid = eventPid;
 		try {
-			tableViewer.setInput(provider.getStringList(eventPid));
+			lls = provider.getStringList(eventPid);
+			tableViewer.setInput(lls);
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

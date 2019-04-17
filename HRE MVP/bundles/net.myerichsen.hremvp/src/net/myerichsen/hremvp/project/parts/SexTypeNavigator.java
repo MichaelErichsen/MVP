@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -15,12 +14,9 @@ import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
@@ -48,7 +44,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sex types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -63,7 +59,7 @@ public class SexTypeNavigator {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private final SexTypeProvider provider;
+	private SexTypeProvider provider;
 	private TableViewer tableViewer;
 	private int sexTypePid = 0;
 
@@ -86,19 +82,7 @@ public class SexTypeNavigator {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.
-			 * eclipse.jface.viewers.DoubleClickEvent)
-			 */
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				openSexTypeView();
-			}
-		});
+		tableViewer.addDoubleClickListener(event -> openSexTypeView());
 
 		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
@@ -177,7 +161,6 @@ public class SexTypeNavigator {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 
@@ -200,7 +183,7 @@ public class SexTypeNavigator {
 				"Delete sex type " + primaryName, null,
 				"Are you sure that you will delete sex type " + sexTypePid
 						+ ", " + primaryName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Deletion of sex type " + primaryName
@@ -209,24 +192,16 @@ public class SexTypeNavigator {
 		}
 
 		try {
-			final SexTypeProvider provider = new SexTypeProvider();
+			provider = new SexTypeProvider();
 			provider.delete(sexTypePid);
-			LOGGER.log(Level.INFO,
-					"Sex type " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Sex type {0} has been deleted",
+					primaryName);
 			eventBroker.post("MESSAGE",
 					"Sex type " + primaryName + " has been deleted");
 			eventBroker.post(Constants.SEX_TYPE_PID_UPDATE_TOPIC, sexTypePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
 	}
 
 	/**
@@ -252,13 +227,6 @@ public class SexTypeNavigator {
 	}
 
 	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
 	 * @param key
 	 * @throws MvpException
 	 */
@@ -266,7 +234,7 @@ public class SexTypeNavigator {
 	@Optional
 	private void subscribeSexTypePidUpdateTopic(
 			@UIEventTopic(Constants.SEX_TYPE_PID_UPDATE_TOPIC) int sexTypePid) {
-		LOGGER.log(Level.FINE, "Received sex type id " + sexTypePid);
+		LOGGER.log(Level.FINE, "Received sex type id {0}", sexTypePid);
 		this.sexTypePid = sexTypePid;
 
 		if (sexTypePid > 0) {
@@ -285,7 +253,6 @@ public class SexTypeNavigator {
 				}
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

@@ -322,7 +322,7 @@ public class NewPersonWizard extends Wizard {
 			PersonNamePartProvider pnpp;
 			String string;
 			int namePartPid;
-			List<List<String>> lls = page3.getLls();
+			final List<List<String>> lls = page3.getLls();
 
 			// Create each name part
 			for (int i = 0; i < lls.size(); i++) {

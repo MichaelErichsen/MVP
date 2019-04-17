@@ -53,6 +53,13 @@ public class EventTypeProvider implements IHREProvider {
 //		return server.get();
 //	}
 
+	/**
+	 *
+	 */
+	public void get() {
+		// TODO Auto-generated method stub
+
+	}
 
 	/**
 	 * Get a row
@@ -83,13 +90,6 @@ public class EventTypeProvider implements IHREProvider {
 		return EventTypePid;
 	}
 
-	/**
-	 * @return
-	 */
-	public int getLabelPid() {
-		return server.getLabelPid();
-	}
-
 //	/**
 //	 * @param key
 //	 * @return
@@ -100,6 +100,13 @@ public class EventTypeProvider implements IHREProvider {
 //			throws Exception {
 //		return server.getNameList(key);
 //	}
+
+	/**
+	 * @return
+	 */
+	public int getLabelPid() {
+		return server.getLabelPid();
+	}
 
 	/**
 	 * @return stringList A list of lists of event type pids, label pids,
@@ -183,14 +190,6 @@ public class EventTypeProvider implements IHREProvider {
 		server.setEventTypePid(EventTypePid);
 		server.setAbbreviation(Abbreviation);
 		server.update();
-	}
-
-	/**
-	 * 
-	 */
-	public void get() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

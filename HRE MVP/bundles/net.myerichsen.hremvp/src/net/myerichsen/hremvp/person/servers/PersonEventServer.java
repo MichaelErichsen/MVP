@@ -101,7 +101,7 @@ public class PersonEventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		PersonServer ls;
 
 		final List<String> personStringList = new ArrayList<>();

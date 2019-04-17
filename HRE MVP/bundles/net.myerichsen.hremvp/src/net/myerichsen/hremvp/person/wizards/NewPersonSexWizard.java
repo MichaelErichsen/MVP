@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a sex to a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 3. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 // FIXME Add from and to dates to insert and update
@@ -80,8 +80,8 @@ public class NewPersonSexWizard extends Wizard {
 
 				final int sexPid = sexProvider.insert();
 
-				LOGGER.log(Level.INFO,
-						"Inserted sex " + sexPid + " for person " + personPid);
+				LOGGER.log(Level.INFO, "Inserted sex {0} for person {1}",
+						new Object[] { sexPid, personPid });
 
 				eventBroker.post("MESSAGE",
 						"Inserted sex " + sexPid + " for person " + personPid);

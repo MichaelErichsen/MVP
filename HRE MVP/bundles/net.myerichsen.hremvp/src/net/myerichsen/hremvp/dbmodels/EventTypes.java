@@ -73,9 +73,9 @@ public class EventTypes {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		List<EventTypes> modelList = new ArrayList<>();
+		final List<EventTypes> modelList = new ArrayList<>();
 		while (rs.next()) {
-			EventTypes model = new EventTypes();
+			final EventTypes model = new EventTypes();
 			model.setEventTypePid(rs.getInt("EVENT_TYPE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));

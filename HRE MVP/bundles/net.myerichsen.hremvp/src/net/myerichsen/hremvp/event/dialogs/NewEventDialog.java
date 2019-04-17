@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 15. apr. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -155,7 +155,7 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void clearLocation() {
 		textLocation.setText("");
@@ -481,7 +481,7 @@ public class NewEventDialog extends TitleAreaDialog {
 		btnNewLocation.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -498,7 +498,7 @@ public class NewEventDialog extends TitleAreaDialog {
 		btnBrowseLocation.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -515,7 +515,7 @@ public class NewEventDialog extends TitleAreaDialog {
 		btnClearLocation.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.
 			 * events.MouseEvent)
@@ -682,7 +682,7 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	private void getNewLocation() {
 		final NewLocationDialog dialog = new NewLocationDialog(
-				textLocation.getShell(), context);
+				textLocation.getShell());
 		if (dialog.open() == Window.OK) {
 			try {
 				locationPid = dialog.getLocationPid();

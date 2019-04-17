@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
  * Wizard to add a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewLocationNameStyleWizard extends Wizard {
@@ -25,9 +25,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
-	private NewLocationNameStyleWizardPage1 page1;
 	private NewLocationNameStyleWizardPage2 page2;
-	private LocationNameStyleProvider provider;
 	private String styleName;
 	private String namePartCount;
 	private String isoCode;
@@ -38,8 +36,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 	 * @param locationNameStylePid
 	 * @param context
 	 */
-	public NewLocationNameStyleWizard(int locationNameStylePid,
-			IEclipseContext context) {
+	public NewLocationNameStyleWizard(IEclipseContext context) {
 		setWindowTitle("Add a location name style");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
@@ -63,7 +60,8 @@ public class NewLocationNameStyleWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewLocationNameStyleWizardPage1(context);
+		NewLocationNameStyleWizardPage1 page1 = new NewLocationNameStyleWizardPage1(
+				context);
 		addPage(page1);
 	}
 
@@ -107,12 +105,12 @@ public class NewLocationNameStyleWizard extends Wizard {
 			int labelPid = dp.getNextLabelPid();
 
 			// Insert a location name style
-			provider = new LocationNameStyleProvider();
+			LocationNameStyleProvider provider = new LocationNameStyleProvider();
 			provider.setIsoCode(isoCode);
 			provider.setLabelPid(labelPid);
 			final int locationNameStylePid = provider.insert();
-			LOGGER.log(Level.INFO,
-					"Inserted location name style {0}", locationNameStylePid);
+			LOGGER.log(Level.INFO, "Inserted location name style {0}",
+					locationNameStylePid);
 			eventBroker.post("MESSAGE",
 					"Inserted location name style " + locationNameStylePid);
 
@@ -123,8 +121,9 @@ public class NewLocationNameStyleWizard extends Wizard {
 			dp.setLabelPid(labelPid);
 			dp.setLabelType("LOCATIONNAME");
 			dp.insert();
-			LOGGER.log(Level.INFO, "Inserted location name style \"" + styleName
-					+ "\" in dictionary");
+			LOGGER.log(Level.INFO,
+					"Inserted location name style \"{0}\" in dictionary",
+					styleName);
 
 			// Handle each table row in wizard page 2
 			final List<List<String>> input = (List<List<String>>) page2
@@ -142,10 +141,9 @@ public class NewLocationNameStyleWizard extends Wizard {
 				dp.setLabelType("LOCATIONNAMEMAP");
 				final int dictionaryPid = dp.insert();
 				LOGGER.log(Level.INFO,
-						"Inserted dictionary element " + dictionaryPid + ", "
-								+ isoCode + ", \"" + input.get(i).get(1)
-								+ "\", label pid " + labelPid);
-
+						"Inserted dictionary element {0}, {1}, \"{2}\", {3}",
+						new Object[] { dictionaryPid, isoCode,
+								input.get(i).get(1), labelPid });
 				// Create a map row
 				map = new LocationNameMaps();
 				map.setLabelPid(labelPid);
@@ -153,9 +151,9 @@ public class NewLocationNameStyleWizard extends Wizard {
 				map.setPartNo(Integer.parseInt(input.get(i).get(0)));
 				final int nameMapPid = map.insert();
 				LOGGER.log(Level.INFO,
-						"Inserted map element " + nameMapPid + ", Part no. "
-								+ input.get(i).get(0) + ", label pid "
-								+ labelPid);
+						"Inserted map element {0}, Part no. {1}, label pid {2}",
+						new Object[] { nameMapPid, input.get(i).get(0),
+								labelPid });
 			}
 
 			eventBroker.post(
@@ -166,7 +164,6 @@ public class NewLocationNameStyleWizard extends Wizard {
 
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 		return false;

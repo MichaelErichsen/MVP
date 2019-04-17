@@ -66,10 +66,7 @@ public class EventPersonView {
 	private IEventBroker eventBroker;
 
 	private final PersonEventProvider provider;
-
-	// FIXME Populate event pid
-	private final static int eventPid = 0;
-
+	private int eventPid = 0;
 	private TableViewer tableViewer;
 
 	/**
@@ -309,6 +306,8 @@ public class EventPersonView {
 	@Optional
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
+		this.eventPid = eventPid;
+
 		try {
 			tableViewer.setInput(provider.getStringList(eventPid));
 			tableViewer.refresh();

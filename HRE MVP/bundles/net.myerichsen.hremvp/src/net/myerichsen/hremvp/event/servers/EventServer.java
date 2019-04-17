@@ -323,7 +323,7 @@ public class EventServer implements IHREServer {
 		}
 
 		final EventTypes eventType = new EventTypes();
-		int eventTypePid2 = event.getEventTypePid();
+		final int eventTypePid2 = event.getEventTypePid();
 		eventType.get(event.getEventTypePid());
 		stringList.add(Integer.toString(eventTypePid2));
 		stringList.add(eventType.getAbbreviation());

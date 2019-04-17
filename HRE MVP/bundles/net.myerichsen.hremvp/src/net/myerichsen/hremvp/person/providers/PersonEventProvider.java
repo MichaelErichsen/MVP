@@ -29,7 +29,6 @@ public class PersonEventProvider implements IHREProvider {
 		server = new PersonEventServer();
 	}
 
-
 	/**
 	 * @param personEventPid2
 	 * @throws MvpException
@@ -86,7 +85,8 @@ public class PersonEventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<>();	}
+		return new ArrayList<>();
+	}
 
 	/*
 	 * (non-Javadoc)

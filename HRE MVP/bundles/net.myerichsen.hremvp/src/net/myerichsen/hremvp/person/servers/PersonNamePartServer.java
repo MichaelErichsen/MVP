@@ -162,7 +162,7 @@ public class PersonNamePartServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
 	 */
 	@Override

@@ -427,7 +427,7 @@ public class PersonNamePartView {
 								input.get(i).get(1), input.get(i).get(2),
 								input.get(i).get(3), provider.getLabel() });
 
-				String string = input.get(i).get(3);
+				final String string = input.get(i).get(3);
 				if (!string.equals(provider.getLabel())) {
 					provider.setLabel(string);
 					provider.update();

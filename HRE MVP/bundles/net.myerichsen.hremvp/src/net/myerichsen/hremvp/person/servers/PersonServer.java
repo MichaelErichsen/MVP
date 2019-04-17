@@ -688,10 +688,10 @@ public class PersonServer implements IHREServer {
 			final List<Dictionary> fkLabelPid = dictionary
 					.getFKLabelPid(st.getLabelPid());
 
-			String isoCode = store.getString("GUILANGUAGE");
+			final String isoCode = store.getString("GUILANGUAGE");
 			String label = "";
 
-			for (Dictionary d : fkLabelPid) {
+			for (final Dictionary d : fkLabelPid) {
 				if (isoCode.equals(d.getIsoCode())) {
 					label = d.getLabel();
 					break;

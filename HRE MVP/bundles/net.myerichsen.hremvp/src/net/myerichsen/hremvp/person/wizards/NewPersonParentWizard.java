@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.person.providers.ParentProvider;
  * Wizard to add an existing person as a parent
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 public class NewPersonParentWizard extends Wizard {
@@ -60,7 +60,7 @@ public class NewPersonParentWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		if (page1.getParentPid() != 0) {
-			ParentProvider parentProvider = new ParentProvider();
+			final ParentProvider parentProvider = new ParentProvider();
 			parentProvider.setChild(childPid);
 			int parentPid = page1.getParentPid();
 			parentProvider.setParent(parentPid);
@@ -71,8 +71,8 @@ public class NewPersonParentWizard extends Wizard {
 			parentProvider.setLanguagePid(1);
 			try {
 				parentPid = parentProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted Parent pid " + parentPid
-						+ " for child " + childPid);
+				LOGGER.log(Level.INFO, "Inserted Parent pid {0} for child {1}",
+						new Object[] { parentPid, childPid });
 
 				eventBroker.post("MESSAGE", "Inserted Parent pid " + parentPid
 						+ " for parent " + childPid);

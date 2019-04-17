@@ -11,13 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.xml.bind.DatatypeConverter;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -50,7 +48,7 @@ import net.myerichsen.hremvp.listeners.SmallIntListener;
  * Dynamically create an editor with the fields in the database catalog
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. apr. 2019
+ * @version 17. apr. 2019
  *
  */
 
@@ -102,59 +100,7 @@ public class H2TableEditor {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final Text text = (Text) lineList.get(0);
-				recordNum = Integer.parseInt(text.getText());
-				try {
-					row = provider.select(recordNum);
-
-					if (!row.isEmpty()) {
-						eventBroker.post("MESSAGE",
-								"Record " + recordNum + " does not exist");
-						return;
-					}
-
-					for (int i = 0; i < lineList.size(); i++) {
-						final Object lineObject = lineList.get(i);
-						final String type = lineObject.getClass().getName();
-
-						if (type.equals("org.eclipse.swt.widgets.Button")) {
-							final Button line = (Button) lineObject;
-							line.setSelection((boolean) row.get(i));
-						} else if (type
-								.equals("org.eclipse.swt.widgets.Text")) {
-							final Text line = (Text) lineObject;
-							line.setText(row.get(i).toString());
-						} else if (type
-								.equals("org.eclipse.swt.widgets.Composite")) {
-							final Timestamp timeStamp = (Timestamp) row.get(i);
-							final Calendar calendar = Calendar.getInstance();
-							calendar.setTimeInMillis(timeStamp.getTime());
-
-							final Composite dateTime = (Composite) lineObject;
-							final Control[] children = dateTime.getChildren();
-
-							final DateTime date = (DateTime) children[0];
-							date.setDate(calendar.get(Calendar.YEAR),
-									calendar.get(Calendar.MONTH),
-									calendar.get(Calendar.DATE));
-							final DateTime time = (DateTime) children[1];
-							time.setTime(calendar.get(Calendar.HOUR),
-									calendar.get(Calendar.MINUTE),
-									calendar.get(Calendar.SECOND));
-						} else {
-							LOGGER.log(Level.INFO,
-									"Unimplemented type: " + type);
-							System.exit(16);
-						}
-					}
-					eventBroker.post("MESSAGE",
-							"Record " + recordNum + " has been selected");
-				} catch (final Exception e2) {
-					LOGGER.log(Level.SEVERE, e2.toString(), e2);
-					eventBroker.post("MESSAGE", e2.getMessage());
-				}
-
-				btnSelect.getParent().redraw();
+				select(btnSelect);
 			}
 		});
 		btnSelect.setText("Select");
@@ -169,54 +115,7 @@ public class H2TableEditor {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final Text insertText = (Text) lineList.get(0);
-				final int insertRecordNum = Integer
-						.parseInt(insertText.getText());
-
-				for (int i = 0; i < lineList.size(); i++) {
-					final Object lineObject = lineList.get(i);
-					final String type = lineObject.getClass().getName();
-
-					if (type.equals("org.eclipse.swt.widgets.Button")) {
-						final Button line = (Button) lineObject;
-						final Button checkButton = (Button) lineList.get(i);
-						line.setSelection(checkButton.getSelection());
-						columns.get(i).setValue(checkButton.getSelection());
-					} else if (type.equals("org.eclipse.swt.widgets.Text")) {
-						final Text line = (Text) lineObject;
-						final Text text = (Text) lineList.get(i);
-						line.setText(text.getText());
-						columns.get(i).setValue(text.getText());
-					} else if (type
-							.equals("org.eclipse.swt.widgets.Composite")) {
-						final Composite dateTime = (Composite) lineObject;
-						final Control[] children = dateTime.getChildren();
-						final DateTime date = (DateTime) children[0];
-						final DateTime time = (DateTime) children[1];
-
-						@SuppressWarnings("deprecation")
-						final Timestamp timeStamp = new Timestamp(
-								date.getYear() - 1900, date.getMonth(),
-								date.getDay(), time.getHours(),
-								time.getMinutes(), time.getSeconds(), 0);
-						columns.get(i).setValue(timeStamp);
-					} else {
-						LOGGER.log(Level.INFO, "Unimplemented type: " + type);
-						System.exit(16);
-					}
-				}
-
-				try {
-					provider.insert(columns);
-					eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
-					eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC,
-							tableName);
-					eventBroker.post("MESSAGE",
-							"Record " + insertRecordNum + " has been inserted");
-				} catch (final Exception e1) {
-					LOGGER.log(Level.SEVERE, e.toString(), e);
-					eventBroker.post("MESSAGE", e1.getMessage());
-				}
+				insert(e);
 			}
 		});
 		btnInsert.setText("Insert");
@@ -231,54 +130,7 @@ public class H2TableEditor {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final Text updateText = (Text) lineList.get(0);
-				final int updateRecordNum = Integer
-						.parseInt(updateText.getText());
-
-				for (int i = 0; i < lineList.size(); i++) {
-					final Object lineObject = lineList.get(i);
-					final String type = lineObject.getClass().getName();
-
-					if (type.equals("org.eclipse.swt.widgets.Button")) {
-						final Button line = (Button) lineObject;
-						final Button checkButton = (Button) lineList.get(i);
-						line.setSelection(checkButton.getSelection());
-						columns.get(i).setValue(checkButton.getSelection());
-					} else if (type.equals("org.eclipse.swt.widgets.Text")) {
-						final Text line = (Text) lineObject;
-						final Text text = (Text) lineList.get(i);
-						line.setText(text.getText());
-						columns.get(i).setValue(text.getText());
-					} else if (type
-							.equals("org.eclipse.swt.widgets.Composite")) {
-						final Composite dateTime = (Composite) lineObject;
-						final Control[] children = dateTime.getChildren();
-						final DateTime date = (DateTime) children[0];
-						final DateTime time = (DateTime) children[1];
-
-						@SuppressWarnings("deprecation")
-						final Timestamp timeStamp = new Timestamp(
-								date.getYear() - 1900, date.getMonth(),
-								date.getDay(), time.getHours(),
-								time.getMinutes(), time.getSeconds(), 0);
-						columns.get(i).setValue(timeStamp);
-					} else {
-						LOGGER.log(Level.INFO, "Unimplemented type: " + type);
-						System.exit(16);
-					}
-				}
-
-				try {
-					provider.update(columns);
-					eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
-					eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC,
-							tableName);
-					eventBroker.post("MESSAGE",
-							"Record " + updateRecordNum + " has been updated");
-				} catch (final Exception e1) {
-					LOGGER.log(Level.SEVERE, e.toString(), e);
-					eventBroker.post("MESSAGE", e1.getMessage());
-				}
+				upodate(e);
 			}
 		});
 		btnUpdate.setText("Update");
@@ -308,28 +160,7 @@ public class H2TableEditor {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (final Object lineObject : lineList) {
-					final String type = lineObject.getClass().getName();
-
-					if (type.equals("org.eclipse.swt.widgets.Button")) {
-						final Button line = (Button) lineObject;
-						line.setSelection(Boolean.FALSE);
-					} else if (type.equals("org.eclipse.swt.widgets.Text")) {
-						final Text line = (Text) lineObject;
-						line.setText("0");
-					} else if (type
-							.equals("org.eclipse.swt.widgets.Composite")) {
-						final Composite dateTime = (Composite) lineObject;
-						final Control[] children = dateTime.getChildren();
-						final DateTime date = (DateTime) children[0];
-						date.setDate(2000, 1, 1);
-						final DateTime time = (DateTime) children[1];
-						time.setTime(0, 0, 0);
-					} else {
-						LOGGER.log(Level.INFO, "Unimplemented type: " + type);
-						System.exit(16);
-					}
-				}
+				reset();
 			}
 		});
 		btnResetDialog.setText("Reset fields");
@@ -418,7 +249,7 @@ public class H2TableEditor {
 		}
 
 		provider = new H2TableProvider(tableName);
-		int count = provider.getCount();
+		final int count = provider.getCount();
 		columns = provider.getModelList();
 		row = provider.select(recordNum);
 
@@ -464,12 +295,12 @@ public class H2TableEditor {
 						SWT.CHECK);
 				checkButton.setText(columns.get(i).getName());
 
-				if (columns.get(i).getValue() == null)
+				if (columns.get(i).getValue() == null) {
 					checkButton.setSelection(false);
-				else if (columns.get(i).getValue().equals("TRUE"))
-					checkButton.setSelection(true);
-				else
-					checkButton.setSelection(false);
+				} else {
+					checkButton.setSelection(
+							columns.get(i).getValue().equals("TRUE"));
+				}
 
 				columns.get(i).setValue(checkButton.getSelection());
 				lineList.add(checkButton);
@@ -573,7 +404,7 @@ public class H2TableEditor {
 
 			default:
 				LOGGER.log(Level.INFO,
-						"Unimplemented type: " + columns.get(i).getType());
+						"Unimplemented type: {0}", columns.get(i).getType());
 				System.exit(16);
 				break;
 			}
@@ -603,17 +434,136 @@ public class H2TableEditor {
 	}
 
 	/**
-	 *
+	 * @param e
 	 */
-	@PreDestroy
-	public void dispose() {
+	private void insert(SelectionEvent e) {
+		final Text insertText = (Text) lineList.get(0);
+		final int insertRecordNum = Integer.parseInt(insertText.getText());
+
+		for (int i = 0; i < lineList.size(); i++) {
+			final Object lineObject = lineList.get(i);
+			final String type = lineObject.getClass().getName();
+
+			if (type.equals("org.eclipse.swt.widgets.Button")) {
+				final Button line = (Button) lineObject;
+				final Button checkButton = (Button) lineList.get(i);
+				line.setSelection(checkButton.getSelection());
+				columns.get(i).setValue(checkButton.getSelection());
+			} else if (type.equals("org.eclipse.swt.widgets.Text")) {
+				final Text line = (Text) lineObject;
+				final Text text = (Text) lineList.get(i);
+				line.setText(text.getText());
+				columns.get(i).setValue(text.getText());
+			} else if (type.equals("org.eclipse.swt.widgets.Composite")) {
+				final Composite dateTime = (Composite) lineObject;
+				final Control[] children = dateTime.getChildren();
+				final DateTime date = (DateTime) children[0];
+				final DateTime time = (DateTime) children[1];
+
+				@SuppressWarnings("deprecation")
+				final Timestamp timeStamp = new Timestamp(date.getYear() - 1900,
+						date.getMonth(), date.getDay(), time.getHours(),
+						time.getMinutes(), time.getSeconds(), 0);
+				columns.get(i).setValue(timeStamp);
+			} else {
+				LOGGER.log(Level.INFO, "Unimplemented type: {0}", type);
+				System.exit(16);
+			}
+		}
+
+		try {
+			provider.insert(columns);
+			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
+			eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
+			eventBroker.post("MESSAGE",
+					"Record " + insertRecordNum + " has been inserted");
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+			eventBroker.post("MESSAGE", e1.getMessage());
+		}
 	}
 
 	/**
 	 *
 	 */
-	@Focus
-	public void setFocus() {
+	private void reset() {
+		for (final Object lineObject : lineList) {
+			final String type = lineObject.getClass().getName();
+
+			if (type.equals("org.eclipse.swt.widgets.Button")) {
+				final Button line = (Button) lineObject;
+				line.setSelection(Boolean.FALSE);
+			} else if (type.equals("org.eclipse.swt.widgets.Text")) {
+				final Text line = (Text) lineObject;
+				line.setText("0");
+			} else if (type.equals("org.eclipse.swt.widgets.Composite")) {
+				final Composite dateTime = (Composite) lineObject;
+				final Control[] children = dateTime.getChildren();
+				final DateTime date = (DateTime) children[0];
+				date.setDate(2000, 1, 1);
+				final DateTime time = (DateTime) children[1];
+				time.setTime(0, 0, 0);
+			} else {
+				LOGGER.log(Level.INFO, "Unimplemented type: {0}", type);
+				System.exit(16);
+			}
+		}
+	}
+
+	/**
+	 * @param btnSelect
+	 */
+	private void select(final Button btnSelect) {
+		final Text text = (Text) lineList.get(0);
+		recordNum = Integer.parseInt(text.getText());
+		try {
+			row = provider.select(recordNum);
+
+			if (!row.isEmpty()) {
+				eventBroker.post("MESSAGE",
+						"Record " + recordNum + " does not exist");
+				return;
+			}
+
+			for (int i = 0; i < lineList.size(); i++) {
+				final Object lineObject = lineList.get(i);
+				final String type = lineObject.getClass().getName();
+
+				if (type.equals("org.eclipse.swt.widgets.Button")) {
+					final Button line = (Button) lineObject;
+					line.setSelection((boolean) row.get(i));
+				} else if (type.equals("org.eclipse.swt.widgets.Text")) {
+					final Text line = (Text) lineObject;
+					line.setText(row.get(i).toString());
+				} else if (type.equals("org.eclipse.swt.widgets.Composite")) {
+					final Timestamp timeStamp = (Timestamp) row.get(i);
+					final Calendar calendar = Calendar.getInstance();
+					calendar.setTimeInMillis(timeStamp.getTime());
+
+					final Composite dateTime = (Composite) lineObject;
+					final Control[] children = dateTime.getChildren();
+
+					final DateTime date = (DateTime) children[0];
+					date.setDate(calendar.get(Calendar.YEAR),
+							calendar.get(Calendar.MONTH),
+							calendar.get(Calendar.DATE));
+					final DateTime time = (DateTime) children[1];
+					time.setTime(calendar.get(Calendar.HOUR),
+							calendar.get(Calendar.MINUTE),
+							calendar.get(Calendar.SECOND));
+				} else {
+					LOGGER.log(Level.INFO, "Unimplemented type: {0}", type);
+					System.exit(16);
+				}
+			}
+			eventBroker.post("MESSAGE",
+					"Record " + recordNum + " has been selected");
+		} catch (final Exception e2) {
+			LOGGER.log(Level.SEVERE, e2.toString(), e2);
+			eventBroker.post("MESSAGE", e2.getMessage());
+		}
+
+		btnSelect.getParent().redraw();
 	}
 
 	/**
@@ -643,5 +593,55 @@ public class H2TableEditor {
 			throws SQLException {
 		recordNum = Integer.parseInt(recordNumString);
 		createLines();
+	}
+
+	/**
+	 * @param e
+	 */
+	private void upodate(SelectionEvent e) {
+		final Text updateText = (Text) lineList.get(0);
+		final int updateRecordNum = Integer.parseInt(updateText.getText());
+
+		for (int i = 0; i < lineList.size(); i++) {
+			final Object lineObject = lineList.get(i);
+			final String type = lineObject.getClass().getName();
+
+			if (type.equals("org.eclipse.swt.widgets.Button")) {
+				final Button line = (Button) lineObject;
+				final Button checkButton = (Button) lineList.get(i);
+				line.setSelection(checkButton.getSelection());
+				columns.get(i).setValue(checkButton.getSelection());
+			} else if (type.equals("org.eclipse.swt.widgets.Text")) {
+				final Text line = (Text) lineObject;
+				final Text text = (Text) lineList.get(i);
+				line.setText(text.getText());
+				columns.get(i).setValue(text.getText());
+			} else if (type.equals("org.eclipse.swt.widgets.Composite")) {
+				final Composite dateTime = (Composite) lineObject;
+				final Control[] children = dateTime.getChildren();
+				final DateTime date = (DateTime) children[0];
+				final DateTime time = (DateTime) children[1];
+
+				@SuppressWarnings("deprecation")
+				final Timestamp timeStamp = new Timestamp(date.getYear() - 1900,
+						date.getMonth(), date.getDay(), time.getHours(),
+						time.getMinutes(), time.getSeconds(), 0);
+				columns.get(i).setValue(timeStamp);
+			} else {
+				LOGGER.log(Level.INFO, "Unimplemented type: {0}", type);
+				System.exit(16);
+			}
+		}
+
+		try {
+			provider.update(columns);
+			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
+			eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
+			eventBroker.post("MESSAGE",
+					"Record " + updateRecordNum + " has been updated");
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+			eventBroker.post("MESSAGE", e1.getMessage());
+		}
 	}
 }

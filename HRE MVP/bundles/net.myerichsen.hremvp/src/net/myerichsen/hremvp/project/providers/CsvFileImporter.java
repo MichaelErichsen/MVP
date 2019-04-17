@@ -46,7 +46,7 @@ public class CsvFileImporter {
 						tableNames[i]);
 				rowCount = provider.importCsv("./" + csvFileNames[i]);
 				LOGGER.log(Level.INFO, "{0} rows has been imported from {1}",
-						new Object[] {rowCount, csvFileNames[i]});
+						new Object[] { rowCount, csvFileNames[i] });
 
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);

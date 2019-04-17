@@ -28,10 +28,10 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
 public class H2TableProvider implements IContentProvider {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Connection conn = null;
-
 	private static final String COUNT_STATEMENT = "SELECT COUNT_STATEMENT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
+
 	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, DATA_TYPE, NUMERIC_PRECISION, NUMERIC_SCALE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
+	private Connection conn = null;
 
 	private int count;
 	private final List<H2TableModel> modelList;
@@ -120,7 +120,7 @@ public class H2TableProvider implements IContentProvider {
 
 	/**
 	 * Delete all rows in the H2 table
-	 * 
+	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
@@ -371,7 +371,7 @@ public class H2TableProvider implements IContentProvider {
 	 *                      access error or other errors
 	 */
 	public List<List<Object>> selectAll() throws SQLException {
-		List<List<Object>> rowList = new ArrayList<>();
+		final List<List<Object>> rowList = new ArrayList<>();
 		String field = "";
 
 		String s = tableName.substring(0, tableName.length() - 1);

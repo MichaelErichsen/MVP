@@ -43,7 +43,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Display all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 17. apr. 2019
  *
  */
 public class PersonSexView {
@@ -291,7 +291,7 @@ public class PersonSexView {
 			btnPrimarySex.setSelection(
 					sexesList.get(4).equals("true") ? true : false);
 
-			List<List<String>> stringList2 = new SexTypeProvider()
+			final List<List<String>> stringList2 = new SexTypeProvider()
 					.getStringList();
 			int index = 0;
 

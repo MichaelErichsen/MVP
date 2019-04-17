@@ -53,7 +53,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all names of a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. mar. 2019
+ * @version 17. apr. 2019
  */
 public class LocationNameNavigator {
 	private static final Logger LOGGER = Logger
@@ -213,7 +213,7 @@ public class LocationNameNavigator {
 				"Delete location name " + primaryName, null,
 				"Are you sure that you will delete location name "
 						+ locationNamePid + ", " + primaryName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of location name " + primaryName
@@ -298,7 +298,8 @@ public class LocationNameNavigator {
 			locationNamePid = selectedRow.getText(0);
 		}
 
-		LOGGER.log(Level.INFO, "Setting location name pid: " + locationNamePid);
+		LOGGER.log(Level.INFO, "Setting location name pid: {0}",
+				locationNamePid);
 		eventBroker.post(Constants.LOCATION_NAME_PID_UPDATE_TOPIC,
 				Integer.parseInt(locationNamePid));
 	}
@@ -318,7 +319,7 @@ public class LocationNameNavigator {
 	private void subscribeLocationPidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
 		this.locationPid = locationPid;
-		LOGGER.log(Level.INFO, "Received " + locationPid);
+		LOGGER.log(Level.INFO, "Received {0}", locationPid);
 
 		try {
 			tableViewer.setInput(provider.getStringList(locationPid));

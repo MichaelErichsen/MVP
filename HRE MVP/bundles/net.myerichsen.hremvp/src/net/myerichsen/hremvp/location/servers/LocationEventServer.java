@@ -145,7 +145,7 @@ public class LocationEventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		LocationServer ls;
 
 		final List<String> locationStringList = new ArrayList<>();

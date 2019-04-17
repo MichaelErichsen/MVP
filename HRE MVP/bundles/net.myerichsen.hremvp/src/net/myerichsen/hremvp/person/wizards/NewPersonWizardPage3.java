@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Person name parts wizard page
- * 
+ *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
  * @version 13. apr. 2019
  *
@@ -91,7 +91,7 @@ public class NewPersonWizardPage3 extends WizardPage {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			NewPersonWizard wizard = (NewPersonWizard) getWizard();
+			final NewPersonWizard wizard = (NewPersonWizard) getWizard();
 			final int personNameStylePid = wizard.getPersonNameStylePid();
 			lls = provider.getStringList(personNameStylePid);
 			tableViewer.setInput(lls);
@@ -112,7 +112,7 @@ public class NewPersonWizardPage3 extends WizardPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
 	 */
 	@Override

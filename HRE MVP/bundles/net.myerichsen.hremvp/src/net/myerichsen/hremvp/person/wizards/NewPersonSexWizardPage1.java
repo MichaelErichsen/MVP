@@ -154,7 +154,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		setControl(container);
 		container.setLayout(new GridLayout(1, false));
 
-		Composite compositeSex = new Composite(container, SWT.BORDER);
+		final Composite compositeSex = new Composite(container, SWT.BORDER);
 		compositeSex.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		compositeSex.setLayout(new GridLayout(2, false));
@@ -195,7 +195,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 			setErrorMessage(e1.getMessage());
 		}
 
-		Composite compositeFrom = new Composite(container, SWT.BORDER);
+		final Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		compositeFrom.setLayout(new GridLayout(2, false));
@@ -244,7 +244,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		});
 		btnClearFrom.setText("Clear");
 
-		Composite compositeTo = new Composite(container, SWT.BORDER);
+		final Composite compositeTo = new Composite(container, SWT.BORDER);
 		compositeTo.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		compositeTo.setLayout(new GridLayout(2, false));

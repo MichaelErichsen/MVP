@@ -78,10 +78,8 @@ public class H2DatabaseNavigator {
 			final TableItem selectedRow = selectedRows[0];
 			final String tableName = selectedRow.getText(0);
 
-			final ParameterizedCommand command = commandService
-					.createCommand(
-							"net.myerichsen.hremvp.command.tablenavigatoropen",
-							null);
+			final ParameterizedCommand command = commandService.createCommand(
+					"net.myerichsen.hremvp.command.tablenavigatoropen", null);
 			handlerService.executeHandler(command);
 			eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
 			eventBroker.post("MESSAGE", tableName + " has been opened");

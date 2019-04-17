@@ -64,7 +64,7 @@ public class NewPersonWizardPage5 extends WizardPage {
 		lls = new ArrayList<>();
 		try {
 			provider = new EventProvider();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
@@ -156,9 +156,9 @@ public class NewPersonWizardPage5 extends WizardPage {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnEventId = tableViewerColumnId.getColumn();
+		final TableColumn tblclmnEventId = tableViewerColumnId.getColumn();
 		tblclmnEventId.setWidth(100);
 		tblclmnEventId.setText("Event Id");
 		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));

@@ -16,10 +16,13 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * "mvp-log.%u.%g.txt".
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 17. apr. 2019
  *
  */
 public class HreLogger {
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+
 	/**
 	 * Constructor
 	 *
@@ -27,10 +30,6 @@ public class HreLogger {
 	private HreLogger() {
 		super();
 	}
-
-	private static IPreferenceStore store = new ScopedPreferenceStore(
-			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-	private static FileHandler handler;
 
 	/**
 	 * @throws IOException When log file access fails
@@ -42,7 +41,7 @@ public class HreLogger {
 
 		final String logFilePath = store.getString("LOGFILEPATH");
 
-		handler = new FileHandler(logFilePath + "mvp-log.%u.%g.txt",
+		FileHandler handler = new FileHandler(logFilePath + "mvp-log.%u.%g.txt",
 				1024 * 1024, 10, true);
 		handler.setFormatter(new SimpleFormatter());
 		LOGGER.addHandler(handler);

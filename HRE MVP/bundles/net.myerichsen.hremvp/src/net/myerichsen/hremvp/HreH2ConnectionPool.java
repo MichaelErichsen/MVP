@@ -64,7 +64,7 @@ public class HreH2ConnectionPool {
 
 	/**
 	 * Dispose the connection pool.
-	 * 
+	 *
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */

@@ -49,7 +49,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all location name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. mar. 2019
+ * @version 17. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -142,8 +142,7 @@ public class LocationNameStyleNavigator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewLocationNameStyleWizard(locationNameStylePid,
-								context));
+						new NewLocationNameStyleWizard(context));
 				dialog.open();
 			}
 		});
@@ -172,7 +171,6 @@ public class LocationNameStyleNavigator {
 	protected void deleteLocationNameStyle(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
-		int locationNameStylePid = 0;
 		String locationNameStyleName = null;
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
@@ -185,7 +183,7 @@ public class LocationNameStyleNavigator {
 				"Delete location name style " + locationNameStyleName, null,
 				"Are you sure that you will delete " + locationNameStylePid
 						+ ", " + locationNameStyleName + "?",
-				MessageDialog.CONFIRM, 0, "OK", "Cancel" );
+				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
 			eventBroker.post("MESSAGE", "Delete of location name style "
@@ -198,7 +196,7 @@ public class LocationNameStyleNavigator {
 			lnmp.deleteLocationNameStylePid(locationNameStylePid);
 			LOGGER.log(Level.INFO, "Location name map(s) has been deleted");
 
-			final LocationNameStyleProvider provider = new LocationNameStyleProvider();
+			provider = new LocationNameStyleProvider();
 			provider.delete(locationNameStylePid);
 			eventBroker.post("MESSAGE", "Location name style "
 					+ locationNameStyleName + " has been deleted");
@@ -281,7 +279,6 @@ public class LocationNameStyleNavigator {
 
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}
