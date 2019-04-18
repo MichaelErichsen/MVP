@@ -18,26 +18,33 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.NavigatorFilter;
 import net.myerichsen.hremvp.location.providers.LocationPersonProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all persons for a single location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 18. apr. 2019
  */
 public class LocationPersonView {
 	private static final Logger LOGGER = Logger
@@ -51,19 +58,25 @@ public class LocationPersonView {
 	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
-	private TableViewer tableViewer;
 
-	private final LocationPersonProvider provider;
+	private TableViewer tableViewer;
+	private LocationPersonProvider provider;
+	private NavigatorFilter navigatorFilter;
+	private int locationPid = 0;
 
 	/**
 	 * Constructor
 	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
-	 *
 	 */
-	public LocationPersonView() throws Exception {
-		provider = new LocationPersonProvider();
+	public LocationPersonView() {
+		try {
+			provider = new LocationPersonProvider();
+			navigatorFilter = new NavigatorFilter(1);
+		} catch (final Exception e) {
+			eventBroker.post("MESSAGE", e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
 	}
 
 	/**
@@ -75,10 +88,18 @@ public class LocationPersonView {
 	public void createControls(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 
-		// FIXME Change to Jface
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer.addFilter(navigatorFilter);
+
 		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events.MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openPersonView();
@@ -93,6 +114,8 @@ public class LocationPersonView {
 		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnEventId
+				.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -100,30 +123,33 @@ public class LocationPersonView {
 				.getColumn();
 		tblclmnPerson.setWidth(300);
 		tblclmnPerson.setText("Person");
-	}
+		tableViewerColumnEventLabel
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
-	/**
-	 * @param key
-	 */
-	private void get(int key) {
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			String[] sa;
-			TableItem item;
-
-			final Table table = tableViewer.getTable();
-			table.removeAll();
-
-			final List<String> nameList = provider.getPersonList(key);
-
-			for (int i = 0; i < nameList.size(); i++) {
-				sa = nameList.get(i).split(",");
-				item = new TableItem(table, SWT.NONE);
-				item.setText(0, sa[0]);
-				item.setText(1, sa[1]);
-			}
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
+			tableViewer.setInput(provider.getStringList(locationPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
+
+		final Label lblNameFilter = new Label(parent, SWT.NONE);
+		lblNameFilter.setText("Name Filter");
+
+		final Text textNameFilter = new Text(parent, SWT.BORDER);
+		textNameFilter.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				navigatorFilter.setSearchText(textNameFilter.getText());
+				LOGGER.log(Level.FINE, "Filter string: {0}",
+						textNameFilter.getText());
+				tableViewer.refresh();
+			}
+		});
+
+		textNameFilter.setLayoutData(
+				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 	}
 
@@ -183,8 +209,15 @@ public class LocationPersonView {
 	@Inject
 	@Optional
 	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int key) {
-		get(key);
-	}
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
+		this.locationPid = locationPid;
 
+		try {
+			tableViewer.setInput(provider.getStringList(locationPid));
+			tableViewer.refresh();
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
+	}
 }

@@ -13,9 +13,8 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 /**
  * Provides log entries to the log view
  *
- * @version 2018-09-14
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- *
+ * @version 18. apr. 2019
  */
 public class MvpLogProvider implements IStructuredContentProvider {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -44,7 +43,7 @@ public class MvpLogProvider implements IStructuredContentProvider {
 
 			br.close();
 		} catch (final Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
 		return lines.toArray();

@@ -56,11 +56,12 @@ public class LocationPersonProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param locationPid
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getPersonList(int locationPid) throws Exception {
-		return server.getPersonList(locationPid);
+	public List<List<String>> getPersonList(int locationPid) throws Exception {
+		return server.getStringList(locationPid);
 	}
 
 	/*

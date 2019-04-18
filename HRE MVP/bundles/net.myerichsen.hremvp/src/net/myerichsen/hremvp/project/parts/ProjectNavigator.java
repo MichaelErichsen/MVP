@@ -822,7 +822,11 @@ public class ProjectNavigator {
 
 		try {
 			closeDbIfActive(dbName);
+		} catch (SQLException e1) {
+			LOGGER.log(Level.INFO, e1.getMessage());
+		}
 
+		try {
 			String fullPath = MessageFormat.format("{0}\\{1}.h2.db", path,
 					dbName);
 			File file = new File(fullPath);

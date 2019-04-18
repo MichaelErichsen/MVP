@@ -19,7 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 18. apr. 2019
  */
 public class HreH2ConnectionPool {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
@@ -120,10 +120,9 @@ public class HreH2ConnectionPool {
 			}
 		}
 
-		LOGGER.log(Level.FINE,
-				"Reusing connection pool, Max: "
-						+ connectionPool.getMaxConnections() + ", Active: "
-						+ connectionPool.getActiveConnections());
+		LOGGER.log(Level.FINE, "Reusing connection pool, Max: {0}, Active: {1}",
+				new Object[] { connectionPool.getMaxConnections(),
+						connectionPool.getActiveConnections() });
 
 		return connectionPool.getConnection();
 	}

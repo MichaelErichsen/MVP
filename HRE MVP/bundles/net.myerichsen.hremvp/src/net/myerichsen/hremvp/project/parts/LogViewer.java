@@ -47,7 +47,7 @@ public class LogViewer {
 	 */
 	public LogViewer() {
 		provider = new MvpLogProvider();
-		logAddress = store.getString("LOGFILEPATH");
+		logAddress = store.getString("LOGFILEPATH") + "mvp-log.0.0.txt";
 	}
 
 	/**
