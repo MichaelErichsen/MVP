@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
  * Wizard to add a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 17. apr. 2019
+ * @version 18. apr. 2019
  *
  */
 public class NewLocationNameStyleWizard extends Wizard {
@@ -49,7 +49,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 	 * @see org.eclipse.jface.wizard.IWizard#addPages()
 	 */
 	public void addBackPages() {
-		page2 = new NewLocationNameStyleWizardPage2(context);
+		page2 = new NewLocationNameStyleWizardPage2();
 		addPage(page2);
 	}
 

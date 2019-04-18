@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Location name wizard page 1
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 18. apr. 2019
  */
 public class NewLocationWizardPage1 extends WizardPage {
 	private static final Logger LOGGER = Logger
@@ -64,6 +64,46 @@ public class NewLocationWizardPage1 extends WizardPage {
 		setDescription(
 				"Add the name style, optionally time limitations for the name "
 						+ "of the location, and a preposition for reporting use.\r\n\r\n");
+	}
+
+	/**
+	 * @param textFromDate
+	 */
+	private void browseFromDate(final Text textFromDate) {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textFromDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setNameFromDatePid(hdatePid);
+				textFromDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
+
+	/**
+	 * @param textToDate
+	 */
+	private void browseToDate(final Text textToDate) {
+		final DateNavigatorDialog dialog = new DateNavigatorDialog(
+				textToDate.getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final int hdatePid = dialog.getHdatePid();
+				final HDateProvider hdp = new HDateProvider();
+				hdp.get(hdatePid);
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setToDatePid(hdatePid);
+				textToDate.setText(hdp.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
 	}
 
 	/*
@@ -116,6 +156,25 @@ public class NewLocationWizardPage1 extends WizardPage {
 				.setLabelProvider(new HREComboLabelProvider(2));
 		comboLocationNameStyles.setToolTipText("Mandatory");
 
+		try {
+			// Populate location name style combo box
+			styleList = new LocationNameStyleProvider().getStringList();
+			comboViewerLocationNameStyles.setInput(styleList);
+			final int llsSize = styleList.size();
+			final String g = store.getString("DEFAULTLOCATIONNAMESTYLE");
+			int index = 0;
+
+			for (int i = 0; i < llsSize; i++) {
+				if (g.equals(styleList.get(i).get(1))) {
+					index = i;
+				}
+			}
+			comboLocationNameStyles.select(index);
+
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayout(new GridLayout(2, false));
 		compositeFrom.setLayoutData(
@@ -147,22 +206,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(
-						textFromDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						wizard = (NewLocationWizard) getWizard();
-						wizard.setNameFromDatePid(hdp.insert());
-						textFromDate.setText(dialog.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				newFromDate(textFromDate);
 			}
 		});
 		btnNewFrom.setText("New");
@@ -178,20 +222,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(
-						textFromDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						wizard = (NewLocationWizard) getWizard();
-						wizard.setNameFromDatePid(hdatePid);
-						textFromDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				browseFromDate(textFromDate);
 			}
 		});
 		btnBrowseFrom.setText("Browse");
@@ -263,22 +294,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateDialog dialog = new DateDialog(textToDate.getShell(),
-						context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final HDateProvider hdp = new HDateProvider();
-						hdp.setDate(dialog.getDate());
-						hdp.setSortDate(dialog.getSortDate());
-						hdp.setOriginalText(dialog.getOriginal());
-						hdp.setSurety(dialog.getSurety());
-						wizard = (NewLocationWizard) getWizard();
-						wizard.setNameToDatePid(hdp.insert());
-						textToDate.setText(dialog.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				newToDate(textToDate);
 			}
 		});
 		btnNewTo.setText("New");
@@ -294,20 +310,7 @@ public class NewLocationWizardPage1 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final DateNavigatorDialog dialog = new DateNavigatorDialog(
-						textToDate.getShell(), context);
-				if (dialog.open() == Window.OK) {
-					try {
-						final int hdatePid = dialog.getHdatePid();
-						final HDateProvider hdp = new HDateProvider();
-						hdp.get(hdatePid);
-						wizard = (NewLocationWizard) getWizard();
-						wizard.setToDatePid(hdatePid);
-						textToDate.setText(hdp.getDate().toString());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				browseToDate(textToDate);
 			}
 		});
 		btnBrowseTo.setText("Browse");
@@ -377,26 +380,51 @@ public class NewLocationWizardPage1 extends WizardPage {
 			}
 		});
 
-		try {
-			// Populate location name style combo box
-			styleList = new LocationNameStyleProvider().getStringList();
-			comboViewerLocationNameStyles.setInput(styleList);
-			final int llsSize = styleList.size();
-			final String g = store.getString("DEFAULTLOCATIONNAMESTYLE");
-			int index = 0;
-
-			for (int i = 0; i < llsSize; i++) {
-				if (g.equals(styleList.get(i).get(1))) {
-					index = i;
-				}
-			}
-			comboLocationNameStyles.select(index);
-
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
-
 		setPageComplete(false);
+	}
+
+	/**
+	 * @param textFromDate
+	 */
+	private void newFromDate(final Text textFromDate) {
+		final DateDialog dialog = new DateDialog(textFromDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setNameFromDatePid(hdp.insert());
+				textFromDate.setText(dialog.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
+
+	/**
+	 * @param textToDate
+	 */
+	private void newToDate(final Text textToDate) {
+		final DateDialog dialog = new DateDialog(textToDate.getShell(),
+				context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final HDateProvider hdp = new HDateProvider();
+				hdp.setDate(dialog.getDate());
+				hdp.setSortDate(dialog.getSortDate());
+				hdp.setOriginalText(dialog.getOriginal());
+				hdp.setSurety(dialog.getSurety());
+				wizard = (NewLocationWizard) getWizard();
+				wizard.setNameToDatePid(hdp.insert());
+				textToDate.setText(dialog.getDate().toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
 	}
 
 //	/**
