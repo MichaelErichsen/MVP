@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -35,10 +33,10 @@ import net.myerichsen.hremvp.project.providers.PartnerRoleProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display a Partner Role with all language labels
+ * Display a partner role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 31. mar. 2019
+ * @version 18. apr. 2019
  *
  */
 
@@ -51,7 +49,6 @@ public class PartnerRoleView {
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final PartnerRoleProvider provider;
-	private DictionaryProvider dp;
 	private int PartnerRolePid = 0;
 	private int labelPid = 0;
 
@@ -145,23 +142,8 @@ public class PartnerRoleView {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**
@@ -186,7 +168,6 @@ public class PartnerRoleView {
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -211,10 +192,10 @@ public class PartnerRoleView {
 			provider.get(PartnerRolePid);
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
-			LOGGER.log(Level.INFO,
-					"Partner pid " + PartnerRolePid + " has been updated");
+			LOGGER.log(Level.INFO, "Partner pid {0} has been updated",
+					PartnerRolePid);
 
-			dp = new DictionaryProvider();
+			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
 
 			final List<List<String>> input = (List<List<String>>) tableViewer
@@ -229,8 +210,8 @@ public class PartnerRoleView {
 									+ existingElement.get(2));
 
 					if (input.get(i).get(2).equals(existingElement.get(0))) {
-						if ((input.get(i).get(3)
-								.equals(existingElement.get(1)) == false)) {
+						if ((!input.get(i).get(3)
+								.equals(existingElement.get(1)))) {
 							dp = new DictionaryProvider();
 							dp.setDictionaryPid(
 									Integer.parseInt(existingElement.get(2)));
@@ -254,7 +235,6 @@ public class PartnerRoleView {
 					"Partner Role " + PartnerRolePid + " has been updated");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

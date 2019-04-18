@@ -41,8 +41,8 @@ public class HreLogger {
 
 		final String logFilePath = store.getString("LOGFILEPATH");
 
-		FileHandler handler = new FileHandler(logFilePath + "mvp-log.%u.%g.txt",
-				1024 * 1024, 10, true);
+		final FileHandler handler = new FileHandler(
+				logFilePath + "mvp-log.%u.%g.txt", 1024 * 1024, 10, true);
 		handler.setFormatter(new SimpleFormatter());
 		LOGGER.addHandler(handler);
 

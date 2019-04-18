@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -38,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event type with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 11. apr. 2019
+ * @version 18. apr. 2019
  *
  */
 public class EventTypeView {
@@ -53,7 +51,6 @@ public class EventTypeView {
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final EventTypeProvider provider;
-//	private DictionaryProvider dp;
 	private int eventTypePid = 0;
 	private int labelPid = 0;
 
@@ -165,20 +162,6 @@ public class EventTypeView {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

@@ -6,7 +6,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 13. feb. 2019
+ * @version 18. apr. 2019
  *
  */
 public class AncestorTreeLabelProvider implements ILabelProvider {
@@ -23,11 +23,13 @@ public class AncestorTreeLabelProvider implements ILabelProvider {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
 	 */
 	@Override
 	public void dispose() {
+		// TODO Auto-generated method stub
+
 	}
 
 	/*

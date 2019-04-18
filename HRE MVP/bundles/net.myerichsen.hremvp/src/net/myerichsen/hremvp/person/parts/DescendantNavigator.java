@@ -6,12 +6,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -36,7 +34,7 @@ import net.myerichsen.hremvp.person.providers.TreePerson;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 13. feb. 2019
+ * @version 18. apr. 2019
  *
  */
 public class DescendantNavigator {
@@ -134,20 +132,6 @@ public class DescendantNavigator {
 			tpList.set(i, person);
 		}
 		return tpList;
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

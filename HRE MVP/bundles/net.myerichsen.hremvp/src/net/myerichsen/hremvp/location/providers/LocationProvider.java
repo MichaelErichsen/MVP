@@ -124,7 +124,7 @@ public class LocationProvider implements IHREProvider {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
-		return new ArrayList<List<String>>();
+		return new ArrayList<>();
 	}
 
 	/**

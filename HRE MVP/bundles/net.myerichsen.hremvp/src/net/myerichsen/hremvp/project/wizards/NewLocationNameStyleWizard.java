@@ -60,7 +60,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		NewLocationNameStyleWizardPage1 page1 = new NewLocationNameStyleWizardPage1(
+		final NewLocationNameStyleWizardPage1 page1 = new NewLocationNameStyleWizardPage1(
 				context);
 		addPage(page1);
 	}
@@ -105,7 +105,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 			int labelPid = dp.getNextLabelPid();
 
 			// Insert a location name style
-			LocationNameStyleProvider provider = new LocationNameStyleProvider();
+			final LocationNameStyleProvider provider = new LocationNameStyleProvider();
 			provider.setIsoCode(isoCode);
 			provider.setLabelPid(labelPid);
 			final int locationNameStylePid = provider.insert();

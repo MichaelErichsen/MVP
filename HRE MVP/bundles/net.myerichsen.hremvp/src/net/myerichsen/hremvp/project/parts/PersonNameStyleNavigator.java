@@ -242,8 +242,8 @@ public class PersonNameStyleNavigator {
 	@Optional
 	private void subscribePersonNameStylePidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_NAME_STYLE_PID_UPDATE_TOPIC) int personNameStylePid) {
-		LOGGER.log(Level.FINE,
-				"Received person name style id {0}", personNameStylePid);
+		LOGGER.log(Level.FINE, "Received person name style id {0}",
+				personNameStylePid);
 		this.personNameStylePid = personNameStylePid;
 
 		if (personNameStylePid > 0) {

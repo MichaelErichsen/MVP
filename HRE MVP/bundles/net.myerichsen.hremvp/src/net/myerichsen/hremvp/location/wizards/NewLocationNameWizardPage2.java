@@ -70,7 +70,7 @@ public class NewLocationNameWizardPage2 extends WizardPage {
 		final Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 
-		TableViewer tableViewer = new TableViewer(container,
+		final TableViewer tableViewer = new TableViewer(container,
 				SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addFocusListener(new FocusAdapter() {

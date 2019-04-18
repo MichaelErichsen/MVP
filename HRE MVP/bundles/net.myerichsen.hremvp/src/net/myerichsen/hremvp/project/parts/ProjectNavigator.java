@@ -15,13 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -75,7 +73,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 18. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -475,13 +473,6 @@ public class ProjectNavigator {
 			}
 		}
 
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
 	}
 
 	/**
@@ -915,13 +906,6 @@ public class ProjectNavigator {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

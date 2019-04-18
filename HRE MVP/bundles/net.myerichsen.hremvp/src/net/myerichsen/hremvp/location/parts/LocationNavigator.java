@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -58,7 +57,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. apr. 2019
+ * @version 18. apr. 2019
  *
  */
 public class LocationNavigator {
@@ -238,10 +237,6 @@ public class LocationNavigator {
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
-	}
-
-	@PreDestroy
-	public void dispose() {
 	}
 
 	/**

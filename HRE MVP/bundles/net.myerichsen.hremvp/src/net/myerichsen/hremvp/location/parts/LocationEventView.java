@@ -76,7 +76,7 @@ public class LocationEventView {
 		parent.setLayout(new GridLayout(4, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -168,7 +168,7 @@ public class LocationEventView {
 	@Optional
 	private void subscribeKeyUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
-		this.locationKey = locationPid;
+		locationKey = locationPid;
 		try {
 			tableViewer.setInput(provider.getStringList(locationPid));
 			tableViewer.refresh();

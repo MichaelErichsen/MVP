@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -40,7 +38,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a Name Style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. mar. 2019
+ * @version 18. apr. 2019
  *
  */
 public class PersonNameStyleView {
@@ -60,8 +58,6 @@ public class PersonNameStyleView {
 	private PersonNameMapProvider pnmp;
 	private int personNameStylePid;
 
-	private DictionaryProvider dp;
-
 	/**
 	 * Constructor
 	 *
@@ -72,7 +68,6 @@ public class PersonNameStyleView {
 			pnmp = new PersonNameMapProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -200,22 +195,7 @@ public class PersonNameStyleView {
 			tableViewer.setInput(pnmp.getStringList(personNameStylePid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**
@@ -252,7 +232,6 @@ public class PersonNameStyleView {
 
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -271,10 +250,10 @@ public class PersonNameStyleView {
 		try {
 			provider.get(personNameStylePid);
 			final int labelPid = provider.getLabelPid();
-			dp = new DictionaryProvider();
+			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringListDp = dp.getStringList(labelPid);
 			final String text = textStyleName.getText();
-			if (text.equals(stringListDp.get(0).get(1)) == false) {
+			if (!text.equals(stringListDp.get(0).get(1))) {
 				final int dictionaryPid = Integer
 						.parseInt(stringListDp.get(0).get(2));
 				dp.get(dictionaryPid);
@@ -282,8 +261,8 @@ public class PersonNameStyleView {
 				dp.setLabel(text);
 				dp.update();
 			}
-			LOGGER.log(Level.INFO, "Person name style pid " + personNameStylePid
-					+ " has been updated to \"" + text + "\"");
+			LOGGER.log(Level.INFO, "Person name style pid {0} has been updated to \"{1}\"",
+					new Object[] {personNameStylePid,text});
 
 			final List<List<String>> stringList = pnmp
 					.getStringList(personNameStylePid);
@@ -298,8 +277,8 @@ public class PersonNameStyleView {
 									+ existingElement.get(3));
 
 					if (input.get(i).get(1).equals(existingElement.get(1))) {
-						if ((input.get(i).get(3)
-								.equals(existingElement.get(3)) == false)) {
+						if ((!input.get(i).get(3)
+								.equals(existingElement.get(3)))) {
 							final int dictionaryPid = Integer
 									.parseInt(input.get(i).get(4));
 							dp.get(dictionaryPid);
@@ -322,7 +301,6 @@ public class PersonNameStyleView {
 					personNameStylePid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 

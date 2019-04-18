@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -37,7 +35,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameMapProvider;
  * Display all data about a name map
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. sep. 2018
+ * @version 18. apr. 2019
  *
  */
 public class PersonNameMapView {
@@ -226,13 +224,6 @@ public class PersonNameMapView {
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 *
 	 */
 	private void get() {
@@ -278,13 +269,6 @@ public class PersonNameMapView {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post(MESSAGE, e.getMessage());
 		}
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

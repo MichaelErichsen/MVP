@@ -5,13 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -53,7 +51,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all names of a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 18. apr. 2019
  */
 public class LocationNameNavigator {
 	private static final Logger LOGGER = Logger
@@ -246,13 +244,6 @@ public class LocationNameNavigator {
 	}
 
 	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 *
 	 */
 	protected void openLocationNamePartsNavigator() {
@@ -302,13 +293,6 @@ public class LocationNameNavigator {
 				locationNamePid);
 		eventBroker.post(Constants.LOCATION_NAME_PID_UPDATE_TOPIC,
 				Integer.parseInt(locationNamePid));
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

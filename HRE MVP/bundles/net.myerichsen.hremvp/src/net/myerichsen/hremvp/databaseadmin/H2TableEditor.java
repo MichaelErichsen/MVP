@@ -403,8 +403,8 @@ public class H2TableEditor {
 				break;
 
 			default:
-				LOGGER.log(Level.INFO,
-						"Unimplemented type: {0}", columns.get(i).getType());
+				LOGGER.log(Level.INFO, "Unimplemented type: {0}",
+						columns.get(i).getType());
 				System.exit(16);
 				break;
 			}

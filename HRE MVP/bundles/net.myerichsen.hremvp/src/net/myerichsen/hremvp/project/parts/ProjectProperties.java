@@ -4,12 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -29,7 +27,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * GUI part displaying project properties.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. feb. 2019
+ * @version 18. apr. 2019
  *
  */
 public class ProjectProperties {
@@ -51,7 +49,6 @@ public class ProjectProperties {
 		try {
 			provider = new ProjectProvider();
 		} catch (final Exception e) {
-			e.printStackTrace();
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -94,27 +91,13 @@ public class ProjectProperties {
 	}
 
 	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
 	 * @param index
 	 */
 	@Inject
 	@Optional
 	private void subscribeProjectPropertiesUpdateTopic(
 			@UIEventTopic(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC) int index) {
-		LOGGER.log(Level.INFO, "Received index " + index);
+		LOGGER.log(Level.INFO, "Received index {0}", index);
 		this.index = index;
 		tableViewer.setInput(provider.getProperties(index));
 		tableViewer.refresh();

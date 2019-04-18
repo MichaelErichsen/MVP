@@ -203,8 +203,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			wizard = (NewLocationWizard) getWizard();
-			int locationNameStylePid = wizard.getLocationNameStylePid();
-			List<List<String>> stringList = provider
+			final int locationNameStylePid = wizard.getLocationNameStylePid();
+			final List<List<String>> stringList = provider
 					.getStringList(locationNameStylePid);
 			tableViewer.setInput(stringList);
 		} catch (final Exception e1) {
@@ -295,8 +295,8 @@ public class NewLocationWizardPage2 extends WizardPage {
 			final JSONObject result0 = results.getJSONObject(0);
 			final JSONObject geometry = result0.getJSONObject("geometry");
 			final JSONObject location = geometry.getJSONObject("location");
-			double lat = location.getDouble("lat");
-			double lng = location.getDouble("lng");
+			final double lat = location.getDouble("lat");
+			final double lng = location.getDouble("lng");
 			LOGGER.log(Level.FINE, "Lat {0}, lng {1}",
 					new Object[] { lat, lng });
 			textCoordinates.setText("Lat " + lat + ", lng " + lng);

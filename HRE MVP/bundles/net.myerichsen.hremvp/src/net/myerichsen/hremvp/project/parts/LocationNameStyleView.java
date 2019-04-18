@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -40,7 +38,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all data about a Name Style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. mar. 2019
+ * @version 18. apr. 2019
  */
 public class LocationNameStyleView {
 	private static final Logger LOGGER = Logger
@@ -58,8 +56,6 @@ public class LocationNameStyleView {
 	private LocationNameStyleProvider provider;
 	private LocationNameMapProvider lnmp;
 	private int locationNameStylePid;
-
-	private DictionaryProvider dp;
 
 	/**
 	 * Constructor
@@ -202,20 +198,6 @@ public class LocationNameStyleView {
 	}
 
 	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
-	}
-
-	/**
 	 * @param ls A list of style id, iso code and label
 	 */
 	@Inject
@@ -267,10 +249,10 @@ public class LocationNameStyleView {
 		try {
 			provider.get(locationNameStylePid);
 			final int labelPid = provider.getLabelPid();
-			dp = new DictionaryProvider();
+			final DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringListDp = dp.getStringList(labelPid);
 			final String text = textStyleName.getText();
-			if (text.equals(stringListDp.get(0).get(1)) == false) {
+			if (!text.equals(stringListDp.get(0).get(1))) {
 				final int dictionaryPid = Integer
 						.parseInt(stringListDp.get(0).get(2));
 				dp.get(dictionaryPid);
@@ -279,8 +261,8 @@ public class LocationNameStyleView {
 				dp.update();
 			}
 			LOGGER.log(Level.INFO,
-					"Location name style pid {0}" + locationNameStylePid
-							+ " has been updated to \"" + text + "\"");
+					"Location name style pid {0} has been updated to \"{1}\"",
+					new Object[] { locationNameStylePid, text });
 
 			final List<List<String>> stringList = lnmp
 					.getStringList(locationNameStylePid);
@@ -295,8 +277,8 @@ public class LocationNameStyleView {
 									+ existingElement.get(3));
 
 					if (input.get(i).get(1).equals(existingElement.get(1))) {
-						if ((input.get(i).get(3)
-								.equals(existingElement.get(3)) == false)) {
+						if ((!input.get(i).get(3)
+								.equals(existingElement.get(3)))) {
 							final int dictionaryPid = Integer
 									.parseInt(input.get(i).get(4));
 							dp.get(dictionaryPid);

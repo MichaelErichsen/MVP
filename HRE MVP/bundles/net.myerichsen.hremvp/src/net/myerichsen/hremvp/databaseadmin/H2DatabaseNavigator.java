@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -14,7 +13,6 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
@@ -35,7 +33,7 @@ import net.myerichsen.hremvp.Constants;
  * Create a view part with all tables in the database
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 18. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -94,6 +92,7 @@ public class H2DatabaseNavigator {
 		final TableColumn tblclmnTableName = tableViewerColumn.getColumn();
 		tblclmnTableName.setWidth(405);
 		tblclmnTableName.setText("Table Name");
+		// FIXME JFace
 
 		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -102,20 +101,6 @@ public class H2DatabaseNavigator {
 		tblclmnRowCount.setText("Row Count");
 
 		updateGui();
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

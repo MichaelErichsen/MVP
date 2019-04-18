@@ -5,12 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -38,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a sex type with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 31. mar. 2019
+ * @version 18. apr. 2019
  *
  */
 
@@ -54,7 +52,6 @@ public class SexTypeView {
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private final SexTypeProvider provider;
-	private DictionaryProvider dp;
 	private int sexTypePid = 0;
 	private int labelPid = 0;
 
@@ -163,23 +160,8 @@ public class SexTypeView {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
-	}
-
-	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**
@@ -200,7 +182,6 @@ public class SexTypeView {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -225,10 +206,9 @@ public class SexTypeView {
 			provider.get(sexTypePid);
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
-			LOGGER.log(Level.INFO,
-					"Sex pid " + sexTypePid + " has been updated");
+			LOGGER.log(Level.INFO, "Sex pid {0} has been updated", sexTypePid);
 
-			dp = new DictionaryProvider();
+			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
 
 			final List<List<String>> input = (List<List<String>>) tableViewer
@@ -243,8 +223,8 @@ public class SexTypeView {
 									+ existingElement.get(2));
 
 					if (input.get(i).get(2).equals(existingElement.get(0))) {
-						if ((input.get(i).get(3)
-								.equals(existingElement.get(1)) == false)) {
+						if ((!input.get(i).get(3)
+								.equals(existingElement.get(1)))) {
 							dp = new DictionaryProvider();
 							dp.setDictionaryPid(
 									Integer.parseInt(existingElement.get(2)));
@@ -254,11 +234,11 @@ public class SexTypeView {
 							dp.setLabelType("SEX");
 							dp.update();
 							LOGGER.log(Level.FINE,
-									"Updated dictionary element "
-											+ input.get(i).get(0) + ", "
-											+ input.get(i).get(1) + ", "
-											+ input.get(i).get(2) + ", "
-											+ input.get(i).get(3));
+									"Updated dictionary element {0}, {1}, {2}, {3}",
+									new Object[] { input.get(i).get(0),
+											input.get(i).get(1),
+											input.get(i).get(2),
+											input.get(i).get(3) });
 						}
 						break;
 					}
@@ -268,7 +248,6 @@ public class SexTypeView {
 					"Sex type " + sexTypePid + " has been updated");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 }

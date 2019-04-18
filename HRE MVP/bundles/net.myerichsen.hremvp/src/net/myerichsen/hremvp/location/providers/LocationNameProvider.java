@@ -61,7 +61,6 @@ public class LocationNameProvider implements IHREProvider {
 		server.deleteAllNamesForLocation(locationPid);
 	}
 
-
 	/**
 	 * Get a row
 	 *

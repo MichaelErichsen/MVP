@@ -77,7 +77,7 @@ public class LocationPersonView {
 
 		// FIXME Change to Jface
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -110,7 +110,7 @@ public class LocationPersonView {
 			String[] sa;
 			TableItem item;
 
-			Table table = tableViewer.getTable();
+			final Table table = tableViewer.getTable();
 			table.removeAll();
 
 			final List<String> nameList = provider.getPersonList(key);

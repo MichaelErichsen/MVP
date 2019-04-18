@@ -4,12 +4,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,6 +21,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.project.providers.MvpLogProvider;
 
@@ -28,14 +30,13 @@ import net.myerichsen.hremvp.project.providers.MvpLogProvider;
  * Display the application log
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. feb. 2019
+ * @version 18. apr. 2019
  */
 public class LogViewer {
-	/**
-	 *
-	 */
-	private static final String LOG_ADDRESS = "C:\\Program Files\\HRE\\eclipse\\.mvp-log.0.0.txt";
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private final String logAddress;
 	private Table table;
 	private final MvpLogProvider provider;
 	private TableViewer tableViewer;
@@ -46,6 +47,7 @@ public class LogViewer {
 	 */
 	public LogViewer() {
 		provider = new MvpLogProvider();
+		logAddress = store.getString("LOGFILEPATH");
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class LogViewer {
 		mntmRefresh.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				tableViewer.setInput(LOG_ADDRESS);
+				tableViewer.setInput(logAddress);
 				tableViewer.refresh();
 				table.setTopIndex(table.getItemCount() - 1);
 			}
@@ -76,21 +78,7 @@ public class LogViewer {
 		mntmRefresh.setText("Refresh");
 
 		tableViewer.setContentProvider(provider);
-		tableViewer.setInput(LOG_ADDRESS);
-	}
-
-	/**
-	 * The object is not needed anymore, but not yet destroyed
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 * The UI element has received the focus
-	 */
-	@Focus
-	public void setFocus() {
+		tableViewer.setInput(logAddress);
 	}
 
 	/**
@@ -101,7 +89,7 @@ public class LogViewer {
 	private void subscribeLogRefreshUpdateTopic(
 			@UIEventTopic(Constants.LOG_REFRESH_UPDATE_TOPIC) int i) {
 		LOGGER.log(Level.FINE, "Update topic received");
-		tableViewer.setInput(LOG_ADDRESS);
+		tableViewer.setInput(logAddress);
 		tableViewer.refresh();
 		table.setTopIndex(table.getItemCount() - 1);
 	}

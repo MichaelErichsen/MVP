@@ -84,8 +84,8 @@ public class NewLocationWizardPage1 extends WizardPage {
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblLocationNameStyle.setText("Location Name Style");
 
-		ComboViewer comboViewerLocationNameStyles = new ComboViewer(container,
-				SWT.NONE);
+		final ComboViewer comboViewerLocationNameStyles = new ComboViewer(
+				container, SWT.NONE);
 		final Combo comboLocationNameStyles = comboViewerLocationNameStyles
 				.getCombo();
 		comboLocationNameStyles.addSelectionListener(new SelectionAdapter() {

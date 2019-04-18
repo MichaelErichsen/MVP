@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
@@ -13,7 +12,6 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -46,7 +44,7 @@ import net.myerichsen.hremvp.Constants;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. apr. 2019
+ * @version 18. apr. 2019
  *
  */
 
@@ -192,13 +190,6 @@ public class H2TableNavigator {
 	}
 
 	/**
-	 *
-	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
 	 * @param fileName
 	 * @param tableName
 	 */
@@ -335,13 +326,6 @@ public class H2TableNavigator {
 		eventBroker.post(Constants.RECORDNUM_UPDATE_TOPIC, recordNum);
 		LOGGER.log(Level.INFO, "Navigator posted record number {0}", recordNum);
 		eventBroker.post("MESSAGE", tableName + " editor has been opened");
-	}
-
-	/**
-	 *
-	 */
-	@Focus
-	public void setFocus() {
 	}
 
 	/**

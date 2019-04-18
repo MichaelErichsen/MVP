@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Text;
 public class NewLocationDialog extends TitleAreaDialog {
 	/**
 	 * Create the dialog.
-	 * 
+	 *
 	 * @param parentShell
 	 * @param context
 	 */
@@ -30,7 +30,7 @@ public class NewLocationDialog extends TitleAreaDialog {
 
 	/**
 	 * Create contents of the button bar.
-	 * 
+	 *
 	 * @param parent
 	 */
 	@Override
@@ -43,7 +43,7 @@ public class NewLocationDialog extends TitleAreaDialog {
 
 	/**
 	 * Create contents of the dialog.
-	 * 
+	 *
 	 * @param parent
 	 */
 	@Override
@@ -60,7 +60,7 @@ public class NewLocationDialog extends TitleAreaDialog {
 				new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblLocation.setText("Location");
 
-		Text textLocation = new Text(container, SWT.BORDER);
+		final Text textLocation = new Text(container, SWT.BORDER);
 		textLocation.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 

@@ -107,7 +107,8 @@ public class NewLocationWizardPage3 extends WizardPage {
 						wizard.setFromDatePid(hdp.insert());
 						textFromDate.setText(dialog.getDate().toString());
 					} catch (final Exception e1) {
-LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
+					}
 				}
 			}
 		});
@@ -135,7 +136,8 @@ LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
 						wizard.setFromDatePid(hdatePid);
 						textFromDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
+					}
 				}
 			}
 		});
@@ -249,7 +251,8 @@ LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
 						wizard.setToDatePid(hdatePid);
 						textToDate.setText(hdp.getDate().toString());
 					} catch (final Exception e1) {
-LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
+					}
 				}
 			}
 		});
@@ -281,8 +284,7 @@ LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
 		final Text textXCoordinate = new Text(container, SWT.BORDER);
 		textXCoordinate.addModifyListener(e -> {
 			wizard = (NewLocationWizard) getWizard();
-			wizard.setxCoordinate(
-					Double.valueOf(textXCoordinate.getText()));
+			wizard.setxCoordinate(Double.valueOf(textXCoordinate.getText()));
 		});
 		textXCoordinate.setText(Double.toString(wizard.getxCoordinate()));
 		textXCoordinate.setToolTipText("Latitude (-180 to 180)");
@@ -312,8 +314,7 @@ LOGGER.log(Level.SEVERE, e1.toString(), e1);					}
 		final Text textZCoordinate = new Text(container, SWT.BORDER);
 		textZCoordinate.addModifyListener(e -> {
 			wizard = (NewLocationWizard) getWizard();
-			wizard.setzCoordinate(
-					Double.valueOf(textZCoordinate.getText()));
+			wizard.setzCoordinate(Double.valueOf(textZCoordinate.getText()));
 		});
 		textZCoordinate.setText(Double.toString(wizard.getzCoordinate()));
 		textZCoordinate.setToolTipText("Elevation above sea level in meters");

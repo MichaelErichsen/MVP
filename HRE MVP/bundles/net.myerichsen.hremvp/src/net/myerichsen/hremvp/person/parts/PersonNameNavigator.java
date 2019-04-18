@@ -4,14 +4,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -32,7 +30,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. apr. 2019
+ * @version 18. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -104,13 +102,6 @@ public class PersonNameNavigator {
 	/**
 	 *
 	 */
-	@PreDestroy
-	public void dispose() {
-	}
-
-	/**
-	 *
-	 */
 	protected void openNameView() {
 		int NamePid = 0;
 
@@ -129,10 +120,6 @@ public class PersonNameNavigator {
 		eventBroker.post(
 				net.myerichsen.hremvp.Constants.PERSON_NAME_PID_UPDATE_TOPIC,
 				NamePid);
-	}
-
-	@Focus
-	public void setFocus() {
 	}
 
 }

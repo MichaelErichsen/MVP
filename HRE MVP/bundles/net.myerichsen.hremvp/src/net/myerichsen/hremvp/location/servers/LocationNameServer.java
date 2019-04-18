@@ -198,7 +198,8 @@ public class LocationNameServer implements IHREServer {
 		final StringBuilder sb = new StringBuilder();
 		LocationNames aName;
 
-		List<LocationNames> nameList = new LocationNames().getFKLocationPid(locationPid);
+		final List<LocationNames> nameList = new LocationNames()
+				.getFKLocationPid(locationPid);
 
 		for (int i = 0; i < nameList.size(); i++) {
 			aName = nameList.get(i);
