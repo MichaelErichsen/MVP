@@ -8,18 +8,16 @@ net.myerichsen.hremvp.event.parts
 net.myerichsen.hremvp.event.providers
 net.myerichsen.hremvp.event.servers
 net.myerichsen.hremvp.event.wizards
-net.myerichsen.hremvp.filters
 net.myerichsen.hremvp.handlers
 net.myerichsen.hremvp.help.handlers
 net.myerichsen.hremvp.help.parts
 net.myerichsen.hremvp.listeners
+net.myerichsen.hremvp.location.dialogs
 net.myerichsen.hremvp.location.handlers
 net.myerichsen.hremvp.location.parts
 net.myerichsen.hremvp.location.providers
 net.myerichsen.hremvp.location.servers
 net.myerichsen.hremvp.location.wizards
-net.myerichsen.hremvp.mockup
-net.myerichsen.hremvp.parts
 net.myerichsen.hremvp.person.dialogs
 net.myerichsen.hremvp.person.handlers
 net.myerichsen.hremvp.person.parts
@@ -33,6 +31,7 @@ net.myerichsen.hremvp.project.models
 net.myerichsen.hremvp.project.parts
 net.myerichsen.hremvp.project.providers
 net.myerichsen.hremvp.project.servers
+net.myerichsen.hremvp.project.wizards
 net.myerichsen.hremvp.providers
 net.myerichsen.hremvp.requesthandlers
 net.myerichsen.hremvp.servers

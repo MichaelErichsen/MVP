@@ -11,8 +11,13 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
 /**
  * Provides all data for a single person
  *
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. apr. 2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 18. apr. 2019
+ *
+ */
+/**
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 18. apr. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -25,9 +30,6 @@ public class PersonProvider implements IHREProvider {
 
 	/**
 	 * Constructor
-	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
 	 *
 	 */
 	public PersonProvider() {
@@ -44,10 +46,19 @@ public class PersonProvider implements IHREProvider {
 		server.delete(key);
 	}
 
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<Persons> get() throws SQLException {
 		return server.get();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
 	@Override
 	public void get(int key) throws Exception {
 		server.get(key);
@@ -98,7 +109,6 @@ public class PersonProvider implements IHREProvider {
 
 	/**
 	 * @return
-	 * @throws MvpException
 	 * @throws Exception
 	 */
 	public List<List<String>> getAllNames() throws Exception {
@@ -107,9 +117,8 @@ public class PersonProvider implements IHREProvider {
 
 	/**
 	 * @param personId
-	 * @param parseInt
+	 * @param generations
 	 * @return
-	 * @throws MvpException
 	 * @throws Exception
 	 */
 	public List<List<String>> getAncestorList(int personId, int generations)
@@ -178,9 +187,8 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param personPid2
-	 * @return the personEventList
-	 * @throws MvpException
+	 * @param key
+	 * @return
 	 * @throws Exception
 	 */
 	public List<List<String>> getPersonEventList(int key) throws Exception {
@@ -276,9 +284,7 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param personPid
 	 * @param eventPid
-	 * @throws MvpException
 	 * @throws Exception
 	 */
 	public void removeEvent(int eventPid) throws Exception {
@@ -295,9 +301,8 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param personPid2
+	 * @param personPid
 	 * @param partnerPid
-	 * @throws MvpException
 	 * @throws Exception
 	 */
 	public void removePartner(int personPid, int partnerPid) throws Exception {
@@ -305,9 +310,7 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param personPid
 	 * @param sexPid
-	 * @throws MvpException
 	 * @throws Exception
 	 */
 	public void removeSex(int sexPid) throws Exception {
@@ -315,7 +318,7 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param birthDatePid the birthDatePid to set
+	 * @param i
 	 */
 	public void setBirthDatePid(int i) {
 		birthDatePid = i;
@@ -338,9 +341,8 @@ public class PersonProvider implements IHREProvider {
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 */
 	@Override
 	public void update() throws Exception {

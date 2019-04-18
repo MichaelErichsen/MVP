@@ -45,7 +45,6 @@ public class LocationNameMapProvider implements IHREProvider {
 
 	/**
 	 * @param key
-	 * @return
 	 * @throws Exception
 	 * @throws MvpException
 	 */

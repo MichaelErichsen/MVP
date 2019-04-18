@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.person.servers.SexServer;
  * Provide all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. mar. 2019
+ * @version 18. apr. 2019
  *
  */
 public class SexProvider implements IHREProvider {
@@ -199,7 +199,7 @@ public class SexProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param data.fromDatePid the fromDatePid to set
+	 * @param i
 	 */
 	public void setFromDatePid(int i) {
 		fromDatePid = i;
@@ -211,13 +211,6 @@ public class SexProvider implements IHREProvider {
 	public void setIsocode(String isocode) {
 		this.isocode = isocode;
 	}
-
-//	/**
-//	 * @param languageLabel the languageLabel to set
-//	 */
-//	public void setLanguageLabel(String languageLabel) {
-//		this.languageLabel = languageLabel;
-//	}
 
 	/**
 	 * @param languagePid the languagePid to set
@@ -273,7 +266,6 @@ public class SexProvider implements IHREProvider {
 	 *
 	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
 	 */
 	@Override
 	public void update() throws Exception {

@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.project.wizards;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -24,16 +23,13 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Add a location name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @vers
+ * @version 18. apr. 2019
  *
  */
 public class NewLocationNameStyleWizardPage2 extends WizardPage {
 //	private static final Logger LOGGER = Logger
 //			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Text textIsoCode;
-	private Text textStyleName;
 	private TableViewer tableViewer;
-	private Text textNamePartCount;
 	private List<List<String>> lls;
 
 	// FIXME Make editable table better
@@ -42,7 +38,7 @@ public class NewLocationNameStyleWizardPage2 extends WizardPage {
 	 *
 	 * @param context
 	 */
-	public NewLocationNameStyleWizardPage2(IEclipseContext context) {
+	public NewLocationNameStyleWizardPage2() {
 		super("Location name style wizard Page 2");
 		setTitle("Location name style");
 		setDescription("Add parts of a new location name style");
