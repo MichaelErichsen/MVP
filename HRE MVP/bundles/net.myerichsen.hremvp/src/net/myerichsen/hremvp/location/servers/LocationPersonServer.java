@@ -2,7 +2,6 @@ package net.myerichsen.hremvp.location.servers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
@@ -13,12 +12,12 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  * Business logic interface for persons for locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 20. apr. 2019
  *
  */
 public class LocationPersonServer implements IHREServer {
-	private static final Logger LOGGER = Logger
-			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private static final Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final LocationEvents leLink;
 	private final PersonEvents peLink;
 
@@ -40,14 +39,6 @@ public class LocationPersonServer implements IHREServer {
 	public void delete(int key) throws Exception {
 		// TODO Auto-generated method stub
 
-	}
-
-	/**
-	 * @return
-	 */
-	public List<?> get() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/*
@@ -101,8 +92,7 @@ public class LocationPersonServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/*
