@@ -73,7 +73,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 20. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -515,7 +515,8 @@ public class ProjectNavigator {
 			store.setValue("DBPATH", path);
 			store.setValue("DBNAME", dbName);
 
-			final ProjectNewDatabaseProvider pndprovider = new ProjectNewDatabaseProvider();
+			final ProjectNewDatabaseProvider pndprovider = new ProjectNewDatabaseProvider(
+					shell);
 
 			pndprovider.provide(dbName);
 

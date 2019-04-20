@@ -6,6 +6,12 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.ui.di.UISynchronize;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.swt.widgets.Shell;
+
 import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.project.providers.CsvFileImporter;
 
@@ -46,7 +52,7 @@ import net.myerichsen.hremvp.project.providers.CsvFileImporter;
 public class ProjectNewDatabaseServer {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String[] statementArray = {
+	private static final String[] createStatementArray = {
 			"CREATE TABLE PERSONS ( PERSON_PID INTEGER NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 15 NOT NULL, BIRTH_DATE_PID INTEGER, DEATH_DATE_PID INTEGER );",
 			"CREATE TABLE PARENT_ROLES ( PARENT_ROLE_PID INTEGER NOT NULL, ABBREVIATION CHAR(8) NOT NULL, LABEL_PID INTEGER NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 26 NOT NULL );",
 			"CREATE TABLE EVENT_TYPES ( EVENT_TYPE_PID INTEGER NOT NULL, ABBREVIATION CHAR(8) NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 23 NOT NULL, LABEL_PID INTEGER NOT NULL );",
@@ -72,7 +78,9 @@ public class ProjectNewDatabaseServer {
 			"CREATE TABLE PARENTS ( PARENT_PID INTEGER NOT NULL, CHILD INTEGER NOT NULL, PARENT INTEGER NOT NULL, PRIMARY_PARENT BOOLEAN NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 22 NOT NULL, LANGUAGE_PID INTEGER, PARENT_ROLE_PID INTEGER NOT NULL );",
 			"CREATE TABLE PERSON_NAME_STYLES ( NAME_STYLE_PID INTEGER NOT NULL, ISO_CODE CHAR(4) NOT NULL, LABEL_PID INTEGER NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 14 NOT NULL );",
 			"CREATE TABLE LOCATION_NAME_MAPS ( LOCATION_NAME_MAP_PID INTEGER NOT NULL, LOCATION_NAME_STYLE_PID INTEGER NOT NULL, PART_NO INTEGER NOT NULL, LABEL_PID INTEGER NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 21 NOT NULL );",
-			"CREATE TABLE LANGUAGES ( LANGUAGE_PID INTEGER NOT NULL, ISOCODE CHAR(4) NOT NULL, LABEL CHAR(30) NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 7 NOT NULL );",
+			"CREATE TABLE LANGUAGES ( LANGUAGE_PID INTEGER NOT NULL, ISOCODE CHAR(4) NOT NULL, LABEL CHAR(30) NOT NULL, INSERT_TSTMP TIMESTAMP NOT NULL, UPDATE_TSTMP TIMESTAMP NOT NULL, TABLE_ID INTEGER DEFAULT 7 NOT NULL );" };
+
+	private static final String[] createIndicesArray = {
 			"CREATE INDEX ON COMMIT_LOGS (USERID_PID ASC);",
 			"CREATE INDEX ON DICTIONARY (ISO_CODE ASC);",
 			"CREATE INDEX ON EVENT_ROLES (EVENT_TYPE_PID ASC);",
@@ -145,7 +153,9 @@ public class ProjectNewDatabaseServer {
 			"CREATE UNIQUE INDEX ON PERSONS (PERSON_PID ASC);",
 			"CREATE UNIQUE INDEX ON SEX_TYPES (SEX_TYPE_PID ASC);",
 			"CREATE UNIQUE INDEX ON SEXES (SEXES_PID ASC);",
-			"CREATE UNIQUE INDEX ON USERIDS (USERID_PID ASC);",
+			"CREATE UNIQUE INDEX ON USERIDS (USERID_PID ASC);" };
+
+	private static final String[] constraintsStatementArray = {
 			"ALTER TABLE SEXES ADD PRIMARY KEY (SEXES_PID);",
 			"ALTER TABLE LOCATION_NAMES ADD PRIMARY KEY (LOCATION_NAME_PID);",
 			"ALTER TABLE PERSON_NAME_STYLES ADD PRIMARY KEY (NAME_STYLE_PID);",
@@ -224,13 +234,21 @@ public class ProjectNewDatabaseServer {
 			"ALTER TABLE PERSONS ADD FOREIGN KEY (DEATH_DATE_PID) REFERENCES HDATES (HDATE_PID) ON DELETE RESTRICT ON UPDATE RESTRICT;",
 			"ALTER TABLE LOCATION_NAMES ADD FOREIGN KEY (FROM_DATE_PID) REFERENCES HDATES (HDATE_PID) ON DELETE RESTRICT ON UPDATE RESTRICT;" };
 
+	@Inject
+	UISynchronize sync;
+
+	Shell shell;
+
 	/**
 	 * Constructor
+	 * 
+	 * @param shell
 	 *
 	 * @throws Exception
 	 */
-	public ProjectNewDatabaseServer() {
+	public ProjectNewDatabaseServer(Shell shell) {
 		super();
+		this.shell = shell;
 	}
 
 	/**
@@ -241,18 +259,66 @@ public class ProjectNewDatabaseServer {
 	 */
 	public void provide(String dbName) throws SQLException {
 		LOGGER.log(Level.INFO, "Provide the data");
-		HreH2ConnectionPool.createNew(dbName);
-		Connection conn = HreH2ConnectionPool.getConnection();
-		Statement stmt = conn.createStatement();
 
-		for (final String element : statementArray) {
-			stmt.execute(element);
+		try {
+			ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+			dialog.run(true, true, monitor -> {
+
+				monitor.beginTask("Create a new project", 100);
+				monitor.subTask("Connect to database manager");
+				HreH2ConnectionPool.createNew(dbName);
+				Connection conn;
+				try {
+					conn = HreH2ConnectionPool.getConnection();
+					Thread.sleep(5000);
+					monitor.worked(10);
+
+					monitor.subTask("Create tables");
+					Statement stmt = conn.createStatement();
+
+					for (final String element : createStatementArray) {
+						stmt.execute(element);
+					}
+
+					stmt.close();
+					Thread.sleep(5000);
+					monitor.worked(10);
+
+					monitor.subTask("Create indices");
+					stmt = conn.createStatement();
+
+					for (final String element : createIndicesArray) {
+						stmt.execute(element);
+					}
+
+					stmt.close();
+					Thread.sleep(5000);
+					monitor.worked(10);
+
+					monitor.subTask("Create constrainst");
+					stmt = conn.createStatement();
+
+					for (final String element : constraintsStatementArray) {
+						stmt.execute(element);
+					}
+
+					stmt.close();
+					Thread.sleep(5000);
+					monitor.worked(10);
+
+					monitor.subTask("Load master data");
+					CsvFileImporter.importCsv();
+
+					conn.close();
+
+					monitor.done();
+				} catch (SQLException e) {
+					LOGGER.log(Level.SEVERE, e.toString(), e);
+				}
+			});
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
-		stmt.close();
-
-		CsvFileImporter.importCsv();
-
-		conn.close();
 	}
 }

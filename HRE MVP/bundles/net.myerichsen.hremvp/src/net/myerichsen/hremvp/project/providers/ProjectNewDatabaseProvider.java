@@ -2,13 +2,15 @@ package net.myerichsen.hremvp.project.providers;
 
 import java.util.prefs.BackingStoreException;
 
+import org.eclipse.swt.widgets.Shell;
+
 import net.myerichsen.hremvp.project.servers.ProjectNewDatabaseServer;
 
 /**
  * Create and open a new HRE project database
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 20. apr. 2019
  *
  */
 public class ProjectNewDatabaseProvider {
@@ -16,11 +18,13 @@ public class ProjectNewDatabaseProvider {
 
 	/**
 	 * Constructor
+	 * 
+	 * @param shell
 	 *
 	 * @throws Exception
 	 */
-	public ProjectNewDatabaseProvider() throws Exception {
-		server = new ProjectNewDatabaseServer();
+	public ProjectNewDatabaseProvider(Shell shell) throws Exception {
+		server = new ProjectNewDatabaseServer(shell);
 	}
 
 	/**
