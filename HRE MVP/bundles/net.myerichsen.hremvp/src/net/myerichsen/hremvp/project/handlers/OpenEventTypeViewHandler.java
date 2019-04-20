@@ -18,13 +18,13 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Name view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. feb. 2019
+ * @version 20. apr. 2019
  *
  */
 public class OpenEventTypeViewHandler {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.EventTypeView";
+	private static final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.EventTypeView";
 
 	/**
 	 * @param partService  The Eclipse part service
@@ -46,13 +46,12 @@ public class OpenEventTypeViewHandler {
 				part = (MPart) a.get(i);
 
 				try {
-					if (part.getContributionURI().equals(contributionURI)) {
+					if (part.getContributionURI().equals(CONTRIBUTION_URI)) {
 						partService.showPart(part, PartState.ACTIVATE);
 						return;
 					}
 				} catch (final Exception e) {
-					LOGGER.log(Level.SEVERE, e.toString(), e);
-					e.printStackTrace();
+					LOGGER.log(Level.INFO, e.getMessage());
 				}
 			}
 		}
@@ -61,7 +60,7 @@ public class OpenEventTypeViewHandler {
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
-		part.setContributionURI(contributionURI);
+		part.setContributionURI(CONTRIBUTION_URI);
 		stacks.get(1).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 	}

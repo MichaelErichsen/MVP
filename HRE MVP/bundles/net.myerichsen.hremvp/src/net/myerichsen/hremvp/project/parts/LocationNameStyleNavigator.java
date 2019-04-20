@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all location name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 18. apr. 2019
+ * @version 20. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -159,7 +159,7 @@ public class LocationNameStyleNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			LOGGER.log(Level.SEVERE, e1.getMessage());
 		}
 	}
 

@@ -19,7 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 20. apr. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -49,7 +49,7 @@ public class Activator implements BundleActivator {
 	 */
 	@Override
 	public void start(BundleContext bundleContext) throws IOException {
-		Activator.context = bundleContext;
+		context = bundleContext;
 
 		HreLogger.setup();
 
@@ -119,7 +119,7 @@ public class Activator implements BundleActivator {
 		try {
 			HreH2ConnectionPool.dispose();
 		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			LOGGER.log(Level.SEVERE, e1.getMessage());
 		}
 
 		final String command = "java -classpath " + HELPCLASSPATH
@@ -132,7 +132,7 @@ public class Activator implements BundleActivator {
 			LOGGER.severe(e.getClass() + ": " + e.getMessage());
 		}
 
-		Activator.context = null;
+		context = null;
 	}
 
 }

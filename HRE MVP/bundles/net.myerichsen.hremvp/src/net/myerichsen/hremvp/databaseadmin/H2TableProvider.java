@@ -22,7 +22,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * Provide H2 data to the table navigator and the table editor
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 20. apr. 2019
  *
  */
 public class H2TableProvider implements IContentProvider {
@@ -33,7 +33,7 @@ public class H2TableProvider implements IContentProvider {
 	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, DATA_TYPE, NUMERIC_PRECISION, NUMERIC_SCALE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
 	private Connection conn = null;
 
-	private int count;
+	private int count = 0;
 	private final List<H2TableModel> modelList;
 	private H2TableModel model;
 	private final String tableName;
@@ -56,14 +56,18 @@ public class H2TableProvider implements IContentProvider {
 		this.tableName = tableName;
 		modelList = new ArrayList<>();
 
-		// Get number of columns in H2 table
-		ps = conn.prepareStatement(COUNT_STATEMENT);
-		ps.setString(1, tableName);
+		// Get number of columns in H2 table if at version 1.4
+		try {
+			ps = conn.prepareStatement(COUNT_STATEMENT);
+			ps.setString(1, tableName);
+			rs = ps.executeQuery();
 
-		rs = ps.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
 
-		if (rs.next()) {
-			count = rs.getInt(1);
+		} catch (final Exception e) {
+			LOGGER.log(Level.INFO, e.getMessage());
 		}
 
 		// Get names and other properties of columns in H2 tables
@@ -95,6 +99,60 @@ public class H2TableProvider implements IContentProvider {
 			}
 
 			modelList.add(model);
+		}
+	}
+
+	/**
+	 * @throws SQLException
+	 */
+	private void addRow() throws SQLException {
+		String field;
+		for (int i = 1; i < (count + 1); i++) {
+			switch (modelList.get(i - 1).getNumericType()) {
+			case Constants.BIGINT:
+				row.add(rs.getLong(i));
+				break;
+			case Constants.BLOB:
+				row.add(rs.getBlob(i));
+				break;
+			case Constants.BOOLEAN:
+				row.add(rs.getBoolean(i));
+				break;
+			case Constants.CHAR:
+				row.add(rs.getString(i));
+				break;
+			case Constants.CLOB:
+				row.add(rs.getClob(i));
+				break;
+			case Constants.DATE:
+				row.add(rs.getString(i));
+				break;
+			case Constants.DOUBLE:
+				row.add(rs.getDouble(i));
+				break;
+			case Constants.INTEGER:
+				row.add(rs.getInt(i));
+				break;
+			case Constants.SMALLINT:
+				row.add(rs.getShort(i));
+				break;
+			case Constants.TIMESTAMP:
+				row.add(rs.getTimestamp(i));
+				break;
+			case Constants.VARBINARY:
+				row.add(rs.getBytes(i));
+				break;
+			case Constants.VARCHAR:
+				row.add(rs.getString(i));
+				break;
+			default:
+				if ((field = rs.getString(i)) != null) {
+					row.add(field);
+				} else {
+					row.add("");
+				}
+				break;
+			}
 		}
 	}
 
@@ -147,6 +205,63 @@ public class H2TableProvider implements IContentProvider {
 	 */
 	public List<H2TableModel> getModelList() {
 		return modelList;
+	}
+
+	/**
+	 * @return
+	 */
+	private List<Object> handleNoRecords() {
+		for (int i = 1; i < (count + 1); i++) {
+			switch (modelList.get(i - 1).getNumericType()) {
+			case Constants.BIGINT:
+				row.add(0L);
+				break;
+			case Constants.BLOB:
+				final byte[] ba = { 0 };
+				Blob blob = null;
+				try {
+					blob = conn.createBlob();
+					blob.setBytes(1, ba);
+				} catch (final Exception e) {
+					LOGGER.log(Level.SEVERE, e.toString(), e);
+				}
+				row.add(blob);
+				break;
+			case Constants.BOOLEAN:
+				row.add(Boolean.FALSE);
+				break;
+			case Constants.CLOB:
+				Clob clob = null;
+				try {
+					clob = conn.createClob();
+					clob.setString(1, "");
+				} catch (final Exception e) {
+					LOGGER.log(Level.SEVERE, e.toString(), e);
+				}
+				row.add(clob);
+				break;
+			case Constants.DOUBLE:
+				row.add(0D);
+				break;
+			case Constants.INTEGER:
+				row.add(0);
+				break;
+			case Constants.SMALLINT:
+				row.add((short) 0);
+				break;
+			case Constants.TIMESTAMP:
+				row.add(new Timestamp(0L));
+				break;
+			case Constants.VARBINARY:
+				final byte[] ba1 = { 0 };
+				row.add(ba1);
+				break;
+			default:
+				row.add("");
+				break;
+			}
+		}
+		return row;
 	}
 
 	/**
@@ -244,60 +359,8 @@ public class H2TableProvider implements IContentProvider {
 	 */
 	public List<Object> select(int recordNum) throws SQLException {
 		row = new ArrayList<>();
-		String field = "";
-
 		if (recordNum == 0) {
-			for (int i = 1; i < (count + 1); i++) {
-				switch (modelList.get(i - 1).getNumericType()) {
-				case Constants.BIGINT:
-					row.add(0L);
-					break;
-				case Constants.BLOB:
-					final byte[] ba = { 0 };
-					Blob blob = null;
-					try {
-						blob = conn.createBlob();
-						blob.setBytes(1, ba);
-					} catch (final Exception e) {
-						LOGGER.log(Level.SEVERE, e.toString(), e);
-					}
-					row.add(blob);
-					break;
-				case Constants.BOOLEAN:
-					row.add(Boolean.FALSE);
-					break;
-				case Constants.CLOB:
-					Clob clob = null;
-					try {
-						clob = conn.createClob();
-						clob.setString(1, "");
-					} catch (final Exception e) {
-						LOGGER.log(Level.SEVERE, e.toString(), e);
-					}
-					row.add(clob);
-					break;
-				case Constants.DOUBLE:
-					row.add(0D);
-					break;
-				case Constants.INTEGER:
-					row.add(0);
-					break;
-				case Constants.SMALLINT:
-					row.add((short) 0);
-					break;
-				case Constants.TIMESTAMP:
-					row.add(new Timestamp(0L));
-					break;
-				case Constants.VARBINARY:
-					final byte[] ba1 = { 0 };
-					row.add(ba1);
-					break;
-				default:
-					row.add("");
-					break;
-				}
-			}
-			return row;
+			return handleNoRecords();
 		}
 
 		String s = tableName.substring(0, tableName.length() - 1);
@@ -312,53 +375,7 @@ public class H2TableProvider implements IContentProvider {
 		rs = ps.executeQuery();
 
 		if (rs.next()) {
-			for (int i = 1; i < (count + 1); i++) {
-				switch (modelList.get(i - 1).getNumericType()) {
-				case Constants.BIGINT:
-					row.add(rs.getLong(i));
-					break;
-				case Constants.BLOB:
-					row.add(rs.getBlob(i));
-					break;
-				case Constants.BOOLEAN:
-					row.add(rs.getBoolean(i));
-					break;
-				case Constants.CHAR:
-					row.add(rs.getString(i));
-					break;
-				case Constants.CLOB:
-					row.add(rs.getClob(i));
-					break;
-				case Constants.DATE:
-					row.add(rs.getString(i));
-					break;
-				case Constants.DOUBLE:
-					row.add(rs.getDouble(i));
-					break;
-				case Constants.INTEGER:
-					row.add(rs.getInt(i));
-					break;
-				case Constants.SMALLINT:
-					row.add(rs.getShort(i));
-					break;
-				case Constants.TIMESTAMP:
-					row.add(rs.getTimestamp(i));
-					break;
-				case Constants.VARBINARY:
-					row.add(rs.getBytes(i));
-					break;
-				case Constants.VARCHAR:
-					row.add(rs.getString(i));
-					break;
-				default:
-					if ((field = rs.getString(i)) != null) {
-						row.add(field);
-					} else {
-						row.add("");
-					}
-					break;
-				}
-			}
+			addRow();
 		}
 		return row;
 	}
