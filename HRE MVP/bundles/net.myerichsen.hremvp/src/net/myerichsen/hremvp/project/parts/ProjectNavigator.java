@@ -73,7 +73,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -568,6 +568,7 @@ public class ProjectNavigator {
 					.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
 
+			// FIXME Only open once
 			openDatabaseNavigator();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);

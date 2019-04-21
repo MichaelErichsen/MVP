@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.ProjectNewDatabaseServer;
  * Create and open a new HRE project database
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class ProjectNewDatabaseProvider {
@@ -23,7 +23,7 @@ public class ProjectNewDatabaseProvider {
 	 *
 	 * @throws Exception
 	 */
-	public ProjectNewDatabaseProvider(Shell shell) throws Exception {
+	public ProjectNewDatabaseProvider(Shell shell) {
 		server = new ProjectNewDatabaseServer(shell);
 	}
 
@@ -37,7 +37,7 @@ public class ProjectNewDatabaseProvider {
 	 * @throws                       java.util.prefs.BackingStoreException
 	 * @throws                       org.osgi.service.prefs.BackingStoreException
 	 */
-	public void provide(String dbName) throws Exception, BackingStoreException {
+	public void provide(String dbName) {
 		server.provide(dbName);
 	}
 }
