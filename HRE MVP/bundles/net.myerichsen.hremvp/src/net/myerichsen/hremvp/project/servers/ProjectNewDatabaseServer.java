@@ -13,7 +13,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import net.myerichsen.hremvp.HreH2ConnectionPool;
-import net.myerichsen.hremvp.project.providers.CsvFileImporter;
+import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
 
 /**
  * Create and open a new HRE project database
@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.project.providers.CsvFileImporter;
  * This is perhaps done best in MS Excel.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class ProjectNewDatabaseServer {
@@ -234,6 +234,15 @@ public class ProjectNewDatabaseServer {
 			"ALTER TABLE PERSONS ADD FOREIGN KEY (DEATH_DATE_PID) REFERENCES HDATES (HDATE_PID) ON DELETE RESTRICT ON UPDATE RESTRICT;",
 			"ALTER TABLE LOCATION_NAMES ADD FOREIGN KEY (FROM_DATE_PID) REFERENCES HDATES (HDATE_PID) ON DELETE RESTRICT ON UPDATE RESTRICT;" };
 
+	private static final String[] csvFileNames = { "languages.csv",
+			"sextypes.csv", "eventtypes.csv", "eventroles.csv",
+			"locationnamestyles.csv", "locationnamemaps.csv",
+			"personnamestyles.csv", "personnamemaps.csv", "dictionary.csv" };
+
+	private static final String[] tableNames = { "LANGUAGES", "SEX_TYPES",
+			"EVENT_TYPES", "EVENT_ROLES", "LOCATION_NAME_STYLES",
+			"LOCATION_NAME_MAPS", "PERSON_NAME_STYLES", "PERSON_NAME_MAPS",
+			"DICTIONARY" };
 	@Inject
 	UISynchronize sync;
 
@@ -257,60 +266,99 @@ public class ProjectNewDatabaseServer {
 	 * @param dbName
 	 * @throws SQLException
 	 */
-	public void provide(String dbName) throws SQLException {
+	public void provide(String dbName) {
 		LOGGER.log(Level.INFO, "Provide the data");
 
+		// TODO Only display for stand alone application
 		try {
 			ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
 			dialog.run(true, true, monitor -> {
+				int counter = 0;
 
-				monitor.beginTask("Create a new project", 100);
+				monitor.beginTask("Create new project " + dbName, 300);
 				monitor.subTask("Connect to database manager");
 				HreH2ConnectionPool.createNew(dbName);
 				Connection conn;
+
 				try {
-					conn = HreH2ConnectionPool.getConnection();
-					Thread.sleep(5000);
 					monitor.worked(10);
+					conn = HreH2ConnectionPool.getConnection();
+					monitor.worked(10);
+					Thread.sleep(1000);
+					counter += 10;
 
 					monitor.subTask("Create tables");
 					Statement stmt = conn.createStatement();
 
 					for (final String element : createStatementArray) {
 						stmt.execute(element);
+						monitor.worked(1);
+						Thread.sleep(100);
+						counter++;
 					}
 
 					stmt.close();
-					Thread.sleep(5000);
-					monitor.worked(10);
+
+					if (monitor.isCanceled()) {
+						LOGGER.log(Level.INFO, "Project creation canceled");
+						return;
+					}
 
 					monitor.subTask("Create indices");
 					stmt = conn.createStatement();
 
 					for (final String element : createIndicesArray) {
 						stmt.execute(element);
+						monitor.worked(1);
+						Thread.sleep(100);
+						counter++;
 					}
 
 					stmt.close();
-					Thread.sleep(5000);
-					monitor.worked(10);
 
-					monitor.subTask("Create constrainst");
+					if (monitor.isCanceled()) {
+						LOGGER.log(Level.INFO, "Project creation canceled");
+						return;
+					}
+
+					monitor.subTask("Create constraints");
 					stmt = conn.createStatement();
 
 					for (final String element : constraintsStatementArray) {
 						stmt.execute(element);
+						monitor.worked(1);
+						Thread.sleep(100);
+						counter++;
 					}
 
 					stmt.close();
-					Thread.sleep(5000);
-					monitor.worked(10);
+
+					if (monitor.isCanceled()) {
+						LOGGER.log(Level.INFO, "Project creation canceled");
+						return;
+					}
 
 					monitor.subTask("Load master data");
-					CsvFileImporter.importCsv();
+					for (int i = 0; i < tableNames.length; i++) {
 
+						int rowCount = 0;
+						final H2TableProvider provider = new H2TableProvider(
+								tableNames[i]);
+						rowCount = provider.importCsv("./" + csvFileNames[i]);
+						LOGGER.log(Level.INFO,
+								"{0} rows has been imported from {1}",
+								new Object[] { rowCount, csvFileNames[i] });
+						monitor.worked(10);
+						Thread.sleep(100);
+						counter += 10;
+
+					}
+					LOGGER.log(Level.FINE, "Count is {0}", counter);
 					conn.close();
 
+					monitor.worked(10);
+					Thread.sleep(2000);
+					counter += 10;
 					monitor.done();
 				} catch (SQLException e) {
 					LOGGER.log(Level.SEVERE, e.toString(), e);
