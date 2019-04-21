@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
  * Wizard to add a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 18. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class NewLocationNameStyleWizard extends Wizard {
@@ -33,7 +33,6 @@ public class NewLocationNameStyleWizard extends Wizard {
 	/**
 	 * Constructor
 	 *
-	 * @param locationNameStylePid
 	 * @param context
 	 */
 	public NewLocationNameStyleWizard(IEclipseContext context) {

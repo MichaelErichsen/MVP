@@ -9,7 +9,7 @@ import net.myerichsen.hremvp.location.servers.LocationPersonServer;
  * Provides all Persons for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class LocationPersonProvider implements IHREProvider {
@@ -17,9 +17,6 @@ public class LocationPersonProvider implements IHREProvider {
 
 	/**
 	 * Constructor
-	 *
-	 * @throws Exception An exception that provides information on a database
-	 *                   access error or other errors
 	 *
 	 */
 	public LocationPersonProvider() {

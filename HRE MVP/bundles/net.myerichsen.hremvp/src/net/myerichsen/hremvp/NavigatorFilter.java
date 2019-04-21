@@ -11,7 +11,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * Filter for navigator parts
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 15. apr. 2019
+ * @version 21. apr. 2019
  */
 public class NavigatorFilter extends ViewerFilter {
 	private static final Logger LOGGER = Logger
@@ -22,10 +22,10 @@ public class NavigatorFilter extends ViewerFilter {
 	/**
 	 * Constructor
 	 *
-	 * @param i
+	 * @param stringPos The current position in the filter string
 	 */
-	public NavigatorFilter(int i) {
-		stringPos = i;
+	public NavigatorFilter(int stringPos) {
+		this.stringPos = stringPos;
 	}
 
 	/*
@@ -51,9 +51,9 @@ public class NavigatorFilter extends ViewerFilter {
 	}
 
 	/**
-	 * @param s
+	 * @param string The updated search string
 	 */
-	public void setSearchText(String s) {
-		searchString = ".*" + s.toLowerCase() + ".*";
+	public void setSearchText(String string) {
+		searchString = ".*" + string.toLowerCase() + ".*";
 	}
 }

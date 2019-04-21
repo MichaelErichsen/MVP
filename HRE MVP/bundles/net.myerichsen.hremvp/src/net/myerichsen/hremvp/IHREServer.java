@@ -6,16 +6,15 @@ import java.util.List;
  * Interface defining the HRE business interface
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 7. mar. 2019
+ * @version 21. apr. 2019
  *
  */
 public interface IHREServer {
 	/**
 	 * Delete a row
 	 *
-	 * @param key
+	 * @param key The persistent id of the row
 	 * @throws Exception
-	 * @throws MvpException
 	 */
 	void delete(int key) throws Exception;
 
@@ -42,7 +41,7 @@ public interface IHREServer {
 	/**
 	 * Get a list of list of strings
 	 *
-	 * @param key
+	 * @param key The persistent id of the row
 	 * @return List A list of lists of strings
 	 * @throws Exception An exception that provides information on a database
 	 *                   access error or other errors

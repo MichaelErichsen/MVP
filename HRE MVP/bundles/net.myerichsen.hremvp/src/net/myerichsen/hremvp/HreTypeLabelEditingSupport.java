@@ -11,7 +11,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
  * Cell editor for the new sex type wizard
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 21. apr. 2019
  *
  */
 public class HreTypeLabelEditingSupport extends EditingSupport {
@@ -22,7 +22,8 @@ public class HreTypeLabelEditingSupport extends EditingSupport {
 	/**
 	 * Constructor
 	 *
-	 * @param viewer
+	 * @param viewer A JFace table viewer
+	 * @param column The column number to make editable
 	 */
 	public HreTypeLabelEditingSupport(TableViewer viewer, int column) {
 		super(viewer);

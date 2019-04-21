@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.person.servers.SexServer;
  * Provide all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class SexProvider implements IHREProvider {
@@ -255,17 +255,17 @@ public class SexProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param data.toDatePid the toDatePid to set
+	 * @param toDatePid the toDatePid to set
 	 */
-	public void setToDatePid(int todate) {
-		toDatePid = todate;
+	public void setToDatePid(int toDatePid) {
+		this.toDatePid = toDatePid;
 	}
 
 	/**
 	 * Update a row
 	 *
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 */
 	@Override
 	public void update() throws Exception {

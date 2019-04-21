@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.person.providers.PersonEventProvider;
  * Wizard to add a new event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 5. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class NewEventWizard extends Wizard {
@@ -233,8 +233,8 @@ public class NewEventWizard extends Wizard {
 	/**
 	 * @param eventName the eventName to set
 	 */
-	public void setEventName(String EventName) {
-		eventName = EventName;
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
 	}
 
 	/**
@@ -261,22 +261,22 @@ public class NewEventWizard extends Wizard {
 	/**
 	 * @param primaryLocation the primaryLocation to set
 	 */
-	public void setIsPrimaryLocation(Boolean isPrimaryLocation) {
-		primaryLocation = isPrimaryLocation;
+	public void setPrimaryLocation(Boolean primaryLocation) {
+		this.primaryLocation = primaryLocation;
 	}
 
 	/**
 	 * @param primaryLocationEvent the primaryLocationEvent to set
 	 */
-	public void setIsPrimaryLocationEvent(Boolean isPrimaryLocationEvent) {
-		primaryLocationEvent = isPrimaryLocationEvent;
+	public void setPrimaryLocationEvent(Boolean primaryLocationEvent) {
+		this.primaryLocationEvent = primaryLocationEvent;
 	}
 
 	/**
 	 * @param primaryPerson the primaryPerson to set
 	 */
-	public void setIsPrimaryPerson(Boolean isPrimaryPerson) {
-		primaryPerson = isPrimaryPerson;
+	public void setPrimaryPerson(Boolean primaryPerson) {
+		this.primaryPerson = primaryPerson;
 	}
 
 	/**

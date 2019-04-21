@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.project.wizards;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -26,14 +25,13 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new sex type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 21. apr. 2019
  *
  */
 public class NewSexTypeWizardPage1 extends WizardPage {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private Text textLabelPid;
 	private Text textAbbreviation;
 	private TableViewer tableViewer;
 	private SexTypeProvider provider;
@@ -43,10 +41,8 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 	/**
 	 * Constructor
 	 *
-	 * @param context
-	 * @throws Exception
 	 */
-	public NewSexTypeWizardPage1(IEclipseContext context) {
+	public NewSexTypeWizardPage1() {
 		super("New sex type wizard Page 1");
 		setTitle("Sex type");
 		setDescription("Add a sex type to this HRE project");
@@ -56,7 +52,6 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 			labelPid = dp.getNextLabelPid();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -76,7 +71,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		final Label lblLabelPid = new Label(container, SWT.NONE);
 		lblLabelPid.setText("New sex type label pid");
 
-		textLabelPid = new Text(container, SWT.BORDER);
+		Text textLabelPid = new Text(container, SWT.BORDER);
 		textLabelPid.setEditable(false);
 		textLabelPid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -135,7 +130,6 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 

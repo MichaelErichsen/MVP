@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 17. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class NewLocationDialog extends TitleAreaDialog {
@@ -22,7 +22,6 @@ public class NewLocationDialog extends TitleAreaDialog {
 	 * Create the dialog.
 	 *
 	 * @param parentShell
-	 * @param context
 	 */
 	public NewLocationDialog(Shell parentShell) {
 		super(parentShell);

@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNames;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameParts}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. mar. 2019
+ * @version 21. apr. 2019
  */
 public class LocationNamePartServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -52,8 +52,8 @@ public class LocationNamePartServer implements IHREServer {
 	}
 
 	/**
-	 * @param locationPid
-	 * @throws Exception
+	 * @param locationNamePid The persistent id of the location name
+	 * @throws Exception Any exception
 	 */
 	public void deleteAllNamePartsForLocationName(int locationNamePid)
 			throws Exception {
@@ -66,23 +66,12 @@ public class LocationNamePartServer implements IHREServer {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	public List<?> get() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
 	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
@@ -123,9 +112,9 @@ public class LocationNamePartServer implements IHREServer {
 	}
 
 	/**
-	 * @param locationNamePid
-	 * @return
-	 * @throws Exception
+	 * @param locationNamePid The persistent id of the location name
+	 * @return A list of persistent ids of the location name parts
+	 * @throws Exception Any exception
 	 */
 	public List<Integer> getFKLocationNamePid(int locationNamePid)
 			throws Exception {

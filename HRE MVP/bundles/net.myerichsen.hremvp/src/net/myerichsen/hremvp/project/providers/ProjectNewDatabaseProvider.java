@@ -1,7 +1,5 @@
 package net.myerichsen.hremvp.project.providers;
 
-import java.util.prefs.BackingStoreException;
-
 import org.eclipse.swt.widgets.Shell;
 
 import net.myerichsen.hremvp.project.servers.ProjectNewDatabaseServer;
@@ -29,13 +27,8 @@ public class ProjectNewDatabaseProvider {
 
 	/**
 	 * Provide the data
-	 *
+	 * 
 	 * @param dbName
-	 *
-	 * @throws Exception             When failing
-	 * @throws BackingStoreException Preferences file access failure
-	 * @throws                       java.util.prefs.BackingStoreException
-	 * @throws                       org.osgi.service.prefs.BackingStoreException
 	 */
 	public void provide(String dbName) {
 		server.provide(dbName);

@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
  * Wizard page to add a location for an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 15. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class NewEventWizardPage2 extends WizardPage {
@@ -46,7 +46,7 @@ public class NewEventWizardPage2 extends WizardPage {
 	/**
 	 * Constructor
 	 *
-	 * @param context
+	 * @param context The Eclipse context
 	 */
 	public NewEventWizardPage2(IEclipseContext context) {
 		super("wizardPage");

@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNames}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 public class LocationNameServer implements IHREServer {
@@ -52,10 +52,9 @@ public class LocationNameServer implements IHREServer {
 	/**
 	 * Delete a row
 	 *
-	 * @param key The persistent ID of the row
+	 * @param key The persistent ID of the location
 	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
@@ -64,8 +63,8 @@ public class LocationNameServer implements IHREServer {
 	}
 
 	/**
-	 * @param locationPid
-	 * @throws Exception
+	 * @param locationPid The persistent id of the location
+	 * @throws Exception Any exception
 	 */
 	public void deleteAllNamesForLocation(int locationPid) throws Exception {
 		final List<LocationNames> fkLocationPid = name
@@ -80,10 +79,9 @@ public class LocationNameServer implements IHREServer {
 	/**
 	 * Get a row
 	 *
-	 * @param key The persistent id of the row
+	 * @param key The persistent id of the location
 	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
 	 *
 	 */
 	@Override
@@ -115,7 +113,7 @@ public class LocationNameServer implements IHREServer {
 	}
 
 	/**
-	 * @param locationPid
+	 * @param locationPid The persistent id of the location
 	 * @return A list of location name pids
 	 * @throws Exception
 	 */
@@ -307,7 +305,7 @@ public class LocationNameServer implements IHREServer {
 	/**
 	 * Insert a row
 	 *
-	 * @return int The persistent ID of the inserted row
+	 * @return int The persistent ID of the inserted location
 	 *
 	 * @throws Exception    An exception that provides information on a database
 	 *                      access error or other errors

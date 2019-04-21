@@ -15,7 +15,12 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. apr. 2019
+ * @version 21. apr. 2019
+ *
+ */
+/**
+ * @author  Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 21. apr. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
@@ -50,8 +55,8 @@ public class LocationEventServer implements IHREServer {
 	}
 
 	/**
-	 * @param locationPid
-	 * @throws Exception
+	 * @param locationPid The persistent id of the location
+	 * @throws Exception Any exception
 	 */
 	public void deleteAllEventLinksForLocation(int locationPid)
 			throws Exception {
@@ -77,7 +82,7 @@ public class LocationEventServer implements IHREServer {
 	/**
 	 * @param locationPid The persistent ID of the row
 	 * @return A list of lists of strings of pids and labels
-	 * @throws Exception
+	 * @throws Exception Any exception
 	 */
 	public List<List<String>> getEventList(int locationPid) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();

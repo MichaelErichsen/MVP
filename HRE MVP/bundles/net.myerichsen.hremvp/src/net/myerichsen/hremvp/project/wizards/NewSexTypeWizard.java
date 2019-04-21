@@ -15,17 +15,15 @@ import net.myerichsen.hremvp.project.providers.SexTypeProvider;
  * Wizard to add a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. feb. 2019
+ * @version 21. apr. 2019
  *
  */
 public class NewSexTypeWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
 	private NewSexTypeWizardPage1 page1;
-	private SexTypeProvider provider;
 
 	/**
 	 * Constructor
@@ -35,7 +33,6 @@ public class NewSexTypeWizard extends Wizard {
 	public NewSexTypeWizard(IEclipseContext context) {
 		setWindowTitle("Add a sex type");
 		setForcePreviousAndNextButtons(true);
-		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -47,7 +44,7 @@ public class NewSexTypeWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewSexTypeWizardPage1(context);
+		page1 = new NewSexTypeWizardPage1();
 		addPage(page1);
 	}
 
@@ -62,13 +59,13 @@ public class NewSexTypeWizard extends Wizard {
 		DictionaryProvider dp;
 		final String abbreviation = page1.getTextAbbreviation().getText();
 
-		if (abbreviation.equals("") == false) {
+		if (!abbreviation.equals("")) {
 			try {
-				provider = new SexTypeProvider();
+				SexTypeProvider provider = new SexTypeProvider();
 				provider.setAbbreviation(abbreviation);
 
 				final int sexTypePid = provider.insert();
-				LOGGER.log(Level.INFO, "Inserted sex type " + sexTypePid);
+				LOGGER.log(Level.INFO, "Inserted sex type {0}", sexTypePid);
 				eventBroker.post("MESSAGE", "Inserted sex type " + sexTypePid);
 
 				final int labelPid = provider.getLabelPid();
@@ -84,9 +81,9 @@ public class NewSexTypeWizard extends Wizard {
 					dp.setLabelType("SEX");
 					final int dictionaryPid = dp.insert();
 					LOGGER.log(Level.INFO,
-							"Inserted dictionary element " + dictionaryPid
-									+ ", " + input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							"Inserted dictionary element {0}, {1}, {2}",
+							new Object[] { dictionaryPid, input.get(i).get(2),
+									input.get(i).get(3) });
 				}
 
 				eventBroker.post(
@@ -95,7 +92,6 @@ public class NewSexTypeWizard extends Wizard {
 				return true;
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}

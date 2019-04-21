@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * Utility to generate a Java model class representing an HRE H2 Table
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. apr. 2019
+ * @version 21. apr. 2019
  *
  */
 
@@ -585,11 +585,10 @@ public class H2ModelGenerator {
 
 	/**
 	 * @param args Usage: H2ModelGenerator h2database tablename outputfile
-	 * @throws IOException File is not available
 	 */
 	public static void main(String[] args) {
 		if (args.length < 3) {
-			System.out.println(
+			LOGGER.log(Level.SEVERE,
 					"Usage: H2ModelGenerator <h2database> <tablename> <outputfile>");
 			System.exit(16);
 		}
@@ -598,8 +597,9 @@ public class H2ModelGenerator {
 		databaseName = args[0];
 		tableName = args[1].toUpperCase();
 		outputDirectory = args[2];
-		System.out.println("Generating Model Class for table " + tableName
-				+ " in " + databaseName + " into " + outputDirectory);
+		LOGGER.log(Level.INFO,
+				"Generating Model Class for table {0} in {1} into {2}",
+				new Object[] { tableName, databaseName, outputDirectory });
 
 		extracted(generator);
 	}
@@ -672,8 +672,9 @@ public class H2ModelGenerator {
 					primaryKeyType = type;
 				} else if (field.equals("TABLE_ID")) {
 					tableId = rs.getInt(3);
-					LOGGER.log(Level.FINE, "Field: " + field + ", type: " + type
-							+ ", default: " + tableId);
+					LOGGER.log(Level.FINE,
+							"Field: {0}, type: {1}, default: {2}",
+							new Object[] { field, type, tableId });
 				}
 			}
 
@@ -694,7 +695,7 @@ public class H2ModelGenerator {
 		} catch (
 
 		final Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			System.exit(8);
 		}
 	}

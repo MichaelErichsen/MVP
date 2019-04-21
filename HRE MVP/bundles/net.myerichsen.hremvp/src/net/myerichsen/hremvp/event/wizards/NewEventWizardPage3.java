@@ -41,7 +41,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Wizard page to add a person to an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 24. mar. 2019
+ * @version 21. apr. 2019
  *
  */
 public class NewEventWizardPage3 extends WizardPage {
@@ -55,7 +55,7 @@ public class NewEventWizardPage3 extends WizardPage {
 	/**
 	 * Constructor
 	 *
-	 * @param context
+	 * @param context The Eclipse context
 	 */
 	public NewEventWizardPage3(IEclipseContext context) {
 		super("wizardPage");
@@ -204,7 +204,7 @@ public class NewEventWizardPage3 extends WizardPage {
 			@Override
 			public void focusLost(FocusEvent e) {
 				wizard = (NewEventWizard) getWizard();
-				wizard.setIsPrimaryPerson(btnPrimaryperson.getSelection());
+				wizard.setPrimaryPerson(btnPrimaryperson.getSelection());
 			}
 		});
 		btnPrimaryperson.setLayoutData(
@@ -250,7 +250,7 @@ public class NewEventWizardPage3 extends WizardPage {
 	@Optional
 	private void subscribePersonPidUpdateTopic(
 			@UIEventTopic(Constants.PERSON_PID_UPDATE_TOPIC) int personPid) {
-		LOGGER.log(Level.FINE, "Received person id " + personPid);
+		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 
 		if (personPid > 0) {
 			try {
@@ -261,7 +261,6 @@ public class NewEventWizardPage3 extends WizardPage {
 				textPerson.setText(provider.getPrimaryName());
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 		}
 	}

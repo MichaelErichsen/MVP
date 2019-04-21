@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.BackingStoreException;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -19,7 +18,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * connection to it
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 21. apr. 2019
  */
 public class HreH2ConnectionPool {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
@@ -38,10 +37,9 @@ public class HreH2ConnectionPool {
 	}
 
 	/**
-	 * Dispose connection pool and recreate to create a new data base.
+	 * Dispose connection pool and recreate to create a new data base
 	 *
 	 * @param dbName Name of the database
-	 * @throws BackingStoreException Error in preferences file access
 	 */
 	public static void createNew(String dbName) {
 		try {
