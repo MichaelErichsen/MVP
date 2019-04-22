@@ -14,6 +14,7 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -35,7 +36,7 @@ import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.location.dialogs.LocationNavigatorDialog;
-import net.myerichsen.hremvp.location.dialogs.NewLocationDialog;
+import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 import net.myerichsen.hremvp.project.providers.EventRoleProvider;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
@@ -45,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 17. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -681,17 +682,22 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	private void getNewLocation() {
-		final NewLocationDialog dialog = new NewLocationDialog(
-				textLocation.getShell());
-		if (dialog.open() == Window.OK) {
-			try {
-				locationPid = dialog.getLocationPid();
-				textFromDate.setText(dialog.getLocationName());
-			} catch (final Exception e1) {
-				LOGGER.log(Level.SEVERE, e1.toString(), e1);
-				eventBroker.post("MESSAGE", e1.getMessage());
-			}
-		}
+		final WizardDialog dialog = new WizardDialog(textLocation.getShell(),
+				new NewLocationWizard(context));
+		dialog.open();
+		// FIXME Add eventlocation
+//		final NewLocationDialog dialog = new NewLocationDialog(
+//				textLocation.getShell());
+//		if (dialog.open() == Window.OK) {
+//			try {
+//				locationPid = dialog.getLocationPid();
+//				textFromDate.setText(dialog.getLocationName());
+//			} catch (final Exception e1) {
+//				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+//				eventBroker.post("MESSAGE", e1.getMessage());
+//			}
+//	}
+
 	}
 
 	/**
