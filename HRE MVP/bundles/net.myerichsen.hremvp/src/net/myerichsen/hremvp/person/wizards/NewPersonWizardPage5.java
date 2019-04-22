@@ -37,7 +37,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * wizard, which then creates a Person Event for each event.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 13. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class NewPersonWizardPage5 extends WizardPage {
@@ -168,14 +168,14 @@ public class NewPersonWizardPage5 extends WizardPage {
 		final TableColumn tblclmnEventLabel = tableViewerColumnLabel
 				.getColumn();
 		tblclmnEventLabel.setWidth(100);
-		tblclmnEventLabel.setText("Event label");
+		tblclmnEventLabel.setText("Event");
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnEventRole = tableViewerColumnRole.getColumn();
 		tblclmnEventRole.setWidth(100);
-		tblclmnEventRole.setText("Role in personEvent");
+		tblclmnEventRole.setText("Role in Event");
 		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(

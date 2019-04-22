@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class EventServer implements IHREServer {
@@ -298,6 +298,10 @@ public class EventServer implements IHREServer {
 	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
+
+		if (key == 0) {
+			return lls;
+		}
 
 		event.get(key);
 

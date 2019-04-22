@@ -8,7 +8,9 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -32,10 +34,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.location.dialogs.LocationNavigatorDialog;
+import net.myerichsen.hremvp.location.providers.LocationEventProvider;
+import net.myerichsen.hremvp.location.providers.LocationProvider;
 import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 import net.myerichsen.hremvp.project.providers.EventRoleProvider;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
@@ -121,6 +126,15 @@ public class NewEventDialog extends TitleAreaDialog {
 			try {
 				locationPid = dialog.getLocationPid();
 				textLocation.setText(dialog.getLocationName());
+
+				LocationEventProvider lep = new LocationEventProvider();
+				lep.setEventPid(eventPid);
+				lep.setLocationPid(locationPid);
+				lep.setPrimaryEvent(true);
+				lep.setPrimaryLocation(true);
+				int locationEventsPid = lep.insert();
+				LOGGER.log(Level.INFO, "Inserted location event {0}",
+						locationEventsPid);
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				eventBroker.post("MESSAGE", e1.getMessage());
@@ -333,7 +347,7 @@ public class NewEventDialog extends TitleAreaDialog {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				getNewFromDate();
+				newFromDate();
 			}
 		});
 		btnNewFrom.setText("New");
@@ -411,7 +425,7 @@ public class NewEventDialog extends TitleAreaDialog {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				getNewToDate();
+				newToDate();
 			}
 		});
 		btnNewTo.setText("New");
@@ -489,7 +503,7 @@ public class NewEventDialog extends TitleAreaDialog {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				getNewLocation();
+				newLocation();
 			}
 		});
 		btnNewLocation.setText("New");
@@ -657,9 +671,23 @@ public class NewEventDialog extends TitleAreaDialog {
 	}
 
 	/**
+	 * @return the role
+	 */
+	public String getRole() {
+		return role;
+	}
+
+	/**
+	 * @return the toDatePid
+	 */
+	public int getToDatePid() {
+		return toDatePid;
+	}
+
+	/**
 	 *
 	 */
-	private void getNewFromDate() {
+	private void newFromDate() {
 		final DateDialog dialog = new DateDialog(textFromDate.getShell(),
 				context);
 		if (dialog.open() == Window.OK) {
@@ -681,29 +709,34 @@ public class NewEventDialog extends TitleAreaDialog {
 	/**
 	 *
 	 */
-	private void getNewLocation() {
+	private void newLocation() {
+		NewLocationWizard newLocationWizard = new NewLocationWizard(context);
 		final WizardDialog dialog = new WizardDialog(textLocation.getShell(),
-				new NewLocationWizard(context));
-		dialog.open();
-		// FIXME Add eventlocation
-//		final NewLocationDialog dialog = new NewLocationDialog(
-//				textLocation.getShell());
-//		if (dialog.open() == Window.OK) {
-//			try {
-//				locationPid = dialog.getLocationPid();
-//				textFromDate.setText(dialog.getLocationName());
-//			} catch (final Exception e1) {
-//				LOGGER.log(Level.SEVERE, e1.toString(), e1);
-//				eventBroker.post("MESSAGE", e1.getMessage());
-//			}
-//	}
+				newLocationWizard);
+		if (dialog.open() == Window.OK) {
+			try {
+				LocationProvider lp = new LocationProvider();
+				lp.get(locationPid);
+				textLocation.setText(lp.getPrimaryName());
 
+				LocationEventProvider lep = new LocationEventProvider();
+				lep.setEventPid(eventPid);
+				lep.setLocationPid(locationPid);
+				lep.setPrimaryEvent(true);
+				lep.setPrimaryLocation(true);
+				int locationEventsPid = lep.insert();
+				LOGGER.log(Level.INFO, "Inserted location event {0}",
+						locationEventsPid);
+			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, e.toString(), e);
+			}
+		}
 	}
 
 	/**
 	 *
 	 */
-	private void getNewToDate() {
+	private void newToDate() {
 		final DateDialog dialog = new DateDialog(textToDate.getShell(),
 				context);
 		if (dialog.open() == Window.OK) {
@@ -720,20 +753,6 @@ public class NewEventDialog extends TitleAreaDialog {
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
-	}
-
-	/**
-	 * @return the role
-	 */
-	public String getRole() {
-		return role;
-	}
-
-	/**
-	 * @return the toDatePid
-	 */
-	public int getToDatePid() {
-		return toDatePid;
 	}
 
 	/**
@@ -797,5 +816,14 @@ public class NewEventDialog extends TitleAreaDialog {
 	 */
 	public void setToDatePid(int toDatePid) {
 		this.toDatePid = toDatePid;
+	}
+
+	@Inject
+	@Optional
+	private void subscribeLocationPidUpdateTopic(
+			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
+		LOGGER.log(Level.INFO, "Received location pid {0}", locationPid);
+		this.locationPid = locationPid;
+		textLocation.setText("Location pid: " + locationPid);
 	}
 }

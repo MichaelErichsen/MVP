@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 22. apr. 2019
  */
 
 public class LocationEventView {
@@ -162,11 +162,10 @@ public class LocationEventView {
 
 	/**
 	 * @param locationPid
-	 * @throws Exception
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(
+	private void subscribeLocationPidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
 		locationKey = locationPid;
 		try {

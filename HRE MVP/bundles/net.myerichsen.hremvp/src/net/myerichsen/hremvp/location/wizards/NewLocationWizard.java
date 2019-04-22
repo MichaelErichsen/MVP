@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.location.providers.LocationProvider;
  * Wizard to add a new location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class NewLocationWizard extends Wizard {
@@ -31,6 +31,8 @@ public class NewLocationWizard extends Wizard {
 	private NewLocationWizardPage2 page2;
 	private NewLocationWizardPage3 page3;
 	private NewLocationWizardPage4 page4;
+	private int locationPid;
+
 	// Page 1
 	private int locationNameStylePid = 0;
 	private int nameFromDatePid = 0;
@@ -122,6 +124,13 @@ public class NewLocationWizard extends Wizard {
 	 */
 	public int getLocationNameStylePid() {
 		return locationNameStylePid;
+	}
+
+	/**
+	 * @return the locationPid
+	 */
+	public int getLocationPid() {
+		return locationPid;
 	}
 
 	/**
@@ -223,7 +232,7 @@ public class NewLocationWizard extends Wizard {
 			lp.setzCoordinate(BigDecimal.valueOf(zCoordinate));
 			lp.setPrimaryLocation(isPrimaryLocation);
 
-			final int locationPid = lp.insert();
+			locationPid = lp.insert();
 			LOGGER.log(Level.INFO, "Inserted location {0}", locationPid);
 
 			final LocationNameProvider lnp = new LocationNameProvider();
@@ -306,6 +315,13 @@ public class NewLocationWizard extends Wizard {
 	 */
 	public void setLocationNameStylePid(int locationNameStylePid) {
 		this.locationNameStylePid = locationNameStylePid;
+	}
+
+	/**
+	 * @param locationPid the locationPid to set
+	 */
+	public void setLocationPid(int locationPid) {
+		this.locationPid = locationPid;
 	}
 
 	/**
