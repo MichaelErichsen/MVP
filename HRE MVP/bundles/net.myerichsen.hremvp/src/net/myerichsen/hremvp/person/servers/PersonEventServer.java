@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class PersonEventServer implements IHREServer {
@@ -103,6 +103,10 @@ public class PersonEventServer implements IHREServer {
 	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 		PersonServer ls;
+
+		if (key == 0) {
+			return lls;
+		}
 
 		final List<String> personStringList = new ArrayList<>();
 

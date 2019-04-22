@@ -124,6 +124,7 @@ public class EventPersonView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
+			// FIXME java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
 			tableViewer.setInput(provider.getStringList(eventPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);

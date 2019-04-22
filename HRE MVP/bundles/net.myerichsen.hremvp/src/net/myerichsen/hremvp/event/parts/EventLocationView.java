@@ -343,7 +343,7 @@ public class EventLocationView {
 			tableViewer.setInput(lls);
 			tableViewer.refresh();
 		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 
 	}
