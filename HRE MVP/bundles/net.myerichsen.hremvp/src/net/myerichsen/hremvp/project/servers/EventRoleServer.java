@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class EventRoleServer implements IHREServer {
@@ -30,7 +30,6 @@ public class EventRoleServer implements IHREServer {
 	private String abbreviation;
 
 	private final EventRoles eventRole;
-//	private Dictionary dictionary;
 
 	/**
 	 * Constructor
@@ -53,42 +52,6 @@ public class EventRoleServer implements IHREServer {
 	public void delete(int key) throws Exception {
 		eventRole.delete(key);
 	}
-
-	/**
-	 * Get all rows
-	 *
-	 * @return
-	 * @throws Exception
-	 */
-	public List<EventRoles> get() throws Exception {
-		return eventRole.get();
-	}
-
-//	/**
-//	 * Get all rows
-//	 *
-//	 * @return A list of lists of strings of pids and labels
-//	 * @throws Exception An exception that provides information on a database
-//	 *                      access error or other errors
-//	 * @throws MvpException Application specific exception
-//	 */
-//	@Override
-//	public List<List<String>> get() throws Exception {
-//		final List<List<String>> lls = new ArrayList<>();
-//		List<String> stringList;
-//
-//		final List<EventRoles> eventRoleList = eventRole.get();
-//
-//		for (final EventRoles Role : eventRoleList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(Role.getEventRolePid()));
-//			// FIXME Labels
-//			stringList.add("Role.getLabel()");
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
 
 	/**
 	 * Get a row
@@ -160,35 +123,6 @@ public class EventRoleServer implements IHREServer {
 	public int getLabelPid() {
 		return eventRole.getLabelPid();
 	}
-
-//	/**
-//	 * @param key
-//	 * @return
-//	 * @throws Exception
-//	 * @throws MvpException
-//	 */
-//	public List<List<String>> getNameList(int key)
-//			throws Exception {
-//		List<String> stringList;
-//
-//		final List<List<String>> lls = new ArrayList<>();
-//		final EventNames names = new EventNames();
-//		final List<EventNames> eventNameList = names.getFKEventRolePid(key);
-//		new Languages();
-//
-//		for (final EventNames eventNames : eventNameList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(eventNames.getEventRolePid()));
-//			stringList.add(eventNames.getLabel());
-//
-////			language.get(eventNames.getLanguagePid());
-////			stringList.add(language.getLabel());
-////			stringList.add(language.getIsocode());
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
 
 	/**
 	 * @return stringList A list of lists of event Role pids, label pids,

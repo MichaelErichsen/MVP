@@ -3,14 +3,13 @@ package net.myerichsen.hremvp.project.providers;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.project.servers.LanguageServer;
 
 /**
  * Provide a language
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class LanguageProvider implements IHREProvider {
@@ -37,26 +36,6 @@ public class LanguageProvider implements IHREProvider {
 	public void delete(int key) throws Exception {
 		server.delete(key);
 
-	}
-
-	/**
-	 * @return A list of lists of Pids, ISO Codes and labels
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	public List<List<String>> get() throws Exception {
-		return server.get();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
-	 */
-	@Override
-	public void get(int key) throws Exception {
-		server.get();
 	}
 
 	/**
@@ -157,6 +136,15 @@ public class LanguageProvider implements IHREProvider {
 		server.setIsocode(Isocode);
 		server.setLabel(Label);
 		server.update();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	@Override
+	public void get(int key) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

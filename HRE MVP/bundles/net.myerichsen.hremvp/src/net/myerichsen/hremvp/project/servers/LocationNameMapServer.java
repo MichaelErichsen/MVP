@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameMaps;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 9. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class LocationNameMapServer implements IHREServer {
@@ -60,16 +60,6 @@ public class LocationNameMapServer implements IHREServer {
 		for (final LocationNameMaps locationNameMaps : fkLocationNameStylePid) {
 			delete(locationNameMaps.getLocationNameMapPid());
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	public List<?> get() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**

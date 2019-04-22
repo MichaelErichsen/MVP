@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.dbmodels.Parents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 28. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class ParentServer implements IHREServer {
@@ -34,16 +34,8 @@ public class ParentServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.servers.IHREServer#delete(int)
 	 */
 	@Override
-	public void delete(int key) throws UnsupportedOperationException {
+	public void delete(int key) {
 
-	}
-
-	/**
-	 * @return
-	 */
-	public List<?> get() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/*

@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class EventTypeServer implements IHREServer {
@@ -62,32 +62,6 @@ public class EventTypeServer implements IHREServer {
 	public List<EventTypes> get() throws Exception {
 		return eventType.get();
 	}
-
-//	/**
-//	 * Get all rows
-//	 *
-//	 * @return A list of lists of strings of pids and labels
-//	 * @throws Exception An exception that provides information on a database
-//	 *                      access error or other errors
-//	 * @throws MvpException Application specific exception
-//	 */
-//	@Override
-//	public List<List<String>> get() throws Exception {
-//		final List<List<String>> lls = new ArrayList<>();
-//		List<String> stringList;
-//
-//		final List<EventTypes> eventTypeList = eventType.get();
-//
-//		for (final EventTypes type : eventTypeList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(type.getEventTypePid()));
-//			// FIXME Labels
-//			stringList.add("type.getLabel()");
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
 
 	/**
 	 * Get a row

@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class LanguageServer implements IHREServer {
@@ -37,31 +37,6 @@ public class LanguageServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 		language.delete(key);
-	}
-
-	/**
-	 * Get all rows
-	 *
-	 * @return A list of lists of Pids, ISO Codes and labels
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 */
-	public List<List<String>> get() throws Exception {
-		final List<List<String>> lls = new ArrayList<>();
-		List<String> stringList;
-
-		final List<Languages> languageList = language.get();
-
-		for (final Languages aLanguage : languageList) {
-			stringList = new ArrayList<>();
-			stringList.add(Integer.toString(aLanguage.getLanguagePid()));
-			stringList.add(aLanguage.getIsocode());
-			stringList.add(aLanguage.getLabel());
-			lls.add(stringList);
-		}
-
-		return lls;
 	}
 
 	/*

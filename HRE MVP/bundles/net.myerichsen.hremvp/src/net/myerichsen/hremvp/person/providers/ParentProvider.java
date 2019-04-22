@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.person.servers.ParentServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 30. mar. 2019
+ * @version 22. apr. 2019
  */
 public class ParentProvider implements IHREProvider {
 	private int ParentPid;
@@ -36,15 +36,6 @@ public class ParentProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws Exception {
 		server.delete(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return server.get();
 	}
 
 	/*

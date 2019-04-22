@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.ParentRoles;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class ParentRoleServer implements IHREServer {
@@ -61,32 +61,6 @@ public class ParentRoleServer implements IHREServer {
 	public List<ParentRoles> get() throws Exception {
 		return parentRole.get();
 	}
-
-//	/**
-//	 * Get all rows
-//	 *
-//	 * @return A list of lists of strings of pids and labels
-//	 * @throws Exception An exception that provides information on a database
-//	 *                      access error or other errors
-//	 * @throws MvpException Application specific exception
-//	 */
-//	@Override
-//	public List<List<String>> get() throws Exception {
-//		final List<List<String>> lls = new ArrayList<>();
-//		List<String> stringList;
-//
-//		final List<ParentRoles> eventRoleList = eventRole.get();
-//
-//		for (final ParentRoles Role : eventRoleList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(Role.getEventRolePid()));
-//			// FIXME Labels
-//			stringList.add("Role.getLabel()");
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
 
 	/**
 	 * Get a row

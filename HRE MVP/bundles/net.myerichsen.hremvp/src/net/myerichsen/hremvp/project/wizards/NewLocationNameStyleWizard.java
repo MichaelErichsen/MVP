@@ -16,13 +16,12 @@ import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
  * Wizard to add a location name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class NewLocationNameStyleWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
 	private NewLocationNameStyleWizardPage2 page2;
@@ -38,7 +37,6 @@ public class NewLocationNameStyleWizard extends Wizard {
 	public NewLocationNameStyleWizard(IEclipseContext context) {
 		setWindowTitle("Add a location name style");
 		setForcePreviousAndNextButtons(true);
-		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -59,8 +57,7 @@ public class NewLocationNameStyleWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		final NewLocationNameStyleWizardPage1 page1 = new NewLocationNameStyleWizardPage1(
-				context);
+		final NewLocationNameStyleWizardPage1 page1 = new NewLocationNameStyleWizardPage1();
 		addPage(page1);
 	}
 

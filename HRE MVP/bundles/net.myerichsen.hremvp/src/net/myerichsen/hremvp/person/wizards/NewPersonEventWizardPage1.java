@@ -407,7 +407,7 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 
 		try {
 			// Populate language combo box
-			languageList = new LanguageProvider().get();
+			languageList = new LanguageProvider().getStringList();
 			comboViewerLanguage.setInput(languageList);
 			final int llsSize = languageList.size();
 			final String g = store.getString("GUILANGUAGE");

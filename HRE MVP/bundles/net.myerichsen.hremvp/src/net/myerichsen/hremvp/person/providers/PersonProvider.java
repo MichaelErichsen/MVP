@@ -1,11 +1,9 @@
 package net.myerichsen.hremvp.person.providers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.Persons;
 import net.myerichsen.hremvp.person.servers.PersonServer;
 
 /**
@@ -39,14 +37,6 @@ public class PersonProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws Exception {
 		server.delete(key);
-	}
-
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<Persons> get() throws SQLException {
-		return server.get();
 	}
 
 	/*

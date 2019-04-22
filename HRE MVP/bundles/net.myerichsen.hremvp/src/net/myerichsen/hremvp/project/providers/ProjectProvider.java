@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.ProjectServer;
  * Provides all registered projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 11. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class ProjectProvider implements IHREProvider {
@@ -33,15 +33,6 @@ public class ProjectProvider implements IHREProvider {
 	@Override
 	public void delete(int key) throws Exception {
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<List<String>> get() throws Exception {
-		return server.get();
 	}
 
 	/*

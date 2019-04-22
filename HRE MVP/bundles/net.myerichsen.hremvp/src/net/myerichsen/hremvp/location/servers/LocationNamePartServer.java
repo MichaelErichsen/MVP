@@ -99,16 +99,6 @@ public class LocationNamePartServer implements IHREServer {
 		setMapLabel("Label");
 		final LocationNames name = new LocationNames();
 		name.get(locationNamePid);
-
-//		final LocationNameMaps map = new LocationNameMaps();
-//		final List<LocationNameMaps> mapList = map
-//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-//
-//		for (int i = 0; i < mapList.size(); i++) {
-//			if (mapList.get(i).getPartNo() == partNo) {
-//				setMapLabel("mapList.get(i).getLabelPid()");
-//				break;
-//			}
 	}
 
 	/**

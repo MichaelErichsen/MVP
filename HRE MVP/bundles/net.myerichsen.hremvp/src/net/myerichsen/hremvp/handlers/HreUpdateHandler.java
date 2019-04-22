@@ -29,7 +29,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 17. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class HreUpdateHandler {
@@ -107,10 +107,8 @@ public class HreUpdateHandler {
 			return null;
 		}
 
-		operation.getProvisioningContext()
-				.setArtifactRepositories(new URI[] { uri });
-		operation.getProvisioningContext()
-				.setMetadataRepositories(new URI[] { uri });
+		operation.getProvisioningContext().setArtifactRepositories(uri);
+		operation.getProvisioningContext().setMetadataRepositories(uri);
 		subMonitor.worked(25);
 		return operation;
 	}

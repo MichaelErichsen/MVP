@@ -73,7 +73,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -245,7 +245,7 @@ public class ProjectNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.get());
+			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -923,7 +923,7 @@ public class ProjectNavigator {
 			@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
 		LOGGER.log(Level.FINE, "Received project index {0}", key);
 		try {
-			tableViewer.setInput(provider.get());
+			tableViewer.setInput(provider.getStringList());
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

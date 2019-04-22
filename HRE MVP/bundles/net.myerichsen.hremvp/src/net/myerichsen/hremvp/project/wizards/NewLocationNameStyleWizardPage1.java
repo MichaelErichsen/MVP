@@ -5,12 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -27,7 +24,7 @@ import net.myerichsen.hremvp.project.providers.LanguageProvider;
  * Add a location name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class NewLocationNameStyleWizardPage1 extends WizardPage {
@@ -45,7 +42,7 @@ public class NewLocationNameStyleWizardPage1 extends WizardPage {
 	 *
 	 * @param context
 	 */
-	public NewLocationNameStyleWizardPage1(IEclipseContext context) {
+	public NewLocationNameStyleWizardPage1() {
 		super("location name style wizard Page 1");
 		setTitle("location name style");
 		setDescription("Add static data for a new location name style");
@@ -88,7 +85,7 @@ public class NewLocationNameStyleWizardPage1 extends WizardPage {
 
 		final LanguageProvider languageProvider = new LanguageProvider();
 		try {
-			languageList = languageProvider.get();
+			languageList = languageProvider.getStringList();
 
 			final int llsSize = languageList.size();
 			final String[] singleArray = new String[llsSize];
@@ -106,26 +103,13 @@ public class NewLocationNameStyleWizardPage1 extends WizardPage {
 			comboIsoCode.select(index);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 		final Label lblStyleName = new Label(container, SWT.NONE);
 		lblStyleName.setText("Style name");
 
 		textStyleName = new Text(container, SWT.BORDER);
-		textStyleName.addModifyListener(new ModifyListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
-			 * events.ModifyEvent)
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				checkCompletedPage();
-			}
-		});
+		textStyleName.addModifyListener(e -> checkCompletedPage());
 		textStyleName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -133,19 +117,7 @@ public class NewLocationNameStyleWizardPage1 extends WizardPage {
 		lblNumberOfName.setText("Number of name parts");
 
 		textNamePartCount = new Text(container, SWT.BORDER);
-		textNamePartCount.addModifyListener(new ModifyListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
-			 * events.ModifyEvent)
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				checkCompletedPage();
-			}
-		});
+		textNamePartCount.addModifyListener(e -> checkCompletedPage());
 		textNamePartCount.addVerifyListener(new NumericVerifyListener());
 		textNamePartCount.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));

@@ -102,14 +102,6 @@ public class LocationNameServer implements IHREServer {
 		LOGGER.log(Level.FINE, "Location name PID: {0}", key);
 		LOGGER.log(Level.FINE, "Location name style PID: {0}",
 				name.getLocationNameStylePid());
-//		mapList = new LocationNameMaps()
-//				.getFKLocationNameStylePid(name.getLocationNameStylePid());
-//		partList = new LocationNameParts().getFKLocationNamePid(key);
-//
-//		if (mapList.size() != partList.size()) {
-//			throw new MvpException("Map list size: " + mapList.size()
-//					+ ", part list size: " + partList.size());
-//		}
 	}
 
 	/**

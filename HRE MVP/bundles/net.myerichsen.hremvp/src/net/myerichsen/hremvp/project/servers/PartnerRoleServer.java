@@ -18,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.PartnerRoles;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class PartnerRoleServer implements IHREServer {
@@ -61,32 +61,6 @@ public class PartnerRoleServer implements IHREServer {
 	public List<PartnerRoles> get() throws Exception {
 		return PartnerRole.get();
 	}
-
-//	/**
-//	 * Get all rows
-//	 *
-//	 * @return A list of lists of strings of pids and labels
-//	 * @throws Exception An exception that provides information on a database
-//	 *                      access error or other errors
-//	 * @throws MvpException Application specific exception
-//	 */
-//	@Override
-//	public List<List<String>> get() throws Exception {
-//		final List<List<String>> lls = new ArrayList<>();
-//		List<String> stringList;
-//
-//		final List<PartnerRoles> eventRoleList = eventRole.get();
-//
-//		for (final PartnerRoles Role : eventRoleList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(Role.getEventRolePid()));
-//			// FIXME Labels
-//			stringList.add("Role.getLabel()");
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
 
 	/**
 	 * Get a row

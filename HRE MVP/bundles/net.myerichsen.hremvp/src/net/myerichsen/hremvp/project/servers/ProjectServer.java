@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.MvpException;
  * Business logic interface for HRE Projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 2. feb. 2019
+ * @version 22. apr. 2019
  *
  */
 public class ProjectServer implements IHREServer {
@@ -39,32 +39,6 @@ public class ProjectServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#get()
-	 */
-	public List<List<String>> get() {
-		final List<List<String>> lls = new ArrayList<>();
-		List<String> ls;
-		final int projectCount = store.getInt("projectcount");
-		String key;
-
-		for (int i = 1; i <= projectCount; i++) {
-			ls = new ArrayList<>();
-			ls.add(Integer.toString(i));
-			key = PROJECT + i + NAME;
-			ls.add(store.getString(key));
-			key = PROJECT + i + ".localserver";
-			ls.add(store.getString(key));
-
-			LOGGER.log(Level.FINE, "Found Name: " + store.getString(key));
-			lls.add(ls);
-		}
-
-		return lls;
 	}
 
 	/*
@@ -148,7 +122,24 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> ls;
+		final int projectCount = store.getInt("projectcount");
+		String key;
+
+		for (int i = 1; i <= projectCount; i++) {
+			ls = new ArrayList<>();
+			ls.add(Integer.toString(i));
+			key = PROJECT + i + NAME;
+			ls.add(store.getString(key));
+			key = PROJECT + i + ".localserver";
+			ls.add(store.getString(key));
+
+			LOGGER.log(Level.FINE, "Found Name: " + store.getString(key));
+			lls.add(ls);
+		}
+
+		return lls;
 	}
 
 	/*

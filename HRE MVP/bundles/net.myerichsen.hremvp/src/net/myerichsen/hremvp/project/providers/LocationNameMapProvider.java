@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.LocationNameMapServer;
  * Provides all data for a single map view part
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class LocationNameMapProvider implements IHREProvider {
@@ -50,15 +50,6 @@ public class LocationNameMapProvider implements IHREProvider {
 	 */
 	public void deleteLocationNameStylePid(int key) throws Exception {
 		server.deleteLocationNameStylePid(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREProvider#get()
-	 */
-	public List<?> get() throws Exception {
-		return server.get();
 	}
 
 	/**

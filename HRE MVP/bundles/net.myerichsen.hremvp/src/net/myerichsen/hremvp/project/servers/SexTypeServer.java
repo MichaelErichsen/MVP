@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
@@ -102,17 +102,6 @@ public class SexTypeServer implements IHREServer {
 		sexType.get(key);
 		setSexTypePid(sexType.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
-
-//		final List<Dictionary> fkIsoCode = dictionary
-//				.getFKIsoCode(store.getString("GUILANGUAGE"));
-//		String label = "";
-//
-//		for (final Dictionary dict : fkIsoCode) {
-//			if (key == dict.getLabelPid()) {
-//				label = dict.getLabel();
-//			}
-//		}
-//		setLabel(label);
 	}
 
 	/**
@@ -162,8 +151,7 @@ public class SexTypeServer implements IHREServer {
 	 * @throws JSONException         JSONException
 	 */
 	public String getRemote(HttpServletResponse response, String target)
-			throws NumberFormatException, Exception, IOException,
-			JSONException {
+			throws Exception {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
@@ -181,7 +169,7 @@ public class SexTypeServer implements IHREServer {
 		js.value(languagePid);
 		js.key("languageLabel");
 		js.value(languageLabel);
-		js.key("isoCode");
+//		js.key("isoCode");
 //		js.value(isoCode);
 		js.endObject();
 		return js.toString();
@@ -203,10 +191,7 @@ public class SexTypeServer implements IHREServer {
 	public List<List<String>> getStringList() throws Exception {
 		List<String> stringList;
 		List<Dictionary> fkLabelPid;
-		String label = "";
 
-		final IPreferenceStore store = new ScopedPreferenceStore(
-				InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 		final String guiLanguage = store.getString("GUILANGUAGE");
 		final List<List<String>> lls = new ArrayList<>();
 		final Dictionary dictionary = new Dictionary();
@@ -258,7 +243,6 @@ public class SexTypeServer implements IHREServer {
 		}
 
 		List<String> stringList;
-		String label = "";
 
 		final Dictionary dictionary = new Dictionary();
 		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
@@ -306,8 +290,7 @@ public class SexTypeServer implements IHREServer {
 	 * @throws JSONException JSONException
 	 * @throws Exception     Exception
 	 */
-	public void insertRemote(HttpServletRequest request)
-			throws IOException, JSONException, Exception {
+	public void insertRemote(HttpServletRequest request) throws Exception {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 		final BufferedReader br = request.getReader();
@@ -320,7 +303,7 @@ public class SexTypeServer implements IHREServer {
 
 		final JSONObject jsonObject = new JSONObject(sb.toString());
 
-		LOGGER.log(Level.INFO, jsonObject.toString(2));
+		LOGGER.log(Level.INFO, "{0}", jsonObject.toString(2));
 
 		setSexTypePid(jsonObject.getInt("sexTypePid"));
 		setAbbreviation(jsonObject.getString("abbreviation"));
@@ -388,8 +371,7 @@ public class SexTypeServer implements IHREServer {
 	 *                       database access error or other errors
 	 * @throws MvpException  Application specific exception
 	 */
-	public void updateRemote(HttpServletRequest request)
-			throws IOException, JSONException, Exception {
+	public void updateRemote(HttpServletRequest request) throws Exception {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 		final BufferedReader br = request.getReader();
@@ -402,7 +384,7 @@ public class SexTypeServer implements IHREServer {
 
 		final JSONObject jsonObject = new JSONObject(sb.toString());
 
-		LOGGER.log(Level.INFO, jsonObject.toString(2));
+		LOGGER.log(Level.INFO, "{0}", jsonObject.toString(2));
 
 		setSexTypePid(jsonObject.getInt("sexTypePid"));
 		setAbbreviation(jsonObject.getString("abbreviation"));

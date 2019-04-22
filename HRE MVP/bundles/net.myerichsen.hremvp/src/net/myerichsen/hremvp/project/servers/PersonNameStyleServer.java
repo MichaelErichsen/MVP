@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 22. apr. 2019
  *
  */
 public class PersonNameStyleServer implements IHREServer {
@@ -100,11 +100,11 @@ public class PersonNameStyleServer implements IHREServer {
 
 		final List<PersonNameStyles> list = get();
 
-		for (final PersonNameStyles style : list) {
+		for (final PersonNameStyles pns : list) {
 			stringList = new ArrayList<>();
-			stringList.add(Integer.toString(style.getNameStylePid()));
-			stringList.add(style.getIsoCode());
-			LabelPid = style.getLabelPid();
+			stringList.add(Integer.toString(pns.getNameStylePid()));
+			stringList.add(pns.getIsoCode());
+			LabelPid = pns.getLabelPid();
 			final List<Dictionary> fkLabelPid = dictionary
 					.getFKLabelPid(LabelPid);
 			stringList.add(fkLabelPid.get(0).getLabel());

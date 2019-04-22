@@ -26,7 +26,6 @@ public class SexServer implements IHREServer {
 	private String sexTypeLabel;
 	private String abbreviation;
 	private int languagePid;
-//	private String languageLabel;
 	private String isocode;
 
 	private final Sexes sex;
