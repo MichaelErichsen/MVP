@@ -15,12 +15,12 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 /**
- * @author  Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. apr. 2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 22. apr. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
@@ -153,6 +153,10 @@ public class LocationEventServer implements IHREServer {
 		LocationPid = key;
 		final List<List<String>> lls = new ArrayList<>();
 		LocationServer ls;
+
+		if (key == 0) {
+			return lls;
+		}
 
 		final List<String> locationStringList = new ArrayList<>();
 

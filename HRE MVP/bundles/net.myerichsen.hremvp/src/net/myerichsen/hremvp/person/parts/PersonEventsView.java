@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.NavigatorFilter;
+import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonEventWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -48,7 +49,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 22. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonEventsView {
@@ -65,7 +66,7 @@ public class PersonEventsView {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private PersonProvider provider;
+	private EventProvider provider;
 	private NavigatorFilter navigatorFilter;
 	private int personPid = 0;
 
@@ -75,7 +76,7 @@ public class PersonEventsView {
 	 */
 	public PersonEventsView() {
 		try {
-			provider = new PersonProvider();
+			provider = new EventProvider();
 			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post(MESSAGE, e.getMessage());
@@ -87,7 +88,7 @@ public class PersonEventsView {
 	 * Create contents of the view part
 	 *
 	 * @param parent  The parent composite
-	 * @param context
+	 * @param context The Eclipse context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -114,26 +115,12 @@ public class PersonEventsView {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 
-		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnID = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
-		tblclmnId.setWidth(100);
-		tblclmnId.setText("ID");
-		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
-
-		final TableViewerColumn tableViewerColumnLabel = new TableViewerColumn(
-				tableViewer, SWT.NONE);
-		final TableColumn tblclmnEvent = tableViewerColumnLabel.getColumn();
-		tblclmnEvent.setWidth(100);
-		tblclmnEvent.setText("Event");
-		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
-
-		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
-				tableViewer, SWT.NONE);
-		final TableColumn tblclmnRole = tableViewerColumnRole.getColumn();
-		tblclmnRole.setWidth(100);
-		tblclmnRole.setText("Role");
-		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(2));
+		final TableColumn tblclmnId = tableViewerColumnID.getColumn();
+		tblclmnId.setWidth(50);
+		tblclmnId.setText("Event ID");
+		tableViewerColumnID.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -142,14 +129,30 @@ public class PersonEventsView {
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
 		tableViewerColumnFromDate
-				.setLabelProvider(new HREColumnLabelProvider(3));
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
-		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(4));
+		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(2));
+
+		final TableViewerColumn tableViewerColumnAbbreviation = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnAbbreviation = tableViewerColumnAbbreviation
+				.getColumn();
+		tblclmnAbbreviation.setWidth(100);
+		tblclmnAbbreviation.setText("Abbreviation");
+		tableViewerColumnAbbreviation
+				.setLabelProvider(new HREColumnLabelProvider(4));
+
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList());
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
 
 		final Label lblFilter = new Label(parent, SWT.NONE);
 		lblFilter.setText("Event Filter");
@@ -167,8 +170,8 @@ public class PersonEventsView {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				navigatorFilter.setSearchText(textFilter.getText());
-				LOGGER.log(Level.FINE,
-						"Filter string: " + textFilter.getText());
+				LOGGER.log(Level.FINE, "Filter string: {0}",
+						textFilter.getText());
 				tableViewer.refresh();
 			}
 		});
@@ -204,13 +207,6 @@ public class PersonEventsView {
 			}
 		});
 		mntmRemoveSelectedEvent.setText("Remove selected event...");
-
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getPersonEventList(0));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 	}
 
 	/**
@@ -282,8 +278,7 @@ public class PersonEventsView {
 		LOGGER.log(Level.FINE, "Received person id {0}", personPid);
 		this.personPid = personPid;
 		try {
-			// FIXME java.lang.IndexOutOfBoundsException: Index: 3, Size: 3
-			tableViewer.setInput(provider.getPersonEventList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

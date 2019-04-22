@@ -12,12 +12,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 18. apr. 2019
- *
- */
-/**
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 18. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -184,15 +179,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public List<List<String>> getPartnerList(int key) throws Exception {
 		return server.getPartnerList(key);
-	}
-
-	/**
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public List<List<String>> getPersonEventList(int key) throws Exception {
-		return server.getPersonEventList(key);
 	}
 
 	/**

@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. apr. 2019
+ * @version 22. apr. 2019
  *
  */
 public class EventNavigator {
@@ -130,31 +130,29 @@ public class EventNavigator {
 		tblclmnId.setText("Event ID");
 		tableViewerColumnID.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumnEventName = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnFromDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnFromDate = tableViewerColumnEventName
+		final TableColumn tblclmnFromDate = tableViewerColumnFromDate
 				.getColumn();
 		tblclmnFromDate.setWidth(100);
 		tblclmnFromDate.setText("From Date");
-		tableViewerColumnEventName
+		tableViewerColumnFromDate
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
-		final TableViewerColumn tableViewerColumnEventType = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnToDate = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnToDate = tableViewerColumnEventType
-				.getColumn();
+		final TableColumn tblclmnToDate = tableViewerColumnToDate.getColumn();
 		tblclmnToDate.setWidth(100);
 		tblclmnToDate.setText("To Date");
-		tableViewerColumnEventType
-				.setLabelProvider(new HREColumnLabelProvider(2));
+		tableViewerColumnToDate.setLabelProvider(new HREColumnLabelProvider(2));
 
-		final TableViewerColumn tableViewerColumnLanguage = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnAbbreviation = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnAbbreviation = tableViewerColumnLanguage
+		final TableColumn tblclmnAbbreviation = tableViewerColumnAbbreviation
 				.getColumn();
 		tblclmnAbbreviation.setWidth(100);
 		tblclmnAbbreviation.setText("Abbreviation");
-		tableViewerColumnLanguage
+		tableViewerColumnAbbreviation
 				.setLabelProvider(new HREColumnLabelProvider(4));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
