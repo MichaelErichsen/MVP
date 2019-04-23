@@ -824,7 +824,7 @@ public class ProjectNavigator {
 
 		try {
 			closeDbIfActive(dbName);
-		} catch (SQLException e1) {
+		} catch (final SQLException e1) {
 			LOGGER.log(Level.INFO, e1.getMessage());
 		}
 

@@ -250,7 +250,7 @@ public class ProjectNewDatabaseServer {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param shell
 	 *
 	 * @throws Exception
@@ -271,7 +271,8 @@ public class ProjectNewDatabaseServer {
 
 		// TODO Only display for stand alone application
 		try {
-			ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(
+					shell);
 			dialog.run(true, true, monitor -> {
 				int counter = 0;
 
@@ -360,11 +361,11 @@ public class ProjectNewDatabaseServer {
 					Thread.sleep(2000);
 					counter += 10;
 					monitor.done();
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 					LOGGER.log(Level.SEVERE, e.toString(), e);
 				}
 			});
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 

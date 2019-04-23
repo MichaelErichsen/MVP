@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.providers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
@@ -9,7 +8,7 @@ import net.myerichsen.hremvp.person.servers.PersonEventServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 5. apr. 2019
+ * @version 23. apr. 2019
  */
 public class PersonEventProvider implements IHREProvider {
 	private int PersonEventPid;
@@ -85,7 +84,7 @@ public class PersonEventProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<>();
+		return server.getStringList();
 	}
 
 	/*

@@ -102,7 +102,8 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 
 		try {
 			final LanguageProvider languageProvider = new LanguageProvider();
-			final List<List<String>> languageList = languageProvider.getStringList();
+			final List<List<String>> languageList = languageProvider
+					.getStringList();
 
 			final int llsSize = languageList.size();
 			final String[][] doubleArray = new String[llsSize][2];

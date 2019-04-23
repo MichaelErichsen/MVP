@@ -1,13 +1,17 @@
 package net.myerichsen.hremvp.person.servers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.ParentRoles;
 import net.myerichsen.hremvp.dbmodels.Parents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 22. apr. 2019
+ * @version 23. apr. 2019
  *
  */
 public class ParentServer implements IHREServer {
@@ -56,6 +60,29 @@ public class ParentServer implements IHREServer {
 	}
 
 	/**
+	 * @param personPid
+	 * @return
+	 */
+	public List<List<String>> getChildrenList(int key) throws Exception {
+		List<String> ls;
+
+		final PersonNameServer pns = new PersonNameServer();
+		final List<List<String>> childrenList = new ArrayList<>();
+
+		for (final Parents parent : new Parents().getFKParent(key)) {
+			ls = new ArrayList<>();
+			final int pid = parent.getChild();
+			ls.add(Integer.toString(pid));
+
+			ls.add(pns.getPrimaryNameString(pid));
+
+			childrenList.add(ls);
+		}
+
+		return childrenList;
+	}
+
+	/**
 	 * @return the languagePid
 	 */
 	public int getLanguagePid() {
@@ -101,8 +128,32 @@ public class ParentServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		final List<List<String>> parentList = new ArrayList<>();
+		List<String> ls;
+		int parentPid;
+		final PersonNameServer pns = new PersonNameServer();
+		final ParentRoles role = new ParentRoles();
+		final Dictionary dictionary = new Dictionary();
+
+		if (key == 0) {
+			return parentList;
+		}
+
+		for (final Parents aParent : new Parents().getFKChild(key)) {
+			ls = new ArrayList<>();
+			parentPid = aParent.getParent();
+			ls.add(Integer.toString(parentPid));
+			ls.add(pns.getPrimaryNameString(parentPid));
+
+			role.get(aParent.getParentRolePid());
+			dictionary.getFKLabelPid(role.getLabelPid());
+			ls.add(dictionary.getLabel());
+
+			ls.add(Boolean.toString(aParent.isPrimaryParent()));
+
+			parentList.add(ls);
+		}
+		return parentList;
 	}
 
 	/*
@@ -125,6 +176,20 @@ public class ParentServer implements IHREServer {
 	 */
 	public boolean isPrimaryParent() {
 		return PrimaryParent;
+	}
+
+	/**
+	 * @param personPid
+	 * @param parentPid
+	 * @throws Exception
+	 * @throws MvpException
+	 */
+	public void removeParent(int parentPid) throws Exception {
+		for (final Parents p : parentRelation.getFKChild(parentPid)) {
+			if (p.getParent() == parentPid) {
+				parentRelation.delete(p.getParentPid());
+			}
+		}
 	}
 
 	/**

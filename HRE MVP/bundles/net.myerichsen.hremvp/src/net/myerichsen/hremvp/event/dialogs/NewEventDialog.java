@@ -127,12 +127,12 @@ public class NewEventDialog extends TitleAreaDialog {
 				locationPid = dialog.getLocationPid();
 				textLocation.setText(dialog.getLocationName());
 
-				LocationEventProvider lep = new LocationEventProvider();
+				final LocationEventProvider lep = new LocationEventProvider();
 				lep.setEventPid(eventPid);
 				lep.setLocationPid(locationPid);
 				lep.setPrimaryEvent(true);
 				lep.setPrimaryLocation(true);
-				int locationEventsPid = lep.insert();
+				final int locationEventsPid = lep.insert();
 				LOGGER.log(Level.INFO, "Inserted location event {0}",
 						locationEventsPid);
 			} catch (final Exception e1) {
@@ -710,24 +710,25 @@ public class NewEventDialog extends TitleAreaDialog {
 	 *
 	 */
 	private void newLocation() {
-		NewLocationWizard newLocationWizard = new NewLocationWizard(context);
+		final NewLocationWizard newLocationWizard = new NewLocationWizard(
+				context);
 		final WizardDialog dialog = new WizardDialog(textLocation.getShell(),
 				newLocationWizard);
 		if (dialog.open() == Window.OK) {
 			try {
-				LocationProvider lp = new LocationProvider();
+				final LocationProvider lp = new LocationProvider();
 				lp.get(locationPid);
 				textLocation.setText(lp.getPrimaryName());
 
-				LocationEventProvider lep = new LocationEventProvider();
+				final LocationEventProvider lep = new LocationEventProvider();
 				lep.setEventPid(eventPid);
 				lep.setLocationPid(locationPid);
 				lep.setPrimaryEvent(true);
 				lep.setPrimaryLocation(true);
-				int locationEventsPid = lep.insert();
+				final int locationEventsPid = lep.insert();
 				LOGGER.log(Level.INFO, "Inserted location event {0}",
 						locationEventsPid);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		}

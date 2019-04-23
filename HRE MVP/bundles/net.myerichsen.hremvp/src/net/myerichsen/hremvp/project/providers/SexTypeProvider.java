@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.project.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. mar. 2019
+ * @version 23. apr. 2019
  *
  */
 public class SexTypeProvider implements IHREProvider {
@@ -169,7 +169,7 @@ public class SexTypeProvider implements IHREProvider {
 
 		final JSONObject jsonObject = new JSONObject(sb.toString());
 
-		LOGGER.log(Level.INFO, jsonObject.toString(2));
+		LOGGER.log(Level.INFO, "{0}", jsonObject.toString(2));
 
 		setSexTypePid(jsonObject.getInt("sexTypePid"));
 		setAbbreviation(jsonObject.getString("abbreviation"));

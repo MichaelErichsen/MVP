@@ -23,7 +23,7 @@ public class AncestorTreeLabelProvider implements ILabelProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
 	 */
 	@Override

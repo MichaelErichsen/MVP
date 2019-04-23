@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.person.providers.PartnerProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonPartnerWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -43,7 +43,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display and maintain all partners for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 23. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonPartnersView {
@@ -58,7 +58,7 @@ public class PersonPartnersView {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private PersonProvider provider;
+	private PartnerProvider provider;
 	private int personPid;
 
 	/**
@@ -67,7 +67,7 @@ public class PersonPartnersView {
 	 */
 	public PersonPartnersView() {
 		try {
-			provider = new PersonProvider();
+			provider = new PartnerProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -126,6 +126,13 @@ public class PersonPartnersView {
 		tableViewerColumnPrimary
 				.setLabelProvider(new HREColumnLabelProvider(3));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList(personPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
@@ -148,13 +155,6 @@ public class PersonPartnersView {
 			}
 		});
 		mntmRemoveSelectedPartner.setText("Remove selected partner...");
-
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getPartnerList(0));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 
 	}
 
@@ -206,7 +206,6 @@ public class PersonPartnersView {
 		}
 
 		try {
-			provider = new PersonProvider();
 			provider.removePartner(personPid, PartnerPid);
 			eventBroker.post("MESSAGE",
 					"Partner " + primaryName + " has been removed");
@@ -227,7 +226,7 @@ public class PersonPartnersView {
 		this.personPid = personPid;
 
 		try {
-			tableViewer.setInput(provider.getPartnerList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

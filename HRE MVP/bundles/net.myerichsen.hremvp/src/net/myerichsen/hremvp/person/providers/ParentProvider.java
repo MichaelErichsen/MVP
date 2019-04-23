@@ -6,8 +6,9 @@ import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.person.servers.ParentServer;
 
 /**
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 22. apr. 2019
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 23. apr. 2019
+ *
  */
 public class ParentProvider implements IHREProvider {
 	private int ParentPid;
@@ -56,6 +57,15 @@ public class ParentProvider implements IHREProvider {
 	}
 
 	/**
+	 * @param personPid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<List<String>> getChildrenList(int personPid) throws Exception {
+		return server.getChildrenList(personPid);
+	}
+
+	/**
 	 * @return the languagePid
 	 */
 	public int getLanguagePid() {
@@ -100,8 +110,7 @@ public class ParentProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList(key);
 	}
 
 	/*
@@ -124,6 +133,15 @@ public class ParentProvider implements IHREProvider {
 	 */
 	public boolean isPrimaryParent() {
 		return PrimaryParent;
+	}
+
+	/**
+	 * @param key
+	 * @throws Exception
+	 */
+	public void removeParent(int key) throws Exception {
+		server.removeParent(key);
+
 	}
 
 	/**

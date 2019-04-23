@@ -2,6 +2,8 @@ package net.myerichsen.hremvp.person.providers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.dbmodels.PersonNames;
@@ -10,12 +12,13 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * Provide a list of all names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 19. feb. 2019
+ * @version 23. apr. 2019
  *
  */
 public class PersonNameListProvider implements IHREProvider {
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private List<PersonNames> modelList;
-	private PersonNames model;
 
 	/**
 	 * Constructor
@@ -26,7 +29,7 @@ public class PersonNameListProvider implements IHREProvider {
 		try {
 			modelList = new PersonNames().get();
 		} catch (final Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
@@ -36,7 +39,7 @@ public class PersonNameListProvider implements IHREProvider {
 	 *                   access error or other errors.
 	 */
 	public void add(int namePid) throws Exception {
-		model = new PersonNames();
+		PersonNames model = new PersonNames();
 		model.setNamePid(namePid);
 
 		if (modelList == null) {

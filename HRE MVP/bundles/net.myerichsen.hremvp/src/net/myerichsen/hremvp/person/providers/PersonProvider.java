@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.person.servers.PersonServer;
  * Provides all data for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. apr. 2019
+ * @version 23. apr. 2019
  *
  */
 public class PersonProvider implements IHREProvider {
@@ -41,7 +41,7 @@ public class PersonProvider implements IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
@@ -119,15 +119,6 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public List<List<String>> getChildrenList(int key) throws Exception {
-		return server.getChildrenList(key);
-	}
-
-	/**
 	 * @return the deathDatePid
 	 */
 	public int getDeathDatePid() {
@@ -154,24 +145,6 @@ public class PersonProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public List<List<String>> getParentList(int key) throws Exception {
-		return server.getParentList(key);
-	}
-
-	/**
-	 * @param key
-	 * @return the partnerList
-	 * @throws Exception
-	 */
-	public List<List<String>> getPartnerList(int key) throws Exception {
-		return server.getPartnerList(key);
-	}
-
-	/**
 	 * @return List of lists of pid, primary name string, birth date and death
 	 *         date
 	 * @throws MvpException
@@ -194,17 +167,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public String getPrimaryName() throws Exception {
 		return server.getPrimaryName();
-	}
-
-	/**
-	 * @param key
-	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, SexTypeLabel,
-	 *         PrimarySex, FromDate, ToDate
-	 * @throws MvpException
-	 * @throws Exception
-	 */
-	public List<List<String>> getSexesList(int key) throws Exception {
-		return server.getSexesList(key);
 	}
 
 	/**
@@ -265,32 +227,6 @@ public class PersonProvider implements IHREProvider {
 	 */
 	public void removeEvent(int eventPid) throws Exception {
 		server.removeEvent(eventPid);
-	}
-
-	/**
-	 * @param parentPid
-	 * @throws MvpException
-	 * @throws Exception
-	 */
-	public void removeParent(int parentPid) throws Exception {
-		server.removeParent(parentPid);
-	}
-
-	/**
-	 * @param personPid
-	 * @param partnerPid
-	 * @throws Exception
-	 */
-	public void removePartner(int personPid, int partnerPid) throws Exception {
-		server.removePartner(personPid, partnerPid);
-	}
-
-	/**
-	 * @param sexPid
-	 * @throws Exception
-	 */
-	public void removeSex(int sexPid) throws Exception {
-		server.removeSex(sexPid);
 	}
 
 	/**

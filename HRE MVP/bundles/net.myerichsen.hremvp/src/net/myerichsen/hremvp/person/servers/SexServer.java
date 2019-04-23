@@ -1,10 +1,17 @@
 package net.myerichsen.hremvp.person.servers;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.SexTypes;
 import net.myerichsen.hremvp.dbmodels.Sexes;
 
@@ -12,11 +19,13 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Sexes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. mar. 2019
+ * @version 23. apr. 2019
  *
  */
-//Use LocalDate
 public class SexServer implements IHREServer {
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+
 	private int sexesPid;
 	private int personPid;
 	private int sexTypePid;
@@ -74,7 +83,6 @@ public class SexServer implements IHREServer {
 		setPrimarySex(sex.isPrimarySex());
 		setFromDatePid(sex.getFromDatePid());
 		setToDatePid(sex.getToDatePid());
-
 		sexType.get(sex.getSexTypePid());
 		setAbbreviation(sexType.getAbbreviation());
 		final int labelPid = sexType.getLabelPid();
@@ -167,7 +175,63 @@ public class SexServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return null;
+		int datePid;
+		List<String> ls;
+		String s;
+
+		final SexTypes st = new SexTypes();
+		final Hdates hdates = new Hdates();
+		final List<List<String>> sexesList = new ArrayList<>();
+
+		if (key == 0) {
+			return sexesList;
+		}
+
+		for (final Sexes aSex : new Sexes().getFKPersonPid(key)) {
+			ls = new ArrayList<>();
+			ls.add(Integer.toString(aSex.getSexesPid()));
+			ls.add(Integer.toString(aSex.getPersonPid()));
+			sexTypePid = aSex.getSexTypePid();
+			ls.add(Integer.toString(sexTypePid));
+
+			st.get(sexTypePid);
+			final List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(st.getLabelPid());
+
+			final String isoCode = store.getString("GUILANGUAGE");
+			String label = "";
+
+			for (final Dictionary d : fkLabelPid) {
+				if (isoCode.equals(d.getIsoCode())) {
+					label = d.getLabel();
+					break;
+				}
+			}
+
+			ls.add(label);
+
+			ls.add(Boolean.toString(aSex.isPrimarySex()));
+			s = "";
+			datePid = aSex.getFromDatePid();
+			if (datePid > 0) {
+				hdates.get(datePid);
+				s = hdates.getDate().toString();
+			}
+			ls.add(s);
+
+			s = "";
+			datePid = aSex.getToDatePid();
+			if (datePid > 0) {
+
+				hdates.get(datePid);
+				s = hdates.getDate().toString();
+			}
+			ls.add(s);
+
+			sexesList.add(ls);
+		}
+
+		return sexesList;
 	}
 
 	/**
@@ -205,6 +269,15 @@ public class SexServer implements IHREServer {
 	}
 
 	/**
+	 * @param sexPid
+	 * @throws Exception
+	 * @throws MvpException
+	 */
+	public void removeSex(int sexPid) throws Exception {
+		sex.delete(sexPid);
+	}
+
+	/**
 	 * @param abbreviation the abbreviation to set
 	 */
 	public void setAbbreviation(String abbreviation) {
@@ -218,19 +291,19 @@ public class SexServer implements IHREServer {
 		fromDatePid = fromdate;
 	}
 
-	/**
-	 * @param isocode the isocode to set
-	 */
-	public void setIsocode(String isocode) {
-		this.isocode = isocode;
-	}
-
 //	/**
 //	 * @param languageLabel the languageLabel to set
 //	 */
 //	public void setLanguageLabel(String languageLabel) {
 //		this.languageLabel = languageLabel;
 //	}
+
+	/**
+	 * @param isocode the isocode to set
+	 */
+	public void setIsocode(String isocode) {
+		this.isocode = isocode;
+	}
 
 	/**
 	 * @param languagePid the languagePid to set

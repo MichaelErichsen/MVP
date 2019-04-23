@@ -250,7 +250,7 @@ public class PersonNameStyleView {
 		try {
 			provider.get(personNameStylePid);
 			final int labelPid = provider.getLabelPid();
-			DictionaryProvider dp = new DictionaryProvider();
+			final DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringListDp = dp.getStringList(labelPid);
 			final String text = textStyleName.getText();
 			if (!text.equals(stringListDp.get(0).get(1))) {
@@ -261,8 +261,9 @@ public class PersonNameStyleView {
 				dp.setLabel(text);
 				dp.update();
 			}
-			LOGGER.log(Level.INFO, "Person name style pid {0} has been updated to \"{1}\"",
-					new Object[] {personNameStylePid,text});
+			LOGGER.log(Level.INFO,
+					"Person name style pid {0} has been updated to \"{1}\"",
+					new Object[] { personNameStylePid, text });
 
 			final List<List<String>> stringList = pnmp
 					.getStringList(personNameStylePid);

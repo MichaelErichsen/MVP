@@ -54,11 +54,22 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		return new ArrayList<>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
+	@Override
 	public List<List<String>> getStringList(int locationPid) throws Exception {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		int eventPid;
 		List<PersonEvents> peList;
@@ -83,16 +94,6 @@ public class LocationPersonServer implements IHREServer {
 		}
 
 		return lls;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
-	 */
-	@Override
-	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<>();
 	}
 
 	/*

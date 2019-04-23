@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.person.servers.PartnerServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 28. mar. 2019
+ * @version 23. apr. 2019
  *
  */
 public class PartnerProvider implements IHREProvider {
@@ -102,8 +102,7 @@ public class PartnerProvider implements IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return server.getStringList(key);
 	}
 
 	/**
@@ -134,6 +133,15 @@ public class PartnerProvider implements IHREProvider {
 	 */
 	public boolean isPrimaryPartner() {
 		return PrimaryPartner;
+	}
+
+	/**
+	 * @param personPid
+	 * @param partnerPid2
+	 * @throws Exception
+	 */
+	public void removePartner(int personPid, int partnerPid2) throws Exception {
+		server.removePartner(personPid, partnerPid2);
 	}
 
 	/**

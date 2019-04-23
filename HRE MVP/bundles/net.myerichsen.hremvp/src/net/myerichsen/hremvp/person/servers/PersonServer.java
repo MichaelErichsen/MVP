@@ -11,40 +11,31 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.json.JSONException;
 import org.json.JSONStringer;
-
-import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
-import net.myerichsen.hremvp.dbmodels.ParentRoles;
 import net.myerichsen.hremvp.dbmodels.Parents;
-import net.myerichsen.hremvp.dbmodels.PartnerRoles;
 import net.myerichsen.hremvp.dbmodels.Partners;
 import net.myerichsen.hremvp.dbmodels.PersonEvents;
 import net.myerichsen.hremvp.dbmodels.PersonNameParts;
 import net.myerichsen.hremvp.dbmodels.PersonNames;
 import net.myerichsen.hremvp.dbmodels.Persons;
-import net.myerichsen.hremvp.dbmodels.SexTypes;
 import net.myerichsen.hremvp.dbmodels.Sexes;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 23. apr. 2019
  */
 public class PersonServer implements IHREServer {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static IPreferenceStore store = new ScopedPreferenceStore(
-			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
 	private int personPid;
 	private int birthDatePid;
@@ -286,24 +277,6 @@ public class PersonServer implements IHREServer {
 	 * @return the list of children
 	 * @throws Exception
 	 */
-	public List<List<String>> getChildrenList(int key) throws Exception {
-		List<String> ls;
-
-		final PersonNameServer pns = new PersonNameServer();
-		final List<List<String>> childrenList = new ArrayList<>();
-
-		for (final Parents parent : new Parents().getFKParent(key)) {
-			ls = new ArrayList<>();
-			final int pid = parent.getChild();
-			ls.add(Integer.toString(pid));
-
-			ls.add(pns.getPrimaryNameString(pid));
-
-			childrenList.add(ls);
-		}
-
-		return childrenList;
-	}
 
 	/**
 	 * @return the deathDatePid
@@ -351,77 +324,6 @@ public class PersonServer implements IHREServer {
 	 */
 	public List<List<String>> getNameList() {
 		return nameList;
-	}
-
-	/**
-	 * @param i
-	 * @return
-	 * @throws Exception
-	 */
-	public List<List<String>> getParentList(int key) throws Exception {
-		final List<List<String>> parentList = new ArrayList<>();
-		List<String> ls;
-		int parentPid;
-		final PersonNameServer pns = new PersonNameServer();
-		final ParentRoles role = new ParentRoles();
-		dictionary = new Dictionary();
-
-		if (key == 0) {
-			return parentList;
-		}
-
-		for (final Parents parent : new Parents().getFKChild(key)) {
-			ls = new ArrayList<>();
-			parentPid = parent.getParent();
-			ls.add(Integer.toString(parentPid));
-			ls.add(pns.getPrimaryNameString(parentPid));
-
-			role.get(parent.getParentRolePid());
-			dictionary.getFKLabelPid(role.getLabelPid());
-			ls.add(dictionary.getLabel());
-
-			ls.add(Boolean.toString(parent.isPrimaryParent()));
-
-			parentList.add(ls);
-		}
-		return parentList;
-	}
-
-	/**
-	 * @param key
-	 * @return the partnerList
-	 * @throws Exception
-	 */
-	public List<List<String>> getPartnerList(int key) throws Exception {
-		List<String> ls;
-		final PartnerRoles role2 = new PartnerRoles();
-		dictionary = new Dictionary();
-		final PersonNameServer pns = new PersonNameServer();
-		final List<List<String>> partnerList = new ArrayList<>();
-		final List<Partners> lpa = new Partners().getFKPartner1(key);
-		lpa.addAll(new Partners().getFKPartner2(key));
-
-		for (final Partners partner : lpa) {
-			ls = new ArrayList<>();
-
-			if (partner.getPartner1() == key) {
-				ls.add(Integer.toString(partner.getPartner2()));
-				ls.add(pns.getPrimaryNameString(partner.getPartner2()));
-			} else {
-				ls.add(Integer.toString(partner.getPartner1()));
-				ls.add(pns.getPrimaryNameString(partner.getPartner1()));
-			}
-
-			role2.get(partner.getPartnerRolePid());
-			dictionary.getFKLabelPid(role2.getLabelPid());
-			ls.add(dictionary.getLabel());
-
-			ls.add(Boolean.toString(partner.isPrimaryPartner()));
-
-			partnerList.add(ls);
-		}
-
-		return partnerList;
 	}
 
 //	/**
@@ -657,74 +559,6 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * @param key
-	 * @return the sexesList: SexesPid, PersonPid, SexTypePid, SexTypeLabel,
-	 *         PrimarySex, FromDate, ToDate
-	 * @throws MvpException
-	 * @throws Exception
-	 */
-	public List<List<String>> getSexesList(int key) throws Exception {
-		int sexTypePid;
-		int datePid;
-		List<String> ls;
-		String s;
-
-		final SexTypes st = new SexTypes();
-		final Hdates hdates = new Hdates();
-		final List<List<String>> sexesList = new ArrayList<>();
-
-		if (key == 0) {
-			return sexesList;
-		}
-
-		for (final Sexes sex : new Sexes().getFKPersonPid(key)) {
-			ls = new ArrayList<>();
-			ls.add(Integer.toString(sex.getSexesPid()));
-			ls.add(Integer.toString(sex.getPersonPid()));
-			sexTypePid = sex.getSexTypePid();
-			ls.add(Integer.toString(sexTypePid));
-
-			st.get(sexTypePid);
-			final List<Dictionary> fkLabelPid = dictionary
-					.getFKLabelPid(st.getLabelPid());
-
-			final String isoCode = store.getString("GUILANGUAGE");
-			String label = "";
-
-			for (final Dictionary d : fkLabelPid) {
-				if (isoCode.equals(d.getIsoCode())) {
-					label = d.getLabel();
-					break;
-				}
-			}
-
-			ls.add(label);
-
-			ls.add(Boolean.toString(sex.isPrimarySex()));
-			s = "";
-			datePid = sex.getFromDatePid();
-			if (datePid > 0) {
-				hdates.get(datePid);
-				s = hdates.getDate().toString();
-			}
-			ls.add(s);
-
-			s = "";
-			datePid = sex.getToDatePid();
-			if (datePid > 0) {
-
-				hdates.get(datePid);
-				s = hdates.getDate().toString();
-			}
-			ls.add(s);
-
-			sexesList.add(ls);
-		}
-
-		return sexesList;
-	}
-
-	/**
 	 * @return the siblingList
 	 * @throws Exception
 	 */
@@ -773,7 +607,8 @@ public class PersonServer implements IHREServer {
 	}
 
 	/**
-	 * Get a list of all names for the person
+	 * Get a list of all names for the person (Copied to
+	 * {@link net.myerichsen.hremvp.person.servers.PersonNameServer})
 	 *
 	 * @param key
 	 * @return
@@ -895,54 +730,6 @@ public class PersonServer implements IHREServer {
 
 		final Events event = new Events();
 		event.delete(eventPid);
-	}
-
-	/**
-	 * @param personPid
-	 * @param parentPid
-	 * @throws Exception
-	 * @throws MvpException
-	 */
-	public void removeParent(int parentPid) throws Exception {
-		final Parents parent = new Parents();
-
-		for (final Parents p : parent.getFKChild(parentPid)) {
-			if (p.getParent() == parentPid) {
-				parent.delete(p.getParentPid());
-			}
-		}
-	}
-
-	/**
-	 * @param personPid
-	 * @param partnerPid
-	 * @throws Exception
-	 * @throws MvpException
-	 */
-	public void removePartner(int personPid, int partnerPid) throws Exception {
-		final Partners partner = new Partners();
-
-		for (final Partners p : partner.getFKPartner1(personPid)) {
-			if (p.getPartner2() == partnerPid) {
-				partner.delete(p.getPartnerPid());
-			}
-		}
-
-		for (final Partners p : partner.getFKPartner2(personPid)) {
-			if (p.getPartner1() == partnerPid) {
-				partner.delete(p.getPartnerPid());
-			}
-		}
-	}
-
-	/**
-	 * @param sexPid
-	 * @throws Exception
-	 * @throws MvpException
-	 */
-	public void removeSex(int sexPid) throws Exception {
-		final Sexes sex = new Sexes();
-		sex.delete(sexPid);
 	}
 
 	/**

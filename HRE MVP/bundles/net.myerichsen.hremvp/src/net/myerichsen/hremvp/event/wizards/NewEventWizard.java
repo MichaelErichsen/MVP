@@ -259,27 +259,6 @@ public class NewEventWizard extends Wizard {
 	}
 
 	/**
-	 * @param primaryLocation the primaryLocation to set
-	 */
-	public void setPrimaryLocation(Boolean primaryLocation) {
-		this.primaryLocation = primaryLocation;
-	}
-
-	/**
-	 * @param primaryLocationEvent the primaryLocationEvent to set
-	 */
-	public void setPrimaryLocationEvent(Boolean primaryLocationEvent) {
-		this.primaryLocationEvent = primaryLocationEvent;
-	}
-
-	/**
-	 * @param primaryPerson the primaryPerson to set
-	 */
-	public void setPrimaryPerson(Boolean primaryPerson) {
-		this.primaryPerson = primaryPerson;
-	}
-
-	/**
 	 * @param primaryPersonEvent the primaryPersonEvent to set
 	 */
 	public void setIsPrimaryPersonEvent(Boolean isPrimaryPersonEvent) {
@@ -326,6 +305,27 @@ public class NewEventWizard extends Wizard {
 	 */
 	public void setPersonPid(int personPid) {
 		this.personPid = personPid;
+	}
+
+	/**
+	 * @param primaryLocation the primaryLocation to set
+	 */
+	public void setPrimaryLocation(Boolean primaryLocation) {
+		this.primaryLocation = primaryLocation;
+	}
+
+	/**
+	 * @param primaryLocationEvent the primaryLocationEvent to set
+	 */
+	public void setPrimaryLocationEvent(Boolean primaryLocationEvent) {
+		this.primaryLocationEvent = primaryLocationEvent;
+	}
+
+	/**
+	 * @param primaryPerson the primaryPerson to set
+	 */
+	public void setPrimaryPerson(Boolean primaryPerson) {
+		this.primaryPerson = primaryPerson;
 	}
 
 	/**

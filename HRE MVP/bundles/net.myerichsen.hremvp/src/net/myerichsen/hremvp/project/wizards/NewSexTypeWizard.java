@@ -61,7 +61,7 @@ public class NewSexTypeWizard extends Wizard {
 
 		if (!abbreviation.equals("")) {
 			try {
-				SexTypeProvider provider = new SexTypeProvider();
+				final SexTypeProvider provider = new SexTypeProvider();
 				provider.setAbbreviation(abbreviation);
 
 				final int sexTypePid = provider.insert();

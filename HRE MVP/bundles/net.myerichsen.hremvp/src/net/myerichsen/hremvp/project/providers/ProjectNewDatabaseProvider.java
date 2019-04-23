@@ -16,7 +16,7 @@ public class ProjectNewDatabaseProvider {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param shell
 	 *
 	 * @throws Exception
@@ -27,7 +27,7 @@ public class ProjectNewDatabaseProvider {
 
 	/**
 	 * Provide the data
-	 * 
+	 *
 	 * @param dbName
 	 */
 	public void provide(String dbName) {

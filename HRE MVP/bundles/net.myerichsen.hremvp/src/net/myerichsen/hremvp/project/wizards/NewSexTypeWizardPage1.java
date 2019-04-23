@@ -71,7 +71,7 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		final Label lblLabelPid = new Label(container, SWT.NONE);
 		lblLabelPid.setText("New sex type label pid");
 
-		Text textLabelPid = new Text(container, SWT.BORDER);
+		final Text textLabelPid = new Text(container, SWT.BORDER);
 		textLabelPid.setEditable(false);
 		textLabelPid.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));

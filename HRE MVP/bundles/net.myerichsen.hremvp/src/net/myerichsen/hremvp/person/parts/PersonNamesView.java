@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.providers.PersonNameProvider;
-import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonNameWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -47,11 +46,10 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * View and maintain all names of a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 9. apr. 2019
+ * @version 23. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
-// TODO Add name type with a language specific label
 public class PersonNamesView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -65,7 +63,7 @@ public class PersonNamesView {
 
 	private Text textId;
 	private TableViewer tableViewer;
-	private PersonProvider provider;
+	private PersonNameProvider provider;
 	private int personPid = 0;
 
 	/**
@@ -74,7 +72,7 @@ public class PersonNamesView {
 	 */
 	public PersonNamesView() {
 		try {
-			provider = new PersonProvider();
+			provider = new PersonNameProvider();
 		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -158,6 +156,13 @@ public class PersonNamesView {
 		tableViewerColumnPrimary
 				.setLabelProvider(new HREColumnLabelProvider(4));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList(personPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
@@ -181,12 +186,6 @@ public class PersonNamesView {
 		});
 		mntmDeleteSelectedName.setText("Delete selected name...");
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getStringList(personPid));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 	}
 
 	/**

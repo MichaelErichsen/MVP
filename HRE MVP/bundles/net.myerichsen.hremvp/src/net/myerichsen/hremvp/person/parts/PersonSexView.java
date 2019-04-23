@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -29,10 +28,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
-import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.providers.SexProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
 import net.myerichsen.hremvp.project.providers.SexTypeProvider;
@@ -51,27 +48,24 @@ public class PersonSexView {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private IEclipseContext context;
 
-	@Inject
-	private IEventBroker eventBroker;
-
 	private Text textId;
 	private Text textFromDate;
 	private Text textToDate;
 	private Button btnPrimarySex;
 
-	private SexProvider sexesProvider;
+	private SexProvider provider;
 	private int sexPid;
 	private int fromDatePid;
 	private int toDatePid;
 	protected NewPersonWizard wizard;
-	private List<List<String>> stringList;
+	private List<List<String>> lls;
 	private Combo comboSex;
 
 	/**
 	 * Constructor
 	 */
 	public PersonSexView() {
-		sexesProvider = new SexProvider();
+		provider = new SexProvider();
 	}
 
 	/**
@@ -155,8 +149,8 @@ public class PersonSexView {
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		try {
-			stringList = new SexTypeProvider().getStringList();
-			comboViewerSex.setInput(stringList);
+			lls = new SexTypeProvider().getStringList();
+			comboViewerSex.setInput(lls);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -275,43 +269,6 @@ public class PersonSexView {
 	}
 
 	/**
-	 * @param key
-	 */
-	private void get(int key) {
-		sexPid = key;
-
-		try {
-			sexesProvider.get(key);
-			final PersonProvider provider = new PersonProvider();
-			final List<String> sexesList = provider.getSexesList(key).get(0);
-
-			textId.setText(sexesList.get(0));
-			textFromDate.setText(sexesList.get(5));
-			textToDate.setText(sexesList.get(6));
-			btnPrimarySex.setSelection(
-					sexesList.get(4).equals("true") ? true : false);
-
-			final List<List<String>> stringList2 = new SexTypeProvider()
-					.getStringList();
-			int index = 0;
-
-			for (int i = 0; i < stringList2.size(); i++) {
-				// FIXME Unrelated types
-				if (stringList2.get(1).equals(sexesList.get(2))) {
-					index = i;
-				}
-			}
-			comboSex.select(index);
-
-			eventBroker.post("MESSAGE",
-					"Name " + textId.getText() + " has been fetched");
-		} catch (final Exception e) {
-			eventBroker.post("MESSAGE", e.getMessage());
-			LOGGER.log(Level.SEVERE, e.toString(), e);
-		}
-	}
-
-	/**
 	 * @return the fromDatePid
 	 */
 	public int getFromDatePid() {
@@ -382,14 +339,42 @@ public class PersonSexView {
 	}
 
 	/**
-	 * @param key
-	 * @throws MvpException
+	 * @param personPid
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(
-			@UIEventTopic(Constants.SEX_PID_UPDATE_TOPIC) int key) {
-		get(key);
+	private void subscribeSexPidUpdateTopic(
+			@UIEventTopic(Constants.SEX_PID_UPDATE_TOPIC) int sexPid) {
+		this.sexPid = sexPid;
+
+		try {
+			provider.get(sexPid);
+
+			textId.setText(Integer.toString(sexPid));
+
+			final HDateProvider hdp = new HDateProvider();
+			hdp.get(provider.getFromDatePid());
+			textFromDate.setText(hdp.getDate().toString());
+
+			hdp.get(provider.getToDatePid());
+			textFromDate.setText(hdp.getDate().toString());
+
+			btnPrimarySex.setSelection(provider.isPrimarySex());
+
+			final List<List<String>> sexTypeList = new SexTypeProvider()
+					.getStringList();
+			int index = 0;
+
+			for (int i = 0; i < sexTypeList.size(); i++) {
+				if (sexTypeList.get(i).get(2)
+						.equals(provider.getAbbreviation())) {
+					index = i;
+				}
+			}
+			comboSex.select(index);
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
 	}
 
 	/**
@@ -397,17 +382,17 @@ public class PersonSexView {
 	 */
 	private void update() {
 		try {
-			sexesProvider = new SexProvider();
-			sexesProvider.get(sexPid);
-			sexesProvider.setFromDatePid(fromDatePid);
-			sexesProvider.setToDatePid(toDatePid);
-			sexesProvider.setPrimarySex(btnPrimarySex.getSelection());
-			sexesProvider.setSexTypePid(Integer.parseInt(
-					stringList.get(comboSex.getSelectionIndex()).get(0)));
-			sexesProvider.update();
+			provider = new SexProvider();
+			provider.get(sexPid);
+			provider.setFromDatePid(fromDatePid);
+			provider.setToDatePid(toDatePid);
+			provider.setPrimarySex(btnPrimarySex.getSelection());
+			provider.setSexTypePid(Integer
+					.parseInt(lls.get(comboSex.getSelectionIndex()).get(0)));
+			provider.update();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
-		sexesProvider.setFromDatePid(0);
+		provider.setFromDatePid(0);
 	}
 }

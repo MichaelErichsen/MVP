@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.person.providers.ParentProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonChildWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -43,7 +44,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display and maintain all children for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 23. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonChildrenView {
@@ -58,7 +59,7 @@ public class PersonChildrenView {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private PersonProvider provider;
+	private ParentProvider provider;
 	private int personPid = 0;
 
 	/**
@@ -67,7 +68,7 @@ public class PersonChildrenView {
 	 */
 	public PersonChildrenView() {
 		try {
-			provider = new PersonProvider();
+			provider = new ParentProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -116,6 +117,13 @@ public class PersonChildrenView {
 		tblclmnChildren.setText("Children");
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(1));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getChildrenList(personPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
@@ -145,12 +153,6 @@ public class PersonChildrenView {
 		});
 		mntmRemoveSelectedChild.setText("Remove selected child...");
 
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getChildrenList(0));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 	}
 
 	/**

@@ -70,8 +70,8 @@ public class LocationNamePartServer implements IHREServer {
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 *
 	 */
 	@Override

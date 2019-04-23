@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.NavigatorFilter;
-import net.myerichsen.hremvp.event.providers.EventProvider;
+import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonEventWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
@@ -49,7 +49,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 23. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonEventsView {
@@ -66,7 +66,7 @@ public class PersonEventsView {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private EventProvider provider;
+	private PersonEventProvider provider;
 	private NavigatorFilter navigatorFilter;
 	private int personPid = 0;
 
@@ -76,7 +76,7 @@ public class PersonEventsView {
 	 */
 	public PersonEventsView() {
 		try {
-			provider = new EventProvider();
+			provider = new PersonEventProvider();
 			navigatorFilter = new NavigatorFilter(1);
 		} catch (final Exception e) {
 			eventBroker.post(MESSAGE, e.getMessage());
@@ -149,7 +149,7 @@ public class PersonEventsView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getStringList());
+			tableViewer.setInput(provider.getStringList(personPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}

@@ -63,7 +63,7 @@ public class NewLocationNameStyleWizardPage2 extends WizardPage {
 		final Label lblIsoCode = new Label(container, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
 
-		Text textIsoCode = new Text(container, SWT.BORDER);
+		final Text textIsoCode = new Text(container, SWT.BORDER);
 		textIsoCode.setEditable(false);
 		textIsoCode.setText(wizard.getIsoCode());
 		textIsoCode.setLayoutData(
@@ -72,7 +72,7 @@ public class NewLocationNameStyleWizardPage2 extends WizardPage {
 		final Label lblStyleName = new Label(container, SWT.NONE);
 		lblStyleName.setText("Style name");
 
-		Text textStyleName = new Text(container, SWT.BORDER);
+		final Text textStyleName = new Text(container, SWT.BORDER);
 		textStyleName.setEditable(false);
 		textStyleName.setText(wizard.getStyleName());
 		textStyleName.setLayoutData(
@@ -81,7 +81,7 @@ public class NewLocationNameStyleWizardPage2 extends WizardPage {
 		final Label lblNumberOfName = new Label(container, SWT.NONE);
 		lblNumberOfName.setText("Number of name parts");
 
-		Text textNamePartCount = new Text(container, SWT.BORDER);
+		final Text textNamePartCount = new Text(container, SWT.BORDER);
 		textNamePartCount.setEditable(false);
 		textNamePartCount.setText(namePartCount);
 		textNamePartCount.setLayoutData(

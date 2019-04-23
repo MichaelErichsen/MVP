@@ -1,13 +1,17 @@
 package net.myerichsen.hremvp.person.servers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREServer;
+import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.PartnerRoles;
 import net.myerichsen.hremvp.dbmodels.Partners;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 28. mar. 2019
+ * @version 23. apr. 2019
  *
  */
 public class PartnerServer implements IHREServer {
@@ -102,8 +106,35 @@ public class PartnerServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> ls;
+		final PartnerRoles role2 = new PartnerRoles();
+		final Dictionary dictionary = new Dictionary();
+		final PersonNameServer pns = new PersonNameServer();
+		final List<List<String>> partnerList = new ArrayList<>();
+		final List<Partners> lpa = new Partners().getFKPartner1(key);
+		lpa.addAll(new Partners().getFKPartner2(key));
+
+		for (final Partners partner : lpa) {
+			ls = new ArrayList<>();
+
+			if (partner.getPartner1() == key) {
+				ls.add(Integer.toString(partner.getPartner2()));
+				ls.add(pns.getPrimaryNameString(partner.getPartner2()));
+			} else {
+				ls.add(Integer.toString(partner.getPartner1()));
+				ls.add(pns.getPrimaryNameString(partner.getPartner1()));
+			}
+
+			role2.get(partner.getPartnerRolePid());
+			dictionary.getFKLabelPid(role2.getLabelPid());
+			ls.add(dictionary.getLabel());
+
+			ls.add(Boolean.toString(partner.isPrimaryPartner()));
+
+			partnerList.add(ls);
+		}
+
+		return partnerList;
 	}
 
 	/**
@@ -135,6 +166,28 @@ public class PartnerServer implements IHREServer {
 	 */
 	public boolean isPrimaryPartner() {
 		return PrimaryPartner;
+	}
+
+	/**
+	 * @param personPid
+	 * @param partnerPid
+	 * @throws Exception
+	 * @throws MvpException
+	 */
+	public void removePartner(int personPid, int partnerPid) throws Exception {
+		final Partners partner = new Partners();
+
+		for (final Partners p : partner.getFKPartner1(personPid)) {
+			if (p.getPartner2() == partnerPid) {
+				partner.delete(p.getPartnerPid());
+			}
+		}
+
+		for (final Partners p : partner.getFKPartner2(personPid)) {
+			if (p.getPartner1() == partnerPid) {
+				partner.delete(p.getPartnerPid());
+			}
+		}
 	}
 
 	/**

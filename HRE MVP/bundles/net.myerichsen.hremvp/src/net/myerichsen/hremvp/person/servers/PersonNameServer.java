@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.PersonNameMaps;
 import net.myerichsen.hremvp.dbmodels.PersonNameParts;
 import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
@@ -17,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNames;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Names}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. apr. 2019
+ * @version 23. apr. 2019
  *
  */
 //Use LocalDate
@@ -31,7 +32,7 @@ public class PersonNameServer implements IHREServer {
 	private int toDatePid;
 	private boolean primaryName;
 	private int nameStylePid;
-	private List<List<String>> stringList;
+	private List<List<String>> lls;
 
 	private PersonNames name;
 
@@ -41,7 +42,7 @@ public class PersonNameServer implements IHREServer {
 	 */
 	public PersonNameServer() {
 		name = new PersonNames();
-		stringList = new ArrayList<>();
+		lls = new ArrayList<>();
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class PersonNameServer implements IHREServer {
 		List<PersonNameParts> partList;
 		List<String> ls;
 
-		stringList.clear();
+		lls.clear();
 
 		map = new PersonNameMaps();
 		mapList = map.getFKNameStylePid(name.getNameStylePid());
@@ -110,7 +111,7 @@ public class PersonNameServer implements IHREServer {
 			ls.add(Integer.toString(partList.get(i).getNamePartPid()));
 			dictionary.getFKLabelPid(mapList.get(i).getLabelPid());
 			ls.add(dictionary.getLabel());
-			stringList.add(ls);
+			lls.add(ls);
 		}
 	}
 
@@ -125,7 +126,7 @@ public class PersonNameServer implements IHREServer {
 	 * @return the stringList
 	 */
 	public List<List<String>> getNameList() {
-		return stringList;
+		return lls;
 	}
 
 	/**
@@ -254,14 +255,73 @@ public class PersonNameServer implements IHREServer {
 		return new ArrayList<>();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Get a list of all names for the person
 	 *
-	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 * @param key
+	 * @return
+	 * @throws MvpException
+	 * @throws Exception
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return new ArrayList<>();
+		final List<List<String>> personNameList = new ArrayList<>();
+		List<String> stringList;
+
+		if (key == 0) {
+			stringList = new ArrayList<>();
+			stringList.add("0");
+			stringList.add("");
+			stringList.add("");
+			stringList.add("");
+			stringList.add("false");
+			personNameList.add(stringList);
+			return personNameList;
+		}
+
+		final PersonNames aName = new PersonNames();
+		StringBuilder sb;
+
+		for (final PersonNames names : aName.getFKPersonPid(key)) {
+			stringList = new ArrayList<>();
+
+			namePid = names.getNamePid();
+			stringList.add(Integer.toString(namePid));
+
+			sb = new StringBuilder();
+			final PersonNameParts part = new PersonNameParts();
+
+			for (final PersonNameParts namePart : part.getFKNamePid(namePid)) {
+				sb.append(namePart.getLabel() + " ");
+			}
+			stringList.add(sb.toString().trim());
+
+			final Hdates date = new Hdates();
+
+			int datePid = names.getFromDatePid();
+
+			if (datePid == 0) {
+				stringList.add("");
+			} else {
+				date.get(datePid);
+				stringList.add(date.getDate().toString());
+			}
+
+			datePid = names.getToDatePid();
+
+			if (datePid == 0) {
+				stringList.add("");
+			} else {
+				date.get(datePid);
+				stringList.add(date.getDate().toString());
+			}
+
+			stringList.add(Boolean.toString(aName.isPrimaryName()));
+
+			personNameList.add(stringList);
+		}
+
+		return personNameList;
 	}
 
 	/**
@@ -308,7 +368,7 @@ public class PersonNameServer implements IHREServer {
 	 * @param stringList the stringList to set
 	 */
 	public void setNameList(List<List<String>> nameList) {
-		stringList = nameList;
+		lls = nameList;
 	}
 
 	/**

@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.person.providers.SexProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonSexWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -43,7 +43,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sexes for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 23. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonSexesNavigator {
@@ -58,7 +58,7 @@ public class PersonSexesNavigator {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private PersonProvider provider;
+	private SexProvider provider;
 	private int personPid = 0;
 
 	/**
@@ -67,7 +67,7 @@ public class PersonSexesNavigator {
 	 */
 	public PersonSexesNavigator() {
 		try {
-			provider = new PersonProvider();
+			provider = new SexProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -134,8 +134,7 @@ public class PersonSexesNavigator {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-
-			tableViewer.setInput(provider.getSexesList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -215,7 +214,6 @@ public class PersonSexesNavigator {
 		}
 
 		try {
-			provider = new PersonProvider();
 			provider.removeSex(sexPid);
 			eventBroker.post("MESSAGE",
 					"Sex " + primaryName + " has been removed");
@@ -237,7 +235,7 @@ public class PersonSexesNavigator {
 		this.personPid = personPid;
 
 		try {
-			tableViewer.setInput(provider.getSexesList(personPid));
+			tableViewer.setInput(provider.getStringList(personPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

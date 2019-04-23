@@ -38,6 +38,17 @@ public class LanguageProvider implements IHREProvider {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
+	 */
+	@Override
+	public void get(int key) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @return the isocode
 	 */
@@ -136,15 +147,6 @@ public class LanguageProvider implements IHREProvider {
 		server.setIsocode(Isocode);
 		server.setLabel(Label);
 		server.update();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
-	 */
-	@Override
-	public void get(int key) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
