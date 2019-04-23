@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 23. apr. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
@@ -178,10 +178,23 @@ public class EventLocationView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				NewLocationWizard newLocationWizard = new NewLocationWizard(
+						context);
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewLocationWizard(context));
-				dialog.open();
-				// FIXME Add eventlocation
+						newLocationWizard);
+				if (dialog.open() == Window.OK) {
+					try {
+						final LocationEventProvider lep = new LocationEventProvider();
+						lep.setEventPid(eventPid);
+						lep.setLocationPid(newLocationWizard.getLocationPid());
+						lep.setPrimaryEvent(false);
+						lep.setPrimaryLocation(false);
+
+						lep.insert();
+					} catch (Exception e1) {
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
+					}
+				}
 			}
 		});
 		mntmAddNewLocation.setText("Add new location...");

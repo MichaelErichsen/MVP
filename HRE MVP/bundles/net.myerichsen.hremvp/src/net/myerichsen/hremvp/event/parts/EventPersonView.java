@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
@@ -50,11 +51,12 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 23. apr. 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	IEclipseContext context;
 
 	@Inject
 	private EPartService partService;
@@ -84,6 +86,7 @@ public class EventPersonView {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
+		this.context = context;
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -143,10 +146,23 @@ public class EventPersonView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				NewPersonWizard newPersonWizard = new NewPersonWizard(context);
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewPersonWizard(context));
-				dialog.open();
-				// FIXME Add personevent
+						newPersonWizard);
+
+				if (dialog.open() == Window.OK) {
+					try {
+						final PersonEventProvider lep = new PersonEventProvider();
+						lep.setEventPid(eventPid);
+						lep.setPersonPid(newPersonWizard.getPersonPid());
+						lep.setPrimaryEvent(false);
+						lep.setPrimaryPerson(false);
+
+						lep.insert();
+					} catch (Exception e1) {
+						LOGGER.log(Level.SEVERE, e1.toString(), e1);
+					}
+				}
 			}
 		});
 		mntmAddNewPerson.setText("Add new person...");
@@ -230,24 +246,21 @@ public class EventPersonView {
 	 *
 	 */
 	protected void openPersonNavigator() {
-		// FIXME Populate openPersonNavigator()
-		// FIXME Add personevent
+		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
+				tableViewer.getTable().getShell(), context);
+		if (dialog.open() == Window.OK) {
+			try {
+				final PersonEventProvider lep = new PersonEventProvider();
+				lep.setEventPid(eventPid);
+				lep.setPersonPid(dialog.getPersonPid());
+				lep.setPrimaryEvent(false);
+				lep.setPrimaryPerson(false);
 
-//		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
-//				parentShell, context);
-//		if (dialog.open() == Window.OK) {
-//			try {
-//				final int fatherPid = dialog.getPersonPid();
-//				textFatherPersonPid.setText(Integer.toString(fatherPid));
-//				textFatherName.setText(dialog.getPersonName());
-//				textFatherBirthDate.setText(dialog.getBirthDate());
-//				textFatherDeathDate.setText(dialog.getDeathDate());
-//				wizard.setFatherPid(fatherPid);
-//			} catch (final Exception e) {
-//				LOGGER.log(Level.SEVERE, e.toString(), e);
-//			}
-//		}
-
+				lep.insert();
+			} catch (Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
 	}
 
 	/**
