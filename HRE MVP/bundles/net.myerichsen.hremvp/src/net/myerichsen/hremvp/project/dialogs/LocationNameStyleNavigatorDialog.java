@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.project.dialogs;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +8,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -24,14 +24,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.project.providers.LocationNameStyleProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all location name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 4. apr. 2019
+ * @version 23. apr. 2019
  *
  */
 public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
@@ -112,6 +112,7 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
 		final TableViewerColumn tableViewerColumnNameStyle = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -119,6 +120,8 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 				.getColumn();
 		tblclmnNameStyle.setWidth(100);
 		tblclmnNameStyle.setText("Name Style");
+		tableViewerColumnNameStyle
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnLanguage = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -126,40 +129,25 @@ public class LocationNameStyleNavigatorDialog extends TitleAreaDialog {
 				.getColumn();
 		tblclmnLanguage.setWidth(100);
 		tblclmnLanguage.setText("Language");
+		tableViewerColumnLanguage
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnIsoCode = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnIsoCode = tableViewerColumnIsoCode.getColumn();
 		tblclmnIsoCode.setWidth(100);
 		tblclmnIsoCode.setText("ISO Code");
+		tableViewerColumnIsoCode
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
 //		final int defaultStyle = store.getInt("DEFAULTlocationNAMESTYLE");
 //		int currentStyle;
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			final List<String> nameStyleList = provider.get();
-			table.removeAll();
-			Languages language;
-
-			for (int i = 0; i < nameStyleList.size(); i++) {
-//				final String style = nameStyleList.get(i);
-				final TableItem item = new TableItem(table, SWT.NONE);
-//				locationNameStylePid = style.getLocationNameStylePid();
-				item.setText(0, Integer.toString(locationNameStylePid));
-				item.setText(1, "style.getLabelPid()");
-
-				language = new Languages();
-//				language.get(currentStyle);
-				item.setText(2, language.getLabel());
-				item.setText(3, language.getIsocode());
-
-//				if (currentStyle == defaultStyle) {
-//					table.setSelection(i);
-//				}
-			}
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
-			eventBroker.post("MESSAGE", e.getMessage());
+			tableViewer.setInput(provider.getStringList());
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 
 		return area;

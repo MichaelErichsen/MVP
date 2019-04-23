@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Dialog to select a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 15. apr. 2019
+ * @version 23. apr. 2019
  *
  */
 public class LocationNavigatorDialog extends TitleAreaDialog {
@@ -127,6 +127,13 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 		tableViewerColumnLocation
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getNameList());
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Label lblLocationFilter = new Label(container, SWT.NONE);
 		lblLocationFilter.setText("Location filter");
 
@@ -150,13 +157,6 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 		});
 		textFilter.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getNameList());
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 
 		return area;
 	}

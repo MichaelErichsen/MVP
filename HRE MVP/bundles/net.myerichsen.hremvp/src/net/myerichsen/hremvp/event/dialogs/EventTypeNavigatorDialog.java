@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.dialogs;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,6 +7,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -24,15 +24,16 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Display all event types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. feb. 2019
+ * @version 23. apr. 2019
  *
  */
-public class EventStyleNavigatorDialog extends TitleAreaDialog {
+public class EventTypeNavigatorDialog extends TitleAreaDialog {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private final IEventBroker eventBroker;
@@ -48,7 +49,7 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 	 * @param parentShell
 	 * @param context
 	 */
-	public EventStyleNavigatorDialog(Shell parentShell,
+	public EventTypeNavigatorDialog(Shell parentShell,
 			IEclipseContext context) {
 		super(parentShell);
 		eventBroker = context.get(IEventBroker.class);
@@ -105,31 +106,26 @@ public class EventStyleNavigatorDialog extends TitleAreaDialog {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TableViewerColumn tableViewerColumn = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnId = tableViewerColumn.getColumn();
+		final TableColumn tblclmnId = tableViewerColumnId.getColumn();
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
+		tableViewerColumnId.setLabelProvider(new HREColumnLabelProvider(0));
 
-		final TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnHistoricalEvent = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		final TableColumn tblclmnHistoricalEvent = tableViewerColumn_1
+		final TableColumn tblclmnHistoricalEvent = tableViewerColumnHistoricalEvent
 				.getColumn();
 		tblclmnHistoricalEvent.setWidth(100);
 		tblclmnHistoricalEvent.setText("Event");
+		tableViewerColumnHistoricalEvent
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			final List<List<String>> EventTypeList = provider.getStringList();
-			table.removeAll();
-
-			for (int i = 0; i < EventTypeList.size(); i++) {
-				final List<String> type = EventTypeList.get(i);
-				final TableItem item = new TableItem(table, SWT.NONE);
-				item.setText(0, type.get(0));
-				item.setText(1, type.get(1));
-			}
+			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
 

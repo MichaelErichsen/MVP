@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 23. apr. 2019
  */
 
 public class LocationEventView {
@@ -56,7 +56,7 @@ public class LocationEventView {
 
 	private TableViewer tableViewer;
 	private final LocationEventProvider provider;
-	private int locationKey = 0;
+	private int locationPid = 0;
 
 	/**
 	 * Constructor
@@ -106,7 +106,7 @@ public class LocationEventView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getStringList(locationKey));
+			tableViewer.setInput(provider.getEventList(locationPid));
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -167,9 +167,10 @@ public class LocationEventView {
 	@Optional
 	private void subscribeLocationPidUpdateTopic(
 			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int locationPid) {
-		locationKey = locationPid;
+		this.locationPid = locationPid;
+
 		try {
-			tableViewer.setInput(provider.getStringList(locationPid));
+			tableViewer.setInput(provider.getEventList(locationPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

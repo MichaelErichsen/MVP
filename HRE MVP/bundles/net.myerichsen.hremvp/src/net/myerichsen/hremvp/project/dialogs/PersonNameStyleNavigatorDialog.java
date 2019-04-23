@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -32,8 +31,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 3. mar. 2019
- *
+ * @version 23. apr. 2019
  */
 public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 	private static final Logger LOGGER = Logger
@@ -56,15 +54,13 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 	 * @param parentShell
 	 * @param context
 	 */
-	public PersonNameStyleNavigatorDialog(Shell parentShell,
-			IEclipseContext context) {
+	public PersonNameStyleNavigatorDialog(Shell parentShell) {
 		super(parentShell);
 		try {
 			provider = new PersonNameStyleProvider();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 			eventBroker.post("MESSAGE", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -142,7 +138,6 @@ public class PersonNameStyleNavigatorDialog extends TitleAreaDialog {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 
 		return area;

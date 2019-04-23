@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
 
@@ -15,12 +16,7 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
- *
- */
-/**
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. apr. 2019
+ * @version 23. apr. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
@@ -89,9 +85,9 @@ public class LocationEventServer implements IHREServer {
 		List<String> stringList;
 
 		int eventPid;
-//		int namePid;
 
 		final Events event = new Events();
+		EventTypes et = new EventTypes();
 		final LocationEvents link = new LocationEvents();
 		final List<LocationEvents> a = link.getFKLocationPid(locationPid);
 
@@ -99,12 +95,11 @@ public class LocationEventServer implements IHREServer {
 			stringList = new ArrayList<>();
 
 			eventPid = eventLink.getEventPid();
-			event.get(eventPid);
 			stringList.add(Integer.toString(eventPid));
 
-//			namePid = event.getEventNamePid();
-//			name.get(namePid);
-//			stringList.add(name.getLabel());
+			event.get(eventPid);
+			et.get(event.getEventTypePid());
+			stringList.add(et.getAbbreviation());
 			lls.add(stringList);
 		}
 
