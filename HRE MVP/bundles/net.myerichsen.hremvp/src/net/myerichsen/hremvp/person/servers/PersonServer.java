@@ -326,54 +326,6 @@ public class PersonServer implements IHREServer {
 		return nameList;
 	}
 
-//	/**
-//	 * @param key
-//	 * @return the personEventList
-//	 * @throws MvpException
-//	 * @throws Exception
-//	 */
-//	public List<List<String>> getPersonEventList(int key) throws Exception {
-//		Events event;
-//		List<String> ls;
-//		final List<List<String>> eventList = new ArrayList<>();
-//		final Hdates date = new Hdates();
-//		int datePid;
-//
-//		if (key == 0) {
-//			return eventList;
-//		}
-//
-//		for (final PersonEvents personEvent : new PersonEvents()
-//				.getFKPersonPid(key)) {
-//			event = new Events();
-//			event.get(personEvent.getEventPid());
-////			eventName = new EventNames();
-////			eventName.get(event.getEventNamePid());
-//
-//			ls = new ArrayList<>();
-//			ls.add(Integer.toString(event.getEventPid()));
-////			ls.add(eventName.getLabel());
-////			ls.add(Integer.toString(personEvent.getRolePid()));
-//			datePid = event.getFromDatePid();
-//			if (datePid == 0) {
-//				ls.add("");
-//			} else {
-//				date.get(datePid);
-//				ls.add(date.getDate().toString());
-//			}
-//			datePid = event.getToDatePid();
-//			if (datePid == 0) {
-//				ls.add("");
-//			} else {
-//				date.get(datePid);
-//				ls.add(date.getDate().toString());
-//			}
-//
-//			eventList.add(ls);
-//		}
-//		return eventList;
-//	}
-
 	/**
 	 * List all persons.
 	 *

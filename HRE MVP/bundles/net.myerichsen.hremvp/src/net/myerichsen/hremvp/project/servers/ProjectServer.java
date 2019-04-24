@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.json.JSONStringer;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
@@ -169,6 +173,59 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws Exception {
+	}
+
+	public String getRemote(HttpServletResponse response, String target) {
+		final JSONStringer js = new JSONStringer();
+		js.object();
+		js.key("projects");
+		js.array();
+
+		js.object();
+
+		List<List<String>> propertiesList = getProperties(1);
+
+		js.key("projectname");
+		js.value(propertiesList.get(0));
+		js.key("lastupdated");
+		js.value(propertiesList.get(1));
+		js.key("summary");
+		js.value(propertiesList.get(2));
+		js.key("localserver");
+		js.value(propertiesList.get(3));
+		js.key("path");
+		js.value(propertiesList.get(4));
+		js.endObject();
+
+		js.endArray();
+		js.endObject();
+
+		LOGGER.log(Level.INFO, "JSON String: {0}", js);
+
+		return js.toString();
+	}
+
+	/**
+	 * @param target
+	 */
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * @param request
+	 */
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * @param request
+	 */
+	public void updateRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
 
 	}
 }

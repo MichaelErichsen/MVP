@@ -19,6 +19,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.HreContextHandlerCollection;
 import net.myerichsen.hremvp.requesthandlers.PersonHttpRequestHandler;
+import net.myerichsen.hremvp.requesthandlers.ProjectHttpRequestHandler;
 import net.myerichsen.hremvp.requesthandlers.RootHttpRequestHandler;
 import net.myerichsen.hremvp.requesthandlers.SexTypeHttpRequestHandler;
 
@@ -62,6 +63,11 @@ public class ProjectStartEmbeddedServerHandler {
 							.getContexts();
 
 					ContextHandler context = new ContextHandler();
+					context.setContextPath("/mvp/v100/project/");
+					context.setHandler(new ProjectHttpRequestHandler());
+					contexts.addHandler(context);
+
+					context = new ContextHandler();
 					context.setContextPath("/mvp/v100/sextype/");
 					context.setHandler(new SexTypeHttpRequestHandler());
 					contexts.addHandler(context);

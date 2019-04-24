@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,14 +12,16 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 
+import net.myerichsen.hremvp.project.servers.ProjectServer;
+
 /**
- * HTTP root request handler
+ * HTTP request handler for projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
  * @version 24. apr. 2019
  *
  */
-public class RootHttpRequestHandler implements Handler {
+public class ProjectHttpRequestHandler implements Handler {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -65,21 +66,42 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void handle(String target, Request baseRequest,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
+			HttpServletRequest request, HttpServletResponse response) {
+		LOGGER.log(Level.INFO,
+				"Target: {0}\r\nRequest {1}\r\nHttpServletRequest {2}",
+				new Object[] { target, baseRequest, request });
+
+		// TODO Generalize request handler. Use class.forname() for server class
+		final ProjectServer server = new ProjectServer();
+
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 
-		final PrintWriter out = response.getWriter();
+		final String method = request.getMethod();
 
-		out.println("{");
-		out.println("\"Method\": \"" + request.getMethod() + "\", ");
-		out.println("\"Target\": \"" + target.substring(1) + "\"");
-		out.println("}");
+		try {
+			if (method.equals("GET")) {
+				final PrintWriter out = response.getWriter();
+				out.print(server.getRemote(response, target));
+				out.close();
+			} else if (method.equals("DELETE")) {
+				server.deleteRemote(target);
+			} else if (method.equals("POST")) {
+				server.insertRemote(request);
+			} else if (method.equals("PUT")) {
+				server.updateRemote(request);
+			}
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.getMessage());
+
+			try {
+				response.sendError(500, e.getClass() + " " + e.getMessage());
+			} catch (final IOException e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+
 		baseRequest.setHandled(true);
-
-		LOGGER.log(Level.INFO, "Method: {0},\r\nTarget: {1}",
-				new Object[] { request.getMethod(), target.substring(1) });
 	}
 
 	/*
