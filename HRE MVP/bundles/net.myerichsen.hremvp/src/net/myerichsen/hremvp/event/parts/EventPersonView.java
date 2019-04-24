@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.TableItem;
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
-import net.myerichsen.hremvp.person.providers.PersonProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
@@ -51,7 +50,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. apr. 2019
+ * @version 24. apr. 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
@@ -115,6 +114,15 @@ public class EventPersonView {
 		tblclmnId.setText("ID");
 		tableViewerColumnEventId
 				.setLabelProvider(new HREColumnLabelProvider(0));
+
+		final TableViewerColumn tableViewerColumnPersonEventId = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		final TableColumn tblclmnPEId = tableViewerColumnPersonEventId
+				.getColumn();
+		tblclmnPEId.setWidth(100);
+		tblclmnPEId.setText("Person Event ID");
+		tableViewerColumnPersonEventId
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -193,48 +201,49 @@ public class EventPersonView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				deletePerson(parent.getShell());
+				deletePersonLink(parent.getShell());
 			}
 		});
-		mntmDeleteSelectedPerson.setText("Delete selected person...");
+		mntmDeleteSelectedPerson.setText("Delete link to selected person...");
 	}
 
 	/**
 	 * @param shell
 	 */
-	protected void deletePerson(Shell shell) {
+	protected void deletePersonLink(Shell shell) {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 
 		int personPid = 0;
 		String primaryName = null;
+		int personEventPid = 0;
+
 		if (selection.length > 0) {
 			final TableItem item = selection[0];
 			personPid = Integer.parseInt(item.getText(0));
-			primaryName = item.getText(1);
+			personEventPid = Integer.parseInt(item.getText(1));
+			primaryName = item.getText(2);
 		}
 
 		// Last chance to regret
 		final MessageDialog dialog = new MessageDialog(shell,
 				"Delete Person " + primaryName, null,
-				"Are you sure that you will delete person " + personPid + ", "
-						+ primaryName + "?",
+				"Are you sure that you will delete link to person " + personPid
+						+ ", " + primaryName + "?",
 				MessageDialog.CONFIRM, 0, "OK", "Cancel");
 
 		if (dialog.open() == Window.CANCEL) {
-			eventBroker.post("MESSAGE",
-					"Deletion of person " + primaryName + " has been canceled");
+			eventBroker.post("MESSAGE", "Deletion of link to person "
+					+ primaryName + " has been canceled");
 			return;
 		}
 
-		// FIXME Delete personevent
-
 		try {
-			final PersonProvider pp = new PersonProvider();
-			pp.delete(personPid);
+			provider.delete(personPid);
 
-			LOGGER.log(Level.INFO, "Person {0} has been deleted", primaryName);
-			eventBroker.post("MESSAGE",
-					"Person " + primaryName + " has been deleted");
+			LOGGER.log(Level.INFO, "Link {0} to person {1} has been deleted",
+					new Object[] { personEventPid, primaryName });
+			eventBroker.post("MESSAGE", "Link " + personEventPid + " to person "
+					+ primaryName + " has been deleted");
 			eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. apr. 2019
+ * @version 24. apr. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
@@ -273,8 +273,6 @@ public class EventLocationView {
 				lnpp.deleteAllNamePartsForLocationName(
 						locationNamePidList.get(i));
 			}
-
-			// FIXME Delete event location
 
 			// Delete all location names for location
 			lnp.deleteAllNamesForLocation(locationPid);

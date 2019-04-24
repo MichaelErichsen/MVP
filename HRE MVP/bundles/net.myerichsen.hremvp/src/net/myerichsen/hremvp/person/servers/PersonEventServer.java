@@ -11,7 +11,7 @@ import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 22. apr. 2019
+ * @version 24. apr. 2019
  *
  */
 public class PersonEventServer implements IHREServer {
@@ -120,6 +120,7 @@ public class PersonEventServer implements IHREServer {
 				ls.get(PersonPid);
 				personStringList.add(Integer.toString(PersonPid));
 				personStringList.add(ls.getPrimaryName());
+				personStringList.add(Integer.toString(pe.getPersonEventPid()));
 			}
 		} catch (final MvpException e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
