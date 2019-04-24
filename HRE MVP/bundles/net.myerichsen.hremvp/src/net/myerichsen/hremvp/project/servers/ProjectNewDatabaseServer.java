@@ -13,7 +13,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import net.myerichsen.hremvp.HreH2ConnectionPool;
-import net.myerichsen.hremvp.databaseadmin.H2TableProvider;
+import net.myerichsen.hremvp.providers.H2TableProvider;
 
 /**
  * Create and open a new HRE project database

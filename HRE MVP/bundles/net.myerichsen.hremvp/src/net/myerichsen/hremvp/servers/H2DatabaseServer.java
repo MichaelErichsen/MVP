@@ -66,7 +66,6 @@ public class H2DatabaseServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-
 		final Connection conn = HreH2ConnectionPool
 				.getConnection(store.getString("DBNAME"));
 		final String h2Version = store.getString("H2VERSION");

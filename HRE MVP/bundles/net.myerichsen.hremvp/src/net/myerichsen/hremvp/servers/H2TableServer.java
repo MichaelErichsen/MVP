@@ -1,4 +1,4 @@
-package net.myerichsen.hremvp.databaseadmin;
+package net.myerichsen.hremvp.servers;
 
 import java.sql.Blob;
 import java.sql.Clob;
@@ -13,19 +13,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.jface.viewers.IContentProvider;
-
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
+import net.myerichsen.hremvp.IHREServer;
+import net.myerichsen.hremvp.databaseadmin.H2TableModel;
 
 /**
- * Provide H2 data to the table navigator and the table editor
+ * Serve H2 data to the table navigator and the table editor
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. apr. 2019
+ * @version 24. apr. 2019
  *
  */
-public class H2TableProvider implements IContentProvider {
+public class H2TableServer implements IHREServer {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String COUNT_STATEMENT = "SELECT COUNT_STATEMENT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
@@ -49,7 +49,7 @@ public class H2TableProvider implements IContentProvider {
 	 *                      access error or other errors
 	 *
 	 */
-	public H2TableProvider(String tableName) throws SQLException {
+	public H2TableServer(String tableName) throws SQLException {
 		String type;
 
 		conn = HreH2ConnectionPool.getConnection();
@@ -163,6 +163,7 @@ public class H2TableProvider implements IContentProvider {
 	 * @throws SQLException An exception that provides information on a database
 	 *                      access error or other errors
 	 */
+	@Override
 	public void delete(int recordNum) throws SQLException {
 		String s = tableName.substring(0, tableName.length() - 1);
 		if (tableName.equals("SEXES")) {
@@ -189,6 +190,17 @@ public class H2TableProvider implements IContentProvider {
 		ps.executeUpdate();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#get(int)
+	 */
+	@Override
+	public void get(int key) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Get the count of columns in the H2 table
 	 *
@@ -205,6 +217,26 @@ public class H2TableProvider implements IContentProvider {
 	 */
 	public List<H2TableModel> getModelList() {
 		return modelList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
+	 */
+	@Override
+	public List<List<String>> getStringList() throws Exception {
+		return new ArrayList<>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
+	 */
+	@Override
+	public List<List<String>> getStringList(int key) throws Exception {
+		return new ArrayList<>();
 	}
 
 	/**
@@ -288,6 +320,17 @@ public class H2TableProvider implements IContentProvider {
 		ps = conn.prepareStatement(IMPORTCSV);
 		rowCount = ps.executeUpdate();
 		return rowCount;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#insert()
+	 */
+	@Override
+	public int insert() throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	/**
@@ -416,6 +459,17 @@ public class H2TableProvider implements IContentProvider {
 			rowList.add(row);
 		}
 		return rowList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#update()
+	 */
+	@Override
+	public void update() throws Exception {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**

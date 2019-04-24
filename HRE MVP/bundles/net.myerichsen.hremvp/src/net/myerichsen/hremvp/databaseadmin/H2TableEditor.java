@@ -43,6 +43,7 @@ import net.myerichsen.hremvp.listeners.IntegerListener;
 import net.myerichsen.hremvp.listeners.LengthFocusListener;
 import net.myerichsen.hremvp.listeners.NumericVerifyListener;
 import net.myerichsen.hremvp.listeners.SmallIntListener;
+import net.myerichsen.hremvp.providers.H2TableProvider;
 
 /**
  * Dynamically create an editor with the fields in the database catalog

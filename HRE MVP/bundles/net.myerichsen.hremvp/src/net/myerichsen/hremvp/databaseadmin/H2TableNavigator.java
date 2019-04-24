@@ -38,6 +38,7 @@ import org.h2.tools.Csv;
 import org.h2.tools.SimpleResultSet;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.providers.H2TableProvider;
 
 /**
  * Create a view part with a table. Create a column for each columns in the
