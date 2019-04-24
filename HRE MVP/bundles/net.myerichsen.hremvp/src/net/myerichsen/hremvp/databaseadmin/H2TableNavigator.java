@@ -44,13 +44,13 @@ import net.myerichsen.hremvp.Constants;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 24. apr. 2019
  *
  */
 
 @SuppressWarnings("restriction")
 public class H2TableNavigator {
-	private static TableViewer tableViewer;
+	private TableViewer tableViewer;
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
