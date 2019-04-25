@@ -195,6 +195,17 @@ public class H2TableServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
@@ -220,6 +231,19 @@ public class H2TableServer implements IHREServer {
 	 */
 	public List<H2TableModel> getModelList() {
 		return modelList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws  Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*
@@ -382,6 +406,18 @@ public class H2TableServer implements IHREServer {
 		ps.executeUpdate();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Insert multiple rows into the H2 table
 	 *
@@ -524,42 +560,6 @@ public class H2TableServer implements IHREServer {
 		final String UPDATE = sb.toString();
 		ps = conn.prepareStatement(UPDATE);
 		ps.executeUpdate();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
-	 */
-	@Override
-	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
-	 */
-	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws  Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
-	 * HttpServletRequest)
-	 */
-	@Override
-	public void insertRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*

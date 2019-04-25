@@ -46,6 +46,17 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
@@ -53,6 +64,19 @@ public class LocationPersonServer implements IHREServer {
 	public void get(int key) throws Exception {
 		// TODO Auto-generated method stub
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return "";
 	}
 
 	/*
@@ -112,47 +136,23 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see net.myerichsen.hremvp.IHREServer#update()
-	 */
-	@Override
-	public void update() throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
-	 */
-	@Override
-	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
-	 */
-	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * 
 	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */
 	@Override
 	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#update()
+	 */
+	@Override
+	public void update() throws Exception {
 		// TODO Auto-generated method stub
 
 	}

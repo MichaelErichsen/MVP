@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.person.servers;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
 import org.json.JSONStringer;
 
 import net.myerichsen.hremvp.IHREServer;
@@ -387,52 +385,60 @@ public class PersonServer implements IHREServer {
 	 *
 	 * @param response Response
 	 * @param target   Target
-	 * @return List of strings
-	 * @throws NumberFormatException Thrown to indicate that the application has
-	 *                               attempted to converta string to one of the
-	 *                               numeric types, but that the string does
-	 *                               nothave the appropriate format.
-	 * @throws Exception             An exception that provides information on a
-	 *                               database access error or other errors
-	 * @throws MvpException          Application specific exception
-	 * @throws IOException           Signals that an I/O exception of some sort
-	 *                               has occurred. Thisclass is the general
-	 *                               class of exceptions produced by failed
-	 *                               orinterrupted I/O operations
-	 * @throws JSONException         The JSONException is thrown by the JSON.org
-	 *                               classes when things are amiss
+	 * @return js JSON String
+	 * @throws Exception Any exception
+	 * 
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target) {
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
 		JSONStringer js = new JSONStringer();
 		js.object();
-		js.key("person");
-		js.object();
 
-		try {
+		if (targetSize == 0) {
+			js.key("persons");
+			js.array();
+
+			List<List<String>> stringList = getStringList();
+
+			for (List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("name");
+				js.value(list.get(1));
+				js.endObject();
+			}
+
+			js.endArray();
+
+		} else {
+
+			js.key("person");
+			js.object();
+
 			List<String> stringList = getStringList(
 					Integer.parseInt(targetParts[targetSize - 1])).get(0);
 
-			js.key("Person pid");
+			js.key("pid");
 			js.value(stringList.get(0));
-			js.key("Name");
+			js.key("name");
 			js.value(stringList.get(1));
-			js.key("From date");
+			js.key("fromdate");
 			js.value(stringList.get(2));
-			js.key("To date");
+			js.key("todate");
 			js.value(stringList.get(3));
-			js.key("Primary name");
+			js.key("primaryname");
 			js.value(stringList.get(4));
 
-			LOGGER.log(Level.FINE, js.toString());
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
+			LOGGER.log(Level.FINE, "{0}", js);
+
+			js.endObject();
 		}
 
-		js.endObject();
 		js.endObject();
 		return js.toString();
 	}
@@ -482,7 +488,20 @@ public class PersonServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<>();
+		List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+		final PersonNameServer pns = new PersonNameServer();
+
+		List<Persons> list = person.get();
+
+		for (Persons persons : list) {
+			stringList = new ArrayList<>();
+			int personPid2 = persons.getPersonPid();
+			stringList.add(Integer.toString(personPid2));
+			stringList.add(pns.getPrimaryNameString(personPid2));
+			lls.add(stringList);
+		}
+		return lls;
 	}
 
 	/**

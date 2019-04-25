@@ -12,18 +12,30 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 
-import net.myerichsen.hremvp.person.servers.PersonServer;
+import net.myerichsen.hremvp.IHREServer;
 
 /**
- * HTTP request handler for Persons
+ * Generic HTTP request handler
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 14. apr. 2019
+ * @version 25. apr. 2019
  *
  */
-public class PersonHttpRequestHandler implements Handler {
+public class HREHttpRequestHandler implements Handler {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	private IHREServer server;
+
+	/**
+	 * Constructor
+	 *
+	 * @param server
+	 */
+	public HREHttpRequestHandler(IHREServer server) {
+		super();
+		this.server = server;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -33,7 +45,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void addLifeCycleListener(Listener arg0) {
-
 	}
 
 	/*
@@ -43,7 +54,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void destroy() {
-
 	}
 
 	/*
@@ -53,7 +63,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public Server getServer() {
-
 		return null;
 	}
 
@@ -70,9 +79,6 @@ public class PersonHttpRequestHandler implements Handler {
 		LOGGER.log(Level.FINE,
 				"Target: {0}\r\nRequest {1}\r\nHttpServletRequest {2}",
 				new Object[] { target, baseRequest, request });
-
-		// TODO Generalize request handler. Use class.forname() for server class
-		final PersonServer server = new PersonServer();
 
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
@@ -92,7 +98,7 @@ public class PersonHttpRequestHandler implements Handler {
 				server.updateRemote(request);
 			}
 		} catch (final Exception e) {
-			LOGGER.severe(e.getClass() + " " + e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			try {
 				response.sendError(500, e.getClass() + " " + e.getMessage());
 			} catch (final IOException e1) {
@@ -110,7 +116,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isFailed() {
-
 		return false;
 	}
 
@@ -121,7 +126,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isRunning() {
-
 		return false;
 	}
 
@@ -132,7 +136,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isStarted() {
-
 		return false;
 	}
 
@@ -143,7 +146,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isStarting() {
-
 		return false;
 	}
 
@@ -154,7 +156,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isStopped() {
-
 		return false;
 	}
 
@@ -165,7 +166,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isStopping() {
-
 		return false;
 	}
 
@@ -178,7 +178,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void removeLifeCycleListener(Listener arg0) {
-
 	}
 
 	/*
@@ -189,7 +188,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void setServer(Server server) {
-
 	}
 
 	/*
@@ -199,7 +197,6 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void start() throws Exception {
-
 	}
 
 	/*
@@ -209,7 +206,5 @@ public class PersonHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void stop() throws Exception {
-
 	}
-
 }

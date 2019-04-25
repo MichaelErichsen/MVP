@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONStringer;
+
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
@@ -22,7 +24,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 25. apr. 2019
  *
  */
 public class EventServer implements IHREServer {
@@ -71,6 +73,17 @@ public class EventServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 		event.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -243,6 +256,72 @@ public class EventServer implements IHREServer {
 		return personList;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
+
+		JSONStringer js = new JSONStringer();
+		js.object();
+
+		if (targetSize == 0) {
+			js.key("events");
+			js.array();
+
+			List<List<String>> stringList = getStringList();
+
+			for (List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("fromdate");
+				js.value(list.get(1));
+				js.key("todate");
+				js.value(list.get(2));
+				js.key("eventtypepid");
+				js.value(list.get(3));
+				js.key("name");
+				js.value(list.get(4));
+				js.endObject();
+			}
+
+			js.endArray();
+
+		} else {
+
+			js.key("event");
+			js.object();
+
+			List<String> list = getStringList(
+					Integer.parseInt(targetParts[targetSize - 1])).get(0);
+
+			js.key("pid");
+			js.value(list.get(0));
+			js.key("fromdate");
+			js.value(list.get(1));
+			js.key("todate");
+			js.value(list.get(2));
+			js.key("eventtypepid");
+			js.value(list.get(3));
+			js.key("name");
+			js.value(list.get(4));
+
+			LOGGER.log(Level.FINE, "{0}", js);
+
+			js.endObject();
+		}
+
+		js.endObject();
+		return js.toString();
+	}
+
 	/**
 	 * Get all rows
 	 *
@@ -387,6 +466,18 @@ public class EventServer implements IHREServer {
 		return event.insert();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @param eventName the eventName to set
 	 */
@@ -521,42 +612,6 @@ public class EventServer implements IHREServer {
 		event.setToDatePid(ToDatePid);
 //		event.setEventNamePid(EventNamePid);
 		event.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
-	 */
-	@Override
-	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
-	 */
-	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws  Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
-	 * HttpServletRequest)
-	 */
-	@Override
-	public void insertRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*

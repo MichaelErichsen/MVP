@@ -9,8 +9,11 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONStringer;
+
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.LocationNameParts;
 import net.myerichsen.hremvp.dbmodels.LocationNames;
 import net.myerichsen.hremvp.dbmodels.Locations;
@@ -19,7 +22,7 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Locations}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 25. apr. 2019
  *
  */
 public class LocationServer implements IHREServer {
@@ -60,14 +63,22 @@ public class LocationServer implements IHREServer {
 		location.delete(key);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+	}
+
 	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
-	 *
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 */
 	@Override
 	public void get(int key) throws Exception {
@@ -169,13 +180,71 @@ public class LocationServer implements IHREServer {
 		return sb.toString();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
+
+		JSONStringer js = new JSONStringer();
+		js.object();
+
+		if (targetSize == 0) {
+			js.key("locations");
+			js.array();
+
+			List<List<String>> stringList = getStringList();
+
+			for (List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("name");
+				js.value(list.get(1));
+				js.endObject();
+			}
+
+			js.endArray();
+
+		} else {
+
+			js.key("location");
+			js.object();
+
+			List<String> stringList = getStringList(
+					Integer.parseInt(targetParts[targetSize - 1])).get(0);
+
+			js.key("pid");
+			js.value(stringList.get(0));
+			js.key("name");
+			js.value(stringList.get(1));
+			js.key("fromdate");
+			js.value(stringList.get(2));
+			js.key("todate");
+			js.value(stringList.get(3));
+
+			LOGGER.log(Level.FINE, "{0}", js);
+
+			js.endObject();
+		}
+
+		js.endObject();
+		return js.toString();
+
+	}
+
 	/**
 	 * Get all rows
 	 *
 	 * @return A list of lists of strings of pids and labels
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
-	 * @throws MvpException Application specific exception
+	 * @throws Exception An exception that provides information on a database
+	 *                   access error or other errors
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
@@ -228,7 +297,62 @@ public class LocationServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
+
+		final LocationNameParts part = new LocationNameParts();
+		List<LocationNameParts> partList;
+
+		Locations loc = new Locations();
+		loc.get(key);
+
+		List<String> stringList = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		stringList.add(Integer.toString(key));
+
+		final List<LocationNames> lnl = new LocationNames()
+				.getFKLocationPid(key);
+
+		for (final LocationNames name : lnl) {
+			if (name.isPrimaryLocationName()) {
+				partList = part.getFKLocationNamePid(name.getLocationNamePid());
+
+				for (int i = 0; i < partList.size(); i++) {
+					if ((partList.get(i) != null) && (partList.get(i).getLabel()
+							.trim().length() > 0)) {
+						sb.append(partList.get(i).getLabel() + ", ");
+					}
+				}
+				break;
+			}
+		}
+
+		LOGGER.log(Level.FINE, "{0}", sb);
+		stringList.add(sb.toString());
+
+		Hdates hdate = new Hdates();
+
+		int datePid = loc.getFromDatePid();
+
+		if (datePid == 0) {
+			stringList.add("");
+		} else {
+			hdate.get(datePid);
+			stringList.add(hdate.getDate().toString());
+		}
+
+		datePid = loc.getToDatePid();
+
+		if (datePid == 0) {
+			stringList.add("");
+		} else {
+			hdate.get(datePid);
+			stringList.add(hdate.getDate().toString());
+		}
+
+		lls.add(stringList);
+
+		return lls;
+
 	}
 
 	/**
@@ -278,6 +402,18 @@ public class LocationServer implements IHREServer {
 		location.setYCoordinate(yCoordinate);
 		location.setZCoordinate(zCoordinate);
 		return location.insert();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -353,41 +489,6 @@ public class LocationServer implements IHREServer {
 		location.setYCoordinate(yCoordinate);
 		location.setZCoordinate(zCoordinate);
 		location.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
-	 */
-	@Override
-	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
-	 */
-	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
-	 * HttpServletRequest)
-	 */
-	@Override
-	public void insertRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*

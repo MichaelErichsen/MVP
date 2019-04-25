@@ -50,6 +50,17 @@ public class PersonEventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
 	 *
 	 * @see net.myerichsen.hremvp.servers.IHREServer#get(int)
 	 */
@@ -84,6 +95,19 @@ public class PersonEventServer implements IHREServer {
 	 */
 	public int getPersonPid() {
 		return PersonPid;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws  Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*
@@ -145,6 +169,18 @@ public class PersonEventServer implements IHREServer {
 		personEvent.setPrimaryPerson(isPrimaryPerson());
 		personEvent.setEventRolePid(EventRolePid);
 		return personEvent.insert();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -210,42 +246,6 @@ public class PersonEventServer implements IHREServer {
 	 */
 	@Override
 	public void update() throws Exception {
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
-	 */
-	@Override
-	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
-	 */
-	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws NumberFormatException, Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
-	 * HttpServletRequest)
-	 */
-	@Override
-	public void insertRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
 
 	}
 

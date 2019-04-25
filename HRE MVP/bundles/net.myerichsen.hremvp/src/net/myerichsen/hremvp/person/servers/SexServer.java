@@ -68,6 +68,17 @@ public class SexServer implements IHREServer {
 		sex.delete(key);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Get a row
 	 *
@@ -111,19 +122,19 @@ public class SexServer implements IHREServer {
 		return fromDatePid;
 	}
 
-	/**
-	 * @return the isocode
-	 */
-	public String getIsocode() {
-		return isocode;
-	}
-
 //	/**
 //	 * @return the languageLabel
 //	 */
 //	public String getLanguageLabel() {
 //		return languageLabel;
 //	}
+
+	/**
+	 * @return the isocode
+	 */
+	public String getIsocode() {
+		return isocode;
+	}
 
 	/**
 	 * @return the languagePid
@@ -137,6 +148,19 @@ public class SexServer implements IHREServer {
 	 */
 	public int getPersonPid() {
 		return personPid;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -264,12 +288,31 @@ public class SexServer implements IHREServer {
 		return sex.insert();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @return the primarySex
 	 */
 	public boolean isPrimarySex() {
 		return primarySex;
 	}
+
+//	/**
+//	 * @param languageLabel the languageLabel to set
+//	 */
+//	public void setLanguageLabel(String languageLabel) {
+//		this.languageLabel = languageLabel;
+//	}
 
 	/**
 	 * @param sexPid
@@ -293,13 +336,6 @@ public class SexServer implements IHREServer {
 	public void setFromDatePid(int fromdate) {
 		fromDatePid = fromdate;
 	}
-
-//	/**
-//	 * @param languageLabel the languageLabel to set
-//	 */
-//	public void setLanguageLabel(String languageLabel) {
-//		this.languageLabel = languageLabel;
-//	}
 
 	/**
 	 * @param isocode the isocode to set
@@ -373,42 +409,6 @@ public class SexServer implements IHREServer {
 		sex.setToDatePid(toDatePid);
 		sex.setPrimarySex(primarySex);
 		sex.update();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
-	 */
-	@Override
-	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
-	 */
-	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws NumberFormatException, Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
-	 * HttpServletRequest)
-	 */
-	@Override
-	public void insertRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*

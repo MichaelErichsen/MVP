@@ -18,17 +18,20 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.HreContextHandlerCollection;
-import net.myerichsen.hremvp.requesthandlers.PersonHttpRequestHandler;
-import net.myerichsen.hremvp.requesthandlers.ProjectHttpRequestHandler;
+import net.myerichsen.hremvp.event.servers.EventServer;
+import net.myerichsen.hremvp.location.servers.LocationServer;
+import net.myerichsen.hremvp.person.servers.PersonServer;
+import net.myerichsen.hremvp.project.servers.ProjectServer;
+import net.myerichsen.hremvp.project.servers.SexTypeServer;
+import net.myerichsen.hremvp.requesthandlers.HREHttpRequestHandler;
 import net.myerichsen.hremvp.requesthandlers.RootHttpRequestHandler;
-import net.myerichsen.hremvp.requesthandlers.SexTypeHttpRequestHandler;
 
 /**
  * Starts the embedded Jetty server. Creates a ContextHandlerCollection that
  * other features can add contexts and handlers to.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd.
- * @version 18. okt. 2018
+ * @version 25. apr. 2019
  *
  */
 public class ProjectStartEmbeddedServerHandler {
@@ -45,66 +48,70 @@ public class ProjectStartEmbeddedServerHandler {
 	 */
 	@Execute
 	public void execute() {
-		final Runnable runnable = new Runnable() {
+		final Runnable runnable = () -> {
+			final Server server = new Server(store.getInt("SERVERPORT"));
+			ContextHandler context;
 
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see java.lang.Runnable#run()
-			 */
-			@Override
-			public void run() {
-				final Server server = new Server(store.getInt("SERVERPORT"));
+			try {
+				server.getConnectors()[0]
+						.getConnectionFactory(HttpConnectionFactory.class);
+				final ContextHandlerCollection contexts = HreContextHandlerCollection
+						.getContexts();
 
-				try {
-					server.getConnectors()[0]
-							.getConnectionFactory(HttpConnectionFactory.class);
-					final ContextHandlerCollection contexts = HreContextHandlerCollection
-							.getContexts();
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/events/");
+				context.setHandler(
+						new HREHttpRequestHandler(new EventServer()));
+				contexts.addHandler(context);
 
-					ContextHandler context = new ContextHandler();
-					context.setContextPath("/mvp/v100/project/");
-					context.setHandler(new ProjectHttpRequestHandler());
-					contexts.addHandler(context);
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/locations/");
+				context.setHandler(
+						new HREHttpRequestHandler(new LocationServer()));
+				contexts.addHandler(context);
 
-					context = new ContextHandler();
-					context.setContextPath("/mvp/v100/sextype/");
-					context.setHandler(new SexTypeHttpRequestHandler());
-					contexts.addHandler(context);
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/persons/");
+				context.setHandler(
+						new HREHttpRequestHandler(new PersonServer()));
+				contexts.addHandler(context);
 
-					context = new ContextHandler();
-					context.setContextPath("/mvp/v100/person/");
-					context.setHandler(new PersonHttpRequestHandler());
-					contexts.addHandler(context);
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/projects/");
+				context.setHandler(
+						new HREHttpRequestHandler(new ProjectServer()));
+				contexts.addHandler(context);
 
-					context = new ContextHandler();
-					context.setContextPath("/");
-					context.setHandler(new RootHttpRequestHandler());
-					contexts.addHandler(context);
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/sextypes/");
+				context.setHandler(
+						new HREHttpRequestHandler(new SexTypeServer()));
+				contexts.addHandler(context);
 
-					final Handler[] handlerList = contexts.getHandlers();
+				context = new ContextHandler();
+				context.setContextPath("/");
+				context.setHandler(new RootHttpRequestHandler());
+				contexts.addHandler(context);
 
-					for (final Handler handler : handlerList) {
-						LOGGER.log(Level.INFO, "Server handler: "
-								+ ((ContextHandler) handler).getContextPath());
-					}
+				final Handler[] handlerList = contexts.getHandlers();
 
-					server.setHandler(contexts);
-					server.setStopAtShutdown(true);
-					server.start();
-
-					LOGGER.log(Level.INFO,
-							"The server is running at " + server.getURI());
-					eventBroker.post("MESSAGE",
-							"The server is running at " + server.getURI());
-
-					// server.join();
-				} catch (final Exception e) {
-					e.printStackTrace();
-					LOGGER.severe(
-							e.getClass() + ": " + e.getMessage() + " at line "
-									+ e.getStackTrace()[0].getLineNumber());
+				for (final Handler handler : handlerList) {
+					LOGGER.log(Level.INFO, "Server handler: {0}",
+							((ContextHandler) handler).getContextPath());
 				}
+
+				server.setHandler(contexts);
+				server.setStopAtShutdown(true);
+				server.start();
+
+				LOGGER.log(Level.INFO, "The server is running at {0}",
+						server.getURI());
+				eventBroker.post("MESSAGE",
+						"The server is running at " + server.getURI());
+
+				// server.join();
+			} catch (final Exception e) {
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		};
 		new Thread(runnable).start();
