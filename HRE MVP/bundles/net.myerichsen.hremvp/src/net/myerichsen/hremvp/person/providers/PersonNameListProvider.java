@@ -39,7 +39,7 @@ public class PersonNameListProvider implements IHREProvider {
 	 *                   access error or other errors.
 	 */
 	public void add(int namePid) throws Exception {
-		PersonNames model = new PersonNames();
+		final PersonNames model = new PersonNames();
 		model.setNamePid(namePid);
 
 		if (modelList == null) {

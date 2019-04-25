@@ -178,7 +178,7 @@ public class EventLocationView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				NewLocationWizard newLocationWizard = new NewLocationWizard(
+				final NewLocationWizard newLocationWizard = new NewLocationWizard(
 						context);
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
 						newLocationWizard);
@@ -191,7 +191,7 @@ public class EventLocationView {
 						lep.setPrimaryLocation(false);
 
 						lep.insert();
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}

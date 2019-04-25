@@ -3,6 +3,9 @@ package net.myerichsen.hremvp.project.servers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
@@ -47,6 +50,17 @@ public class PersonNameStyleServer implements IHREServer {
 		style.delete(key);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @return
 	 * @throws Exception
@@ -86,6 +100,19 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	public int getNameStylePid() {
 		return NameStylePid;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws NumberFormatException, Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -138,6 +165,18 @@ public class PersonNameStyleServer implements IHREServer {
 		return style.insert();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @param isoCode the isoCode to set
 	 */
@@ -171,6 +210,18 @@ public class PersonNameStyleServer implements IHREServer {
 		style.setIsoCode(IsoCode);
 		style.setLabelPid(LabelPid);
 		style.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void updateRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

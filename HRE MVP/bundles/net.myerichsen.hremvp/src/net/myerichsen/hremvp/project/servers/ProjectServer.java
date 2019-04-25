@@ -21,7 +21,12 @@ import net.myerichsen.hremvp.MvpException;
  * Business logic interface for HRE Projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. apr. 2019
+ * @version 25. apr. 2019
+ *
+ */
+/**
+ * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
+ * @version 25. apr. 2019
  *
  */
 public class ProjectServer implements IHREServer {
@@ -42,6 +47,17 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public void delete(int key) throws Exception {
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -71,52 +87,42 @@ public class ProjectServer implements IHREServer {
 		return element;
 	}
 
-	/**
-	 * @param projectId
-	 * @return lls Project properties for a single project
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
 	 */
-	public List<List<String>> getProperties(int projectId) {
-		String key;
-		List<String> ls;
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		final JSONStringer js = new JSONStringer();
+		js.object();
+		js.key("project");
 
-		final List<List<String>> lls = new ArrayList<>();
-		final String[] labelArray = { "Project Name", "Last Edited", "Summary",
-				"Local/Server", "Path" };
+		js.object();
 
-		for (int i = 0; i < labelArray.length; i++) {
-			ls = new ArrayList<>();
+		int targetInt = Integer.parseInt(target.replace("/", "")) - 1;
+		LOGGER.log(Level.INFO, "Target {0}, int {1}",
+				new Object[] { target, targetInt });
+		List<List<String>> lls = getStringList(targetInt);
+		List<String> stringList;
 
-			ls.add(labelArray[i]);
+		for (int i = 0; i < lls.size(); i++) {
+			stringList = lls.get(i);
 
-			switch (i) {
-			case 0:
-				key = PROJECT + projectId + NAME;
-				ls.add(store.getString(key));
-				break;
-			case 1:
-				key = PROJECT + projectId + ".lastupdated";
-				ls.add(store.getString(key));
-				break;
-			case 2:
-				key = PROJECT + projectId + ".summary";
-				ls.add(store.getString(key));
-				break;
-			case 3:
-				key = PROJECT + projectId + ".localserver";
-				ls.add(store.getString(key));
-				break;
-			case 4:
-				key = PROJECT + projectId + ".path";
-				ls.add(store.getString(key));
-				break;
-			default:
-				LOGGER.log(Level.SEVERE, "Invalid index: {0}", i);
-				break;
-			}
-
-			lls.add(ls);
+			LOGGER.log(Level.INFO, "{0}: {1}",
+					new Object[] { stringList.get(0), stringList.get(1) });
+			js.key(stringList.get(0));
+			js.value(stringList.get(1));
 		}
-		return lls;
+
+		js.endObject();
+		js.endObject();
+
+		LOGGER.log(Level.INFO, "JSON String: {0}", js);
+
+		return js.toString();
 	}
 
 	/*
@@ -153,7 +159,48 @@ public class ProjectServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return new ArrayList<>();
+		String keyString;
+		List<String> ls;
+
+		final List<List<String>> lls = new ArrayList<>();
+		final String[] labelArray = { "Project Name", "Last Edited", "Summary",
+				"Local/Server", "Path" };
+
+		for (int i = 0; i < labelArray.length; i++) {
+			ls = new ArrayList<>();
+
+			ls.add(labelArray[i]);
+
+			switch (i) {
+			case 0:
+				keyString = PROJECT + projectId + NAME;
+				ls.add(store.getString(keyString));
+				break;
+			case 1:
+				keyString = PROJECT + projectId + ".lastupdated";
+				ls.add(store.getString(keyString));
+				break;
+			case 2:
+				keyString = PROJECT + projectId + ".summary";
+				ls.add(store.getString(keyString));
+				break;
+			case 3:
+				keyString = PROJECT + projectId + ".localserver";
+				ls.add(store.getString(keyString));
+				break;
+			case 4:
+				keyString = PROJECT + projectId + ".path";
+				ls.add(store.getString(keyString));
+				break;
+			default:
+				LOGGER.log(Level.SEVERE, "Invalid index: {0}", i);
+				break;
+			}
+
+			lls.add(ls);
+		}
+		return lls;
+
 	}
 
 	/*
@@ -169,61 +216,31 @@ public class ProjectServer implements IHREServer {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#update()
 	 */
 	@Override
 	public void update() throws Exception {
 	}
 
-	public String getRemote(HttpServletResponse response, String target) {
-		final JSONStringer js = new JSONStringer();
-		js.object();
-		js.key("projects");
-		js.array();
-
-		js.object();
-
-		List<List<String>> propertiesList = getProperties(1);
-
-		js.key("projectname");
-		js.value(propertiesList.get(0));
-		js.key("lastupdated");
-		js.value(propertiesList.get(1));
-		js.key("summary");
-		js.value(propertiesList.get(2));
-		js.key("localserver");
-		js.value(propertiesList.get(3));
-		js.key("path");
-		js.value(propertiesList.get(4));
-		js.endObject();
-
-		js.endArray();
-		js.endObject();
-
-		LOGGER.log(Level.INFO, "JSON String: {0}", js);
-
-		return js.toString();
-	}
-
-	/**
-	 * @param target
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
+	 * HttpServletRequest)
 	 */
-	public void deleteRemote(String target) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * @param request
-	 */
-	public void insertRemote(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * @param request
-	 */
+	@Override
 	public void updateRemote(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 

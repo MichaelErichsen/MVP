@@ -90,7 +90,7 @@ public class H2TableProvider implements IContentProvider, IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<List<String>>();
+		return new ArrayList<>();
 	}
 
 	/*
@@ -100,7 +100,7 @@ public class H2TableProvider implements IContentProvider, IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		return new ArrayList<List<String>>();
+		return new ArrayList<>();
 	}
 
 	/**

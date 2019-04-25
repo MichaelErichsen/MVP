@@ -51,9 +51,9 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
 
 @SuppressWarnings("restriction")
 public class H2TableNavigator {
-	private TableViewer tableViewer;
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private TableViewer tableViewer;
 	@Inject
 	private EPartService partService;
 	@Inject

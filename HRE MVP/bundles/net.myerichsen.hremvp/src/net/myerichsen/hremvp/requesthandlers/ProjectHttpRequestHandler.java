@@ -92,7 +92,7 @@ public class ProjectHttpRequestHandler implements Handler {
 				server.updateRemote(request);
 			}
 		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.getMessage());
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 
 			try {
 				response.sendError(500, e.getClass() + " " + e.getMessage());

@@ -1,11 +1,8 @@
 package net.myerichsen.hremvp.project.servers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.JSONStringer;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
@@ -28,12 +24,12 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 24. apr. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
-	private static final Logger LOGGER = Logger
-			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private static final Logger LOGGER = Logger
+//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
@@ -68,14 +64,13 @@ public class SexTypeServer implements IHREServer {
 
 	/**
 	 * @param target The request target
-	 * @throws Exception    An exception that provides information on a database
-	 *                      access error or other errors
 	 * @throws MvpException Application specific exception
 	 */
-	public void deleteRemote(String target) throws Exception {
-		final String[] targetParts = target.split("/");
-		final int targetSize = targetParts.length;
-		delete(Integer.parseInt(targetParts[targetSize - 1]));
+	@Override
+	public void deleteRemote(String target) {
+//		final String[] targetParts = target.split("/");
+//		final int targetSize = targetParts.length;
+//		delete(Integer.parseInt(targetParts[targetSize - 1]));
 	}
 
 	/**
@@ -150,6 +145,7 @@ public class SexTypeServer implements IHREServer {
 	 * @throws IOException           IOException
 	 * @throws JSONException         JSONException
 	 */
+	@Override
 	public String getRemote(HttpServletResponse response, String target)
 			throws Exception {
 		final String[] targetParts = target.split("/");
@@ -288,28 +284,28 @@ public class SexTypeServer implements IHREServer {
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
 	 * @throws JSONException JSONException
-	 * @throws Exception     Exception
 	 */
-	public void insertRemote(HttpServletRequest request) throws Exception {
-		final StringBuilder sb = new StringBuilder();
-		String s = "";
-		final BufferedReader br = request.getReader();
-
-		while (null != (s = br.readLine())) {
-			sb.append(s);
-		}
-
-		br.close();
-
-		final JSONObject jsonObject = new JSONObject(sb.toString());
-
-		LOGGER.log(Level.INFO, "{0}", jsonObject.toString(2));
-
-		setSexTypePid(jsonObject.getInt("sexTypePid"));
-		setAbbreviation(jsonObject.getString("abbreviation"));
-		setLabel(jsonObject.getString("label"));
-		setLanguagePid(jsonObject.getInt("languagePid"));
-		insert();
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+//		final StringBuilder sb = new StringBuilder();
+//		String s = "";
+//		final BufferedReader br = request.getReader();
+//
+//		while (null != (s = br.readLine())) {
+//			sb.append(s);
+//		}
+//
+//		br.close();
+//
+//		final JSONObject jsonObject = new JSONObject(sb.toString());
+//
+//		LOGGER.log(Level.INFO, "{0}", jsonObject.toString(2));
+//
+//		setSexTypePid(jsonObject.getInt("sexTypePid"));
+//		setAbbreviation(jsonObject.getString("abbreviation"));
+//		setLabel(jsonObject.getString("label"));
+//		setLanguagePid(jsonObject.getInt("languagePid"));
+//		insert();
 	}
 
 	/**
@@ -367,29 +363,28 @@ public class SexTypeServer implements IHREServer {
 	 * @param request HttpServletRequest
 	 * @throws IOException   IOException
 	 * @throws JSONException JSONException
-	 * @throws Exception     An exception that provides information on a
-	 *                       database access error or other errors
 	 * @throws MvpException  Application specific exception
 	 */
-	public void updateRemote(HttpServletRequest request) throws Exception {
-		final StringBuilder sb = new StringBuilder();
-		String s = "";
-		final BufferedReader br = request.getReader();
-
-		while (null != (s = br.readLine())) {
-			sb.append(s);
-		}
-
-		br.close();
-
-		final JSONObject jsonObject = new JSONObject(sb.toString());
-
-		LOGGER.log(Level.INFO, "{0}", jsonObject.toString(2));
-
-		setSexTypePid(jsonObject.getInt("sexTypePid"));
-		setAbbreviation(jsonObject.getString("abbreviation"));
-		setLabel(jsonObject.getString("label"));
-		setLanguagePid(jsonObject.getInt("languagePid"));
-		update();
+	@Override
+	public void updateRemote(HttpServletRequest request) {
+//		final StringBuilder sb = new StringBuilder();
+//		String s = "";
+//		final BufferedReader br = request.getReader();
+//
+//		while (null != (s = br.readLine())) {
+//			sb.append(s);
+//		}
+//
+//		br.close();
+//
+//		final JSONObject jsonObject = new JSONObject(sb.toString());
+//
+//		LOGGER.log(Level.INFO, "{0}", jsonObject.toString(2));
+//
+//		setSexTypePid(jsonObject.getInt("sexTypePid"));
+//		setAbbreviation(jsonObject.getString("abbreviation"));
+//		setLabel(jsonObject.getString("label"));
+//		setLanguagePid(jsonObject.getInt("languagePid"));
+//		update();
 	}
 }

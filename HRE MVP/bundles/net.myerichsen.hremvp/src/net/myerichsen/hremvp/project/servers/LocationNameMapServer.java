@@ -3,6 +3,9 @@ package net.myerichsen.hremvp.project.servers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
@@ -62,6 +65,17 @@ public class LocationNameMapServer implements IHREServer {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Get a row
 	 *
@@ -110,12 +124,25 @@ public class LocationNameMapServer implements IHREServer {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList()
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -179,6 +206,18 @@ public class LocationNameMapServer implements IHREServer {
 		return map.insert();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @param labelPid the labelPid to set
 	 */
@@ -228,5 +267,17 @@ public class LocationNameMapServer implements IHREServer {
 		map.setPartNo(PartNo);
 		map.setLabelPid(LabelPid);
 		map.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void updateRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 }

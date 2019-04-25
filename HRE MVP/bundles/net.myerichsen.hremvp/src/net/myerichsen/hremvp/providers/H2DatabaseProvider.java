@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.servers.H2DatabaseServer;
  *
  */
 public class H2DatabaseProvider implements IContentProvider, IHREProvider {
-	private H2DatabaseServer server;
+	private final H2DatabaseServer server;
 
 	/**
 	 * Constructor
@@ -29,7 +29,7 @@ public class H2DatabaseProvider implements IContentProvider, IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#delete(int)
 	 */
 	@Override
@@ -39,7 +39,7 @@ public class H2DatabaseProvider implements IContentProvider, IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get(int)
 	 */
 	@Override
@@ -49,7 +49,7 @@ public class H2DatabaseProvider implements IContentProvider, IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList()
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class H2DatabaseProvider implements IContentProvider, IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
 	 */
 	@Override
@@ -69,7 +69,7 @@ public class H2DatabaseProvider implements IContentProvider, IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#insert()
 	 */
 	@Override
@@ -79,7 +79,7 @@ public class H2DatabaseProvider implements IContentProvider, IHREProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#update()
 	 */
 	@Override

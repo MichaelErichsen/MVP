@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * GUI part displaying project properties.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 25. apr. 2019
  *
  */
 public class ProjectProperties {
@@ -87,7 +87,11 @@ public class ProjectProperties {
 		tableViewerColumnValue.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setInput(provider.getProperties(index));
+		try {
+			tableViewer.setInput(provider.getStringList(index));
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
 	}
 
 	/**
@@ -99,8 +103,12 @@ public class ProjectProperties {
 			@UIEventTopic(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC) int index) {
 		LOGGER.log(Level.INFO, "Received index {0}", index);
 		this.index = index;
-		tableViewer.setInput(provider.getProperties(index));
-		tableViewer.refresh();
+		try {
+			tableViewer.setInput(provider.getStringList(index));
+			tableViewer.refresh();
+		} catch (final Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
 
 	}
 

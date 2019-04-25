@@ -3,6 +3,9 @@ package net.myerichsen.hremvp.project.servers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -53,6 +56,17 @@ public class EventTypeServer implements IHREServer {
 		eventType.delete(key);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Get all rows
 	 *
@@ -99,6 +113,48 @@ public class EventTypeServer implements IHREServer {
 	public int getLabelPid() {
 		return eventType.getLabelPid();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws  Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	/**
+//	 * @param key
+//	 * @return
+//	 * @throws Exception
+//	 * @throws MvpException
+//	 */
+//	public List<List<String>> getNameList(int key)
+//			throws Exception {
+//		List<String> stringList;
+//
+//		final List<List<String>> lls = new ArrayList<>();
+//		final EventNames names = new EventNames();
+//		final List<EventNames> eventNameList = names.getFKEventTypePid(key);
+//		new Languages();
+//
+//		for (final EventNames eventNames : eventNameList) {
+//			stringList = new ArrayList<>();
+//			stringList.add(Integer.toString(eventNames.getEventTypePid()));
+//			stringList.add(eventNames.getLabel());
+//
+////			language.get(eventNames.getLanguagePid());
+////			stringList.add(language.getLabel());
+////			stringList.add(language.getIsocode());
+//			lls.add(stringList);
+//		}
+//
+//		return lls;
+//	}
 
 	/**
 	 * @return stringList A list of lists of event type pids, label pids,
@@ -191,35 +247,6 @@ public class EventTypeServer implements IHREServer {
 		return lls;
 	}
 
-//	/**
-//	 * @param key
-//	 * @return
-//	 * @throws Exception
-//	 * @throws MvpException
-//	 */
-//	public List<List<String>> getNameList(int key)
-//			throws Exception {
-//		List<String> stringList;
-//
-//		final List<List<String>> lls = new ArrayList<>();
-//		final EventNames names = new EventNames();
-//		final List<EventNames> eventNameList = names.getFKEventTypePid(key);
-//		new Languages();
-//
-//		for (final EventNames eventNames : eventNameList) {
-//			stringList = new ArrayList<>();
-//			stringList.add(Integer.toString(eventNames.getEventTypePid()));
-//			stringList.add(eventNames.getLabel());
-//
-////			language.get(eventNames.getLanguagePid());
-////			stringList.add(language.getLabel());
-////			stringList.add(language.getIsocode());
-//			lls.add(stringList);
-//		}
-//
-//		return lls;
-//	}
-
 	/**
 	 * @return the tableId
 	 */
@@ -243,6 +270,18 @@ public class EventTypeServer implements IHREServer {
 		eventType.setLabelPid(dictionary.getNextLabelPid());
 		eventType.setTableId(TableId);
 		return eventType.insert();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -284,6 +323,18 @@ public class EventTypeServer implements IHREServer {
 		eventType.setEventTypePid(EventTypePid);
 		eventType.setTableId(TableId);
 		eventType.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void updateRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -56,7 +56,7 @@ public class H2DatabaseNavigator {
 	public H2DatabaseNavigator() {
 		try {
 			provider = new H2DatabaseProvider();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}
@@ -72,7 +72,7 @@ public class H2DatabaseNavigator {
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		tableViewer.addDoubleClickListener(event -> {
@@ -123,7 +123,7 @@ public class H2DatabaseNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 			tableViewer.refresh();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 	}

@@ -3,6 +3,9 @@ package net.myerichsen.hremvp.project.servers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -51,6 +54,17 @@ public class EventRoleServer implements IHREServer {
 	@Override
 	public void delete(int key) throws Exception {
 		eventRole.delete(key);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -122,6 +136,19 @@ public class EventRoleServer implements IHREServer {
 	 */
 	public int getLabelPid() {
 		return eventRole.getLabelPid();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -234,6 +261,18 @@ public class EventRoleServer implements IHREServer {
 		return eventRole.insert();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * @param abbreviation the abbreviation to set
 	 */
@@ -272,5 +311,17 @@ public class EventRoleServer implements IHREServer {
 	public void update() throws Exception {
 		eventRole.setEventRolePid(EventRolePid);
 		eventRole.update();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void updateRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -135,6 +135,7 @@ public class PersonServer implements IHREServer {
 	 *
 	 * @param target Target
 	 */
+	@Override
 	public void deleteRemote(String target) {
 
 	}
@@ -401,112 +402,38 @@ public class PersonServer implements IHREServer {
 	 * @throws JSONException         The JSONException is thrown by the JSON.org
 	 *                               classes when things are amiss
 	 */
+	@Override
 	public String getRemote(HttpServletResponse response, String target) {
-//		final String[] targetParts = target.split("/");
-//		final int targetSize = targetParts.length;
-//
-//		get(Integer.parseInt(targetParts[targetSize - 1]));
-//
-		final JSONStringer js = new JSONStringer();
-//		js.object();
-//		js.key("personPid");
-//		js.value(personPid);
-//		js.key("birthDatePid");
-//		js.value(birthDatePid);
-//		js.key("deathDatePid");
-//		js.value(deathDatePid);
-//
-//		js.key("nameList");
-//		js.array();
-//
-//		for (final List<String> list : nameList) {
-//			js.object();
-//			js.key("namePid");
-//			js.value(list.get(0));
-//			js.key("nameString");
-//			js.value(list.get(1));
-//			js.key("primaryName");
-//			js.value(list.get(2));
-//			js.endObject();
-//		}
-//
-//		js.endArray();
-//
-//		js.key("sexTypeList");
-//		js.array();
-//
-//		for (final List<String> list : sexesList) {
-//			js.object();
-//			js.key("sexTypePid");
-//			js.value(list.get(0));
-//			js.key("sexTypeLabel");
-//			js.value(list.get(1));
-//			js.key("primarySex");
-//			js.value(list.get(2));
-//			js.endObject();
-//		}
-//
-//		js.endArray();
-//
-//		js.key("parentList");
-//		js.array();
-//
-//		for (final List<String> list : parentList) {
-//			js.object();
-//			js.key("namePid");
-//			js.value(list.get(0));
-//			js.key("nameString");
-//			js.value(list.get(1));
-//			js.key("role");
-//			js.value(list.get(2));
-//			js.key("primaryParent");
-//			js.value(list.get(3));
-//			js.endObject();
-//		}
-//
-//		js.endArray();
-//
-//		js.key("partnerList");
-//		js.array();
-//
-//		for (final List<String> list : partnerList) {
-//			js.object();
-//			js.key("namePid");
-//			js.value(list.get(0));
-//			js.key("nameString");
-//			js.value(list.get(1));
-//			js.key("role");
-//			js.value(list.get(2));
-//			js.key("primaryPartner");
-//			js.value(list.get(3));
-//			js.endObject();
-//		}
-//
-//		js.endArray();
-//
-//		js.key("eventList");
-//		js.array();
-//
-//		for (final List<String> list : eventList) {
-//			js.object();
-//			js.key("eventPid");
-//			js.value(list.get(0));
-//			js.key("label");
-//			js.value(list.get(1));
-//			js.key("role");
-//			js.value(list.get(2));
-//			js.key("fromDate");
-//			js.value(list.get(3));
-//			js.key("toDate");
-//			js.value(list.get(4));
-//			js.endObject();
-//		}
-//
-//		js.endArray();
-//		js.endObject();
-//
-//		LOGGER.log( Level.FINE, js.toString());
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
 
+		JSONStringer js = new JSONStringer();
+		js.object();
+		js.key("person");
+		js.object();
+
+		try {
+			List<String> stringList = getStringList(
+					Integer.parseInt(targetParts[targetSize - 1])).get(0);
+
+			js.key("Person pid");
+			js.value(stringList.get(0));
+			js.key("Name");
+			js.value(stringList.get(1));
+			js.key("From date");
+			js.value(stringList.get(2));
+			js.key("To date");
+			js.value(stringList.get(3));
+			js.key("Primary name");
+			js.value(stringList.get(4));
+
+			LOGGER.log(Level.FINE, js.toString());
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
+		js.endObject();
+		js.endObject();
 		return js.toString();
 	}
 
@@ -569,7 +496,7 @@ public class PersonServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		final List<List<String>> personNameList = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
 		if (key == 0) {
@@ -579,8 +506,8 @@ public class PersonServer implements IHREServer {
 			stringList.add("");
 			stringList.add("");
 			stringList.add("false");
-			personNameList.add(stringList);
-			return personNameList;
+			lls.add(stringList);
+			return lls;
 		}
 
 		final PersonNames name = new PersonNames();
@@ -623,10 +550,10 @@ public class PersonServer implements IHREServer {
 
 			stringList.add(Boolean.toString(name.isPrimaryName()));
 
-			personNameList.add(stringList);
+			lls.add(stringList);
 		}
 
-		return personNameList;
+		return lls;
 	}
 
 	/**
@@ -650,6 +577,7 @@ public class PersonServer implements IHREServer {
 	 *
 	 * @param request Request
 	 */
+	@Override
 	public void insertRemote(HttpServletRequest request) {
 
 	}
@@ -745,6 +673,7 @@ public class PersonServer implements IHREServer {
 	 *
 	 * @param request Request
 	 */
+	@Override
 	public void updateRemote(HttpServletRequest request) {
 	}
 }

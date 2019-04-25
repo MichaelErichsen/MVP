@@ -3,6 +3,9 @@ package net.myerichsen.hremvp.project.servers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Languages;
@@ -42,6 +45,17 @@ public class LanguageServer implements IHREServer {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
+	 */
+	@Override
+	public void deleteRemote(String target) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#get(int)
 	 */
 	@Override
@@ -68,6 +82,19 @@ public class LanguageServer implements IHREServer {
 	 */
 	public int getLanguagePid() {
 		return LanguagePid;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
+	 * HttpServletResponse, java.lang.String)
+	 */
+	@Override
+	public String getRemote(HttpServletResponse response, String target)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -99,7 +126,7 @@ public class LanguageServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 
 	/**
@@ -119,6 +146,18 @@ public class LanguageServer implements IHREServer {
 		language.setLabel(Label);
 		language.setTableId(7);
 		return language.insert();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void insertRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -160,6 +199,18 @@ public class LanguageServer implements IHREServer {
 		language.setIsocode(Isocode);
 		language.setLabel(Label);
 		language.update();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
+	 * HttpServletRequest)
+	 */
+	@Override
+	public void updateRemote(HttpServletRequest request) {
+		// TODO Auto-generated method stub
 
 	}
 

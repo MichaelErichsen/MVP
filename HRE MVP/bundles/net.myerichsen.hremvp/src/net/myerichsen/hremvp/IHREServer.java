@@ -2,11 +2,14 @@ package net.myerichsen.hremvp;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Interface defining the HRE business interface
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 21. apr. 2019
+ * @version 24. apr. 2019
  *
  */
 public interface IHREServer {
@@ -19,6 +22,11 @@ public interface IHREServer {
 	void delete(int key) throws Exception;
 
 	/**
+	 * @param target
+	 */
+	void deleteRemote(String target);
+
+	/**
 	 * Get a row
 	 *
 	 * @param key The persistent id of the row
@@ -28,6 +36,16 @@ public interface IHREServer {
 	 *
 	 */
 	void get(int key) throws Exception;
+
+	/**
+	 * @param response
+	 * @param target
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws Exception
+	 */
+	String getRemote(HttpServletResponse response, String target)
+			throws Exception;
 
 	/**
 	 * Get a list of list of strings
@@ -59,6 +77,11 @@ public interface IHREServer {
 	int insert() throws Exception;
 
 	/**
+	 * @param request
+	 */
+	void insertRemote(HttpServletRequest request);
+
+	/**
 	 * Update a row
 	 *
 	 * @throws Exception    An exception that provides information on a database
@@ -66,4 +89,9 @@ public interface IHREServer {
 	 * @throws MvpException Application specific exception
 	 */
 	void update() throws Exception;
+
+	/**
+	 * @param request
+	 */
+	void updateRemote(HttpServletRequest request);
 }

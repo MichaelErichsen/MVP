@@ -154,7 +154,8 @@ public class EventPersonView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				NewPersonWizard newPersonWizard = new NewPersonWizard(context);
+				final NewPersonWizard newPersonWizard = new NewPersonWizard(
+						context);
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
 						newPersonWizard);
 
@@ -167,7 +168,7 @@ public class EventPersonView {
 						lep.setPrimaryPerson(false);
 
 						lep.insert();
-					} catch (Exception e1) {
+					} catch (final Exception e1) {
 						LOGGER.log(Level.SEVERE, e1.toString(), e1);
 					}
 				}
@@ -266,7 +267,7 @@ public class EventPersonView {
 				lep.setPrimaryPerson(false);
 
 				lep.insert();
-			} catch (Exception e1) {
+			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
 		}
