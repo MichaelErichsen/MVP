@@ -148,6 +148,7 @@ public class SexTypeServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletResponse response, String target)
 			throws Exception {
+		// FIXME Numberformatexception
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 

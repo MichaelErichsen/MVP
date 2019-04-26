@@ -12,12 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.json.JSONStringer;
+
+import net.myerichsen.hremvp.HreContextHandlerCollection;
 
 /**
- * HTTP root request handler
+ * HTTP root request handler. Any invalid request will return a list of valid
+ * endpoints
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. apr. 2019
+ * @version 26. apr. 2019
  *
  */
 public class RootHttpRequestHandler implements Handler {
@@ -32,7 +37,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void addLifeCycleListener(Listener arg0) {
-
 	}
 
 	/*
@@ -42,7 +46,39 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void destroy() {
+	}
 
+	/**
+	 * @param request
+	 * @param target
+	 * @return
+	 */
+	private String getRemote(HttpServletRequest request, String target) {
+		final JSONStringer js = new JSONStringer();
+		js.object();
+
+		js.key("validendpoints");
+		js.array();
+
+		for (final Handler handler : HreContextHandlerCollection.getContexts()
+				.getHandlers()) {
+			js.object();
+			js.key("endpoint");
+
+			final String[] strings = request.getProtocol().split("/");
+
+			js.value(strings[0] + "://" + request.getLocalName() + ":"
+					+ request.getLocalPort()
+					+ ((ContextHandler) handler).getContextPath());
+
+			js.endObject();
+		}
+
+		js.endArray();
+
+		js.endObject();
+
+		return js.toString();
 	}
 
 	/*
@@ -52,7 +88,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public Server getServer() {
-
 		return null;
 	}
 
@@ -71,11 +106,9 @@ public class RootHttpRequestHandler implements Handler {
 		response.setStatus(HttpServletResponse.SC_OK);
 
 		final PrintWriter out = response.getWriter();
+		out.print(getRemote(request, target));
+		out.close();
 
-		out.println("{");
-		out.println("\"Method\": \"" + request.getMethod() + "\", ");
-		out.println("\"Target\": \"" + target.substring(1) + "\"");
-		out.println("}");
 		baseRequest.setHandled(true);
 
 		LOGGER.log(Level.INFO, "{0} {1}",
@@ -111,7 +144,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isStarted() {
-
 		return false;
 	}
 
@@ -133,7 +165,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isStopped() {
-
 		return false;
 	}
 
@@ -144,7 +175,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public boolean isStopping() {
-
 		return false;
 	}
 
@@ -157,7 +187,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void removeLifeCycleListener(Listener arg0) {
-
 	}
 
 	/*
@@ -168,7 +197,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void setServer(Server server) {
-
 	}
 
 	/*
@@ -178,7 +206,6 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void start() throws Exception {
-
 	}
 
 	/*
@@ -188,7 +215,5 @@ public class RootHttpRequestHandler implements Handler {
 	 */
 	@Override
 	public void stop() throws Exception {
-
 	}
-
 }
