@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -94,7 +93,7 @@ public class ProjectServer implements IHREServer {
 	 * HttpServletResponse, java.lang.String)
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
+	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
 		final JSONStringer js = new JSONStringer();
 		js.object();
@@ -102,10 +101,10 @@ public class ProjectServer implements IHREServer {
 
 		js.object();
 
-		int targetInt = Integer.parseInt(target.replace("/", "")) - 1;
+		final int targetInt = Integer.parseInt(target.replace("/", "")) - 1;
 		LOGGER.log(Level.INFO, "Target {0}, int {1}",
 				new Object[] { target, targetInt });
-		List<List<String>> lls = getStringList(targetInt);
+		final List<List<String>> lls = getStringList(targetInt);
 		List<String> stringList;
 
 		for (int i = 0; i < lls.size(); i++) {

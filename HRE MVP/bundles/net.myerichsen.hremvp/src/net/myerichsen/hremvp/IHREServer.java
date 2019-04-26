@@ -3,7 +3,6 @@ package net.myerichsen.hremvp;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Interface defining the HRE business interface
@@ -38,13 +37,13 @@ public interface IHREServer {
 	void get(int key) throws Exception;
 
 	/**
-	 * @param response
+	 * @param request
 	 * @param target
 	 * @return
 	 * @throws NumberFormatException
 	 * @throws Exception
 	 */
-	String getRemote(HttpServletResponse response, String target)
+	String getRemote(HttpServletRequest request, String target)
 			throws Exception;
 
 	/**

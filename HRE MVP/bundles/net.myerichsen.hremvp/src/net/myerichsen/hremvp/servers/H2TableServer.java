@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
@@ -195,7 +194,7 @@ public class H2TableServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
 	 */
 	@Override
@@ -235,13 +234,13 @@ public class H2TableServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
 	 * HttpServletResponse, java.lang.String)
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws  Exception {
+	public String getRemote(HttpServletRequest request, String target)
+			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -408,7 +407,7 @@ public class H2TableServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */
@@ -564,7 +563,7 @@ public class H2TableServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */

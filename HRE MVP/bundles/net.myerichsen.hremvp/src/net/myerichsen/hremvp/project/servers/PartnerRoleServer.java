@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -120,8 +119,8 @@ public class PartnerRoleServer implements IHREServer {
 	 * HttpServletResponse, java.lang.String)
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
-			throws NumberFormatException, Exception {
+	public String getRemote(HttpServletRequest request, String target)
+			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

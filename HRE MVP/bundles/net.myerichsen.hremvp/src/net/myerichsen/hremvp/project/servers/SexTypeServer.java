@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -146,7 +145,7 @@ public class SexTypeServer implements IHREServer {
 	 * @throws JSONException         JSONException
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
+	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
 		// FIXME Numberformatexception
 		final String[] targetParts = target.split("/");

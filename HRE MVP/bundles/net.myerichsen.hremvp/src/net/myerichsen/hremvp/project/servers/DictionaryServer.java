@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
@@ -120,7 +119,7 @@ public class DictionaryServer implements IHREServer {
 	 * HttpServletResponse, java.lang.String)
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
+	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;

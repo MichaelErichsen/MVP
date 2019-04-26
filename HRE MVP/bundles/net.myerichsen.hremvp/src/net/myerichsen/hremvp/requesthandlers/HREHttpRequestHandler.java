@@ -25,7 +25,7 @@ public class HREHttpRequestHandler implements Handler {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private IHREServer server;
+	private final IHREServer server;
 
 	/**
 	 * Constructor
@@ -88,7 +88,7 @@ public class HREHttpRequestHandler implements Handler {
 		try {
 			if (method.equals("GET")) {
 				final PrintWriter out = response.getWriter();
-				out.print(server.getRemote(response, target));
+				out.print(server.getRemote(request, target));
 				out.close();
 			} else if (method.equals("DELETE")) {
 				server.deleteRemote(target);

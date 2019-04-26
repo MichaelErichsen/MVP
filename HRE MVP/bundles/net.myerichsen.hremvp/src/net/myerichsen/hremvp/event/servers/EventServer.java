@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONStringer;
 
@@ -77,7 +76,7 @@ public class EventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
 	 */
 	@Override
@@ -258,26 +257,26 @@ public class EventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
+	 * HttpServletrequest, java.lang.String)
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
+	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
-		JSONStringer js = new JSONStringer();
+		final JSONStringer js = new JSONStringer();
 		js.object();
 
 		if (targetSize == 0) {
 			js.key("events");
 			js.array();
 
-			List<List<String>> stringList = getStringList();
+			final List<List<String>> stringList = getStringList();
 
-			for (List<String> list : stringList) {
+			for (final List<String> list : stringList) {
 				js.object();
 				js.key("pid");
 				js.value(list.get(0));
@@ -289,6 +288,8 @@ public class EventServer implements IHREServer {
 				js.value(list.get(3));
 				js.key("name");
 				js.value(list.get(4));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
 				js.endObject();
 			}
 
@@ -299,7 +300,7 @@ public class EventServer implements IHREServer {
 			js.key("event");
 			js.object();
 
-			List<String> list = getStringList(
+			final List<String> list = getStringList(
 					Integer.parseInt(targetParts[targetSize - 1])).get(0);
 
 			js.key("pid");
@@ -468,7 +469,7 @@ public class EventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */
@@ -616,7 +617,7 @@ public class EventServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */

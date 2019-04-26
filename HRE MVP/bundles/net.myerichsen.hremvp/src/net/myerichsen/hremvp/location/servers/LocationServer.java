@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONStringer;
 
@@ -65,7 +64,7 @@ public class LocationServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
 	 */
 	@Override
@@ -182,31 +181,33 @@ public class LocationServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
 	 * HttpServletResponse, java.lang.String)
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
+	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
-		JSONStringer js = new JSONStringer();
+		final JSONStringer js = new JSONStringer();
 		js.object();
 
 		if (targetSize == 0) {
 			js.key("locations");
 			js.array();
 
-			List<List<String>> stringList = getStringList();
+			final List<List<String>> stringList = getStringList();
 
-			for (List<String> list : stringList) {
+			for (final List<String> list : stringList) {
 				js.object();
 				js.key("pid");
 				js.value(list.get(0));
 				js.key("name");
 				js.value(list.get(1));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
 				js.endObject();
 			}
 
@@ -217,7 +218,7 @@ public class LocationServer implements IHREServer {
 			js.key("location");
 			js.object();
 
-			List<String> stringList = getStringList(
+			final List<String> stringList = getStringList(
 					Integer.parseInt(targetParts[targetSize - 1])).get(0);
 
 			js.key("pid");
@@ -302,11 +303,11 @@ public class LocationServer implements IHREServer {
 		final LocationNameParts part = new LocationNameParts();
 		List<LocationNameParts> partList;
 
-		Locations loc = new Locations();
+		final Locations loc = new Locations();
 		loc.get(key);
 
-		List<String> stringList = new ArrayList<>();
-		StringBuilder sb = new StringBuilder();
+		final List<String> stringList = new ArrayList<>();
+		final StringBuilder sb = new StringBuilder();
 		stringList.add(Integer.toString(key));
 
 		final List<LocationNames> lnl = new LocationNames()
@@ -329,7 +330,7 @@ public class LocationServer implements IHREServer {
 		LOGGER.log(Level.FINE, "{0}", sb);
 		stringList.add(sb.toString());
 
-		Hdates hdate = new Hdates();
+		final Hdates hdate = new Hdates();
 
 		int datePid = loc.getFromDatePid();
 
@@ -406,7 +407,7 @@ public class LocationServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */
@@ -493,7 +494,7 @@ public class LocationServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */

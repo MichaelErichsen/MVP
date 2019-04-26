@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.handlers;
 
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +32,7 @@ import net.myerichsen.hremvp.requesthandlers.RootHttpRequestHandler;
  * other features can add contexts and handlers to.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd.
- * @version 25. apr. 2019
+ * @version 26. apr. 2019
  *
  */
 public class ProjectStartEmbeddedServerHandler {
@@ -104,10 +105,12 @@ public class ProjectStartEmbeddedServerHandler {
 				server.setStopAtShutdown(true);
 				server.start();
 
-				LOGGER.log(Level.INFO, "The server is running at {0}",
-						server.getURI());
-				eventBroker.post("MESSAGE",
-						"The server is running at " + server.getURI());
+				final URI uri = server.getURI();
+
+				LOGGER.log(Level.INFO, "The server is running at {0}:{1}",
+						new Object[] { uri.getHost(), uri.getPort() });
+				eventBroker.post("MESSAGE", "The server is running at "
+						+ uri.getHost() + ":" + uri.getPort());
 
 				// server.join();
 			} catch (final Exception e) {

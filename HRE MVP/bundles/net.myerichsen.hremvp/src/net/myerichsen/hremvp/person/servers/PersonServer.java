@@ -8,13 +8,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONStringer;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
+import net.myerichsen.hremvp.dbmodels.EventRoles;
+import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.Parents;
@@ -29,7 +30,7 @@ import net.myerichsen.hremvp.dbmodels.Sexes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Persons}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. apr. 2019
+ * @version 26. apr. 2019
  */
 public class PersonServer implements IHREServer {
 	private static final Logger LOGGER = Logger
@@ -387,41 +388,47 @@ public class PersonServer implements IHREServer {
 	 * @param target   Target
 	 * @return js JSON String
 	 * @throws Exception Any exception
-	 * 
+	 *
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
+	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
+		LOGGER.log(Level.INFO, "Target {0}", target);
+
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
-		JSONStringer js = new JSONStringer();
+		final JSONStringer js = new JSONStringer();
 		js.object();
 
 		if (targetSize == 0) {
 			js.key("persons");
 			js.array();
 
-			List<List<String>> stringList = getStringList();
+			final List<List<String>> stringList = getStringList();
 
-			for (List<String> list : stringList) {
+			for (final List<String> list : stringList) {
 				js.object();
 				js.key("pid");
 				js.value(list.get(0));
 				js.key("name");
 				js.value(list.get(1));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
 				js.endObject();
 			}
 
 			js.endArray();
+			js.endObject();
+			return js.toString();
+		}
 
-		} else {
-
+		if (targetSize == 2) {
 			js.key("person");
 			js.object();
 
-			List<String> stringList = getStringList(
-					Integer.parseInt(targetParts[targetSize - 1])).get(0);
+			final List<String> stringList = getStringList(
+					Integer.parseInt(targetParts[1])).get(0);
 
 			js.key("pid");
 			js.value(stringList.get(0));
@@ -437,6 +444,63 @@ public class PersonServer implements IHREServer {
 			LOGGER.log(Level.FINE, "{0}", js);
 
 			js.endObject();
+		}
+
+		if (targetSize == 3) {
+			if (targetParts[2].equals("events")) {
+				js.key("events");
+				js.array();
+
+				final List<String> stringList = getStringList(
+						Integer.parseInt(targetParts[1])).get(0);
+				final PersonEvents pe = new PersonEvents();
+				final List<PersonEvents> fkPersonPid = pe
+						.getFKPersonPid(Integer.parseInt(stringList.get(0)));
+
+				Events e;
+				EventTypes et;
+				EventRoles er;
+				Hdates hdates;
+
+				for (final PersonEvents personEvents : fkPersonPid) {
+					js.object();
+					js.key("personeventpid");
+					js.value(personEvents.getPersonEventPid());
+
+					js.key("eventpid");
+					e = new Events();
+					e.get(personEvents.getEventPid());
+					js.value(e.getEventPid());
+
+					js.key("fromdate");
+					hdates = new Hdates();
+					hdates.get(e.getFromDatePid());
+					js.value(hdates.getDate().toString());
+
+					js.key("todate");
+					hdates.get(e.getFromDatePid());
+					js.value(hdates.getDate().toString());
+
+					js.key("type");
+					et = new EventTypes();
+					et.get(e.getEventTypePid());
+					dictionary = new Dictionary();
+					final List<Dictionary> fkLabelPid = dictionary
+							.getFKLabelPid(et.getLabelPid());
+					js.value(fkLabelPid.get(0).getLabel());
+
+					js.key("role");
+					er = new EventRoles();
+					er.get(personEvents.getEventRolePid());
+					js.value(er.getAbbreviation());
+
+					js.endObject();
+				}
+
+				LOGGER.log(Level.FINE, "{0}", js);
+
+				js.endArray();
+			}
 		}
 
 		js.endObject();
@@ -488,15 +552,15 @@ public class PersonServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		List<List<String>> lls = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 		final PersonNameServer pns = new PersonNameServer();
 
-		List<Persons> list = person.get();
+		final List<Persons> list = person.get();
 
-		for (Persons persons : list) {
+		for (final Persons persons : list) {
 			stringList = new ArrayList<>();
-			int personPid2 = persons.getPersonPid();
+			final int personPid2 = persons.getPersonPid();
 			stringList.add(Integer.toString(personPid2));
 			stringList.add(pns.getPrimaryNameString(personPid2));
 			lls.add(stringList);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
@@ -46,7 +45,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#deleteRemote(java.lang.String)
 	 */
 	@Override
@@ -68,12 +67,12 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
 	 * HttpServletResponse, java.lang.String)
 	 */
 	@Override
-	public String getRemote(HttpServletResponse response, String target)
+	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return "";
@@ -136,7 +135,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#insertRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */
@@ -159,7 +158,7 @@ public class LocationPersonServer implements IHREServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.myerichsen.hremvp.IHREServer#updateRemote(javax.servlet.http.
 	 * HttpServletRequest)
 	 */
