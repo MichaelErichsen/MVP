@@ -20,12 +20,7 @@ import net.myerichsen.hremvp.MvpException;
  * Business logic interface for HRE Projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 25. apr. 2019
- *
- */
-/**
- * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 25. apr. 2019
+ * @version 26. apr. 2019
  *
  */
 public class ProjectServer implements IHREServer {
@@ -101,6 +96,7 @@ public class ProjectServer implements IHREServer {
 
 		js.object();
 
+// FIXME		java.lang.NumberFormatException: For input string: ""
 		final int targetInt = Integer.parseInt(target.replace("/", "")) - 1;
 		LOGGER.log(Level.INFO, "Target {0}, int {1}",
 				new Object[] { target, targetInt });

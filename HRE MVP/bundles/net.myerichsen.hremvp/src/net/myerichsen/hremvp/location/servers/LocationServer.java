@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Locations}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. apr. 2019
+ * @version 26. apr. 2019
  *
  */
 public class LocationServer implements IHREServer {
