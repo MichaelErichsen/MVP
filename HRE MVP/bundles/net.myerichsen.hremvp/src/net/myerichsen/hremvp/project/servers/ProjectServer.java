@@ -261,13 +261,13 @@ public class ProjectServer implements IHREServer {
 			if (conn != null) {
 				conn.createStatement().execute("SHUTDOWN");
 				conn.close();
-				LOGGER.log(Level.INFO, "Existing database {0} has been closed",
+				LOGGER.log(Level.FINE, "Existing database {0} has been closed",
 						dbName);
 
 				try {
 					HreH2ConnectionPool.dispose();
 				} catch (final Exception e) {
-					LOGGER.log(Level.INFO, "No connection pool to dispose");
+					LOGGER.log(Level.FINE, "No connection pool to dispose");
 				}
 			}
 		}

@@ -490,8 +490,6 @@ public class ProjectNavigator {
 
 			provider.closeDbIfActive(dbName);
 
-			// Connect to the new database
-
 			final String h2Version = store.getString("H2VERSION");
 			LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: {0}",
 					h2Version.substring(0, 3));

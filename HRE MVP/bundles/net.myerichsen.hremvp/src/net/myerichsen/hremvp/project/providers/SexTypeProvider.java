@@ -37,6 +37,7 @@ import net.myerichsen.hremvp.project.servers.SexTypeServer;
  * @version 23. apr. 2019
  *
  */
+@SuppressWarnings("restriction")
 public class SexTypeProvider implements IHREProvider {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
@@ -75,8 +76,7 @@ public class SexTypeProvider implements IHREProvider {
 	 * @throws MvpException            Application specific exception
 	 *
 	 */
-	public void deleteRemote(int key)
-			throws ClientProtocolException, IOException, MvpException {
+	public void deleteRemote(int key) throws IOException, MvpException {
 		final CloseableHttpClient client = HttpClients.createDefault();
 		final HttpDelete request = new HttpDelete("http://"
 				+ store.getString("SERVERADDRESS") + ":"
@@ -140,8 +140,7 @@ public class SexTypeProvider implements IHREProvider {
 	 *                                 JSON API
 	 * @throws MvpException            Application specific exception
 	 */
-	public void getRemote(int key)
-			throws ClientProtocolException, IOException, MvpException {
+	public void getRemote(int key) throws MvpException, ClientProtocolException, IOException {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 
@@ -226,12 +225,12 @@ public class SexTypeProvider implements IHREProvider {
 	/**
 	 * Insert a row
 	 *
-	 * @throws ParseException ParseException
-	 * @throws MvpException   Application specific exception
-	 * @throws IOException    IOException
+	 * @throws ParseException          ParseException
+	 * @throws MvpException            Application specific exception
+	 * @throws ClientProtocolException
+	 * @throws IOException             IOException
 	 */
-	public void insertRemote()
-			throws ParseException, IOException, MvpException {
+	public void insertRemote() throws MvpException, ClientProtocolException, IOException {
 		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("sexTypePid");
