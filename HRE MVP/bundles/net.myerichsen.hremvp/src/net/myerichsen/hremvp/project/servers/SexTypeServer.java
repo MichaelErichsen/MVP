@@ -3,6 +3,8 @@ package net.myerichsen.hremvp.project.servers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,12 +25,12 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
-//	private static final Logger LOGGER = Logger
-//			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	final IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 
@@ -134,39 +136,68 @@ public class SexTypeServer implements IHREServer {
 	}
 
 	/**
-	 * @param response HttpServletResponse
-	 * @param target   String
-	 * @return JSONString a JSON String
-	 * @throws NumberFormatException NumberFormatException
-	 * @throws Exception             An exception that provides information on a
-	 *                               database access error or other errors
-	 * @throws MvpException          Application specific exception
-	 * @throws IOException           IOException
-	 * @throws JSONException         JSONException
+	 * Get a row remotely
+	 *
+	 * @param response Response
+	 * @param target   Target
+	 * @return js JSON String
+	 * @throws Exception Any exception
+	 *
 	 */
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		// FIXME Numberformatexception
+		LOGGER.log(Level.INFO, "Target {0}", target);
+
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
 
-		get(Integer.parseInt(targetParts[targetSize - 1]));
-
 		final JSONStringer js = new JSONStringer();
 		js.object();
-		js.key("sexTypePid");
-		js.value(sexTypePid);
-		js.key("abbreviation");
-		js.value(abbreviation);
-		js.key("label");
-		js.value(label);
-		js.key("languagePid");
-		js.value(languagePid);
-		js.key("languageLabel");
-		js.value(languageLabel);
-//		js.key("isoCode");
-//		js.value(isoCode);
+
+		if (targetSize == 0) {
+			js.key("sextypes");
+			js.array();
+
+			final List<List<String>> stringList = getStringList();
+
+			for (final List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("abbreviation");
+				js.value(list.get(2));
+				js.key("label");
+				js.value(list.get(3));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
+				js.endObject();
+			}
+
+			js.endArray();
+			js.endObject();
+			return js.toString();
+		}
+
+		if (targetSize == 2) {
+			js.key("sextype");
+			js.object();
+
+			final List<String> stringList = getStringList(
+					Integer.parseInt(targetParts[1])).get(0);
+
+			js.key("pid");
+			js.value(stringList.get(0));
+			js.key("isocode");
+			js.value(stringList.get(2));
+			js.key("label");
+			js.value(stringList.get(3));
+
+			LOGGER.log(Level.FINE, "{0}", js);
+
+			js.endObject();
+		}
+
 		js.endObject();
 		return js.toString();
 	}

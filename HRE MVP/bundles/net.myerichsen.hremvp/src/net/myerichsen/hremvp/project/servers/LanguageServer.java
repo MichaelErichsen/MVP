@@ -2,8 +2,12 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONStringer;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
@@ -13,10 +17,13 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 public class LanguageServer implements IHREServer {
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	private int LanguagePid;
 	private String Isocode;
 	private String Label;
@@ -83,17 +90,69 @@ public class LanguageServer implements IHREServer {
 		return LanguagePid;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Get a row remotely
 	 *
-	 * @see net.myerichsen.hremvp.IHREServer#getRemote(javax.servlet.http.
-	 * HttpServletResponse, java.lang.String)
+	 * @param response Response
+	 * @param target   Target
+	 * @return js JSON String
+	 * @throws Exception Any exception
+	 *
 	 */
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.log(Level.INFO, "Target {0}", target);
+
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
+
+		final JSONStringer js = new JSONStringer();
+		js.object();
+
+		if (targetSize == 0) {
+			js.key("languages");
+			js.array();
+
+			final List<List<String>> stringList = getStringList();
+
+			for (final List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("name");
+				js.value(list.get(2));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
+				js.endObject();
+			}
+
+			js.endArray();
+			js.endObject();
+			return js.toString();
+		}
+
+		if (targetSize == 2) {
+			js.key("language");
+			js.object();
+
+			final List<String> stringList = getStringList(
+					Integer.parseInt(targetParts[1])).get(0);
+
+			js.key("pid");
+			js.value(stringList.get(0));
+			js.key("isocode");
+			js.value(stringList.get(1));
+			js.key("label");
+			js.value(stringList.get(2));
+
+			LOGGER.log(Level.FINE, "{0}", js);
+
+			js.endObject();
+		}
+
+		js.endObject();
+		return js.toString();
 	}
 
 	/**
@@ -124,8 +183,19 @@ public class LanguageServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+
+		Languages aLanguage = new Languages();
+		aLanguage.get();
+
+		stringList = new ArrayList<>();
+		stringList.add(Integer.toString(aLanguage.getLanguagePid()));
+		stringList.add(aLanguage.getIsocode());
+		stringList.add(aLanguage.getLabel());
+		lls.add(stringList);
+
+		return lls;
 	}
 
 	/**

@@ -22,6 +22,10 @@ import net.myerichsen.hremvp.HreContextHandlerCollection;
 import net.myerichsen.hremvp.event.servers.EventServer;
 import net.myerichsen.hremvp.location.servers.LocationServer;
 import net.myerichsen.hremvp.person.servers.PersonServer;
+import net.myerichsen.hremvp.project.servers.EventRoleServer;
+import net.myerichsen.hremvp.project.servers.EventTypeServer;
+import net.myerichsen.hremvp.project.servers.LanguageServer;
+import net.myerichsen.hremvp.project.servers.LocationNameStyleServer;
 import net.myerichsen.hremvp.project.servers.ProjectServer;
 import net.myerichsen.hremvp.project.servers.SexTypeServer;
 import net.myerichsen.hremvp.requesthandlers.HREHttpRequestHandler;
@@ -32,7 +36,7 @@ import net.myerichsen.hremvp.requesthandlers.RootHttpRequestHandler;
  * other features can add contexts and handlers to.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd.
- * @version 26. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 public class ProjectStartEmbeddedServerHandler {
@@ -66,9 +70,33 @@ public class ProjectStartEmbeddedServerHandler {
 				contexts.addHandler(context);
 
 				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/eventroles/");
+				context.setHandler(
+						new HREHttpRequestHandler(new EventRoleServer()));
+				contexts.addHandler(context);
+
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/eventtypes/");
+				context.setHandler(
+						new HREHttpRequestHandler(new EventTypeServer()));
+				contexts.addHandler(context);
+
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/languages/");
+				context.setHandler(
+						new HREHttpRequestHandler(new LanguageServer()));
+				contexts.addHandler(context);
+
+				context = new ContextHandler();
 				context.setContextPath("/mvp/v100/locations/");
 				context.setHandler(
 						new HREHttpRequestHandler(new LocationServer()));
+				contexts.addHandler(context);
+
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/locationnamestyles/");
+				context.setHandler(new HREHttpRequestHandler(
+						new LocationNameStyleServer()));
 				contexts.addHandler(context);
 
 				context = new ContextHandler();

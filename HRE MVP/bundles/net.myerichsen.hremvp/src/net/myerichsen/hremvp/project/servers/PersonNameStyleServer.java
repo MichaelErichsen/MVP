@@ -32,7 +32,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 *                   access error or other errors
 	 *
 	 */
-	public PersonNameStyleServer() throws Exception {
+	public PersonNameStyleServer() {
 		style = new PersonNameStyles();
 	}
 
@@ -109,7 +109,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
-			throws NumberFormatException, Exception {
+			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -146,7 +146,7 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// TODO Auto-generated method stub
+		// FIXME Auto-generated method stub
 		return null;
 	}
 
