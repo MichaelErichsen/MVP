@@ -1,5 +1,8 @@
 package net.myerichsen.hremvp.project.servers;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -9,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.h2.tools.Script;
 import org.json.JSONStringer;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
+import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 
@@ -20,7 +25,7 @@ import net.myerichsen.hremvp.MvpException;
  * Business logic interface for HRE Projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 26. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 public class ProjectServer implements IHREServer {
@@ -140,7 +145,7 @@ public class ProjectServer implements IHREServer {
 			key = PROJECT + i + ".localserver";
 			ls.add(store.getString(key));
 
-			LOGGER.log(Level.FINE, "Found Name: " + store.getString(key));
+			LOGGER.log(Level.INFO, "Found Name: " + store.getString(key));
 			lls.add(ls);
 		}
 
@@ -168,23 +173,23 @@ public class ProjectServer implements IHREServer {
 
 			switch (i) {
 			case 0:
-				keyString = PROJECT + projectId + NAME;
+				keyString = PROJECT + key + NAME;
 				ls.add(store.getString(keyString));
 				break;
 			case 1:
-				keyString = PROJECT + projectId + ".lastupdated";
+				keyString = PROJECT + key + ".lastupdated";
 				ls.add(store.getString(keyString));
 				break;
 			case 2:
-				keyString = PROJECT + projectId + ".summary";
+				keyString = PROJECT + key + ".summary";
 				ls.add(store.getString(keyString));
 				break;
 			case 3:
-				keyString = PROJECT + projectId + ".localserver";
+				keyString = PROJECT + key + ".localserver";
 				ls.add(store.getString(keyString));
 				break;
 			case 4:
-				keyString = PROJECT + projectId + ".path";
+				keyString = PROJECT + key + ".path";
 				ls.add(store.getString(keyString));
 				break;
 			default:
@@ -239,5 +244,71 @@ public class ProjectServer implements IHREServer {
 	public void updateRemote(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @param dbName
+	 * @throws SQLException
+	 */
+	public void closeDbIfActive(final String dbName) throws SQLException {
+		final String activeName = store.getString("DBNAME");
+
+		if (activeName.equals(dbName)) {
+			Connection conn = null;
+
+			conn = HreH2ConnectionPool.getConnection();
+
+			if (conn != null) {
+				conn.createStatement().execute("SHUTDOWN");
+				conn.close();
+				LOGGER.log(Level.INFO, "Existing database {0} has been closed",
+						dbName);
+
+				try {
+					HreH2ConnectionPool.dispose();
+				} catch (final Exception e) {
+					LOGGER.log(Level.INFO, "No connection pool to dispose");
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param dbName
+	 * @param path
+	 * @throws SQLException
+	 */
+	public void backupUsingScript(final String dbName, String path)
+			throws SQLException {
+		final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
+				"-user", store.getString("USERID"), "-password",
+				store.getString("PASSWORD"), "-script",
+				path + "\\" + dbName + ".zip", "-options", "compression",
+				"zip" };
+		Script.main(bkp);
+	}
+
+	/**
+	 * @param dbName
+	 * @param h2Version
+	 * @throws SQLException
+	 */
+	public void connectToNewDatabase(final String dbName,
+			final String h2Version) throws SQLException {
+		final Connection conn = HreH2ConnectionPool.getConnection(dbName);
+		PreparedStatement ps;
+
+		if (h2Version.substring(0, 3).equals("1.3")) {
+			ps = conn.prepareStatement(
+					"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+		} else {
+			ps = conn.prepareStatement(
+					"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+		}
+
+		ps.executeQuery();
+		conn.close();
 	}
 }

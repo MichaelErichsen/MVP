@@ -25,6 +25,7 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -55,7 +56,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.h2.tools.RunScript;
-import org.h2.tools.Script;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
@@ -73,7 +73,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 public class ProjectNavigator {
@@ -121,20 +121,16 @@ public class ProjectNavigator {
 		final String dbName = model.getName();
 
 		try {
-			closeDbIfActive(dbName);
+			provider.closeDbIfActive(dbName);
 
 			String path = model.getPath();
 			File file = new File(path + ".h2.db");
 			if (!file.exists()) {
 				file = new File(path + ".mv.db");
 			}
+
 			path = file.getParent();
-			final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
-					"-user", store.getString("USERID"), "-password",
-					store.getString("PASSWORD"), "-script",
-					path + "\\" + dbName + ".zip", "-options", "compression",
-					"zip" };
-			Script.main(bkp);
+			provider.backupUsingScript(dbName, path);
 
 			LOGGER.log(Level.INFO,
 					"Project database {0} has been backed up to {1}\\{2}.zip",
@@ -144,33 +140,6 @@ public class ProjectNavigator {
 							+ path + "\\" + dbName + ".zip");
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-		}
-	}
-
-	/**
-	 * @param dbName
-	 * @throws SQLException
-	 */
-	private void closeDbIfActive(final String dbName) throws SQLException {
-		final String activeName = store.getString("DBNAME");
-
-		if (activeName.equals(dbName)) {
-			Connection conn = null;
-
-			conn = HreH2ConnectionPool.getConnection();
-
-			if (conn != null) {
-				conn.createStatement().execute("SHUTDOWN");
-				conn.close();
-				LOGGER.log(Level.INFO, "Existing database {0} has been closed",
-						dbName);
-
-				try {
-					HreH2ConnectionPool.dispose();
-				} catch (final Exception e) {
-					LOGGER.log(Level.INFO, "No connection pool to dispose");
-				}
-			}
 		}
 	}
 
@@ -395,7 +364,6 @@ public class ProjectNavigator {
 
 		textNameFilter.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 	}
 
 	/**
@@ -420,7 +388,7 @@ public class ProjectNavigator {
 		}
 
 		try {
-			closeDbIfActive(dbName);
+			provider.closeDbIfActive(dbName);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -461,7 +429,7 @@ public class ProjectNavigator {
 				if (path.equals(store.getString(key).trim())) {
 					// Delete from preferences
 					index = i;
-					ProjectList.remove(index, dbName);
+					ProjectList.remove(index);
 					LOGGER.log(Level.INFO, "Project {0} has been deleted",
 							dbName);
 					eventBroker.post("MESSAGE",
@@ -509,7 +477,7 @@ public class ProjectNavigator {
 
 		try {
 			// Create the new database
-			LOGGER.log(Level.FINE, "New database name: {0}\\{1}",
+			LOGGER.log(Level.INFO, "New database name: {0}\\{1}",
 					new Object[] { path, dbName });
 
 			store.setValue("DBPATH", path);
@@ -520,28 +488,15 @@ public class ProjectNavigator {
 
 			pndprovider.provide(dbName);
 
-			closeDbIfActive(dbName);
+			provider.closeDbIfActive(dbName);
 
 			// Connect to the new database
-			final Connection conn = HreH2ConnectionPool.getConnection(dbName);
 
 			final String h2Version = store.getString("H2VERSION");
-			LOGGER.log(Level.FINE, "Retrieved H2 version from preferences: {0}",
+			LOGGER.log(Level.INFO, "Retrieved H2 version from preferences: {0}",
 					h2Version.substring(0, 3));
-			PreparedStatement ps;
 
-			if (h2Version.substring(0, 3).equals("1.3")) {
-				ps = conn.prepareStatement(
-						"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
-								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
-			} else {
-				ps = conn.prepareStatement(
-						"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
-								+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
-			}
-
-			ps.executeQuery();
-			conn.close();
+			provider.connectToNewDatabase(dbName, h2Version);
 
 			// Open a dialog for summary
 			final ProjectNameSummaryDialog pnsDialog = new ProjectNameSummaryDialog(
@@ -557,7 +512,7 @@ public class ProjectNavigator {
 					pnsDialog.getProjectSummary(), "LOCAL",
 					path + "\\" + dbName);
 
-			LOGGER.log(Level.FINE, "New properties {0}, {1}, {2}, LOCAL {3}",
+			LOGGER.log(Level.INFO, "New properties {0}, {1}, {2}, LOCAL {3}",
 					new Object[] { pnsDialog.getProjectName(), timestamp,
 							pnsDialog.getProjectSummary(), dbName });
 
@@ -566,9 +521,8 @@ public class ProjectNavigator {
 			// Set database name in title bar
 			final MWindow window = (MWindow) modelService
 					.find("net.myerichsen.hremvp.window.main", application);
-			window.setLabel("HRE MVP v0.2 - " + dbName);
+			window.setLabel("HRE MVP v0.2.2 - " + dbName);
 
-			// FIXME Only open once
 			openDatabaseNavigator();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
@@ -576,6 +530,8 @@ public class ProjectNavigator {
 			eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, index);
 			eventBroker.post("MESSAGE",
 					"Project database " + dbName + " has been created");
+
+			ProjectList.writePreferences();
 		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -586,15 +542,28 @@ public class ProjectNavigator {
 	 * Open H2 Database Navigator
 	 */
 	private void openDatabaseNavigator() {
+		String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator";
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
-		final MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
+		MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
+
+		for (final MPartStack mPartStack : stacks) {
+			final List<MStackElement> a = mPartStack.getChildren();
+
+			for (int i = 0; i < a.size(); i++) {
+				h2dnPart = (MPart) a.get(i);
+				if (h2dnPart.getContributionURI().equals(CONTRIBUTION_URI)) {
+					partService.showPart(h2dnPart, PartState.ACTIVATE);
+					return;
+				}
+			}
+		}
+
 		h2dnPart.setLabel("Database Tables");
 		h2dnPart.setContainerData("650");
 		h2dnPart.setCloseable(true);
 		h2dnPart.setVisible(true);
-		h2dnPart.setContributionURI(
-				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator");
+		h2dnPart.setContributionURI(CONTRIBUTION_URI);
 		stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
 		partService.showPart(h2dnPart, PartState.ACTIVATE);
 	}
@@ -618,7 +587,7 @@ public class ProjectNavigator {
 		final String dbName = parts[0];
 
 		try {
-			closeDbIfActive(dbName);
+			provider.closeDbIfActive(dbName);
 
 			store.setValue("DBPATH", path);
 			store.setValue("DBNAME", dbName);
@@ -713,7 +682,7 @@ public class ProjectNavigator {
 		Connection conn = null;
 
 		try {
-			closeDbIfActive(store.getString("DBNAME"));
+			provider.closeDbIfActive(store.getString("DBNAME"));
 
 			getSelectedProject();
 
@@ -790,7 +759,7 @@ public class ProjectNavigator {
 		eventBroker.post(Constants.PROJECT_PROPERTIES_UPDATE_TOPIC, projectPid);
 		eventBroker.post(Constants.DATABASE_UPDATE_TOPIC,
 				store.getString("DBNAME"));
-		LOGGER.log(Level.FINE, "Project Navigator posted selection index {0}",
+		LOGGER.log(Level.INFO, "Project Navigator posted selection index {0}",
 				projectPid);
 	}
 
@@ -823,7 +792,7 @@ public class ProjectNavigator {
 		final String dbName = parts[0];
 
 		try {
-			closeDbIfActive(dbName);
+			provider.closeDbIfActive(dbName);
 		} catch (final SQLException e1) {
 			LOGGER.log(Level.INFO, e1.getMessage());
 		}
@@ -921,7 +890,7 @@ public class ProjectNavigator {
 	@Optional
 	private void subscribeProjectListUpdateTopic(
 			@UIEventTopic(Constants.PROJECT_LIST_UPDATE_TOPIC) int key) {
-		LOGGER.log(Level.FINE, "Received project index {0}", key);
+		LOGGER.log(Level.INFO, "Received project index {0}", key);
 		try {
 			tableViewer.setInput(provider.getStringList());
 			tableViewer.refresh();

@@ -199,6 +199,7 @@ public class H2TableEditor {
 		scrolledComposite.setExpandVertical(true);
 
 		try {
+			// FIXME change to JFace
 			createLines();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

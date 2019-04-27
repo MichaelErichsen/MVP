@@ -23,7 +23,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Singleton class encapsulating a list of project model objects.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. feb. 2019
+ * @version 27. apr. 2019
  *
  */
 public class ProjectList {
@@ -63,8 +63,8 @@ public class ProjectList {
 		store.setValue("project." + count + ".path", model.getPath());
 		store.setValue("projectcount", count);
 		((ScopedPreferenceStore) store).save();
-		LOGGER.log(Level.INFO,
-				"Added " + model.getName() + " as project " + count);
+		LOGGER.log(Level.INFO, "Added {0} as project {1}",
+				new Object[] { model.getName(), count });
 		return count;
 	}
 
@@ -104,8 +104,6 @@ public class ProjectList {
 	 *
 	 */
 	private static void readPreferences() {
-		String key;
-		String lastEditedString;
 		String name;
 		Date lastEdited;
 		String summary;
@@ -121,23 +119,16 @@ public class ProjectList {
 
 		try {
 			for (int i = 1; i <= projectCount; i++) {
-				key = new String("project." + i + ".name");
-				name = store.getString(key);
+				name = store.getString("project." + i + ".name");
 
-				key = new String("project." + i + ".lastupdated");
-				lastEditedString = store.getString(key);
 				final DateFormat df = new SimpleDateFormat(
 						"yyyy-MM-dd hh:mm:ss");
-				lastEdited = df.parse(lastEditedString);
+				lastEdited = df.parse(
+						store.getString("project." + i + ".lastupdated"));
 
-				key = new String("project." + i + ".summary");
-				summary = store.getString(key);
-
-				key = new String("project." + i + ".localserver");
-				localServer = store.getString(key);
-
-				key = new String("project." + i + ".path");
-				path = store.getString(key);
+				summary = store.getString("project." + i + ".summary");
+				localServer = store.getString("project." + i + ".localserver");
+				path = store.getString("project." + i + ".path");
 
 				model = new ProjectModel(name, lastEdited, summary, localServer,
 						path);
@@ -155,7 +146,7 @@ public class ProjectList {
 	 * @param index
 	 * @param model
 	 */
-	public static void remove(int index, String dbName) {
+	public static void remove(int index) {
 		final ProjectModel model = getModel(index);
 		models.remove(model);
 
@@ -186,7 +177,6 @@ public class ProjectList {
 			((ScopedPreferenceStore) store).save();
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -198,9 +188,9 @@ public class ProjectList {
 			if (projectModel.getLocalServer().equalsIgnoreCase("LOCAL")) {
 				final String path = projectModel.getPath();
 				final File file = new File(path);
-				if (file.exists() == false) {
-					LOGGER.severe("File " + projectModel.getName()
-							+ " does not exist");
+				if (!file.exists()) {
+					LOGGER.log(Level.SEVERE, "File {0} does not exist",
+							projectModel.getName());
 					eventBroker.post("MESSAGE", "File " + projectModel.getName()
 							+ " does not exist");
 					return false;
@@ -208,5 +198,46 @@ public class ProjectList {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 *
+	 */
+	public static void writePreferences() {
+		String lastEditedString;
+
+		final int projectCount = store.getInt("projectcount");
+
+		LOGGER.log(Level.INFO, "Project preferences for {0} projects:\r\n",
+				projectCount);
+
+		try {
+			for (int i = 1; i <= projectCount; i++) {
+				LOGGER.log(Level.INFO, "Project {0}", i);
+				LOGGER.log(Level.INFO, "project.{0}.name: {1}", new Object[] {
+						i, store.getString("project.{0}.name") });
+
+				lastEditedString = store
+						.getString("project." + i + ".lastupdated");
+				final DateFormat df = new SimpleDateFormat(
+						"yyyy-MM-dd hh:mm:ss");
+				LOGGER.log(Level.INFO, "project.{0}.lastEdited: {1}",
+						new Object[] { i, df.parse(lastEditedString) });
+
+				LOGGER.log(Level.INFO, "project.{0}.summary: {1}",
+						new Object[] { i,
+								store.getString("project." + i + ".summary") });
+				LOGGER.log(Level.INFO, "project.{0}.localServer: {1}",
+						new Object[] { i, store
+								.getString("project." + i + ".localserver") });
+				LOGGER.log(Level.INFO, "project.{0}.path: {1}\r\n",
+						new Object[] { i,
+								store.getString("project." + i + ".path") });
+
+			}
+		} catch (final ParseException e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+			eventBroker.post("MESSAGE", e.getMessage());
+		}
 	}
 }

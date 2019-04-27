@@ -27,7 +27,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * GUI part displaying project properties.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 25. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 public class ProjectProperties {

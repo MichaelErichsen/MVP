@@ -16,11 +16,11 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
  * Handler to open the Events view
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. feb. 2019
+ * @version 27. apr. 2019
  *
  */
 public class OpenEventViewHandler {
-	private static final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
+	private static final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
 
 	/**
 	 * @param partService  The Eclipse part service
@@ -51,7 +51,7 @@ public class OpenEventViewHandler {
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
-		part.setContributionURI(contributionURI);
+		part.setContributionURI(CONTRIBUTION_URI);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
 		partService.showPart(part, PartState.ACTIVATE);
 	}

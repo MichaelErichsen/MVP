@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.databaseadmin;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,10 +15,13 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -45,7 +49,7 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 
@@ -53,7 +57,7 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
 public class H2TableNavigator {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private TableViewer tableViewer;
+
 	@Inject
 	private EPartService partService;
 	@Inject
@@ -66,7 +70,8 @@ public class H2TableNavigator {
 	private ECommandService commandService;
 	@Inject
 	private EHandlerService handlerService;
-	private Table table;
+
+	private TableViewer tableViewer;
 	private Composite parent;
 	private String tableName;
 
@@ -99,14 +104,14 @@ public class H2TableNavigator {
 	/**
 	 * Create contents of the view part.
 	 *
-	 * @param parentC Shell
+	 * @param parent Shell
 	 */
 	@PostConstruct
-	public void createControls(Composite parentC) {
-		parent = parentC;
+	public void createControls(Composite parent) {
+		this.parent = parent;
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -270,7 +275,8 @@ public class H2TableNavigator {
 		dialog.open();
 
 		final String shortName = dialog.getFileName();
-		final String fileName = dialog.getFilterPath() + "\\" + shortName;
+		final String fileName = MessageFormat.format("{0}\\{1}",
+				dialog.getFilterPath(), shortName);
 
 		exportCsv(fileName);
 	}
@@ -286,7 +292,8 @@ public class H2TableNavigator {
 		dialog.open();
 
 		final String shortName = dialog.getFileName();
-		final String fileName = dialog.getFilterPath() + "\\" + shortName;
+		final String fileName = MessageFormat.format("{0}\\{1}",
+				dialog.getFilterPath(), shortName);
 
 		int rowCount = 0;
 		try {
@@ -317,7 +324,7 @@ public class H2TableNavigator {
 		eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
 		LOGGER.log(Level.INFO, "Navigator posted tablename {0}", tableName);
 
-		final TableItem[] selectedRows = table.getSelection();
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
 			final TableItem selectedRow = selectedRows[0];
@@ -335,13 +342,39 @@ public class H2TableNavigator {
 	@Inject
 	@Optional
 	private void subscribeNameUpdateTopic(
-			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName2) {
-		tableName = tableName2;
+			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName) {
+		this.tableName = tableName;
+
+		String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableEditor";
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2)
-				.getSelectedElement();
-		part.setLabel(tableName2);
+		MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
+
+		try {
+			for (final MPartStack mPartStack : stacks) {
+				final List<MStackElement> a = mPartStack.getChildren();
+
+				for (int i = 0; i < a.size(); i++) {
+					h2dnPart = (MPart) a.get(i);
+					if (h2dnPart.getContributionURI()
+							.equals(CONTRIBUTION_URI)) {
+						partService.showPart(h2dnPart, PartState.ACTIVATE);
+
+						updateGui();
+						return;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.log(Level.FINEST, "Part could not be activated");
+		}
+
+		h2dnPart.setLabel(tableName);
+		h2dnPart.setCloseable(true);
+		h2dnPart.setVisible(true);
+		h2dnPart.setContributionURI(CONTRIBUTION_URI);
+		stacks.get(stacks.size() - 3).getChildren().add(h2dnPart);
+		partService.showPart(h2dnPart, PartState.ACTIVATE);
 
 		updateGui();
 	}
@@ -354,11 +387,14 @@ public class H2TableNavigator {
 			return;
 		}
 
+		// FIXME Change to JFace
 		try {
 			final H2TableProvider provider = new H2TableProvider(tableName);
 
 			final int count = provider.getCount();
 			parent.setLayout(new GridLayout());
+
+			Table table = tableViewer.getTable();
 
 			if (table.getColumnCount() == 0) {
 				final TableViewerColumn[] tvc = new TableViewerColumn[count];

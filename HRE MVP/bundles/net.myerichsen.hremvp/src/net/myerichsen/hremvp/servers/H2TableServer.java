@@ -15,6 +15,11 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.HreH2ConnectionPool;
 import net.myerichsen.hremvp.IHREServer;
@@ -24,15 +29,22 @@ import net.myerichsen.hremvp.databaseadmin.H2TableModel;
  * Serve H2 data to the table navigator and the table editor
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. apr. 2019
+ * @version 27. apr. 2019
  *
  */
 public class H2TableServer implements IHREServer {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String COUNT_STATEMENT = "SELECT COUNT_STATEMENT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
+	private static IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+	private static final String COUNT_STATEMENT = "SELECT COUNT_STATEMENT(*) "
+			+ "FROM INFORMATION_SCHEMA.COLUMNS "
+			+ "WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
 
-	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, DATA_TYPE, NUMERIC_PRECISION, NUMERIC_SCALE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
+	private static final String COLUMNS = "SELECT COLUMN_NAME, TYPE_NAME, "
+			+ "DATA_TYPE, NUMERIC_PRECISION, NUMERIC_SCALE, CHARACTER_MAXIMUM_LENGTH "
+			+ "FROM INFORMATION_SCHEMA.COLUMNS "
+			+ "WHERE TABLE_SCHEMA = 'PUBLIC' AND TABLE_NAME = ?";
 	private Connection conn = null;
 
 	private int count = 0;
@@ -58,18 +70,20 @@ public class H2TableServer implements IHREServer {
 		this.tableName = tableName;
 		modelList = new ArrayList<>();
 
-		// Get number of columns in H2 table if at version 1.4
-		try {
-			ps = conn.prepareStatement(COUNT_STATEMENT);
-			ps.setString(1, tableName);
-			rs = ps.executeQuery();
+		if (!store.getString("H2VERSION").substring(0, 3).equals("1.3")) {
+			// Get number of columns in H2 table if at version 1.4
+			try {
+				ps = conn.prepareStatement(COUNT_STATEMENT);
+				ps.setString(1, tableName);
+				rs = ps.executeQuery();
 
-			if (rs.next()) {
-				count = rs.getInt(1);
+				if (rs.next()) {
+					count = rs.getInt(1);
+				}
+
+			} catch (final Exception e) {
+				LOGGER.log(Level.INFO, e.getMessage());
 			}
-
-		} catch (final Exception e) {
-			LOGGER.log(Level.INFO, e.getMessage());
 		}
 
 		// Get names and other properties of columns in H2 tables
