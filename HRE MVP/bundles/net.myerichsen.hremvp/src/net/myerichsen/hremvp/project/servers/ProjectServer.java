@@ -95,26 +95,47 @@ public class ProjectServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
+		LOGGER.log(Level.INFO, "Target {0}", target);
+
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
+
 		final JSONStringer js = new JSONStringer();
 		js.object();
-		js.key("project");
 
+		if (targetSize == 0) {
+			js.key("projects");
+			js.array();
+
+			final List<List<String>> stringList = getStringList();
+
+			for (final List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("name");
+				js.value(list.get(1));
+				js.key("LOCAL/REMOTE");
+				js.value(list.get(2));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
+				js.endObject();
+			}
+
+			js.endArray();
+			js.endObject();
+			return js.toString();
+		}
+
+		int pid = Integer.parseInt(targetParts[1]);
+		List<List<String>> stringList = getStringList(pid);
+
+		js.key("project");
 		js.object();
 
-// FIXME		java.lang.NumberFormatException: For input string: ""
-		final int targetInt = Integer.parseInt(target.replace("/", "")) - 1;
-		LOGGER.log(Level.INFO, "Target {0}, int {1}",
-				new Object[] { target, targetInt });
-		final List<List<String>> lls = getStringList(targetInt);
-		List<String> stringList;
-
-		for (int i = 0; i < lls.size(); i++) {
-			stringList = lls.get(i);
-
-			LOGGER.log(Level.INFO, "{0}: {1}",
-					new Object[] { stringList.get(0), stringList.get(1) });
-			js.key(stringList.get(0));
-			js.value(stringList.get(1));
+		for (int i = 0; i < 4; i++) {
+			js.key(stringList.get(i).get(0));
+			js.value(stringList.get(i).get(1));
 		}
 
 		js.endObject();

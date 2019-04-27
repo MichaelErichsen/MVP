@@ -325,6 +325,7 @@ public class NewPersonWizard extends Wizard {
 			final List<List<String>> lls = page3.getLls();
 
 			// Create each name part
+			// FIXME java.lang.NullPointerException
 			for (int i = 0; i < lls.size(); i++) {
 				string = lls.get(i).get(5);
 
