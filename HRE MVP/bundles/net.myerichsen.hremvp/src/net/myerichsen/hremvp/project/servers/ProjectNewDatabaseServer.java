@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
  * This is perhaps done best in MS Excel.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class ProjectNewDatabaseServer {
@@ -237,12 +237,13 @@ public class ProjectNewDatabaseServer {
 	private static final String[] csvFileNames = { "languages.csv",
 			"sextypes.csv", "eventtypes.csv", "eventroles.csv",
 			"locationnamestyles.csv", "locationnamemaps.csv",
-			"personnamestyles.csv", "personnamemaps.csv", "dictionary.csv" };
+			"personnamestyles.csv", "personnamemaps.csv", "parentroles.csv",
+			"partnerroles.csv", "dictionary.csv" };
 
 	private static final String[] tableNames = { "LANGUAGES", "SEX_TYPES",
 			"EVENT_TYPES", "EVENT_ROLES", "LOCATION_NAME_STYLES",
 			"LOCATION_NAME_MAPS", "PERSON_NAME_STYLES", "PERSON_NAME_MAPS",
-			"DICTIONARY" };
+			"PARENT_ROLES", "PARTNER_ROLES", "DICTIONARY" };
 	@Inject
 	UISynchronize sync;
 

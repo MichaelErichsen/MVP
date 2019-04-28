@@ -31,7 +31,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Create a view part with all tables in the database
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -107,7 +107,7 @@ public class H2DatabaseNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			LOGGER.log(Level.SEVERE, e1.getMessage());
 		}
 	}
 
