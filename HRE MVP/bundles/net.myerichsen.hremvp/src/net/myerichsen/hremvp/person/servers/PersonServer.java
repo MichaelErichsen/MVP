@@ -393,7 +393,7 @@ public class PersonServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		LOGGER.log(Level.INFO, "Target {0}", target);
+		LOGGER.log(Level.FINE, "Target {0}", target);
 
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;

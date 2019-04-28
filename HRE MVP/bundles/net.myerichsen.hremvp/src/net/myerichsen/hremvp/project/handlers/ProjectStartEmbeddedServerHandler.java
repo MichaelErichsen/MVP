@@ -26,6 +26,7 @@ import net.myerichsen.hremvp.project.servers.EventRoleServer;
 import net.myerichsen.hremvp.project.servers.EventTypeServer;
 import net.myerichsen.hremvp.project.servers.LanguageServer;
 import net.myerichsen.hremvp.project.servers.LocationNameStyleServer;
+import net.myerichsen.hremvp.project.servers.PersonNameStyleServer;
 import net.myerichsen.hremvp.project.servers.ProjectServer;
 import net.myerichsen.hremvp.project.servers.SexTypeServer;
 import net.myerichsen.hremvp.requesthandlers.HREHttpRequestHandler;
@@ -36,7 +37,7 @@ import net.myerichsen.hremvp.requesthandlers.RootHttpRequestHandler;
  * other features can add contexts and handlers to.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd.
- * @version 27. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class ProjectStartEmbeddedServerHandler {
@@ -105,6 +106,12 @@ public class ProjectStartEmbeddedServerHandler {
 						new HREHttpRequestHandler(new PersonServer()));
 				contexts.addHandler(context);
 
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/personnamestyles/");
+				context.setHandler(
+						new HREHttpRequestHandler(new PersonNameStyleServer()));
+				contexts.addHandler(context);
+				
 				context = new ContextHandler();
 				context.setContextPath("/mvp/v100/projects/");
 				context.setHandler(

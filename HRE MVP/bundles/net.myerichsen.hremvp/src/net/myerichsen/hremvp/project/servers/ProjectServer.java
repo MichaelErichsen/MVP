@@ -39,6 +39,72 @@ public class ProjectServer implements IHREServer {
 	private int projectId = 0;
 	private String projectName = "";
 
+	/**
+	 * @param dbName
+	 * @param path
+	 * @throws SQLException
+	 */
+	public void backupUsingScript(final String dbName, String path)
+			throws SQLException {
+		final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
+				"-user", store.getString("USERID"), "-password",
+				store.getString("PASSWORD"), "-script",
+				path + "\\" + dbName + ".zip", "-options", "compression",
+				"zip" };
+		Script.main(bkp);
+	}
+
+	/**
+	 * @param dbName
+	 * @throws SQLException
+	 */
+	public void closeDbIfActive(final String dbName) throws SQLException {
+		final String activeName = store.getString("DBNAME");
+
+		if (activeName.equals(dbName)) {
+			Connection conn = null;
+
+			conn = HreH2ConnectionPool.getConnection();
+
+			if (conn != null) {
+				conn.createStatement().execute("SHUTDOWN");
+				conn.close();
+				LOGGER.log(Level.FINE, "Existing database {0} has been closed",
+						dbName);
+
+				try {
+					HreH2ConnectionPool.dispose();
+				} catch (final Exception e) {
+					LOGGER.log(Level.FINE, "No connection pool to dispose");
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param dbName
+	 * @param h2Version
+	 * @throws SQLException
+	 */
+	public void connectToNewDatabase(final String dbName,
+			final String h2Version) throws SQLException {
+		final Connection conn = HreH2ConnectionPool.getConnection(dbName);
+		PreparedStatement ps;
+
+		if (h2Version.substring(0, 3).equals("1.3")) {
+			ps = conn.prepareStatement(
+					"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+		} else {
+			ps = conn.prepareStatement(
+					"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
+							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
+		}
+
+		ps.executeQuery();
+		conn.close();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -95,7 +161,7 @@ public class ProjectServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		LOGGER.log(Level.INFO, "Target {0}", target);
+		LOGGER.log(Level.FINE, "Target {0}", target);
 
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
@@ -127,8 +193,8 @@ public class ProjectServer implements IHREServer {
 			return js.toString();
 		}
 
-		int pid = Integer.parseInt(targetParts[1]);
-		List<List<String>> stringList = getStringList(pid);
+		final int pid = Integer.parseInt(targetParts[1]);
+		final List<List<String>> stringList = getStringList(pid);
 
 		js.key("project");
 		js.object();
@@ -265,71 +331,5 @@ public class ProjectServer implements IHREServer {
 	public void updateRemote(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 
-	}
-
-	/**
-	 * @param dbName
-	 * @throws SQLException
-	 */
-	public void closeDbIfActive(final String dbName) throws SQLException {
-		final String activeName = store.getString("DBNAME");
-
-		if (activeName.equals(dbName)) {
-			Connection conn = null;
-
-			conn = HreH2ConnectionPool.getConnection();
-
-			if (conn != null) {
-				conn.createStatement().execute("SHUTDOWN");
-				conn.close();
-				LOGGER.log(Level.FINE, "Existing database {0} has been closed",
-						dbName);
-
-				try {
-					HreH2ConnectionPool.dispose();
-				} catch (final Exception e) {
-					LOGGER.log(Level.FINE, "No connection pool to dispose");
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param dbName
-	 * @param path
-	 * @throws SQLException
-	 */
-	public void backupUsingScript(final String dbName, String path)
-			throws SQLException {
-		final String[] bkp = { "-url", "jdbc:h2:" + path + "\\" + dbName,
-				"-user", store.getString("USERID"), "-password",
-				store.getString("PASSWORD"), "-script",
-				path + "\\" + dbName + ".zip", "-options", "compression",
-				"zip" };
-		Script.main(bkp);
-	}
-
-	/**
-	 * @param dbName
-	 * @param h2Version
-	 * @throws SQLException
-	 */
-	public void connectToNewDatabase(final String dbName,
-			final String h2Version) throws SQLException {
-		final Connection conn = HreH2ConnectionPool.getConnection(dbName);
-		PreparedStatement ps;
-
-		if (h2Version.substring(0, 3).equals("1.3")) {
-			ps = conn.prepareStatement(
-					"SELECT TABLE_NAME, 0 FROM INFORMATION_SCHEMA.TABLES "
-							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
-		} else {
-			ps = conn.prepareStatement(
-					"SELECT TABLE_NAME, ROW_COUNT_ESTIMATE FROM INFORMATION_SCHEMA.TABLES "
-							+ "WHERE TABLE_TYPE = 'TABLE' ORDER BY TABLE_NAME");
-		}
-
-		ps.executeQuery();
-		conn.close();
 	}
 }

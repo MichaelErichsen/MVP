@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class EventServer implements IHREServer {

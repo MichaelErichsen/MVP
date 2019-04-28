@@ -2,8 +2,12 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONStringer;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
@@ -15,10 +19,13 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class PersonNameStyleServer implements IHREServer {
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	private int NameStylePid;
 	private String IsoCode;
 	private int LabelPid;
@@ -110,8 +117,58 @@ public class PersonNameStyleServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.log(Level.FINE, "Target {0}", target);
+
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
+
+		final JSONStringer js = new JSONStringer();
+		js.object();
+
+		if (targetSize == 0) {
+			js.key("languages");
+			js.array();
+
+			final List<List<String>> stringList = getStringList();
+
+			for (final List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("name");
+				js.value(list.get(2));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
+				js.endObject();
+			}
+
+			js.endArray();
+			js.endObject();
+			return js.toString();
+		}
+
+		if (targetSize == 2) {
+			js.key("language");
+			js.object();
+
+			final List<String> stringList = getStringList(
+					Integer.parseInt(targetParts[1])).get(0);
+
+			js.key("pid");
+			js.value(stringList.get(0));
+			js.key("isocode");
+			js.value(stringList.get(1));
+			js.key("label");
+			js.value(stringList.get(2));
+
+			LOGGER.log(Level.FINE, "{0}", js);
+
+			js.endObject();
+		}
+
+		js.endObject();
+		return js.toString();
+
 	}
 
 	/**
@@ -146,8 +203,20 @@ public class PersonNameStyleServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		// FIXME Auto-generated method stub
-		return null;
+		final List<List<String>> lls = new ArrayList<>();
+		List<String> stringList;
+		final Dictionary dictionary = new Dictionary();
+
+		style.get(key);
+		stringList = new ArrayList<>();
+		stringList.add(Integer.toString(style.getNameStylePid()));
+		stringList.add(style.getIsoCode());
+		LabelPid = style.getLabelPid();
+		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(LabelPid);
+		stringList.add(fkLabelPid.get(0).getLabel());
+		lls.add(stringList);
+		return lls;
+
 	}
 
 	/**

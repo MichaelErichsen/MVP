@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. apr. 2019
+ * @version 28. apr. 2019
  */
 public class PersonNameMapServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -144,7 +144,7 @@ public class PersonNameMapServer implements IHREServer {
 	 */
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
-			throws NumberFormatException, Exception {
+			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

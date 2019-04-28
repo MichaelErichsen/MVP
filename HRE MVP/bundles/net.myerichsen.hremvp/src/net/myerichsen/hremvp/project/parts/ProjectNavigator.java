@@ -540,7 +540,7 @@ public class ProjectNavigator {
 	 * Open H2 Database Navigator
 	 */
 	private void openDatabaseNavigator() {
-		String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator";
+		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator";
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
 		MPart h2dnPart = MBasicFactory.INSTANCE.createPart();

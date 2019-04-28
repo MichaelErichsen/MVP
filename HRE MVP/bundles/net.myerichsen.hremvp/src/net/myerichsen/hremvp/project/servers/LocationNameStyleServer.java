@@ -136,7 +136,7 @@ public class LocationNameStyleServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		LOGGER.log(Level.INFO, "Target {0}", target);
+		LOGGER.log(Level.FINE, "Target {0}", target);
 
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
@@ -227,7 +227,7 @@ public class LocationNameStyleServer implements IHREServer {
 		List<String> stringList;
 		final Dictionary dictionary = new Dictionary();
 
-		LocationNameStyles aStyle = new LocationNameStyles();
+		final LocationNameStyles aStyle = new LocationNameStyles();
 		aStyle.get(key);
 
 		stringList = new ArrayList<>();

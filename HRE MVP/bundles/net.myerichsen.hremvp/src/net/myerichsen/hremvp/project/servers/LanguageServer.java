@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class LanguageServer implements IHREServer {
@@ -27,7 +27,7 @@ public class LanguageServer implements IHREServer {
 	private int LanguagePid;
 	private String Isocode;
 	private String Label;
-	private int TableId;
+
 	private final Languages language;
 
 	/**
@@ -102,7 +102,7 @@ public class LanguageServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		LOGGER.log(Level.INFO, "Target {0}", target);
+		LOGGER.log(Level.FINE, "Target {0}", target);
 
 		final String[] targetParts = target.split("/");
 		final int targetSize = targetParts.length;
@@ -186,8 +186,8 @@ public class LanguageServer implements IHREServer {
 		final List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
 
-		Languages aLanguage = new Languages();
-		aLanguage.get();
+		final Languages aLanguage = new Languages();
+		aLanguage.get(key);
 
 		stringList = new ArrayList<>();
 		stringList.add(Integer.toString(aLanguage.getLanguagePid()));
@@ -196,13 +196,6 @@ public class LanguageServer implements IHREServer {
 		lls.add(stringList);
 
 		return lls;
-	}
-
-	/**
-	 * @return the tableId
-	 */
-	public int getTableId() {
-		return TableId;
 	}
 
 	/**
@@ -248,13 +241,6 @@ public class LanguageServer implements IHREServer {
 	 */
 	public void setLanguagePid(int languagePid) {
 		LanguagePid = languagePid;
-	}
-
-	/**
-	 * @param tableId the tableId to set
-	 */
-	public void setTableId(int tableId) {
-		TableId = tableId;
 	}
 
 	/*

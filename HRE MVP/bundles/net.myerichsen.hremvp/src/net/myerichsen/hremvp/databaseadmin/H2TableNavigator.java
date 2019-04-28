@@ -111,7 +111,7 @@ public class H2TableNavigator {
 		this.parent = parent;
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -345,7 +345,7 @@ public class H2TableNavigator {
 			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName) {
 		this.tableName = tableName;
 
-		String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableEditor";
+		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableEditor";
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
 		MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
@@ -365,7 +365,7 @@ public class H2TableNavigator {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(Level.FINEST, "Part could not be activated");
 		}
 
@@ -394,7 +394,7 @@ public class H2TableNavigator {
 			final int count = provider.getCount();
 			parent.setLayout(new GridLayout());
 
-			Table table = tableViewer.getTable();
+			final Table table = tableViewer.getTable();
 
 			if (table.getColumnCount() == 0) {
 				final TableViewerColumn[] tvc = new TableViewerColumn[count];

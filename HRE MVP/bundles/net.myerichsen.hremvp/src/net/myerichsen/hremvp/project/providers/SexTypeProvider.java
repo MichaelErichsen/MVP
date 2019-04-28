@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.project.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -140,7 +140,7 @@ public class SexTypeProvider implements IHREProvider {
 	 *                                 JSON API
 	 * @throws MvpException            Application specific exception
 	 */
-	public void getRemote(int key) throws MvpException, ClientProtocolException, IOException {
+	public void getRemote(int key) throws MvpException, IOException {
 		final StringBuilder sb = new StringBuilder();
 		String s = "";
 
@@ -230,7 +230,7 @@ public class SexTypeProvider implements IHREProvider {
 	 * @throws ClientProtocolException
 	 * @throws IOException             IOException
 	 */
-	public void insertRemote() throws MvpException, ClientProtocolException, IOException {
+	public void insertRemote() throws MvpException, IOException {
 		final JSONStringer js = new JSONStringer();
 		js.object();
 		js.key("sexTypePid");
