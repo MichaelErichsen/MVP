@@ -51,7 +51,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 22. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {

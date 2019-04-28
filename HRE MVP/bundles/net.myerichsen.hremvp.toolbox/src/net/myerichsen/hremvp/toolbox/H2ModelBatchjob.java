@@ -6,16 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Reads the H2 catalog and calls H2ModelGenerator for each table.
  *
  * @see H2ModelGenerator
- * @version 2018-08-02
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 28. apr. 2019
  *
  */
 public class H2ModelBatchjob {
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final String TABLES = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES "
 			+ "WHERE TABLE_SCHEMA = 'PUBLIC'";
 
@@ -28,7 +32,7 @@ public class H2ModelBatchjob {
 	 */
 	public static void main(String[] args) {
 		if (args.length < 2) {
-			System.out.println(
+			LOGGER.log(Level.WARNING,
 					"Usage: H2ModelBatchjob <h2database> <outputdirectory>");
 			System.exit(16);
 		}
@@ -49,20 +53,20 @@ public class H2ModelBatchjob {
 			String name;
 			while (rs.next()) {
 				name = rs.getString(1);
-				// System.out.println("Found table " + name);
+				LOGGER.log(Level.FINE, "Found table {0}", name);
 				tableNames.add(name);
 			}
 
 			conn.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.toString(), e);
 			System.exit(16);
 		}
 
 		// Call H2ModelGenerator for each table name
 		for (String tableName : tableNames) {
-			System.out.println("Generating " + tableName + " in " + databaseName
-					+ " to " + outputDirectory);
+			LOGGER.log(Level.INFO, "Generating {0} in {1} to {2}",
+					new Object[] { tableName, databaseName, outputDirectory });
 
 			H2ModelGenerator generator;
 			try {
@@ -72,7 +76,7 @@ public class H2ModelBatchjob {
 				generator.setOutputDirectory(outputDirectory);
 				extracted(generator);
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		}
 	}

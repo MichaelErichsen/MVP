@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  * Utility to generate a Java model class representing an HRE H2 Table
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 21. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 
@@ -99,10 +100,11 @@ public class H2ModelGenerator {
 	}
 
 	/**
+	 * @throws SQLException
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	private static void createDatabaseOperations() throws Exception {
+	private static void createDatabaseOperations() throws SQLException {
 		// delete()
 		writer.println("public void delete() throws Exception {");
 		writer.println("conn = HreH2ConnectionPool.getConnection();");
@@ -243,8 +245,9 @@ public class H2ModelGenerator {
 			if (field.equals(primaryKey)) {
 				writer.println("ps.setInt(" + (index++) + ", maxPid);");
 				continue;
-			} else if ((field.equals("INSERT_TSTMP"))
-					|| (field.equals("UPDATE_TSTMP"))
+			}
+
+			if ((field.equals("INSERT_TSTMP")) || (field.equals("UPDATE_TSTMP"))
 					|| (field.equals("TABLE_ID"))) {
 				continue;
 			}
@@ -635,8 +638,8 @@ public class H2ModelGenerator {
 	public void generate() {
 		fields = new ArrayList<>();
 		types = new ArrayList<>();
-		final File outputFile = new File(
-				outputDirectory + "/" + toCamelCase(tableName) + ".java");
+		final File outputFile = new File(MessageFormat.format("{0}/{1}.java",
+				outputDirectory, toCamelCase(tableName)));
 
 		try {
 			writer = new PrintWriter(
