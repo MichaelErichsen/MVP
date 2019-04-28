@@ -5,7 +5,11 @@ import javax.annotation.PostConstruct;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.Bullet;
+import org.eclipse.swt.custom.ST;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.GlyphMetrics;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -38,8 +42,9 @@ public class WelcomePage {
 		parent.setLayout(new GridLayout(2, false));
 
 		StyledText styledTextHeader = new StyledText(parent, SWT.WRAP);
+		styledTextHeader.setAlignment(SWT.CENTER);
 		styledTextHeader.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+				new GridData(SWT.CENTER, SWT.CENTER, false, false, 2, 1));
 		styledTextHeader.setRightMargin(10);
 		styledTextHeader.setLeftMargin(10);
 		styledTextHeader.setTopMargin(10);
@@ -83,6 +88,11 @@ public class WelcomePage {
 						+ "two purposes:\nTo be able to run HRE MVP on separate client "
 						+ "and server machines\nTo be able to build mobile front ends "
 						+ "to HRE MVP from Android and other devices.");
+
+		final StyleRange style = new StyleRange();
+		style.metrics = new GlyphMetrics(0, 0, 40);
+		Bullet bullet = new Bullet(ST.BULLET_DOT, style);
+		styledTextBody.setLineBullet(8, 2, bullet);
 
 		Label label = new Label(parent, SWT.NONE);
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
