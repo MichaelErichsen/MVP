@@ -16,7 +16,8 @@
             <children xsi:type="basic:Part" xmi:id="_kPa7wDx1Eemh9Naf7FyRjw" elementId="net.myerichsen.hremvp.part.locationnamestyles" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LocationNameStyleNavigator" label="Location Name Styles" tooltip="Location Name Styles"/>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_m_sw4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partsashcontainer.0" containerData="580">
-            <children xsi:type="basic:PartStack" xmi:id="_owicYLAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.2" containerData="8000" accessibilityPhrase="">
+            <children xsi:type="basic:PartStack" xmi:id="_owicYLAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.2" containerData="8000" accessibilityPhrase="" selectedElement="_4CatAGmXEem2etJB0Gz-Dg">
+              <children xsi:type="basic:Part" xmi:id="_4CatAGmXEem2etJB0Gz-Dg" elementId="net.myerichsen.hremvp.part.welcome" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.WelcomePage" label="Welcome" closeable="true"/>
               <children xsi:type="basic:Part" xmi:id="_vN_ToKR-EeiDVvVNqbPujw" elementId="net.myerichsen.hremvp.part.projectproperties" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.ProjectProperties" label="Project Properties" tooltip="Project Properties"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_pZ9z4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.3" containerData="2000">
@@ -134,12 +135,14 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_tuWOQM-eEeiCtsQHb45mZQ" elementId="net.myerichsen.hremvp.handledmenuitem.preferences" label="Preferences" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PreferencesIcon.png" tooltip="Preferences" command="_Z6qoYM-eEeiCtsQHb45mZQ"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="help" label="Help">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_NHdNEGmYEem2etJB0Gz-Dg" elementId="net.myerichsen.hremvp.handledmenuitem.welcomepage" label="Welcome Page" command="_CZdZUGmYEem2etJB0Gz-Dg"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_HSrk0A4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.menuseparator.1"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_EAmJAA4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.handledmenuitem.helpcontents" label="Help Contents in External Browser" tooltip="Help Contents" command="_Az1kAA3-Eemn86hhplJLfQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_FoWJ8A4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.handledmenuitem.embeddedhelpbrowser" label="Embedded Help Browser" command="_-AFqAA39Eemn86hhplJLfQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_GfUOMA4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.handledmenuitem.hrewebsite" label="HRE Website" tooltip="HRE Website" command="_C1cPYA3-Eemn86hhplJLfQ"/>
-        <children xsi:type="menu:MenuSeparator" xmi:id="_HSrk0A4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.menuseparator.1"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_ICyzIA4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.handleditem.about" label="About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_lKHAoDIoEemFh8IjP8PYwQ" elementId="net.myerichsen.hremvp.handledmenuitem.updatehreovertheinternet" label="Check for updates" command="_KX47UDIoEemFh8IjP8PYwQ"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_WaiiAGmYEem2etJB0Gz-Dg" elementId="net.myerichsen.hremvp.menuseparator.1"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_ICyzIA4AEemn86hhplJLfQ" elementId="org.historyresearchenvironment.client.handleditem.about" label="About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_6wlLlcgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.trimbar.top">
@@ -193,6 +196,7 @@
   <handlers xmi:id="_ffd64Eu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.handler.23" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenEventRoleViewHandler" command="_UJqgQEu3EemeNo01Nx-9Hg"/>
   <handlers xmi:id="_Zb_RAFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.handler.25" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenParentRoleViewHandler" command="_PZf4YFIDEem56rnTmdFCow"/>
   <handlers xmi:id="_cwRsQFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.handler.27" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenPartnerRoleViewHandler" command="_VffmQFIDEem56rnTmdFCow"/>
+  <handlers xmi:id="_Gxz5oGmYEem2etJB0Gz-Dg" elementId="net.myerichsen.hremvp.handler.14" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenWelcomePageHandler" command="_CZdZUGmYEem2etJB0Gz-Dg"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.keybinding.m1o" keySequence="M1+O"/>
@@ -241,6 +245,7 @@
   <commands xmi:id="_UJqgQEu3EemeNo01Nx-9Hg" elementId="net.myerichsen.hremvp.command.openeventroleview" commandName="openEventRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_PZf4YFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.command.openparentroleview" commandName="openParentRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_VffmQFIDEem56rnTmdFCow" elementId="net.myerichsen.hremvp.command.openpartnerroleview" commandName="openPartnerRoleView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
+  <commands xmi:id="_CZdZUGmYEem2etJB0Gz-Dg" elementId="net.myerichsen.hremvp.command.openwelcomepage" commandName="OpenWelcomePage" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

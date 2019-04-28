@@ -15,22 +15,21 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 /**
- * Handler to open the event role view
+ * Handler to open the Welcome Page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 20199
+ * @version 28. apr. 2019
  *
  */
-public class OpenEventRoleViewHandler {
+public class OpenWelcomePageHandler {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.EventRoleView";
+	private static final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.WelcomePage";
 
 	/**
 	 * @param partService  The Eclipse part service
 	 * @param application  The Eclipse Application
 	 * @param modelService The Eclipse model service
-	 *
 	 */
 	@Execute
 	public void execute(EPartService partService, MApplication application,
@@ -56,7 +55,7 @@ public class OpenEventRoleViewHandler {
 			}
 		}
 
-		part.setLabel("Event Role");
+		part.setLabel("Welcome");
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
