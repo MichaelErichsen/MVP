@@ -26,6 +26,8 @@ import net.myerichsen.hremvp.project.servers.EventRoleServer;
 import net.myerichsen.hremvp.project.servers.EventTypeServer;
 import net.myerichsen.hremvp.project.servers.LanguageServer;
 import net.myerichsen.hremvp.project.servers.LocationNameStyleServer;
+import net.myerichsen.hremvp.project.servers.ParentRoleServer;
+import net.myerichsen.hremvp.project.servers.PartnerRoleServer;
 import net.myerichsen.hremvp.project.servers.PersonNameStyleServer;
 import net.myerichsen.hremvp.project.servers.ProjectServer;
 import net.myerichsen.hremvp.project.servers.SexTypeServer;
@@ -101,6 +103,18 @@ public class ProjectStartEmbeddedServerHandler {
 				contexts.addHandler(context);
 
 				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/parentroles/");
+				context.setHandler(
+						new HREHttpRequestHandler(new ParentRoleServer()));
+				contexts.addHandler(context);
+
+				context = new ContextHandler();
+				context.setContextPath("/mvp/v100/partnerroles/");
+				context.setHandler(
+						new HREHttpRequestHandler(new PartnerRoleServer()));
+				contexts.addHandler(context);
+
+				context = new ContextHandler();
 				context.setContextPath("/mvp/v100/persons/");
 				context.setHandler(
 						new HREHttpRequestHandler(new PersonServer()));
@@ -111,7 +125,7 @@ public class ProjectStartEmbeddedServerHandler {
 				context.setHandler(
 						new HREHttpRequestHandler(new PersonNameStyleServer()));
 				contexts.addHandler(context);
-				
+
 				context = new ContextHandler();
 				context.setContextPath("/mvp/v100/projects/");
 				context.setHandler(

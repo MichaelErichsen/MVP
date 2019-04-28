@@ -2,30 +2,32 @@ package net.myerichsen.hremvp.project.servers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.json.JSONStringer;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.Dictionary;
-import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.PartnerRoles;
 
 /**
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class PartnerRoleServer implements IHREServer {
-	// private static final Logger LOGGER =
-	// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger LOGGER = Logger
+			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private int PartnerRolePid;
 	private String abbreviation;
@@ -121,8 +123,57 @@ public class PartnerRoleServer implements IHREServer {
 	@Override
 	public String getRemote(HttpServletRequest request, String target)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.log(Level.FINE, "Target {0}", target);
+
+		final String[] targetParts = target.split("/");
+		final int targetSize = targetParts.length;
+
+		final JSONStringer js = new JSONStringer();
+		js.object();
+
+		if (targetSize == 0) {
+			js.key("persons");
+			js.array();
+
+			final List<List<String>> stringList = getStringList();
+
+			for (final List<String> list : stringList) {
+				js.object();
+				js.key("pid");
+				js.value(list.get(0));
+				js.key("abbreviation");
+				js.value(list.get(2));
+				js.key("endpoint");
+				js.value(request.getRequestURL() + list.get(0));
+				js.endObject();
+			}
+
+			js.endArray();
+			js.endObject();
+			return js.toString();
+		}
+
+		if (targetSize == 2) {
+			js.key("person");
+			js.object();
+
+			final List<String> stringList = getStringList(
+					Integer.parseInt(targetParts[1])).get(0);
+
+			js.key("pid");
+			js.value(stringList.get(0));
+			js.key("isocode");
+			js.value(stringList.get(2));
+			js.key("label");
+			js.value(stringList.get(3));
+
+			LOGGER.log(Level.FINE, "{0}", js);
+
+			js.endObject();
+		}
+
+		js.endObject();
+		return js.toString();
 	}
 
 	/**
@@ -165,55 +216,51 @@ public class PartnerRoleServer implements IHREServer {
 	}
 
 	/**
-	 * @param labelPid
-	 * @param abbreviation
+	 * @param partnerRolePid
 	 * @return stringList A list of lists of event Role pids, label pids, iso
 	 *         codes and generic labels
 	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int labelPid) throws Exception {
+	public List<List<String>> getStringList(int partnerRolePid)
+			throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
 
-		if (labelPid == 0) {
+		if (partnerRolePid == 0) {
 			return lls;
 		}
 
-		String eventRolePidString = "1";
-		final List<PartnerRoles> list = PartnerRole.get();
-
-		for (final PartnerRoles PartnerRoles : list) {
-			if (PartnerRoles.getLabelPid() == labelPid) {
-				eventRolePidString = Integer
-						.toString(PartnerRoles.getPartnerRolePid());
-			}
-		}
-
+		this.PartnerRolePid = partnerRolePid;
+		
 		List<String> stringList;
+		List<Dictionary> fkLabelPid;
 		String label = "";
 
+		final IPreferenceStore store = new ScopedPreferenceStore(
+				InstanceScope.INSTANCE, "net.myerichsen.hremvp");
+		final String guiLanguage = store.getString("GUILANGUAGE");
 		final Dictionary dictionary = new Dictionary();
-		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
 
-		final Languages language = new Languages();
+		PartnerRoles aPartnerRole = new PartnerRoles();
+		aPartnerRole.get(partnerRolePid);
 
-		for (final Languages l : language.get()) {
-			stringList = new ArrayList<>();
-			stringList.add(eventRolePidString);
-			stringList.add(Integer.toString(labelPid));
-			stringList.add(l.getIsocode());
+		stringList = new ArrayList<>();
+		stringList.add(Integer.toString(aPartnerRole.getPartnerRolePid()));
+		stringList.add(Integer.toString(aPartnerRole.getLabelPid()));
+		stringList.add(aPartnerRole.getAbbreviation());
 
-			for (final Dictionary d : fkLabelPid) {
-				if (l.getIsocode().equals(d.getIsoCode())) {
-					label = d.getLabel();
-					break;
-				}
+		fkLabelPid = dictionary.getFKLabelPid(aPartnerRole.getLabelPid());
+
+		for (final Dictionary d : fkLabelPid) {
+			if (guiLanguage.equals(d.getIsoCode())) {
+				label = d.getLabel();
 			}
-
-			stringList.add(label);
-			lls.add(stringList);
 		}
+
+		stringList.add(label);
+		lls.add(stringList);
 		return lls;
+
 	}
 
 	/**
