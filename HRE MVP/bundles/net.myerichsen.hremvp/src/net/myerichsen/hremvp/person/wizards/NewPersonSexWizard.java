@@ -13,10 +13,9 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a sex to a person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 17. apr. 2019
+ * @version 28. apr. 2019
  *
  */
-// FIXME Add from and to dates to insert and update
 public class NewPersonSexWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -66,22 +65,16 @@ public class NewPersonSexWizard extends Wizard {
 			sexProvider.setPersonPid(personPid);
 			sexProvider.setSexTypePid(sexTypePid);
 			sexProvider.setPrimarySex(page1.isPrimary());
-			// FIXME Get date pids if not 0
-//			sexProvider.setFromDatePid(0);
-//			sexProvider.setToDatePid(0);
-			try {
-				// FIXME SEVERE: Referential integrity constraint violation:
-				// "SEX_TYPES_SEXES_FK: PUBLIC.SEXES FOREIGN KEY(SEX_TYPE_PID)
-				// REFERENCES PUBLIC.SEX_TYPES(SEX_TYPE_PID) (4)"; SQL
-				// statement:
-				// INSERT INTO PUBLIC.SEXES( SEXES_PID, PERSON_PID,
-				// SEX_TYPE_PID, PRIMARY_SEX, TABLE_ID, FROM_DATE_PID,
-				// TO_DATE_PID) VALUES (?, ?, ?, ?, ?, ?, ?) [23506-197]
 
+			sexProvider.setFromDatePid(page1.getFromDatePid());
+			sexProvider.setToDatePid(page1.getToDatePid());
+			try {
 				final int sexPid = sexProvider.insert();
 
-				LOGGER.log(Level.INFO, "Inserted sex {0} for person {1}",
-						new Object[] { sexPid, personPid });
+				LOGGER.log(Level.INFO,
+						"Inserted sex {0} for person {1} with {2} to {3}",
+						new Object[] { sexPid, personPid,
+								page1.getFromDatePid(), page1.getToDatePid() });
 
 				eventBroker.post("MESSAGE",
 						"Inserted sex " + sexPid + " for person " + personPid);

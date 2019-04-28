@@ -40,7 +40,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Display all data for a sex
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class PersonSexView {
@@ -353,11 +353,21 @@ public class PersonSexView {
 			textId.setText(Integer.toString(sexPid));
 
 			final HDateProvider hdp = new HDateProvider();
-			hdp.get(provider.getFromDatePid());
-			textFromDate.setText(hdp.getDate().toString());
+			fromDatePid = provider.getFromDatePid();
+			if (fromDatePid == 0) {
+				textFromDate.setText("");
+			} else {
+				hdp.get(fromDatePid);
+				textFromDate.setText(hdp.getDate().toString());
+			}
 
-			hdp.get(provider.getToDatePid());
-			textFromDate.setText(hdp.getDate().toString());
+			toDatePid = provider.getToDatePid();
+			if (toDatePid == 0) {
+				textToDate.setText("");
+			} else {
+				hdp.get(toDatePid);
+				textToDate.setText(hdp.getDate().toString());
+			}
 
 			btnPrimarySex.setSelection(provider.isPrimarySex());
 

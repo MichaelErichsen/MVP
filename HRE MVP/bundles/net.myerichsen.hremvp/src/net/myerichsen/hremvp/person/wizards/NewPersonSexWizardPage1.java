@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person sex wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 14. apr. 2019
+ * @version 28. apr. 2019
  *
  */
 public class NewPersonSexWizardPage1 extends WizardPage {
@@ -52,7 +52,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	private int fromDatePid;
 	private int toDatePid;
 	private List<List<String>> stringList;
-	protected NewPersonWizard wizard;
+	protected NewPersonSexWizard wizard;
 	private Button btnCheckButtonPrimary;
 
 	/**
@@ -76,9 +76,9 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				textFromDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				final int hdatePid = dialog.getHdatePid();
+				fromDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get(hdatePid);
+				hdp.get(fromDatePid);
 				textFromDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -94,10 +94,8 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 			final SexTypeNavigatorDialog dialog = new SexTypeNavigatorDialog(
 					textSexTypePid.getShell(), context);
 			if (dialog.open() == Window.OK) {
-
 				sexTypePid = dialog.getSexTypePid();
 				textSexTypePid.setText(Integer.toString(sexTypePid));
-
 				final SexTypeProvider provider = new SexTypeProvider();
 				provider.get(sexTypePid);
 			}
@@ -115,9 +113,9 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				textToDate.getShell(), context);
 		if (dialog.open() == Window.OK) {
 			try {
-				final int hdatePid = dialog.getHdatePid();
+				toDatePid = dialog.getHdatePid();
 				final HDateProvider hdp = new HDateProvider();
-				hdp.get(hdatePid);
+				hdp.get(toDatePid);
 				textToDate.setText(hdp.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -130,6 +128,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	 */
 	private void clearFromDate() {
 		textFromDate.setText("");
+		fromDatePid = 0;
 	}
 
 	/**
@@ -144,6 +143,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 	 *
 	 */
 	private void clearToDate() {
+		toDatePid = 0;
 		textToDate.setText("");
 	}
 
@@ -175,9 +175,8 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final int selectionIndex = comboSex.getSelectionIndex();
-				wizard = (NewPersonWizard) getWizard();
-				wizard.setSexTypePid(Integer
-						.parseInt(stringList.get(selectionIndex).get(0)));
+				sexTypePid = Integer
+						.parseInt(stringList.get(selectionIndex).get(0));
 				setPageComplete(true);
 			}
 		});
@@ -201,20 +200,17 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		compositeFrom.setLayout(new GridLayout(2, false));
 
 		final Label lblFromDate = new Label(compositeFrom, SWT.NONE);
-		lblFromDate.setSize(55, 15);
 		lblFromDate.setText("From Date");
 
 		textFromDate = new Text(compositeFrom, SWT.BORDER);
 		textFromDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textFromDate.setSize(226, 21);
 		textFromDate.setEditable(false);
 
 		final Composite compositeFromButtons = new Composite(compositeFrom,
 				SWT.NONE);
 		compositeFromButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeFromButtons.setSize(137, 31);
 		compositeFromButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewFrom = new Button(compositeFromButtons, SWT.NONE);
@@ -250,20 +246,17 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 		compositeTo.setLayout(new GridLayout(2, false));
 
 		final Label lblToDate = new Label(compositeTo, SWT.NONE);
-		lblToDate.setSize(40, 15);
 		lblToDate.setText("To Date");
 
 		textToDate = new Text(compositeTo, SWT.BORDER);
 		textToDate.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textToDate.setSize(264, 21);
 		textToDate.setEditable(false);
 
 		final Composite compositeToButtons = new Composite(compositeTo,
 				SWT.NONE);
 		compositeToButtons.setLayoutData(
 				new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-		compositeToButtons.setSize(137, 31);
 		compositeToButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		final Button btnNewTo = new Button(compositeToButtons, SWT.NONE);
@@ -321,7 +314,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				setFromDatePid(hdp.insert());
+				fromDatePid = hdp.insert();
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -342,7 +335,7 @@ public class NewPersonSexWizardPage1 extends WizardPage {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				setToDatePid(hdp.insert());
+				toDatePid = hdp.insert();
 				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
