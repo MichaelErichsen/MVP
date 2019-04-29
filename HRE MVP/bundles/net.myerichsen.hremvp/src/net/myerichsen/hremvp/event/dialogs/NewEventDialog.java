@@ -136,6 +136,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				LOGGER.log(Level.INFO, "Inserted location event {0}",
 						locationEventsPid);
 			} catch (final Exception e1) {
+				// FIXME Null pointer exception
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
@@ -717,6 +718,7 @@ public class NewEventDialog extends TitleAreaDialog {
 		if (dialog.open() == Window.OK) {
 			try {
 				final LocationProvider lp = new LocationProvider();
+				// FIXME net.myerichsen.hremvp.MvpException: ID 0 not found
 				lp.get(locationPid);
 				textLocation.setText(lp.getPrimaryName());
 
