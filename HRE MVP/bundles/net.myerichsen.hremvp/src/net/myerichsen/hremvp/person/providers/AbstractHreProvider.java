@@ -144,9 +144,7 @@ public abstract class AbstractHreProvider {
 //								try {
 //									 invokeVararg(model, argVector, method);
 //								} catch (Exception e) {
-//									 e.printStackTrace();
-//									 LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line " +
-//									 e.getStackTrace()[0].getLineNumber());
+//                                   LOGGER.log(Level.SEVERE, e.toString(), e);//									 LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line " +
 //								}
 //							}
 //						}
@@ -159,9 +157,7 @@ public abstract class AbstractHreProvider {
 //				}
 //			}
 //		} catch (Exception e) {
-//			 e.printStackTrace();
-//			 LOGGER
-//					.severe(e.getClass() + ": " + e.getMessage() + " at line " + e.getStackTrace()[0].getLineNumber());
+//  LOGGER.log(Level.SEVERE, e.toString(), e);//									 LOGGER.severe(e.getClass() + ": " + e.getMessage() + " at line " +
 //		}
 //	}
 

@@ -43,7 +43,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all parents for a single person
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. apr. 2019
+ * @version 29. apr. 2019
  */
 @SuppressWarnings("restriction")
 public class PersonParentsView {
@@ -158,16 +158,12 @@ public class PersonParentsView {
 			}
 		});
 		mntmRemoveSelectedParent.setText("Remove selected parent...");
-
 	}
 
 	/**
 	 *
 	 */
 	protected void openParentView() {
-		// FIXME Doubleclick does not work any more
-//		int personPid = 0;
-
 		final ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.openpersonview", null);
 		handlerService.executeHandler(command);
