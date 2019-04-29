@@ -49,7 +49,7 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. apr. 2019
+ * @version 29. apr. 2019
  *
  */
 
@@ -366,7 +366,7 @@ public class H2TableNavigator {
 				}
 			}
 		} catch (final Exception e) {
-			LOGGER.log(Level.FINEST, "Part could not be activated");
+			LOGGER.log(Level.INFO, "Part could not be activated");
 		}
 
 		h2dnPart.setLabel(tableName);

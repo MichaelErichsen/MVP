@@ -14,11 +14,13 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 /**
  * Handler to open a table navigator
  *
- * @version 2018-09-04
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
+ * @version 29. apr. 2019
  *
  */
 public class TableNavigatorHandler {
+	private static final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableNavigator";
+
 	/**
 	 * Open a table navigator
 	 *
@@ -34,8 +36,7 @@ public class TableNavigatorHandler {
 		part.setContainerData("650");
 		part.setCloseable(true);
 		part.setVisible(true);
-		part.setContributionURI(
-				"bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableNavigator");
+		part.setContributionURI(CONTRIBUTION_URI);
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
 		stacks.get(stacks.size() - 2).getChildren().add(part);
