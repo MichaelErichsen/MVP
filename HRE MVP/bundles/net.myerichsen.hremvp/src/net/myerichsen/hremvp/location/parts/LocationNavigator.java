@@ -57,7 +57,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 30. apr. 2019
  *
  */
 public class LocationNavigator {
@@ -128,6 +128,14 @@ public class LocationNavigator {
 		tblclmnPrimaryLocationName.setText("Primary Location Name");
 		tableViewerColumnName.setLabelProvider(new HREColumnLabelProvider(1));
 
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		try {
+			tableViewer.setInput(provider.getStringList());
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			eventBroker.post("MESSAGE", e1.getMessage());
+		}
+
 		final Menu menu = new Menu(table);
 		table.setMenu(menu);
 
@@ -169,14 +177,6 @@ public class LocationNavigator {
 
 		textNameFilter.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		try {
-			tableViewer.setInput(provider.getStringList());
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			eventBroker.post("MESSAGE", e1.getMessage());
-		}
 	}
 
 	/**

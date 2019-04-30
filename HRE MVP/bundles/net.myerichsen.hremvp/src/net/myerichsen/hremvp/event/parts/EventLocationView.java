@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. apr. 2019
+ * @version 30. apr. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
@@ -159,7 +159,7 @@ public class EventLocationView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			lls = provider.getStringList(eventPid);
+			lls = provider.getLocationStringListByEvent(eventPid);
 			tableViewer.setInput(lls);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -295,7 +295,7 @@ public class EventLocationView {
 	 *
 	 */
 	protected void openLocationView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationViewOld";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
@@ -350,7 +350,7 @@ public class EventLocationView {
 		LOGGER.log(Level.INFO, "Received event pid {0}", eventPid);
 		this.eventPid = eventPid;
 		try {
-			lls = provider.getStringList(eventPid);
+			lls = provider.getLocationStringListByEvent(eventPid);
 			tableViewer.setInput(lls);
 			tableViewer.refresh();
 		} catch (final Exception e) {

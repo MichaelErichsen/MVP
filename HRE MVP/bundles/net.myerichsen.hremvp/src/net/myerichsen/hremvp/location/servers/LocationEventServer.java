@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
-import net.myerichsen.hremvp.dbmodels.EventTypes;
-import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
 
 /**
@@ -18,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 23. apr. 2019
+ * @version 30. apr. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
@@ -26,7 +24,7 @@ public class LocationEventServer implements IHREServer {
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private int LocationEventsPid;
 	private int EventPid;
-	private int LocationPid;
+	private int locationPid;
 	private boolean PrimaryEvent;
 	private boolean PrimaryLocation;
 
@@ -89,37 +87,6 @@ public class LocationEventServer implements IHREServer {
 	}
 
 	/**
-	 * @param locationPid The persistent ID of the row
-	 * @return A list of lists of strings of pids and labels
-	 * @throws Exception Any exception
-	 */
-	public List<List<String>> getEventList(int locationPid) throws Exception {
-		final List<List<String>> lls = new ArrayList<>();
-		List<String> stringList;
-
-		int eventPid;
-
-		final Events event = new Events();
-		final EventTypes et = new EventTypes();
-		final LocationEvents link = new LocationEvents();
-		final List<LocationEvents> a = link.getFKLocationPid(locationPid);
-
-		for (final LocationEvents eventLink : a) {
-			stringList = new ArrayList<>();
-
-			eventPid = eventLink.getEventPid();
-			stringList.add(Integer.toString(eventPid));
-
-			event.get(eventPid);
-			et.get(event.getEventTypePid());
-			stringList.add(et.getAbbreviation());
-			lls.add(stringList);
-		}
-
-		return lls;
-	}
-
-	/**
 	 * @return the eventPid
 	 */
 	public int getEventPid() {
@@ -137,7 +104,7 @@ public class LocationEventServer implements IHREServer {
 	 * @return the locationPid
 	 */
 	public int getLocationPid() {
-		return LocationPid;
+		return locationPid;
 	}
 
 	/*
@@ -171,15 +138,19 @@ public class LocationEventServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		LocationPid = key;
 		final List<List<String>> lls = new ArrayList<>();
 		LocationServer ls;
+		List<String> locationStringList;
 
 		if (key == 0) {
+			locationStringList = new ArrayList<>();
+			locationStringList.add("0");
+			locationStringList.add("");
+			lls.add(locationStringList);
 			return lls;
 		}
 
-		final List<String> locationStringList = new ArrayList<>();
+		this.locationPid = key;
 
 		final LocationEvents locationEvents = new LocationEvents();
 		final List<LocationEvents> leList = locationEvents
@@ -187,18 +158,29 @@ public class LocationEventServer implements IHREServer {
 
 		try {
 			for (final LocationEvents le : leList) {
+				locationStringList = new ArrayList<>();
 				ls = new LocationServer();
-				LocationPid = le.getLocationPid();
-				ls.get(LocationPid);
-				locationStringList.add(Integer.toString(LocationPid));
+				locationPid = le.getLocationPid();
+				ls.get(locationPid);
+				locationStringList.add(Integer.toString(locationPid));
 				locationStringList.add(ls.getPrimaryName());
+				lls.add(locationStringList);
 			}
 		} catch (final MvpException e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
-		lls.add(locationStringList);
 		return lls;
+	}
+
+	/**
+	 * @param eventPid The persistent ID of the event
+	 * @return A list of lists of strings of pids and labels
+	 * @throws Exception Any exception
+	 */
+	public List<List<String>> getLocationStringListByEvent(int eventPid)
+			throws Exception {
+		return new LocationServer().getStringList(eventPid);
 	}
 
 	/*
@@ -209,7 +191,7 @@ public class LocationEventServer implements IHREServer {
 	@Override
 	public int insert() throws Exception {
 		locationEvent.setEventPid(EventPid);
-		locationEvent.setLocationPid(LocationPid);
+		locationEvent.setLocationPid(locationPid);
 		locationEvent.setPrimaryEvent(PrimaryEvent);
 		locationEvent.setPrimaryLocation(PrimaryLocation);
 		return locationEvent.insert();
@@ -259,7 +241,7 @@ public class LocationEventServer implements IHREServer {
 	 * @param locationPid the locationPid to set
 	 */
 	public void setLocationPid(int locationPid) {
-		LocationPid = locationPid;
+		this.locationPid = locationPid;
 	}
 
 	/**
