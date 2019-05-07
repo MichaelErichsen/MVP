@@ -17,7 +17,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Languages}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class LanguageServer implements IHREServer {
@@ -184,6 +184,11 @@ public class LanguageServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
 		List<String> stringList;
 
 		final Languages aLanguage = new Languages();

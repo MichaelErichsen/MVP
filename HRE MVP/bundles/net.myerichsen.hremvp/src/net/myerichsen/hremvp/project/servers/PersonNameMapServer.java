@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.PersonNameMaps}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 2019
+ * @version 7. maj 2019
  */
 public class PersonNameMapServer implements IHREServer {
 	// private static Logger LOGGER =
@@ -160,38 +160,38 @@ public class PersonNameMapServer implements IHREServer {
 	}
 
 	/**
-	 * @param personNameStylePid
+	 * @param key
 	 * @return List A list of lists of name map pid, label pid, part no, label,
 	 *         dictionary pid and a blank
 	 * @throws Exception
 	 */
 	@Override
-	public List<List<String>> getStringList(int personNameStylePid)
-			throws Exception {
+	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
 		List<String> stringList;
 
-		if (personNameStylePid > 0) {
-			final List<PersonNameMaps> fkNameStylePid = map
-					.getFKNameStylePid(personNameStylePid);
+		final List<PersonNameMaps> fkNameStylePid = map.getFKNameStylePid(key);
 
-			for (final PersonNameMaps personNameMaps : fkNameStylePid) {
-				stringList = new ArrayList<>();
-				stringList
-						.add(Integer.toString(personNameMaps.getNameMapPid()));
-				final int labelPid = personNameMaps.getLabelPid();
-				stringList.add(Integer.toString(labelPid));
-				stringList.add(Integer.toString(personNameMaps.getPartNo()));
+		for (final PersonNameMaps personNameMaps : fkNameStylePid) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(personNameMaps.getNameMapPid()));
+			final int labelPid = personNameMaps.getLabelPid();
+			stringList.add(Integer.toString(labelPid));
+			stringList.add(Integer.toString(personNameMaps.getPartNo()));
 
-				final Dictionary dictionary = new Dictionary();
-				final List<Dictionary> fkLabelPid = dictionary
-						.getFKLabelPid(labelPid);
-				stringList.add(fkLabelPid.get(0).getLabel());
-				stringList.add(
-						Integer.toString(fkLabelPid.get(0).getDictionaryPid()));
-				stringList.add("");
-				lls.add(stringList);
-			}
+			final Dictionary dictionary = new Dictionary();
+			final List<Dictionary> fkLabelPid = dictionary
+					.getFKLabelPid(labelPid);
+			stringList.add(fkLabelPid.get(0).getLabel());
+			stringList.add(
+					Integer.toString(fkLabelPid.get(0).getDictionaryPid()));
+			stringList.add("");
+			lls.add(stringList);
 		}
 
 		return lls;

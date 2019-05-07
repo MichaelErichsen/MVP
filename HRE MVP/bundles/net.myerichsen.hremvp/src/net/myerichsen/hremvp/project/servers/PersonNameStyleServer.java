@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.dbmodels.PersonNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.NameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class PersonNameStyleServer implements IHREServer {
@@ -204,6 +204,11 @@ public class PersonNameStyleServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
 		List<String> stringList;
 		final Dictionary dictionary = new Dictionary();
 

@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.dbmodels.Locations;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Locations}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 26. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class LocationServer implements IHREServer {
@@ -299,6 +299,10 @@ public class LocationServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
+		
+		if (key == 0) {
+			return lls;
+		}
 
 		final LocationNameParts part = new LocationNameParts();
 		List<LocationNameParts> partList;

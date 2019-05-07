@@ -19,7 +19,7 @@ import net.myerichsen.hremvp.dbmodels.LocationNameStyles;
  * {@link net.myerichsen.hremvp.dbmodels.LocationNameStyles}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class LocationNameStyleServer implements IHREServer {
@@ -224,6 +224,11 @@ public class LocationNameStyleServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
 		List<String> stringList;
 		final Dictionary dictionary = new Dictionary();
 

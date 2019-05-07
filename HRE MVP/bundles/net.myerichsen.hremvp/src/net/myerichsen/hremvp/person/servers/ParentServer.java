@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Parents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 23. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class ParentServer implements IHREServer {
@@ -153,7 +153,12 @@ public class ParentServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
-		final List<List<String>> parentList = new ArrayList<>();
+		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
 		List<String> ls;
 		int parentPid;
 		final PersonNameServer pns = new PersonNameServer();
@@ -161,7 +166,7 @@ public class ParentServer implements IHREServer {
 		final Dictionary dictionary = new Dictionary();
 
 		if (key == 0) {
-			return parentList;
+			return lls;
 		}
 
 		for (final Parents aParent : new Parents().getFKChild(key)) {
@@ -176,9 +181,9 @@ public class ParentServer implements IHREServer {
 
 			ls.add(Boolean.toString(aParent.isPrimaryParent()));
 
-			parentList.add(ls);
+			lls.add(ls);
 		}
-		return parentList;
+		return lls;
 	}
 
 	/*

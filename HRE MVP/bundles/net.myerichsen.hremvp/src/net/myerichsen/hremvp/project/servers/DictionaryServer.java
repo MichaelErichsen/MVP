@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.dbmodels.Dictionary;
  * {@link net.myerichsen.hremvp.dbmodels.Dictionary}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 3. mar. 2019
+ * @version 7. maj 2019
  *
  */
 public class DictionaryServer implements IHREServer {
@@ -144,18 +144,20 @@ public class DictionaryServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int labelPid) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (labelPid == 0) {
+			return lls;
+		}
+
 		List<String> stringList;
 
-		if (labelPid > 0) {
-			final List<Dictionary> fkLabelPid = dictionary
-					.getFKLabelPid(labelPid);
-			for (final Dictionary d : fkLabelPid) {
-				stringList = new ArrayList<>();
-				stringList.add(d.getIsoCode());
-				stringList.add(d.getLabel());
-				stringList.add(Integer.toString(d.getDictionaryPid()));
-				lls.add(stringList);
-			}
+		final List<Dictionary> fkLabelPid = dictionary.getFKLabelPid(labelPid);
+		for (final Dictionary d : fkLabelPid) {
+			stringList = new ArrayList<>();
+			stringList.add(d.getIsoCode());
+			stringList.add(d.getLabel());
+			stringList.add(Integer.toString(d.getDictionaryPid()));
+			lls.add(stringList);
 		}
 		return lls;
 

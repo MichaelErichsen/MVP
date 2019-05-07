@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Partners;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 23. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class PartnerServer implements IHREServer {
@@ -132,11 +132,17 @@ public class PartnerServer implements IHREServer {
 	 */
 	@Override
 	public List<List<String>> getStringList(int key) throws Exception {
+		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
 		List<String> ls;
 		final PartnerRoles role2 = new PartnerRoles();
 		final Dictionary dictionary = new Dictionary();
 		final PersonNameServer pns = new PersonNameServer();
-		final List<List<String>> partnerList = new ArrayList<>();
+
 		final List<Partners> lpa = new Partners().getFKPartner1(key);
 		lpa.addAll(new Partners().getFKPartner2(key));
 
@@ -157,10 +163,10 @@ public class PartnerServer implements IHREServer {
 
 			ls.add(Boolean.toString(partner.isPrimaryPartner()));
 
-			partnerList.add(ls);
+			lls.add(ls);
 		}
 
-		return partnerList;
+		return lls;
 	}
 
 	/**

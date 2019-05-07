@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.person.servers.PersonNameServer;
  * Business logic interface for persons for locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 20. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class LocationPersonServer implements IHREServer {
@@ -96,6 +96,11 @@ public class LocationPersonServer implements IHREServer {
 	@Override
 	public List<List<String>> getStringList(int locationPid) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (locationPid == 0) {
+			return lls;
+		}
+
 		List<String> stringList;
 		int eventPid;
 		List<PersonEvents> peList;

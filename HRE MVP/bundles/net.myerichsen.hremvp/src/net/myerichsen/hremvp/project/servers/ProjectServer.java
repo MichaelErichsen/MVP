@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.MvpException;
  * Business logic interface for HRE Projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 27. apr. 2019
+ * @version 7. maj 2019
  *
  */
 public class ProjectServer implements IHREServer {
@@ -250,6 +250,11 @@ public class ProjectServer implements IHREServer {
 		List<String> ls;
 
 		final List<List<String>> lls = new ArrayList<>();
+
+		if (key == 0) {
+			return lls;
+		}
+
 		final String[] labelArray = { "Project Name", "Last Edited", "Summary",
 				"Local/Server", "Path" };
 
