@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 16. apr. 2019
+ * @version 7. maj 2019
  */
 public class EventView {
 	private static final Logger LOGGER = Logger
@@ -356,8 +356,7 @@ public class EventView {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				hdp.insert();
-				fromDatePid = dialog.gethDatePid();
+				fromDatePid = hdp.insert();
 				textFromDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -378,8 +377,7 @@ public class EventView {
 				hdp.setSortDate(dialog.getSortDate());
 				hdp.setOriginalText(dialog.getOriginal());
 				hdp.setSurety(dialog.getSurety());
-				hdp.insert();
-				toDatePid = dialog.gethDatePid();
+				toDatePid = hdp.insert();
 				textToDate.setText(dialog.getDate().toString());
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -406,8 +404,9 @@ public class EventView {
 	 *
 	 */
 	protected void update() {
+		LOGGER.log(Level.INFO, "Updating {0}, {1}, {2}, {3}", new Object[] {
+				eventPid, eventTypePid, fromDatePid, toDatePid });
 		try {
-			// FIXME Not working properly
 			provider.setEventPid(eventPid);
 			provider.setEventTypePid(eventTypePid);
 			provider.setFromDatePid(fromDatePid);
