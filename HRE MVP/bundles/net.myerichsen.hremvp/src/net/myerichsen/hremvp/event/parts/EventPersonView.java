@@ -50,7 +50,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. apr. 2019
+ * @version 11. maj 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
@@ -110,7 +110,7 @@ public class EventPersonView {
 		final TableViewerColumn tableViewerColumnEventId = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnId = tableViewerColumnEventId.getColumn();
-		tblclmnId.setWidth(100);
+		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 		tableViewerColumnEventId
 				.setLabelProvider(new HREColumnLabelProvider(0));
@@ -119,23 +119,29 @@ public class EventPersonView {
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnPEId = tableViewerColumnPersonEventId
 				.getColumn();
-		tblclmnPEId.setWidth(100);
+		tblclmnPEId.setWidth(50);
 		tblclmnPEId.setText("Person Event ID");
 		tableViewerColumnPersonEventId
-				.setLabelProvider(new HREColumnLabelProvider(2));
+				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnPerson = tableViewerColumnEventLabel
 				.getColumn();
-		tblclmnPerson.setWidth(300);
+		tblclmnPerson.setWidth(200);
 		tblclmnPerson.setText("Person");
 		tableViewerColumnEventLabel
-				.setLabelProvider(new HREColumnLabelProvider(1));
+				.setLabelProvider(new HREColumnLabelProvider(2));
+
+		TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
+				tableViewer, SWT.NONE);
+		TableColumn tblclmnRole = tableViewerColumnRole.getColumn();
+		tblclmnRole.setWidth(100);
+		tblclmnRole.setText("Role");
+		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(4));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			// FIXME java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
 			tableViewer.setInput(provider.getStringList(eventPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
@@ -154,24 +160,7 @@ public class EventPersonView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final NewPersonWizard newPersonWizard = new NewPersonWizard(
-						context);
-				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						newPersonWizard);
-
-				if (dialog.open() == Window.OK) {
-					try {
-						final PersonEventProvider lep = new PersonEventProvider();
-						lep.setEventPid(eventPid);
-						lep.setPersonPid(newPersonWizard.getPersonPid());
-						lep.setPrimaryEvent(false);
-						lep.setPrimaryPerson(false);
-
-						lep.insert();
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				newPersonEvent(parent, context);
 			}
 		});
 		mntmAddNewPerson.setText("Add new person...");
@@ -206,6 +195,7 @@ public class EventPersonView {
 			}
 		});
 		mntmDeleteSelectedPerson.setText("Delete link to selected person...");
+
 	}
 
 	/**
@@ -250,6 +240,31 @@ public class EventPersonView {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
+	}
+
+	/**
+	 * @param parent
+	 * @param context
+	 */
+	public void newPersonEvent(Composite parent, IEclipseContext context) {
+		final NewPersonWizard newPersonWizard = new NewPersonWizard(context);
+		final WizardDialog dialog = new WizardDialog(parent.getShell(),
+				newPersonWizard);
+
+		if (dialog.open() == Window.OK) {
+			try {
+				// FIXME Add new dialog to set role
+				final PersonEventProvider pep = new PersonEventProvider();
+				pep.setEventPid(eventPid);
+				pep.setPersonPid(newPersonWizard.getPersonPid());
+				pep.setPrimaryEvent(false);
+				pep.setPrimaryPerson(false);
+
+				pep.insert();
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
 	}
 
 	/**

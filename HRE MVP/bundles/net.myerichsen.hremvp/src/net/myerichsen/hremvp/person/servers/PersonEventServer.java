@@ -9,11 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.EventRoles;
 import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. apr. 2019
+ * @version 11. maj 2019
  *
  */
 public class PersonEventServer implements IHREServer {
@@ -145,14 +146,23 @@ public class PersonEventServer implements IHREServer {
 				PersonPid = pe.getPersonPid();
 				ls.get(PersonPid);
 				personStringList.add(Integer.toString(PersonPid));
-				personStringList.add(ls.getPrimaryName());
+
 				personStringList.add(Integer.toString(pe.getPersonEventPid()));
+
+				personStringList.add(ls.getPrimaryName());
+
+				EventRolePid = pe.getEventRolePid();
+				personStringList.add(Integer.toString(EventRolePid));
+
+				EventRoles role = new EventRoles();
+				role.get(EventRolePid);
+				personStringList.add(role.getAbbreviation());
+				lls.add(personStringList);
 			}
 		} catch (final MvpException e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
 
-		lls.add(personStringList);
 		return lls;
 	}
 
@@ -163,10 +173,10 @@ public class PersonEventServer implements IHREServer {
 	@Override
 	public int insert() throws Exception {
 		personEvent.setEventPid(EventPid);
+		personEvent.setEventRolePid(EventRolePid);
 		personEvent.setPersonPid(PersonPid);
 		personEvent.setPrimaryEvent(isPrimaryEvent());
 		personEvent.setPrimaryPerson(isPrimaryPerson());
-		personEvent.setEventRolePid(EventRolePid);
 		return personEvent.insert();
 	}
 

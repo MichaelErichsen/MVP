@@ -8,7 +8,7 @@ import net.myerichsen.hremvp.person.servers.PersonEventServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 23. apr. 2019
+ * @version 11. maj 2019
  */
 public class PersonEventProvider implements IHREProvider {
 	private int PersonEventPid;
@@ -18,7 +18,7 @@ public class PersonEventProvider implements IHREProvider {
 	private boolean PrimaryPerson;
 	private boolean PrimaryEvent;
 
-	PersonEventServer server;
+	private final PersonEventServer server;
 
 	/**
 	 * Constructor

@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 13. apr. 2019
+ * @version 11. maj 2019
  *
  */
 public class NewPersonWizard extends Wizard {
@@ -100,6 +100,17 @@ public class NewPersonWizard extends Wizard {
 		addPage(page1);
 		page2 = new NewPersonWizardPage2(context);
 		addPage(page2);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
+	 */
+	@Override
+	public boolean canFinish() {
+		return ((getContainer().getCurrentPage() != page1)
+				&& (getContainer().getCurrentPage() != page2));
 	}
 
 	/**
@@ -324,8 +335,12 @@ public class NewPersonWizard extends Wizard {
 			int namePartPid;
 			final List<List<String>> lls = page3.getLls();
 
+			if (lls == null) {
+				page3.setErrorMessage("Please enter a name");
+				return false;
+			}
+
 			// Create each name part
-			// FIXME java.lang.NullPointerException
 			for (int i = 0; i < lls.size(); i++) {
 				string = lls.get(i).get(5);
 
