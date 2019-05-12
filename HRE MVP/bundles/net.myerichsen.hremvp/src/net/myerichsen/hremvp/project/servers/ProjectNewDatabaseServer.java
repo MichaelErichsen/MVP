@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.ui.di.UISynchronize;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -46,7 +47,7 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
  * This is perhaps done best in MS Excel.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. maj 2019
+ * @version 12. maj 2019
  *
  */
 public class ProjectNewDatabaseServer {
@@ -262,6 +263,105 @@ public class ProjectNewDatabaseServer {
 	}
 
 	/**
+	 * @param monitor
+	 * @param counter
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 * @throws InterruptedException
+	 */
+	private int createConstraints(IProgressMonitor monitor, int counter,
+			Connection conn) throws SQLException, InterruptedException {
+		Statement stmt;
+		monitor.subTask("Create constraints");
+		stmt = conn.createStatement();
+
+		for (final String element : constraintsStatementArray) {
+			stmt.execute(element);
+			monitor.worked(1);
+			Thread.sleep(100);
+			counter++;
+		}
+
+		stmt.close();
+		return counter;
+	}
+
+	/**
+	 * @param monitor
+	 * @param counter
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 * @throws InterruptedException
+	 */
+	private int createIndices(IProgressMonitor monitor, int counter,
+			Connection conn) throws SQLException, InterruptedException {
+		Statement stmt;
+		monitor.subTask("Create indices");
+		stmt = conn.createStatement();
+
+		for (final String element : createIndicesArray) {
+			stmt.execute(element);
+			monitor.worked(1);
+			Thread.sleep(100);
+			counter++;
+		}
+
+		stmt.close();
+		return counter;
+	}
+
+	/**
+	 * @param monitor
+	 * @param counter
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 * @throws InterruptedException
+	 */
+	private int createTables(IProgressMonitor monitor, int counter,
+			Connection conn) throws SQLException, InterruptedException {
+		monitor.subTask("Create tables");
+		final Statement stmt = conn.createStatement();
+
+		for (final String element : createStatementArray) {
+			stmt.execute(element);
+			monitor.worked(1);
+			Thread.sleep(100);
+			counter++;
+		}
+
+		stmt.close();
+		return counter;
+	}
+
+	/**
+	 * @param monitor
+	 * @param counter
+	 * @return
+	 * @throws SQLException
+	 * @throws InterruptedException
+	 */
+	private int loadMasterData(IProgressMonitor monitor, int counter)
+			throws SQLException, InterruptedException {
+		monitor.subTask("Load master data");
+		for (int i = 0; i < tableNames.length; i++) {
+
+			int rowCount = 0;
+			final H2TableProvider provider = new H2TableProvider(tableNames[i]);
+			rowCount = provider.importCsv("./" + csvFileNames[i]);
+			LOGGER.log(Level.INFO, "{0} rows has been imported from {1}",
+					new Object[] { rowCount, csvFileNames[i] });
+			monitor.worked(10);
+			Thread.sleep(100);
+			counter += 10;
+
+		}
+		return counter;
+	}
+
+	/**
 	 * Provide the data
 	 *
 	 * @param dbName
@@ -289,72 +389,28 @@ public class ProjectNewDatabaseServer {
 					Thread.sleep(1000);
 					counter += 10;
 
-					monitor.subTask("Create tables");
-					Statement stmt = conn.createStatement();
-
-					for (final String element : createStatementArray) {
-						stmt.execute(element);
-						monitor.worked(1);
-						Thread.sleep(100);
-						counter++;
-					}
-
-					stmt.close();
+					counter = createTables(monitor, counter, conn);
 
 					if (monitor.isCanceled()) {
 						LOGGER.log(Level.INFO, "Project creation canceled");
 						return;
 					}
 
-					monitor.subTask("Create indices");
-					stmt = conn.createStatement();
-
-					for (final String element : createIndicesArray) {
-						stmt.execute(element);
-						monitor.worked(1);
-						Thread.sleep(100);
-						counter++;
-					}
-
-					stmt.close();
+					counter = createIndices(monitor, counter, conn);
 
 					if (monitor.isCanceled()) {
 						LOGGER.log(Level.INFO, "Project creation canceled");
 						return;
 					}
 
-					monitor.subTask("Create constraints");
-					stmt = conn.createStatement();
-
-					for (final String element : constraintsStatementArray) {
-						stmt.execute(element);
-						monitor.worked(1);
-						Thread.sleep(100);
-						counter++;
-					}
-
-					stmt.close();
+					counter = createConstraints(monitor, counter, conn);
 
 					if (monitor.isCanceled()) {
 						LOGGER.log(Level.INFO, "Project creation canceled");
 						return;
 					}
 
-					monitor.subTask("Load master data");
-					for (int i = 0; i < tableNames.length; i++) {
-
-						int rowCount = 0;
-						final H2TableProvider provider = new H2TableProvider(
-								tableNames[i]);
-						rowCount = provider.importCsv("./" + csvFileNames[i]);
-						LOGGER.log(Level.INFO,
-								"{0} rows has been imported from {1}",
-								new Object[] { rowCount, csvFileNames[i] });
-						monitor.worked(10);
-						Thread.sleep(100);
-						counter += 10;
-
-					}
+					counter = loadMasterData(monitor, counter);
 					LOGGER.log(Level.FINE, "Count is {0}", counter);
 					conn.close();
 
