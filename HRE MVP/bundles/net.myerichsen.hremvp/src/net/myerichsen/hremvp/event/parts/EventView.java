@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 7. maj 2019
+ * @version 12. maj 2019
  */
 public class EventView {
 	private static final Logger LOGGER = Logger
@@ -390,9 +390,11 @@ public class EventView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeLocationPidUpdateTopic(
+	private void subscribeEventPidUpdateTopic(
 			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
+		LOGGER.log(Level.INFO, "Received event pid {0}", eventPid);
 		if (eventPid != 0) {
+			this.eventPid = eventPid;
 			get(eventPid);
 		} else {
 			eventBroker.post("MESSAGE",

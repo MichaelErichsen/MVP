@@ -15,7 +15,6 @@ import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventTypes;
 import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.Hdates;
-import net.myerichsen.hremvp.dbmodels.Languages;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
 import net.myerichsen.hremvp.location.servers.LocationServer;
 
@@ -23,7 +22,7 @@ import net.myerichsen.hremvp.location.servers.LocationServer;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 2019
+ * @version 12. maj 2019
  *
  */
 public class EventServer implements IHREServer {
@@ -121,20 +120,7 @@ public class EventServer implements IHREServer {
 			setToDateOriginal("");
 		}
 
-//		final EventNames anEventName = new EventNames();
-//		setEventNamePid(event.getEventNamePid());
-//		anEventName.get(EventNamePid);
-//		setEventName(anEventName.getLabel());
-
-		final Languages aLanguage = new Languages();
-		aLanguage.get(LanguagePid);
-		setIsoCode(aLanguage.getIsocode());
-		setLanguage(aLanguage.getLabel());
-
-//		final EventTypes anEventType = new EventTypes();
-//		setEventTypePid(anEventName.getEventTypePid());
-//		anEventType.get(EventTypePid);
-//		setEventType(anEventType.getLabel());
+		setEventTypePid(event.getEventTypePid());
 	}
 
 	/**

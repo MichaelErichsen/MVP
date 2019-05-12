@@ -41,6 +41,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.myerichsen.hremvp.Constants;
+import net.myerichsen.hremvp.event.dialogs.EventRoleDialog;
+import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonEventProvider;
 import net.myerichsen.hremvp.person.wizards.NewPersonWizard;
@@ -50,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. maj 2019
+ * @version 12. maj 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
@@ -253,14 +255,26 @@ public class EventPersonView {
 
 		if (dialog.open() == Window.OK) {
 			try {
-				// FIXME Add new dialog to set role
-				final PersonEventProvider pep = new PersonEventProvider();
-				pep.setEventPid(eventPid);
-				pep.setPersonPid(newPersonWizard.getPersonPid());
-				pep.setPrimaryEvent(false);
-				pep.setPrimaryPerson(false);
+				LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
+				EventProvider ep = new EventProvider();
+				ep.get(eventPid);
 
-				pep.insert();
+				LOGGER.log(Level.INFO, "Event type pid {0}", ep.getEventTypePid());
+				
+				EventRoleDialog eventRoleDialog = new EventRoleDialog(
+						ep.getEventTypePid(), parent.getShell());
+
+				if (eventRoleDialog.open() == Window.OK) {
+					final PersonEventProvider pep = new PersonEventProvider();
+					pep.setEventPid(eventPid);
+					pep.setEventRolePid(eventRoleDialog.getEventRolePid());
+					pep.setPersonPid(newPersonWizard.getPersonPid());
+					pep.setPrimaryEvent(false);
+					pep.setPrimaryPerson(false);
+
+					pep.insert();
+				}
+
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
@@ -343,9 +357,10 @@ public class EventPersonView {
 	 */
 	@Inject
 	@Optional
-	private void subscribeKeyUpdateTopic(
+	private void subscribeEventPidUpdateTopic(
 			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
 		this.eventPid = eventPid;
+		LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
 
 		try {
 			tableViewer.setInput(provider.getStringList(eventPid));

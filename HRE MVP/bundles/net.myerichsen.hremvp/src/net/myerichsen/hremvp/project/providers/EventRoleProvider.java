@@ -10,7 +10,7 @@ import net.myerichsen.hremvp.project.servers.EventRoleServer;
  * Provides all data for an personEvent Role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. mar. 2019
+ * @version 12. maj 2019
  *
  */
 public class EventRoleProvider implements IHREProvider {
@@ -40,19 +40,6 @@ public class EventRoleProvider implements IHREProvider {
 	public void delete(int key) throws Exception {
 		server.delete(key);
 	}
-
-//	/**
-//	 * Get all rows
-//	 *
-//	 * @return A list of lists of strings with pids and labels
-//	 * @throws Exception An exception that provides information on a database
-//	 *                      access error or other errors
-//	 * @throws MvpException Application specific exception
-//	 */
-//	@Override
-//	public List<List<String>> get() throws Exception {
-//		return server.get();
-//	}
 
 	/**
 	 *
@@ -140,6 +127,11 @@ public class EventRoleProvider implements IHREProvider {
 	@Override
 	public List<List<String>> getStringList(int labelPid) throws Exception {
 		return server.getStringList(labelPid);
+	}
+
+	public List<List<String>> getStringListByType(int eventTypePid)
+			throws Exception {
+		return server.getStringListByType(eventTypePid);
 	}
 
 	/**

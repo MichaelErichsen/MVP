@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. apr. 2019
+ * @version 12. maj 2019
  *
  */
 public class EventRoleServer implements IHREServer {
@@ -292,6 +292,32 @@ public class EventRoleServer implements IHREServer {
 			}
 
 			stringList.add(label);
+			lls.add(stringList);
+		}
+		return lls;
+	}
+
+	/**
+	 * @param eventTypePid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<List<String>> getStringListByType(int eventTypePid)
+			throws Exception {
+		final List<List<String>> lls = new ArrayList<>();
+
+		if (eventTypePid == 0) {
+			return lls;
+		}
+
+		List<String> stringList;
+
+		final List<EventRoles> list = eventRole.getFKEventTypePid(eventTypePid);
+
+		for (EventRoles eventRoles : list) {
+			stringList = new ArrayList<>();
+			stringList.add(Integer.toString(eventRoles.getEventRolePid()));
+			stringList.add(eventRoles.getAbbreviation());
 			lls.add(stringList);
 		}
 		return lls;
