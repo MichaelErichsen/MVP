@@ -10,14 +10,13 @@ import net.myerichsen.hremvp.project.servers.EventRoleServer;
  * Provides all data for an personEvent Role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. maj 2019
+ * @version 13. maj 2019
  *
  */
 public class EventRoleProvider implements IHREProvider {
 	private int EventRolePid;
 	private int EventTypePid;
 	private String Abbreviation;
-	private int TableId;
 	private final EventRoleServer server;
 
 	/**
@@ -135,13 +134,6 @@ public class EventRoleProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the tableId
-	 */
-	public int getTableId() {
-		return TableId;
-	}
-
-	/**
 	 * Insert a row
 	 *
 	 * @return int The persistent ID of the inserted row
@@ -182,13 +174,6 @@ public class EventRoleProvider implements IHREProvider {
 	 * @param labelPid the labelPid to set
 	 */
 	public void setLabelPid(int labelPid) {
-	}
-
-	/**
-	 * @param tableId the tableId to set
-	 */
-	public void setTableId(int tableId) {
-		TableId = tableId;
 	}
 
 	/**

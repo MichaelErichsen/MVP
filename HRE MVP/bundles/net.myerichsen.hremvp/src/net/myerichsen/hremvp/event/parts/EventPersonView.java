@@ -259,8 +259,9 @@ public class EventPersonView {
 				EventProvider ep = new EventProvider();
 				ep.get(eventPid);
 
-				LOGGER.log(Level.INFO, "Event type pid {0}", ep.getEventTypePid());
-				
+				LOGGER.log(Level.INFO, "Event type pid {0}",
+						ep.getEventTypePid());
+
 				EventRoleDialog eventRoleDialog = new EventRoleDialog(
 						ep.getEventTypePid(), parent.getShell());
 
@@ -285,17 +286,32 @@ public class EventPersonView {
 	 *
 	 */
 	protected void openPersonNavigator() {
-		final PersonNavigatorDialog dialog = new PersonNavigatorDialog(
+		final PersonNavigatorDialog personNavigatorDialog = new PersonNavigatorDialog(
 				tableViewer.getTable().getShell(), context);
-		if (dialog.open() == Window.OK) {
+		if (personNavigatorDialog.open() == Window.OK) {
 			try {
-				final PersonEventProvider lep = new PersonEventProvider();
-				lep.setEventPid(eventPid);
-				lep.setPersonPid(dialog.getPersonPid());
-				lep.setPrimaryEvent(false);
-				lep.setPrimaryPerson(false);
+				LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
+				EventProvider ep = new EventProvider();
+				ep.get(eventPid);
 
-				lep.insert();
+				LOGGER.log(Level.INFO, "Event type pid {0}",
+						ep.getEventTypePid());
+
+				EventRoleDialog eventRoleDialog = new EventRoleDialog(
+						ep.getEventTypePid(),
+						tableViewer.getTable().getShell());
+
+				if (eventRoleDialog.open() == Window.OK) {
+					final PersonEventProvider pep = new PersonEventProvider();
+					pep.setEventPid(eventPid);
+					pep.setEventRolePid(eventRoleDialog.getEventRolePid());
+					pep.setPersonPid(personNavigatorDialog.getPersonPid());
+					pep.setPrimaryEvent(false);
+					pep.setPrimaryPerson(false);
+
+					pep.insert();
+				}
+
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
@@ -363,6 +379,7 @@ public class EventPersonView {
 		LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
 
 		try {
+			// FIXME Displays the same person every time
 			tableViewer.setInput(provider.getStringList(eventPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {

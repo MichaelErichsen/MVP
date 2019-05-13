@@ -14,14 +14,11 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -30,7 +27,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.myerichsen.hremvp.Constants;
-import net.myerichsen.hremvp.event.providers.EventProvider;
 import net.myerichsen.hremvp.project.providers.EventRoleProvider;
 import net.myerichsen.hremvp.project.providers.EventTypeProvider;
 import net.myerichsen.hremvp.providers.HREComboLabelProvider;
@@ -39,7 +35,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to add a person event role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 12. maj 2019
+ * @version 13. maj 2019
  *
  */
 public class EventRoleDialog extends TitleAreaDialog {
@@ -53,18 +49,17 @@ public class EventRoleDialog extends TitleAreaDialog {
 	private ComboViewer comboViewerEventRole;
 
 	private int eventNamePid = 0;
-	private String role = "";
 	private int eventTypePid = 0;
 	private int eventRolePid = 0;
 	private int eventPid = 0;
 
 	private List<List<String>> eventRoleStringList;
 	private Text textEventType;
-	private EventTypeProvider etp;
+	private final EventTypeProvider etp;
 
 	/**
 	 * Create the dialog.
-	 * 
+	 *
 	 * @param eventtypePid
 	 *
 	 * @param parentShell
@@ -84,14 +79,14 @@ public class EventRoleDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		final Button button = createButton(parent, IDialogConstants.OK_ID,
-				IDialogConstants.OK_LABEL, true);
-		button.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				createEvent();
-			}
-		});
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+				true);
+//		button.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseDown(MouseEvent e) {
+//				createEventRole();
+//			}
+//		});
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
 	}
@@ -122,7 +117,7 @@ public class EventRoleDialog extends TitleAreaDialog {
 			LOGGER.log(Level.INFO, "Event type pid {0}", eventTypePid);
 			etp.get(eventTypePid);
 			textEventType.setText(etp.getAbbreviation());
-		} catch (Exception e2) {
+		} catch (final Exception e2) {
 			LOGGER.log(Level.SEVERE, e2.toString(), e2);
 		}
 
@@ -145,9 +140,8 @@ public class EventRoleDialog extends TitleAreaDialog {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final int selectionIndex = comboEventRole.getSelectionIndex();
-				eventRolePid = Integer.parseInt(
-						eventRoleStringList.get(selectionIndex).get(0));
+				eventRolePid = Integer.parseInt(eventRoleStringList
+						.get(comboEventRole.getSelectionIndex()).get(0));
 			}
 		});
 		comboViewerEventRole
@@ -166,20 +160,27 @@ public class EventRoleDialog extends TitleAreaDialog {
 		return area;
 	}
 
-	/**
-	 *
-	 */
-	protected void createEvent() {
-		try {
-			final EventProvider provider = new EventProvider();
-			provider.setEventTypePid(eventTypePid);
-			setEventPid(provider.insert());
-
-			LOGGER.log(Level.INFO, "Created event {0}", eventPid);
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
-		}
-	}
+//	/**
+//	 *
+//	 */
+//	protected void createEventRole() {
+//		try {
+//			final EventRoleProvider provider = new EventRoleProvider();
+//			provider.setEventTypePid(eventTypePid);
+//			provider.setAbbreviation(eventRoleAbbreviation);
+//			eventRolePid = provider.insert();
+//
+//			eventBroker.post(
+//					net.myerichsen.hremvp.Constants.EVENT_ROLE_PID_UPDATE_TOPIC,
+//					eventRolePid);
+//			eventBroker.post(
+//					net.myerichsen.hremvp.Constants.EVENT_PID_UPDATE_TOPIC,
+//					eventPid);
+//			LOGGER.log(Level.INFO, "Created event {0}", eventPid);
+//		} catch (final Exception e) {
+//			LOGGER.log(Level.SEVERE, e.toString(), e);
+//		}
+//	}
 
 	/**
 	 * @return the eventNamePid
@@ -218,13 +219,6 @@ public class EventRoleDialog extends TitleAreaDialog {
 	}
 
 	/**
-	 * @return the role
-	 */
-	public String getRole() {
-		return role;
-	}
-
-	/**
 	 * @param eventNamePid the eventNamePid to set
 	 */
 	public void setEventNamePid(int eventNamePid) {
@@ -252,17 +246,10 @@ public class EventRoleDialog extends TitleAreaDialog {
 		this.eventTypePid = eventTypePid;
 	}
 
-	/**
-	 * @param role the role to set
-	 */
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 	@Inject
 	@Optional
 	private void subscribeEventTypePidUpdateTopic(
-			@UIEventTopic(Constants.LOCATION_PID_UPDATE_TOPIC) int eventTypePid) {
+			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventTypePid) {
 		LOGGER.log(Level.INFO, "Received event type pid {0}", eventTypePid);
 		this.eventTypePid = eventTypePid;
 
