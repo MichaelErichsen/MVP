@@ -22,6 +22,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -30,7 +31,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -43,20 +43,20 @@ import org.h2.tools.SimpleResultSet;
 
 import net.myerichsen.hremvp.Constants;
 import net.myerichsen.hremvp.providers.H2TableProvider;
+import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
  * Create a view part with a table. Create a column for each columns in the
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 29. apr. 2019
+ * @version 1. jun. 2019
  *
  */
 
 @SuppressWarnings("restriction")
 public class H2TableNavigator {
-	private static final Logger LOGGER = Logger
-			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Inject
 	private EPartService partService;
@@ -72,8 +72,8 @@ public class H2TableNavigator {
 	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
-	private Composite parent;
 	private String tableName;
+	private H2TableProvider provider;
 
 	/**
 	 * Constructor
@@ -86,7 +86,6 @@ public class H2TableNavigator {
 	 *
 	 */
 	private void clearTable() {
-		H2TableProvider provider;
 		try {
 			provider = new H2TableProvider(tableName);
 			provider.deleteAll();
@@ -95,7 +94,7 @@ public class H2TableNavigator {
 			eventBroker.post("MESSAGE",
 					"All rows have been deleted from " + tableName);
 			updateGui();
-		} catch (final Exception e1) {
+		} catch (Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -108,11 +107,16 @@ public class H2TableNavigator {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
-		this.parent = parent;
-
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		final Table table = tableViewer.getTable();
+		Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events.MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openTableEditor();
@@ -122,10 +126,10 @@ public class H2TableNavigator {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final Composite compositeButtons = new Composite(parent, SWT.NONE);
+		Composite compositeButtons = new Composite(parent, SWT.NONE);
 		compositeButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Button btnImport = new Button(compositeButtons, SWT.NONE);
+		Button btnImport = new Button(compositeButtons, SWT.NONE);
 		btnImport.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -140,7 +144,7 @@ public class H2TableNavigator {
 		});
 		btnImport.setText("Import Table...");
 
-		final Button btnExport = new Button(compositeButtons, SWT.NONE);
+		Button btnExport = new Button(compositeButtons, SWT.NONE);
 		btnExport.addSelectionListener(new SelectionAdapter() {
 
 			/*
@@ -156,7 +160,7 @@ public class H2TableNavigator {
 		});
 		btnExport.setText("Export Table...");
 
-		final Button btnEmptyTable = new Button(compositeButtons, SWT.NONE);
+		Button btnEmptyTable = new Button(compositeButtons, SWT.NONE);
 		btnEmptyTable.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -171,7 +175,7 @@ public class H2TableNavigator {
 		});
 		btnEmptyTable.setText("Empty Table");
 
-		final Button btnClose = new Button(compositeButtons, SWT.NONE);
+		Button btnClose = new Button(compositeButtons, SWT.NONE);
 		btnClose.addSelectionListener(new SelectionAdapter() {
 
 			/*
@@ -182,17 +186,15 @@ public class H2TableNavigator {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final List<MPartStack> stacks = modelService.findElements(
-						application, null, MPartStack.class, null);
-				final MPart part = (MPart) stacks.get(stacks.size() - 2)
+				List<MPartStack> stacks = modelService.findElements(application,
+						null, MPartStack.class, null);
+				MPart part = (MPart) stacks.get(stacks.size() - 2)
 						.getSelectedElement();
 				partService.hidePart(part, true);
 			}
 
 		});
 		btnClose.setText("Close");
-
-		updateGui();
 	}
 
 	/**
@@ -201,11 +203,11 @@ public class H2TableNavigator {
 	 */
 	private void exportCsv(String fileName) {
 		try {
-			final H2TableProvider provider = new H2TableProvider(tableName);
-			final List<H2TableModel> modelList = provider.getModelList();
-			final List<List<Object>> rows = provider.selectAll();
+			provider = new H2TableProvider(tableName);
+			List<H2TableModel> modelList = provider.getModelList();
+			List<List<Object>> rows = provider.selectAll();
 
-			final SimpleResultSet rs = new SimpleResultSet();
+			SimpleResultSet rs = new SimpleResultSet();
 
 			for (int i = 0; i < provider.getCount(); i++) {
 				switch (modelList.get(i).getNumericType()) {
@@ -250,7 +252,7 @@ public class H2TableNavigator {
 				rs.addRow(oa);
 			}
 
-			final Csv csvFile = new Csv();
+			Csv csvFile = new Csv();
 			csvFile.setFieldSeparatorWrite(",");
 
 			// FIXME java.lang.ClassCastException: java.lang.String cannot be
@@ -258,7 +260,7 @@ public class H2TableNavigator {
 			csvFile.write(fileName, rs, "UTF-8");
 			eventBroker.post("MESSAGE",
 					"Table " + tableName + " has been exported to " + fileName);
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -267,15 +269,14 @@ public class H2TableNavigator {
 	/**
 	 * @param btnImport
 	 */
-	private void exportTable(final Button btnImport) {
-		final FileDialog dialog = new FileDialog(btnImport.getShell(),
-				SWT.SAVE);
-		final String[] extensions = { "*.csv", "*.*" };
+	private void exportTable(Button btnImport) {
+		FileDialog dialog = new FileDialog(btnImport.getShell(), SWT.SAVE);
+		String[] extensions = { "*.csv", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
-		final String shortName = dialog.getFileName();
-		final String fileName = MessageFormat.format("{0}\\{1}",
+		String shortName = dialog.getFileName();
+		String fileName = MessageFormat.format("{0}\\{1}",
 				dialog.getFilterPath(), shortName);
 
 		exportCsv(fileName);
@@ -284,26 +285,25 @@ public class H2TableNavigator {
 	/**
 	 * @param btnImport
 	 */
-	private void importTable(final Button btnImport) {
-		final FileDialog dialog = new FileDialog(btnImport.getShell(),
-				SWT.OPEN);
-		final String[] extensions = { "*.csv", "*.*" };
+	private void importTable(Button btnImport) {
+		FileDialog dialog = new FileDialog(btnImport.getShell(), SWT.OPEN);
+		String[] extensions = { "*.csv", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
-		final String shortName = dialog.getFileName();
-		final String fileName = MessageFormat.format("{0}\\{1}",
+		String shortName = dialog.getFileName();
+		String fileName = MessageFormat.format("{0}\\{1}",
 				dialog.getFilterPath(), shortName);
 
 		int rowCount = 0;
 		try {
-			final H2TableProvider provider = new H2TableProvider(tableName);
+			provider = new H2TableProvider(tableName);
 			rowCount = provider.importCsv(fileName);
 			eventBroker.post("MESSAGE",
 					rowCount + " rows has been imported from " + fileName);
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
 			updateGui();
-		} catch (final Exception e1) {
+		} catch (Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
@@ -316,7 +316,7 @@ public class H2TableNavigator {
 		String recordNum = "0";
 
 		// Open an editor
-		final ParameterizedCommand command = commandService.createCommand(
+		ParameterizedCommand command = commandService.createCommand(
 				"net.myerichsen.hremvp.command.tableeditoropen", null);
 		handlerService.executeHandler(command);
 		LOGGER.log(Level.INFO, "Navigator opened editor");
@@ -324,10 +324,10 @@ public class H2TableNavigator {
 		eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
 		LOGGER.log(Level.INFO, "Navigator posted tablename {0}", tableName);
 
-		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
+		TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {
-			final TableItem selectedRow = selectedRows[0];
+			TableItem selectedRow = selectedRows[0];
 			recordNum = selectedRow.getText(0);
 		}
 
@@ -343,16 +343,17 @@ public class H2TableNavigator {
 	@Optional
 	private void subscribeNameUpdateTopic(
 			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName) {
+		LOGGER.log(Level.INFO, "H2 table navigator subscribeNameUpdateTopic");
 		this.tableName = tableName;
 
-		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableEditor";
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
+		String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableEditor";
+		List<MPartStack> stacks = modelService.findElements(application, null,
+				MPartStack.class, null);
 		MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
 
 		try {
-			for (final MPartStack mPartStack : stacks) {
-				final List<MStackElement> a = mPartStack.getChildren();
+			for (MPartStack mPartStack : stacks) {
+				List<MStackElement> a = mPartStack.getChildren();
 
 				for (int i = 0; i < a.size(); i++) {
 					h2dnPart = (MPart) a.get(i);
@@ -365,7 +366,7 @@ public class H2TableNavigator {
 					}
 				}
 			}
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			LOGGER.log(Level.INFO, "Part could not be activated");
 		}
 
@@ -387,45 +388,40 @@ public class H2TableNavigator {
 			return;
 		}
 
-		// FIXME Change to JFace
 		try {
-			final H2TableProvider provider = new H2TableProvider(tableName);
+			provider = new H2TableProvider(tableName);
 
-			final int count = provider.getCount();
-			parent.setLayout(new GridLayout());
+			int count = provider.getCount();
 
-			final Table table = tableViewer.getTable();
+			Table table = tableViewer.getTable();
 
 			if (table.getColumnCount() == 0) {
-				final TableViewerColumn[] tvc = new TableViewerColumn[count];
-				final TableColumn[] tc = new TableColumn[count];
+				TableViewerColumn[] tvc = new TableViewerColumn[count];
+				TableColumn[] tc = new TableColumn[count];
 
 				for (int i = 0; i < count; i++) {
 					tvc[i] = new TableViewerColumn(tableViewer, SWT.NONE);
 					tc[i] = tvc[i].getColumn();
 					tc[i].setWidth(100);
-					tc[i].setText(provider.getModelList().get(i).getName());
+					tvc[i].setLabelProvider(new HREColumnLabelProvider(i));
 				}
 			}
 
-			List<List<Object>> rowList;
+			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewer.setInput(provider.getStringList());
+			tableViewer.refresh();
 
-			rowList = provider.selectAll();
+			List<List<String>> stringList = provider.getStringList();
+			List<String> list;
 
-			table.removeAll();
-
-			for (int i = 0; i < rowList.size(); i++) {
-				final TableItem item = new TableItem(table, SWT.NONE);
-				final List<Object> row = rowList.get(i);
-				for (int j = 0; j < row.size(); j++) {
-					if (row.get(j) != null) {
-						item.setText(j, (String) row.get(j));
-					} else {
-						item.setText(j, "");
-					}
+			for (int i = 0; i < stringList.size(); i++) {
+				list = stringList.get(i);
+				for (int j = 0; j < list.size(); j++) {
+					LOGGER.log(Level.INFO, "i {0}, j {1}: {2}",
+							new Object[] { i, j, list.get(j) });
 				}
 			}
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}

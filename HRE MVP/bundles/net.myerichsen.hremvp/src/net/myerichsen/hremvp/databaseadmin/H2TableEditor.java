@@ -49,8 +49,7 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
  * Dynamically create an editor with the fields in the database catalog
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
- *
+ * @version 31. maj 2019
  */
 
 public class H2TableEditor {
@@ -62,9 +61,9 @@ public class H2TableEditor {
 	private EModelService modelService;
 	@Inject
 	private MApplication application;
-
 	@Inject
 	private IEventBroker eventBroker;
+	
 	private String tableName;
 	private int recordNum = 0;
 	private H2TableProvider provider;
@@ -199,7 +198,6 @@ public class H2TableEditor {
 		scrolledComposite.setExpandVertical(true);
 
 		try {
-			// FIXME change to JFace
 			createLines();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

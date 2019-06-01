@@ -14,7 +14,7 @@ import net.myerichsen.hremvp.servers.H2TableServer;
  * Provide H2 data to the table navigator and the table editor
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. apr. 2019
+ * @version 31. maj 2019
  *
  */
 public class H2TableProvider implements IContentProvider, IHREProvider {
@@ -90,7 +90,7 @@ public class H2TableProvider implements IContentProvider, IHREProvider {
 	 */
 	@Override
 	public List<List<String>> getStringList() throws Exception {
-		return new ArrayList<>();
+		return server.getStringList();
 	}
 
 	/*

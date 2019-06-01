@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
 import net.myerichsen.hremvp.dbmodels.EventRoles;
+import net.myerichsen.hremvp.dbmodels.Events;
+import net.myerichsen.hremvp.dbmodels.Hdates;
 import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 11. maj 2019
+ * @version 24. maj 2019
  *
  */
 public class PersonEventServer implements IHREServer {
@@ -127,21 +129,70 @@ public class PersonEventServer implements IHREServer {
 	 * @see net.myerichsen.hremvp.IHREServer#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws Exception {
+	public List<List<String>> getStringList(int personPid) throws Exception {
 		final List<List<String>> lls = new ArrayList<>();
-		PersonServer ls;
 
-		if (key == 0) {
+		if (personPid == 0) {
 			return lls;
 		}
 
-		final List<String> personStringList = new ArrayList<>();
-
-		final PersonEvents personEvents = new PersonEvents();
-		final List<PersonEvents> peList = personEvents.getFKEventPid(key);
+		// FIXME Return Event id, from date, to date and abbrev
+		List<String> personStringList;
 
 		try {
-			for (final PersonEvents pe : peList) {
+			for (final PersonEvents pe : new PersonEvents()
+					.getFKPersonPid(personPid)) {
+				personStringList = new ArrayList<>();
+
+				EventPid = pe.getEventPid();
+				personStringList.add(Integer.toString(EventPid));
+
+				Events event = new Events();
+				event.get(EventPid);
+
+				Hdates hdate = new Hdates();
+				hdate.get(event.getFromDatePid());
+				personStringList.add(hdate.getDate().toString());
+
+				hdate.get(event.getToDatePid());
+				personStringList.add(hdate.getDate().toString());
+
+				EventRolePid = pe.getEventRolePid();
+				personStringList.add(Integer.toString(EventRolePid));
+
+				final EventRoles role = new EventRoles();
+				role.get(EventRolePid);
+				personStringList.add(role.getAbbreviation());
+				lls.add(personStringList);
+			}
+		} catch (final MvpException e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);
+		}
+
+		return lls;
+	}
+
+	/**
+	 * @param eventPid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<List<String>> getStringListByEvent(int eventPid)
+			throws Exception {
+		final List<List<String>> lls = new ArrayList<>();
+		PersonServer ls;
+
+		if (eventPid == 0) {
+			return lls;
+		}
+
+		List<String> personStringList;
+
+		try {
+			for (final PersonEvents pe : new PersonEvents()
+					.getFKEventPid(eventPid)) {
+				personStringList = new ArrayList<>();
+
 				ls = new PersonServer();
 				PersonPid = pe.getPersonPid();
 				ls.get(PersonPid);
@@ -154,7 +205,7 @@ public class PersonEventServer implements IHREServer {
 				EventRolePid = pe.getEventRolePid();
 				personStringList.add(Integer.toString(EventRolePid));
 
-				EventRoles role = new EventRoles();
+				final EventRoles role = new EventRoles();
 				role.get(EventRolePid);
 				personStringList.add(role.getAbbreviation());
 				lls.add(personStringList);

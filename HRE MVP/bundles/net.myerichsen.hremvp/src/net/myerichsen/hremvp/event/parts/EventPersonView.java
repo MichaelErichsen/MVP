@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. maj 2019
+ * @version 24. maj 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
@@ -144,7 +144,7 @@ public class EventPersonView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getStringList(eventPid));
+			tableViewer.setInput(provider.getStringListByEvent(eventPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -379,8 +379,7 @@ public class EventPersonView {
 		LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
 
 		try {
-			// FIXME Displays the same person every time
-			tableViewer.setInput(provider.getStringList(eventPid));
+			tableViewer.setInput(provider.getStringListByEvent(eventPid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);

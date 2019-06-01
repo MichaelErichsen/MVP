@@ -8,7 +8,7 @@ import net.myerichsen.hremvp.person.servers.PersonEventServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 11. maj 2019
+ * @version 24. maj 2019
  */
 public class PersonEventProvider implements IHREProvider {
 	private int PersonEventPid;
@@ -93,10 +93,19 @@ public class PersonEventProvider implements IHREProvider {
 	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
 	 */
 	@Override
-	public List<List<String>> getStringList(int key) throws Exception {
-		return server.getStringList(key);
+	public List<List<String>> getStringList(int personPid) throws Exception {
+		return server.getStringList(personPid);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see net.myerichsen.hremvp.IHREProvider#getStringList(int)
+	 */
+	public List<List<String>> getStringListByEvent(int eventPid) throws Exception {
+		return server.getStringListByEvent(eventPid);
+	}
+	
 	/**
 	 * @return
 	 * @throws Exception
