@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. apr. 2019
+ * @version 2. jun. 2019
  */
 
 public class LocationEventView {
@@ -116,7 +116,7 @@ public class LocationEventView {
 	 *
 	 */
 	protected void openEventView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.EventView";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
