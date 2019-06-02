@@ -103,19 +103,6 @@
           </children>
         </children>
       </children>
-      <children xsi:type="advanced:Perspective" xmi:id="_ZVWzgOWlEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.perspective.administrationperspective" accessibilityPhrase="" label="Administration" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/DatabaseIcon.png">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_ERSR4OWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partsashcontainer.5" containerData="1280" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_JlbsEOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partstack.8" containerData="380">
-            <children xsi:type="basic:Part" xmi:id="_QXP2YKhXEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.part.databasenavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator" label="Database Tables" tooltip="Database Tables"/>
-          </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_QtmooOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partsashcontainer.6" containerData="900">
-            <children xsi:type="basic:PartStack" xmi:id="_MZzRIOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partstack.9" containerData="900"/>
-            <children xsi:type="basic:PartStack" xmi:id="_YEQtIOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.partstack.10" containerData="200">
-              <children xsi:type="basic:Part" xmi:id="_e8hlcOWnEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.parbundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LogViewer.parts.LogViewer.parts.LogViewer.parts.LogViewer" label="Log"/>
-            </children>
-          </children>
-        </children>
-      </children>
     </children>
     <mainMenu xmi:id="_6wlLicgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="file" label="Project">
@@ -129,8 +116,6 @@
           <children xsi:type="menu:HandledMenuItem" xmi:id="_uJ2HcBNKEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.handledmenuitem.person" label="Person" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PersonIcon.png" command="_0GArQBNHEemEvqVth7AYPg"/>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_wqK7sOTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.handledmenuitem.locationperspective" label="Location " iconURI="platform:/plugin/net.myerichsen.hremvp/icons/LocationIcon.png" command="_fXKi0OTSEeiOQPtyES1FZg"/>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_JAbzEO1yEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handledmenuitem.event" label="Event" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/EventIcon.png" tooltip="Event Perspective" command="_Q0bJQO1xEeixq6yORkaFTA"/>
-          <children xsi:type="menu:MenuSeparator" xmi:id="_WZNyEO1yEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.menuseparator.0"/>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_9KTBEOWmEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.handledmenuitem.administration" label="Administration" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/DatabaseIcon.png" command="_uCdUsOWlEeirzfgMfQV5uA"/>
         </children>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_tuWOQM-eEeiCtsQHb45mZQ" elementId="net.myerichsen.hremvp.handledmenuitem.preferences" label="Preferences" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PreferencesIcon.png" tooltip="Preferences" command="_Z6qoYM-eEeiCtsQHb45mZQ"/>
       </children>
@@ -152,7 +137,6 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_tGFPwO1rEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handledtoolitem.locations" label="Locations" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/LocationIcon.png" tooltip="Location Perspective" command="_fXKi0OTSEeiOQPtyES1FZg"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_l1ycgO1sEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handledtoolitem.events" label="Events" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/EventIcon.png" tooltip="Event Perspective" command="_Q0bJQO1xEeixq6yORkaFTA"/>
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_cj6ZwO1yEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.toolbarseparator.0"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_xx5eoO1rEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handledtoolitem.database" label="Database" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/DatabaseIcon.png" tooltip="Database Adminístration Perspective" command="_uCdUsOWlEeirzfgMfQV5uA"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_ck6REBNKEemEvqVth7AYPg" elementId="net.myerichsen.hremvp.handledtoolitem.preferences" label="Preferences" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/PreferencesIcon.png" tooltip="Preferences" command="_Z6qoYM-eEeiCtsQHb45mZQ"/>
       </children>
     </trimBars>
@@ -162,8 +146,6 @@
   </children>
   <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="net.myerichsen.hremvp.handler.saveCommand" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.SaveHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_pV5d4KSJEeikydEfX4x7tA" elementId="net.myerichsen.hremvp.handler.0" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenPersonViewHandler" command="_mP3hEKSJEeikydEfX4x7tA"/>
-  <handlers xmi:id="_cTcQsKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.handler.1" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.TableNavigatorHandler" command="_LGKFUKhZEeibyfLs7dGugQ"/>
-  <handlers xmi:id="_i4PacKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.handler.2" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.TableEditorHandler" command="_Ui9-AKhZEeibyfLs7dGugQ"/>
   <handlers xmi:id="_c_YEoKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.handler.3" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.person.handlers.OpenNameViewHandler" command="_Z-VVgKiQEeijn8bOcRpvRw"/>
   <handlers xmi:id="_LA4U0K-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.handler.4" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.OpenLocationNameNavigatorHandler" command="_HYFpMK-NEeiFg6Dg1VDbHw"/>
   <handlers xmi:id="_xmtBwLFTEei7F_uEER0ShA" elementId="net.myerichsen.hremvp.handler.6" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenLocationNameMapViewHandler" command="_tbsZ4LFTEei7F_uEER0ShA"/>
@@ -179,7 +161,6 @@
   <handlers xmi:id="_mH1I0M-eEeiCtsQHb45mZQ" elementId="net.myerichsen.hremvp.handler.18" contributionURI="bundleclass://net.myerichsen.hremvp/com.opcoach.e4.preferences.handlers.E4PreferencesHandler" command="_Z6qoYM-eEeiCtsQHb45mZQ"/>
   <handlers xmi:id="_h06-sOTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.handler.19" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.handlers.BasePerspectiveHandler" command="_agVWwOTSEeiOQPtyES1FZg"/>
   <handlers xmi:id="_kVe28OTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.handler.20" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.handlers.LocationPerspectiveHandler" command="_fXKi0OTSEeiOQPtyES1FZg"/>
-  <handlers xmi:id="_v7_MsOWmEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.handler.21" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.AdministrationPerspectiveHandler" command="_uCdUsOWlEeirzfgMfQV5uA"/>
   <handlers xmi:id="_UR4HkO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.handler.22" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.handlers.EventPerspectiveHandler" command="_Q0bJQO1xEeixq6yORkaFTA"/>
   <handlers xmi:id="_aKsDIPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.handler.24" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.OpenEventTypeViewHandler" command="_RlnDsPJVEeifL-SH13Qjuw"/>
   <handlers xmi:id="_QQthsA3-Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.handler.30" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.handlers.ProjectPropertiesHandler" command="_tmGj0A39Eemn86hhplJLfQ"/>
@@ -209,8 +190,6 @@
   </rootContext>
   <commands xmi:id="_6wlLg8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_mP3hEKSJEeikydEfX4x7tA" elementId="net.myerichsen.hremvp.command.openpersonview" commandName="openPersonView" category="_oxYVUBNHEemEvqVth7AYPg"/>
-  <commands xmi:id="_LGKFUKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.command.tablenavigatoropen" commandName="tablenavigatoropen" category="_fymHQOWmEeirzfgMfQV5uA"/>
-  <commands xmi:id="_Ui9-AKhZEeibyfLs7dGugQ" elementId="net.myerichsen.hremvp.command.tableeditoropen" commandName="tableeditoropen" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_Z-VVgKiQEeijn8bOcRpvRw" elementId="net.myerichsen.hremvp.command.openpersonnameview" commandName="openPersonNameView" category="_oxYVUBNHEemEvqVth7AYPg"/>
   <commands xmi:id="_HYFpMK-NEeiFg6Dg1VDbHw" elementId="net.myerichsen.hremvp.command.openlocationnamenavigator" commandName="openLocationNameNavigator" category="_lxRDoBylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_tbsZ4LFTEei7F_uEER0ShA" elementId="net.myerichsen.hremvp.command.openlocationnamemapview" commandName="openLocationNameMapView" category="_UIbmMOWmEeirzfgMfQV5uA"/>
@@ -227,7 +206,6 @@
   <commands xmi:id="_Z6qoYM-eEeiCtsQHb45mZQ" elementId="org.eclipse.ui.window.preferences" commandName="org.eclipse.ui.window.preferences" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_agVWwOTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.command.switchtobaseperspective" commandName="switchToBasePerspective"/>
   <commands xmi:id="_fXKi0OTSEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.command.switchtolocationperspective" commandName="switchToLocationPerspective" category="_UIbmMOWmEeirzfgMfQV5uA"/>
-  <commands xmi:id="_uCdUsOWlEeirzfgMfQV5uA" elementId="net.myerichsen.hremvp.command.switchtoadministrationperspective" commandName="switchToAdministrationPerspective" category="_fymHQOWmEeirzfgMfQV5uA"/>
   <commands xmi:id="_Q0bJQO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.command.switchtoeventperspective" commandName="switchToEventPerspective" category="_KdvUAO1xEeixq6yORkaFTA"/>
   <commands xmi:id="_RlnDsPJVEeifL-SH13Qjuw" elementId="net.myerichsen.hremvp.command.openeventtypeview" commandName="openEventTypeView" category="_5bkEABylEem5Zd9TTtLZ6w"/>
   <commands xmi:id="_Ojg1gA39Eemn86hhplJLfQ" elementId="net.myerichsen.hremvp.command.projectnavigator" commandName="ProjectNavigator" category="_5bkEABylEem5Zd9TTtLZ6w"/>

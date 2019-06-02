@@ -1,17 +1,22 @@
 package net.myerichsen.hremvp.databaseadmin;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -31,20 +36,26 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Create a view part with all tables in the database
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 2019
+ * @version 2. jun. 2019
  *
  */
-@SuppressWarnings("restriction")
 public class H2DatabaseNavigator {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableNavigator";
 
-	@Inject
-	private ECommandService commandService;
-	@Inject
-	private EHandlerService handlerService;
+//	@Inject
+//	private ECommandService commandService;
+//	@Inject
+//	private EHandlerService handlerService;
 	@Inject
 	private IEventBroker eventBroker;
+	@Inject
+	private EPartService partService;
+	@Inject
+	private MApplication application;
+	@Inject
+	private EModelService modelService;
 
 	private H2DatabaseProvider provider;
 	private TableViewer tableViewer;
@@ -80,9 +91,20 @@ public class H2DatabaseNavigator {
 			final TableItem selectedRow = selectedRows[0];
 			final String tableName = selectedRow.getText(0);
 
-			final ParameterizedCommand command = commandService.createCommand(
-					"net.myerichsen.hremvp.command.tablenavigatoropen", null);
-			handlerService.executeHandler(command);
+			final MPart part = MBasicFactory.INSTANCE.createPart();
+			part.setLabel(tableName);
+			part.setContainerData("650");
+			part.setCloseable(true);
+			part.setVisible(true);
+			part.setContributionURI(CONTRIBUTION_URI);
+			final List<MPartStack> stacks = modelService
+					.findElements(application, null, MPartStack.class, null);
+			stacks.get(stacks.size() - 2).getChildren().add(part);
+			partService.showPart(part, PartState.ACTIVATE);
+
+//			final ParameterizedCommand command = commandService.createCommand(
+//					"net.myerichsen.hremvp.command.tablenavigatoropen", null);
+//			handlerService.executeHandler(command);
 			eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
 			eventBroker.post("MESSAGE", tableName + " has been opened");
 		});

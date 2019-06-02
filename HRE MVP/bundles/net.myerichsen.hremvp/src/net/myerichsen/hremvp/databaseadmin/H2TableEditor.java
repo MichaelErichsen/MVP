@@ -4,6 +4,8 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -17,11 +19,6 @@ import javax.xml.bind.DatatypeConverter;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,21 +46,15 @@ import net.myerichsen.hremvp.providers.H2TableProvider;
  * Dynamically create an editor with the fields in the database catalog
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. maj 2019
+ * @version 2. jun. 2019
  */
 
 public class H2TableEditor {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
-	@Inject
 	private IEventBroker eventBroker;
-	
+
 	private String tableName;
 	private int recordNum = 0;
 	private H2TableProvider provider;
@@ -164,19 +155,6 @@ public class H2TableEditor {
 			}
 		});
 		btnResetDialog.setText("Reset fields");
-
-		final Button btnClose = new Button(compositeButtons, SWT.NONE);
-		btnClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final List<MPartStack> stacks = modelService.findElements(
-						application, null, MPartStack.class, null);
-				final MPart part = (MPart) stacks.get(stacks.size() - 1)
-						.getSelectedElement();
-				partService.hidePart(part, true);
-			}
-		});
-		btnClose.setText("Close");
 
 	}
 
@@ -460,11 +438,13 @@ public class H2TableEditor {
 				final DateTime date = (DateTime) children[0];
 				final DateTime time = (DateTime) children[1];
 
-				@SuppressWarnings("deprecation")
-				final Timestamp timeStamp = new Timestamp(date.getYear() - 1900,
-						date.getMonth(), date.getDay(), time.getHours(),
-						time.getMinutes(), time.getSeconds(), 0);
-				columns.get(i).setValue(timeStamp);
+				Calendar calendar = Calendar.getInstance();
+				calendar.set(date.getYear() - 1900, date.getMonth(),
+						date.getDay(), time.getHours(), time.getMinutes(),
+						time.getSeconds());
+				DateFormat dateFormat = new SimpleDateFormat(
+						"yyyy/MM/dd HH:mm:ss");
+				columns.get(i).setValue(dateFormat.format(calendar));
 			} else {
 				LOGGER.log(Level.INFO, "Unimplemented type: {0}", type);
 				System.exit(16);
@@ -571,14 +551,10 @@ public class H2TableEditor {
 	 */
 	@Inject
 	@Optional
-	private void subscribeNameUpdateTopic(
-			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName2) {
-		tableName = tableName2;
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		final MPart part = (MPart) stacks.get(stacks.size() - 2)
-				.getSelectedElement();
-		part.setLabel(tableName2);
+	private void subscribeTableNameUpdateTopic(
+			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName) {
+		LOGGER.log(Level.INFO, "Table name: {0}", tableName);
+		this.tableName = tableName;
 	}
 
 	/**
@@ -591,6 +567,7 @@ public class H2TableEditor {
 	private void subscribeRecordNumUpdateTopic(
 			@UIEventTopic(Constants.RECORDNUM_UPDATE_TOPIC) String recordNumString)
 			throws SQLException {
+		LOGGER.log(Level.INFO, "Record number {0}", recordNumString);
 		recordNum = Integer.parseInt(recordNumString);
 		createLines();
 	}
@@ -622,11 +599,13 @@ public class H2TableEditor {
 				final DateTime date = (DateTime) children[0];
 				final DateTime time = (DateTime) children[1];
 
-				@SuppressWarnings("deprecation")
-				final Timestamp timeStamp = new Timestamp(date.getYear() - 1900,
-						date.getMonth(), date.getDay(), time.getHours(),
-						time.getMinutes(), time.getSeconds(), 0);
-				columns.get(i).setValue(timeStamp);
+				Calendar calendar = Calendar.getInstance();
+				calendar.set(date.getYear() - 1900, date.getMonth(),
+						date.getDay(), time.getHours(), time.getMinutes(),
+						time.getSeconds());
+				DateFormat dateFormat = new SimpleDateFormat(
+						"yyyy/MM/dd HH:mm:ss");
+				columns.get(i).setValue(dateFormat.format(calendar));
 			} else {
 				LOGGER.log(Level.INFO, "Unimplemented type: {0}", type);
 				System.exit(16);

@@ -29,7 +29,7 @@ import net.myerichsen.hremvp.databaseadmin.H2TableModel;
  * Serve H2 data to the table navigator and the table editor
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 31. maj 2019
+ * @version 2. jun. 2019
  *
  */
 public class H2TableServer implements IHREServer {
@@ -273,11 +273,6 @@ public class H2TableServer implements IHREServer {
 	public List<List<String>> getStringList() throws Exception {
 		List<List<String>> lls = new ArrayList<>();
 		List<String> stringList;
-
-//		for (H2TableModel model : modelList) {
-
-//			stringList.add(model.getName());
-
 		List<List<Object>> selectAll = selectAll();
 
 		for (int i = 0; i < selectAll.size(); i++) {
@@ -285,7 +280,6 @@ public class H2TableServer implements IHREServer {
 			List<Object> list = selectAll.get(i);
 			for (int j = 0; j < list.size(); j++) {
 				stringList.add((String) (selectAll.get(i).get(j)));
-//					LOGGER.log(Level.INFO, ">>> i:{0} j:{1} {2}", new Object[] {i, j, selectAll.get(i).get(j)});
 			}
 			lls.add(stringList);
 
@@ -486,6 +480,8 @@ public class H2TableServer implements IHREServer {
 		String s = tableName.substring(0, tableName.length() - 1);
 		if (tableName.equals("SEXES")) {
 			s = "SEXES";
+		} else if (tableName.equals("DICTIONARY")) {
+			s = "DICTIONARY";
 		}
 
 		final String SELECT = "SELECT * FROM PUBLIC." + tableName + " WHERE "

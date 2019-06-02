@@ -8,9 +8,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
@@ -18,7 +15,6 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
@@ -50,13 +46,12 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 1. jun. 2019
- *
+ * @version 2. jun. 2019
  */
 
-@SuppressWarnings("restriction")
 public class H2TableNavigator {
 	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableEditor";
 
 	@Inject
 	private EPartService partService;
@@ -66,10 +61,6 @@ public class H2TableNavigator {
 	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
-	@Inject
-	private ECommandService commandService;
-	@Inject
-	private EHandlerService handlerService;
 
 	private TableViewer tableViewer;
 	private String tableName;
@@ -94,7 +85,7 @@ public class H2TableNavigator {
 			eventBroker.post("MESSAGE",
 					"All rows have been deleted from " + tableName);
 			updateGui();
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -108,11 +99,11 @@ public class H2TableNavigator {
 	@PostConstruct
 	public void createControls(Composite parent) {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
-		Table table = tableViewer.getTable();
+		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
 			 * swt.events.MouseEvent)
@@ -126,10 +117,10 @@ public class H2TableNavigator {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		Composite compositeButtons = new Composite(parent, SWT.NONE);
+		final Composite compositeButtons = new Composite(parent, SWT.NONE);
 		compositeButtons.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Button btnImport = new Button(compositeButtons, SWT.NONE);
+		final Button btnImport = new Button(compositeButtons, SWT.NONE);
 		btnImport.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -144,7 +135,7 @@ public class H2TableNavigator {
 		});
 		btnImport.setText("Import Table...");
 
-		Button btnExport = new Button(compositeButtons, SWT.NONE);
+		final Button btnExport = new Button(compositeButtons, SWT.NONE);
 		btnExport.addSelectionListener(new SelectionAdapter() {
 
 			/*
@@ -160,7 +151,7 @@ public class H2TableNavigator {
 		});
 		btnExport.setText("Export Table...");
 
-		Button btnEmptyTable = new Button(compositeButtons, SWT.NONE);
+		final Button btnEmptyTable = new Button(compositeButtons, SWT.NONE);
 		btnEmptyTable.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
@@ -175,26 +166,6 @@ public class H2TableNavigator {
 		});
 		btnEmptyTable.setText("Empty Table");
 
-		Button btnClose = new Button(compositeButtons, SWT.NONE);
-		btnClose.addSelectionListener(new SelectionAdapter() {
-
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
-			 * eclipse.swt.events .SelectionEvent)
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				List<MPartStack> stacks = modelService.findElements(application,
-						null, MPartStack.class, null);
-				MPart part = (MPart) stacks.get(stacks.size() - 2)
-						.getSelectedElement();
-				partService.hidePart(part, true);
-			}
-
-		});
-		btnClose.setText("Close");
 	}
 
 	/**
@@ -204,10 +175,10 @@ public class H2TableNavigator {
 	private void exportCsv(String fileName) {
 		try {
 			provider = new H2TableProvider(tableName);
-			List<H2TableModel> modelList = provider.getModelList();
-			List<List<Object>> rows = provider.selectAll();
+			final List<H2TableModel> modelList = provider.getModelList();
+			final List<List<Object>> rows = provider.selectAll();
 
-			SimpleResultSet rs = new SimpleResultSet();
+			final SimpleResultSet rs = new SimpleResultSet();
 
 			for (int i = 0; i < provider.getCount(); i++) {
 				switch (modelList.get(i).getNumericType()) {
@@ -252,7 +223,7 @@ public class H2TableNavigator {
 				rs.addRow(oa);
 			}
 
-			Csv csvFile = new Csv();
+			final Csv csvFile = new Csv();
 			csvFile.setFieldSeparatorWrite(",");
 
 			// FIXME java.lang.ClassCastException: java.lang.String cannot be
@@ -260,7 +231,7 @@ public class H2TableNavigator {
 			csvFile.write(fileName, rs, "UTF-8");
 			eventBroker.post("MESSAGE",
 					"Table " + tableName + " has been exported to " + fileName);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
@@ -270,13 +241,14 @@ public class H2TableNavigator {
 	 * @param btnImport
 	 */
 	private void exportTable(Button btnImport) {
-		FileDialog dialog = new FileDialog(btnImport.getShell(), SWT.SAVE);
-		String[] extensions = { "*.csv", "*.*" };
+		final FileDialog dialog = new FileDialog(btnImport.getShell(),
+				SWT.SAVE);
+		final String[] extensions = { "*.csv", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
-		String shortName = dialog.getFileName();
-		String fileName = MessageFormat.format("{0}\\{1}",
+		final String shortName = dialog.getFileName();
+		final String fileName = MessageFormat.format("{0}\\{1}",
 				dialog.getFilterPath(), shortName);
 
 		exportCsv(fileName);
@@ -286,13 +258,14 @@ public class H2TableNavigator {
 	 * @param btnImport
 	 */
 	private void importTable(Button btnImport) {
-		FileDialog dialog = new FileDialog(btnImport.getShell(), SWT.OPEN);
-		String[] extensions = { "*.csv", "*.*" };
+		final FileDialog dialog = new FileDialog(btnImport.getShell(),
+				SWT.OPEN);
+		final String[] extensions = { "*.csv", "*.*" };
 		dialog.setFilterExtensions(extensions);
 		dialog.open();
 
-		String shortName = dialog.getFileName();
-		String fileName = MessageFormat.format("{0}\\{1}",
+		final String shortName = dialog.getFileName();
+		final String fileName = MessageFormat.format("{0}\\{1}",
 				dialog.getFilterPath(), shortName);
 
 		int rowCount = 0;
@@ -303,7 +276,7 @@ public class H2TableNavigator {
 					rowCount + " rows has been imported from " + fileName);
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, "Dummy");
 			updateGui();
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			eventBroker.post("MESSAGE", e1.getMessage());
 		}
@@ -315,21 +288,29 @@ public class H2TableNavigator {
 	private void openTableEditor() {
 		String recordNum = "0";
 
+		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
+
+		if (selectedRows.length > 0) {
+			final TableItem selectedRow = selectedRows[0];
+			recordNum = selectedRow.getText(0);
+		}
+
 		// Open an editor
-		ParameterizedCommand command = commandService.createCommand(
-				"net.myerichsen.hremvp.command.tableeditoropen", null);
-		handlerService.executeHandler(command);
+		final MPart part = MBasicFactory.INSTANCE.createPart();
+		part.setLabel(tableName + " record " + recordNum);
+		part.setContainerData("650");
+		part.setCloseable(true);
+		part.setVisible(true);
+		part.setContributionURI(CONTRIBUTION_URI);
+		final List<MPartStack> stacks = modelService.findElements(application,
+				null, MPartStack.class, null);
+		stacks.get(stacks.size() - 2).getChildren().add(part);
+		partService.showPart(part, PartState.ACTIVATE);
+
 		LOGGER.log(Level.INFO, "Navigator opened editor");
 
 		eventBroker.post(Constants.TABLENAME_UPDATE_TOPIC, tableName);
 		LOGGER.log(Level.INFO, "Navigator posted tablename {0}", tableName);
-
-		TableItem[] selectedRows = tableViewer.getTable().getSelection();
-
-		if (selectedRows.length > 0) {
-			TableItem selectedRow = selectedRows[0];
-			recordNum = selectedRow.getText(0);
-		}
 
 		eventBroker.post(Constants.RECORDNUM_UPDATE_TOPIC, recordNum);
 		LOGGER.log(Level.INFO, "Navigator posted record number {0}", recordNum);
@@ -345,38 +326,6 @@ public class H2TableNavigator {
 			@UIEventTopic(Constants.TABLENAME_UPDATE_TOPIC) String tableName) {
 		LOGGER.log(Level.INFO, "H2 table navigator subscribeNameUpdateTopic");
 		this.tableName = tableName;
-
-		String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2TableEditor";
-		List<MPartStack> stacks = modelService.findElements(application, null,
-				MPartStack.class, null);
-		MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
-
-		try {
-			for (MPartStack mPartStack : stacks) {
-				List<MStackElement> a = mPartStack.getChildren();
-
-				for (int i = 0; i < a.size(); i++) {
-					h2dnPart = (MPart) a.get(i);
-					if (h2dnPart.getContributionURI()
-							.equals(CONTRIBUTION_URI)) {
-						partService.showPart(h2dnPart, PartState.ACTIVATE);
-
-						updateGui();
-						return;
-					}
-				}
-			}
-		} catch (Exception e) {
-			LOGGER.log(Level.INFO, "Part could not be activated");
-		}
-
-		h2dnPart.setLabel(tableName);
-		h2dnPart.setCloseable(true);
-		h2dnPart.setVisible(true);
-		h2dnPart.setContributionURI(CONTRIBUTION_URI);
-		stacks.get(stacks.size() - 3).getChildren().add(h2dnPart);
-		partService.showPart(h2dnPart, PartState.ACTIVATE);
-
 		updateGui();
 	}
 
@@ -390,14 +339,12 @@ public class H2TableNavigator {
 
 		try {
 			provider = new H2TableProvider(tableName);
-
-			int count = provider.getCount();
-
-			Table table = tableViewer.getTable();
+			final int count = provider.getCount();
+			final Table table = tableViewer.getTable();
 
 			if (table.getColumnCount() == 0) {
-				TableViewerColumn[] tvc = new TableViewerColumn[count];
-				TableColumn[] tc = new TableColumn[count];
+				final TableViewerColumn[] tvc = new TableViewerColumn[count];
+				final TableColumn[] tc = new TableColumn[count];
 
 				for (int i = 0; i < count; i++) {
 					tvc[i] = new TableViewerColumn(tableViewer, SWT.NONE);
@@ -410,18 +357,7 @@ public class H2TableNavigator {
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 			tableViewer.setInput(provider.getStringList());
 			tableViewer.refresh();
-
-			List<List<String>> stringList = provider.getStringList();
-			List<String> list;
-
-			for (int i = 0; i < stringList.size(); i++) {
-				list = stringList.get(i);
-				for (int j = 0; j < list.size(); j++) {
-					LOGGER.log(Level.INFO, "i {0}, j {1}: {2}",
-							new Object[] { i, j, list.get(j) });
-				}
-			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			eventBroker.post("MESSAGE", e.getMessage());
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
