@@ -39,7 +39,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events for a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. jun. 2019
+ * @version 3. jun. 2019
  */
 
 public class LocationEventView {
@@ -78,6 +78,13 @@ public class LocationEventView {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events.MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openEventView();
@@ -93,16 +100,16 @@ public class LocationEventView {
 		tblclmnId.setWidth(100);
 		tblclmnId.setText("ID");
 		tableViewerColumnEventId
-				.setLabelProvider(new HREColumnLabelProvider(0));
+				.setLabelProvider(new HREColumnLabelProvider(2));
 
 		final TableViewerColumn tableViewerColumnEventLabel = new TableViewerColumn(
 				tableViewer, SWT.NONE);
 		final TableColumn tblclmnEvent = tableViewerColumnEventLabel
 				.getColumn();
-		tblclmnEvent.setWidth(300);
+		tblclmnEvent.setWidth(100);
 		tblclmnEvent.setText("Event");
 		tableViewerColumnEventLabel
-				.setLabelProvider(new HREColumnLabelProvider(1));
+				.setLabelProvider(new HREColumnLabelProvider(3));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

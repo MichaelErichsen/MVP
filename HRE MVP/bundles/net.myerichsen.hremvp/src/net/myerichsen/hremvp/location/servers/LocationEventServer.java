@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.myerichsen.hremvp.IHREServer;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.EventTypes;
+import net.myerichsen.hremvp.dbmodels.Events;
 import net.myerichsen.hremvp.dbmodels.LocationEvents;
 
 /**
@@ -16,7 +18,7 @@ import net.myerichsen.hremvp.dbmodels.LocationEvents;
  * {@link net.myerichsen.hremvp.dbmodels.LocationEvents}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. apr. 2019
+ * @version 3. jun. 2019
  *
  */
 public class LocationEventServer implements IHREServer {
@@ -143,10 +145,10 @@ public class LocationEventServer implements IHREServer {
 		List<String> locationStringList;
 
 		if (key == 0) {
-			locationStringList = new ArrayList<>();
-			locationStringList.add("0");
-			locationStringList.add("");
-			lls.add(locationStringList);
+//			locationStringList = new ArrayList<>();
+//			locationStringList.add("0");
+//			locationStringList.add("");
+//			lls.add(locationStringList);
 			return lls;
 		}
 
@@ -164,6 +166,16 @@ public class LocationEventServer implements IHREServer {
 				ls.get(locationPid);
 				locationStringList.add(Integer.toString(locationPid));
 				locationStringList.add(ls.getPrimaryName());
+
+				Events event = new Events();
+				EventPid = le.getEventPid();
+				locationStringList.add(Integer.toString(EventPid));
+
+				event.get(EventPid);
+				EventTypes et = new EventTypes();
+				et.get(event.getEventTypePid());
+				locationStringList.add(et.getAbbreviation());
+
 				lls.add(locationStringList);
 			}
 		} catch (final MvpException e) {
