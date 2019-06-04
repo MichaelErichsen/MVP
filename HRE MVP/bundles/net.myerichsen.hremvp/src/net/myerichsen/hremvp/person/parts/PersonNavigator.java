@@ -45,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons with their primary names
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. apr. 2019
+ * @version 4. jun. 2019
  */
 public class PersonNavigator {
 	private static final Logger LOGGER = Logger
@@ -227,9 +227,7 @@ public class PersonNavigator {
 		final TableItem[] selection = tableViewer.getTable().getSelection();
 		final int personPid = Integer.parseInt(selection[0].getText(0));
 		LOGGER.log(Level.INFO, "Posting person pid {0}", personPid);
-		eventBroker.post(
-				net.myerichsen.hremvp.Constants.PERSON_PID_UPDATE_TOPIC,
-				personPid);
+		eventBroker.post(Constants.PERSON_PID_UPDATE_TOPIC, personPid);
 	}
 
 	/**

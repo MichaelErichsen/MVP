@@ -97,7 +97,7 @@
                 <children xsi:type="basic:Part" xmi:id="_l1eU8P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.locationsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventLocationView" label="Locations in Event"/>
               </children>
               <children xsi:type="basic:PartStack" xmi:id="_nnNVAEptEemFz4Ig_nU0Ew" elementId="net.myerichsen.hremvp.partstack.13">
-                <children xsi:type="basic:Part" xmi:id="_gWYPAP06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventPersonView" label="Persons in Event"/>
+                <children xsi:type="basic:Part" xmi:id="_x195MIbgEemjtIzE4e4Q8g" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventPersonView" label="Persons in event"/>
               </children>
             </children>
           </children>

@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.parts;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,14 +10,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -54,7 +45,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 22. apr. 2019
+ * @version 3. jun. 2019
  *
  */
 public class EventNavigator {
@@ -62,12 +53,6 @@ public class EventNavigator {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 
@@ -116,7 +101,7 @@ public class EventNavigator {
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				openOtherViews();
+				updateOtherViews();
 			}
 		});
 		table.setHeaderVisible(true);
@@ -159,7 +144,7 @@ public class EventNavigator {
 		try {
 			tableViewer.setInput(provider.getStringList());
 		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			LOGGER.log(Level.INFO, e1.getMessage());
 		}
 
 		final Menu menu = new Menu(table);
@@ -288,128 +273,10 @@ public class EventNavigator {
 		}
 	}
 
-	protected void openEventLocationView() {
-		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventLocationView";
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		boolean found = false;
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			try {
-				for (int i = 0; i < a.size(); i++) {
-					part = (MPart) a.get(i);
-					if (CONTRIBUTION_URI.equals(part.getContributionURI())) {
-						partService.showPart(part, PartState.ACTIVATE);
-						found = true;
-						break;
-					}
-				}
-			} catch (final Exception e) {
-				LOGGER.log(Level.INFO, e.getMessage());
-			}
-		}
-
-		if (!found) {
-			part.setLabel("Locations in Event");
-			part.setCloseable(true);
-			part.setVisible(true);
-			part.setContributionURI(CONTRIBUTION_URI);
-			stacks.get(stacks.size() - 5).getChildren().add(part);
-			partService.showPart(part, PartState.ACTIVATE);
-		}
-
-	}
-
-	/**
-	 *
-	 */
-	protected void openEventPersonView() {
-		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventPersonView";
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		boolean found = false;
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			try {
-				for (int i = 0; i < a.size(); i++) {
-					part = (MPart) a.get(i);
-					if (CONTRIBUTION_URI.equals(part.getContributionURI())) {
-						partService.showPart(part, PartState.ACTIVATE);
-						found = true;
-						break;
-					}
-				}
-			} catch (final Exception e) {
-				LOGGER.log(Level.INFO, e.getMessage());
-			}
-		}
-
-		if (!found) {
-			part.setLabel("Persons in Event");
-			part.setCloseable(true);
-			part.setVisible(true);
-			part.setContributionURI(CONTRIBUTION_URI);
-			stacks.get(stacks.size() - 5).getChildren().add(part);
-			partService.showPart(part, PartState.ACTIVATE);
-		}
-
-	}
-
-	/**
-	 *
-	 */
-	protected void openEventView() {
-		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		boolean found = false;
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			try {
-				for (int i = 0; i < a.size(); i++) {
-					part = (MPart) a.get(i);
-					if (CONTRIBUTION_URI.equals(part.getContributionURI())) {
-						partService.showPart(part, PartState.ACTIVATE);
-						found = true;
-						break;
-					}
-				}
-			} catch (final Exception e) {
-				LOGGER.log(Level.INFO, e.getMessage());
-			}
-		}
-
-		if (!found) {
-			part.setLabel("Event View");
-			part.setCloseable(true);
-			part.setVisible(true);
-			part.setContributionURI(CONTRIBUTION_URI);
-			stacks.get(stacks.size() - 5).getChildren().add(part);
-			partService.showPart(part, PartState.ACTIVATE);
-		}
-
-	}
-
 	/**
 	 * @throws NumberFormatException
 	 */
-	private void openOtherViews() {
-		openEventView();
-		openEventLocationView();
-		openEventPersonView();
-
+	private void updateOtherViews() {
 		int eventPid = 0;
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();

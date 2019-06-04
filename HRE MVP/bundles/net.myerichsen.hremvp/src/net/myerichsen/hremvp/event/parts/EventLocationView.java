@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. apr. 2019
+ * @version 3. jun. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
@@ -334,7 +334,7 @@ public class EventLocationView {
 			LocationPid = selectedRow.getText(0);
 		}
 
-		LOGGER.log(Level.INFO, "Setting Location pid: {0}", LocationPid);
+		LOGGER.log(Level.INFO, "Setting location pid: {0}", LocationPid);
 		eventBroker.post(Constants.LOCATION_PID_UPDATE_TOPIC,
 				Integer.parseInt(LocationPid));
 

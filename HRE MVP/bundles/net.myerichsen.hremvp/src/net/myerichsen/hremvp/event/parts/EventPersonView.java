@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. maj 2019
+ * @version 3. jun. 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
@@ -71,6 +71,7 @@ public class EventPersonView {
 	private final PersonEventProvider provider;
 	private int eventPid = 0;
 	private TableViewer tableViewer;
+	private List<List<String>> lls;
 
 	/**
 	 * Constructor
@@ -144,7 +145,8 @@ public class EventPersonView {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
-			tableViewer.setInput(provider.getStringListByEvent(eventPid));
+			lls = provider.getStringListByEvent(eventPid);
+			tableViewer.setInput(lls);
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
@@ -178,7 +180,6 @@ public class EventPersonView {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				openPersonNavigator();
-
 			}
 		});
 		mntmAddExistingPerson.setText("Add existing person...");
@@ -368,8 +369,7 @@ public class EventPersonView {
 	}
 
 	/**
-	 * @param key
-	 * @throws Exception
+	 * @param eventPid
 	 */
 	@Inject
 	@Optional
@@ -379,7 +379,8 @@ public class EventPersonView {
 		LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
 
 		try {
-			tableViewer.setInput(provider.getStringListByEvent(eventPid));
+			lls = provider.getStringListByEvent(eventPid);
+			tableViewer.setInput(lls);
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
