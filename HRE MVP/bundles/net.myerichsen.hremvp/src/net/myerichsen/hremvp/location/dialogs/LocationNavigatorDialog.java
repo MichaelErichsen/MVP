@@ -33,7 +33,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Dialog to select a location
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. apr. 2019
+ * @version 4. jun. 2019
  *
  */
 public class LocationNavigatorDialog extends TitleAreaDialog {
@@ -52,6 +52,7 @@ public class LocationNavigatorDialog extends TitleAreaDialog {
 	 */
 	public LocationNavigatorDialog(Shell parentShell) {
 		super(parentShell);
+		LOGGER.log(Level.FINE, "Shell {0}", parentShell);
 		setHelpAvailable(false);
 		navigatorFilter = new NavigatorFilter(1);
 		try {
