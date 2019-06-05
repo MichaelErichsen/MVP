@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Composite;
  * Location summary wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. mar. 2019
+ * @version 5. jun. 2019
  *
  */
 public class NewLocationWizardPage4 extends WizardPage {
@@ -26,6 +26,16 @@ public class NewLocationWizardPage4 extends WizardPage {
 		setTitle("Confirmation");
 		setDescription("Confirm the new location");
 		wizard = (NewLocationWizard) getWizard();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.jface.wizard.WizardPage#canFlipToNextPage()
+	 */
+	@Override
+	public boolean canFlipToNextPage() {
+		return false;
 	}
 
 	/*
