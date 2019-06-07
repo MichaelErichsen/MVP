@@ -137,6 +137,7 @@ public class NewEventDialog extends TitleAreaDialog {
 						locationEventsPid);
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+				// FIXME Null pointer exception
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}

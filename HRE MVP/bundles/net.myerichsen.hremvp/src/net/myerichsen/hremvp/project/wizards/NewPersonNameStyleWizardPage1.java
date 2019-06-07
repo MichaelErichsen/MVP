@@ -11,8 +11,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -32,7 +30,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Add a person name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 31. mar. 2019
+ * @version 7. jun. 2019
  *
  */
 public class NewPersonNameStyleWizardPage1 extends WizardPage {
@@ -105,29 +103,31 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 				wizard.setIsoCode(stringList.get(selectionIndex).get(1));
 			}
 		});
+
 		comboViewerLanguage
 				.setContentProvider(ArrayContentProvider.getInstance());
 		comboViewerLanguage.setLabelProvider(new HREComboLabelProvider(2));
+
 		try {
 			stringList = provider.getStringList();
+			comboViewerLanguage.setInput(stringList);
 
 			final int llsSize = stringList.size();
 			final String g = store.getString("GUILANGUAGE");
 
 			for (int i = 0; i < llsSize; i++) {
 				if (g.equals(stringList.get(i).get(1))) {
-					LOGGER.log(Level.INFO, "Selected language " + i + ", "
-							+ stringList.get(i).get(1));
+					LOGGER.log(Level.INFO, "Selected language {0}, {1}",
+							new Object[] { i, stringList.get(i).get(2) });
 					comboLanguage.select(i);
 					break;
 				}
 			}
-			// FIXME Does not set default language
-//			comboLanguage.select(index);
+
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
+
 		comboLanguage.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -135,19 +135,7 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		lblStyleName.setText("Style name");
 
 		textStyleName = new Text(container, SWT.BORDER);
-		textStyleName.addModifyListener(new ModifyListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
-			 * events.ModifyEvent)
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				checkCompletedPage();
-			}
-		});
+		textStyleName.addModifyListener(e -> checkCompletedPage());
 		textStyleName.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
@@ -155,29 +143,10 @@ public class NewPersonNameStyleWizardPage1 extends WizardPage {
 		lblNumberOfName.setText("Number of name parts");
 
 		textNamePartCount = new Text(container, SWT.BORDER);
-		textNamePartCount.addModifyListener(new ModifyListener() {
-			/*
-			 * (non-Javadoc)
-			 *
-			 * @see
-			 * org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.
-			 * events.ModifyEvent)
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				checkCompletedPage();
-			}
-		});
+		textNamePartCount.addModifyListener(e -> checkCompletedPage());
 		textNamePartCount.addVerifyListener(new NumericVerifyListener());
 		textNamePartCount.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		try {
-
-			stringList = provider.getStringList();
-			comboViewerLanguage.setInput(stringList);
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 
 		setPageComplete(false);
 	}
