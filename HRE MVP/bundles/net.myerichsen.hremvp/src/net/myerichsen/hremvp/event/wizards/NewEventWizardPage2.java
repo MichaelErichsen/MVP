@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.event.wizards;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +34,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
  * Wizard page to add a location for an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. apr. 2019
+ * @version 7. jun. 2019
  *
  */
 public class NewEventWizardPage2 extends WizardPage {
@@ -100,9 +101,7 @@ public class NewEventWizardPage2 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewLocationWizard(context));
-				dialog.open();
+				newLocation(parent);
 			}
 		});
 		btnNew.setText("New");
@@ -118,19 +117,7 @@ public class NewEventWizardPage2 extends WizardPage {
 			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
-				final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
-						getShell());
-
-				if (dialog.open() == Window.OK) {
-					try {
-						final int locationPid = dialog.getLocationPid();
-						wizard = (NewEventWizard) getWizard();
-						wizard.setLocationPid(locationPid);
-						textLocation.setText(dialog.getLocationName());
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				browseLocations();
 			}
 		});
 		btnBrowse.setText("Browse");
@@ -210,6 +197,54 @@ public class NewEventWizardPage2 extends WizardPage {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void browseLocations() {
+		final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
+				getShell());
+
+		if (dialog.open() == Window.OK) {
+			try {
+				final int locationPid = dialog.getLocationPid();
+				wizard = (NewEventWizard) getWizard();
+				wizard.setLocationPid(locationPid);
+				textLocation.setText(dialog.getLocationName());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
+
+	/**
+	 * @param parent
+	 */
+	public void newLocation(Composite parent) {
+		NewLocationWizard newLocationWizard = new NewLocationWizard(context);
+		final WizardDialog dialog = new WizardDialog(parent.getShell(),
+				newLocationWizard);
+
+		if (dialog.open() == Window.OK) {
+			try {
+				final int locationPid = newLocationWizard.getLocationPid();
+				wizard = (NewEventWizard) getWizard();
+				wizard.setLocationPid(locationPid);
+				List<String> locationNamePartList = newLocationWizard
+						.getLocationNamePartList();
+
+				StringBuilder sb = new StringBuilder();
+				for (String string : locationNamePartList) {
+					if (string.length() > 0) {
+						sb.append(string + " ");
+					}
+				}
+				textLocation.setText(sb.toString());
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
 		}
 	}
 }
