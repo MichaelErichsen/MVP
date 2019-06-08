@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Parents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 7. maj 2019
+ * @version 8. jun. 2019
  *
  */
 public class ParentServer implements IHREServer {
@@ -21,8 +21,8 @@ public class ParentServer implements IHREServer {
 	private int Child;
 	private int Parent;
 	private int ParentRolePid;
+	private int ChildRolePid;
 	private boolean PrimaryParent;
-	private int LanguagePid;
 
 	private final Parents parentRelation;
 
@@ -96,10 +96,10 @@ public class ParentServer implements IHREServer {
 	}
 
 	/**
-	 * @return the languagePid
+	 * @return the childRolePid
 	 */
-	public int getLanguagePid() {
-		return LanguagePid;
+	public int getChildRolePid() {
+		return ChildRolePid;
 	}
 
 	/**
@@ -165,10 +165,6 @@ public class ParentServer implements IHREServer {
 		final ParentRoles role = new ParentRoles();
 		final Dictionary dictionary = new Dictionary();
 
-		if (key == 0) {
-			return lls;
-		}
-
 		for (final Parents aParent : new Parents().getFKChild(key)) {
 			ls = new ArrayList<>();
 			parentPid = aParent.getParent();
@@ -197,7 +193,6 @@ public class ParentServer implements IHREServer {
 		parentRelation.setParent(Parent);
 		parentRelation.setParentRolePid(getParentRolePid());
 		parentRelation.setPrimaryParent(PrimaryParent);
-		parentRelation.setLanguagePid(LanguagePid);
 		return parentRelation.insert();
 	}
 
@@ -242,10 +237,10 @@ public class ParentServer implements IHREServer {
 	}
 
 	/**
-	 * @param languagePid the languagePid to set
+	 * @param childRolePid the childRolePid to set
 	 */
-	public void setLanguagePid(int languagePid) {
-		LanguagePid = languagePid;
+	public void setChildRolePid(int childRolePid) {
+		ChildRolePid = childRolePid;
 	}
 
 	/**

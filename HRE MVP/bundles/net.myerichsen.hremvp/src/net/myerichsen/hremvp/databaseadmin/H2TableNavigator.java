@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * catalog for the given table. Populate the table with data from H2.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 2. jun. 2019
+ * @version 8. jun. 2019
  */
 
 public class H2TableNavigator {
@@ -227,7 +227,8 @@ public class H2TableNavigator {
 			csvFile.setFieldSeparatorWrite(",");
 
 			// FIXME java.lang.ClassCastException: java.lang.String cannot be
-			// cast to java.sql.Timestamp
+			// cast to java.sql.Timestamp 
+			// But the field was VARCHAR, last record of table
 			csvFile.write(fileName, rs, "UTF-8");
 			eventBroker.post("MESSAGE",
 					"Table " + tableName + " has been exported to " + fileName);

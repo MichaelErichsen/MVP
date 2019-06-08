@@ -1,19 +1,25 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -22,13 +28,15 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.project.providers.ChildRoleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Person child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 17. feb. 2019
+ * @version 8. jun. 2019
  *
  */
 public class NewPersonChildWizardPage1 extends WizardPage {
@@ -46,7 +54,9 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 
 	private int childPid = 0;
 
-	private String childRole = "";
+	private static final String childRole = "";
+	private List<List<String>> childStringList;
+	private int childRolePid;
 
 	/**
 	 * Constructor
@@ -159,10 +169,36 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 		final Label lblChildRole = new Label(container, SWT.NONE);
 		lblChildRole.setText("Child role");
 
-		final Text textChildRole = new Text(container, SWT.BORDER);
-		textChildRole
-				.addModifyListener(e -> childRole = textChildRole.getText());
-		textChildRole.setLayoutData(
+		final ComboViewer comboViewerChildRole = new ComboViewer(container,
+				SWT.NONE);
+		final Combo comboChildRole = comboViewerChildRole.getCombo();
+		comboChildRole.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboChildRole.getSelectionIndex();
+				childRolePid = Integer
+						.parseInt(childStringList.get(selectionIndex).get(0));
+			}
+		});
+		comboViewerChildRole
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerChildRole.setLabelProvider(new HREComboLabelProvider(3));
+
+		try {
+			childStringList = new ChildRoleProvider().getStringList();
+			comboViewerChildRole.setInput(childStringList);
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			setErrorMessage(e1.getMessage());
+		}
+		comboChildRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 	}
@@ -179,6 +215,20 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 	 */
 	public String getChildRole() {
 		return childRole;
+	}
+
+	/**
+	 * @return the childRolePid
+	 */
+	public int getChildRolePid() {
+		return childRolePid;
+	}
+
+	/**
+	 * @param childRolePid the childRolePid to set
+	 */
+	public void setChildRolePid(int childRolePid) {
+		this.childRolePid = childRolePid;
 	}
 
 	/**

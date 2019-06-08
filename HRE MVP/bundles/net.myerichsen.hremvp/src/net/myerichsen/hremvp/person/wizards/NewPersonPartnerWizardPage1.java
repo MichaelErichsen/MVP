@@ -1,19 +1,25 @@
 package net.myerichsen.hremvp.person.wizards;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -24,13 +30,15 @@ import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.person.dialogs.PersonNavigatorDialog;
 import net.myerichsen.hremvp.person.providers.PersonProvider;
+import net.myerichsen.hremvp.project.providers.PartnerRoleProvider;
 import net.myerichsen.hremvp.providers.HDateProvider;
+import net.myerichsen.hremvp.providers.HREComboLabelProvider;
 
 /**
  * Person partner wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 16. mar. 2019
+ * @version 8. jun. 2019
  *
  */
 public class NewPersonPartnerWizardPage1 extends WizardPage {
@@ -49,9 +57,11 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 	private Text textPartnershipEndDate;
 
 	private int partnerPid = 0;
-	private String partnerRole = "";
+	private static final String partnerRole = "";
 	private int partnerFromDatePid = 0;
 	private int partnerToDatePid = 0;
+	private List<List<String>> partnerStringList;
+	private int partnerRolePid;
 
 	/**
 	 * Constructor
@@ -228,10 +238,36 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 		final Label lblPartnerRole = new Label(container, SWT.NONE);
 		lblPartnerRole.setText("Partner role");
 
-		final Text textPartnerRole = new Text(container, SWT.BORDER);
-		textPartnerRole.addModifyListener(
-				e -> partnerRole = textPartnerRole.getText());
-		textPartnerRole.setLayoutData(
+		final ComboViewer comboViewerPartnerRole = new ComboViewer(container,
+				SWT.NONE);
+		final Combo comboPartnerRole = comboViewerPartnerRole.getCombo();
+		comboPartnerRole.addSelectionListener(new SelectionAdapter() {
+
+			/*
+			 * (non-Javadoc)
+			 *
+			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.
+			 * eclipse.swt.events.SelectionEvent)
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final int selectionIndex = comboPartnerRole.getSelectionIndex();
+				partnerRolePid = Integer
+						.parseInt(partnerStringList.get(selectionIndex).get(0));
+			}
+		});
+		comboViewerPartnerRole
+				.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewerPartnerRole.setLabelProvider(new HREComboLabelProvider(3));
+
+		try {
+			partnerStringList = new PartnerRoleProvider().getStringList();
+			comboViewerPartnerRole.setInput(partnerStringList);
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			setErrorMessage(e1.getMessage());
+		}
+		comboPartnerRole.setLayoutData(
 				new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		final Label lblStartOfPartnership = new Label(container, SWT.NONE);
@@ -338,6 +374,13 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 	}
 
 	/**
+	 * @return the partnerRolePid
+	 */
+	public int getPartnerRolePid() {
+		return partnerRolePid;
+	}
+
+	/**
 	 * @return the partnerToDatePid
 	 */
 	public int getPartnerToDatePid() {
@@ -386,6 +429,13 @@ public class NewPersonPartnerWizardPage1 extends WizardPage {
 			}
 		}
 
+	}
+
+	/**
+	 * @param partnerRolePid the partnerRolePid to set
+	 */
+	public void setPartnerRolePid(int partnerRolePid) {
+		this.partnerRolePid = partnerRolePid;
 	}
 
 	/**

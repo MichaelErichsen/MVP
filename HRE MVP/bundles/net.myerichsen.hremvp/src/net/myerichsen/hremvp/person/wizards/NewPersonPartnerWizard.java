@@ -10,10 +10,10 @@ import org.eclipse.jface.wizard.Wizard;
 import net.myerichsen.hremvp.person.providers.PartnerProvider;
 
 /**
- * Wizard to add an existing person as a Partner
+ * Wizard to add an existing person as a partner
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 8. jun. 2019
  *
  */
 public class NewPersonPartnerWizard extends Wizard {
@@ -64,15 +64,15 @@ public class NewPersonPartnerWizard extends Wizard {
 			final int partnerPid = page1.getPartnerPid();
 			partnerProvider.setPartner2(partnerPid);
 			partnerProvider.setPrimaryPartner(true);
-			// FIXME Role
-//			partnerProvider.setRole(page1.getPartnerRole());
+			partnerProvider.setPartnerRolePid(page1.getPartnerRolePid());
 			partnerProvider.setFromDatePid(page1.getPartnerFromDatePid());
 			partnerProvider.setToDatePid(page1.getPartnerToDatePid());
 
 			try {
 				partnerProvider.insert();
-				LOGGER.log(Level.INFO, "Inserted partner pid " + partnerPid
-						+ " for person " + personPid);
+				LOGGER.log(Level.INFO,
+						"Inserted partner pid {0} for person {1}",
+						new Object[] { partnerPid, personPid });
 				eventBroker.post("MESSAGE", "Inserted partner pid " + partnerPid
 						+ " for person " + personPid);
 				eventBroker.post(

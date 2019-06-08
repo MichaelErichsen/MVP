@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.person.servers.ParentServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. apr. 2019
+ * @version 8. jun. 2019
  *
  */
 public class ParentProvider implements IHREProvider {
@@ -15,8 +15,8 @@ public class ParentProvider implements IHREProvider {
 	private int Child;
 	private int Parent;
 	private int ParentRolePid;
+	private int ChildRolePid;
 	private boolean PrimaryParent;
-	private int LanguagePid;
 
 	private final ParentServer server;
 
@@ -66,10 +66,10 @@ public class ParentProvider implements IHREProvider {
 	}
 
 	/**
-	 * @return the languagePid
+	 * @return the childRolePid
 	 */
-	public int getLanguagePid() {
-		return LanguagePid;
+	public int getChildRolePid() {
+		return ChildRolePid;
 	}
 
 	/**
@@ -124,7 +124,6 @@ public class ParentProvider implements IHREProvider {
 		server.setParent(Parent);
 		server.setParentRolePid(getParentRolePid());
 		server.setPrimaryParent(PrimaryParent);
-		server.setLanguagePid(LanguagePid);
 		return server.insert();
 	}
 
@@ -152,10 +151,11 @@ public class ParentProvider implements IHREProvider {
 	}
 
 	/**
-	 * @param languagePid the languagePid to set
+	 * @param childRolePid
 	 */
-	public void setLanguagePid(int languagePid) {
-		LanguagePid = languagePid;
+	public void setChildRolePid(int childRolePid) {
+		// FIXME Auto-generated method stub
+
 	}
 
 	/**

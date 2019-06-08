@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.person.providers.SexProvider;
  * Wizard to add a new person with sex, name, parents, partner, child and events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. maj 2019
+ * @version 8. jun. 2019
  *
  */
 public class NewPersonWizard extends Wizard {
