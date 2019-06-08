@@ -42,7 +42,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person events wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 4. jun. 20199
+ * @version 8. jun. 2019
  *
  */
 public class NewPersonEventWizardPage1 extends WizardPage {
@@ -409,16 +409,15 @@ public class NewPersonEventWizardPage1 extends WizardPage {
 			// Populate language combo box
 			languageList = new LanguageProvider().getStringList();
 			comboViewerLanguage.setInput(languageList);
-			final int llsSize = languageList.size();
-			final String g = store.getString("GUILANGUAGE");
-			int index = 0;
+			final String defaultLanguage = store.getString("GUILANGUAGE");
 
-			for (int i = 0; i < llsSize; i++) {
-				if (g.equals(languageList.get(i).get(1))) {
-					index = i;
+			for (int i = 0; i < languageList.size(); i++) {
+				if (defaultLanguage.equals(languageList.get(i).get(1))) {
+					comboLanguage.select(i);
+					break;
 				}
 			}
-			comboLanguage.select(index);
+
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}

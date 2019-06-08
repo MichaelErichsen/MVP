@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
@@ -23,6 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import com.opcoach.e4.preferences.ScopedPreferenceStore;
+
 import net.myerichsen.hremvp.dialogs.DateDialog;
 import net.myerichsen.hremvp.dialogs.DateNavigatorDialog;
 import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
@@ -33,20 +37,23 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person name wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 13. apr. 2019
+ * @version 8. jun. 2019
  *
  */
 public class NewPersonWizardPage2 extends WizardPage {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	final IPreferenceStore store = new ScopedPreferenceStore(
+			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
 	private final IEclipseContext context;
-	private NewPersonWizard wizard;
 
 	private Text textFromDate;
 	private Text textToDate;
+	private Combo comboNameStyle;
+
+	private NewPersonWizard wizard;
 
 	private List<List<String>> stringList;
-	private Combo comboNameStyle;
 
 	/**
 	 * Constructor
@@ -182,11 +189,20 @@ public class NewPersonWizardPage2 extends WizardPage {
 		try {
 			stringList = new PersonNameStyleProvider().getStringList();
 			comboViewerNameStyle.setInput(stringList);
+			String defaultStyle = store.getString("DEFAULTPERSONNAMESTYLE");
+
+			for (int i = 0; i < stringList.size(); i++) {
+				if (defaultStyle.equals(stringList.get(i).get(0))) {
+					LOGGER.log(Level.INFO, "Person name style {0}, {1}",
+							new Object[] { stringList.get(i).get(0),
+									stringList.get(i).get(2) });
+					comboNameStyle.select(i);
+					break;
+				}
+			}
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
-
-		// FIXME int defaultStyle = store.getInt("DEFAULTPERSONNAMESTYLE");
 
 		final Composite compositeFrom = new Composite(container, SWT.BORDER);
 		compositeFrom.setLayoutData(
