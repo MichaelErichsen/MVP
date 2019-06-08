@@ -36,8 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a sex type with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 18. apr. 2019
- *
+ * @version 8. jun. 2019
  */
 
 public class SexTypeView {
@@ -134,6 +133,14 @@ public class SexTypeView {
 
 		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
+		try {
+			provider.get();
+			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewer.setInput(provider.getStringList(labelPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 		composite.setLayoutData(
@@ -154,13 +161,6 @@ public class SexTypeView {
 			}
 		});
 		btnUpdate.setText("Update");
-		try {
-			provider.get();
-			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(provider.getStringList(labelPid));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 
 	}
 
@@ -171,9 +171,10 @@ public class SexTypeView {
 	@Optional
 	private void subscribeLabelPidUpdateTopic(
 			@UIEventTopic(Constants.LABEL_PID_UPDATE_TOPIC) List<String> ls) {
+		LOGGER.log(Level.FINE, "Label pid {0}, {1}, {2}",
+				new Object[] { ls.get(0), ls.get(1), ls.get(2) });
 		sexTypePid = Integer.parseInt(ls.get(0));
 		textSexTypePid.setText(ls.get(0));
-		// FIXME java.lang.NumberFormatException: For input string: "ENUS"
 		labelPid = Integer.parseInt(ls.get(1));
 		textLabelPid.setText(ls.get(1));
 		textAbbreviation.setText(ls.get(2));

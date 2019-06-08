@@ -51,7 +51,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 28. apr. 2019
+ * @version 8. jun. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -84,6 +84,8 @@ public class NewEventDialog extends TitleAreaDialog {
 	private List<List<String>> eventRoleStringList;
 
 	private final EventRoleProvider eventRoleProvider;
+
+	private int locationEventsPid;
 
 	/**
 	 * Create the dialog.
@@ -132,12 +134,11 @@ public class NewEventDialog extends TitleAreaDialog {
 				lep.setLocationPid(locationPid);
 				lep.setPrimaryEvent(true);
 				lep.setPrimaryLocation(true);
-				final int locationEventsPid = lep.insert();
+				locationEventsPid = lep.insert();
 				LOGGER.log(Level.INFO, "Inserted location event {0}",
 						locationEventsPid);
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
-				// FIXME Null pointer exception
 				eventBroker.post("MESSAGE", e1.getMessage());
 			}
 		}
@@ -557,7 +558,6 @@ public class NewEventDialog extends TitleAreaDialog {
 			provider.setEventTypePid(eventTypePid);
 			setEventPid(provider.insert());
 
-			// FIXME If a location exists, then create a locationevent
 			LOGGER.log(Level.INFO, "Created event {0}", eventPid);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
@@ -726,7 +726,7 @@ public class NewEventDialog extends TitleAreaDialog {
 				lep.setLocationPid(locationPid);
 				lep.setPrimaryEvent(true);
 				lep.setPrimaryLocation(true);
-				final int locationEventsPid = lep.insert();
+				locationEventsPid = lep.insert();
 				LOGGER.log(Level.INFO, "Inserted location event {0}",
 						locationEventsPid);
 			} catch (final Exception e) {

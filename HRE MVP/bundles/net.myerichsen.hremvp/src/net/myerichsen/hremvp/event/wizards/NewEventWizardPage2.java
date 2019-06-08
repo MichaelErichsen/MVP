@@ -34,7 +34,7 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
  * Wizard page to add a location for an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 7. jun. 2019
+ * @version 8. jun. 2019
  *
  */
 public class NewEventWizardPage2 extends WizardPage {
@@ -210,9 +210,12 @@ public class NewEventWizardPage2 extends WizardPage {
 		if (dialog.open() == Window.OK) {
 			try {
 				final int locationPid = dialog.getLocationPid();
-				wizard = (NewEventWizard) getWizard();
-				wizard.setLocationPid(locationPid);
-				textLocation.setText(dialog.getLocationName());
+
+				if (locationPid > 0) {
+					wizard = (NewEventWizard) getWizard();
+					wizard.setLocationPid(locationPid);
+					textLocation.setText(dialog.getLocationName());
+				}
 			} catch (final Exception e1) {
 				LOGGER.log(Level.SEVERE, e1.toString(), e1);
 			}
