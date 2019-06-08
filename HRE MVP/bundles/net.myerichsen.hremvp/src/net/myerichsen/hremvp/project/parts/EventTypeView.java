@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event type with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 18. apr. 2019
+ * @version 8. jun. 2019
  *
  */
 public class EventTypeView {
@@ -211,8 +211,6 @@ public class EventTypeView {
 
 			provider.get(eventTypePid);
 			provider.setAbbreviation(textAbbreviation.getText());
-			// FIXME SEVERE: Invalid value "3" for parameter "parameterIndex"
-			// [90008-168]
 			provider.update();
 			LOGGER.log(Level.INFO, "Event pid {0} has been updated",
 					eventTypePid);
