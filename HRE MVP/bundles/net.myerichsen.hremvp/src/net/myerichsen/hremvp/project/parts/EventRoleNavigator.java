@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all event roles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 9. jun. 2019
  */
 @SuppressWarnings("restriction")
 public class EventRoleNavigator {
@@ -155,7 +155,7 @@ public class EventRoleNavigator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewEventRoleWizard(eventRolePid, context));
+						new NewEventRoleWizard(context));
 				dialog.open();
 			}
 		});

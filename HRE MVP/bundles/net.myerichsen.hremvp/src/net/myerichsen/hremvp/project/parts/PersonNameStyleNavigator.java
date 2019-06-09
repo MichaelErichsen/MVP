@@ -47,7 +47,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all person name styles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 17. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -140,8 +140,7 @@ public class PersonNameStyleNavigator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewPersonNameStyleWizard(personNameStylePid,
-								context));
+						new NewPersonNameStyleWizard(context));
 				dialog.open();
 			}
 		});

@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.project.wizards;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -24,16 +23,13 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Add a person name style wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 26. feb. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewPersonNameStyleWizardPage2 extends WizardPage {
 //	private static final Logger LOGGER = Logger
 //			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Text textIsoCode;
-	private Text textStyleName;
 	private TableViewer tableViewer;
-	private Text textNamePartCount;
 	private List<List<String>> lls;
 
 	/**
@@ -41,7 +37,7 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 	 *
 	 * @param context
 	 */
-	public NewPersonNameStyleWizardPage2(IEclipseContext context) {
+	public NewPersonNameStyleWizardPage2() {
 		super("Person name style wizard Page 2");
 		setTitle("Person name style");
 		setDescription("Add parts of a new person name style");
@@ -68,7 +64,7 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 		final Label lblIsoCode = new Label(container, SWT.NONE);
 		lblIsoCode.setText("ISO Code");
 
-		textIsoCode = new Text(container, SWT.BORDER);
+		Text textIsoCode = new Text(container, SWT.BORDER);
 		textIsoCode.setEditable(false);
 		textIsoCode.setText(wizard.getIsoCode());
 		textIsoCode.setLayoutData(
@@ -77,7 +73,7 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 		final Label lblStyleName = new Label(container, SWT.NONE);
 		lblStyleName.setText("Style name");
 
-		textStyleName = new Text(container, SWT.BORDER);
+		Text textStyleName = new Text(container, SWT.BORDER);
 		textStyleName.setEditable(false);
 		textStyleName.setText(wizard.getStyleName());
 		textStyleName.setLayoutData(
@@ -86,7 +82,7 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 		final Label lblNumberOfName = new Label(container, SWT.NONE);
 		lblNumberOfName.setText("Number of name parts");
 
-		textNamePartCount = new Text(container, SWT.BORDER);
+		Text textNamePartCount = new Text(container, SWT.BORDER);
 		textNamePartCount.setEditable(false);
 		textNamePartCount.setText(namePartCount);
 		textNamePartCount.setLayoutData(
@@ -116,6 +112,8 @@ public class NewPersonNameStyleWizardPage2 extends WizardPage {
 				new HreTypeLabelEditingSupport(tableViewer, 1));
 		tableViewerColumnPartName
 				.setLabelProvider(new HREColumnLabelProvider(1));
+
+		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		tableViewer.setInput(lls);

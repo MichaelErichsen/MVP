@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
  * Wizard to add a person name style
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 27. feb. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewPersonNameStyleWizard extends Wizard {
@@ -25,9 +25,7 @@ public class NewPersonNameStyleWizard extends Wizard {
 	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
-	private NewPersonNameStyleWizardPage1 page1;
 	private NewPersonNameStyleWizardPage2 page2;
-	private PersonNameStyleProvider provider;
 	private String styleName;
 	private String namePartCount;
 	private String isoCode;
@@ -38,8 +36,7 @@ public class NewPersonNameStyleWizard extends Wizard {
 	 * @param personNameStylePid
 	 * @param context
 	 */
-	public NewPersonNameStyleWizard(int personNameStylePid,
-			IEclipseContext context) {
+	public NewPersonNameStyleWizard(IEclipseContext context) {
 		setWindowTitle("Add a person name style");
 		setForcePreviousAndNextButtons(true);
 		this.context = context;
@@ -52,7 +49,7 @@ public class NewPersonNameStyleWizard extends Wizard {
 	 * @see org.eclipse.jface.wizard.IWizard#addPages()
 	 */
 	public void addBackPages() {
-		page2 = new NewPersonNameStyleWizardPage2(context);
+		page2 = new NewPersonNameStyleWizardPage2();
 		addPage(page2);
 	}
 
@@ -63,7 +60,7 @@ public class NewPersonNameStyleWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewPersonNameStyleWizardPage1(context);
+		NewPersonNameStyleWizardPage1 page1 = new NewPersonNameStyleWizardPage1(context);
 		addPage(page1);
 	}
 
@@ -107,12 +104,12 @@ public class NewPersonNameStyleWizard extends Wizard {
 			int labelPid = dp.getNextLabelPid();
 
 			// Insert a person name style
-			provider = new PersonNameStyleProvider();
+			PersonNameStyleProvider provider = new PersonNameStyleProvider();
 			provider.setIsoCode(isoCode);
 			provider.setLabelPid(labelPid);
 			final int personNameStylePid = provider.insert();
-			LOGGER.log(Level.INFO,
-					"Inserted person name style " + personNameStylePid);
+			LOGGER.log(Level.INFO, "Inserted person name style {0}",
+					personNameStylePid);
 			eventBroker.post("MESSAGE",
 					"Inserted person name style " + personNameStylePid);
 
@@ -123,8 +120,9 @@ public class NewPersonNameStyleWizard extends Wizard {
 			dp.setLabelPid(labelPid);
 			dp.setLabelType("PERSONNAME");
 			dp.insert();
-			LOGGER.log(Level.INFO, "Inserted person name style \"" + styleName
-					+ "\" in dictionary");
+			LOGGER.log(Level.INFO,
+					"Inserted person name style \"{0}\" in dictionary",
+					styleName);
 
 			// Handle each table row in wizard page 2
 			final List<List<String>> input = (List<List<String>>) page2
@@ -142,9 +140,9 @@ public class NewPersonNameStyleWizard extends Wizard {
 				dp.setLabelType("PERSONNAMEMAP");
 				final int dictionaryPid = dp.insert();
 				LOGGER.log(Level.INFO,
-						"Inserted dictionary element " + dictionaryPid + ", "
-								+ isoCode + ", \"" + input.get(i).get(1)
-								+ "\", label pid " + labelPid);
+						"Inserted dictionary element {0}, {1}, {2}",
+						new Object[] { dictionaryPid, input.get(i).get(2),
+								input.get(i).get(3) });
 
 				// Create a map row
 				map = new PersonNameMaps();
@@ -153,9 +151,9 @@ public class NewPersonNameStyleWizard extends Wizard {
 				map.setPartNo(Integer.parseInt(input.get(i).get(0)));
 				final int nameMapPid = map.insert();
 				LOGGER.log(Level.INFO,
-						"Inserted map element " + nameMapPid + ", Part no. "
-								+ input.get(i).get(0) + ", label pid "
-								+ labelPid);
+						"Inserted map element {0}, Part no. {1}, label pid {2}",
+						new Object[] { nameMapPid, input.get(i).get(0),
+								labelPid });
 			}
 
 			eventBroker.post(
@@ -166,7 +164,6 @@ public class NewPersonNameStyleWizard extends Wizard {
 
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 		return false;

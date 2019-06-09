@@ -15,29 +15,24 @@ import net.myerichsen.hremvp.project.providers.EventTypeProvider;
  * Wizard to add a event type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 24. feb. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewEventTypeWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
 	private NewEventTypeWizardPage1 page1;
-	private EventTypeProvider provider;
 
 	/**
 	 * Constructor
 	 *
-	 * @param eventTypePid
-	 *
 	 * @param context
 	 */
-	public NewEventTypeWizard(int eventTypePid, IEclipseContext context) {
+	public NewEventTypeWizard(IEclipseContext context) {
 		setWindowTitle("Add an event type");
 		setForcePreviousAndNextButtons(true);
-		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -49,7 +44,7 @@ public class NewEventTypeWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewEventTypeWizardPage1(context);
+		page1 = new NewEventTypeWizardPage1();
 		addPage(page1);
 	}
 
@@ -64,13 +59,13 @@ public class NewEventTypeWizard extends Wizard {
 		DictionaryProvider dp;
 		final String abbreviation = page1.getTextAbbreviation().getText();
 
-		if (abbreviation.equals("") == false) {
+		if (!abbreviation.equals("")) {
 			try {
-				provider = new EventTypeProvider();
+				EventTypeProvider provider = new EventTypeProvider();
 				provider.setAbbreviation(abbreviation);
 
 				final int eventTypePid = provider.insert();
-				LOGGER.log(Level.INFO, "Inserted event type " + eventTypePid);
+				LOGGER.log(Level.INFO, "Inserted event type {0}", eventTypePid);
 				eventBroker.post("MESSAGE",
 						"Inserted event type " + eventTypePid);
 
@@ -87,9 +82,9 @@ public class NewEventTypeWizard extends Wizard {
 					dp.setLabelType("EVENT");
 					final int dictionaryPid = dp.insert();
 					LOGGER.log(Level.INFO,
-							"Inserted dictionary element " + dictionaryPid
-									+ ", " + input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							"Inserted dictionary element {0}, {1}, {2}",
+							new Object[] { dictionaryPid, input.get(i).get(2),
+									input.get(i).get(3) });
 				}
 
 				eventBroker.post(
@@ -98,7 +93,6 @@ public class NewEventTypeWizard extends Wizard {
 				return true;
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}

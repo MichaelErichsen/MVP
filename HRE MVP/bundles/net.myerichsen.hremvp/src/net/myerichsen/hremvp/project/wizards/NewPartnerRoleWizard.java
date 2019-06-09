@@ -15,29 +15,24 @@ import net.myerichsen.hremvp.project.providers.PartnerRoleProvider;
  * Wizard to add an Partner role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewPartnerRoleWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
 	private NewPartnerRoleWizardPage1 page1;
-	private PartnerRoleProvider provider;
 
 	/**
 	 * Constructor
 	 *
-	 * @param PartnerRolePid
-	 *
 	 * @param context
 	 */
-	public NewPartnerRoleWizard(int PartnerRolePid, IEclipseContext context) {
+	public NewPartnerRoleWizard(IEclipseContext context) {
 		setWindowTitle("Add an Partner role");
 		setForcePreviousAndNextButtons(true);
-		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -49,7 +44,7 @@ public class NewPartnerRoleWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewPartnerRoleWizardPage1(context);
+		page1 = new NewPartnerRoleWizardPage1();
 		addPage(page1);
 	}
 
@@ -64,14 +59,14 @@ public class NewPartnerRoleWizard extends Wizard {
 		DictionaryProvider dp;
 		final String abbreviation = page1.getTextAbbreviation().getText();
 
-		if (abbreviation.equals("") == false) {
+		if (!abbreviation.equals("")) {
 			try {
-				provider = new PartnerRoleProvider();
+				PartnerRoleProvider provider = new PartnerRoleProvider();
 				provider.setAbbreviation(abbreviation);
 
 				final int PartnerRolePid = provider.insert();
-				LOGGER.log(Level.INFO,
-						"Inserted Partner role " + PartnerRolePid);
+				LOGGER.log(Level.INFO, "Inserted Partner role {0}",
+						PartnerRolePid);
 				eventBroker.post("MESSAGE",
 						"Inserted Partner role " + PartnerRolePid);
 
@@ -88,9 +83,9 @@ public class NewPartnerRoleWizard extends Wizard {
 					dp.setLabelType("PartnerROLE");
 					final int dictionaryPid = dp.insert();
 					LOGGER.log(Level.INFO,
-							"Inserted dictionary element " + dictionaryPid
-									+ ", " + input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							"Inserted dictionary element {0}, {1}, {2}",
+							new Object[] { dictionaryPid, input.get(i).get(2),
+									input.get(i).get(3) });
 				}
 
 				eventBroker.post(
@@ -99,7 +94,6 @@ public class NewPartnerRoleWizard extends Wizard {
 				return true;
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}

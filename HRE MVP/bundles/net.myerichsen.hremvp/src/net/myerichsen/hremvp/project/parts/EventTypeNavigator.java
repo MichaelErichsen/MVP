@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all event types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 @SuppressWarnings("restriction")
@@ -146,7 +146,7 @@ public class EventTypeNavigator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewEventTypeWizard(eventTypePid, context));
+						new NewEventTypeWizard(context));
 				dialog.open();
 			}
 		});

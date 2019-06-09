@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.project.wizards;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -26,7 +25,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new Partner Role for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 31. mar. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewPartnerRoleWizardPage1 extends WizardPage {
@@ -43,7 +42,7 @@ public class NewPartnerRoleWizardPage1 extends WizardPage {
 	 *
 	 * @param context
 	 */
-	public NewPartnerRoleWizardPage1(IEclipseContext context) {
+	public NewPartnerRoleWizardPage1() {
 		super("New Partner role wizard page 1");
 		setTitle("Partner role");
 		setDescription("Add an Partner role to this HRE project");
@@ -53,7 +52,6 @@ public class NewPartnerRoleWizardPage1 extends WizardPage {
 			labelPid = dp.getNextLabelPid();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 	}
 
@@ -127,7 +125,6 @@ public class NewPartnerRoleWizardPage1 extends WizardPage {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 

@@ -181,8 +181,6 @@ public class ParentServer implements IHREServer {
 			dictionary.getFKLabelPid(role.getLabelPid());
 			ls.add(dictionary.getLabel());
 
-			ls.add(Boolean.toString(aParent.isPrimaryParent()));
-			
 			lls.add(ls);
 		}
 		return lls;

@@ -15,17 +15,15 @@ import net.myerichsen.hremvp.project.providers.ParentRoleProvider;
  * Wizard to add an Parent role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewParentRoleWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
 	private NewParentRoleWizardPage1 page1;
-	private ParentRoleProvider provider;
 
 	/**
 	 * Constructor
@@ -34,10 +32,9 @@ public class NewParentRoleWizard extends Wizard {
 	 *
 	 * @param context
 	 */
-	public NewParentRoleWizard(int ParentRolePid, IEclipseContext context) {
+	public NewParentRoleWizard(IEclipseContext context) {
 		setWindowTitle("Add an Parent role");
 		setForcePreviousAndNextButtons(true);
-		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -49,7 +46,7 @@ public class NewParentRoleWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewParentRoleWizardPage1(context);
+		page1 = new NewParentRoleWizardPage1();
 		addPage(page1);
 	}
 
@@ -64,13 +61,14 @@ public class NewParentRoleWizard extends Wizard {
 		DictionaryProvider dp;
 		final String abbreviation = page1.getTextAbbreviation().getText();
 
-		if (abbreviation.equals("") == false) {
+		if (!abbreviation.equals("")) {
 			try {
-				provider = new ParentRoleProvider();
+				ParentRoleProvider provider = new ParentRoleProvider();
 				provider.setAbbreviation(abbreviation);
 
 				final int ParentRolePid = provider.insert();
-				LOGGER.log(Level.INFO, "Inserted Parent role " + ParentRolePid);
+				LOGGER.log(Level.INFO, "Inserted Parent role {0}",
+						ParentRolePid);
 				eventBroker.post("MESSAGE",
 						"Inserted Parent role " + ParentRolePid);
 
@@ -87,9 +85,9 @@ public class NewParentRoleWizard extends Wizard {
 					dp.setLabelType("ParentROLE");
 					final int dictionaryPid = dp.insert();
 					LOGGER.log(Level.INFO,
-							"Inserted dictionary element " + dictionaryPid
-									+ ", " + input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							"Inserted dictionary element {0}, {1}, {2}",
+							new Object[] { dictionaryPid, input.get(i).get(2),
+									input.get(i).get(3) });
 				}
 
 				eventBroker.post(
@@ -98,7 +96,6 @@ public class NewParentRoleWizard extends Wizard {
 				return true;
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
-				e.printStackTrace();
 			}
 
 		}

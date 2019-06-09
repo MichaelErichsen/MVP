@@ -46,7 +46,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all partner roles
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 18. apr. 2019
+ * @version 9. jun. 2019
  */
 @SuppressWarnings("restriction")
 public class PartnerRoleNavigator {
@@ -145,7 +145,7 @@ public class PartnerRoleNavigator {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						new NewPartnerRoleWizard(PartnerRolePid, context));
+						new NewPartnerRoleWizard(context));
 				dialog.open();
 			}
 		});

@@ -15,7 +15,7 @@ import net.myerichsen.hremvp.project.providers.SexTypeProvider;
  * Wizard to add a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewSexTypeWizard extends Wizard {
@@ -79,6 +79,13 @@ public class NewSexTypeWizard extends Wizard {
 					dp.setLabel(input.get(i).get(3));
 					dp.setLabelPid(labelPid);
 					dp.setLabelType("SEX");
+					// FIXME SEVERE: org.h2.jdbc.JdbcSQLException: NULL not
+					// allowed for column "LABEL"; SQL statement:
+					// INSERT INTO PUBLIC.DICTIONARY( DICTIONARY_PID, LABEL_PID,
+					// ISO_CODE, LABEL, INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID,
+					// LABEL_TYPE) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP,
+					// CURRENT_TIMESTAMP, 6, ?) [23502-168]
+
 					final int dictionaryPid = dp.insert();
 					LOGGER.log(Level.INFO,
 							"Inserted dictionary element {0}, {1}, {2}",

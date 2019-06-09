@@ -3,7 +3,6 @@ package net.myerichsen.hremvp.project.wizards;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -26,7 +25,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new event type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 22. mar. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewEventTypeWizardPage1 extends WizardPage {
@@ -43,7 +42,7 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 	 *
 	 * @param context
 	 */
-	public NewEventTypeWizardPage1(IEclipseContext context) {
+	public NewEventTypeWizardPage1() {
 		super("New Event type wizard Page 1");
 		setTitle("Event type");
 		setDescription("Add an event type to this HRE project");
@@ -53,7 +52,6 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 			labelPid = dp.getNextLabelPid();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
-			e.printStackTrace();
 		}
 
 	}
@@ -119,12 +117,13 @@ public class NewEventTypeWizardPage1 extends WizardPage {
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
 
+		HREColumnLabelProvider.addEditingSupport(tableViewer);
+
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-			e1.printStackTrace();
 		}
 	}
 

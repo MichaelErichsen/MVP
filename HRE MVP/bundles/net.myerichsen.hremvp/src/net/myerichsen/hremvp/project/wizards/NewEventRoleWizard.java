@@ -15,17 +15,15 @@ import net.myerichsen.hremvp.project.providers.EventRoleProvider;
  * Wizard to add an event role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 23. mar. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewEventRoleWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
 	private NewEventRoleWizardPage1 page1;
-	private EventRoleProvider provider;
 	private int eventTypePid = 0;
 
 	/**
@@ -35,10 +33,9 @@ public class NewEventRoleWizard extends Wizard {
 	 *
 	 * @param context
 	 */
-	public NewEventRoleWizard(int eventRolePid, IEclipseContext context) {
+	public NewEventRoleWizard(IEclipseContext context) {
 		setWindowTitle("Add an event role");
 		setForcePreviousAndNextButtons(true);
-		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -50,7 +47,7 @@ public class NewEventRoleWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewEventRoleWizardPage1(context);
+		page1 = new NewEventRoleWizardPage1();
 		addPage(page1);
 	}
 
@@ -72,9 +69,9 @@ public class NewEventRoleWizard extends Wizard {
 		DictionaryProvider dp;
 		final String abbreviation = page1.getTextAbbreviation().getText();
 
-		if (abbreviation.equals("") == false) {
+		if (!abbreviation.equals("")) {
 			try {
-				provider = new EventRoleProvider();
+				EventRoleProvider provider = new EventRoleProvider();
 				provider.setAbbreviation(abbreviation);
 				provider.setEventTypePid(eventTypePid);
 
@@ -96,9 +93,9 @@ public class NewEventRoleWizard extends Wizard {
 					dp.setLabelType("EVENTROLE");
 					final int dictionaryPid = dp.insert();
 					LOGGER.log(Level.INFO,
-							"Inserted dictionary element " + dictionaryPid
-									+ ", " + input.get(i).get(2) + ", "
-									+ input.get(i).get(3));
+							"Inserted dictionary element {0}, {1}, {2}",
+							new Object[] { dictionaryPid, input.get(i).get(2),
+									input.get(i).get(3) });
 				}
 
 				eventBroker.post(

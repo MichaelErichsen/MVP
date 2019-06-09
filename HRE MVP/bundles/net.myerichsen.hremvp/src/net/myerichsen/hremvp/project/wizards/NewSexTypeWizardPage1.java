@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new sex type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 21. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewSexTypeWizardPage1 extends WizardPage {
@@ -124,6 +124,8 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 		tableViewerColumnLabel.setEditingSupport(
 				new HreTypeLabelEditingSupport(tableViewer, 3));
 		tableViewerColumnLabel.setLabelProvider(new HREColumnLabelProvider(3));
+
+		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {

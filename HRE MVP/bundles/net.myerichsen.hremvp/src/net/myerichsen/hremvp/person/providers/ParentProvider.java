@@ -155,7 +155,7 @@ public class ParentProvider implements IHREProvider {
 	 * @param childRolePid
 	 */
 	public void setChildRolePid(int childRolePid) {
-		// FIXME Auto-generated method stub
+		ChildRolePid = childRolePid;
 
 	}
 
