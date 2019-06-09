@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 12. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 
@@ -149,6 +149,14 @@ public class EventRoleView {
 
 		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
+		try {
+			provider.get();
+			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewer.setInput(provider.getStringList(labelPid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 		composite.setLayoutData(
@@ -169,14 +177,6 @@ public class EventRoleView {
 			}
 		});
 		btnUpdate.setText("Update");
-
-		try {
-			provider.get();
-			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(provider.getStringList(labelPid));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
 
 	}
 
@@ -220,6 +220,8 @@ public class EventRoleView {
 			return;
 		}
 
+		// FIXME First entry not updated
+		
 		try {
 			final List<List<String>> eventRoleList = provider
 					.getStringList(labelPid);
@@ -241,11 +243,11 @@ public class EventRoleView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.log(Level.FINE,
-							input.get(i).get(2) + ", " + input.get(i).get(3)
-									+ " - " + existingElement.get(0) + ", "
-									+ existingElement.get(1) + ", "
-									+ existingElement.get(2));
+					LOGGER.log(Level.FINE, "{0}, {1} - {2}, {3}, {4}",
+							new Object[] { input.get(i).get(2),
+									input.get(i).get(3), existingElement.get(0),
+									existingElement.get(1),
+									existingElement.get(2) });
 
 					if (input.get(i).get(2).equals(existingElement.get(0))) {
 						if (!(input.get(i).get(3)
@@ -259,11 +261,11 @@ public class EventRoleView {
 							dp.setLabelType("EVENTROLE");
 							dp.update();
 							LOGGER.log(Level.FINE,
-									"Updated dictionary element "
-											+ input.get(i).get(0) + ", "
-											+ input.get(i).get(1) + ", "
-											+ input.get(i).get(2) + ", "
-											+ input.get(i).get(3));
+									"Updated dictionary element {0}, {1}, {2}, {3}",
+									new Object[] { input.get(i).get(0),
+											input.get(i).get(1),
+											input.get(i).get(2),
+											input.get(i).get(3) });
 						}
 						break;
 					}
