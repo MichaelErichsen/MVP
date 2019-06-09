@@ -14,56 +14,57 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PARENTS database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 09. jun. 2019
  *
  */
 
 public class Parents {
+	private List<Parents> modelList;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	private Connection conn;
 	private static final String SELECT = "SELECT PARENT_PID, CHILD, "
 			+ "PARENT, PRIMARY_PARENT, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID, "
-			+ "PARENT_ROLE_PID FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
+			+ "UPDATE_TSTMP, TABLE_ID, PARENT_ROLE_PID, "
+			+ "CHILD_ROLE_PID FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
+
 	private static final String SELECT_CHILD = "SELECT PARENT_PID, "
 			+ "CHILD, PARENT, PRIMARY_PARENT, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID, "
-			+ "PARENT_ROLE_PID FROM PUBLIC.PARENTS WHERE CHILD = ? ORDER BY PARENT_PID";
+			+ "UPDATE_TSTMP, TABLE_ID, PARENT_ROLE_PID, "
+			+ "CHILD_ROLE_PID FROM PUBLIC.PARENTS WHERE CHILD = ? ORDER BY PARENT_PID";
+
 	private static final String SELECT_PARENT = "SELECT PARENT_PID, "
 			+ "CHILD, PARENT, PRIMARY_PARENT, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID, "
-			+ "PARENT_ROLE_PID FROM PUBLIC.PARENTS WHERE PARENT = ? ORDER BY PARENT_PID";
+			+ "UPDATE_TSTMP, TABLE_ID, PARENT_ROLE_PID, "
+			+ "CHILD_ROLE_PID FROM PUBLIC.PARENTS WHERE PARENT = ? ORDER BY PARENT_PID";
+
 	private static final String SELECT_PARENT_ROLE_PID = "SELECT "
 			+ "PARENT_PID, CHILD, PARENT, PRIMARY_PARENT, "
-			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID, "
-			+ "PARENT_ROLE_PID FROM PUBLIC.PARENTS WHERE PARENT_ROLE_PID = ? ORDER BY PARENT_PID";
+			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, PARENT_ROLE_PID, "
+			+ "CHILD_ROLE_PID FROM PUBLIC.PARENTS WHERE PARENT_ROLE_PID = ? ORDER BY PARENT_PID";
+
 	private static final String SELECTALL = "SELECT PARENT_PID, "
 			+ "CHILD, PARENT, PRIMARY_PARENT, INSERT_TSTMP, "
-			+ "UPDATE_TSTMP, TABLE_ID, LANGUAGE_PID, "
-			+ "PARENT_ROLE_PID FROM PUBLIC.PARENTS ORDER BY PARENT_PID";
+			+ "UPDATE_TSTMP, TABLE_ID, PARENT_ROLE_PID, "
+			+ "CHILD_ROLE_PID FROM PUBLIC.PARENTS ORDER BY PARENT_PID";
 
 	private static final String SELECTMAX = "SELECT MAX(PARENT_PID) FROM PUBLIC.PARENTS";
 
 	private static final String INSERT = "INSERT INTO PUBLIC.PARENTS( "
 			+ "PARENT_PID, CHILD, PARENT, PRIMARY_PARENT, "
 			+ "INSERT_TSTMP, UPDATE_TSTMP, TABLE_ID, "
-			+ "LANGUAGE_PID, PARENT_ROLE_PID) VALUES (?, ?, "
+			+ "PARENT_ROLE_PID, CHILD_ROLE_PID) VALUES (?, ?, "
 			+ "?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 22, ?, ?)";
 
 	private static final String UPDATE = "UPDATE PUBLIC.PARENTS SET "
 			+ "CHILD = ?, PARENT = ?, PRIMARY_PARENT = ?"
-			+ ", UPDATE_TSTMP = CURRENT_TIMESTAMP, LANGUAGE_PID = ?"
-			+ ", PARENT_ROLE_PID = ? WHERE PARENT_PID = ?";
+			+ ", INSERT_TSTMP = ?, UPDATE_TSTMP = CURRENT_TIMESTAMP"
+			+ ", TABLE_ID = ?, PARENT_ROLE_PID = ?"
+			+ ", CHILD_ROLE_PID = ? WHERE PARENT_PID = ?";
 
 	private static final String DELETE = "DELETE FROM PUBLIC.PARENTS WHERE PARENT_PID = ?";
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.PARENTS";
-
-	private List<Parents> modelList;
-
-	private PreparedStatement ps;
-
-	private ResultSet rs;
-
-	private Connection conn;
 
 	private int ParentPid;
 	private int Child;
@@ -72,8 +73,8 @@ public class Parents {
 	private Timestamp InsertTstmp;
 	private Timestamp UpdateTstmp;
 	private int TableId;
-	private int LanguagePid;
 	private int ParentRolePid;
+	private int ChildRolePid;
 	private Parents model;
 
 	public void delete() throws Exception {
@@ -98,7 +99,7 @@ public class Parents {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		modelList = new ArrayList<Parents>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -108,8 +109,8 @@ public class Parents {
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setParentRolePid(rs.getInt("PARENT_ROLE_PID"));
+			model.setChildRolePid(rs.getInt("CHILD_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -129,21 +130,12 @@ public class Parents {
 			setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			setTableId(rs.getInt("TABLE_ID"));
-			setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			setParentRolePid(rs.getInt("PARENT_ROLE_PID"));
+			setChildRolePid(rs.getInt("CHILD_ROLE_PID"));
 		} else {
 			throw new MvpException("ID " + key + " not found");
 		}
 		conn.close();
-	}
-
-	/**
-	 * Get the Child field.
-	 *
-	 * @return Contents of the CHILD column
-	 */
-	public int getChild() {
-		return Child;
 	}
 
 	public List<Parents> getFKChild(int key) throws Exception {
@@ -151,7 +143,7 @@ public class Parents {
 		ps = conn.prepareStatement(SELECT_CHILD);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		modelList = new ArrayList<Parents>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -161,8 +153,8 @@ public class Parents {
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setParentRolePid(rs.getInt("PARENT_ROLE_PID"));
+			model.setChildRolePid(rs.getInt("CHILD_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -174,7 +166,7 @@ public class Parents {
 		ps = conn.prepareStatement(SELECT_PARENT);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		modelList = new ArrayList<Parents>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -184,8 +176,8 @@ public class Parents {
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setParentRolePid(rs.getInt("PARENT_ROLE_PID"));
+			model.setChildRolePid(rs.getInt("CHILD_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
@@ -197,7 +189,7 @@ public class Parents {
 		ps = conn.prepareStatement(SELECT_PARENT_ROLE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		modelList = new ArrayList<Parents>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -207,75 +199,12 @@ public class Parents {
 			model.setInsertTstmp(rs.getTimestamp("INSERT_TSTMP"));
 			model.setUpdateTstmp(rs.getTimestamp("UPDATE_TSTMP"));
 			model.setTableId(rs.getInt("TABLE_ID"));
-			model.setLanguagePid(rs.getInt("LANGUAGE_PID"));
 			model.setParentRolePid(rs.getInt("PARENT_ROLE_PID"));
+			model.setChildRolePid(rs.getInt("CHILD_ROLE_PID"));
 			modelList.add(model);
 		}
 		conn.close();
 		return modelList;
-	}
-
-	/**
-	 * Get the InsertTstmp field.
-	 *
-	 * @return Contents of the INSERT_TSTMP column
-	 */
-	public Timestamp getInsertTstmp() {
-		return InsertTstmp;
-	}
-
-	/**
-	 * Get the LanguagePid field.
-	 *
-	 * @return Contents of the LANGUAGE_PID column
-	 */
-	public int getLanguagePid() {
-		return LanguagePid;
-	}
-
-	/**
-	 * Get the Parent field.
-	 *
-	 * @return Contents of the PARENT column
-	 */
-	public int getParent() {
-		return Parent;
-	}
-
-	/**
-	 * Get the ParentPid field.
-	 *
-	 * @return Contents of the PARENT_PID column
-	 */
-	public int getParentPid() {
-		return ParentPid;
-	}
-
-	/**
-	 * Get the ParentRolePid field.
-	 *
-	 * @return Contents of the PARENT_ROLE_PID column
-	 */
-	public int getParentRolePid() {
-		return ParentRolePid;
-	}
-
-	/**
-	 * Get the TableId field.
-	 *
-	 * @return Contents of the TABLE_ID column
-	 */
-	public int getTableId() {
-		return TableId;
-	}
-
-	/**
-	 * Get the UpdateTstmp field.
-	 *
-	 * @return Contents of the UPDATE_TSTMP column
-	 */
-	public Timestamp getUpdateTstmp() {
-		return UpdateTstmp;
 	}
 
 	public int insert() throws Exception {
@@ -293,11 +222,51 @@ public class Parents {
 		ps.setInt(2, getChild());
 		ps.setInt(3, getParent());
 		ps.setBoolean(4, isPrimaryParent());
-		ps.setInt(5, getLanguagePid());
-		ps.setInt(6, getParentRolePid());
+		ps.setInt(5, getParentRolePid());
+		ps.setInt(6, getChildRolePid());
 		ps.executeUpdate();
 		conn.close();
 		return maxPid;
+	}
+
+	public void update() throws Exception {
+		conn = HreH2ConnectionPool.getConnection();
+		ps = conn.prepareStatement(UPDATE);
+		ps.setInt(1, getChild());
+		ps.setInt(2, getParent());
+		ps.setBoolean(3, isPrimaryParent());
+		ps.setInt(4, getParentRolePid());
+		ps.setInt(5, getChildRolePid());
+		ps.setInt(6, getParentPid());
+		ps.executeUpdate();
+		conn.close();
+	}
+
+	/**
+	 * Get the ParentPid field.
+	 *
+	 * @return Contents of the PARENT_PID column
+	 */
+	public int getParentPid() {
+		return this.ParentPid;
+	}
+
+	/**
+	 * Get the Child field.
+	 *
+	 * @return Contents of the CHILD column
+	 */
+	public int getChild() {
+		return this.Child;
+	}
+
+	/**
+	 * Get the Parent field.
+	 *
+	 * @return Contents of the PARENT column
+	 */
+	public int getParent() {
+		return this.Parent;
 	}
 
 	/**
@@ -306,43 +275,52 @@ public class Parents {
 	 * @return Contents of the PRIMARY_PARENT column
 	 */
 	public boolean isPrimaryParent() {
-		return PrimaryParent;
+		return this.PrimaryParent;
 	}
 
 	/**
-	 * Set the Child field
+	 * Get the InsertTstmp field.
 	 *
-	 * @param Child Contents of the CHILD column
+	 * @return Contents of the INSERT_TSTMP column
 	 */
-	public void setChild(int Child) {
-		this.Child = Child;
+	public Timestamp getInsertTstmp() {
+		return this.InsertTstmp;
 	}
 
 	/**
-	 * Set the InsertTstmp field
+	 * Get the UpdateTstmp field.
 	 *
-	 * @param InsertTstmp Contents of the INSERT_TSTMP column
+	 * @return Contents of the UPDATE_TSTMP column
 	 */
-	public void setInsertTstmp(Timestamp InsertTstmp) {
-		this.InsertTstmp = InsertTstmp;
+	public Timestamp getUpdateTstmp() {
+		return this.UpdateTstmp;
 	}
 
 	/**
-	 * Set the LanguagePid field
+	 * Get the TableId field.
 	 *
-	 * @param LanguagePid Contents of the LANGUAGE_PID column
+	 * @return Contents of the TABLE_ID column
 	 */
-	public void setLanguagePid(int LanguagePid) {
-		this.LanguagePid = LanguagePid;
+	public int getTableId() {
+		return this.TableId;
 	}
 
 	/**
-	 * Set the Parent field
+	 * Get the ParentRolePid field.
 	 *
-	 * @param Parent Contents of the PARENT column
+	 * @return Contents of the PARENT_ROLE_PID column
 	 */
-	public void setParent(int Parent) {
-		this.Parent = Parent;
+	public int getParentRolePid() {
+		return this.ParentRolePid;
+	}
+
+	/**
+	 * Get the ChildRolePid field.
+	 *
+	 * @return Contents of the CHILD_ROLE_PID column
+	 */
+	public int getChildRolePid() {
+		return this.ChildRolePid;
 	}
 
 	/**
@@ -355,12 +333,21 @@ public class Parents {
 	}
 
 	/**
-	 * Set the ParentRolePid field
+	 * Set the Child field
 	 *
-	 * @param ParentRolePid Contents of the PARENT_ROLE_PID column
+	 * @param Child Contents of the CHILD column
 	 */
-	public void setParentRolePid(int ParentRolePid) {
-		this.ParentRolePid = ParentRolePid;
+	public void setChild(int Child) {
+		this.Child = Child;
+	}
+
+	/**
+	 * Set the Parent field
+	 *
+	 * @param Parent Contents of the PARENT column
+	 */
+	public void setParent(int Parent) {
+		this.Parent = Parent;
 	}
 
 	/**
@@ -373,12 +360,12 @@ public class Parents {
 	}
 
 	/**
-	 * Set the TableId field
+	 * Set the InsertTstmp field
 	 *
-	 * @param TableId Contents of the TABLE_ID column
+	 * @param InsertTstmp Contents of the INSERT_TSTMP column
 	 */
-	public void setTableId(int TableId) {
-		this.TableId = TableId;
+	public void setInsertTstmp(Timestamp InsertTstmp) {
+		this.InsertTstmp = InsertTstmp;
 	}
 
 	/**
@@ -390,17 +377,31 @@ public class Parents {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws Exception {
-		conn = HreH2ConnectionPool.getConnection();
-		ps = conn.prepareStatement(UPDATE);
-		ps.setInt(1, getChild());
-		ps.setInt(2, getParent());
-		ps.setBoolean(3, isPrimaryParent());
-		ps.setInt(4, getLanguagePid());
-		ps.setInt(5, getParentRolePid());
-		ps.setInt(6, getParentPid());
-		ps.executeUpdate();
-		conn.close();
+	/**
+	 * Set the TableId field
+	 *
+	 * @param TableId Contents of the TABLE_ID column
+	 */
+	public void setTableId(int TableId) {
+		this.TableId = TableId;
+	}
+
+	/**
+	 * Set the ParentRolePid field
+	 *
+	 * @param ParentRolePid Contents of the PARENT_ROLE_PID column
+	 */
+	public void setParentRolePid(int ParentRolePid) {
+		this.ParentRolePid = ParentRolePid;
+	}
+
+	/**
+	 * Set the ChildRolePid field
+	 *
+	 * @param ChildRolePid Contents of the CHILD_ROLE_PID column
+	 */
+	public void setChildRolePid(int ChildRolePid) {
+		this.ChildRolePid = ChildRolePid;
 	}
 
 }

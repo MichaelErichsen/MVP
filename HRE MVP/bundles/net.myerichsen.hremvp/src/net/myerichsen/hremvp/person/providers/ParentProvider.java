@@ -7,7 +7,7 @@ import net.myerichsen.hremvp.person.servers.ParentServer;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 8. jun. 2019
+ * @version 9. jun. 2019
  *
  */
 public class ParentProvider implements IHREProvider {
@@ -123,6 +123,7 @@ public class ParentProvider implements IHREProvider {
 		server.setChild(Child);
 		server.setParent(Parent);
 		server.setParentRolePid(getParentRolePid());
+		server.setChildRolePid(getChildRolePid());
 		server.setPrimaryParent(PrimaryParent);
 		return server.insert();
 	}

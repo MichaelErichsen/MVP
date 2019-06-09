@@ -13,7 +13,7 @@ import net.myerichsen.hremvp.dbmodels.Parents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 8. jun. 2019
+ * @version 9. jun. 2019
  *
  */
 public class ParentServer implements IHREServer {
@@ -177,6 +177,12 @@ public class ParentServer implements IHREServer {
 
 			ls.add(Boolean.toString(aParent.isPrimaryParent()));
 
+			role.get(aParent.getChildRolePid());
+			dictionary.getFKLabelPid(role.getLabelPid());
+			ls.add(dictionary.getLabel());
+
+			ls.add(Boolean.toString(aParent.isPrimaryParent()));
+			
 			lls.add(ls);
 		}
 		return lls;
@@ -192,6 +198,7 @@ public class ParentServer implements IHREServer {
 		parentRelation.setChild(Child);
 		parentRelation.setParent(Parent);
 		parentRelation.setParentRolePid(getParentRolePid());
+		parentRelation.setChildRolePid(ChildRolePid);
 		parentRelation.setPrimaryParent(PrimaryParent);
 		return parentRelation.insert();
 	}
