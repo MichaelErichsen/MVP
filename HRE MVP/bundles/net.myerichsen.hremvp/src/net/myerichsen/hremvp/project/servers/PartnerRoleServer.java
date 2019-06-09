@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.servers;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ import net.myerichsen.hremvp.dbmodels.PartnerRoles;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 public class PartnerRoleServer implements IHREServer {
@@ -71,9 +72,10 @@ public class PartnerRoleServer implements IHREServer {
 	 * Get all rows
 	 *
 	 * @return
+	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public List<PartnerRoles> get() throws Exception {
+	public List<PartnerRoles> get() throws SQLException {
 		return PartnerRole.get();
 	}
 
@@ -178,7 +180,7 @@ public class PartnerRoleServer implements IHREServer {
 
 	/**
 	 * @return stringList A list of lists of event Role pids, label pids,
-	 *         abbreviations, and generic labels
+	 *         abbreviations, and default language labels
 	 * @throws Exception
 	 */
 	@Override
@@ -217,8 +219,8 @@ public class PartnerRoleServer implements IHREServer {
 
 	/**
 	 * @param partnerRolePid
-	 * @return stringList A list of lists of event Role pids, label pids, iso
-	 *         codes and generic labels
+	 * @return stringList A list of lists of partner role pids, label pids, iso
+	 *         codes and language specific labels for a partner role
 	 * @throws Exception
 	 */
 	@Override
@@ -231,34 +233,32 @@ public class PartnerRoleServer implements IHREServer {
 		}
 
 		this.PartnerRolePid = partnerRolePid;
-		
-		List<String> stringList;
-		List<Dictionary> fkLabelPid;
-		String label = "";
 
-		final IPreferenceStore store = new ScopedPreferenceStore(
-				InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-		final String guiLanguage = store.getString("GUILANGUAGE");
+		List<String> stringList;
+
 		final Dictionary dictionary = new Dictionary();
 
 		PartnerRoles aPartnerRole = new PartnerRoles();
 		aPartnerRole.get(partnerRolePid);
 
-		stringList = new ArrayList<>();
-		stringList.add(Integer.toString(aPartnerRole.getPartnerRolePid()));
-		stringList.add(Integer.toString(aPartnerRole.getLabelPid()));
-		stringList.add(aPartnerRole.getAbbreviation());
+		for (final Dictionary d : dictionary
+				.getFKLabelPid(aPartnerRole.getLabelPid())) {
+			stringList = new ArrayList<>();
 
-		fkLabelPid = dictionary.getFKLabelPid(aPartnerRole.getLabelPid());
+			// Partner role pid
+			stringList.add(Integer.toString(partnerRolePid));
 
-		for (final Dictionary d : fkLabelPid) {
-			if (guiLanguage.equals(d.getIsoCode())) {
-				label = d.getLabel();
-			}
+			// Dictionary label pid
+			stringList.add(Integer.toString(aPartnerRole.getLabelPid()));
+
+			// Iso code
+			stringList.add(d.getIsoCode());
+
+			// Language specific label
+			stringList.add(d.getLabel());
+
+			lls.add(stringList);
 		}
-
-		stringList.add(label);
-		lls.add(stringList);
 		return lls;
 
 	}

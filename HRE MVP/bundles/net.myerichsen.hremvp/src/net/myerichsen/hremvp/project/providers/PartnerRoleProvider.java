@@ -1,16 +1,18 @@
 package net.myerichsen.hremvp.project.providers;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import net.myerichsen.hremvp.IHREProvider;
 import net.myerichsen.hremvp.MvpException;
+import net.myerichsen.hremvp.dbmodels.PartnerRoles;
 import net.myerichsen.hremvp.project.servers.PartnerRoleServer;
 
 /**
  * Provides all data for an personEvent Role
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. mar. 2019
+ * @version 9. jun. 2019
  *
  */
 public class PartnerRoleProvider implements IHREProvider {
@@ -57,7 +59,7 @@ public class PartnerRoleProvider implements IHREProvider {
 	 *
 	 * @see net.myerichsen.hremvp.IHREProvider#get()
 	 */
-	public List<?> get() throws Exception {
+	public List<PartnerRoles> get() throws SQLException {
 		return server.get();
 	}
 

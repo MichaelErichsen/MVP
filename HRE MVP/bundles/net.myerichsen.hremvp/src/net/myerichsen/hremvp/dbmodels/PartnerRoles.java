@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import net.myerichsen.hremvp.MvpException;
  * The persistent class for the PARTNER_ROLES database table
  *
  * @author H2ModelGenerator, &copy; History Research Environment Ltd., 2019
- * @version 28. mar. 2019
+ * @version 9. jun. 2019
  *
  */
 
@@ -39,8 +40,6 @@ public class PartnerRoles {
 
 	private static final String DELETEALL = "DELETE FROM PUBLIC.PARTNER_ROLES";
 
-	private List<PartnerRoles> modelList;
-
 	private PreparedStatement ps;
 
 	private ResultSet rs;
@@ -53,16 +52,15 @@ public class PartnerRoles {
 	private Timestamp InsertTstmp;
 	private Timestamp UpdateTstmp;
 	private int TableId;
-	private PartnerRoles model;
 
-	public void delete() throws Exception {
+	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws Exception {
+	public void delete(int key) throws SQLException, MvpException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -73,13 +71,13 @@ public class PartnerRoles {
 		conn.close();
 	}
 
-	public List<PartnerRoles> get() throws Exception {
+	public List<PartnerRoles> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<>();
+		List<PartnerRoles> modelList = new ArrayList<>();
 		while (rs.next()) {
-			model = new PartnerRoles();
+			PartnerRoles model = new PartnerRoles();
 			model.setPartnerRolePid(rs.getInt("PARTNER_ROLE_PID"));
 			model.setAbbreviation(rs.getString("ABBREVIATION"));
 			model.setLabelPid(rs.getInt("LABEL_PID"));
@@ -92,7 +90,7 @@ public class PartnerRoles {
 		return modelList;
 	}
 
-	public void get(int key) throws Exception {
+	public void get(int key) throws SQLException, MvpException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -164,7 +162,7 @@ public class PartnerRoles {
 		return UpdateTstmp;
 	}
 
-	public int insert() throws Exception {
+	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -237,7 +235,7 @@ public class PartnerRoles {
 		this.UpdateTstmp = UpdateTstmp;
 	}
 
-	public void update() throws Exception {
+	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setString(1, getAbbreviation());

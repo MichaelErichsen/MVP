@@ -22,7 +22,7 @@ import net.myerichsen.hremvp.dbmodels.ParentRoles;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 28. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 public class ParentRoleServer implements IHREServer {
@@ -217,8 +217,8 @@ public class ParentRoleServer implements IHREServer {
 
 	/**
 	 * @param parentRolePid
-	 * @return stringList A list of lists of event Role pids, label pids, iso
-	 *         codes and generic labels
+	 * @return stringList A list of lists of parent role pids, label pids, iso
+	 *         codes and language specific labels
 	 * @throws Exception
 	 */
 	@Override
@@ -233,32 +233,30 @@ public class ParentRoleServer implements IHREServer {
 		this.ParentRolePid = parentRolePid;
 
 		List<String> stringList;
-		List<Dictionary> fkLabelPid;
-		String label = "";
 
-		final IPreferenceStore store = new ScopedPreferenceStore(
-				InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-		final String guiLanguage = store.getString("GUILANGUAGE");
 		final Dictionary dictionary = new Dictionary();
 
 		ParentRoles aParentRole = new ParentRoles();
 		aParentRole.get(parentRolePid);
 
-		stringList = new ArrayList<>();
-		stringList.add(Integer.toString(aParentRole.getParentRolePid()));
-		stringList.add(Integer.toString(aParentRole.getLabelPid()));
-		stringList.add(aParentRole.getAbbreviation());
+		for (final Dictionary d : dictionary
+				.getFKLabelPid(aParentRole.getLabelPid())) {
+			stringList = new ArrayList<>();
 
-		fkLabelPid = dictionary.getFKLabelPid(aParentRole.getLabelPid());
+			// Parent role pid
+			stringList.add(Integer.toString(parentRolePid));
 
-		for (final Dictionary d : fkLabelPid) {
-			if (guiLanguage.equals(d.getIsoCode())) {
-				label = d.getLabel();
-			}
+			// Dictionary label pid
+			stringList.add(Integer.toString(aParentRole.getLabelPid()));
+
+			// Iso code
+			stringList.add(d.getIsoCode());
+
+			// Language specific label
+			stringList.add(d.getLabel());
+
+			lls.add(stringList);
 		}
-
-		stringList.add(label);
-		lls.add(stringList);
 		return lls;
 	}
 

@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Person child wizard page
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 8. jun. 2019
+ * @version 9. jun. 2019
  *
  */
 public class NewPersonChildWizardPage1 extends WizardPage {
@@ -54,7 +54,7 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 
 	private int childPid = 0;
 
-	private static final String childRole = "";
+//	private static final String childRole = "";
 	private List<List<String>> childStringList;
 	private int childRolePid;
 
@@ -210,12 +210,12 @@ public class NewPersonChildWizardPage1 extends WizardPage {
 		return childPid;
 	}
 
-	/**
-	 * @return the childRole
-	 */
-	public String getChildRole() {
-		return childRole;
-	}
+//	/**
+//	 * @return the childRole
+//	 */
+//	public String getChildRole() {
+//		return childRole;
+//	}
 
 	/**
 	 * @return the childRolePid

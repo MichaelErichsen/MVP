@@ -19,7 +19,6 @@ import net.myerichsen.hremvp.project.providers.LanguageProvider;
 public class NewLanguageWizard extends Wizard {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private final IEclipseContext context;
 	private final IEventBroker eventBroker;
 
 	private NewLanguageWizardPage1 page1;
@@ -32,7 +31,6 @@ public class NewLanguageWizard extends Wizard {
 	public NewLanguageWizard(IEclipseContext context) {
 		setWindowTitle("Add a language");
 		setForcePreviousAndNextButtons(true);
-		this.context = context;
 		eventBroker = context.get(IEventBroker.class);
 	}
 
@@ -44,7 +42,7 @@ public class NewLanguageWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		page1 = new NewLanguageWizardPage1(context);
+		page1 = new NewLanguageWizardPage1();
 		addPage(page1);
 	}
 

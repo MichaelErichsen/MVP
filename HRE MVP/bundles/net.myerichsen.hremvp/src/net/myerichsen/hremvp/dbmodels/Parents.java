@@ -3,6 +3,7 @@ package net.myerichsen.hremvp.dbmodels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,14 +78,14 @@ public class Parents {
 	private int ChildRolePid;
 	private Parents model;
 
-	public void delete() throws Exception {
+	public void delete() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETEALL);
 		ps.executeUpdate();
 		conn.close();
 	}
 
-	public void delete(int key) throws Exception {
+	public void delete(int key) throws SQLException, MvpException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(DELETE);
 		ps.setInt(1, key);
@@ -95,11 +96,11 @@ public class Parents {
 		conn.close();
 	}
 
-	public List<Parents> get() throws Exception {
+	public List<Parents> get() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTALL);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Parents>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -117,7 +118,7 @@ public class Parents {
 		return modelList;
 	}
 
-	public void get(int key) throws Exception {
+	public void get(int key) throws SQLException, MvpException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT);
 		ps.setInt(1, key);
@@ -138,12 +139,12 @@ public class Parents {
 		conn.close();
 	}
 
-	public List<Parents> getFKChild(int key) throws Exception {
+	public List<Parents> getFKChild(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_CHILD);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Parents>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -161,12 +162,12 @@ public class Parents {
 		return modelList;
 	}
 
-	public List<Parents> getFKParent(int key) throws Exception {
+	public List<Parents> getFKParent(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PARENT);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Parents>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -184,12 +185,12 @@ public class Parents {
 		return modelList;
 	}
 
-	public List<Parents> getFKParentRolePid(int key) throws Exception {
+	public List<Parents> getFKParentRolePid(int key) throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECT_PARENT_ROLE_PID);
 		ps.setInt(1, key);
 		rs = ps.executeQuery();
-		modelList = new ArrayList<Parents>();
+		modelList = new ArrayList<>();
 		while (rs.next()) {
 			model = new Parents();
 			model.setParentPid(rs.getInt("PARENT_PID"));
@@ -207,7 +208,7 @@ public class Parents {
 		return modelList;
 	}
 
-	public int insert() throws Exception {
+	public int insert() throws SQLException {
 		int maxPid = 0;
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(SELECTMAX);
@@ -229,7 +230,7 @@ public class Parents {
 		return maxPid;
 	}
 
-	public void update() throws Exception {
+	public void update() throws SQLException {
 		conn = HreH2ConnectionPool.getConnection();
 		ps = conn.prepareStatement(UPDATE);
 		ps.setInt(1, getChild());

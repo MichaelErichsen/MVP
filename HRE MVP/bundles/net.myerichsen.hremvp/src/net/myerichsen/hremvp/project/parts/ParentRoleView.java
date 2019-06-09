@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Parent Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 18. apr. 2019
+ * @version 9. jun. 2019
  *
  */
 
@@ -115,6 +115,14 @@ public class ParentRoleView {
 
 		HREColumnLabelProvider.addEditingSupport(tableViewer);
 
+		try {
+			provider.get();
+			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewer.setInput(provider.getStringList(ParentRolePid));
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+		}
+
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 		composite.setLayoutData(
@@ -136,14 +144,6 @@ public class ParentRoleView {
 		});
 		btnUpdate.setText("Update");
 
-		try {
-			provider.get();
-			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(provider.getStringList(labelPid));
-		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.toString(), e1);
-		}
-
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class ParentRoleView {
 
 			provider.get(ParentRolePid);
 			labelPid = provider.getLabelPid();
-			tableViewer.setInput(provider.getStringList(labelPid));
+			tableViewer.setInput(provider.getStringList(ParentRolePid));
 			tableViewer.refresh();
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
