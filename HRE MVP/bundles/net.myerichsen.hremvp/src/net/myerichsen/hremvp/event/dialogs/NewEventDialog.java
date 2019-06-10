@@ -51,7 +51,7 @@ import net.myerichsen.hremvp.providers.HREComboLabelProvider;
  * Dialog to create a new person event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 8. jun. 2019
+ * @version 10. jun. 2019
  *
  */
 public class NewEventDialog extends TitleAreaDialog {
@@ -124,23 +124,10 @@ public class NewEventDialog extends TitleAreaDialog {
 	private void browseLocations() {
 		final LocationNavigatorDialog dialog = new LocationNavigatorDialog(
 				textLocation.getShell());
-		if (dialog.open() == Window.OK) {
-			try {
-				locationPid = dialog.getLocationPid();
-				textLocation.setText(dialog.getLocationName());
 
-				final LocationEventProvider lep = new LocationEventProvider();
-				lep.setEventPid(eventPid);
-				lep.setLocationPid(locationPid);
-				lep.setPrimaryEvent(true);
-				lep.setPrimaryLocation(true);
-				locationEventsPid = lep.insert();
-				LOGGER.log(Level.INFO, "Inserted location event {0}",
-						locationEventsPid);
-			} catch (final Exception e1) {
-				LOGGER.log(Level.SEVERE, e1.toString(), e1);
-				eventBroker.post("MESSAGE", e1.getMessage());
-			}
+		if (dialog.open() == Window.OK) {
+			locationPid = dialog.getLocationPid();
+			textLocation.setText(dialog.getLocationName());
 		}
 	}
 
@@ -556,12 +543,24 @@ public class NewEventDialog extends TitleAreaDialog {
 			provider.setFromDatePid(fromDatePid);
 			provider.setToDatePid(toDatePid);
 			provider.setEventTypePid(eventTypePid);
-			setEventPid(provider.insert());
+			eventPid = provider.insert();
 
 			LOGGER.log(Level.INFO, "Created event {0}", eventPid);
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
+
+			final LocationEventProvider lep = new LocationEventProvider();
+			lep.setEventPid(eventPid);
+			lep.setLocationPid(locationPid);
+			lep.setPrimaryEvent(true);
+			lep.setPrimaryLocation(true);
+			locationEventsPid = lep.insert();
+
+			LOGGER.log(Level.INFO, "Inserted location event {0}",
+					locationEventsPid);
+		} catch (final Exception e1) {
+			LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			eventBroker.post("MESSAGE", e1.getMessage());
 		}
+
 	}
 
 	/**

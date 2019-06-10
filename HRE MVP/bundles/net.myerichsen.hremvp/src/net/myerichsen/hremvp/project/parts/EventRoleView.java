@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 9. jun. 2019
+ * @version 10. jun. 2019
  *
  */
 
