@@ -52,12 +52,11 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jun. 2019
+ * @version 10. jun. 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	IEclipseContext context;
 
 	@Inject
 	private EPartService partService;
@@ -79,6 +78,7 @@ public class EventPersonView {
 	 */
 	public EventPersonView() {
 		provider = new PersonEventProvider();
+		LOGGER.log(Level.INFO, "Provider: {0}", provider.getClass().getName());
 	}
 
 	/**
@@ -88,7 +88,6 @@ public class EventPersonView {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
-		this.context = context;
 		parent.setLayout(new GridLayout(1, false));
 
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
@@ -144,6 +143,7 @@ public class EventPersonView {
 		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(4));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+
 		try {
 			lls = provider.getStringListByEvent(eventPid);
 			tableViewer.setInput(lls);
@@ -179,7 +179,7 @@ public class EventPersonView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				openPersonNavigator();
+				openPersonNavigator(context);
 			}
 		});
 		mntmAddExistingPerson.setText("Add existing person...");
@@ -286,7 +286,7 @@ public class EventPersonView {
 	/**
 	 *
 	 */
-	protected void openPersonNavigator() {
+	protected void openPersonNavigator(IEclipseContext context) {
 		final PersonNavigatorDialog personNavigatorDialog = new PersonNavigatorDialog(
 				tableViewer.getTable().getShell(), context);
 		if (personNavigatorDialog.open() == Window.OK) {
@@ -376,7 +376,7 @@ public class EventPersonView {
 	private void subscribeEventPidUpdateTopic(
 			@UIEventTopic(Constants.EVENT_PID_UPDATE_TOPIC) int eventPid) {
 		this.eventPid = eventPid;
-		LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
+		LOGGER.log(Level.INFO, "Received event pid {0}", eventPid);
 
 		try {
 			lls = provider.getStringListByEvent(eventPid);

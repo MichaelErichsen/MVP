@@ -54,7 +54,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all Locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 3. jun. 2019
+ * @version 10. jun. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
@@ -77,14 +77,10 @@ public class EventLocationView {
 	/**
 	 * Constructor
 	 *
-	 *
 	 */
 	public EventLocationView() {
-		try {
-			provider = new LocationEventProvider();
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
-		}
+		provider = new LocationEventProvider();
+		LOGGER.log(Level.INFO, "Provider: {0}", provider.getClass().getName());		
 	}
 
 	/**
@@ -131,6 +127,13 @@ public class EventLocationView {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table = tableViewer.getTable();
 		table.addMouseListener(new MouseAdapter() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
+			 * swt.events.MouseEvent)
+			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openLocationView();
@@ -158,6 +161,7 @@ public class EventLocationView {
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		
 		try {
 			lls = provider.getLocationStringListByEvent(eventPid);
 			tableViewer.setInput(lls);

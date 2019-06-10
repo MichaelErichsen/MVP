@@ -35,7 +35,7 @@ import net.myerichsen.hremvp.providers.HDateProvider;
  * Display all data about an event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. maj 2019
+ * @version 10. jun. 2019
  */
 public class EventView {
 	private static final Logger LOGGER = Logger
@@ -59,6 +59,7 @@ public class EventView {
 	 */
 	public EventView() {
 		provider = new EventProvider();
+		LOGGER.log(Level.INFO, "Provider: {0}", provider.getClass().getName());
 	}
 
 	/**
