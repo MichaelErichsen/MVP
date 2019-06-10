@@ -7,9 +7,11 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.Bullet;
 import org.eclipse.swt.custom.ST;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.GlyphMetrics;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -18,12 +20,13 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
+import org.eclipse.swt.graphics.Point;
 
 /**
  * Application welcome page
  * 
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 28. apr. 2019
+ * @version 10. jun. 2019
  *
  */
 public class WelcomePage {
@@ -39,9 +42,16 @@ public class WelcomePage {
 	@PostConstruct
 	public void createControls(Composite parent) {
 		parent.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		parent.setLayout(new GridLayout(2, false));
+		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		StyledText styledTextHeader = new StyledText(parent, SWT.WRAP);
+		ScrolledComposite scrolledComposite = new ScrolledComposite(parent,
+				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+
+		Composite container = new Composite(scrolledComposite, SWT.None);
+		scrolledComposite.setContent(container);
+		container.setLayout(new GridLayout(2, false));
+
+		StyledText styledTextHeader = new StyledText(container, SWT.WRAP);
 		styledTextHeader.setAlignment(SWT.CENTER);
 		styledTextHeader.setLayoutData(
 				new GridData(SWT.CENTER, SWT.CENTER, false, false, 2, 1));
@@ -55,9 +65,11 @@ public class WelcomePage {
 		styledTextHeader.setDoubleClickEnabled(false);
 		styledTextHeader.setEditable(false);
 
-		StyledText styledTextBody = new StyledText(parent, SWT.WRAP);
+		StyledText styledTextBody = new StyledText(container, SWT.WRAP);
+		GridData gd_styledTextBody = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
+		gd_styledTextBody.heightHint = 476;
 		styledTextBody.setLayoutData(
-				new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
+				gd_styledTextBody);
 		styledTextBody.setIndent(10);
 		styledTextBody.setBottomMargin(10);
 		styledTextBody.setLeftMargin(10);
@@ -94,14 +106,16 @@ public class WelcomePage {
 		Bullet bullet = new Bullet(ST.BULLET_DOT, style);
 		styledTextBody.setLineBullet(8, 2, bullet);
 
-		Label label = new Label(parent, SWT.NONE);
+		Label label = new Label(container, SWT.NONE);
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label.setText("Server Link:");
 
-		Link link = new Link(parent, SWT.NONE);
+		Link link = new Link(container, SWT.NONE);
 		link.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		link.setText("<a>http://" + store.getString("SERVERADDRESS") + ":"
 				+ store.getString("SERVERPORT") + "</a>");
+
+		container.setSize(new Point(600, 550));
 
 	}
 }
