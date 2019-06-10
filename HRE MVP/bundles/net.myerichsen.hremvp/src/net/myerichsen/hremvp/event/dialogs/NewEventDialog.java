@@ -85,8 +85,6 @@ public class NewEventDialog extends TitleAreaDialog {
 
 	private final EventRoleProvider eventRoleProvider;
 
-	private int locationEventsPid;
-
 	/**
 	 * Create the dialog.
 	 *
@@ -552,7 +550,7 @@ public class NewEventDialog extends TitleAreaDialog {
 			lep.setLocationPid(locationPid);
 			lep.setPrimaryEvent(true);
 			lep.setPrimaryLocation(true);
-			locationEventsPid = lep.insert();
+			int locationEventsPid = lep.insert();
 
 			LOGGER.log(Level.INFO, "Inserted location event {0}",
 					locationEventsPid);
@@ -715,22 +713,20 @@ public class NewEventDialog extends TitleAreaDialog {
 		final WizardDialog dialog = new WizardDialog(textLocation.getShell(),
 				newLocationWizard);
 		if (dialog.open() == Window.OK) {
-			try {
-				final LocationProvider lp = new LocationProvider();
-				lp.get(locationPid);
-				textLocation.setText(lp.getPrimaryName());
+			locationPid = newLocationWizard.getLocationPid();
 
-				final LocationEventProvider lep = new LocationEventProvider();
-				lep.setEventPid(eventPid);
-				lep.setLocationPid(locationPid);
-				lep.setPrimaryEvent(true);
-				lep.setPrimaryLocation(true);
-				locationEventsPid = lep.insert();
-				LOGGER.log(Level.INFO, "Inserted location event {0}",
-						locationEventsPid);
-			} catch (final Exception e) {
+			String text = "";
+			LocationProvider lp;
+
+			try {
+				lp = new LocationProvider();
+				lp.get(locationPid);
+				text = lp.getPrimaryName();
+			} catch (Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
+
+			textLocation.setText(text);
 		}
 	}
 
