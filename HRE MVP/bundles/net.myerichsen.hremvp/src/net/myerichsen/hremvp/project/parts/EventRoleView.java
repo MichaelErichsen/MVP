@@ -33,10 +33,10 @@ import net.myerichsen.hremvp.project.providers.EventRoleProvider;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display a Event Role with all language labels
+ * Display a event role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 19. jun. 2019
+ * @version 23. jun. 2019
  *
  */
 
@@ -60,7 +60,6 @@ public class EventRoleView {
 
 	/**
 	 * Constructor
-	 *
 	 */
 	public EventRoleView() {
 		provider = new EventRoleProvider();
@@ -220,8 +219,6 @@ public class EventRoleView {
 			return;
 		}
 
-		// FIXME First entry not updated
-		
 		try {
 			final List<List<String>> eventRoleList = provider
 					.getStringList(labelPid);
@@ -229,12 +226,14 @@ public class EventRoleView {
 			eventRolePid = Integer.parseInt(eventRoleList.get(0).get(0));
 			labelPid = Integer.parseInt(eventRoleList.get(0).get(1));
 
+			// Update abbreviation
 			provider.get(eventRolePid);
 			provider.setAbbreviation(textAbbreviation.getText());
 			provider.update();
 			LOGGER.log(Level.INFO, "Event pid {0} has been updated",
 					Integer.toString(eventRolePid));
 
+			// Update each event label
 			DictionaryProvider dp = new DictionaryProvider();
 			final List<List<String>> stringList = dp.getStringList(labelPid);
 
