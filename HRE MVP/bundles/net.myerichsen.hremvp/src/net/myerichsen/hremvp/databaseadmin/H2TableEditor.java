@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+// FIXME Deprecated as of Java 11
 import javax.xml.bind.DatatypeConverter;
 
 import org.eclipse.e4.core.di.annotations.Optional;
@@ -255,6 +256,7 @@ public class H2TableEditor {
 
 				try {
 					final byte[] ba = blob.getBytes(1L, (int) blob.length());
+					// FIXME Deprecated
 					final String s = DatatypeConverter.printHexBinary(ba);
 					text.setText(s);
 				} catch (final Exception e) {

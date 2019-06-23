@@ -36,7 +36,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display a Event Role with all language labels
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 10. jun. 2019
+ * @version 19. jun. 2019
  *
  */
 
@@ -243,7 +243,7 @@ public class EventRoleView {
 
 			for (int i = 0; i < input.size(); i++) {
 				for (final List<String> existingElement : stringList) {
-					LOGGER.log(Level.FINE, "{0}, {1} - {2}, {3}, {4}",
+					LOGGER.log(Level.INFO, "{0}, {1} - {2}, {3}, {4}",
 							new Object[] { input.get(i).get(2),
 									input.get(i).get(3), existingElement.get(0),
 									existingElement.get(1),
@@ -260,7 +260,7 @@ public class EventRoleView {
 							dp.setLabelPid(provider.getLabelPid());
 							dp.setLabelType("EVENTROLE");
 							dp.update();
-							LOGGER.log(Level.FINE,
+							LOGGER.log(Level.INFO,
 									"Updated dictionary element {0}, {1}, {2}, {3}",
 									new Object[] { input.get(i).get(0),
 											input.get(i).get(1),

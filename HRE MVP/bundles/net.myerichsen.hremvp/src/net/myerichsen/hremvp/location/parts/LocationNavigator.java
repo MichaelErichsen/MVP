@@ -11,14 +11,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -57,18 +49,12 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all locations
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 30. apr. 2019
+ * @version 23. jun. 2019
  *
  */
 public class LocationNavigator {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 
@@ -105,7 +91,7 @@ public class LocationNavigator {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				openLocationView();
+				postLocationPid();
 			}
 		});
 
@@ -242,44 +228,10 @@ public class LocationNavigator {
 	/**
 	 *
 	 */
-	protected void openLocationView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationView";
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		boolean found = false;
-
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-				try {
-					if (part.getContributionURI().equals(contributionURI)) {
-						partService.showPart(part, PartState.ACTIVATE);
-						found = true;
-						break;
-					}
-				} catch (final Exception e) {
-					LOGGER.log(Level.INFO, e.getMessage());
-				}
-			}
-		}
-
-		if (!found) {
-			part.setLabel("Location View");
-			part.setCloseable(true);
-			part.setVisible(true);
-			part.setContributionURI(contributionURI);
-			stacks.get(stacks.size() - 5).getChildren().add(part);
-			partService.showPart(part, PartState.ACTIVATE);
-		}
-
+	protected void postLocationPid() {
 		int locationPid = 0;
 
-		// Post name pid
+		// Post location pid
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 
 		if (selectedRows.length > 0) {

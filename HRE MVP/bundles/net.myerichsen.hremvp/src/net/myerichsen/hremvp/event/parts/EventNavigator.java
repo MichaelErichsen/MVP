@@ -1,6 +1,5 @@
 package net.myerichsen.hremvp.event.parts;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,14 +10,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -54,24 +45,15 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all events
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jun. 2019
+ * @version 23. jun. 2019
  *
  */
 public class EventNavigator {
 	private static final String MESSAGE = "MESSAGE";
-	private static final String CONTRIBUTION_URI_E = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView";
-	private static final String CONTRIBUTION_URI_EL = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventLocationView";
-	private static final String CONTRIBUTION_URI_EP = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventPersonView";
 
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	@Inject
-	private EPartService partService;
-	@Inject
-	private EModelService modelService;
-	@Inject
-	private MApplication application;
 	@Inject
 	private IEventBroker eventBroker;
 
@@ -93,8 +75,8 @@ public class EventNavigator {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent      The parent composite
-	 * @param menuService The Eclipse menu service
+	 * @param parent  The parent composite
+	 * @param context The Eclipse context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -115,7 +97,7 @@ public class EventNavigator {
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				updateOtherViews();
+				postEventPid();
 			}
 		});
 		table.setHeaderVisible(true);
@@ -289,120 +271,6 @@ public class EventNavigator {
 	}
 
 	/**
-	 *
-	 */
-	private void openEventLocationView() {
-		LOGGER.log(Level.FINE, "Searching for {0}", CONTRIBUTION_URI_EL);
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-				LOGGER.log(Level.FINE, "Enumerated {0}, {1}", new Object[] {
-						part.getLabel(), part.getContributionURI() });
-				if (part.getContributionURI().equals(CONTRIBUTION_URI_EL)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					LOGGER.log(Level.INFO, "Found {0} in stack {1} {2}, {3}",
-							new Object[] { part.getLabel(), mPartStack.getElementId(), i,
-									part.getContributionURI() });
-					return;
-				}
-			}
-		}
-
-		part.setLabel("Locations in Event");
-		part.setCloseable(true);
-		part.setVisible(true);
-		part.setContributionURI(CONTRIBUTION_URI_EL);
-		stacks.get(3).getChildren().add(part);
-		partService.showPart(part, PartState.ACTIVATE);
-		LOGGER.log(Level.INFO, "Not found {0}, {1}",
-				new Object[] { part.getLabel(), part.getContributionURI() });
-
-	}
-
-	/**
-	 *
-	 */
-	private void openEventPersonView() {
-		LOGGER.log(Level.FINE, "Searching for {0}", CONTRIBUTION_URI_EP);
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-				LOGGER.log(Level.FINE, "Enumerated {0}, {1}", new Object[] {
-						part.getLabel(), part.getContributionURI() });
-
-				if (part.getContributionURI().equals(CONTRIBUTION_URI_EP)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					LOGGER.log(Level.INFO, "Found {0} in stack {1} {2}, {3}",
-							new Object[] { part.getLabel(), mPartStack.getElementId(), i,
-									part.getContributionURI() });
-					return;
-				}
-			}
-		}
-
-		part.setLabel("Persons in Event");
-		part.setCloseable(true);
-		part.setVisible(true);
-		part.setContributionURI(CONTRIBUTION_URI_EP);
-		stacks.get(4).getChildren().add(part);
-		partService.showPart(part, PartState.ACTIVATE);
-		LOGGER.log(Level.INFO, "Not found {0}, {1}",
-				new Object[] { part.getLabel(), part.getContributionURI() });
-
-	}
-
-	/**
-	 *
-	 */
-	private void openEventView() {
-		LOGGER.log(Level.FINE, "Searching for {0}", CONTRIBUTION_URI_E);
-
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart part = MBasicFactory.INSTANCE.createPart();
-
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				part = (MPart) a.get(i);
-
-				if (part.getContributionURI().equals(CONTRIBUTION_URI_E)) {
-					partService.showPart(part, PartState.ACTIVATE);
-					LOGGER.log(Level.INFO, "Found {0} in stack {1} {2}, {3}",
-							new Object[] { part.getLabel(), mPartStack.getElementId(), i,
-									part.getContributionURI() });
-					return;
-				}
-			}
-		}
-
-		part.setLabel("Event View");
-		part.setCloseable(true);
-		part.setVisible(true);
-		part.setContributionURI(CONTRIBUTION_URI_E);
-		stacks.get(2).getChildren().add(part);
-		partService.showPart(part, PartState.ACTIVATE);
-		LOGGER.log(Level.INFO, "Not found {0}, {1}",
-				new Object[] { part.getLabel(), part.getContributionURI() });
-
-	}
-
-	/**
 	 * @param eventPid
 	 */
 	@Inject
@@ -415,10 +283,6 @@ public class EventNavigator {
 			try {
 				tableViewer.setInput(provider.getStringList());
 				tableViewer.refresh();
-
-				openEventView();
-				openEventPersonView();
-				openEventLocationView();
 
 				final TableItem[] items = tableViewer.getTable().getItems();
 				final String item0 = Integer.toString(eventPid);
@@ -436,15 +300,9 @@ public class EventNavigator {
 	}
 
 	/**
-	 * @throws NumberFormatException
 	 */
-	private void updateOtherViews() {
-		LOGGER.log(Level.INFO, "Update other views");
-
+	private void postEventPid() {
 		int eventPid = 0;
-		openEventView();
-		openEventLocationView();
-		openEventPersonView();
 
 		final TableItem[] selectedRows = tableViewer.getTable().getSelection();
 

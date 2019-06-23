@@ -52,7 +52,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all persons for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jun. 2019
+ * @version 23. jun. 2019
  */
 public class EventPersonView {
 	private static final Logger LOGGER = Logger
@@ -67,10 +67,10 @@ public class EventPersonView {
 	@Inject
 	private IEventBroker eventBroker;
 
-	private final PersonEventProvider provider;
-	private int eventPid = 0;
 	private TableViewer tableViewer;
+	private final PersonEventProvider provider;
 	private List<List<String>> lls;
+	private int eventPid = 0;
 
 	/**
 	 * Constructor
@@ -84,7 +84,8 @@ public class EventPersonView {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
+	 * @param parent  The parent composite
+	 * @param context The Eclipse context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -135,9 +136,9 @@ public class EventPersonView {
 		tableViewerColumnEventLabel
 				.setLabelProvider(new HREColumnLabelProvider(2));
 
-		TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
+		final TableViewerColumn tableViewerColumnRole = new TableViewerColumn(
 				tableViewer, SWT.NONE);
-		TableColumn tblclmnRole = tableViewerColumnRole.getColumn();
+		final TableColumn tblclmnRole = tableViewerColumnRole.getColumn();
 		tblclmnRole.setWidth(100);
 		tblclmnRole.setText("Role");
 		tableViewerColumnRole.setLabelProvider(new HREColumnLabelProvider(4));
@@ -257,13 +258,13 @@ public class EventPersonView {
 		if (dialog.open() == Window.OK) {
 			try {
 				LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
-				EventProvider ep = new EventProvider();
+				final EventProvider ep = new EventProvider();
 				ep.get(eventPid);
 
 				LOGGER.log(Level.INFO, "Event type pid {0}",
 						ep.getEventTypePid());
 
-				EventRoleDialog eventRoleDialog = new EventRoleDialog(
+				final EventRoleDialog eventRoleDialog = new EventRoleDialog(
 						ep.getEventTypePid(), parent.getShell());
 
 				if (eventRoleDialog.open() == Window.OK) {
@@ -292,13 +293,13 @@ public class EventPersonView {
 		if (personNavigatorDialog.open() == Window.OK) {
 			try {
 				LOGGER.log(Level.INFO, "Event pid {0}", eventPid);
-				EventProvider ep = new EventProvider();
+				final EventProvider ep = new EventProvider();
 				ep.get(eventPid);
 
 				LOGGER.log(Level.INFO, "Event type pid {0}",
 						ep.getEventTypePid());
 
-				EventRoleDialog eventRoleDialog = new EventRoleDialog(
+				final EventRoleDialog eventRoleDialog = new EventRoleDialog(
 						ep.getEventTypePid(),
 						tableViewer.getTable().getShell());
 

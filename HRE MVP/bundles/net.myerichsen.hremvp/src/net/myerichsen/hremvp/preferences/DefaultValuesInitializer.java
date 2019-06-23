@@ -10,7 +10,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * Default values initializer
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. mar. 2019
+ * @version 23. jun. 2019
  *
  */
 public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
@@ -53,7 +53,7 @@ public class DefaultValuesInitializer extends AbstractPreferenceInitializer {
 		// H2
 		store.setDefault("H2TRACELEVEL", "1");
 		store.setDefault("DBPATH", ".");
-		store.setDefault("DBNAME", "MVP");
+		store.setDefault("DBNAME", "SAMPLE");
 		store.setDefault("USERID", "sa");
 		store.setDefault("PASSWORD", "");
 		store.setDefault("H2VERSION", "1.3.168");

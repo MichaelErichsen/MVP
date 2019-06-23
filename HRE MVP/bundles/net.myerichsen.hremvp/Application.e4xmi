@@ -22,6 +22,7 @@
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_pZ9z4LAhEeiZBOmt_BeWPg" elementId="net.myerichsen.hremvp.partstack.3" containerData="2000">
               <children xsi:type="basic:Part" xmi:id="_M88-4LBcEeizXZZKfAgc9g" elementId="net.myerichsen.hremvp.part.log" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.project.parts.LogViewer" label="Log" tooltip="Log"/>
+              <children xsi:type="basic:Part" xmi:id="_8khSUJWhEemCNcBjcMQfbg" elementId="net.myerichsen.hremvp.part.databasetables" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator" label="Database Tables"/>
             </children>
           </children>
         </children>
@@ -59,10 +60,10 @@
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_Q2zioOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.perspective.locationperspective" label="Location " iconURI="platform:/plugin/net.myerichsen.hremvp/icons/LocationIcon.png">
         <children xsi:type="basic:PartSashContainer" xmi:id="_hBXFsOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.1" containerData="1280" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_ocrnwOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partstack.1" containerData="300">
+          <children xsi:type="basic:PartStack" xmi:id="_ocrnwOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partstack.1" containerData="380">
             <children xsi:type="basic:Part" xmi:id="_pSAGMOTQEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationNavigator" label="Location Navigator"/>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_82jjkOTTEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.2" containerData="980">
+          <children xsi:type="basic:PartSashContainer" xmi:id="_82jjkOTTEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.2" containerData="900">
             <children xsi:type="basic:PartSashContainer" xmi:id="_D9w20OTUEeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partsashcontainer.3" horizontal="true">
               <children xsi:type="basic:PartStack" xmi:id="_K6UgoOTREeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.partstack.4" containerData="">
                 <children xsi:type="basic:Part" xmi:id="_LvtQgOTREeiOQPtyES1FZg" elementId="net.myerichsen.hremvp.part.locationview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationView" label="Location View"/>
@@ -84,20 +85,20 @@
         </children>
       </children>
       <children xsi:type="advanced:Perspective" xmi:id="_bqH88O1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.perspective.eventperspective" label="Events" iconURI="platform:/plugin/net.myerichsen.hremvp/icons/EventIcon.png">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_llPiQO1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partsashcontainer.7" containerData="1280" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_382WQO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partstack.12" containerData="380">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_llPiQO1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partsashcontainer.7" containerData="12800" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_382WQO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partstack.12" containerData="3800">
             <children xsi:type="basic:Part" xmi:id="_4kOfUO1xEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventnavigator" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventNavigator" label="Event Navigator" tooltip="Event Navigator"/>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_ZF310P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.8" containerData="900" horizontal="true">
-            <children xsi:type="basic:PartStack" xmi:id="_mdYrMO1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partstack.11" containerData="">
-              <children xsi:type="basic:Part" xmi:id="_mtqi4O1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView" label="Event View" tooltip="Event View" closeable="true"/>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_ZF310P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.8" containerData="9000">
+            <children xsi:type="basic:PartStack" xmi:id="_mdYrMO1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.partstack.11" containerData="4500">
+              <children xsi:type="basic:Part" xmi:id="_mtqi4O1wEeixq6yORkaFTA" elementId="net.myerichsen.hremvp.part.eventview" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventView" label="Event View" tooltip="Event View"/>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_cCshYP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.10">
-              <children xsi:type="basic:PartStack" xmi:id="_1YIfoP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partstack.15">
-                <children xsi:type="basic:Part" xmi:id="_l1eU8P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.locationsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventLocationView" label="Locations in Event" closeable="true"/>
+            <children xsi:type="basic:PartSashContainer" xmi:id="_cCshYP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partsashcontainer.10" containerData="4500" horizontal="true">
+              <children xsi:type="basic:PartStack" xmi:id="_1YIfoP08EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.partstack.15" containerData="2250">
+                <children xsi:type="basic:Part" xmi:id="_l1eU8P06EeiY0-m6RmcFoA" elementId="net.myerichsen.hremvp.part.locationsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventLocationView" label="Locations in Event"/>
               </children>
-              <children xsi:type="basic:PartStack" xmi:id="_nnNVAEptEemFz4Ig_nU0Ew" elementId="net.myerichsen.hremvp.partstack.13">
-                <children xsi:type="basic:Part" xmi:id="_x195MIbgEemjtIzE4e4Q8g" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventPersonView" label="Persons in Event" closeable="true"/>
+              <children xsi:type="basic:PartStack" xmi:id="_nnNVAEptEemFz4Ig_nU0Ew" elementId="net.myerichsen.hremvp.partstack.13" containerData="2250">
+                <children xsi:type="basic:Part" xmi:id="_x195MIbgEemjtIzE4e4Q8g" elementId="net.myerichsen.hremvp.part.personsinevent" contributionURI="bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.event.parts.EventPersonView" label="Persons in Event"/>
               </children>
             </children>
           </children>

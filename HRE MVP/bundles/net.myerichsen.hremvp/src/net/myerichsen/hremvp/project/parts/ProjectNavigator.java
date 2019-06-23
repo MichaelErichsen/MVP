@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,14 +21,8 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.model.application.ui.basic.MStackElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -73,7 +66,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Navigator part to display and maintain all HRE projects
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. apr. 2019
+ * @version 23. jun. 2019
  *
  */
 public class ProjectNavigator {
@@ -88,8 +81,6 @@ public class ProjectNavigator {
 	private EModelService modelService;
 	@Inject
 	private MApplication application;
-	@Inject
-	private EPartService partService;
 
 	private ProjectProvider provider;
 	private TableViewer tableViewer;
@@ -521,7 +512,7 @@ public class ProjectNavigator {
 					.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2.2 - " + dbName);
 
-			openDatabaseNavigator();
+//			openDatabaseNavigator();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 			eventBroker.post(Constants.PROJECT_LIST_UPDATE_TOPIC, index);
@@ -534,36 +525,6 @@ public class ProjectNavigator {
 			eventBroker.post("MESSAGE", e1.getMessage());
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);
 		}
-	}
-
-	/**
-	 * Open H2 Database Navigator
-	 */
-	private void openDatabaseNavigator() {
-		final String CONTRIBUTION_URI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.databaseadmin.H2DatabaseNavigator";
-		final List<MPartStack> stacks = modelService.findElements(application,
-				null, MPartStack.class, null);
-		MPart h2dnPart = MBasicFactory.INSTANCE.createPart();
-
-		for (final MPartStack mPartStack : stacks) {
-			final List<MStackElement> a = mPartStack.getChildren();
-
-			for (int i = 0; i < a.size(); i++) {
-				h2dnPart = (MPart) a.get(i);
-				if (h2dnPart.getContributionURI().equals(CONTRIBUTION_URI)) {
-					partService.showPart(h2dnPart, PartState.ACTIVATE);
-					return;
-				}
-			}
-		}
-
-		h2dnPart.setLabel("Database Tables");
-		h2dnPart.setContainerData("650");
-		h2dnPart.setCloseable(true);
-		h2dnPart.setVisible(true);
-		h2dnPart.setContributionURI(CONTRIBUTION_URI);
-		stacks.get(stacks.size() - 2).getChildren().add(h2dnPart);
-		partService.showPart(h2dnPart, PartState.ACTIVATE);
 	}
 
 	/**
@@ -652,7 +613,7 @@ public class ProjectNavigator {
 				window.setLabel("HRE v0.2 - " + dbName);
 			}
 
-			openDatabaseNavigator();
+//			openDatabaseNavigator();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 
@@ -729,7 +690,7 @@ public class ProjectNavigator {
 					.find("net.myerichsen.hremvp.window.main", application);
 			window.setLabel("HRE MVP v0.2 - " + dbName);
 
-			openDatabaseNavigator();
+//			openDatabaseNavigator();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 
@@ -859,7 +820,7 @@ public class ProjectNavigator {
 				window.setLabel("HRE v0.2 - " + dbName);
 			}
 
-			openDatabaseNavigator();
+//			openDatabaseNavigator();
 
 			eventBroker.post(Constants.DATABASE_UPDATE_TOPIC, dbName);
 

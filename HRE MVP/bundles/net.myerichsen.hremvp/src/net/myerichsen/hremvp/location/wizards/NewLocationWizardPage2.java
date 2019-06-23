@@ -48,10 +48,9 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 15. jun. 2019
  *
  */
-@SuppressWarnings("restriction")
 public class NewLocationWizardPage2 extends WizardPage {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);

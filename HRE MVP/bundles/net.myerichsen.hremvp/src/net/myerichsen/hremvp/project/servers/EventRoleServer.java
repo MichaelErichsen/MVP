@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.dbmodels.Languages;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.Events}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 12. maj 2019
+ * @version 19. jun. 2019
  *
  */
 public class EventRoleServer implements IHREServer {
@@ -81,7 +81,7 @@ public class EventRoleServer implements IHREServer {
 	@Override
 	public void get(int key) throws Exception {
 		eventRole.get(key);
-		setEventRolePid(eventRole.getEventRolePid());
+		setEventTypePid(eventRole.getEventTypePid());
 		setAbbreviation(eventRole.getAbbreviation());
 	}
 

@@ -51,10 +51,10 @@ import net.myerichsen.hremvp.location.wizards.NewLocationWizard;
 import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
 
 /**
- * Display all Locations for a single event
+ * Display all locations for a single event
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 10. jun. 2019
+ * @version 23. jun. 2019
  */
 public class EventLocationView {
 	private static final Logger LOGGER = Logger
@@ -70,7 +70,7 @@ public class EventLocationView {
 	private IEventBroker eventBroker;
 
 	private TableViewer tableViewer;
-	private LocationEventProvider provider;
+	private final LocationEventProvider provider;
 	private List<List<String>> lls;
 	private int eventPid = 0;
 
@@ -80,7 +80,7 @@ public class EventLocationView {
 	 */
 	public EventLocationView() {
 		provider = new LocationEventProvider();
-		LOGGER.log(Level.INFO, "Provider: {0}", provider.getClass().getName());		
+		LOGGER.log(Level.INFO, "Provider: {0}", provider.getClass().getName());
 	}
 
 	/**
@@ -114,11 +114,8 @@ public class EventLocationView {
 	/**
 	 * Create contents of the view part
 	 *
-	 * @param parent The parent composite
-	 */
-	/**
-	 * @param parent
-	 * @param context
+	 * @param parent  The parent composite
+	 * @param context The Eclipse context
 	 */
 	@PostConstruct
 	public void createControls(Composite parent, IEclipseContext context) {
@@ -129,7 +126,7 @@ public class EventLocationView {
 		table.addMouseListener(new MouseAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.MouseAdapter#mouseDoubleClick(org.eclipse.
 			 * swt.events.MouseEvent)
@@ -161,7 +158,7 @@ public class EventLocationView {
 				.setLabelProvider(new HREColumnLabelProvider(1));
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		
+
 		try {
 			lls = provider.getLocationStringListByEvent(eventPid);
 			tableViewer.setInput(lls);
@@ -182,23 +179,7 @@ public class EventLocationView {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final NewLocationWizard newLocationWizard = new NewLocationWizard(
-						context);
-				final WizardDialog dialog = new WizardDialog(parent.getShell(),
-						newLocationWizard);
-				if (dialog.open() == Window.OK) {
-					try {
-						final LocationEventProvider lep = new LocationEventProvider();
-						lep.setEventPid(eventPid);
-						lep.setLocationPid(newLocationWizard.getLocationPid());
-						lep.setPrimaryEvent(false);
-						lep.setPrimaryLocation(false);
-
-						lep.insert();
-					} catch (final Exception e1) {
-						LOGGER.log(Level.SEVERE, e1.toString(), e1);
-					}
-				}
+				newEventLocation(parent, context);
 			}
 		});
 		mntmAddNewLocation.setText("Add new location...");
@@ -296,10 +277,34 @@ public class EventLocationView {
 	}
 
 	/**
+	 * @param parent
+	 * @param context
+	 */
+	public void newEventLocation(Composite parent, IEclipseContext context) {
+		final NewLocationWizard newLocationWizard = new NewLocationWizard(
+				context);
+		final WizardDialog dialog = new WizardDialog(parent.getShell(),
+				newLocationWizard);
+		if (dialog.open() == Window.OK) {
+			try {
+				final LocationEventProvider lep = new LocationEventProvider();
+				lep.setEventPid(eventPid);
+				lep.setLocationPid(newLocationWizard.getLocationPid());
+				lep.setPrimaryEvent(false);
+				lep.setPrimaryLocation(false);
+
+				lep.insert();
+			} catch (final Exception e1) {
+				LOGGER.log(Level.SEVERE, e1.toString(), e1);
+			}
+		}
+	}
+
+	/**
 	 *
 	 */
 	protected void openLocationView() {
-		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.parts.LocationView";
+		final String contributionURI = "bundleclass://net.myerichsen.hremvp/net.myerichsen.hremvp.location.parts.LocationView";
 
 		final List<MPartStack> stacks = modelService.findElements(application,
 				null, MPartStack.class, null);
