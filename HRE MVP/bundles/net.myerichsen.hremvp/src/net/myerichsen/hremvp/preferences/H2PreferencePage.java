@@ -21,7 +21,7 @@ import net.myerichsen.hremvp.HreH2ConnectionPool;
  * Preference page for H2 databse
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 11. apr. 2019
+ * @version 24. jun. 2019
  *
  */
 public class H2PreferencePage extends FieldEditorPreferencePage
@@ -105,8 +105,8 @@ public class H2PreferencePage extends FieldEditorPreferencePage
 				prep.close();
 				conn.close();
 			} catch (final SQLException e) {
-				LOGGER.severe(e.getMessage() + ", " + e.getErrorCode() + ", "
-						+ e.getSQLState());
+				LOGGER.log(Level.SEVERE, "{0}, {1}, {2}", new Object[] {
+						e.getMessage(), e.getErrorCode(), e.getSQLState() });
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 			}

@@ -28,7 +28,7 @@ import net.myerichsen.hremvp.project.providers.PersonNameStyleProvider;
  * Preference page for HRE MVP client
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 4. apr. 2019
+ * @version 24. jun. 2019
  *
  */
 public class ClientPreferencePage extends FieldEditorPreferencePage
@@ -208,7 +208,7 @@ public class ClientPreferencePage extends FieldEditorPreferencePage
 					conn = DriverManager.getConnection("jdbc:h2:" + dbName,
 							userId, passWord);
 				} catch (final Exception e) {
-					LOGGER.severe(e.getClass() + " " + e.getMessage());
+					LOGGER.log(Level.SEVERE, e.getMessage());
 				}
 				LOGGER.log(Level.INFO, "Changed property "
 						+ comboFieldEditorCsMode.getPreferenceName() + " from "

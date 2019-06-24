@@ -48,9 +48,10 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Location name parts wizard page 2
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. jun. 2019
+ * @version 24. jun. 2019
  *
  */
+@SuppressWarnings("restriction")
 public class NewLocationWizardPage2 extends WizardPage {
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -310,7 +311,7 @@ public class NewLocationWizardPage2 extends WizardPage {
 					"Geocoded address " + result0.getString("formatted_address")
 							+ " as lat " + lat + ", lng " + lng);
 		} catch (final Exception e) {
-			LOGGER.severe(e.getCause() + ": " + e.getMessage());
+			LOGGER.log(Level.SEVERE, e.getMessage());
 			eventBroker.post("MESSAGE", e.getCause() + ": " + e.getMessage());
 		}
 	}
