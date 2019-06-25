@@ -17,13 +17,4 @@
 
 	</modules>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.197</version>
-			<scope>system</scope>
-			<systemPath>C:\Program Files\HRE\Other jars\h2-1.4.197.jar</systemPath>
-		</dependency>
-	</dependencies>
 </project>

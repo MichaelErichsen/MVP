@@ -44,7 +44,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Display all sex types
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 17. apr. 2019
+ * @version 25. jun. 2019
  *
  */
 @SuppressWarnings("restriction")

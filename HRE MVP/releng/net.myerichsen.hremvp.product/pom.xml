@@ -43,14 +43,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>com.h2.database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.197</version>
-			<scope>system</scope>
-			<systemPath>C:\Program Files\HRE\Other jars\h2-1.4.197.jar</systemPath>
-		</dependency>
-	</dependencies>
 </project>
 

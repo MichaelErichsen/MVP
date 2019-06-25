@@ -1,5 +1,6 @@
 package net.myerichsen.hremvp.project.wizards;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +26,7 @@ import net.myerichsen.hremvp.providers.HREColumnLabelProvider;
  * Wizard page to define a new sex type for HRE
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2019
- * @version 9. jun. 2019
+ * @version 25. jun. 2019
  *
  */
 public class NewSexTypeWizardPage1 extends WizardPage {
@@ -129,6 +130,15 @@ public class NewSexTypeWizardPage1 extends WizardPage {
 
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		try {
+			List<List<String>> stringList = provider.getStringList(labelPid);
+
+			for (List<String> list : stringList) {
+				LOGGER.log(Level.FINE,
+						"Sex type pid {0}, label pid {1}, iso code {2}, label {3}",
+						new Object[] { list.get(0), list.get(1), list.get(2),
+								list.get(3) });
+			}
+
 			tableViewer.setInput(provider.getStringList(labelPid));
 		} catch (final Exception e1) {
 			LOGGER.log(Level.SEVERE, e1.toString(), e1);

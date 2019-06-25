@@ -13,10 +13,11 @@
 
 	<modules>
 		<module>net.myerichsen.hremvp</module>
+		
 		<module>com.opcoach.e4.preferences</module>
 		<module>org.xBaseJ</module>
 		<module>org.json</module>
 		<module>com.hypotemoose.cal</module>
-		<module>net.myerichsen.hremvp.helpsystem</module>
+		
 	</modules>
 </project>

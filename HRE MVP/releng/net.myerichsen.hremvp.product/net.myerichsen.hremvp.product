@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="net.myerichsen.hremvp" uid="HRE MVP" id="net.myerichsen.hremvp.HRE_MVP" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.2.2.qualifier" useFeatures="true" includeLaunchers="true">
-
+<product name="net.myerichsen.hremvp" uid="HRE MVP" id="net.myerichsen.hremvp.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.2.2.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -23,7 +22,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -136,7 +134,8 @@
    </plugins>
 
    <features>
-      <feature id="net.myerichsen.hremvp.feature" version="0.2.2.qualifier"/>
+      <feature id="net.myerichsen.hremvp.feature"/>
+      <feature id="net.myerichsen.hremvp.helpsystem.feature"/>
       <feature id="com.opcoach.e4.preferences.feature"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.emf.ecore"/>
@@ -163,5 +162,13 @@
    <repositories>
       <repository location="http://www.myerichsen.net/HRE/repository" enabled="true" />
    </repositories>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+      <file path="/bundles/net.myerichsen.hremvp/css/default.css"/>
+   </cssInfo>
 
 </product>

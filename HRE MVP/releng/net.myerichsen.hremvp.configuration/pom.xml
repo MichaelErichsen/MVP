@@ -11,6 +11,8 @@
 		<tycho.version>1.2.0</tycho.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<eclipse-repo.url>http://download.eclipse.org/releases/photon</eclipse-repo.url>
+		<h2.version>1.4.197</h2.version>
+		<h2.path>C:\Program Files\HRE\Other jars\h2-1.4.197.jar</h2.path>
 	</properties>
 
 	<repositories>

@@ -23,7 +23,7 @@ import net.myerichsen.hremvp.Constants;
  * Dialog to display help about HRE.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 6. jan. 2019
+ * @version 25. jun. 2019
  *
  */
 public class HelpAboutDialog extends Dialog {
@@ -101,7 +101,7 @@ public class HelpAboutDialog extends Dialog {
 		styledText_2.setEditable(false);
 		styledText_2
 				.setFont(SWTResourceManager.getFont("Calibri", 10, SWT.BOLD));
-		styledText_2.setText("Release V0.2.2\r\nBuild Date 2019-01-06");
+		styledText_2.setText("Release V0.2.3\r\nBuild Date 2019-07-00");
 		styledText_2.setLayoutData(
 				new GridData(SWT.CENTER, SWT.FILL, true, false, 1, 1));
 

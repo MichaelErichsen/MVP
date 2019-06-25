@@ -10,7 +10,7 @@
             application="org.eclipse.e4.ui.workbench.swt.E4Application">
          <property
                name="applicationCSS"
-               value="platform:/plugin/net.myerichsen.hremvp/css/default.css">
+               value="/bundles/net.myerichsen.hremvp/css/default.css">
          </property>
          <property
                name="appName"

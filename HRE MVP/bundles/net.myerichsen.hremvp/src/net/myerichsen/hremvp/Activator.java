@@ -20,7 +20,7 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
  * logger. Starts and stops the Help System.
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 24. jun. 2019
+ * @version 25. jun. 2019
  *
  */
 public class Activator implements BundleActivator {
@@ -28,20 +28,11 @@ public class Activator implements BundleActivator {
 	 *
 	 */
 	private static final String PROJECT = "project.";
-	private static BundleContext context;
 	private static final Logger LOGGER = Logger
 			.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");
-//	private static final String HELPCLASSPATH = "plugins\\\\org.eclipse.help.base_4.2.400.v20181206-0815.jar";
 	private Infocenter infocenter;
-
-	/**
-	 * @return The bundle context
-	 */
-	static BundleContext getContext() {
-		return context;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -51,16 +42,14 @@ public class Activator implements BundleActivator {
 	 */
 	@Override
 	public void start(BundleContext bundleContext) throws IOException {
-		context = bundleContext;
-
 		HreLogger.setup();
 
 		LOGGER.log(Level.INFO, "HRE MVP v0.2.3 has been started");
 		LOGGER.log(Level.FINE, "Command line arguments:");
 
-		final ServiceReference<EnvironmentInfo> envRef = context
+		final ServiceReference<EnvironmentInfo> envRef = bundleContext
 				.getServiceReference(EnvironmentInfo.class);
-		final EnvironmentInfo envInfo = context.getService(envRef);
+		final EnvironmentInfo envInfo = bundleContext.getService(envRef);
 		final String[] args = envInfo.getCommandLineArgs();
 		for (int i = 0; i < args.length; i++) {
 			LOGGER.log(Level.FINE, "CLI {0}: {1}", new Object[] { i, args[i] });
@@ -91,25 +80,15 @@ public class Activator implements BundleActivator {
 		LOGGER.log(Level.FINE, "HRE Font: {0}", store.getString("HREFONT"));
 
 		final int port = store.getInt("HELPSYSTEMPORT");
-//		final String command = "java -classpath " + HELPCLASSPATH
-//				+ " org.eclipse.help.standalone.Infocenter -command start -port "
-//				+ port + " -product net.myerichsen.hremvp.helpsystem -clean";
 
 		try {
-			LOGGER.log(Level.INFO, "Help System is being started at port {0}",
-					port);
 
 			String[] options = new String[] { "-port", Integer.toString(port) };
 			infocenter = new Infocenter(options);
 			infocenter.start();
 
-//			final Process helpProcess = Runtime.getRuntime().exec(command);
-//			if (helpProcess.isAlive()) {
-//				LOGGER.log(Level.INFO, "Help system start command: {0}",
-//						command);
-//			} else {
-//				throw new MvpException("Could not start help system process");
-//			}
+			LOGGER.log(Level.INFO, "Help System has been started at port {0}",
+					port);
 		} catch (final Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
@@ -126,21 +105,18 @@ public class Activator implements BundleActivator {
 		try {
 			HreH2ConnectionPool.dispose();
 		} catch (final Exception e1) {
-			LOGGER.log(Level.SEVERE, e1.getMessage());
+			LOGGER.log(Level.SEVERE, "Dispose connection pool: {0}",
+					e1.getMessage());
 		}
-
-//		final String command = "java -classpath " + HELPCLASSPATH
-//				+ " org.eclipse.help.standalone.Infocenter -command shutdown";
 
 		try {
 			infocenter.shutdown();
-//			Runtime.getRuntime().exec(command);
-			LOGGER.log(Level.FINE, "Help System is being stopped");
+
+			LOGGER.log(Level.INFO, "Help System is being stopped");
 		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, e.getMessage());
+			LOGGER.log(Level.SEVERE, "Stop help system: {0}", e.getMessage());
 		}
 
-		context = null;
 	}
 
 }

@@ -34,9 +34,10 @@ import net.myerichsen.hremvp.project.servers.SexTypeServer;
  * Provide all data for a sex type
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 15. jun. 2019
+ * @version 25. jun. 2019
  *
  */
+@SuppressWarnings("restriction")
 public class SexTypeProvider implements IHREProvider {
 	private static IPreferenceStore store = new ScopedPreferenceStore(
 			InstanceScope.INSTANCE, "net.myerichsen.hremvp");

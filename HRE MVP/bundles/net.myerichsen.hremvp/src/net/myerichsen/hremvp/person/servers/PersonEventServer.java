@@ -16,7 +16,7 @@ import net.myerichsen.hremvp.dbmodels.PersonEvents;
 
 /**
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018
- * @version 24. maj 2019
+ * @version 25. jun. 2019
  *
  */
 public class PersonEventServer implements IHREServer {
@@ -136,7 +136,6 @@ public class PersonEventServer implements IHREServer {
 			return lls;
 		}
 
-		// FIXME Return Event id, from date, to date and abbrev
 		List<String> personStringList;
 
 		try {

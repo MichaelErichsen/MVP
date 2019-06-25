@@ -40,9 +40,10 @@ public class HelpSystemBrowser {
 
 		final Browser browser = new Browser(parent, SWT.NONE);
 		browser.setToolTipText("HRE Help");
-		browser.setUrl("http://127.0.0.1:" + store.getInt("HELPSYSTEMPORT")
-				+ "/help/index.jsp");
-		LOGGER.log(Level.INFO, "Browser pointing at " + browser.getUrl());
+		String url = "http://127.0.0.1:" + store.getInt("HELPSYSTEMPORT")
+				+ "/help/index.jsp";
+		browser.setUrl(url);
+		LOGGER.log(Level.INFO, "Embedded browser pointing at {0}", url);
 		browser.setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 	}

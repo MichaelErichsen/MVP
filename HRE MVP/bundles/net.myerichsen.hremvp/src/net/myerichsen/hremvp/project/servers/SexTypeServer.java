@@ -25,7 +25,7 @@ import net.myerichsen.hremvp.dbmodels.SexTypes;
  * Business logic interface for {@link net.myerichsen.hremvp.dbmodels.SexTypes}
  *
  * @author Michael Erichsen, &copy; History Research Environment Ltd., 2018-2019
- * @version 27. apr. 2019
+ * @version 25. jun. 2019
  *
  */
 public class SexTypeServer implements IHREServer {
@@ -282,6 +282,7 @@ public class SexTypeServer implements IHREServer {
 			stringList.add(Integer.toString(labelPid));
 			stringList.add(l.getIsocode());
 
+			label = "";
 			for (final Dictionary d : fkLabelPid) {
 				if (l.getIsocode().equals(d.getIsoCode())) {
 					label = d.getLabel();
