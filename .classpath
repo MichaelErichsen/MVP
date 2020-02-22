@@ -3,5 +3,18 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/h2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JSON-java"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.opcoach.e4.preference.example.e3"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.opcoach.e4.preferences"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.opcoach.e4.preferences.example"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.opcoach.e4.preferences.mainmenu"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.opcoach.e4.preferences.provider.example"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/example"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ui"/>
+	<classpathentry kind="lib" path="/core/src/main/java/net/sourceforge/xBaseJ/DBF.java"/>
+	<classpathentry kind="lib" path="/core/src/main/java/net/sourceforge/xBaseJ/xBaseJException.java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
