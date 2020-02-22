@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nils_TMG_HRE
+Bundle-SymbolicName: Nils_TMG_HRE
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: History Research Environment
+Automatic-Module-Name: Nils_TMG_HRE
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
